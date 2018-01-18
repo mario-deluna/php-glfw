@@ -4,9 +4,42 @@
 #include "php.h"
 #include "php_glfw.h"
 
-static zend_function_entry hello_functions[] = {
+#include <GLFW/glfw3.h>
+
+PHP_FUNCTION(glfwInit)
+{
+    glfwInit();
+
+    GLFWwindow* window = glfwCreateWindow(640, 480, "My Title", NULL, NULL);
+    
+    if (!window)
+    {
+        glfwTerminate();
+        exit(EXIT_FAILURE);
+    }
+
+    glfwMakeContextCurrent(window);
+    glfwSwapInterval(1);
+
+    while (!glfwWindowShouldClose(window))
+    {
+        glfwSwapBuffers(window);
+        glfwPollEvents();
+    }
+
+    glfwDestroyWindow(window);
+
+    glfwTerminate();
+}
+
+static zend_function_entry glfw_functions[] = {
+    PHP_FE(glfwInit, NULL)
     PHP_FE(hello_world, NULL)
+#ifdef PHP_FE_END
+    PHP_FE_END
+#else
     {NULL, NULL, NULL}
+#endif
 };
 
 zend_module_entry glfw_module_entry = {
@@ -14,7 +47,7 @@ zend_module_entry glfw_module_entry = {
     STANDARD_MODULE_HEADER,
 #endif
     PHP_GLFW_EXTNAME,
-    hello_functions,
+    glfw_functions,
     NULL,
     NULL,
     NULL,

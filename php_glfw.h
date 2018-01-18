@@ -6,6 +6,6 @@
 PHP_FUNCTION(hello_world);
 
 extern zend_module_entry glfw_module_entry;
-#define phpext_hello_ptr &glfw_module_entry
+#define phpext_glfw_ptr &glfw_module_entry
 
 #endif
