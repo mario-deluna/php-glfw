@@ -4,37 +4,123 @@
 #include "php.h"
 #include "php_glfw.h"
 
+#include <zend_API.h>
 #include <GLFW/glfw3.h>
+
+#define PHPGLFW_WINDOW_NAME "phpglfw window"
+
+int phpglfw_window_context;
+
+#define PHPGLFW_RESOURCE_TYPE zend_resource
+#define PHPGLFW_RETURN_RESOURCE(window, context) \
+    RETURN_RES(zend_register_resource(window, context))
 
 PHP_FUNCTION(glfwInit)
 {
     glfwInit();
+}
 
-    GLFWwindow* window = glfwCreateWindow(640, 480, "My Title", NULL, NULL);
-    
-    if (!window)
-    {
-        glfwTerminate();
-        exit(EXIT_FAILURE);
-    }
-
-    glfwMakeContextCurrent(window);
-    glfwSwapInterval(1);
-
-    while (!glfwWindowShouldClose(window))
-    {
-        glfwSwapBuffers(window);
-        glfwPollEvents();
-    }
-
-    glfwDestroyWindow(window);
-
+PHP_FUNCTION(glfwTerminate)
+{
     glfwTerminate();
+}
+
+/**
+ * Get window
+ * --------------------------------
+ */
+static GLFWwindow *phpglfw_fetch_window(zval *resource TSRMLS_DC)
+{
+    GLFWwindow *window;
+
+    window = (GLFWwindow *)zend_fetch_resource_ex(resource, PHPGLFW_WINDOW_NAME, phpglfw_window_context);
+
+    return window;
+}
+
+/**
+ * Create window
+ * --------------------------------
+ */
+
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glfwCreateWindow, 0, 0, 1)
+    ZEND_ARG_INFO(0, width)
+    ZEND_ARG_INFO(0, height)
+    ZEND_ARG_INFO(0, title)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glfwCreateWindow)
+{
+    GLFWwindow* window = glfwCreateWindow(640, 480, "Hello World", NULL, NULL);
+
+    zend_long width, height;
+    char *title;
+    size_t title_size;
+
+    if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "lls", &width, &height, &title, &title_size) == FAILURE) {
+        return;
+    }
+
+    if (!window) {
+        RETURN_FALSE;
+    }
+
+    PHPGLFW_RETURN_RESOURCE(window, phpglfw_window_context);
+}
+
+/**
+ * Destroy window
+ * --------------------------------
+ */
+
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glfwDestroyWindow, 0, 0, 1)
+    ZEND_ARG_INFO(0, window)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glfwDestroyWindow)
+{
+    zval *resource;
+
+    if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "r", &resource) == FAILURE) {
+        return;
+    }
+
+    zend_list_close(Z_RES_P(resource));
+
+    RETURN_TRUE;
+}
+
+/**
+ *
+ */
+static void phpglfw_window_dtor(zend_resource *rsrc TSRMLS_DC)
+{
+    GLFWwindow* window = (void *) rsrc->ptr;
+
+    if (window) {
+        glfwDestroyWindow(window);
+    }
+}
+
+
+/**
+ * Register
+ * --------------------------------
+ */
+
+PHP_MINIT_FUNCTION(glfw)
+{
+    phpglfw_window_context = zend_register_list_destructors_ex(phpglfw_window_dtor, NULL, PHPGLFW_WINDOW_NAME, module_number);
+
+
+    return SUCCESS;
 }
 
 static zend_function_entry glfw_functions[] = {
     PHP_FE(glfwInit, NULL)
-    PHP_FE(hello_world, NULL)
+    PHP_FE(glfwTerminate, NULL)
+    PHP_FE(glfwCreateWindow, arginfo_glfwCreateWindow)
+    PHP_FE(glfwDestroyWindow, arginfo_glfwDestroyWindow)
 #ifdef PHP_FE_END
     PHP_FE_END
 #else
@@ -48,7 +134,7 @@ zend_module_entry glfw_module_entry = {
 #endif
     PHP_GLFW_EXTNAME,
     glfw_functions,
-    NULL,
+    PHP_MINIT(glfw),
     NULL,
     NULL,
     NULL,
@@ -62,8 +148,3 @@ zend_module_entry glfw_module_entry = {
 #ifdef COMPILE_DL_GLFW
 ZEND_GET_MODULE(glfw)
 #endif
-
-PHP_FUNCTION(hello_world)
-{
-    RETURN_STRING("Hello GLFW");
-}
