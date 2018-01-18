@@ -4,14 +4,14 @@ glfwInit();
 
 $window = glfwCreateWindow(500, 500, "PHP GLFW");
 
-sleep(1);
-echo "running";
-sleep(1);
-echo "running";
-sleep(1);
-echo "running";
-sleep(1);
+glfwMakeContextCurrent($window);
+
+while (!glfwWindowShouldClose($window))
+{
+    // glfwSwapBuffers(window);
+    glfwPollEvents();
+}
 
 glfwDestroyWindow($window);
 
-#glfwTerminate();
+glfwTerminate();

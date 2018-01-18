@@ -51,8 +51,6 @@ ZEND_END_ARG_INFO()
 
 PHP_FUNCTION(glfwCreateWindow)
 {
-    GLFWwindow* window = glfwCreateWindow(640, 480, "Hello World", NULL, NULL);
-
     zend_long width, height;
     char *title;
     size_t title_size;
@@ -60,6 +58,8 @@ PHP_FUNCTION(glfwCreateWindow)
     if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "lls", &width, &height, &title, &title_size) == FAILURE) {
         return;
     }
+
+    GLFWwindow* window = glfwCreateWindow(width, height, title, NULL, NULL);
 
     if (!window) {
         RETURN_FALSE;
@@ -72,11 +72,6 @@ PHP_FUNCTION(glfwCreateWindow)
  * Destroy window
  * --------------------------------
  */
-
-ZEND_BEGIN_ARG_INFO_EX(arginfo_glfwDestroyWindow, 0, 0, 1)
-    ZEND_ARG_INFO(0, window)
-ZEND_END_ARG_INFO()
-
 PHP_FUNCTION(glfwDestroyWindow)
 {
     zval *resource;
@@ -91,7 +86,60 @@ PHP_FUNCTION(glfwDestroyWindow)
 }
 
 /**
- *
+ * Make current context
+ * --------------------------------
+ */
+PHP_FUNCTION(glfwMakeContextCurrent)
+{
+    zval *resource;
+
+    if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "r", &resource) == FAILURE) {
+        return;
+    }
+
+    GLFWwindow* window = phpglfw_fetch_window(resource TSRMLS_CC);
+    
+    if (window == NULL) {
+        RETURN_FALSE;
+    }
+
+    glfwMakeContextCurrent(window);
+
+    RETURN_TRUE;
+}
+
+/**
+ * glfwWindowShouldClose
+ * --------------------------------
+ */
+PHP_FUNCTION(glfwWindowShouldClose)
+{
+    zval *resource;
+
+    if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "r", &resource) == FAILURE) {
+        return;
+    }
+
+    GLFWwindow* window = phpglfw_fetch_window(resource TSRMLS_CC);
+
+    if (glfwWindowShouldClose(window)) {
+        RETURN_TRUE
+    }
+
+    RETURN_FALSE;
+}
+
+/**
+ * glfwPollEvents
+ * --------------------------------
+ */
+PHP_FUNCTION(glfwPollEvents)
+{
+    glfwPollEvents();
+}
+
+/**
+ * dtor
  */
 static void phpglfw_window_dtor(zend_resource *rsrc TSRMLS_DC)
 {
@@ -104,7 +152,7 @@ static void phpglfw_window_dtor(zend_resource *rsrc TSRMLS_DC)
 
 
 /**
- * Register
+ * MINIT
  * --------------------------------
  */
 
@@ -112,15 +160,24 @@ PHP_MINIT_FUNCTION(glfw)
 {
     phpglfw_window_context = zend_register_list_destructors_ex(phpglfw_window_dtor, NULL, PHPGLFW_WINDOW_NAME, module_number);
 
-
     return SUCCESS;
 }
+
+/**
+ * Common args
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_with_glfw_resource, 0, 0, 1)
+    ZEND_ARG_INFO(0, window)
+ZEND_END_ARG_INFO()
 
 static zend_function_entry glfw_functions[] = {
     PHP_FE(glfwInit, NULL)
     PHP_FE(glfwTerminate, NULL)
     PHP_FE(glfwCreateWindow, arginfo_glfwCreateWindow)
-    PHP_FE(glfwDestroyWindow, arginfo_glfwDestroyWindow)
+    PHP_FE(glfwDestroyWindow, arginfo_with_glfw_resource)
+    PHP_FE(glfwMakeContextCurrent, arginfo_with_glfw_resource)
+    PHP_FE(glfwWindowShouldClose, arginfo_with_glfw_resource)
+    PHP_FE(glfwPollEvents, NULL)
 #ifdef PHP_FE_END
     PHP_FE_END
 #else
