@@ -173,12 +173,25 @@ abstract class Method
 	}
 
 	/**
+	 * Generate the method call
+	 */
+	public function generateCall() : string
+	{
+		
+	}
+
+	/**
 	 * Generates the method 
 	 */
 	public function generateMethod() : string
 	{
 		$b = "PHP_FUNCTION($this->name)\n{\n";
-		$b .= $this->tabulate($this->generateArgumentParser());
+		if ($this->hasArguments()) {
+			$b .= $this->tabulate($this->generateArgumentParser());
+		}
+
+		$b .= $this->tabulate($this->generateCall());
+
 		$b .= "\n}\n";
 
 		return $b;

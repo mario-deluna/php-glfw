@@ -48,18 +48,12 @@ static void phpglfw_window_dtor(zend_resource *rsrc TSRMLS_DC)
  */
 PHP_FUNCTION(glfwInit)
 {
-    if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "", ) == FAILURE) {
-       return;
-    }
-    
+
 }
  
 PHP_FUNCTION(glfwTerminate)
 {
-    if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "", ) == FAILURE) {
-       return;
-    }
-    
+
 }
  
 ZEND_BEGIN_ARG_INFO_EX(arginfo_glfwDestroyWindow, 0, 0, 1)
