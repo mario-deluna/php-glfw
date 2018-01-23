@@ -1,13 +1,31 @@
 <?php
+/**
+ * This file contains all classes and methods needed
+ * to generate the PHP extensions methods including their 
+ * argument info and function entry.
+ */
 
 /**
  * Base argument
  */
-abstract class Argument {
+abstract class Argument 
+{
 	public $name;
 	public $charid;
-	public function __construct(string $name) { $this->name = $name; }
+	public $passedByRef = false;
+	
+	public function __construct(string $name) 
+	{ 
+		if ($name[0] === '&') {
+			$this->passedByRef = true;
+			$name = substr($name, 1);
+		}
+
+		$this->name = $name; 
+	}
+
 	abstract public function generateVariable() : string;
+
 	public function getReferences() {
 		return '&' . $this->name;
 	}
@@ -25,7 +43,13 @@ class LongArgument extends Argument {
 class FloatArgument extends Argument {
 	public $charid = 'f';
 	public function generateVariable() : string {
-		return "zend_float {$this->name};";
+		return "float {$this->name};";
+	}
+}
+class DoubleArgument extends Argument {
+	public $charid = 'd';
+	public function generateVariable() : string {
+		return "double {$this->name};";
 	}
 }
 class BoolArgument extends Argument {
@@ -54,7 +78,7 @@ class WindowArgument extends Argument {
 }
 
 /**
- * Base method
+ * Base method objects
  */
 abstract class Method 
 {
@@ -82,6 +106,7 @@ abstract class Method
 			{
 				case 'long': $args[] = new LongArgument($name); break;
 				case 'float': $args[] = new FloatArgument($name); break;
+				case 'double': $args[] = new DoubleArgument($name); break;
 				case 'bool': $args[] = new BoolArgument($name); break;
 				case 'string': $args[] = new StringArgument($name); break;
 				case 'window': $args[] = new WindowArgument($name); break;
@@ -99,7 +124,7 @@ abstract class Method
 	 */
 	private function tabulate(string $text, string $prefix = '    ') : string
 	{
-		$lines = explode("\n", $text);
+		$lines = array_filter(explode("\n", $text));
 		foreach($lines as &$line) 
 		{
 			$line = $prefix . $line;
@@ -132,14 +157,14 @@ abstract class Method
 	/**
 	 * Generates the argument info definition
 	 */
-	public function generateArgInfo() : string
+	protected function generateArgInfo() : string
 	{
 		$arginfo = $this->generateArgInfoName($this->name);
 
 		$b = "ZEND_BEGIN_ARG_INFO_EX({$arginfo}, 0, 0, 1)" . PHP_EOL;
 		foreach($this->getArguments() as $argument)
 		{
-			$b .= "    ZEND_ARG_INFO(0, $argument->name)" . PHP_EOL;
+			$b .= "    ZEND_ARG_INFO(". (int) $argument->passedByRef .", $argument->name)" . PHP_EOL;
 		}
 
 		$b .= "ZEND_END_ARG_INFO()" . PHP_EOL;
@@ -147,12 +172,19 @@ abstract class Method
 		return $b;
 	}
 
-	public function generateArgumentParser() : string
+	protected function generateWindowResourceFetchCode() : string
+	{
+		return "GLFWwindow* window = phpglfw_fetch_window(window_resource TSRMLS_CC);\n";
+	}
+
+	protected function generateArgumentParser() : string
 	{
 		$b = "";
 
 		$typecharlist = '';
 		$referencelist = [];
+
+		$hasWindowArg = false;
 
 		// generate the vars
 		foreach($this->getArguments() as $argument)
@@ -162,33 +194,89 @@ abstract class Method
 
 			// add the variable
 			$b .= $argument->generateVariable() . "\n";
+
+			if ($argument instanceof WindowArgument) {
+				$hasWindowArg = true;
+			}
 		}
 
 		// create the parser method
-		$b .= 'if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "'.$typecharlist.'", '.implode(', ', $referencelist).') == FAILURE) {' . PHP_EOL;
+		$b .= PHP_EOL . 'if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "'.$typecharlist.'", '.implode(', ', $referencelist).') == FAILURE) {' . PHP_EOL;
 		$b .= '   return;' . PHP_EOL;
-		$b .= '}';
+		$b .= "}\n";
 
-		return $b. "\n";
+		// when we have a window argument we need to fetch it
+		if ($hasWindowArg) {
+			$b .= $this->generateWindowResourceFetchCode();
+		}
+
+		return $b;
 	}
 
 	/**
 	 * Generate the method call
 	 */
-	public function generateCall() : string
+	protected function generateCallReturnVoid(string $call) : string
 	{
-		
+		return $call . ";\n";
+	}
+
+	/**
+	 * Generate the method call (Bool)
+	 */
+	protected function generateCallReturnBool(string $call) : string
+	{
+		// Im not sure whats exactly behind the `RETURN_TRUE` and `RETURN_FALSE`
+		// so this code is probably stupid and should be return $call..
+		return 'if ('. $call .') { RETURN_TRUE; } RETURN_FALSE;';
+	}
+
+	/**
+	 * Generate the method call (String)
+	 */
+	protected function generateCallReturnString(string $call) : string
+	{
+		return 'RETURN_STRING('. $call .');';
+	}
+
+	/**
+	 * Generate the method call (Int)
+	 */
+	protected function generateCallReturnInt(string $call) : string
+	{
+		return 'RETURN_INT('. $call .');';
+	}
+
+	/**
+	 * Generate the method call
+	 */
+	protected function generateCall() : string
+	{
+		$arguments = [];
+
+		foreach($this->getArguments() as $argument) 
+		{
+			$arguments[] = $argument->name;
+		}
+
+		$callCode = $this->name . '('. implode(', ', $arguments) .')';
+
+		$returnCodeGenerator = 'generateCallReturn' . ucfirst($this->returns);
+
+		return $this->{$returnCodeGenerator}($callCode);
 	}
 
 	/**
 	 * Generates the method 
 	 */
-	public function generateMethod() : string
+	protected function generateMethod() : string
 	{
 		$b = "PHP_FUNCTION($this->name)\n{\n";
 		if ($this->hasArguments()) {
 			$b .= $this->tabulate($this->generateArgumentParser());
 		}
+
+		$b .= PHP_EOL;
 
 		$b .= $this->tabulate($this->generateCall());
 
@@ -202,69 +290,12 @@ abstract class Method
 	 */
 	public function generate()
 	{
+		$c = "/**\n * {$this->name}\n * --------------------------------\n */\n";
+
 		if (!$this->hasArguments()) {
-			return $this->generateMethod();
+			return $c . $this->generateMethod();
 		}
 
-		return $this->generateArgInfo() . PHP_EOL . $this->generateMethod();
+		return $c . $this->generateArgInfo() . PHP_EOL . $this->generateMethod();
 	}
 }
-
-
-
-/**
- * Return types
- */
-abstract class ReturnType { public $id; }
-
-class VoidReturn extends ReturnType { public $id = 'void'; }
-class LongReturn extends ReturnType { public $id = 'long'; }
-class BoolReturn extends ReturnType { public $id = 'bool'; }
-
-/**
- *
- */
-return 
-[
-	/**
-	 * glfwInit
-	 */
-	new class extends Method {
-		public $name = 'glfwInit';
-		public $returns = 'bool';
-	},
-
-	/**
-	 * glfwTerminate
-	 */
-	new class extends Method {
-		public $name = 'glfwTerminate';
-	},
-
-	/**
-	 * glfwDestroyWindow
-	 */
-	new class extends Method {
-		public $name = 'glfwDestroyWindow';
-		public $arguments = [
-			'window' => 'window',
-		];
-	},
-
-	/**
-	 * glfwCreateWindow
-	 */
-	new class extends Method
-	{
-		public $name = 'glfwCreateWindow';
-		public $arguments = [
-			'width' => 'long',
-			'height' => 'long',
-			'title' => 'string'
-		];
-
-		public function returns() {
-			return new WindowReference();
-		}
-	}
-];

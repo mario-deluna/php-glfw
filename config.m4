@@ -37,5 +37,5 @@ if test "$PHP_GLFW" != "no"; then
   AC_DEFINE(HAVE_GLFW, 1, [Whether you have glfw])
   PHP_SUBST(GLFW_SHARED_LIBADD)
 
-  PHP_NEW_EXTENSION(glfw, glfw.c, $ext_shared)
+  PHP_NEW_EXTENSION(glfw, glfw_gen.c, $ext_shared)
 fi
