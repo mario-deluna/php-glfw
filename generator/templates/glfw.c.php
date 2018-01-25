@@ -58,7 +58,11 @@ static void phpglfw_window_dtor(zend_resource *rsrc TSRMLS_DC)
 PHP_MINIT_FUNCTION(glfw)
 {
     phpglfw_window_context = zend_register_list_destructors_ex(phpglfw_window_dtor, NULL, PHPGLFW_WINDOW_NAME, module_number);
-
+<?php foreach($constants as $constant) : ?>
+#ifdef <?php echo $constant; ?> 
+    REGISTER_LONG_CONSTANT("<?php echo $constant; ?>", <?php echo $constant; ?>, CONST_CS|CONST_PERSISTENT);
+#endif
+<?php endforeach; ?>
     return SUCCESS;
 }
 

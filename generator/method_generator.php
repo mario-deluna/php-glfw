@@ -13,6 +13,7 @@ abstract class Argument
 	public $name;
 	public $charid;
 	public $passedByRef = false;
+	public $realType = 'void';
 	
 	public function __construct(string $name) 
 	{ 
@@ -21,13 +22,60 @@ abstract class Argument
 			$name = substr($name, 1);
 		}
 
+		if (strpos($name, ':') !== false) {
+			list($name, $this->realType) = explode(':', $name);
+		}
+
 		$this->name = $name; 
 	}
 
 	abstract public function generateVariable() : string;
 
+	public function getVariable() {
+		if ($this->passedByRef) {
+			return "zval *z_{$this->name};";
+		}
+		return $this->generateVariable();
+	}
+
 	public function getReferences() {
+		if ($this->passedByRef) {
+			return '&z_' . $this->name;
+		}
 		return '&' . $this->name;
+	}
+
+	public function getCharId() : string {
+		if ($this->passedByRef) {
+			return 'z';
+		}
+		return $this->charid;
+	}
+
+	public function generateZValConvertion() : string
+	{
+		return '';
+	}
+
+	public function generateDereferencing() : string 
+	{
+		if (!$this->passedByRef) {
+			return '';
+		}
+
+		$b = "ZVAL_DEREF(z_{$this->name});";
+		$b .= $this->generateZValConvertion();
+
+		return $b;
+	}
+
+	public function getCallName()
+	{
+		if ($this->passedByRef) {
+			return "&z_{$this->name}->value";
+		}
+
+		return $this->name;
 	}
 }
 
@@ -38,6 +86,15 @@ class LongArgument extends Argument {
 	public $charid = 'l';
 	public function generateVariable() : string {
 		return "zend_long {$this->name};";
+	}
+	public function generateZValConvertion() : string {
+		return " convert_to_long(z_{$this->name});";
+	}
+	public function getCallName() {
+		if ($this->passedByRef) {
+			return "({$this->realType} *)" . parent::getCallName();
+		}
+		return parent::getCallName();
 	}
 }
 class FloatArgument extends Argument {
@@ -76,6 +133,12 @@ class WindowArgument extends Argument {
 		return "&{$this->name}_resource";
 	}
 }
+class HashTableArgument extends Argument {
+	public $charid = 'h';
+	public function generateVariable() : string {
+		return "HashTable *{$this->name}; zval *{$this->name}_data;";
+	}
+}
 
 /**
  * Base method objects
@@ -110,6 +173,7 @@ abstract class Method
 				case 'bool': $args[] = new BoolArgument($name); break;
 				case 'string': $args[] = new StringArgument($name); break;
 				case 'window': $args[] = new WindowArgument($name); break;
+				case 'ht': $args[] = new HashTableArgument($name); break;
 			}
 		}
 
@@ -189,11 +253,11 @@ abstract class Method
 		// generate the vars
 		foreach($this->getArguments() as $argument)
 		{
-			$typecharlist .= $argument->charid;
+			$typecharlist .= $argument->getCharId();
 			$referencelist[] = $argument->getReferences();
 
 			// add the variable
-			$b .= $argument->generateVariable() . "\n";
+			$b .= $argument->getVariable() . "\n";
 
 			if ($argument instanceof WindowArgument) {
 				$hasWindowArg = true;
@@ -204,6 +268,12 @@ abstract class Method
 		$b .= PHP_EOL . 'if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "'.$typecharlist.'", '.implode(', ', $referencelist).') == FAILURE) {' . PHP_EOL;
 		$b .= '   return;' . PHP_EOL;
 		$b .= "}\n";
+
+		// generate dereferencing and converting
+		foreach($this->getArguments() as $argument)
+		{
+			$b .= $argument->generateDereferencing() . "\n";
+		}
 
 		// when we have a window argument we need to fetch it
 		if ($hasWindowArg) {
@@ -256,7 +326,7 @@ abstract class Method
 
 		foreach($this->getArguments() as $argument) 
 		{
-			$arguments[] = $argument->name;
+			$arguments[] = $argument->getCallName();
 		}
 
 		$callCode = $this->name . '('. implode(', ', $arguments) .')';
