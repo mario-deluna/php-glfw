@@ -348,6 +348,52 @@ return
 	},
 
 	/**
+	 * glVertexAttribPointer
+	 */
+	new class extends Method {
+		public $name = 'glVertexAttribPointer';
+		public $arguments = [
+			'index' => 'long',
+			'size' => 'long',
+			'type' => 'long',
+			'normalized' => 'long',
+			'stride' => 'long',
+			'pointer' => 'long',
+		];
+
+		public function generateCall() : string 
+		{
+			$b = 'glVertexAttribPointer(index, size, type, normalized, stride * sizeof(float), (void*)(pointer * sizeof(float)));' . PHP_EOL;
+
+		    return $b;
+		}
+	},
+
+	/**
+	 * glEnableVertexAttribArray
+	 */
+	new class extends Method {
+		public $name = 'glEnableVertexAttribArray';
+		public $arguments = [
+			'index' => 'long',
+		];
+	},
+
+	/**
+	 * glDrawArrays
+	 */
+	new class extends Method {
+		public $name = 'glDrawArrays';
+		public $arguments = [
+			'mode' => 'long',
+			'first' => 'long',
+			'count' => 'long',
+		];
+	},
+
+	
+
+	/**
 	 * 
 	 * OpenGL Shaders
 	 * -----------------------------------------------------------
@@ -360,6 +406,16 @@ return
 		public $returns = 'long';
 		public $arguments = [
 			'target' => 'long',
+		];
+	},
+
+	/**
+	 * glCreateProgram
+	 */
+	new class extends Method {
+		public $name = 'glCreateProgram';
+		public $returns = 'long';
+		public $arguments = [
 		];
 	},
 
@@ -387,6 +443,37 @@ return
 	},
 
 	/**
+	 * glDeleteShader
+	 */
+	new class extends Method {
+		public $name = 'glDeleteShader';
+		public $arguments = [
+			'shader' => 'long'
+		];
+	},
+
+	/**
+	 * glAttachShader
+	 */
+	new class extends Method {
+		public $name = 'glAttachShader';
+		public $arguments = [
+			'program' => 'long',
+			'shader' => 'long'
+		];
+	},
+
+	/**
+	 * glLinkProgram
+	 */
+	new class extends Method {
+		public $name = 'glLinkProgram';
+		public $arguments = [
+			'program' => 'long'
+		];
+	},
+
+	/**
 	 * glGetShaderiv
 	 */
 	new class extends Method {
@@ -397,4 +484,27 @@ return
 			'&params' => 'long'
 		];
 	},
+
+	/**
+	 * glGetProgramiv
+	 */
+	new class extends Method {
+		public $name = 'glGetProgramiv';
+		public $arguments = [
+			'program' => 'long',
+			'pname' => 'long',
+			'&params' => 'long'
+		];
+	},
+	
+	/**
+	 * glUseProgram
+	 */
+	new class extends Method {
+		public $name = 'glUseProgram';
+		public $arguments = [
+			'program' => 'long'
+		];
+	},
+	
 ];

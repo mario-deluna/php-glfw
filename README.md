@@ -55,6 +55,23 @@ The `glBufferData` method has been disabled and is replaced with multiple type s
 
 Also you don't need to pass in the size of your data this is solved by the type specific methods itself.
 
-```
+```php
 glBufferDataFloat(GL_ARRAY_BUFFER, [1.0, 0.5, 0.0], GL_STATIC_DRAW);
 ``` 
+
+#### glVertexAttribPointer
+
+In phpglfw the `stride` (byte offset) and `pointer` offset of the vertext attributes is a simple number representing the count and not the size of the data. The size is then determined by the given type.
+
+So this attribute pointer in C:
+
+```c
+glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)(3 * sizeof(float)));
+```
+
+Would be written in php be:
+
+```php
+glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 5, 3);
+```
+
