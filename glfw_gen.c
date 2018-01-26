@@ -161,7 +161,7 @@ ZEND_END_ARG_INFO()
 
 ZEND_NAMED_FUNCTION(zif_glfwExtensionSupported)
 {
-    char *extension;
+    const char *extension;
     size_t extension_size;
     if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "s", &extension, &extension_size) == FAILURE) {
        return;
@@ -179,7 +179,7 @@ ZEND_END_ARG_INFO()
 
 ZEND_NAMED_FUNCTION(zif_glfwGetProcAddress)
 {
-    char *procname;
+    const char *procname;
     size_t procname_size;
     if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "s", &procname, &procname_size) == FAILURE) {
        return;
@@ -247,7 +247,7 @@ ZEND_NAMED_FUNCTION(zif_glfwCreateWindow)
 {
     zend_long width;
     zend_long height;
-    char *title;
+    const char *title;
     size_t title_size;
     if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "lls", &width, &height, &title, &title_size) == FAILURE) {
        return;
@@ -488,6 +488,84 @@ ZEND_NAMED_FUNCTION(zif_glBufferDataFloat)
       cdata[i] = (float) Z_DVAL_P(data_data);
     ZEND_HASH_FOREACH_END();
     glBufferData(target, sizeof(cdata), cdata, usage);
+}
+ 
+/**
+ * glCreateShader
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glCreateShader, 0, 0, 1)
+    ZEND_ARG_INFO(0, target)
+ZEND_END_ARG_INFO()
+
+ZEND_NAMED_FUNCTION(zif_glCreateShader)
+{
+    zend_long target;
+    if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "l", &target) == FAILURE) {
+       return;
+    }
+    RETURN_LONG(glCreateShader(target));
+}
+ 
+/**
+ * glShaderSource
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glShaderSource, 0, 0, 1)
+    ZEND_ARG_INFO(0, shader)
+    ZEND_ARG_INFO(0, count)
+    ZEND_ARG_INFO(0, source)
+ZEND_END_ARG_INFO()
+
+ZEND_NAMED_FUNCTION(zif_glShaderSource)
+{
+    zend_long shader;
+    zend_long count;
+    const char *source;
+    size_t source_size;
+    if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "lls", &shader, &count, &source, &source_size) == FAILURE) {
+       return;
+    }
+    glShaderSource(shader, count, &source, NULL);
+}
+ 
+/**
+ * glCompileShader
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glCompileShader, 0, 0, 1)
+    ZEND_ARG_INFO(0, shader)
+ZEND_END_ARG_INFO()
+
+ZEND_NAMED_FUNCTION(zif_glCompileShader)
+{
+    zend_long shader;
+    if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "l", &shader) == FAILURE) {
+       return;
+    }
+    glCompileShader(shader);
+}
+ 
+/**
+ * glGetShaderiv
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glGetShaderiv, 0, 0, 1)
+    ZEND_ARG_INFO(0, shader)
+    ZEND_ARG_INFO(0, pname)
+    ZEND_ARG_INFO(1, params)
+ZEND_END_ARG_INFO()
+
+ZEND_NAMED_FUNCTION(zif_glGetShaderiv)
+{
+    zend_long shader;
+    zend_long pname;
+    zval *z_params;
+    if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "llz", &shader, &pname, &z_params) == FAILURE) {
+       return;
+    }
+    ZVAL_DEREF(z_params); convert_to_long(z_params);
+    glGetShaderiv(shader, pname, (void *)&z_params->value);
 }
  
 
@@ -5464,6 +5542,10 @@ static zend_function_entry glfw_functions[] = {
     ZEND_RAW_NAMED_FE(glBindVertexArray, zif_glBindVertexArray, arginfo_glBindVertexArray) 
     ZEND_RAW_NAMED_FE(glBufferData, zif_glBufferData, arginfo_glBufferData) 
     ZEND_RAW_NAMED_FE(glBufferDataFloat, zif_glBufferDataFloat, arginfo_glBufferDataFloat) 
+    ZEND_RAW_NAMED_FE(glCreateShader, zif_glCreateShader, arginfo_glCreateShader) 
+    ZEND_RAW_NAMED_FE(glShaderSource, zif_glShaderSource, arginfo_glShaderSource) 
+    ZEND_RAW_NAMED_FE(glCompileShader, zif_glCompileShader, arginfo_glCompileShader) 
+    ZEND_RAW_NAMED_FE(glGetShaderiv, zif_glGetShaderiv, arginfo_glGetShaderiv) 
 #ifdef PHP_FE_END
     PHP_FE_END
 #else

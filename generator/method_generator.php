@@ -14,6 +14,7 @@ abstract class Argument
 	public $charid;
 	public $passedByRef = false;
 	public $realType = 'void';
+	public $shouldDeref = false;
 	
 	public function __construct(string $name) 
 	{ 
@@ -75,6 +76,10 @@ abstract class Argument
 			return "&z_{$this->name}->value";
 		}
 
+		if ($this->shouldDeref) {
+			return "&" . $this->name;
+		}
+
 		return $this->name;
 	}
 }
@@ -115,10 +120,18 @@ class BoolArgument extends Argument {
 		return "zend_bool {$this->name};";
 	}
 }
+class NullArgument extends Argument {
+	public function generateVariable() : string {
+		return "";
+	}
+	public function getCallName() {
+		return "NULL";
+	}
+}
 class StringArgument extends Argument {
 	public $charid = 's';
 	public function generateVariable() : string {
-		return "char *{$this->name};\nsize_t {$this->name}_size;";
+		return "const char *{$this->name};\nsize_t {$this->name}_size;";
 	}
 	public function getReferences() {
 		return '&' . $this->name . ', &' . $this->name . '_size';
@@ -165,16 +178,27 @@ abstract class Method
 
 		foreach ($this->arguments as $name => $type) 
 		{
+			$shouldDeref = false;
+			if (substr($type, 0, 1) === '&') {
+				$shouldDeref = true;
+				$type = substr($type, 1);
+			}
+
+			$currArg;
+
 			switch ($type) 
 			{
-				case 'long': $args[] = new LongArgument($name); break;
-				case 'float': $args[] = new FloatArgument($name); break;
-				case 'double': $args[] = new DoubleArgument($name); break;
-				case 'bool': $args[] = new BoolArgument($name); break;
-				case 'string': $args[] = new StringArgument($name); break;
-				case 'window': $args[] = new WindowArgument($name); break;
-				case 'ht': $args[] = new HashTableArgument($name); break;
+				case 'long': $args[] = $currArg = new LongArgument($name); break;
+				case 'float': $args[] = $currArg = new FloatArgument($name); break;
+				case 'double': $args[] = $currArg = new DoubleArgument($name); break;
+				case 'bool': $args[] = $currArg = new BoolArgument($name); break;
+				case 'null': $args[] = $currArg = new NullArgument($name); break;
+				case 'string': $args[] = $currArg = new StringArgument($name); break;
+				case 'window': $args[] = $currArg = new WindowArgument($name); break;
+				case 'ht': $args[] = $currArg = new HashTableArgument($name); break;
 			}
+
+			$currArg->shouldDeref = $shouldDeref;
 		}
 
 		return $args;
@@ -229,6 +253,10 @@ abstract class Method
 		$b = "ZEND_BEGIN_ARG_INFO_EX({$arginfo}, 0, 0, 1)" . PHP_EOL;
 		foreach($this->getArguments() as $argument)
 		{
+			if ($argument instanceof NullArgument) {
+				continue;
+			}
+
 			$b .= "    ZEND_ARG_INFO(". (int) $argument->passedByRef .", $argument->name)" . PHP_EOL;
 		}
 
@@ -254,6 +282,11 @@ abstract class Method
 		// generate the vars
 		foreach($this->getArguments() as $argument)
 		{
+			// skip null
+			if ($argument instanceof NullArgument) {
+				continue;
+			}
+
 			$typecharlist .= $argument->getCharId();
 			$referencelist[] = $argument->getReferences();
 
@@ -313,9 +346,9 @@ abstract class Method
 	/**
 	 * Generate the method call (Int)
 	 */
-	protected function generateCallReturnInt(string $call) : string
+	protected function generateCallReturnLong(string $call) : string
 	{
-		return 'RETURN_INT('. $call .');';
+		return 'RETURN_LONG('. $call .');';
 	}
 
 	/**

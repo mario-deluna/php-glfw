@@ -236,6 +236,7 @@ return
 	 * -----------------------------------------------------------
 	 */
 
+
 	/**
 	 * glClearColor
 	 */
@@ -344,5 +345,56 @@ return
 
 		    return $b;
 		}
+	},
+
+	/**
+	 * 
+	 * OpenGL Shaders
+	 * -----------------------------------------------------------
+	 */
+	/**
+	 * glCreateShader
+	 */
+	new class extends Method {
+		public $name = 'glCreateShader';
+		public $returns = 'long';
+		public $arguments = [
+			'target' => 'long',
+		];
+	},
+
+	/**
+	 * glShaderSource
+	 */
+	new class extends Method {
+		public $name = 'glShaderSource';
+		public $arguments = [
+			'shader' => 'long',
+			'count' => 'long',
+			'source' => '&string',
+			'length' => 'null',
+		];
+	},
+
+	/**
+	 * glCompileShader
+	 */
+	new class extends Method {
+		public $name = 'glCompileShader';
+		public $arguments = [
+			'shader' => 'long'
+		];
+	},
+
+	/**
+	 * glGetShaderiv
+	 */
+	new class extends Method {
+		public $name = 'glGetShaderiv';
+		public $arguments = [
+			'shader' => 'long',
+			'pname' => 'long',
+			'&params' => 'long'
+		];
 	},
 ];
