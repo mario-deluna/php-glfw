@@ -12,14 +12,16 @@ glfwSwapInterval(1);
 
 // verticies
 $verticies = [ 
-	-0.6, -0.4, 1.0, 0.0, 0.0,
-    0.6, -0.4, 0.0, 1.0, 0.0,
-    0.0, 0.6, 0.0, 0.0, 1.0,
+	-0.5, -0.5, 0.0,
+     0.5, -0.5, 0.0,
+     0.0,  0.5, 0.0
 ];
 
+$VBO; $VAO; 
+
 // buffers
-glGenBuffers(1, $vb);
-glBindBuffer(GL_ARRAY_BUFFER, $vb);
+glGenBuffers(1, $VBO);
+glBindBuffer(GL_ARRAY_BUFFER, $VBO);
 glBufferData(GL_ARRAY_BUFFER, 0, $verticies, GL_STATIC_DRAW);
 
 $i = 0;

@@ -31,11 +31,16 @@ if test "$PHP_GLFW" != "no"; then
 
   AC_MSG_RESULT([found in $GLFW_DIR])
 
+  # GLAD
+  #PHP_ADD_LIBRARY_WITH_PATH(glad, glad/$PHP_LIBDIR, GLFW_SHARED_LIBADD)
+  PHP_ADD_INCLUDE(glad/include)
+  
+  # GLFW
   PHP_ADD_LIBRARY_WITH_PATH(glfw, [$GLFW_DIR/$PHP_LIBDIR], GLFW_SHARED_LIBADD)
   PHP_ADD_INCLUDE([$GLFW_DIR/include])
 
   AC_DEFINE(HAVE_GLFW, 1, [Whether you have glfw])
   PHP_SUBST(GLFW_SHARED_LIBADD)
 
-  PHP_NEW_EXTENSION(glfw, glfw_gen.c, $ext_shared)
+  PHP_NEW_EXTENSION(glfw, glfw_gen.c glad/src/glad.c, $ext_shared)
 fi

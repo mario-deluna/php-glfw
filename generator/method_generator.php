@@ -215,6 +215,7 @@ abstract class Method
 			$arginfo = $this->generateArgInfoName($this->name);
 		}
 
+		return "ZEND_RAW_NAMED_FE({$this->name}, zif_{$this->name}, {$arginfo})";
 		return "PHP_FE({$this->name}, {$arginfo})";
 	}
 
@@ -341,7 +342,12 @@ abstract class Method
 	 */
 	protected function generateMethod() : string
 	{
-		$b = "PHP_FUNCTION($this->name)\n{\n";
+		// we need to work around the glad defines here
+		// this allows us to keep the normal gl functions 
+		// inside php without the glad prefix
+		//$b .= "PHP_FUNCTION($this->name)\n{\n";
+		$b = "ZEND_NAMED_FUNCTION(zif_{$this->name})\n{\n";
+
 		if ($this->hasArguments()) {
 			$b .= $this->tabulate($this->generateArgumentParser());
 		}

@@ -59,6 +59,17 @@ return
 		public $arguments = [
 			'window' => 'window',
 		];
+
+		public function generateCall() : string
+		{
+			$b = parent::generateCall();
+
+			$b .= "if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress)) {" . PHP_EOL;
+			$b .= 'zend_error(E_ERROR, "Could not load glad.");' . PHP_EOL;
+			$b .= "}" . PHP_EOL;
+
+			return  $b;
+		}
 	},
 
 	/**
@@ -260,6 +271,17 @@ return
 	},
 
 	/**
+	 * glGenVertexArrays
+	 */
+	new class extends Method {
+		public $name = 'glGenVertexArrays';
+		public $arguments = [
+			'n' => 'long',
+			'&buffers:GLuint' => 'long',
+		];
+	},
+
+	/**
 	 * glBindBuffer
 	 */
 	new class extends Method {
@@ -267,6 +289,16 @@ return
 		public $arguments = [
 			'target' => 'long',
 			'buffer' => 'long',
+		];
+	},
+
+	/**
+	 * glBindVertexArray
+	 */
+	new class extends Method {
+		public $name = 'glBindVertexArray';
+		public $arguments = [
+			'target' => 'long',
 		];
 	},
 
@@ -284,12 +316,29 @@ return
 
 		public function generateCall() : string 
 		{
+			return 'zend_error(E_ERROR, "This method is unavailable in PHP-GLFW. Please use `glBufferDataFloat(long target, array data, long usage)`, `glBufferDataDouble(long target, array data, long usage)`, `glBufferDataInt(long target, array data, long usage)` or `glBufferDataLong(long target, array data, long usage)`");';
+		}
+	},
+
+	/**
+	 * glBufferDataFloat
+	 */
+	new class extends Method {
+		public $name = 'glBufferDataFloat';
+		public $arguments = [
+			'target' => 'long',
+			'data' => 'ht',
+			'usage' => 'long',
+		];
+
+		public function generateCall() : string 
+		{
 			$b = 'float cdata[zend_hash_num_elements(data)];' . PHP_EOL;
 		    $b .= 'int i = 0;' . PHP_EOL;
 		    $b .= 'ZEND_HASH_FOREACH_VAL(data, data_data)' . PHP_EOL;
 		    $b .= '  ZVAL_DEREF(data_data);' . PHP_EOL;
 		    $b .= '  convert_to_double(data_data);' . PHP_EOL;
-		    $b .= '  cdata[i] = Z_DVAL_P(data_data);' . PHP_EOL;
+		    $b .= '  cdata[i] = (float) Z_DVAL_P(data_data);' . PHP_EOL;
 		    $b .= 'ZEND_HASH_FOREACH_END();' . PHP_EOL;
 		    $b .= 'glBufferData(target, sizeof(cdata), cdata, usage);' . PHP_EOL;
 

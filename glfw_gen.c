@@ -5,6 +5,7 @@
 #include "php_glfw.h"
 
 #include <zend_API.h>
+#include <glad/glad.h>
 #include <GLFW/glfw3.h>
 
 #define PHPGLFW_WINDOW_NAME "phpglfw window"
@@ -50,7 +51,7 @@ static void phpglfw_window_dtor(zend_resource *rsrc TSRMLS_DC)
  * glfwInit
  * --------------------------------
  */
-PHP_FUNCTION(glfwInit)
+ZEND_NAMED_FUNCTION(zif_glfwInit)
 {
 
     if (glfwInit()) { RETURN_TRUE; } RETURN_FALSE;
@@ -60,7 +61,7 @@ PHP_FUNCTION(glfwInit)
  * glfwTerminate
  * --------------------------------
  */
-PHP_FUNCTION(glfwTerminate)
+ZEND_NAMED_FUNCTION(zif_glfwTerminate)
 {
 
     glfwTerminate();
@@ -76,7 +77,7 @@ ZEND_BEGIN_ARG_INFO_EX(arginfo_glfwGetVersion, 0, 0, 1)
     ZEND_ARG_INFO(1, rev)
 ZEND_END_ARG_INFO()
 
-PHP_FUNCTION(glfwGetVersion)
+ZEND_NAMED_FUNCTION(zif_glfwGetVersion)
 {
     zval *z_major;
     zval *z_minor;
@@ -94,7 +95,7 @@ PHP_FUNCTION(glfwGetVersion)
  * glfwGetVersionString
  * --------------------------------
  */
-PHP_FUNCTION(glfwGetVersionString)
+ZEND_NAMED_FUNCTION(zif_glfwGetVersionString)
 {
 
     RETURN_STRING(glfwGetVersionString());
@@ -108,7 +109,7 @@ ZEND_BEGIN_ARG_INFO_EX(arginfo_glfwMakeContextCurrent, 0, 0, 1)
     ZEND_ARG_INFO(0, window)
 ZEND_END_ARG_INFO()
 
-PHP_FUNCTION(glfwMakeContextCurrent)
+ZEND_NAMED_FUNCTION(zif_glfwMakeContextCurrent)
 {
     zval *window_resource;
     if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "r", &window_resource) == FAILURE) {
@@ -116,13 +117,16 @@ PHP_FUNCTION(glfwMakeContextCurrent)
     }
     GLFWwindow* window = phpglfw_fetch_window(window_resource TSRMLS_CC);
     glfwMakeContextCurrent(window);
+    if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress)) {
+    zend_error(E_ERROR, "Could not load glad.");
+    }
 }
  
 /**
  * glfwGetCurrentContext
  * --------------------------------
  */
-PHP_FUNCTION(glfwGetCurrentContext)
+ZEND_NAMED_FUNCTION(zif_glfwGetCurrentContext)
 {
 
     GLFWwindow* window = glfwGetCurrentContext();
@@ -138,7 +142,7 @@ ZEND_BEGIN_ARG_INFO_EX(arginfo_glfwSwapInterval, 0, 0, 1)
     ZEND_ARG_INFO(0, interval)
 ZEND_END_ARG_INFO()
 
-PHP_FUNCTION(glfwSwapInterval)
+ZEND_NAMED_FUNCTION(zif_glfwSwapInterval)
 {
     zend_long interval;
     if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "l", &interval) == FAILURE) {
@@ -155,7 +159,7 @@ ZEND_BEGIN_ARG_INFO_EX(arginfo_glfwExtensionSupported, 0, 0, 1)
     ZEND_ARG_INFO(0, extension)
 ZEND_END_ARG_INFO()
 
-PHP_FUNCTION(glfwExtensionSupported)
+ZEND_NAMED_FUNCTION(zif_glfwExtensionSupported)
 {
     char *extension;
     size_t extension_size;
@@ -173,7 +177,7 @@ ZEND_BEGIN_ARG_INFO_EX(arginfo_glfwGetProcAddress, 0, 0, 1)
     ZEND_ARG_INFO(0, procname)
 ZEND_END_ARG_INFO()
 
-PHP_FUNCTION(glfwGetProcAddress)
+ZEND_NAMED_FUNCTION(zif_glfwGetProcAddress)
 {
     char *procname;
     size_t procname_size;
@@ -187,7 +191,7 @@ PHP_FUNCTION(glfwGetProcAddress)
  * glfwDefaultWindowHints
  * --------------------------------
  */
-PHP_FUNCTION(glfwDefaultWindowHints)
+ZEND_NAMED_FUNCTION(zif_glfwDefaultWindowHints)
 {
 
     glfwDefaultWindowHints();
@@ -202,7 +206,7 @@ ZEND_BEGIN_ARG_INFO_EX(arginfo_glfwWindowHint, 0, 0, 1)
     ZEND_ARG_INFO(0, value)
 ZEND_END_ARG_INFO()
 
-PHP_FUNCTION(glfwWindowHint)
+ZEND_NAMED_FUNCTION(zif_glfwWindowHint)
 {
     zend_long hint;
     zend_long value;
@@ -220,7 +224,7 @@ ZEND_BEGIN_ARG_INFO_EX(arginfo_glfwDestroyWindow, 0, 0, 1)
     ZEND_ARG_INFO(0, window)
 ZEND_END_ARG_INFO()
 
-PHP_FUNCTION(glfwDestroyWindow)
+ZEND_NAMED_FUNCTION(zif_glfwDestroyWindow)
 {
     zval *window_resource;
     if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "r", &window_resource) == FAILURE) {
@@ -239,7 +243,7 @@ ZEND_BEGIN_ARG_INFO_EX(arginfo_glfwCreateWindow, 0, 0, 1)
     ZEND_ARG_INFO(0, title)
 ZEND_END_ARG_INFO()
 
-PHP_FUNCTION(glfwCreateWindow)
+ZEND_NAMED_FUNCTION(zif_glfwCreateWindow)
 {
     zend_long width;
     zend_long height;
@@ -261,7 +265,7 @@ ZEND_BEGIN_ARG_INFO_EX(arginfo_glfwWindowShouldClose, 0, 0, 1)
     ZEND_ARG_INFO(0, window)
 ZEND_END_ARG_INFO()
 
-PHP_FUNCTION(glfwWindowShouldClose)
+ZEND_NAMED_FUNCTION(zif_glfwWindowShouldClose)
 {
     zval *window_resource;
     if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "r", &window_resource) == FAILURE) {
@@ -280,7 +284,7 @@ ZEND_BEGIN_ARG_INFO_EX(arginfo_glfwSetWindowShouldClose, 0, 0, 1)
     ZEND_ARG_INFO(0, value)
 ZEND_END_ARG_INFO()
 
-PHP_FUNCTION(glfwSetWindowShouldClose)
+ZEND_NAMED_FUNCTION(zif_glfwSetWindowShouldClose)
 {
     zval *window_resource;
     zend_bool value;
@@ -299,7 +303,7 @@ ZEND_BEGIN_ARG_INFO_EX(arginfo_glfwSwapBuffers, 0, 0, 1)
     ZEND_ARG_INFO(0, window)
 ZEND_END_ARG_INFO()
 
-PHP_FUNCTION(glfwSwapBuffers)
+ZEND_NAMED_FUNCTION(zif_glfwSwapBuffers)
 {
     zval *window_resource;
     if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "r", &window_resource) == FAILURE) {
@@ -313,7 +317,7 @@ PHP_FUNCTION(glfwSwapBuffers)
  * glfwPollEvents
  * --------------------------------
  */
-PHP_FUNCTION(glfwPollEvents)
+ZEND_NAMED_FUNCTION(zif_glfwPollEvents)
 {
 
     glfwPollEvents();
@@ -330,7 +334,7 @@ ZEND_BEGIN_ARG_INFO_EX(arginfo_glClearColor, 0, 0, 1)
     ZEND_ARG_INFO(0, a)
 ZEND_END_ARG_INFO()
 
-PHP_FUNCTION(glClearColor)
+ZEND_NAMED_FUNCTION(zif_glClearColor)
 {
     double r;
     double g;
@@ -350,7 +354,7 @@ ZEND_BEGIN_ARG_INFO_EX(arginfo_glClear, 0, 0, 1)
     ZEND_ARG_INFO(0, mask)
 ZEND_END_ARG_INFO()
 
-PHP_FUNCTION(glClear)
+ZEND_NAMED_FUNCTION(zif_glClear)
 {
     zend_long mask;
     if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "l", &mask) == FAILURE) {
@@ -368,7 +372,7 @@ ZEND_BEGIN_ARG_INFO_EX(arginfo_glGenBuffers, 0, 0, 1)
     ZEND_ARG_INFO(1, buffers)
 ZEND_END_ARG_INFO()
 
-PHP_FUNCTION(glGenBuffers)
+ZEND_NAMED_FUNCTION(zif_glGenBuffers)
 {
     zend_long n;
     zval *z_buffers;
@@ -380,6 +384,26 @@ PHP_FUNCTION(glGenBuffers)
 }
  
 /**
+ * glGenVertexArrays
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glGenVertexArrays, 0, 0, 1)
+    ZEND_ARG_INFO(0, n)
+    ZEND_ARG_INFO(1, buffers)
+ZEND_END_ARG_INFO()
+
+ZEND_NAMED_FUNCTION(zif_glGenVertexArrays)
+{
+    zend_long n;
+    zval *z_buffers;
+    if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "lz", &n, &z_buffers) == FAILURE) {
+       return;
+    }
+    ZVAL_DEREF(z_buffers); convert_to_long(z_buffers);
+    glGenVertexArrays(n, (GLuint *)&z_buffers->value);
+}
+ 
+/**
  * glBindBuffer
  * --------------------------------
  */
@@ -388,7 +412,7 @@ ZEND_BEGIN_ARG_INFO_EX(arginfo_glBindBuffer, 0, 0, 1)
     ZEND_ARG_INFO(0, buffer)
 ZEND_END_ARG_INFO()
 
-PHP_FUNCTION(glBindBuffer)
+ZEND_NAMED_FUNCTION(zif_glBindBuffer)
 {
     zend_long target;
     zend_long buffer;
@@ -396,6 +420,23 @@ PHP_FUNCTION(glBindBuffer)
        return;
     }
     glBindBuffer(target, buffer);
+}
+ 
+/**
+ * glBindVertexArray
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glBindVertexArray, 0, 0, 1)
+    ZEND_ARG_INFO(0, target)
+ZEND_END_ARG_INFO()
+
+ZEND_NAMED_FUNCTION(zif_glBindVertexArray)
+{
+    zend_long target;
+    if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "l", &target) == FAILURE) {
+       return;
+    }
+    glBindVertexArray(target);
 }
  
 /**
@@ -409,7 +450,7 @@ ZEND_BEGIN_ARG_INFO_EX(arginfo_glBufferData, 0, 0, 1)
     ZEND_ARG_INFO(0, usage)
 ZEND_END_ARG_INFO()
 
-PHP_FUNCTION(glBufferData)
+ZEND_NAMED_FUNCTION(zif_glBufferData)
 {
     zend_long target;
     zend_long size;
@@ -418,12 +459,33 @@ PHP_FUNCTION(glBufferData)
     if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "llhl", &target, &size, &data, &usage) == FAILURE) {
        return;
     }
+    zend_error(E_ERROR, "This method is unavailable in PHP-GLFW. Please use `glBufferDataFloat(long target, array data, long usage)`, `glBufferDataDouble(long target, array data, long usage)`, `glBufferDataInt(long target, array data, long usage)` or `glBufferDataLong(long target, array data, long usage)`");
+}
+ 
+/**
+ * glBufferDataFloat
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glBufferDataFloat, 0, 0, 1)
+    ZEND_ARG_INFO(0, target)
+    ZEND_ARG_INFO(0, data)
+    ZEND_ARG_INFO(0, usage)
+ZEND_END_ARG_INFO()
+
+ZEND_NAMED_FUNCTION(zif_glBufferDataFloat)
+{
+    zend_long target;
+    HashTable *data; zval *data_data;
+    zend_long usage;
+    if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "lhl", &target, &data, &usage) == FAILURE) {
+       return;
+    }
     float cdata[zend_hash_num_elements(data)];
     int i = 0;
     ZEND_HASH_FOREACH_VAL(data, data_data)
       ZVAL_DEREF(data_data);
       convert_to_double(data_data);
-      cdata[i] = Z_DVAL_P(data_data);
+      cdata[i] = (float) Z_DVAL_P(data_data);
     ZEND_HASH_FOREACH_END();
     glBufferData(target, sizeof(cdata), cdata, usage);
 }
@@ -5377,28 +5439,31 @@ PHP_MINIT_FUNCTION(glfw)
  * --------------------------------
  */
 static zend_function_entry glfw_functions[] = {
-    PHP_FE(glfwInit, NULL) 
-    PHP_FE(glfwTerminate, NULL) 
-    PHP_FE(glfwGetVersion, arginfo_glfwGetVersion) 
-    PHP_FE(glfwGetVersionString, NULL) 
-    PHP_FE(glfwMakeContextCurrent, arginfo_glfwMakeContextCurrent) 
-    PHP_FE(glfwGetCurrentContext, NULL) 
-    PHP_FE(glfwSwapInterval, arginfo_glfwSwapInterval) 
-    PHP_FE(glfwExtensionSupported, arginfo_glfwExtensionSupported) 
-    PHP_FE(glfwGetProcAddress, arginfo_glfwGetProcAddress) 
-    PHP_FE(glfwDefaultWindowHints, NULL) 
-    PHP_FE(glfwWindowHint, arginfo_glfwWindowHint) 
-    PHP_FE(glfwDestroyWindow, arginfo_glfwDestroyWindow) 
-    PHP_FE(glfwCreateWindow, arginfo_glfwCreateWindow) 
-    PHP_FE(glfwWindowShouldClose, arginfo_glfwWindowShouldClose) 
-    PHP_FE(glfwSetWindowShouldClose, arginfo_glfwSetWindowShouldClose) 
-    PHP_FE(glfwSwapBuffers, arginfo_glfwSwapBuffers) 
-    PHP_FE(glfwPollEvents, NULL) 
-    PHP_FE(glClearColor, arginfo_glClearColor) 
-    PHP_FE(glClear, arginfo_glClear) 
-    PHP_FE(glGenBuffers, arginfo_glGenBuffers) 
-    PHP_FE(glBindBuffer, arginfo_glBindBuffer) 
-    PHP_FE(glBufferData, arginfo_glBufferData) 
+    ZEND_RAW_NAMED_FE(glfwInit, zif_glfwInit, NULL) 
+    ZEND_RAW_NAMED_FE(glfwTerminate, zif_glfwTerminate, NULL) 
+    ZEND_RAW_NAMED_FE(glfwGetVersion, zif_glfwGetVersion, arginfo_glfwGetVersion) 
+    ZEND_RAW_NAMED_FE(glfwGetVersionString, zif_glfwGetVersionString, NULL) 
+    ZEND_RAW_NAMED_FE(glfwMakeContextCurrent, zif_glfwMakeContextCurrent, arginfo_glfwMakeContextCurrent) 
+    ZEND_RAW_NAMED_FE(glfwGetCurrentContext, zif_glfwGetCurrentContext, NULL) 
+    ZEND_RAW_NAMED_FE(glfwSwapInterval, zif_glfwSwapInterval, arginfo_glfwSwapInterval) 
+    ZEND_RAW_NAMED_FE(glfwExtensionSupported, zif_glfwExtensionSupported, arginfo_glfwExtensionSupported) 
+    ZEND_RAW_NAMED_FE(glfwGetProcAddress, zif_glfwGetProcAddress, arginfo_glfwGetProcAddress) 
+    ZEND_RAW_NAMED_FE(glfwDefaultWindowHints, zif_glfwDefaultWindowHints, NULL) 
+    ZEND_RAW_NAMED_FE(glfwWindowHint, zif_glfwWindowHint, arginfo_glfwWindowHint) 
+    ZEND_RAW_NAMED_FE(glfwDestroyWindow, zif_glfwDestroyWindow, arginfo_glfwDestroyWindow) 
+    ZEND_RAW_NAMED_FE(glfwCreateWindow, zif_glfwCreateWindow, arginfo_glfwCreateWindow) 
+    ZEND_RAW_NAMED_FE(glfwWindowShouldClose, zif_glfwWindowShouldClose, arginfo_glfwWindowShouldClose) 
+    ZEND_RAW_NAMED_FE(glfwSetWindowShouldClose, zif_glfwSetWindowShouldClose, arginfo_glfwSetWindowShouldClose) 
+    ZEND_RAW_NAMED_FE(glfwSwapBuffers, zif_glfwSwapBuffers, arginfo_glfwSwapBuffers) 
+    ZEND_RAW_NAMED_FE(glfwPollEvents, zif_glfwPollEvents, NULL) 
+    ZEND_RAW_NAMED_FE(glClearColor, zif_glClearColor, arginfo_glClearColor) 
+    ZEND_RAW_NAMED_FE(glClear, zif_glClear, arginfo_glClear) 
+    ZEND_RAW_NAMED_FE(glGenBuffers, zif_glGenBuffers, arginfo_glGenBuffers) 
+    ZEND_RAW_NAMED_FE(glGenVertexArrays, zif_glGenVertexArrays, arginfo_glGenVertexArrays) 
+    ZEND_RAW_NAMED_FE(glBindBuffer, zif_glBindBuffer, arginfo_glBindBuffer) 
+    ZEND_RAW_NAMED_FE(glBindVertexArray, zif_glBindVertexArray, arginfo_glBindVertexArray) 
+    ZEND_RAW_NAMED_FE(glBufferData, zif_glBufferData, arginfo_glBufferData) 
+    ZEND_RAW_NAMED_FE(glBufferDataFloat, zif_glBufferDataFloat, arginfo_glBufferDataFloat) 
 #ifdef PHP_FE_END
     PHP_FE_END
 #else

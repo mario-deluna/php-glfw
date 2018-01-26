@@ -5,6 +5,7 @@
 #include "php_glfw.h"
 
 #include <zend_API.h>
+#include <glad/glad.h>
 #include <GLFW/glfw3.h>
 
 #define PHPGLFW_WINDOW_NAME "phpglfw window"
