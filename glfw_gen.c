@@ -486,6 +486,7 @@ ZEND_NAMED_FUNCTION(zif_glBufferDataFloat)
       ZVAL_DEREF(data_data);
       convert_to_double(data_data);
       cdata[i] = (float) Z_DVAL_P(data_data);
+      i++;
     ZEND_HASH_FOREACH_END();
     glBufferData(target, sizeof(cdata), cdata, usage);
 }
@@ -514,7 +515,7 @@ ZEND_NAMED_FUNCTION(zif_glVertexAttribPointer)
     if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "llllll", &index, &size, &type, &normalized, &stride, &pointer) == FAILURE) {
        return;
     }
-    glVertexAttribPointer(index, size, type, normalized, stride * sizeof(float), (void*)0);
+    glVertexAttribPointer(index, size, type, normalized, stride * sizeof(float), (void*)(pointer * sizeof(float)));
 }
  
 /**
@@ -644,17 +645,17 @@ ZEND_NAMED_FUNCTION(zif_glDeleteShader)
  */
 ZEND_BEGIN_ARG_INFO_EX(arginfo_glAttachShader, 0, 0, 1)
     ZEND_ARG_INFO(0, program)
-    ZEND_ARG_INFO(0, shader)
+    ZEND_ARG_INFO(0, index)
 ZEND_END_ARG_INFO()
 
 ZEND_NAMED_FUNCTION(zif_glAttachShader)
 {
     zend_long program;
-    zend_long shader;
-    if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "ll", &program, &shader) == FAILURE) {
+    zend_long index;
+    if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "ll", &program, &index) == FAILURE) {
        return;
     }
-    glAttachShader(program, shader);
+    glAttachShader(program, index);
 }
  
 /**

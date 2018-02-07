@@ -340,6 +340,7 @@ return
 		    $b .= '  ZVAL_DEREF(data_data);' . PHP_EOL;
 		    $b .= '  convert_to_double(data_data);' . PHP_EOL;
 		    $b .= '  cdata[i] = (float) Z_DVAL_P(data_data);' . PHP_EOL;
+		    $b .= '  i++;' . PHP_EOL;
 		    $b .= 'ZEND_HASH_FOREACH_END();' . PHP_EOL;
 		    $b .= 'glBufferData(target, sizeof(cdata), cdata, usage);' . PHP_EOL;
 
@@ -459,7 +460,7 @@ return
 		public $name = 'glAttachShader';
 		public $arguments = [
 			'program' => 'long',
-			'shader' => 'long'
+			'index' => 'long'
 		];
 	},
 

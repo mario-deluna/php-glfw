@@ -29,11 +29,11 @@ $vertexShader = glCreateShader(GL_VERTEX_SHADER);
 glShaderSource($vertexShader, 1, "
 #version 330 core
 layout (location = 0) in vec3 aPos;
-out vec2 _uvCoord;
+out vec3 ourColor;
 void main()
 {
-   gl_Position = vec4(aPos.x, aPos.y, aPos.z, 1.0);
-   _uvCoord = vec2(1.0f);
+   gl_Position = vec4(aPos.x, aPos.y, aPos.z, 1.0f);
+   ourColor = aPos;
 }
 ");
 glCompileShader($vertexShader);
@@ -48,9 +48,10 @@ $fragShader = glCreateShader(GL_FRAGMENT_SHADER);
 glShaderSource($fragShader, 1, "
 #version 330 core
 out vec4 FragColor;
+in vec3 ourColor;
 void main()
 {
-   FragColor = vec4(1.0f, 0.5f, 0.2f, 1.0f);
+   FragColor = vec4(ourColor, 1.0f);
 }
 ");
 glCompileShader($fragShader);
@@ -61,16 +62,16 @@ if (!$success) {
 }
 
 // link the shaders
-$shader = glCreateProgram();
-glAttachShader($shader, $vertexShader);
-glAttachShader($shader, $fragShader);
-glLinkProgram($shader);
+$shaderProgram = glCreateProgram();
+glAttachShader($shaderProgram, $vertexShader);
+glAttachShader($shaderProgram, $fragShader);
+glLinkProgram($shaderProgram);
 
-glGetProgramiv($shader, GL_LINK_STATUS, $success);
+glGetProgramiv($shaderProgram, GL_LINK_STATUS, $linkSuccess);
 
-if (!$success) {
-	die("Shader program could not be linked.");
-}
+// if (!$linkSuccess) {
+// 	die("Shader program could not be linked.");
+// }
 
 // free the shders
 glDeleteShader($vertexShader);
@@ -101,8 +102,6 @@ glEnableVertexAttribArray(0);
 glBindBuffer(GL_ARRAY_BUFFER, 0); 
 glBindVertexArray(0); 
 
-var_dump($shader);
-
 $i = 0;
 
 while (!glfwWindowShouldClose($window))
@@ -110,11 +109,11 @@ while (!glfwWindowShouldClose($window))
 	$i++;
 
     glClearColor(sin($i / 200), sin($i / 100), sin($i / 500), 1.0);
-    glClearColor(0, 0, 0, 1);
+    //glClearColor(0, 0, 0, 1);
 	glClear(GL_COLOR_BUFFER_BIT);
 
 	// shader
-	glUseProgram($shader);
+	glUseProgram($shaderProgram);
 	glBindVertexArray($VAO);
 	glDrawArrays(GL_TRIANGLES, 0, 3);
 
