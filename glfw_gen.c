@@ -767,6 +767,37 @@ ZEND_NAMED_FUNCTION(zif_glUniform1f)
 }
  
 /**
+ * glUniformMatrix4fv
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glUniformMatrix4fv, 0, 0, 1)
+    ZEND_ARG_INFO(0, location)
+    ZEND_ARG_INFO(0, count)
+    ZEND_ARG_INFO(0, transpose)
+    ZEND_ARG_INFO(0, value)
+ZEND_END_ARG_INFO()
+
+ZEND_NAMED_FUNCTION(zif_glUniformMatrix4fv)
+{
+    zend_long location;
+    zend_long count;
+    zend_bool transpose;
+    HashTable *value; zval *value_data;
+    if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "llbh", &location, &count, &transpose, &value) == FAILURE) {
+       return;
+    }
+    float cdata[zend_hash_num_elements(value)];
+    uint32_t i = 0;
+    ZEND_HASH_FOREACH_VAL(value, value_data)
+      ZVAL_DEREF(value_data);
+      convert_to_double(value_data);
+      cdata[i] = (float) Z_DVAL_P(value_data);
+      i++;
+    ZEND_HASH_FOREACH_END();
+    glUniformMatrix4fv(location, count, transpose, &cdata[0]);
+}
+ 
+/**
  * glLinkProgram
  * --------------------------------
  */
@@ -5833,6 +5864,7 @@ static zend_function_entry glfw_functions[] = {
     ZEND_RAW_NAMED_FE(glGetUniformLocation, zif_glGetUniformLocation, arginfo_glGetUniformLocation) 
     ZEND_RAW_NAMED_FE(glUniform1i, zif_glUniform1i, arginfo_glUniform1i) 
     ZEND_RAW_NAMED_FE(glUniform1f, zif_glUniform1f, arginfo_glUniform1f) 
+    ZEND_RAW_NAMED_FE(glUniformMatrix4fv, zif_glUniformMatrix4fv, arginfo_glUniformMatrix4fv) 
     ZEND_RAW_NAMED_FE(glLinkProgram, zif_glLinkProgram, arginfo_glLinkProgram) 
     ZEND_RAW_NAMED_FE(glGetShaderiv, zif_glGetShaderiv, arginfo_glGetShaderiv) 
     ZEND_RAW_NAMED_FE(glGetProgramiv, zif_glGetProgramiv, arginfo_glGetProgramiv) 

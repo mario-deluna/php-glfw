@@ -531,6 +531,35 @@ return
 	},
 
 	/**
+	 * glUniformMatrix4fv
+	 */
+	new class extends Method {
+		public $name = 'glUniformMatrix4fv';
+		public $arguments = [
+			'location' => 'long',
+			'count' => 'long',
+			'transpose' => 'bool',
+			'value' => 'ht'
+		];
+
+		public function generateCall() : string 
+		{
+			$b = 'float cdata[zend_hash_num_elements(value)];' . PHP_EOL;
+		    $b .= 'uint32_t i = 0;' . PHP_EOL;
+		    $b .= 'ZEND_HASH_FOREACH_VAL(value, value_data)' . PHP_EOL;
+		    $b .= '  ZVAL_DEREF(value_data);' . PHP_EOL;
+		    $b .= '  convert_to_double(value_data);' . PHP_EOL;
+		    $b .= '  cdata[i] = (float) Z_DVAL_P(value_data);' . PHP_EOL;
+		    $b .= '  i++;' . PHP_EOL;
+		    $b .= 'ZEND_HASH_FOREACH_END();' . PHP_EOL;
+
+		    $b .= 'glUniformMatrix4fv(location, count, transpose, &cdata[0]);' . PHP_EOL;
+
+		    return $b;
+		}
+	},
+
+	/**
 	 * glLinkProgram
 	 */
 	new class extends Method {
