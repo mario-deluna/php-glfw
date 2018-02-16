@@ -28,6 +28,14 @@ $ ./configure --enable-glfw
 $ make && make install
 ```
 
+## Example
+
+## Whats inside?
+
+This extension does not only deliver glfw and OpenGL bindings, it also comes with `linmath` and `stb_image` to make getting started easy.
+
+To avoid copying and hopefully therefor increase performance all vectors and matricies are resources & allocated on the heap which results in a very akward syntax.
+
 ## API Differences
 
 I've tried to keep the API as similar as possible to the original C API of glfw and OpenGL, but I had to change some things to make this work easily with PHP. 

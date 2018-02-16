@@ -137,7 +137,7 @@ class StringArgument extends Argument {
 		return '&' . $this->name . ', &' . $this->name . '_size';
 	}
 }
-class WindowArgument extends Argument {
+class ResourceArgument extends Argument {
 	public $charid = 'r';
 	public function generateVariable() : string {
 		return "zval *{$this->name}_resource;";
@@ -150,6 +150,56 @@ class HashTableArgument extends Argument {
 	public $charid = 'h';
 	public function generateVariable() : string {
 		return "HashTable *{$this->name}; zval *{$this->name}_data;";
+	}
+}
+
+/**
+ * Resources
+ */
+abstract class Resource
+{
+	public static function getReturnCall(string $for) 
+	{
+		global $resources;
+
+		foreach($resources as $resource) {
+			if ($resource->name != $for) {
+				continue;
+			}
+
+			return $resource->getReturnResource(). "($resource->name, ".$resource->getContextName().");" . PHP_EOL;
+		}
+	}
+
+	public $type = 'Unknown *';
+	public $name = "resource";
+
+	public function getUName() : string {
+		return strtoupper($this->name);
+	}
+
+	public function getReturnResource() : string {
+		return 'PHPGLFW_RETURN_'.$this->getUName().'_RESOURCE';
+	}
+
+	public function getResourceName() : string {
+		return 'PHPGLFW_'. $this->getUName() .'_NAME';
+	}
+
+	public function getContextName() : string {
+		return 'phpglfw_' . $this->name . '_context';
+	}
+
+	public function getFetchMethod() : string {
+		return 'phpglfw_fetch_' . $this->name;
+	}
+
+	public function getDtorMethod() : string {
+		return 'phpglfw_'. $this->name .'_dtor';
+	}
+
+	public function generateDestroy() : string {
+		return "delete " . $this->name . '; ' . $this->name . ' = NULL;' . PHP_EOL;
 	}
 }
 
@@ -194,7 +244,7 @@ abstract class Method
 				case 'bool': $args[] = $currArg = new BoolArgument($name); break;
 				case 'null': $args[] = $currArg = new NullArgument($name); break;
 				case 'string': $args[] = $currArg = new StringArgument($name); break;
-				case 'window': $args[] = $currArg = new WindowArgument($name); break;
+				case 'resource': $args[] = $currArg = new ResourceArgument($name); break;
 				case 'ht': $args[] = $currArg = new HashTableArgument($name); break;
 			}
 
@@ -309,10 +359,27 @@ abstract class Method
 			$b .= $argument->generateDereferencing() . "\n";
 		}
 
-		// when we have a window argument we need to fetch it
-		if ($hasWindowArg) {
-			$b .= $this->generateWindowResourceFetchCode();
+		// generate the resource fetchers
+		foreach($this->getArguments() as $argument) 
+		{
+			if (!$argument instanceof ResourceArgument) 
+			{
+				continue;
+			}
+
+			// find the matching resource
+			global $resources;
+
+			foreach($resources as $resource) 
+			{
+				if ($resource->name != $argument->name) {
+					continue;
+				}
+
+				$b .= $resource->type . $resource->name . ' = ' . $resource->getFetchMethod() . "(". substr($argument->getReferences(), 1) ." TSRMLS_CC);\n";
+			}
 		}
+
 
 		return $b;
 	}

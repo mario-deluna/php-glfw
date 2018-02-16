@@ -5,7 +5,11 @@ glfwInit();
 echo glfwGetVersionString() . PHP_EOL;
 
 // configure the window
-glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
+glfwWindowHint(GLFW_RESIZABLE, GL_TRUE);
+
+// // offscreen
+// glfwWindowHint(GLFW_VISIBLE, GLFW_FALSE);
+
 glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
 glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
 glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
@@ -51,7 +55,7 @@ out vec4 FragColor;
 in vec3 ourColor;
 void main()
 {
-   FragColor = vec4(ourColor, 1.0f);
+   FragColor = vec4(ourColor.x, ourColor.y, ourColor.z, 1.0f);
 }
 ");
 glCompileShader($fragShader);

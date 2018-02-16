@@ -3,44 +3,51 @@
 #endif
 #include "php.h"
 #include "php_glfw.h"
+#include "linmath.h"
 
 #include <zend_API.h>
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 
-#define PHPGLFW_WINDOW_NAME "phpglfw window"
-
-int phpglfw_window_context;
+<?php foreach ($resources as $resource) : ?>
+#define <?php echo $resource->getResourceName(); ?> "<?php echo $resource->name; ?>"
+int <?php echo $resource->getContextName(); ?>;
+<?php endforeach; ?>
 
 #define PHPGLFW_RESOURCE_TYPE zend_resource
-#define PHPGLFW_RETURN_RESOURCE(window, context) \
-    RETURN_RES(zend_register_resource(window, context))
+<?php foreach ($resources as $resource) : ?>
+#define <?php echo $resource->getReturnResource(); ?>(<?php echo $resource->name; ?>, context) \
+    RETURN_RES(zend_register_resource(<?php echo $resource->name; ?>, context))
+<?php endforeach; ?>
 
+<?php foreach ($resources as $resource) : ?>
 /**
- * Get GLFW window from resource
+ * Get <?php echo $resource->type; ?> from resource
  * --------------------------------
  */
-static GLFWwindow *phpglfw_fetch_window(zval *resource TSRMLS_DC)
+static <?php echo $resource->type; ?><?php echo $resource->getFetchMethod(); ?>(zval *resource TSRMLS_DC)
 {
-    GLFWwindow *window;
+    <?php echo $resource->type; ?><?php echo $resource->name; ?>;
 
-    window = (GLFWwindow *)zend_fetch_resource_ex(resource, PHPGLFW_WINDOW_NAME, phpglfw_window_context);
+    <?php echo $resource->name; ?> = (<?php echo $resource->type; ?>)zend_fetch_resource_ex(resource, <?php echo $resource->getResourceName(); ?>, <?php echo $resource->getContextName(); ?>);
 
-    return window;
+    return <?php echo $resource->name; ?>;
 }
 
 /**
- * dtor
+ * dtor <?php echo $resource->type; ?>
  * --------------------------------
  */
-static void phpglfw_window_dtor(zend_resource *rsrc TSRMLS_DC)
+static void <?php echo $resource->getDtorMethod(); ?>(zend_resource *rsrc TSRMLS_DC)
 {
-    GLFWwindow* window = (void *) rsrc->ptr;
+    <?php echo $resource->type; ?><?php echo $resource->name; ?> = (void *) rsrc->ptr;
 
-    if (window) {
-        glfwDestroyWindow(window);
+    if (<?php echo $resource->name; ?>) {
+        <?php echo $resource->generateDestroy(); ?>
     }
 }
+
+<?php endforeach; ?>
 
 /**
  * --------------------------------
@@ -58,7 +65,9 @@ static void phpglfw_window_dtor(zend_resource *rsrc TSRMLS_DC)
  */
 PHP_MINIT_FUNCTION(glfw)
 {
-    phpglfw_window_context = zend_register_list_destructors_ex(phpglfw_window_dtor, NULL, PHPGLFW_WINDOW_NAME, module_number);
+<?php foreach ($resources as $resource) : ?>
+    <?php echo $resource->getContextName(); ?> = zend_register_list_destructors_ex(<?php echo $resource->getDtorMethod(); ?>, NULL, <?php echo $resource->getResourceName(); ?>, module_number);
+<?php endforeach; ?>
 <?php foreach($constants as $constant) : ?>
 #ifdef <?php echo $constant; ?> 
     REGISTER_LONG_CONSTANT("<?php echo $constant; ?>", <?php echo $constant; ?>, CONST_CS|CONST_PERSISTENT);

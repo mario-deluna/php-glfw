@@ -57,7 +57,7 @@ return
 	new class extends Method {
 		public $name = 'glfwMakeContextCurrent';
 		public $arguments = [
-			'window' => 'window',
+			'glfwwindow' => 'resource',
 		];
 
 		public function generateCall() : string
@@ -81,9 +81,9 @@ return
 		// custom call
 		public function generateCall() : string 
 		{
-			$b = 'GLFWwindow* window = glfwGetCurrentContext();' . PHP_EOL;
-			$b .= 'if (!window) RETURN_FALSE;' . PHP_EOL;
-		    $b .= 'PHPGLFW_RETURN_RESOURCE(window, phpglfw_window_context);' . PHP_EOL;
+			$b = 'GLFWwindow* glfwwindow = glfwGetCurrentContext();' . PHP_EOL;
+			$b .= 'if (!glfwwindow) RETURN_FALSE;' . PHP_EOL;
+			$b .= Resource::getReturnCall('glfwwindow');
 
 		    return $b;
 		}
@@ -153,7 +153,7 @@ return
 	new class extends Method {
 		public $name = 'glfwDestroyWindow';
 		public $arguments = [
-			'window' => 'window',
+			'glfwwindow' => 'resource',
 		];
 
 		// no window fetching here
@@ -162,7 +162,7 @@ return
 		// custom call
 		public function generateCall() : string 
 		{
-			return 'zend_list_close(Z_RES_P(window_resource));';
+			return 'zend_list_close(Z_RES_P(glfwwindow_resource));';
 		}
 	},
 
@@ -180,9 +180,9 @@ return
 
 		public function generateCall() : string 
 		{
-			$b = 'GLFWwindow* window = glfwCreateWindow(width, height, title, NULL, NULL);' . PHP_EOL;
-		    $b .= 'if (!window) RETURN_FALSE;' . PHP_EOL;
-		    $b .= 'PHPGLFW_RETURN_RESOURCE(window, phpglfw_window_context);' . PHP_EOL;
+			$b = 'GLFWwindow* glfwwindow = glfwCreateWindow(width, height, title, NULL, NULL);' . PHP_EOL;
+		    $b .= 'if (!glfwwindow) RETURN_FALSE;' . PHP_EOL;
+			$b .= Resource::getReturnCall('glfwwindow');
 
 		    return $b;
 		}
@@ -195,7 +195,7 @@ return
 		public $name = 'glfwWindowShouldClose';
 		public $returns = 'bool';
 		public $arguments = [
-			'window' => 'window',
+			'glfwwindow' => 'resource',
 		];
 	},
 
@@ -205,7 +205,7 @@ return
 	new class extends Method {
 		public $name = 'glfwSetWindowShouldClose';
 		public $arguments = [
-			'window' => 'window',
+			'glfwwindow' => 'resource',
 			'value' => 'bool',
 		];
 	},
@@ -216,7 +216,7 @@ return
 	new class extends Method {
 		public $name = 'glfwSwapBuffers';
 		public $arguments = [
-			'window' => 'window'
+			'glfwwindow' => 'resource'
 		];
 	},
 
@@ -272,10 +272,32 @@ return
 	},
 
 	/**
+	 * glDeleteBuffers
+	 */
+	new class extends Method {
+		public $name = 'glDeleteBuffers';
+		public $arguments = [
+			'n' => 'long',
+			'&buffers:GLuint' => 'long',
+		];
+	},
+
+	/**
 	 * glGenVertexArrays
 	 */
 	new class extends Method {
 		public $name = 'glGenVertexArrays';
+		public $arguments = [
+			'n' => 'long',
+			'&buffers:GLuint' => 'long',
+		];
+	},
+
+	/**
+	 * glDeleteVertexArrays
+	 */
+	new class extends Method {
+		public $name = 'glDeleteVertexArrays';
 		public $arguments = [
 			'n' => 'long',
 			'&buffers:GLuint' => 'long',
@@ -461,6 +483,17 @@ return
 		public $arguments = [
 			'program' => 'long',
 			'index' => 'long'
+		];
+	},
+
+	/**
+	 * glUniform1i
+	 */
+	new class extends Method {
+		public $name = 'glUniform1i';
+		public $arguments = [
+			'location' => 'long',
+			'value' => 'long'
 		];
 	},
 
