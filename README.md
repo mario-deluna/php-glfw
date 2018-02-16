@@ -8,7 +8,7 @@ Write games with PHP!
 
 Nobody asked for a library like this and still, I delivered. Please don't spend a tremendous amount of time writing a "real game" in PHP with this. Just because its possible does not mean it is a good idea. I have no idea how you would ship / distribute such a game. Therefore this library hopefully serves an educational purpose for people who want to get into graphics programming and mainly work with PHP.
 
-I'm very far from being an expert with the Zend engine and the PHP internals. So there are pieces in this code that will make you want to pull out your hair. My focus was to make this thing run, bugs, performance and memory leaks can be fixed later. Or probably never because again this is not supposed to create production applications with.
+I'm very far from being an expert with the Zend engine and the PHP internals. So there are pieces in this code that will make you want to pull out your hair. My focus was to make this thing run, bugs, performance and memory leaks can be fixed later. Or probably never because again this is not supposed to create production applications with. Alot of methods introduce a hell lot of overhead when it comes to copying (I buy you a beer here in Zürich if you can help me make this somehow efficent.).
 
 Also keep in mind I did not spend time making this failsafe in any way. When you pass unexpected types you might end up with a segmentation fault.
 
@@ -32,9 +32,7 @@ $ make && make install
 
 ## Whats inside?
 
-This extension does not only deliver glfw and OpenGL bindings, it also comes with `linmath` and `stb_image` to make getting started easy.
-
-To avoid copying and hopefully therefor increase performance all vectors and matricies are resources & allocated on the heap which results in a very akward syntax.
+This extension does not only deliver glfw and OpenGL bindings, it also comes with `stb_image` to make getting started easy.
 
 ## API Differences
 
