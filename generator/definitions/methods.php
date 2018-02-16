@@ -574,4 +574,24 @@ return
 		];
 	},
 	
+	// /**
+	//  * 
+	//  * Linmath  // This currently just want work out..
+	//  * -----------------------------------------------------------
+	//  */
+	// /**
+	//  * vec2create()
+	//  */
+	// new class extends Method {
+	// 	public $name = 'vec2_add';
+	// 	public $arguments = [
+	// 		'vector1' => 'ht',
+	// 		'vector2' => 'ht',
+	// 	];
+
+	// 	public function generateCall() : string 
+	// 	{
+	// 		return "";
+	// 	}
+	// },
 ];

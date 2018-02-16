@@ -3,7 +3,7 @@
 #endif
 #include "php.h"
 #include "php_glfw.h"
-#include "linmath.h"
+//#include "linmath.h"
 
 #include <zend_API.h>
 #include <glad/glad.h>

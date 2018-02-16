@@ -53,10 +53,13 @@ glShaderSource($fragShader, 1, "
 #version 330 core
 out vec4 FragColor;
 in vec3 ourColor;
+
+uniform float time;
+
 void main()
 {
-   FragColor = vec4(ourColor.x, ourColor.y, ourColor.z, 1.0f);
-}
+   FragColor = vec4(ourColor.x + sin(time / 10), ourColor.y + sin(time / 15), ourColor.z + cos(time / 5), 1.0f);
+} 
 ");
 glCompileShader($fragShader);
 glGetShaderiv($fragShader, GL_COMPILE_STATUS, $success);

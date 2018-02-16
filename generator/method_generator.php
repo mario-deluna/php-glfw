@@ -199,7 +199,7 @@ abstract class Resource
 	}
 
 	public function generateDestroy() : string {
-		return "delete " . $this->name . '; ' . $this->name . ' = NULL;' . PHP_EOL;
+		return "free(" . $this->name . '); ' . $this->name . ' = NULL;' . PHP_EOL;
 	}
 }
 
