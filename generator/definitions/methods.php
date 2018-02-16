@@ -229,6 +229,17 @@ return
 		];
 	},
 
+	/**
+	 * glfwGetTime
+	 */
+	new class extends Method {
+		public $name = 'glfwGetTime';
+		public $returns = 'double';
+		public $arguments = [
+		];
+	},
+
+
 	
 	/**
 	 * 
@@ -485,6 +496,17 @@ return
 			'index' => 'long'
 		];
 	},
+	
+	/**
+	 * glGetUniformLocation
+	 */
+	new class extends Method {
+		public $name = 'glGetUniformLocation';
+		public $arguments = [
+			'program' => 'long',
+			'name' => 'string'
+		];
+	},
 
 	/**
 	 * glUniform1i
@@ -494,6 +516,17 @@ return
 		public $arguments = [
 			'location' => 'long',
 			'value' => 'long'
+		];
+	},
+
+	/**
+	 * glUniform1f
+	 */
+	new class extends Method {
+		public $name = 'glUniform1f';
+		public $arguments = [
+			'location' => 'long',
+			'value' => 'double'
 		];
 	},
 

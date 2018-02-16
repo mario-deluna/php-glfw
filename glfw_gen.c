@@ -324,6 +324,16 @@ ZEND_NAMED_FUNCTION(zif_glfwPollEvents)
 }
  
 /**
+ * glfwGetTime
+ * --------------------------------
+ */
+ZEND_NAMED_FUNCTION(zif_glfwGetTime)
+{
+
+    RETURN_DOUBLE(glfwGetTime());
+}
+ 
+/**
  * glClearColor
  * --------------------------------
  */
@@ -699,6 +709,26 @@ ZEND_NAMED_FUNCTION(zif_glAttachShader)
 }
  
 /**
+ * glGetUniformLocation
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glGetUniformLocation, 0, 0, 1)
+    ZEND_ARG_INFO(0, program)
+    ZEND_ARG_INFO(0, name)
+ZEND_END_ARG_INFO()
+
+ZEND_NAMED_FUNCTION(zif_glGetUniformLocation)
+{
+    zend_long program;
+    const char *name;
+    size_t name_size;
+    if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "ls", &program, &name, &name_size) == FAILURE) {
+       return;
+    }
+    glGetUniformLocation(program, name);
+}
+ 
+/**
  * glUniform1i
  * --------------------------------
  */
@@ -715,6 +745,25 @@ ZEND_NAMED_FUNCTION(zif_glUniform1i)
        return;
     }
     glUniform1i(location, value);
+}
+ 
+/**
+ * glUniform1f
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glUniform1f, 0, 0, 1)
+    ZEND_ARG_INFO(0, location)
+    ZEND_ARG_INFO(0, value)
+ZEND_END_ARG_INFO()
+
+ZEND_NAMED_FUNCTION(zif_glUniform1f)
+{
+    zend_long location;
+    double value;
+    if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "ld", &location, &value) == FAILURE) {
+       return;
+    }
+    glUniform1f(location, value);
 }
  
 /**
@@ -5761,6 +5810,7 @@ static zend_function_entry glfw_functions[] = {
     ZEND_RAW_NAMED_FE(glfwSetWindowShouldClose, zif_glfwSetWindowShouldClose, arginfo_glfwSetWindowShouldClose) 
     ZEND_RAW_NAMED_FE(glfwSwapBuffers, zif_glfwSwapBuffers, arginfo_glfwSwapBuffers) 
     ZEND_RAW_NAMED_FE(glfwPollEvents, zif_glfwPollEvents, NULL) 
+    ZEND_RAW_NAMED_FE(glfwGetTime, zif_glfwGetTime, NULL) 
     ZEND_RAW_NAMED_FE(glClearColor, zif_glClearColor, arginfo_glClearColor) 
     ZEND_RAW_NAMED_FE(glClear, zif_glClear, arginfo_glClear) 
     ZEND_RAW_NAMED_FE(glGenBuffers, zif_glGenBuffers, arginfo_glGenBuffers) 
@@ -5780,7 +5830,9 @@ static zend_function_entry glfw_functions[] = {
     ZEND_RAW_NAMED_FE(glCompileShader, zif_glCompileShader, arginfo_glCompileShader) 
     ZEND_RAW_NAMED_FE(glDeleteShader, zif_glDeleteShader, arginfo_glDeleteShader) 
     ZEND_RAW_NAMED_FE(glAttachShader, zif_glAttachShader, arginfo_glAttachShader) 
+    ZEND_RAW_NAMED_FE(glGetUniformLocation, zif_glGetUniformLocation, arginfo_glGetUniformLocation) 
     ZEND_RAW_NAMED_FE(glUniform1i, zif_glUniform1i, arginfo_glUniform1i) 
+    ZEND_RAW_NAMED_FE(glUniform1f, zif_glUniform1f, arginfo_glUniform1f) 
     ZEND_RAW_NAMED_FE(glLinkProgram, zif_glLinkProgram, arginfo_glLinkProgram) 
     ZEND_RAW_NAMED_FE(glGetShaderiv, zif_glGetShaderiv, arginfo_glGetShaderiv) 
     ZEND_RAW_NAMED_FE(glGetProgramiv, zif_glGetProgramiv, arginfo_glGetProgramiv) 

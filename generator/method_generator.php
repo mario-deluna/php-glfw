@@ -419,6 +419,14 @@ abstract class Method
 	}
 
 	/**
+	 * Generate the method call (Int)
+	 */
+	protected function generateCallReturnDouble(string $call) : string
+	{
+		return 'RETURN_DOUBLE('. $call .');';
+	}
+
+	/**
 	 * Generate the method call
 	 */
 	protected function generateCall() : string

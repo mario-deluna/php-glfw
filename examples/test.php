@@ -118,6 +118,10 @@ while (!glfwWindowShouldClose($window))
 
 	// shader
 	glUseProgram($shaderProgram);
+
+	// set the time
+	glUniform1f(glGetUniformLocation($shaderProgram, "time"), glfwGetTime());
+
 	glBindVertexArray($VAO);
 	glDrawArrays(GL_TRIANGLES, 0, 3);
 
