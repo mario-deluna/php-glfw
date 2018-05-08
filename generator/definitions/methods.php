@@ -554,6 +554,7 @@ return
 	 */
 	new class extends Method {
 		public $name = 'glGetUniformLocation';
+		public $returns = 'long';
 		public $arguments = [
 			'program' => 'long',
 			'name' => 'string'

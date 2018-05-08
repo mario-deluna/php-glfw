@@ -800,7 +800,7 @@ ZEND_NAMED_FUNCTION(zif_glGetUniformLocation)
     if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "ls", &program, &name, &name_size) == FAILURE) {
        return;
     }
-    glGetUniformLocation(program, name);
+    RETURN_LONG(glGetUniformLocation(program, name));
 }
  
 /**
