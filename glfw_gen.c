@@ -334,6 +334,29 @@ ZEND_NAMED_FUNCTION(zif_glfwGetTime)
 }
  
 /**
+ * glViewport
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glViewport, 0, 0, 1)
+    ZEND_ARG_INFO(0, x)
+    ZEND_ARG_INFO(0, y)
+    ZEND_ARG_INFO(0, w)
+    ZEND_ARG_INFO(0, h)
+ZEND_END_ARG_INFO()
+
+ZEND_NAMED_FUNCTION(zif_glViewport)
+{
+    double x;
+    double y;
+    double w;
+    double h;
+    if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "dddd", &x, &y, &w, &h) == FAILURE) {
+       return;
+    }
+    glViewport(x, y, w, h);
+}
+ 
+/**
  * glClearColor
  * --------------------------------
  */
@@ -542,6 +565,35 @@ ZEND_NAMED_FUNCTION(zif_glBufferDataFloat)
 }
  
 /**
+ * glBufferDataInt
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glBufferDataInt, 0, 0, 1)
+    ZEND_ARG_INFO(0, target)
+    ZEND_ARG_INFO(0, data)
+    ZEND_ARG_INFO(0, usage)
+ZEND_END_ARG_INFO()
+
+ZEND_NAMED_FUNCTION(zif_glBufferDataInt)
+{
+    zend_long target;
+    HashTable *data; zval *data_data;
+    zend_long usage;
+    if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "lhl", &target, &data, &usage) == FAILURE) {
+       return;
+    }
+    int cdata[zend_hash_num_elements(data)];
+    int i = 0;
+    ZEND_HASH_FOREACH_VAL(data, data_data)
+      ZVAL_DEREF(data_data);
+      convert_to_long(data_data);
+      cdata[i] = (int) Z_LVAL_P(data_data);
+      i++;
+    ZEND_HASH_FOREACH_END();
+    glBufferData(target, sizeof(cdata), cdata, usage);
+}
+ 
+/**
  * glVertexAttribPointer
  * --------------------------------
  */
@@ -604,6 +656,29 @@ ZEND_NAMED_FUNCTION(zif_glDrawArrays)
        return;
     }
     glDrawArrays(mode, first, count);
+}
+ 
+/**
+ * glDrawElements
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glDrawElements, 0, 0, 1)
+    ZEND_ARG_INFO(0, mode)
+    ZEND_ARG_INFO(0, count)
+    ZEND_ARG_INFO(0, type)
+    ZEND_ARG_INFO(0, indices)
+ZEND_END_ARG_INFO()
+
+ZEND_NAMED_FUNCTION(zif_glDrawElements)
+{
+    zend_long mode;
+    zend_long count;
+    zend_long type;
+    zend_long indices;
+    if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "llll", &mode, &count, &type, &indices) == FAILURE) {
+       return;
+    }
+    glDrawElements(mode, count, type, indices);
 }
  
 /**
@@ -5842,6 +5917,7 @@ static zend_function_entry glfw_functions[] = {
     ZEND_RAW_NAMED_FE(glfwSwapBuffers, zif_glfwSwapBuffers, arginfo_glfwSwapBuffers) 
     ZEND_RAW_NAMED_FE(glfwPollEvents, zif_glfwPollEvents, NULL) 
     ZEND_RAW_NAMED_FE(glfwGetTime, zif_glfwGetTime, NULL) 
+    ZEND_RAW_NAMED_FE(glViewport, zif_glViewport, arginfo_glViewport) 
     ZEND_RAW_NAMED_FE(glClearColor, zif_glClearColor, arginfo_glClearColor) 
     ZEND_RAW_NAMED_FE(glClear, zif_glClear, arginfo_glClear) 
     ZEND_RAW_NAMED_FE(glGenBuffers, zif_glGenBuffers, arginfo_glGenBuffers) 
@@ -5852,9 +5928,11 @@ static zend_function_entry glfw_functions[] = {
     ZEND_RAW_NAMED_FE(glBindVertexArray, zif_glBindVertexArray, arginfo_glBindVertexArray) 
     ZEND_RAW_NAMED_FE(glBufferData, zif_glBufferData, arginfo_glBufferData) 
     ZEND_RAW_NAMED_FE(glBufferDataFloat, zif_glBufferDataFloat, arginfo_glBufferDataFloat) 
+    ZEND_RAW_NAMED_FE(glBufferDataInt, zif_glBufferDataInt, arginfo_glBufferDataInt) 
     ZEND_RAW_NAMED_FE(glVertexAttribPointer, zif_glVertexAttribPointer, arginfo_glVertexAttribPointer) 
     ZEND_RAW_NAMED_FE(glEnableVertexAttribArray, zif_glEnableVertexAttribArray, arginfo_glEnableVertexAttribArray) 
     ZEND_RAW_NAMED_FE(glDrawArrays, zif_glDrawArrays, arginfo_glDrawArrays) 
+    ZEND_RAW_NAMED_FE(glDrawElements, zif_glDrawElements, arginfo_glDrawElements) 
     ZEND_RAW_NAMED_FE(glCreateShader, zif_glCreateShader, arginfo_glCreateShader) 
     ZEND_RAW_NAMED_FE(glCreateProgram, zif_glCreateProgram, NULL) 
     ZEND_RAW_NAMED_FE(glShaderSource, zif_glShaderSource, arginfo_glShaderSource) 

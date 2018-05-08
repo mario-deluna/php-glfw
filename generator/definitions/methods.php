@@ -247,6 +247,18 @@ return
 	 * -----------------------------------------------------------
 	 */
 
+	/**
+	 * glViewport
+	 */
+	new class extends Method {
+		public $name = 'glViewport';
+		public $arguments = [
+			'x' => 'double',
+			'y' => 'double',
+			'w' => 'double',
+			'h' => 'double',
+		];
+	},
 
 	/**
 	 * glClearColor
@@ -382,6 +394,33 @@ return
 	},
 
 	/**
+	 * glBufferDataInt
+	 */
+	new class extends Method {
+		public $name = 'glBufferDataInt';
+		public $arguments = [
+			'target' => 'long',
+			'data' => 'ht',
+			'usage' => 'long',
+		];
+
+		public function generateCall() : string 
+		{
+			$b = 'int cdata[zend_hash_num_elements(data)];' . PHP_EOL;
+		    $b .= 'int i = 0;' . PHP_EOL;
+		    $b .= 'ZEND_HASH_FOREACH_VAL(data, data_data)' . PHP_EOL;
+		    $b .= '  ZVAL_DEREF(data_data);' . PHP_EOL;
+		    $b .= '  convert_to_long(data_data);' . PHP_EOL;
+		    $b .= '  cdata[i] = (int) Z_LVAL_P(data_data);' . PHP_EOL;
+		    $b .= '  i++;' . PHP_EOL;
+		    $b .= 'ZEND_HASH_FOREACH_END();' . PHP_EOL;
+		    $b .= 'glBufferData(target, sizeof(cdata), cdata, usage);' . PHP_EOL;
+
+		    return $b;
+		}
+	},
+
+	/**
 	 * glVertexAttribPointer
 	 */
 	new class extends Method {
@@ -422,6 +461,19 @@ return
 			'mode' => 'long',
 			'first' => 'long',
 			'count' => 'long',
+		];
+	},
+
+	/**
+	 * glDrawElements
+	 */
+	new class extends Method {
+		public $name = 'glDrawElements';
+		public $arguments = [
+			'mode' => 'long',
+			'count' => 'long',
+			'type' => 'long',
+			'indices' => 'long' // @todo 
 		];
 	},
 
