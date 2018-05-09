@@ -4,7 +4,9 @@ Write games with PHP! This is a written C extension that adds GLFW & OpenGL supp
 
 ## ❓❓❓
 
-![Alt Text](https://media.giphy.com/media/lzQHOFIV9Cj5whBcOF/giphy.gif)
+<p align="center">
+ <img src="https://media.giphy.com/media/lzQHOFIV9Cj5whBcOF/giphy.gif"/>
+</p>
 
 > Keep in mind this is a **gif** in reality this runs smoothly at 60fps.
 
