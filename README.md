@@ -1,8 +1,12 @@
 # PHP-GLFW
 
-Write games with PHP! 
+Write games with PHP! This is a written C extension that adds GLFW & OpenGL support to PHP.
 
+## ❓❓❓
 
+![Alt Text](https://media.giphy.com/media/lzQHOFIV9Cj5whBcOF/giphy.gif)
+
+> Keep in mind this is a **gif** in reality this runs smoothly at 60fps.
 
 ## Notes / Disclaimer
 
