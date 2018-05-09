@@ -1,23 +1,40 @@
 # PHP-GLFW
 
-Write games with PHP! 
+Write fun **3D** games or other **graphical** applications with PHP! This is a C extension that adds **GLFW & OpenGL** support to **PHP**. 
 
+## ❓❓❓
 
+<p align="center">
+ <img src="https://media.giphy.com/media/lzQHOFIV9Cj5whBcOF/giphy.gif"/>
+</p>
+
+> Keep in mind this is a **gif** in reality this runs smoothly at 60fps.
 
 ## Notes / Disclaimer
 
 Nobody asked for a library like this, and still, I delivered. Please don't spend a tremendous amount of time writing a "real game" in PHP with this. Just because its possible does not mean it is a good idea. I have no idea how you would ship/distribute such a game. Therefore this library hopefully serves an educational purpose for people who want to get into graphics programming and mainly work with PHP.
 
-I am very far from being an expert with the Zend engine and the PHP internals. So there are pieces in this code that will make you want to pull out your hair. My focus was to make this thing work, bugs, performance and memory leaks can be fixed later. (Or probably never because again this is not supposed to create production applications with.) Many methods introduce a hell lot of overhead when it comes to copying (I buy you a beer here in Zürich if you can help me make this somehow efficient.).
+I am very far from being an expert with the Zend engine and the PHP internals. So there are pieces in this code that will make you want to pull out your hair from your head. My focus was to make this thing work at any cost, bugs, performance and memory leaks or even safe type conversions can be fixed later. (Or maybe never because again this is not supposed to create production applications with.) Many methods introduce a hell lot of overhead when it comes to copying or type conversations (I would love to buy you a beer here in Zürich if you can help me make this somehow efficient.).
 
-Also, keep in mind I did not spend time making this failsafe in any way. When you pass unexpected types, you might end up with a segmentation fault.
+Also, keep in mind I did not spend time making this failsafe in any way. When you pass unexpected types / values, you might end up with a segmentation fault.
+
+I can't point this out enough this library is far from stable, and should **only** be used in _"just for fun"_ or _"because I can"_ and general _experimental_ type of projects. At least in its current state, who knows what the future brings.
+ 
 
 ## Installation
+
+> Note: I only tested this extension on MacOS.
 
 Make sure to install glfw3. 
 
 ```
 $ brew install glfw3 
+```
+
+Clone the repository.
+
+```
+$ git clone https://github.com/mario-deluna/php-glfw/ && cd php-glfw
 ```
 
 Now you should be able to build the extension:
@@ -26,6 +43,13 @@ Now you should be able to build the extension:
 $ phpize
 $ ./configure --enable-glfw
 $ make && make install
+```
+
+Don't forget to link the extension, by appending the following lines to your `php.ini`.
+
+```
+[glfw]
+extension=glfw.so
 ```
 
 ## Example
