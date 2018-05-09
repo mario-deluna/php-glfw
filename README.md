@@ -1,6 +1,6 @@
 # PHP-GLFW
 
-Write fun **3D** games or other **graphical** applications with PHP! This is a C extension that adds **GLFW & OpenGL** support to **PHP**. 
+Write fun **3D / 2D** games or other **graphical** applications with PHP! This is a C extension that adds **GLFW & OpenGL** support to **PHP**. 
 
 ## ❓❓❓
 
