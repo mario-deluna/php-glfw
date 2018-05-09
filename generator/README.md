@@ -1,4 +1,4 @@
-# PHP-GLFW binding generator
+# PHP-GLFW binding generator
 
 Because there are so damn many functions and constants to cover I decided to create a simple generator for this purpose.
 
