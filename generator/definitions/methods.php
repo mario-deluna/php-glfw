@@ -247,6 +247,17 @@ return
 	 * -----------------------------------------------------------
 	 */
 
+	
+	/**
+	 * glEnable
+	 */
+	new class extends Method {
+		public $name = 'glEnable';
+		public $arguments = [
+			'cap' => 'long',
+		];
+	},
+
 	/**
 	 * glViewport
 	 */
@@ -654,6 +665,149 @@ return
 		public $arguments = [
 			'program' => 'long'
 		];
+	},
+
+	/**
+	 * 
+	 * OpenGL Textures
+	 * -----------------------------------------------------------
+	 */
+	/**
+	 * glGenTextures
+	 */
+	new class extends Method {
+		public $name = 'glGenTextures';
+		public $arguments = [
+			'n' => 'long',
+			'&textures:GLuint' => 'long', // @todo
+		];
+	},
+
+	/**
+	 * glBindTexture
+	 */
+	new class extends Method {
+		public $name = 'glBindTexture';
+		public $arguments = [
+			'target' => 'long',
+			'texture' => 'long',
+		];
+	},
+
+	/**
+	 * glTexParameteri
+	 */
+	new class extends Method {
+		public $name = 'glTexParameteri';
+		public $arguments = [
+			'target' => 'long',
+			'pname' => 'long',
+			'param' => 'long',
+		];
+	},
+
+	/**
+	 * glTextureParameteri
+	 */
+	new class extends Method {
+		public $name = 'glTextureParameteri';
+		public $arguments = [
+			'target' => 'long',
+			'pname' => 'long',
+			'param' => 'long',
+		];
+	},
+
+	/**
+	 * glTexParameterf
+	 */
+	new class extends Method {
+		public $name = 'glTexParameterf';
+		public $arguments = [
+			'target' => 'long',
+			'pname' => 'long',
+			'param' => 'double',
+		];
+	},
+
+	/**
+	 * glTextureParameterf
+	 */
+	new class extends Method {
+		public $name = 'glTextureParameterf';
+		public $arguments = [
+			'target' => 'long',
+			'pname' => 'long',
+			'param' => 'double',
+		];
+	},
+
+	/**
+	 * glTexImage2D
+	 */
+	new class extends Method {
+		public $name = 'glTexImage2D';
+		public $arguments = [
+			'target' => 'long',
+			'level' => 'long',
+			'internal_format' => 'long',
+			'width' => 'long',
+			'height' => 'long',
+			'border' => 'long',
+			'format' => 'long',
+			'type' => 'long',
+			'stbimagedata' => 'resource',
+		];
+	},
+
+	/**
+	 * glGenerateMipmap
+	 */
+	new class extends Method {
+		public $name = 'glGenerateMipmap';
+		public $arguments = [
+			'target' => 'long',
+		];
+	},
+
+	/**
+	 * glActiveTexture
+	 */
+	new class extends Method {
+		public $name = 'glActiveTexture';
+		public $arguments = [
+			'texture' => 'long',
+		];
+	},
+
+	/**
+	 * 
+	 * STBImage
+	 * -----------------------------------------------------------
+	 */
+
+	/**
+	 * stbi_load
+	 */
+	new class extends Method
+	{
+		public $name = 'stbi_load';
+		public $arguments = [
+			'path' => 'string',
+			'&width:int' => 'long',
+			'&height:int' => 'long',
+			'&number_or_channels:int' => 'long',
+			'force_n_comp' => 'long',
+		];
+
+		public function generateCall() : string 
+		{
+			$b = 'unsigned char * stbimagedata = stbi_load(path, (int *)&z_width->value, (int *)&z_height->value, (int *)&z_number_or_channels->value, force_n_comp);' . PHP_EOL;
+		    $b .= 'if (!stbimagedata) RETURN_FALSE;' . PHP_EOL;
+			$b .= Resource::getReturnCall('stbimagedata');
+
+		    return $b;
+		}
 	},
 	
 	// /**

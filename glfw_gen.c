@@ -3,18 +3,25 @@
 #endif
 #include "php.h"
 #include "php_glfw.h"
-//#include "linmath.h"
 
 #include <zend_API.h>
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 
+#define STB_IMAGE_IMPLEMENTATION
+#include <stb_image/stb_image.h>
+
+
 #define PHPGLFW_GLFWWINDOW_NAME "glfwwindow"
 int phpglfw_glfwwindow_context;
+#define PHPGLFW_STBIMAGEDATA_NAME "stbimagedata"
+int phpglfw_stbimagedata_context;
 
 #define PHPGLFW_RESOURCE_TYPE zend_resource
 #define PHPGLFW_RETURN_GLFWWINDOW_RESOURCE(glfwwindow, context) \
     RETURN_RES(zend_register_resource(glfwwindow, context))
+#define PHPGLFW_RETURN_STBIMAGEDATA_RESOURCE(stbimagedata, context) \
+    RETURN_RES(zend_register_resource(stbimagedata, context))
 
 /**
  * Get GLFWwindow * from resource
@@ -38,6 +45,30 @@ static void phpglfw_glfwwindow_dtor(zend_resource *rsrc TSRMLS_DC)
 
     if (glfwwindow) {
         glfwDestroyWindow(glfwwindow);    }
+}
+
+/**
+ * Get unsigned char * from resource
+ * --------------------------------
+ */
+static unsigned char *phpglfw_fetch_stbimagedata(zval *resource TSRMLS_DC)
+{
+    unsigned char *stbimagedata;
+
+    stbimagedata = (unsigned char *)zend_fetch_resource_ex(resource, PHPGLFW_STBIMAGEDATA_NAME, phpglfw_stbimagedata_context);
+
+    return stbimagedata;
+}
+
+/**
+ * dtor unsigned char * * --------------------------------
+ */
+static void phpglfw_stbimagedata_dtor(zend_resource *rsrc TSRMLS_DC)
+{
+    unsigned char *stbimagedata = (void *) rsrc->ptr;
+
+    if (stbimagedata) {
+        stbi_image_free(stbimagedata);    }
 }
 
 
@@ -331,6 +362,23 @@ ZEND_NAMED_FUNCTION(zif_glfwGetTime)
 {
 
     RETURN_DOUBLE(glfwGetTime());
+}
+ 
+/**
+ * glEnable
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glEnable, 0, 0, 1)
+    ZEND_ARG_INFO(0, cap)
+ZEND_END_ARG_INFO()
+
+ZEND_NAMED_FUNCTION(zif_glEnable)
+{
+    zend_long cap;
+    if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "l", &cap) == FAILURE) {
+       return;
+    }
+    glEnable(cap);
 }
  
 /**
@@ -950,6 +998,228 @@ ZEND_NAMED_FUNCTION(zif_glUseProgram)
     glUseProgram(program);
 }
  
+/**
+ * glGenTextures
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glGenTextures, 0, 0, 1)
+    ZEND_ARG_INFO(0, n)
+    ZEND_ARG_INFO(1, textures)
+ZEND_END_ARG_INFO()
+
+ZEND_NAMED_FUNCTION(zif_glGenTextures)
+{
+    zend_long n;
+    zval *z_textures;
+    if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "lz", &n, &z_textures) == FAILURE) {
+       return;
+    }
+    ZVAL_DEREF(z_textures); convert_to_long(z_textures);
+    glGenTextures(n, (GLuint *)&z_textures->value);
+}
+ 
+/**
+ * glBindTexture
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glBindTexture, 0, 0, 1)
+    ZEND_ARG_INFO(0, target)
+    ZEND_ARG_INFO(0, texture)
+ZEND_END_ARG_INFO()
+
+ZEND_NAMED_FUNCTION(zif_glBindTexture)
+{
+    zend_long target;
+    zend_long texture;
+    if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "ll", &target, &texture) == FAILURE) {
+       return;
+    }
+    glBindTexture(target, texture);
+}
+ 
+/**
+ * glTexParameteri
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glTexParameteri, 0, 0, 1)
+    ZEND_ARG_INFO(0, target)
+    ZEND_ARG_INFO(0, pname)
+    ZEND_ARG_INFO(0, param)
+ZEND_END_ARG_INFO()
+
+ZEND_NAMED_FUNCTION(zif_glTexParameteri)
+{
+    zend_long target;
+    zend_long pname;
+    zend_long param;
+    if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "lll", &target, &pname, &param) == FAILURE) {
+       return;
+    }
+    glTexParameteri(target, pname, param);
+}
+ 
+/**
+ * glTextureParameteri
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glTextureParameteri, 0, 0, 1)
+    ZEND_ARG_INFO(0, target)
+    ZEND_ARG_INFO(0, pname)
+    ZEND_ARG_INFO(0, param)
+ZEND_END_ARG_INFO()
+
+ZEND_NAMED_FUNCTION(zif_glTextureParameteri)
+{
+    zend_long target;
+    zend_long pname;
+    zend_long param;
+    if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "lll", &target, &pname, &param) == FAILURE) {
+       return;
+    }
+    glTextureParameteri(target, pname, param);
+}
+ 
+/**
+ * glTexParameterf
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glTexParameterf, 0, 0, 1)
+    ZEND_ARG_INFO(0, target)
+    ZEND_ARG_INFO(0, pname)
+    ZEND_ARG_INFO(0, param)
+ZEND_END_ARG_INFO()
+
+ZEND_NAMED_FUNCTION(zif_glTexParameterf)
+{
+    zend_long target;
+    zend_long pname;
+    double param;
+    if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "lld", &target, &pname, &param) == FAILURE) {
+       return;
+    }
+    glTexParameterf(target, pname, param);
+}
+ 
+/**
+ * glTextureParameterf
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glTextureParameterf, 0, 0, 1)
+    ZEND_ARG_INFO(0, target)
+    ZEND_ARG_INFO(0, pname)
+    ZEND_ARG_INFO(0, param)
+ZEND_END_ARG_INFO()
+
+ZEND_NAMED_FUNCTION(zif_glTextureParameterf)
+{
+    zend_long target;
+    zend_long pname;
+    double param;
+    if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "lld", &target, &pname, &param) == FAILURE) {
+       return;
+    }
+    glTextureParameterf(target, pname, param);
+}
+ 
+/**
+ * glTexImage2D
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glTexImage2D, 0, 0, 1)
+    ZEND_ARG_INFO(0, target)
+    ZEND_ARG_INFO(0, level)
+    ZEND_ARG_INFO(0, internal_format)
+    ZEND_ARG_INFO(0, width)
+    ZEND_ARG_INFO(0, height)
+    ZEND_ARG_INFO(0, border)
+    ZEND_ARG_INFO(0, format)
+    ZEND_ARG_INFO(0, type)
+    ZEND_ARG_INFO(0, stbimagedata)
+ZEND_END_ARG_INFO()
+
+ZEND_NAMED_FUNCTION(zif_glTexImage2D)
+{
+    zend_long target;
+    zend_long level;
+    zend_long internal_format;
+    zend_long width;
+    zend_long height;
+    zend_long border;
+    zend_long format;
+    zend_long type;
+    zval *stbimagedata_resource;
+    if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "llllllllr", &target, &level, &internal_format, &width, &height, &border, &format, &type, &stbimagedata_resource) == FAILURE) {
+       return;
+    }
+    unsigned char *stbimagedata = phpglfw_fetch_stbimagedata(stbimagedata_resource TSRMLS_CC);
+    glTexImage2D(target, level, internal_format, width, height, border, format, type, stbimagedata);
+}
+ 
+/**
+ * glGenerateMipmap
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glGenerateMipmap, 0, 0, 1)
+    ZEND_ARG_INFO(0, target)
+ZEND_END_ARG_INFO()
+
+ZEND_NAMED_FUNCTION(zif_glGenerateMipmap)
+{
+    zend_long target;
+    if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "l", &target) == FAILURE) {
+       return;
+    }
+    glGenerateMipmap(target);
+}
+ 
+/**
+ * glActiveTexture
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glActiveTexture, 0, 0, 1)
+    ZEND_ARG_INFO(0, texture)
+ZEND_END_ARG_INFO()
+
+ZEND_NAMED_FUNCTION(zif_glActiveTexture)
+{
+    zend_long texture;
+    if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "l", &texture) == FAILURE) {
+       return;
+    }
+    glActiveTexture(texture);
+}
+ 
+/**
+ * stbi_load
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_stbi_load, 0, 0, 1)
+    ZEND_ARG_INFO(0, path)
+    ZEND_ARG_INFO(1, width)
+    ZEND_ARG_INFO(1, height)
+    ZEND_ARG_INFO(1, number_or_channels)
+    ZEND_ARG_INFO(0, force_n_comp)
+ZEND_END_ARG_INFO()
+
+ZEND_NAMED_FUNCTION(zif_stbi_load)
+{
+    const char *path;
+    size_t path_size;
+    zval *z_width;
+    zval *z_height;
+    zval *z_number_or_channels;
+    zend_long force_n_comp;
+    if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "szzzl", &path, &path_size, &z_width, &z_height, &z_number_or_channels, &force_n_comp) == FAILURE) {
+       return;
+    }
+    ZVAL_DEREF(z_width); convert_to_long(z_width);
+    ZVAL_DEREF(z_height); convert_to_long(z_height);
+    ZVAL_DEREF(z_number_or_channels); convert_to_long(z_number_or_channels);
+    unsigned char * stbimagedata = stbi_load(path, (int *)&z_width->value, (int *)&z_height->value, (int *)&z_number_or_channels->value, force_n_comp);
+    if (!stbimagedata) RETURN_FALSE;
+    PHPGLFW_RETURN_STBIMAGEDATA_RESOURCE(stbimagedata, phpglfw_stbimagedata_context);
+}
+ 
 
 
 /**
@@ -959,6 +1229,7 @@ ZEND_NAMED_FUNCTION(zif_glUseProgram)
 PHP_MINIT_FUNCTION(glfw)
 {
     phpglfw_glfwwindow_context = zend_register_list_destructors_ex(phpglfw_glfwwindow_dtor, NULL, PHPGLFW_GLFWWINDOW_NAME, module_number);
+    phpglfw_stbimagedata_context = zend_register_list_destructors_ex(phpglfw_stbimagedata_dtor, NULL, PHPGLFW_STBIMAGEDATA_NAME, module_number);
 #ifdef GLFW_TRUE 
     REGISTER_LONG_CONSTANT("GLFW_TRUE", GLFW_TRUE, CONST_CS|CONST_PERSISTENT);
 #endif
@@ -5917,6 +6188,7 @@ static zend_function_entry glfw_functions[] = {
     ZEND_RAW_NAMED_FE(glfwSwapBuffers, zif_glfwSwapBuffers, arginfo_glfwSwapBuffers) 
     ZEND_RAW_NAMED_FE(glfwPollEvents, zif_glfwPollEvents, NULL) 
     ZEND_RAW_NAMED_FE(glfwGetTime, zif_glfwGetTime, NULL) 
+    ZEND_RAW_NAMED_FE(glEnable, zif_glEnable, arginfo_glEnable) 
     ZEND_RAW_NAMED_FE(glViewport, zif_glViewport, arginfo_glViewport) 
     ZEND_RAW_NAMED_FE(glClearColor, zif_glClearColor, arginfo_glClearColor) 
     ZEND_RAW_NAMED_FE(glClear, zif_glClear, arginfo_glClear) 
@@ -5947,6 +6219,16 @@ static zend_function_entry glfw_functions[] = {
     ZEND_RAW_NAMED_FE(glGetShaderiv, zif_glGetShaderiv, arginfo_glGetShaderiv) 
     ZEND_RAW_NAMED_FE(glGetProgramiv, zif_glGetProgramiv, arginfo_glGetProgramiv) 
     ZEND_RAW_NAMED_FE(glUseProgram, zif_glUseProgram, arginfo_glUseProgram) 
+    ZEND_RAW_NAMED_FE(glGenTextures, zif_glGenTextures, arginfo_glGenTextures) 
+    ZEND_RAW_NAMED_FE(glBindTexture, zif_glBindTexture, arginfo_glBindTexture) 
+    ZEND_RAW_NAMED_FE(glTexParameteri, zif_glTexParameteri, arginfo_glTexParameteri) 
+    ZEND_RAW_NAMED_FE(glTextureParameteri, zif_glTextureParameteri, arginfo_glTextureParameteri) 
+    ZEND_RAW_NAMED_FE(glTexParameterf, zif_glTexParameterf, arginfo_glTexParameterf) 
+    ZEND_RAW_NAMED_FE(glTextureParameterf, zif_glTextureParameterf, arginfo_glTextureParameterf) 
+    ZEND_RAW_NAMED_FE(glTexImage2D, zif_glTexImage2D, arginfo_glTexImage2D) 
+    ZEND_RAW_NAMED_FE(glGenerateMipmap, zif_glGenerateMipmap, arginfo_glGenerateMipmap) 
+    ZEND_RAW_NAMED_FE(glActiveTexture, zif_glActiveTexture, arginfo_glActiveTexture) 
+    ZEND_RAW_NAMED_FE(stbi_load, zif_stbi_load, arginfo_stbi_load) 
 #ifdef PHP_FE_END
     PHP_FE_END
 #else

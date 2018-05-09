@@ -15,4 +15,16 @@ return
 			return "glfwDestroyWindow($this->name);";
 		}
 	},
+
+	/**
+	 * STB Image
+	 */
+	new class extends Resource {
+		public $type = 'unsigned char *';
+		public $name = "stbimagedata";
+
+		public function generateDestroy() : string {
+			return "stbi_image_free($this->name);";
+		}
+	},
 ];

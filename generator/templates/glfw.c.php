@@ -3,11 +3,14 @@
 #endif
 #include "php.h"
 #include "php_glfw.h"
-//#include "linmath.h"
 
 #include <zend_API.h>
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
+
+#define STB_IMAGE_IMPLEMENTATION
+#include <stb_image/stb_image.h>
+
 
 <?php foreach ($resources as $resource) : ?>
 #define <?php echo $resource->getResourceName(); ?> "<?php echo $resource->name; ?>"
