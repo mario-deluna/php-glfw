@@ -1,0 +1,37 @@
+#!/usr/bin/env php
+<?php
+/**
+ * Build the glfw.c file 
+ *
+ * Its not coded very well and ignores basically every PSR. This entire generator thing
+ * was just created to speed up the implementation of the bindings. In the end it would probably 
+ * have been faster to simply write the C code manually. 
+ */
+
+require __DIR__ . '/method_generator.php';
+
+/**
+ * Read the methods
+ */
+$methods = require __DIR__ . '/definitions/methods.php';
+
+/**
+ * Read the constants
+ */
+$constants = require __DIR__ . '/definitions/constants.php';
+
+/**
+ * Read the resources
+ */
+$resources = require __DIR__ . '/definitions/resources.php';
+
+/**
+ * Read the template
+ */
+ob_start();
+require __DIR__ . '/templates/glfw.c.php';
+
+/**
+ * Write
+ */
+file_put_contents(__DIR__ . '/../glfw_gen.c', ob_get_clean());
