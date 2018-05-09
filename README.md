@@ -14,10 +14,18 @@ Also, keep in mind I did not spend time making this failsafe in any way. When yo
 
 ## Installation
 
+> Note: I only tested this extension on MacOS.
+
 Make sure to install glfw3. 
 
 ```
 $ brew install glfw3 
+```
+
+Clone the repository.
+
+```
+$ git clone https://github.com/mario-deluna/php-glfw/ && cd php-glfw
 ```
 
 Now you should be able to build the extension:
@@ -26,6 +34,13 @@ Now you should be able to build the extension:
 $ phpize
 $ ./configure --enable-glfw
 $ make && make install
+```
+
+Don't forget to link the extension, by appending the following lines to your `php.ini`.
+
+```
+[glfw]
+extension=glfw.so
 ```
 
 ## Example
