@@ -54,7 +54,7 @@ extension=glfw.so
 
 ## Example
 
-Drawing the classic colored triangle:
+Drawing the classic colored triangle. You can run this example: `php ./examples/triangle.php`
 
 ```php
 <?php
