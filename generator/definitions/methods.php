@@ -239,6 +239,118 @@ return
 		];
 	},
 
+	/**
+	 * 
+	 * Imput
+	 * -----------------------------------------------------------
+	 */
+	
+
+	/**
+	 * glfwCreateCursor @todo
+	 */
+	// new class extends Method {
+	// 	public $name = 'glfwCreateCursor';
+	// 	public $returns = 'long';
+	// 	public $arguments = [
+	// 		'glfwwindow' => 'resource',
+	// 		'key' => 'longong'
+	// 	];
+	// },
+
+	/**
+	 * glfwCreateStandardCursor
+	 */
+	new class extends Method {
+		public $name = 'glfwCreateStandardCursor';
+		public $returns = 'glfwcursor';
+		public $arguments = [
+			'shape' => 'long'
+		];
+	},
+
+	/**
+	 * glfwDestroyCursor
+	 */
+	new class extends Method {
+		public $name = 'glfwDestroyCursor';
+		public $arguments = [
+			'glfwcursor' => 'resource',
+		];
+
+		// no window fetching here
+		protected function generateCursorResourceFetchCode() : string { return ''; }
+
+		// custom call
+		public function generateCall() : string 
+		{
+			return 'zend_list_close(Z_RES_P(glfwcursor_resource));';
+		}
+	},
+
+	/**
+	 * glfwGetClipboardString
+	 */
+	new class extends Method {
+		public $name = 'glfwGetClipboardString';
+		public $returns = 'string';
+		public $arguments = [
+			'glfwwindow' => 'resource'
+		];
+	},
+
+	/**
+	 * glfwGetCursorPos
+	 */
+	new class extends Method {
+		public $name = 'glfwGetCursorPos';
+		public $arguments = [
+			'glfwwindow' => 'resource',
+			'&xpos:double' => 'double',
+			'&ypos:double' => 'double',
+		];
+	},
+	
+
+	/**
+	 * glfwGetKey
+	 */
+	new class extends Method {
+		public $name = 'glfwGetKey';
+		public $returns = 'long';
+		public $arguments = [
+			'glfwwindow' => 'resource',
+			'key' => 'long'
+		];
+	},
+
+
+	// /**
+	//  * glfwGetKeyName
+	//  */
+	// new class extends Method {
+	// 	public $name = 'glfwGetKeyName';
+	// 	public $returns = 'string';
+	// 	public $arguments = [
+	// 		'glfwwindow' => 'resource',
+	// 		'key' => 'long'
+	// 	];
+	// },
+
+	/**
+	 * glfwGetKey
+	 */
+	new class extends Method {
+		public $name = 'glfwGetMouseButton';
+		public $returns = 'long';
+		public $arguments = [
+			'glfwwindow' => 'resource',
+			'key' => 'long'
+		];
+	},
+
+	
+
 
 	
 	/**

@@ -14,12 +14,16 @@
 
 #define PHPGLFW_GLFWWINDOW_NAME "glfwwindow"
 int phpglfw_glfwwindow_context;
+#define PHPGLFW_GLFWCURSOR_NAME "glfwcursor"
+int phpglfw_glfwcursor_context;
 #define PHPGLFW_STBIMAGEDATA_NAME "stbimagedata"
 int phpglfw_stbimagedata_context;
 
 #define PHPGLFW_RESOURCE_TYPE zend_resource
 #define PHPGLFW_RETURN_GLFWWINDOW_RESOURCE(glfwwindow, context) \
     RETURN_RES(zend_register_resource(glfwwindow, context))
+#define PHPGLFW_RETURN_GLFWCURSOR_RESOURCE(glfwcursor, context) \
+    RETURN_RES(zend_register_resource(glfwcursor, context))
 #define PHPGLFW_RETURN_STBIMAGEDATA_RESOURCE(stbimagedata, context) \
     RETURN_RES(zend_register_resource(stbimagedata, context))
 
@@ -45,6 +49,30 @@ static void phpglfw_glfwwindow_dtor(zend_resource *rsrc TSRMLS_DC)
 
     if (glfwwindow) {
         glfwDestroyWindow(glfwwindow);    }
+}
+
+/**
+ * Get GLFWcursor * from resource
+ * --------------------------------
+ */
+static GLFWcursor *phpglfw_fetch_glfwcursor(zval *resource TSRMLS_DC)
+{
+    GLFWcursor *glfwcursor;
+
+    glfwcursor = (GLFWcursor *)zend_fetch_resource_ex(resource, PHPGLFW_GLFWCURSOR_NAME, phpglfw_glfwcursor_context);
+
+    return glfwcursor;
+}
+
+/**
+ * dtor GLFWcursor * * --------------------------------
+ */
+static void phpglfw_glfwcursor_dtor(zend_resource *rsrc TSRMLS_DC)
+{
+    GLFWcursor *glfwcursor = (void *) rsrc->ptr;
+
+    if (glfwcursor) {
+        glfwDestroyCursor(glfwcursor);    }
 }
 
 /**
@@ -362,6 +390,124 @@ ZEND_NAMED_FUNCTION(zif_glfwGetTime)
 {
 
     RETURN_DOUBLE(glfwGetTime());
+}
+ 
+/**
+ * glfwCreateStandardCursor
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glfwCreateStandardCursor, 0, 0, 1)
+    ZEND_ARG_INFO(0, shape)
+ZEND_END_ARG_INFO()
+
+ZEND_NAMED_FUNCTION(zif_glfwCreateStandardCursor)
+{
+    zend_long shape;
+    if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "l", &shape) == FAILURE) {
+       return;
+    }
+    GLFWcursor * glfwcursor = glfwCreateStandardCursor(shape);
+    PHPGLFW_RETURN_GLFWCURSOR_RESOURCE(glfwcursor, phpglfw_glfwcursor_context);
+}
+ 
+/**
+ * glfwDestroyCursor
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glfwDestroyCursor, 0, 0, 1)
+    ZEND_ARG_INFO(0, glfwcursor)
+ZEND_END_ARG_INFO()
+
+ZEND_NAMED_FUNCTION(zif_glfwDestroyCursor)
+{
+    zval *glfwcursor_resource;
+    if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "r", &glfwcursor_resource) == FAILURE) {
+       return;
+    }
+    GLFWcursor *glfwcursor = phpglfw_fetch_glfwcursor(glfwcursor_resource TSRMLS_CC);
+    zend_list_close(Z_RES_P(glfwcursor_resource));
+}
+ 
+/**
+ * glfwGetClipboardString
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glfwGetClipboardString, 0, 0, 1)
+    ZEND_ARG_INFO(0, glfwwindow)
+ZEND_END_ARG_INFO()
+
+ZEND_NAMED_FUNCTION(zif_glfwGetClipboardString)
+{
+    zval *glfwwindow_resource;
+    if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "r", &glfwwindow_resource) == FAILURE) {
+       return;
+    }
+    GLFWwindow *glfwwindow = phpglfw_fetch_glfwwindow(glfwwindow_resource TSRMLS_CC);
+    RETURN_STRING(glfwGetClipboardString(glfwwindow));
+}
+ 
+/**
+ * glfwGetCursorPos
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glfwGetCursorPos, 0, 0, 1)
+    ZEND_ARG_INFO(0, glfwwindow)
+    ZEND_ARG_INFO(1, xpos)
+    ZEND_ARG_INFO(1, ypos)
+ZEND_END_ARG_INFO()
+
+ZEND_NAMED_FUNCTION(zif_glfwGetCursorPos)
+{
+    zval *glfwwindow_resource;
+    zval *z_xpos;
+    zval *z_ypos;
+    if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "rzz", &glfwwindow_resource, &z_xpos, &z_ypos) == FAILURE) {
+       return;
+    }
+    ZVAL_DEREF(z_xpos); convert_to_double(z_xpos);
+    ZVAL_DEREF(z_ypos); convert_to_double(z_ypos);
+    GLFWwindow *glfwwindow = phpglfw_fetch_glfwwindow(glfwwindow_resource TSRMLS_CC);
+    glfwGetCursorPos(glfwwindow, (double *)&z_xpos->value, (double *)&z_ypos->value);
+}
+ 
+/**
+ * glfwGetKey
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glfwGetKey, 0, 0, 1)
+    ZEND_ARG_INFO(0, glfwwindow)
+    ZEND_ARG_INFO(0, key)
+ZEND_END_ARG_INFO()
+
+ZEND_NAMED_FUNCTION(zif_glfwGetKey)
+{
+    zval *glfwwindow_resource;
+    zend_long key;
+    if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "rl", &glfwwindow_resource, &key) == FAILURE) {
+       return;
+    }
+    GLFWwindow *glfwwindow = phpglfw_fetch_glfwwindow(glfwwindow_resource TSRMLS_CC);
+    RETURN_LONG(glfwGetKey(glfwwindow, key));
+}
+ 
+/**
+ * glfwGetMouseButton
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glfwGetMouseButton, 0, 0, 1)
+    ZEND_ARG_INFO(0, glfwwindow)
+    ZEND_ARG_INFO(0, key)
+ZEND_END_ARG_INFO()
+
+ZEND_NAMED_FUNCTION(zif_glfwGetMouseButton)
+{
+    zval *glfwwindow_resource;
+    zend_long key;
+    if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "rl", &glfwwindow_resource, &key) == FAILURE) {
+       return;
+    }
+    GLFWwindow *glfwwindow = phpglfw_fetch_glfwwindow(glfwwindow_resource TSRMLS_CC);
+    RETURN_LONG(glfwGetMouseButton(glfwwindow, key));
 }
  
 /**
@@ -1229,6 +1375,7 @@ ZEND_NAMED_FUNCTION(zif_stbi_load)
 PHP_MINIT_FUNCTION(glfw)
 {
     phpglfw_glfwwindow_context = zend_register_list_destructors_ex(phpglfw_glfwwindow_dtor, NULL, PHPGLFW_GLFWWINDOW_NAME, module_number);
+    phpglfw_glfwcursor_context = zend_register_list_destructors_ex(phpglfw_glfwcursor_dtor, NULL, PHPGLFW_GLFWCURSOR_NAME, module_number);
     phpglfw_stbimagedata_context = zend_register_list_destructors_ex(phpglfw_stbimagedata_dtor, NULL, PHPGLFW_STBIMAGEDATA_NAME, module_number);
 #ifdef GLFW_TRUE 
     REGISTER_LONG_CONSTANT("GLFW_TRUE", GLFW_TRUE, CONST_CS|CONST_PERSISTENT);
@@ -6188,6 +6335,12 @@ static zend_function_entry glfw_functions[] = {
     ZEND_RAW_NAMED_FE(glfwSwapBuffers, zif_glfwSwapBuffers, arginfo_glfwSwapBuffers) 
     ZEND_RAW_NAMED_FE(glfwPollEvents, zif_glfwPollEvents, NULL) 
     ZEND_RAW_NAMED_FE(glfwGetTime, zif_glfwGetTime, NULL) 
+    ZEND_RAW_NAMED_FE(glfwCreateStandardCursor, zif_glfwCreateStandardCursor, arginfo_glfwCreateStandardCursor) 
+    ZEND_RAW_NAMED_FE(glfwDestroyCursor, zif_glfwDestroyCursor, arginfo_glfwDestroyCursor) 
+    ZEND_RAW_NAMED_FE(glfwGetClipboardString, zif_glfwGetClipboardString, arginfo_glfwGetClipboardString) 
+    ZEND_RAW_NAMED_FE(glfwGetCursorPos, zif_glfwGetCursorPos, arginfo_glfwGetCursorPos) 
+    ZEND_RAW_NAMED_FE(glfwGetKey, zif_glfwGetKey, arginfo_glfwGetKey) 
+    ZEND_RAW_NAMED_FE(glfwGetMouseButton, zif_glfwGetMouseButton, arginfo_glfwGetMouseButton) 
     ZEND_RAW_NAMED_FE(glEnable, zif_glEnable, arginfo_glEnable) 
     ZEND_RAW_NAMED_FE(glViewport, zif_glViewport, arginfo_glViewport) 
     ZEND_RAW_NAMED_FE(glClearColor, zif_glClearColor, arginfo_glClearColor) 

@@ -102,16 +102,19 @@ class LongArgument extends Argument {
 		return parent::getCallName();
 	}
 }
-class FloatArgument extends Argument {
-	public $charid = 'f';
-	public function generateVariable() : string {
-		return "float {$this->name};";
-	}
-}
 class DoubleArgument extends Argument {
 	public $charid = 'd';
 	public function generateVariable() : string {
 		return "double {$this->name};";
+	}
+	public function generateZValConvertion() : string {
+		return " convert_to_double(z_{$this->name});";
+	}
+	public function getCallName() {
+		if ($this->passedByRef) {
+			return "({$this->realType} *)" . parent::getCallName();
+		}
+		return parent::getCallName();
 	}
 }
 class BoolArgument extends Argument {
@@ -439,6 +442,17 @@ abstract class Method
 		}
 
 		$callCode = $this->name . '('. implode(', ', $arguments) .')';
+
+		// check if there might be a resource we want to return
+		global $resources;
+
+		foreach($resources as $resource) {
+			if ($resource->name != $this->returns) {
+				continue;
+			}
+
+			return $resource->type . ' ' . $resource->name . ' = ' . $callCode . ";\n" . Resource::getReturnCall($this->returns) . PHP_EOL;
+		}
 
 		$returnCodeGenerator = 'generateCallReturn' . ucfirst($this->returns);
 

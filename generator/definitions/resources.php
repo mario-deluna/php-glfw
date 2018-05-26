@@ -17,6 +17,18 @@ return
 	},
 
 	/**
+	 * GLFWcursor
+	 */
+	new class extends Resource {
+		public $type = 'GLFWcursor *';
+		public $name = "glfwcursor";
+
+		public function generateDestroy() : string {
+			return "glfwDestroyCursor($this->name);";
+		}
+	},
+
+	/**
 	 * STB Image
 	 */
 	new class extends Resource {
