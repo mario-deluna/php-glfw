@@ -1,6 +1,6 @@
 # PHP-GLFW
 
-Write fun **3D** games or other **graphical** applications with PHP! This is a C extension that adds **GLFW & OpenGL** support to **PHP**. 
+Write fun **3D / 2D** games or other **graphical** applications with PHP! This is a C extension that adds **GLFW & OpenGL** support to **PHP**. 
 
 ## ❓❓❓
 
@@ -52,9 +52,13 @@ Don't forget to link the extension, by appending the following lines to your `ph
 extension=glfw.so
 ```
 
-## Example
+## Example (Triangle)
 
 Drawing the classic colored triangle. You can run this example: `php ./examples/triangle.php`
+
+<img width="912" alt="screen shot 2018-05-09 at 20 32 01" src="https://user-images.githubusercontent.com/956212/39832883-c78e1606-53c8-11e8-9dcd-6f3015ca11d3.png">
+
+**Code:**
 
 ```php
 <?php
