@@ -550,6 +550,25 @@ ZEND_NAMED_FUNCTION(zif_glEnable)
 }
  
 /**
+ * glBlendFunc
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glBlendFunc, 0, 0, 1)
+    ZEND_ARG_INFO(0, sfactor)
+    ZEND_ARG_INFO(0, dfactor)
+ZEND_END_ARG_INFO()
+
+ZEND_NAMED_FUNCTION(zif_glBlendFunc)
+{
+    zend_long sfactor;
+    zend_long dfactor;
+    if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "ll", &sfactor, &dfactor) == FAILURE) {
+       return;
+    }
+    glBlendFunc(sfactor, dfactor);
+}
+ 
+/**
  * glViewport
  * --------------------------------
  */
@@ -6503,6 +6522,7 @@ static zend_function_entry glfw_functions[] = {
     ZEND_RAW_NAMED_FE(glfwGetMouseButton, zif_glfwGetMouseButton, arginfo_glfwGetMouseButton) 
     ZEND_RAW_NAMED_FE(glfwSetInputMode, zif_glfwSetInputMode, arginfo_glfwSetInputMode) 
     ZEND_RAW_NAMED_FE(glEnable, zif_glEnable, arginfo_glEnable) 
+    ZEND_RAW_NAMED_FE(glBlendFunc, zif_glBlendFunc, arginfo_glBlendFunc) 
     ZEND_RAW_NAMED_FE(glViewport, zif_glViewport, arginfo_glViewport) 
     ZEND_RAW_NAMED_FE(glClearColor, zif_glClearColor, arginfo_glClearColor) 
     ZEND_RAW_NAMED_FE(glClear, zif_glClear, arginfo_glClear) 

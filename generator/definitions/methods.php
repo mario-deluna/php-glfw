@@ -391,6 +391,17 @@ return
 	},
 
 	/**
+	 * glBlendFunc
+	 */
+	new class extends Method {
+		public $name = 'glBlendFunc';
+		public $arguments = [
+			'sfactor' => 'long',
+			'dfactor' => 'long',
+		];
+	},
+
+	/**
 	 * glViewport
 	 */
 	new class extends Method {
