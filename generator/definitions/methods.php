@@ -349,8 +349,28 @@ return
 		];
 	},
 
-	
+	/**
+	 * glfwSetInputMode
+	 */
+	new class extends Method {
+		public $name = 'glfwSetInputMode';
+		public $arguments = [
+			'glfwwindow' => 'resource',
+			'param' => 'long',
+			'value' => 'long'
+		];
+	},
 
+	// /**
+	//  * glfwSetCursorPosCallback
+	//  */
+	// new class extends Method {
+	// 	public $name = 'glfwSetCursorPosCallback';
+	// 	public $arguments = [
+	// 		'glfwwindow' => 'resource',
+	// 		'param' => 'long',
+	// 	];
+	// },
 
 	
 	/**
@@ -696,6 +716,45 @@ return
 	},
 
 	/**
+	 * glUniform2i
+	 */
+	new class extends Method {
+		public $name = 'glUniform2i';
+		public $arguments = [
+			'location' => 'long',
+			'value0' => 'long',
+			'value1' => 'long',
+		];
+	},
+
+	/**
+	 * glUniform3i
+	 */
+	new class extends Method {
+		public $name = 'glUniform3i';
+		public $arguments = [
+			'location' => 'long',
+			'value0' => 'long',
+			'value1' => 'long',
+			'value2' => 'long',
+		];
+	},
+
+	/**
+	 * glUniform4i
+	 */
+	new class extends Method {
+		public $name = 'glUniform4i';
+		public $arguments = [
+			'location' => 'long',
+			'value0' => 'long',
+			'value1' => 'long',
+			'value2' => 'long',
+			'value3' => 'long',
+		];
+	},
+
+	/**
 	 * glUniform1f
 	 */
 	new class extends Method {
@@ -703,6 +762,45 @@ return
 		public $arguments = [
 			'location' => 'long',
 			'value' => 'double'
+		];
+	},
+
+	/**
+	 * glUniform2f
+	 */
+	new class extends Method {
+		public $name = 'glUniform2f';
+		public $arguments = [
+			'location' => 'long',
+			'value0' => 'double',
+			'value1' => 'double',
+		];
+	},
+
+	/**
+	 * glUniform3f
+	 */
+	new class extends Method {
+		public $name = 'glUniform3f';
+		public $arguments = [
+			'location' => 'long',
+			'value0' => 'double',
+			'value1' => 'double',
+			'value2' => 'double',
+		];
+	},
+
+	/**
+	 * glUniform4f
+	 */
+	new class extends Method {
+		public $name = 'glUniform4f';
+		public $arguments = [
+			'location' => 'long',
+			'value0' => 'double',
+			'value1' => 'double',
+			'value2' => 'double',
+			'value3' => 'double',
 		];
 	},
 

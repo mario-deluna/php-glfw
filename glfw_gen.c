@@ -511,6 +511,28 @@ ZEND_NAMED_FUNCTION(zif_glfwGetMouseButton)
 }
  
 /**
+ * glfwSetInputMode
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glfwSetInputMode, 0, 0, 1)
+    ZEND_ARG_INFO(0, glfwwindow)
+    ZEND_ARG_INFO(0, param)
+    ZEND_ARG_INFO(0, value)
+ZEND_END_ARG_INFO()
+
+ZEND_NAMED_FUNCTION(zif_glfwSetInputMode)
+{
+    zval *glfwwindow_resource;
+    zend_long param;
+    zend_long value;
+    if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "rll", &glfwwindow_resource, &param, &value) == FAILURE) {
+       return;
+    }
+    GLFWwindow *glfwwindow = phpglfw_fetch_glfwwindow(glfwwindow_resource TSRMLS_CC);
+    glfwSetInputMode(glfwwindow, param, value);
+}
+ 
+/**
  * glEnable
  * --------------------------------
  */
@@ -1017,6 +1039,75 @@ ZEND_NAMED_FUNCTION(zif_glUniform1i)
 }
  
 /**
+ * glUniform2i
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glUniform2i, 0, 0, 1)
+    ZEND_ARG_INFO(0, location)
+    ZEND_ARG_INFO(0, value0)
+    ZEND_ARG_INFO(0, value1)
+ZEND_END_ARG_INFO()
+
+ZEND_NAMED_FUNCTION(zif_glUniform2i)
+{
+    zend_long location;
+    zend_long value0;
+    zend_long value1;
+    if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "lll", &location, &value0, &value1) == FAILURE) {
+       return;
+    }
+    glUniform2i(location, value0, value1);
+}
+ 
+/**
+ * glUniform3i
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glUniform3i, 0, 0, 1)
+    ZEND_ARG_INFO(0, location)
+    ZEND_ARG_INFO(0, value0)
+    ZEND_ARG_INFO(0, value1)
+    ZEND_ARG_INFO(0, value2)
+ZEND_END_ARG_INFO()
+
+ZEND_NAMED_FUNCTION(zif_glUniform3i)
+{
+    zend_long location;
+    zend_long value0;
+    zend_long value1;
+    zend_long value2;
+    if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "llll", &location, &value0, &value1, &value2) == FAILURE) {
+       return;
+    }
+    glUniform3i(location, value0, value1, value2);
+}
+ 
+/**
+ * glUniform4i
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glUniform4i, 0, 0, 1)
+    ZEND_ARG_INFO(0, location)
+    ZEND_ARG_INFO(0, value0)
+    ZEND_ARG_INFO(0, value1)
+    ZEND_ARG_INFO(0, value2)
+    ZEND_ARG_INFO(0, value3)
+ZEND_END_ARG_INFO()
+
+ZEND_NAMED_FUNCTION(zif_glUniform4i)
+{
+    zend_long location;
+    zend_long value0;
+    zend_long value1;
+    zend_long value2;
+    zend_long value3;
+    if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "lllll", &location, &value0, &value1, &value2, &value3) == FAILURE) {
+       return;
+    }
+    glUniform4i(location, value0, value1, value2, value3);
+}
+ 
+/**
  * glUniform1f
  * --------------------------------
  */
@@ -1033,6 +1124,75 @@ ZEND_NAMED_FUNCTION(zif_glUniform1f)
        return;
     }
     glUniform1f(location, value);
+}
+ 
+/**
+ * glUniform2f
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glUniform2f, 0, 0, 1)
+    ZEND_ARG_INFO(0, location)
+    ZEND_ARG_INFO(0, value0)
+    ZEND_ARG_INFO(0, value1)
+ZEND_END_ARG_INFO()
+
+ZEND_NAMED_FUNCTION(zif_glUniform2f)
+{
+    zend_long location;
+    double value0;
+    double value1;
+    if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "ldd", &location, &value0, &value1) == FAILURE) {
+       return;
+    }
+    glUniform2f(location, value0, value1);
+}
+ 
+/**
+ * glUniform3f
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glUniform3f, 0, 0, 1)
+    ZEND_ARG_INFO(0, location)
+    ZEND_ARG_INFO(0, value0)
+    ZEND_ARG_INFO(0, value1)
+    ZEND_ARG_INFO(0, value2)
+ZEND_END_ARG_INFO()
+
+ZEND_NAMED_FUNCTION(zif_glUniform3f)
+{
+    zend_long location;
+    double value0;
+    double value1;
+    double value2;
+    if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "lddd", &location, &value0, &value1, &value2) == FAILURE) {
+       return;
+    }
+    glUniform3f(location, value0, value1, value2);
+}
+ 
+/**
+ * glUniform4f
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glUniform4f, 0, 0, 1)
+    ZEND_ARG_INFO(0, location)
+    ZEND_ARG_INFO(0, value0)
+    ZEND_ARG_INFO(0, value1)
+    ZEND_ARG_INFO(0, value2)
+    ZEND_ARG_INFO(0, value3)
+ZEND_END_ARG_INFO()
+
+ZEND_NAMED_FUNCTION(zif_glUniform4f)
+{
+    zend_long location;
+    double value0;
+    double value1;
+    double value2;
+    double value3;
+    if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "ldddd", &location, &value0, &value1, &value2, &value3) == FAILURE) {
+       return;
+    }
+    glUniform4f(location, value0, value1, value2, value3);
 }
  
 /**
@@ -6341,6 +6501,7 @@ static zend_function_entry glfw_functions[] = {
     ZEND_RAW_NAMED_FE(glfwGetCursorPos, zif_glfwGetCursorPos, arginfo_glfwGetCursorPos) 
     ZEND_RAW_NAMED_FE(glfwGetKey, zif_glfwGetKey, arginfo_glfwGetKey) 
     ZEND_RAW_NAMED_FE(glfwGetMouseButton, zif_glfwGetMouseButton, arginfo_glfwGetMouseButton) 
+    ZEND_RAW_NAMED_FE(glfwSetInputMode, zif_glfwSetInputMode, arginfo_glfwSetInputMode) 
     ZEND_RAW_NAMED_FE(glEnable, zif_glEnable, arginfo_glEnable) 
     ZEND_RAW_NAMED_FE(glViewport, zif_glViewport, arginfo_glViewport) 
     ZEND_RAW_NAMED_FE(glClearColor, zif_glClearColor, arginfo_glClearColor) 
@@ -6366,7 +6527,13 @@ static zend_function_entry glfw_functions[] = {
     ZEND_RAW_NAMED_FE(glAttachShader, zif_glAttachShader, arginfo_glAttachShader) 
     ZEND_RAW_NAMED_FE(glGetUniformLocation, zif_glGetUniformLocation, arginfo_glGetUniformLocation) 
     ZEND_RAW_NAMED_FE(glUniform1i, zif_glUniform1i, arginfo_glUniform1i) 
+    ZEND_RAW_NAMED_FE(glUniform2i, zif_glUniform2i, arginfo_glUniform2i) 
+    ZEND_RAW_NAMED_FE(glUniform3i, zif_glUniform3i, arginfo_glUniform3i) 
+    ZEND_RAW_NAMED_FE(glUniform4i, zif_glUniform4i, arginfo_glUniform4i) 
     ZEND_RAW_NAMED_FE(glUniform1f, zif_glUniform1f, arginfo_glUniform1f) 
+    ZEND_RAW_NAMED_FE(glUniform2f, zif_glUniform2f, arginfo_glUniform2f) 
+    ZEND_RAW_NAMED_FE(glUniform3f, zif_glUniform3f, arginfo_glUniform3f) 
+    ZEND_RAW_NAMED_FE(glUniform4f, zif_glUniform4f, arginfo_glUniform4f) 
     ZEND_RAW_NAMED_FE(glUniformMatrix4fv, zif_glUniformMatrix4fv, arginfo_glUniformMatrix4fv) 
     ZEND_RAW_NAMED_FE(glLinkProgram, zif_glLinkProgram, arginfo_glLinkProgram) 
     ZEND_RAW_NAMED_FE(glGetShaderiv, zif_glGetShaderiv, arginfo_glGetShaderiv) 
