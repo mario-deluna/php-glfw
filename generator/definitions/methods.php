@@ -391,6 +391,28 @@ return
 	},
 
 	/**
+	 * glDisable
+	 */
+	new class extends Method {
+		public $name = 'glDisable';
+		public $arguments = [
+			'cap' => 'long',
+		];
+	},
+
+	/**
+	 * glPolygonMode
+	 */
+	new class extends Method {
+		public $name = 'glPolygonMode';
+		public $arguments = [
+			'face' => 'long',
+			'mode' => 'long',
+		];
+	},
+
+
+	/**
 	 * glBlendFunc
 	 */
 	new class extends Method {

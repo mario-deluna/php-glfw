@@ -550,6 +550,42 @@ ZEND_NAMED_FUNCTION(zif_glEnable)
 }
  
 /**
+ * glDisable
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glDisable, 0, 0, 1)
+    ZEND_ARG_INFO(0, cap)
+ZEND_END_ARG_INFO()
+
+ZEND_NAMED_FUNCTION(zif_glDisable)
+{
+    zend_long cap;
+    if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "l", &cap) == FAILURE) {
+       return;
+    }
+    glDisable(cap);
+}
+ 
+/**
+ * glPolygonMode
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glPolygonMode, 0, 0, 1)
+    ZEND_ARG_INFO(0, face)
+    ZEND_ARG_INFO(0, mode)
+ZEND_END_ARG_INFO()
+
+ZEND_NAMED_FUNCTION(zif_glPolygonMode)
+{
+    zend_long face;
+    zend_long mode;
+    if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "ll", &face, &mode) == FAILURE) {
+       return;
+    }
+    glPolygonMode(face, mode);
+}
+ 
+/**
  * glBlendFunc
  * --------------------------------
  */
@@ -6522,6 +6558,8 @@ static zend_function_entry glfw_functions[] = {
     ZEND_RAW_NAMED_FE(glfwGetMouseButton, zif_glfwGetMouseButton, arginfo_glfwGetMouseButton) 
     ZEND_RAW_NAMED_FE(glfwSetInputMode, zif_glfwSetInputMode, arginfo_glfwSetInputMode) 
     ZEND_RAW_NAMED_FE(glEnable, zif_glEnable, arginfo_glEnable) 
+    ZEND_RAW_NAMED_FE(glDisable, zif_glDisable, arginfo_glDisable) 
+    ZEND_RAW_NAMED_FE(glPolygonMode, zif_glPolygonMode, arginfo_glPolygonMode) 
     ZEND_RAW_NAMED_FE(glBlendFunc, zif_glBlendFunc, arginfo_glBlendFunc) 
     ZEND_RAW_NAMED_FE(glViewport, zif_glViewport, arginfo_glViewport) 
     ZEND_RAW_NAMED_FE(glClearColor, zif_glClearColor, arginfo_glClearColor) 
