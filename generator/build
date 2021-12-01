@@ -1,5 +1,27 @@
 #!/usr/bin/env php
 <?php
+
+/**
+ * Load dependencies
+ */
+require __DIR__ . '/bootstrap.php';
+
+/**
+ * Parse the GL Spec
+ */
+$spec = new GLSpec;
+$reader = new GLSpecReader;
+$gen = new ExtGenerator;
+
+// parse the GL spec
+$reader->parse($spec, __DIR__ . '/data/gl.xml');
+
+// import the gl spec into the generator
+$gen->import($spec, 'gl', '3.2');
+
+var_dump($spec); die;
+
+
 /**
  * Build the glfw.c file 
  *
@@ -8,7 +30,7 @@
  * have been faster to simply write the C code manually. 
  */
 
-require __DIR__ . '/method_generator.php';
+//require __DIR__ . '/method_generator.php';
 
 /**
  * Read the methods
@@ -24,6 +46,8 @@ $constants = require __DIR__ . '/definitions/constants.php';
  * Read the resources
  */
 $resources = require __DIR__ . '/definitions/resources.php';
+
+$methods = array_merge($methods, $gen->methods);
 
 /**
  * Read the template
