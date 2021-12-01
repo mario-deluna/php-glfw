@@ -35,7 +35,7 @@ if test "$PHP_GLFW" != "no"; then
   #PHP_ADD_LIBRARY_WITH_PATH(glad, glad/$PHP_LIBDIR, GLFW_SHARED_LIBADD)
   PHP_ADD_INCLUDE(glad/include)
   
-  # GLFW
+  # GLFW
   PHP_ADD_LIBRARY_WITH_PATH(glfw, [$GLFW_DIR/$PHP_LIBDIR], GLFW_SHARED_LIBADD)
   PHP_ADD_INCLUDE([$GLFW_DIR/include])
 

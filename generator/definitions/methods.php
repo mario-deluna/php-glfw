@@ -361,16 +361,16 @@ return
 		];
 	},
 
-	// /**
-	//  * glfwSetCursorPosCallback
-	//  */
-	// new class extends Method {
-	// 	public $name = 'glfwSetCursorPosCallback';
-	// 	public $arguments = [
-	// 		'glfwwindow' => 'resource',
-	// 		'param' => 'long',
-	// 	];
-	// },
+	/**
+	 * glfwSetCursorPosCallback
+	 */
+	new class extends Method {
+		public $name = 'glfwSetCursorPosCallback';
+		public $arguments = [
+			'glfwwindow' => 'resource',
+			'param' => 'long',
+		];
+	},
 
 	
 	/**
@@ -380,678 +380,678 @@ return
 	 */
 
 	
-	/**
-	 * glEnable
-	 */
-	new class extends Method {
-		public $name = 'glEnable';
-		public $arguments = [
-			'cap' => 'long',
-		];
-	},
+	// /**
+	//  * glEnable
+	//  */
+	// new class extends Method {
+	// 	public $name = 'glEnable';
+	// 	public $arguments = [
+	// 		'cap' => 'long',
+	// 	];
+	// },
 
-	/**
-	 * glDisable
-	 */
-	new class extends Method {
-		public $name = 'glDisable';
-		public $arguments = [
-			'cap' => 'long',
-		];
-	},
+	// /**
+	//  * glDisable
+	//  */
+	// new class extends Method {
+	// 	public $name = 'glDisable';
+	// 	public $arguments = [
+	// 		'cap' => 'long',
+	// 	];
+	// },
 
-	/**
-	 * glPolygonMode
-	 */
-	new class extends Method {
-		public $name = 'glPolygonMode';
-		public $arguments = [
-			'face' => 'long',
-			'mode' => 'long',
-		];
-	},
+	// /**
+	//  * glPolygonMode
+	//  */
+	// new class extends Method {
+	// 	public $name = 'glPolygonMode';
+	// 	public $arguments = [
+	// 		'face' => 'long',
+	// 		'mode' => 'long',
+	// 	];
+	// },
 
 
-	/**
-	 * glBlendFunc
-	 */
-	new class extends Method {
-		public $name = 'glBlendFunc';
-		public $arguments = [
-			'sfactor' => 'long',
-			'dfactor' => 'long',
-		];
-	},
+	// /**
+	//  * glBlendFunc
+	//  */
+	// new class extends Method {
+	// 	public $name = 'glBlendFunc';
+	// 	public $arguments = [
+	// 		'sfactor' => 'long',
+	// 		'dfactor' => 'long',
+	// 	];
+	// },
 
-	/**
-	 * glViewport
-	 */
-	new class extends Method {
-		public $name = 'glViewport';
-		public $arguments = [
-			'x' => 'double',
-			'y' => 'double',
-			'w' => 'double',
-			'h' => 'double',
-		];
-	},
+	// /**
+	//  * glViewport
+	//  */
+	// new class extends Method {
+	// 	public $name = 'glViewport';
+	// 	public $arguments = [
+	// 		'x' => 'double',
+	// 		'y' => 'double',
+	// 		'w' => 'double',
+	// 		'h' => 'double',
+	// 	];
+	// },
 
-	/**
-	 * glClearColor
-	 */
-	new class extends Method {
-		public $name = 'glClearColor';
-		public $arguments = [
-			'r' => 'double',
-			'g' => 'double',
-			'b' => 'double',
-			'a' => 'double',
-		];
-	},
+	// /**
+	//  * glClearColor
+	//  */
+	// new class extends Method {
+	// 	public $name = 'glClearColor';
+	// 	public $arguments = [
+	// 		'r' => 'double',
+	// 		'g' => 'double',
+	// 		'b' => 'double',
+	// 		'a' => 'double',
+	// 	];
+	// },
 
-	/**
-	 * glClearColor
-	 */
-	new class extends Method {
-		public $name = 'glClear';
-		public $arguments = [
-			'mask' => 'long',
-		];
-	},
+	// /**
+	//  * glClearColor
+	//  */
+	// new class extends Method {
+	// 	public $name = 'glClear';
+	// 	public $arguments = [
+	// 		'mask' => 'long',
+	// 	];
+	// },
 
-	/**
-	 * glGenBuffers
-	 */
-	new class extends Method {
-		public $name = 'glGenBuffers';
-		public $arguments = [
-			'n' => 'long',
-			'&buffers:GLuint' => 'long',
-		];
-	},
+	// /**
+	//  * glGenBuffers
+	//  */
+	// new class extends Method {
+	// 	public $name = 'glGenBuffers';
+	// 	public $arguments = [
+	// 		'n' => 'long',
+	// 		'&buffers:GLuint' => 'long',
+	// 	];
+	// },
 
-	/**
-	 * glDeleteBuffers
-	 */
-	new class extends Method {
-		public $name = 'glDeleteBuffers';
-		public $arguments = [
-			'n' => 'long',
-			'&buffers:GLuint' => 'long',
-		];
-	},
+	// /**
+	//  * glDeleteBuffers
+	//  */
+	// new class extends Method {
+	// 	public $name = 'glDeleteBuffers';
+	// 	public $arguments = [
+	// 		'n' => 'long',
+	// 		'&buffers:GLuint' => 'long',
+	// 	];
+	// },
 
-	/**
-	 * glGenVertexArrays
-	 */
-	new class extends Method {
-		public $name = 'glGenVertexArrays';
-		public $arguments = [
-			'n' => 'long',
-			'&buffers:GLuint' => 'long',
-		];
-	},
+	// /**
+	//  * glGenVertexArrays
+	//  */
+	// new class extends Method {
+	// 	public $name = 'glGenVertexArrays';
+	// 	public $arguments = [
+	// 		'n' => 'long',
+	// 		'&buffers:GLuint' => 'long',
+	// 	];
+	// },
 
-	/**
-	 * glDeleteVertexArrays
-	 */
-	new class extends Method {
-		public $name = 'glDeleteVertexArrays';
-		public $arguments = [
-			'n' => 'long',
-			'&buffers:GLuint' => 'long',
-		];
-	},
+	// /**
+	//  * glDeleteVertexArrays
+	//  */
+	// new class extends Method {
+	// 	public $name = 'glDeleteVertexArrays';
+	// 	public $arguments = [
+	// 		'n' => 'long',
+	// 		'&buffers:GLuint' => 'long',
+	// 	];
+	// },
 
-	/**
-	 * glBindBuffer
-	 */
-	new class extends Method {
-		public $name = 'glBindBuffer';
-		public $arguments = [
-			'target' => 'long',
-			'buffer' => 'long',
-		];
-	},
+	// /**
+	//  * glBindBuffer
+	//  */
+	// new class extends Method {
+	// 	public $name = 'glBindBuffer';
+	// 	public $arguments = [
+	// 		'target' => 'long',
+	// 		'buffer' => 'long',
+	// 	];
+	// },
 
-	/**
-	 * glBindVertexArray
-	 */
-	new class extends Method {
-		public $name = 'glBindVertexArray';
-		public $arguments = [
-			'target' => 'long',
-		];
-	},
+	// /**
+	//  * glBindVertexArray
+	//  */
+	// new class extends Method {
+	// 	public $name = 'glBindVertexArray';
+	// 	public $arguments = [
+	// 		'target' => 'long',
+	// 	];
+	// },
 
-	/**
-	 * glBufferData
-	 */
-	new class extends Method {
-		public $name = 'glBufferData';
-		public $arguments = [
-			'target' => 'long',
-			'size' => 'long',
-			'data' => 'ht',
-			'usage' => 'long',
-		];
+	// /**
+	//  * glBufferData
+	//  */
+	// new class extends Method {
+	// 	public $name = 'glBufferData';
+	// 	public $arguments = [
+	// 		'target' => 'long',
+	// 		'size' => 'long',
+	// 		'data' => 'ht',
+	// 		'usage' => 'long',
+	// 	];
 
-		public function generateCall() : string 
-		{
-			return 'zend_error(E_ERROR, "This method is unavailable in PHP-GLFW. Please use `glBufferDataFloat(long target, array data, long usage)`, `glBufferDataDouble(long target, array data, long usage)`, `glBufferDataInt(long target, array data, long usage)` or `glBufferDataLong(long target, array data, long usage)`");';
-		}
-	},
+	// 	public function generateCall() : string 
+	// 	{
+	// 		return 'zend_error(E_ERROR, "This method is unavailable in PHP-GLFW. Please use `glBufferDataFloat(long target, array data, long usage)`, `glBufferDataDouble(long target, array data, long usage)`, `glBufferDataInt(long target, array data, long usage)` or `glBufferDataLong(long target, array data, long usage)`");';
+	// 	}
+	// },
 
-	/**
-	 * glBufferDataFloat
-	 */
-	new class extends Method {
-		public $name = 'glBufferDataFloat';
-		public $arguments = [
-			'target' => 'long',
-			'data' => 'ht',
-			'usage' => 'long',
-		];
+	// /**
+	//  * glBufferDataFloat
+	//  */
+	// new class extends Method {
+	// 	public $name = 'glBufferDataFloat';
+	// 	public $arguments = [
+	// 		'target' => 'long',
+	// 		'data' => 'ht',
+	// 		'usage' => 'long',
+	// 	];
 
-		public function generateCall() : string 
-		{
-			$b = 'float cdata[zend_hash_num_elements(data)];' . PHP_EOL;
-		    $b .= 'int i = 0;' . PHP_EOL;
-		    $b .= 'ZEND_HASH_FOREACH_VAL(data, data_data)' . PHP_EOL;
-		    $b .= '  ZVAL_DEREF(data_data);' . PHP_EOL;
-		    $b .= '  convert_to_double(data_data);' . PHP_EOL;
-		    $b .= '  cdata[i] = (float) Z_DVAL_P(data_data);' . PHP_EOL;
-		    $b .= '  i++;' . PHP_EOL;
-		    $b .= 'ZEND_HASH_FOREACH_END();' . PHP_EOL;
-		    $b .= 'glBufferData(target, sizeof(cdata), cdata, usage);' . PHP_EOL;
+	// 	public function generateCall() : string 
+	// 	{
+	// 		$b = 'float cdata[zend_hash_num_elements(data)];' . PHP_EOL;
+	// 	    $b .= 'int i = 0;' . PHP_EOL;
+	// 	    $b .= 'ZEND_HASH_FOREACH_VAL(data, data_data)' . PHP_EOL;
+	// 	    $b .= '  ZVAL_DEREF(data_data);' . PHP_EOL;
+	// 	    $b .= '  convert_to_double(data_data);' . PHP_EOL;
+	// 	    $b .= '  cdata[i] = (float) Z_DVAL_P(data_data);' . PHP_EOL;
+	// 	    $b .= '  i++;' . PHP_EOL;
+	// 	    $b .= 'ZEND_HASH_FOREACH_END();' . PHP_EOL;
+	// 	    $b .= 'glBufferData(target, sizeof(cdata), cdata, usage);' . PHP_EOL;
 
-		    return $b;
-		}
-	},
+	// 	    return $b;
+	// 	}
+	// },
 
-	/**
-	 * glBufferDataInt
-	 */
-	new class extends Method {
-		public $name = 'glBufferDataInt';
-		public $arguments = [
-			'target' => 'long',
-			'data' => 'ht',
-			'usage' => 'long',
-		];
+	// /**
+	//  * glBufferDataInt
+	//  */
+	// new class extends Method {
+	// 	public $name = 'glBufferDataInt';
+	// 	public $arguments = [
+	// 		'target' => 'long',
+	// 		'data' => 'ht',
+	// 		'usage' => 'long',
+	// 	];
 
-		public function generateCall() : string 
-		{
-			$b = 'int cdata[zend_hash_num_elements(data)];' . PHP_EOL;
-		    $b .= 'int i = 0;' . PHP_EOL;
-		    $b .= 'ZEND_HASH_FOREACH_VAL(data, data_data)' . PHP_EOL;
-		    $b .= '  ZVAL_DEREF(data_data);' . PHP_EOL;
-		    $b .= '  convert_to_long(data_data);' . PHP_EOL;
-		    $b .= '  cdata[i] = (int) Z_LVAL_P(data_data);' . PHP_EOL;
-		    $b .= '  i++;' . PHP_EOL;
-		    $b .= 'ZEND_HASH_FOREACH_END();' . PHP_EOL;
-		    $b .= 'glBufferData(target, sizeof(cdata), cdata, usage);' . PHP_EOL;
+	// 	public function generateCall() : string 
+	// 	{
+	// 		$b = 'int cdata[zend_hash_num_elements(data)];' . PHP_EOL;
+	// 	    $b .= 'int i = 0;' . PHP_EOL;
+	// 	    $b .= 'ZEND_HASH_FOREACH_VAL(data, data_data)' . PHP_EOL;
+	// 	    $b .= '  ZVAL_DEREF(data_data);' . PHP_EOL;
+	// 	    $b .= '  convert_to_long(data_data);' . PHP_EOL;
+	// 	    $b .= '  cdata[i] = (int) Z_LVAL_P(data_data);' . PHP_EOL;
+	// 	    $b .= '  i++;' . PHP_EOL;
+	// 	    $b .= 'ZEND_HASH_FOREACH_END();' . PHP_EOL;
+	// 	    $b .= 'glBufferData(target, sizeof(cdata), cdata, usage);' . PHP_EOL;
 
-		    return $b;
-		}
-	},
+	// 	    return $b;
+	// 	}
+	// },
 
-	/**
-	 * glVertexAttribPointer
-	 */
-	new class extends Method {
-		public $name = 'glVertexAttribPointer';
-		public $arguments = [
-			'index' => 'long',
-			'size' => 'long',
-			'type' => 'long',
-			'normalized' => 'long',
-			'stride' => 'long',
-			'pointer' => 'long',
-		];
+	// /**
+	//  * glVertexAttribPointer
+	//  */
+	// new class extends Method {
+	// 	public $name = 'glVertexAttribPointer';
+	// 	public $arguments = [
+	// 		'index' => 'long',
+	// 		'size' => 'long',
+	// 		'type' => 'long',
+	// 		'normalized' => 'long',
+	// 		'stride' => 'long',
+	// 		'pointer' => 'long',
+	// 	];
 
-		public function generateCall() : string 
-		{
-			$b = 'glVertexAttribPointer(index, size, type, normalized, stride * sizeof(float), (void*)(pointer * sizeof(float)));' . PHP_EOL;
+	// 	public function generateCall() : string 
+	// 	{
+	// 		$b = 'glVertexAttribPointer(index, size, type, normalized, stride * sizeof(float), (void*)(pointer * sizeof(float)));' . PHP_EOL;
 
-		    return $b;
-		}
-	},
+	// 	    return $b;
+	// 	}
+	// },
 
-	/**
-	 * glEnableVertexAttribArray
-	 */
-	new class extends Method {
-		public $name = 'glEnableVertexAttribArray';
-		public $arguments = [
-			'index' => 'long',
-		];
-	},
+	// /**
+	//  * glEnableVertexAttribArray
+	//  */
+	// new class extends Method {
+	// 	public $name = 'glEnableVertexAttribArray';
+	// 	public $arguments = [
+	// 		'index' => 'long',
+	// 	];
+	// },
 
-	/**
-	 * glDrawArrays
-	 */
-	new class extends Method {
-		public $name = 'glDrawArrays';
-		public $arguments = [
-			'mode' => 'long',
-			'first' => 'long',
-			'count' => 'long',
-		];
-	},
+	// /**
+	//  * glDrawArrays
+	//  */
+	// new class extends Method {
+	// 	public $name = 'glDrawArrays';
+	// 	public $arguments = [
+	// 		'mode' => 'long',
+	// 		'first' => 'long',
+	// 		'count' => 'long',
+	// 	];
+	// },
 
-	/**
-	 * glDrawElements
-	 */
-	new class extends Method {
-		public $name = 'glDrawElements';
-		public $arguments = [
-			'mode' => 'long',
-			'count' => 'long',
-			'type' => 'long',
-			'indices' => 'long' // @todo 
-		];
-	},
+	// /**
+	//  * glDrawElements
+	//  */
+	// new class extends Method {
+	// 	public $name = 'glDrawElements';
+	// 	public $arguments = [
+	// 		'mode' => 'long',
+	// 		'count' => 'long',
+	// 		'type' => 'long',
+	// 		'indices' => 'long' // @todo 
+	// 	];
+	// },
 
 	
 
-	/**
-	 * 
-	 * OpenGL Shaders
-	 * -----------------------------------------------------------
-	 */
-	/**
-	 * glCreateShader
-	 */
-	new class extends Method {
-		public $name = 'glCreateShader';
-		public $returns = 'long';
-		public $arguments = [
-			'target' => 'long',
-		];
-	},
+	// /**
+	//  * 
+	//  * OpenGL Shaders
+	//  * -----------------------------------------------------------
+	//  */
+	// /**
+	//  * glCreateShader
+	//  */
+	// new class extends Method {
+	// 	public $name = 'glCreateShader';
+	// 	public $returns = 'long';
+	// 	public $arguments = [
+	// 		'target' => 'long',
+	// 	];
+	// },
 
-	/**
-	 * glCreateProgram
-	 */
-	new class extends Method {
-		public $name = 'glCreateProgram';
-		public $returns = 'long';
-		public $arguments = [
-		];
-	},
+	// /**
+	//  * glCreateProgram
+	//  */
+	// new class extends Method {
+	// 	public $name = 'glCreateProgram';
+	// 	public $returns = 'long';
+	// 	public $arguments = [
+	// 	];
+	// },
 
-	/**
-	 * glShaderSource
-	 */
-	new class extends Method {
-		public $name = 'glShaderSource';
-		public $arguments = [
-			'shader' => 'long',
-			'count' => 'long',
-			'source' => '&string',
-			'length' => 'null',
-		];
-	},
+	// /**
+	//  * glShaderSource
+	//  */
+	// new class extends Method {
+	// 	public $name = 'glShaderSource';
+	// 	public $arguments = [
+	// 		'shader' => 'long',
+	// 		'count' => 'long',
+	// 		'source' => '&string',
+	// 		'length' => 'null',
+	// 	];
+	// },
 
-	/**
-	 * glCompileShader
-	 */
-	new class extends Method {
-		public $name = 'glCompileShader';
-		public $arguments = [
-			'shader' => 'long'
-		];
-	},
+	// /**
+	//  * glCompileShader
+	//  */
+	// new class extends Method {
+	// 	public $name = 'glCompileShader';
+	// 	public $arguments = [
+	// 		'shader' => 'long'
+	// 	];
+	// },
 
-	/**
-	 * glDeleteShader
-	 */
-	new class extends Method {
-		public $name = 'glDeleteShader';
-		public $arguments = [
-			'shader' => 'long'
-		];
-	},
+	// /**
+	//  * glDeleteShader
+	//  */
+	// new class extends Method {
+	// 	public $name = 'glDeleteShader';
+	// 	public $arguments = [
+	// 		'shader' => 'long'
+	// 	];
+	// },
 
-	/**
-	 * glAttachShader
-	 */
-	new class extends Method {
-		public $name = 'glAttachShader';
-		public $arguments = [
-			'program' => 'long',
-			'index' => 'long'
-		];
-	},
+	// /**
+	//  * glAttachShader
+	//  */
+	// new class extends Method {
+	// 	public $name = 'glAttachShader';
+	// 	public $arguments = [
+	// 		'program' => 'long',
+	// 		'index' => 'long'
+	// 	];
+	// },
 	
-	/**
-	 * glGetUniformLocation
-	 */
-	new class extends Method {
-		public $name = 'glGetUniformLocation';
-		public $returns = 'long';
-		public $arguments = [
-			'program' => 'long',
-			'name' => 'string'
-		];
-	},
+	// /**
+	//  * glGetUniformLocation
+	//  */
+	// new class extends Method {
+	// 	public $name = 'glGetUniformLocation';
+	// 	public $returns = 'long';
+	// 	public $arguments = [
+	// 		'program' => 'long',
+	// 		'name' => 'string'
+	// 	];
+	// },
 
-	/**
-	 * glUniform1i
-	 */
-	new class extends Method {
-		public $name = 'glUniform1i';
-		public $arguments = [
-			'location' => 'long',
-			'value' => 'long'
-		];
-	},
+	// /**
+	//  * glUniform1i
+	//  */
+	// new class extends Method {
+	// 	public $name = 'glUniform1i';
+	// 	public $arguments = [
+	// 		'location' => 'long',
+	// 		'value' => 'long'
+	// 	];
+	// },
 
-	/**
-	 * glUniform2i
-	 */
-	new class extends Method {
-		public $name = 'glUniform2i';
-		public $arguments = [
-			'location' => 'long',
-			'value0' => 'long',
-			'value1' => 'long',
-		];
-	},
+	// /**
+	//  * glUniform2i
+	//  */
+	// new class extends Method {
+	// 	public $name = 'glUniform2i';
+	// 	public $arguments = [
+	// 		'location' => 'long',
+	// 		'value0' => 'long',
+	// 		'value1' => 'long',
+	// 	];
+	// },
 
-	/**
-	 * glUniform3i
-	 */
-	new class extends Method {
-		public $name = 'glUniform3i';
-		public $arguments = [
-			'location' => 'long',
-			'value0' => 'long',
-			'value1' => 'long',
-			'value2' => 'long',
-		];
-	},
+	// /**
+	//  * glUniform3i
+	//  */
+	// new class extends Method {
+	// 	public $name = 'glUniform3i';
+	// 	public $arguments = [
+	// 		'location' => 'long',
+	// 		'value0' => 'long',
+	// 		'value1' => 'long',
+	// 		'value2' => 'long',
+	// 	];
+	// },
 
-	/**
-	 * glUniform4i
-	 */
-	new class extends Method {
-		public $name = 'glUniform4i';
-		public $arguments = [
-			'location' => 'long',
-			'value0' => 'long',
-			'value1' => 'long',
-			'value2' => 'long',
-			'value3' => 'long',
-		];
-	},
+	// /**
+	//  * glUniform4i
+	//  */
+	// new class extends Method {
+	// 	public $name = 'glUniform4i';
+	// 	public $arguments = [
+	// 		'location' => 'long',
+	// 		'value0' => 'long',
+	// 		'value1' => 'long',
+	// 		'value2' => 'long',
+	// 		'value3' => 'long',
+	// 	];
+	// },
 
-	/**
-	 * glUniform1f
-	 */
-	new class extends Method {
-		public $name = 'glUniform1f';
-		public $arguments = [
-			'location' => 'long',
-			'value' => 'double'
-		];
-	},
+	// /**
+	//  * glUniform1f
+	//  */
+	// new class extends Method {
+	// 	public $name = 'glUniform1f';
+	// 	public $arguments = [
+	// 		'location' => 'long',
+	// 		'value' => 'double'
+	// 	];
+	// },
 
-	/**
-	 * glUniform2f
-	 */
-	new class extends Method {
-		public $name = 'glUniform2f';
-		public $arguments = [
-			'location' => 'long',
-			'value0' => 'double',
-			'value1' => 'double',
-		];
-	},
+	// /**
+	//  * glUniform2f
+	//  */
+	// new class extends Method {
+	// 	public $name = 'glUniform2f';
+	// 	public $arguments = [
+	// 		'location' => 'long',
+	// 		'value0' => 'double',
+	// 		'value1' => 'double',
+	// 	];
+	// },
 
-	/**
-	 * glUniform3f
-	 */
-	new class extends Method {
-		public $name = 'glUniform3f';
-		public $arguments = [
-			'location' => 'long',
-			'value0' => 'double',
-			'value1' => 'double',
-			'value2' => 'double',
-		];
-	},
+	// /**
+	//  * glUniform3f
+	//  */
+	// new class extends Method {
+	// 	public $name = 'glUniform3f';
+	// 	public $arguments = [
+	// 		'location' => 'long',
+	// 		'value0' => 'double',
+	// 		'value1' => 'double',
+	// 		'value2' => 'double',
+	// 	];
+	// },
 
-	/**
-	 * glUniform4f
-	 */
-	new class extends Method {
-		public $name = 'glUniform4f';
-		public $arguments = [
-			'location' => 'long',
-			'value0' => 'double',
-			'value1' => 'double',
-			'value2' => 'double',
-			'value3' => 'double',
-		];
-	},
+	// /**
+	//  * glUniform4f
+	//  */
+	// new class extends Method {
+	// 	public $name = 'glUniform4f';
+	// 	public $arguments = [
+	// 		'location' => 'long',
+	// 		'value0' => 'double',
+	// 		'value1' => 'double',
+	// 		'value2' => 'double',
+	// 		'value3' => 'double',
+	// 	];
+	// },
 
-	/**
-	 * glUniformMatrix4fv
-	 */
-	new class extends Method {
-		public $name = 'glUniformMatrix4fv';
-		public $arguments = [
-			'location' => 'long',
-			'count' => 'long',
-			'transpose' => 'bool',
-			'value' => 'ht'
-		];
+	// /**
+	//  * glUniformMatrix4fv
+	//  */
+	// new class extends Method {
+	// 	public $name = 'glUniformMatrix4fv';
+	// 	public $arguments = [
+	// 		'location' => 'long',
+	// 		'count' => 'long',
+	// 		'transpose' => 'bool',
+	// 		'value' => 'ht'
+	// 	];
 
-		public function generateCall() : string 
-		{
-			$b = 'float cdata[zend_hash_num_elements(value)];' . PHP_EOL;
-		    $b .= 'uint32_t i = 0;' . PHP_EOL;
-		    $b .= 'ZEND_HASH_FOREACH_VAL(value, value_data)' . PHP_EOL;
-		    $b .= '  ZVAL_DEREF(value_data);' . PHP_EOL;
-		    $b .= '  convert_to_double(value_data);' . PHP_EOL;
-		    $b .= '  cdata[i] = (float) Z_DVAL_P(value_data);' . PHP_EOL;
-		    $b .= '  i++;' . PHP_EOL;
-		    $b .= 'ZEND_HASH_FOREACH_END();' . PHP_EOL;
+	// 	public function generateCall() : string 
+	// 	{
+	// 		$b = 'float cdata[zend_hash_num_elements(value)];' . PHP_EOL;
+	// 	    $b .= 'uint32_t i = 0;' . PHP_EOL;
+	// 	    $b .= 'ZEND_HASH_FOREACH_VAL(value, value_data)' . PHP_EOL;
+	// 	    $b .= '  ZVAL_DEREF(value_data);' . PHP_EOL;
+	// 	    $b .= '  convert_to_double(value_data);' . PHP_EOL;
+	// 	    $b .= '  cdata[i] = (float) Z_DVAL_P(value_data);' . PHP_EOL;
+	// 	    $b .= '  i++;' . PHP_EOL;
+	// 	    $b .= 'ZEND_HASH_FOREACH_END();' . PHP_EOL;
 
-		    $b .= 'glUniformMatrix4fv(location, count, transpose, &cdata[0]);' . PHP_EOL;
+	// 	    $b .= 'glUniformMatrix4fv(location, count, transpose, &cdata[0]);' . PHP_EOL;
 
-		    return $b;
-		}
-	},
+	// 	    return $b;
+	// 	}
+	// },
 
-	/**
-	 * glLinkProgram
-	 */
-	new class extends Method {
-		public $name = 'glLinkProgram';
-		public $arguments = [
-			'program' => 'long'
-		];
-	},
+	// /**
+	//  * glLinkProgram
+	//  */
+	// new class extends Method {
+	// 	public $name = 'glLinkProgram';
+	// 	public $arguments = [
+	// 		'program' => 'long'
+	// 	];
+	// },
 
-	/**
-	 * glGetShaderiv
-	 */
-	new class extends Method {
-		public $name = 'glGetShaderiv';
-		public $arguments = [
-			'shader' => 'long',
-			'pname' => 'long',
-			'&params' => 'long'
-		];
-	},
+	// /**
+	//  * glGetShaderiv
+	//  */
+	// new class extends Method {
+	// 	public $name = 'glGetShaderiv';
+	// 	public $arguments = [
+	// 		'shader' => 'long',
+	// 		'pname' => 'long',
+	// 		'&params' => 'long'
+	// 	];
+	// },
 
-	/**
-	 * glGetProgramiv
-	 */
-	new class extends Method {
-		public $name = 'glGetProgramiv';
-		public $arguments = [
-			'program' => 'long',
-			'pname' => 'long',
-			'&params' => 'long'
-		];
-	},
+	// /**
+	//  * glGetProgramiv
+	//  */
+	// new class extends Method {
+	// 	public $name = 'glGetProgramiv';
+	// 	public $arguments = [
+	// 		'program' => 'long',
+	// 		'pname' => 'long',
+	// 		'&params' => 'long'
+	// 	];
+	// },
 	
-	/**
-	 * glUseProgram
-	 */
-	new class extends Method {
-		public $name = 'glUseProgram';
-		public $arguments = [
-			'program' => 'long'
-		];
-	},
+	// /**
+	//  * glUseProgram
+	//  */
+	// new class extends Method {
+	// 	public $name = 'glUseProgram';
+	// 	public $arguments = [
+	// 		'program' => 'long'
+	// 	];
+	// },
 
-	/**
-	 * 
-	 * OpenGL Textures
-	 * -----------------------------------------------------------
-	 */
-	/**
-	 * glGenTextures
-	 */
-	new class extends Method {
-		public $name = 'glGenTextures';
-		public $arguments = [
-			'n' => 'long',
-			'&textures:GLuint' => 'long', // @todo
-		];
-	},
+	// /**
+	//  * 
+	//  * OpenGL Textures
+	//  * -----------------------------------------------------------
+	//  */
+	// /**
+	//  * glGenTextures
+	//  */
+	// new class extends Method {
+	// 	public $name = 'glGenTextures';
+	// 	public $arguments = [
+	// 		'n' => 'long',
+	// 		'&textures:GLuint' => 'long', // @todo
+	// 	];
+	// },
 
-	/**
-	 * glBindTexture
-	 */
-	new class extends Method {
-		public $name = 'glBindTexture';
-		public $arguments = [
-			'target' => 'long',
-			'texture' => 'long',
-		];
-	},
+	// /**
+	//  * glBindTexture
+	//  */
+	// new class extends Method {
+	// 	public $name = 'glBindTexture';
+	// 	public $arguments = [
+	// 		'target' => 'long',
+	// 		'texture' => 'long',
+	// 	];
+	// },
 
-	/**
-	 * glTexParameteri
-	 */
-	new class extends Method {
-		public $name = 'glTexParameteri';
-		public $arguments = [
-			'target' => 'long',
-			'pname' => 'long',
-			'param' => 'long',
-		];
-	},
+	// /**
+	//  * glTexParameteri
+	//  */
+	// new class extends Method {
+	// 	public $name = 'glTexParameteri';
+	// 	public $arguments = [
+	// 		'target' => 'long',
+	// 		'pname' => 'long',
+	// 		'param' => 'long',
+	// 	];
+	// },
 
-	/**
-	 * glTextureParameteri
-	 */
-	new class extends Method {
-		public $name = 'glTextureParameteri';
-		public $arguments = [
-			'target' => 'long',
-			'pname' => 'long',
-			'param' => 'long',
-		];
-	},
+	// /**
+	//  * glTextureParameteri
+	//  */
+	// new class extends Method {
+	// 	public $name = 'glTextureParameteri';
+	// 	public $arguments = [
+	// 		'target' => 'long',
+	// 		'pname' => 'long',
+	// 		'param' => 'long',
+	// 	];
+	// },
 
-	/**
-	 * glTexParameterf
-	 */
-	new class extends Method {
-		public $name = 'glTexParameterf';
-		public $arguments = [
-			'target' => 'long',
-			'pname' => 'long',
-			'param' => 'double',
-		];
-	},
+	// /**
+	//  * glTexParameterf
+	//  */
+	// new class extends Method {
+	// 	public $name = 'glTexParameterf';
+	// 	public $arguments = [
+	// 		'target' => 'long',
+	// 		'pname' => 'long',
+	// 		'param' => 'double',
+	// 	];
+	// },
 
-	/**
-	 * glTextureParameterf
-	 */
-	new class extends Method {
-		public $name = 'glTextureParameterf';
-		public $arguments = [
-			'target' => 'long',
-			'pname' => 'long',
-			'param' => 'double',
-		];
-	},
+	// /**
+	//  * glTextureParameterf
+	//  */
+	// new class extends Method {
+	// 	public $name = 'glTextureParameterf';
+	// 	public $arguments = [
+	// 		'target' => 'long',
+	// 		'pname' => 'long',
+	// 		'param' => 'double',
+	// 	];
+	// },
 
-	/**
-	 * glTexImage2D
-	 */
-	new class extends Method {
-		public $name = 'glTexImage2D';
-		public $arguments = [
-			'target' => 'long',
-			'level' => 'long',
-			'internal_format' => 'long',
-			'width' => 'long',
-			'height' => 'long',
-			'border' => 'long',
-			'format' => 'long',
-			'type' => 'long',
-			'stbimagedata' => 'resource',
-		];
-	},
+	// /**
+	//  * glTexImage2D
+	//  */
+	// new class extends Method {
+	// 	public $name = 'glTexImage2D';
+	// 	public $arguments = [
+	// 		'target' => 'long',
+	// 		'level' => 'long',
+	// 		'internal_format' => 'long',
+	// 		'width' => 'long',
+	// 		'height' => 'long',
+	// 		'border' => 'long',
+	// 		'format' => 'long',
+	// 		'type' => 'long',
+	// 		'stbimagedata' => 'resource',
+	// 	];
+	// },
 
-	/**
-	 * glGenerateMipmap
-	 */
-	new class extends Method {
-		public $name = 'glGenerateMipmap';
-		public $arguments = [
-			'target' => 'long',
-		];
-	},
+	// /**
+	//  * glGenerateMipmap
+	//  */
+	// new class extends Method {
+	// 	public $name = 'glGenerateMipmap';
+	// 	public $arguments = [
+	// 		'target' => 'long',
+	// 	];
+	// },
 
-	/**
-	 * glActiveTexture
-	 */
-	new class extends Method {
-		public $name = 'glActiveTexture';
-		public $arguments = [
-			'texture' => 'long',
-		];
-	},
+	// /**
+	//  * glActiveTexture
+	//  */
+	// new class extends Method {
+	// 	public $name = 'glActiveTexture';
+	// 	public $arguments = [
+	// 		'texture' => 'long',
+	// 	];
+	// },
 
-	/**
-	 * 
-	 * STBImage
-	 * -----------------------------------------------------------
-	 */
+	// /**
+	//  * 
+	//  * STBImage
+	//  * -----------------------------------------------------------
+	//  */
 
-	/**
-	 * stbi_load
-	 */
-	new class extends Method
-	{
-		public $name = 'stbi_load';
-		public $arguments = [
-			'path' => 'string',
-			'&width:int' => 'long',
-			'&height:int' => 'long',
-			'&number_or_channels:int' => 'long',
-			'force_n_comp' => 'long',
-		];
+	// /**
+	//  * stbi_load
+	//  */
+	// new class extends Method
+	// {
+	// 	public $name = 'stbi_load';
+	// 	public $arguments = [
+	// 		'path' => 'string',
+	// 		'&width:int' => 'long',
+	// 		'&height:int' => 'long',
+	// 		'&number_or_channels:int' => 'long',
+	// 		'force_n_comp' => 'long',
+	// 	];
 
-		public function generateCall() : string 
-		{
-			$b = 'unsigned char * stbimagedata = stbi_load(path, (int *)&z_width->value, (int *)&z_height->value, (int *)&z_number_or_channels->value, force_n_comp);' . PHP_EOL;
-		    $b .= 'if (!stbimagedata) RETURN_FALSE;' . PHP_EOL;
-			$b .= Resource::getReturnCall('stbimagedata');
+	// 	public function generateCall() : string 
+	// 	{
+	// 		$b = 'unsigned char * stbimagedata = stbi_load(path, (int *)&z_width->value, (int *)&z_height->value, (int *)&z_number_or_channels->value, force_n_comp);' . PHP_EOL;
+	// 	    $b .= 'if (!stbimagedata) RETURN_FALSE;' . PHP_EOL;
+	// 		$b .= Resource::getReturnCall('stbimagedata');
 
-		    return $b;
-		}
-	},
+	// 	    return $b;
+	// 	}
+	// },
 	
 	// /**
 	//  * 

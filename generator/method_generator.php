@@ -288,11 +288,9 @@ abstract class Method
 	public function generateFE() : string
 	{
 		$arginfo = 'NULL';
-		if ($this->hasArguments()) {
-			$arginfo = $this->generateArgInfoName($this->name);
-		}
+		$arginfo = $this->generateArgInfoName($this->name);
 
-		return "ZEND_RAW_NAMED_FE({$this->name}, zif_{$this->name}, {$arginfo})";
+		//return "ZEND_RAW_NAMED_FE({$this->name}, zif_{$this->name}, {$arginfo})";
 		return "PHP_FE({$this->name}, {$arginfo})";
 	}
 
@@ -320,7 +318,7 @@ abstract class Method
 
 	protected function generateWindowResourceFetchCode() : string
 	{
-		return "GLFWwindow* window = phpglfw_fetch_window(window_resource TSRMLS_CC);\n";
+		return "GLFWwindow* window = phpglfw_fetch_window(window_resource );\n";
 	}
 
 	protected function generateArgumentParser() : string
@@ -352,7 +350,7 @@ abstract class Method
 		}
 
 		// create the parser method
-		$b .= PHP_EOL . 'if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "'.$typecharlist.'", '.implode(', ', $referencelist).') == FAILURE) {' . PHP_EOL;
+		$b .= PHP_EOL . 'if (zend_parse_parameters(ZEND_NUM_ARGS() , "'.$typecharlist.'", '.implode(', ', $referencelist).') == FAILURE) {' . PHP_EOL;
 		$b .= '   return;' . PHP_EOL;
 		$b .= "}\n";
 
@@ -379,7 +377,7 @@ abstract class Method
 					continue;
 				}
 
-				$b .= $resource->type . $resource->name . ' = ' . $resource->getFetchMethod() . "(". substr($argument->getReferences(), 1) ." TSRMLS_CC);\n";
+				$b .= $resource->type . $resource->name . ' = ' . $resource->getFetchMethod() . "(". substr($argument->getReferences(), 1) ." );\n";
 			}
 		}
 
@@ -467,8 +465,8 @@ abstract class Method
 		// we need to work around the glad defines here
 		// this allows us to keep the normal gl functions 
 		// inside php without the glad prefix
-		//$b .= "PHP_FUNCTION($this->name)\n{\n";
-		$b = "ZEND_NAMED_FUNCTION(zif_{$this->name})\n{\n";
+		$b = "PHP_FUNCTION($this->name)\n{\n";
+		//$b = "ZEND_NAMED_FUNCTION(zif_{$this->name})\n{\n";
 
 		if ($this->hasArguments()) {
 			$b .= $this->tabulate($this->generateArgumentParser());
@@ -489,10 +487,6 @@ abstract class Method
 	public function generate()
 	{
 		$c = "/**\n * {$this->name}\n * --------------------------------\n */\n";
-
-		if (!$this->hasArguments()) {
-			return $c . $this->generateMethod();
-		}
 
 		return $c . $this->generateArgInfo() . PHP_EOL . $this->generateMethod();
 	}

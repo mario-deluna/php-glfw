@@ -31,11 +31,11 @@ int phpglfw_stbimagedata_context;
  * Get GLFWwindow * from resource
  * --------------------------------
  */
-static GLFWwindow *phpglfw_fetch_glfwwindow(zval *resource TSRMLS_DC)
+static GLFWwindow *phpglfw_fetch_glfwwindow(zval *resource)
 {
     GLFWwindow *glfwwindow;
-
-    glfwwindow = (GLFWwindow *)zend_fetch_resource_ex(resource, PHPGLFW_GLFWWINDOW_NAME, phpglfw_glfwwindow_context);
+    ZEND_ASSERT(Z_TYPE_P(resource) == IS_RESOURCE);
+    glfwwindow = (GLFWwindow *)zend_fetch_resource(Z_RES_P(resource), PHPGLFW_GLFWWINDOW_NAME, phpglfw_glfwwindow_context);
 
     return glfwwindow;
 }
@@ -43,7 +43,7 @@ static GLFWwindow *phpglfw_fetch_glfwwindow(zval *resource TSRMLS_DC)
 /**
  * dtor GLFWwindow * * --------------------------------
  */
-static void phpglfw_glfwwindow_dtor(zend_resource *rsrc TSRMLS_DC)
+static void phpglfw_glfwwindow_dtor(zend_resource *rsrc)
 {
     GLFWwindow *glfwwindow = (void *) rsrc->ptr;
 
@@ -55,11 +55,11 @@ static void phpglfw_glfwwindow_dtor(zend_resource *rsrc TSRMLS_DC)
  * Get GLFWcursor * from resource
  * --------------------------------
  */
-static GLFWcursor *phpglfw_fetch_glfwcursor(zval *resource TSRMLS_DC)
+static GLFWcursor *phpglfw_fetch_glfwcursor(zval *resource)
 {
     GLFWcursor *glfwcursor;
-
-    glfwcursor = (GLFWcursor *)zend_fetch_resource_ex(resource, PHPGLFW_GLFWCURSOR_NAME, phpglfw_glfwcursor_context);
+    ZEND_ASSERT(Z_TYPE_P(resource) == IS_RESOURCE);
+    glfwcursor = (GLFWcursor *)zend_fetch_resource(Z_RES_P(resource), PHPGLFW_GLFWCURSOR_NAME, phpglfw_glfwcursor_context);
 
     return glfwcursor;
 }
@@ -67,7 +67,7 @@ static GLFWcursor *phpglfw_fetch_glfwcursor(zval *resource TSRMLS_DC)
 /**
  * dtor GLFWcursor * * --------------------------------
  */
-static void phpglfw_glfwcursor_dtor(zend_resource *rsrc TSRMLS_DC)
+static void phpglfw_glfwcursor_dtor(zend_resource *rsrc)
 {
     GLFWcursor *glfwcursor = (void *) rsrc->ptr;
 
@@ -79,11 +79,11 @@ static void phpglfw_glfwcursor_dtor(zend_resource *rsrc TSRMLS_DC)
  * Get unsigned char * from resource
  * --------------------------------
  */
-static unsigned char *phpglfw_fetch_stbimagedata(zval *resource TSRMLS_DC)
+static unsigned char *phpglfw_fetch_stbimagedata(zval *resource)
 {
     unsigned char *stbimagedata;
-
-    stbimagedata = (unsigned char *)zend_fetch_resource_ex(resource, PHPGLFW_STBIMAGEDATA_NAME, phpglfw_stbimagedata_context);
+    ZEND_ASSERT(Z_TYPE_P(resource) == IS_RESOURCE);
+    stbimagedata = (unsigned char *)zend_fetch_resource(Z_RES_P(resource), PHPGLFW_STBIMAGEDATA_NAME, phpglfw_stbimagedata_context);
 
     return stbimagedata;
 }
@@ -91,7 +91,7 @@ static unsigned char *phpglfw_fetch_stbimagedata(zval *resource TSRMLS_DC)
 /**
  * dtor unsigned char * * --------------------------------
  */
-static void phpglfw_stbimagedata_dtor(zend_resource *rsrc TSRMLS_DC)
+static void phpglfw_stbimagedata_dtor(zend_resource *rsrc)
 {
     unsigned char *stbimagedata = (void *) rsrc->ptr;
 
@@ -109,7 +109,10 @@ static void phpglfw_stbimagedata_dtor(zend_resource *rsrc TSRMLS_DC)
  * glfwInit
  * --------------------------------
  */
-ZEND_NAMED_FUNCTION(zif_glfwInit)
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glfwInit, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glfwInit)
 {
 
     if (glfwInit()) { RETURN_TRUE; } RETURN_FALSE;
@@ -119,7 +122,10 @@ ZEND_NAMED_FUNCTION(zif_glfwInit)
  * glfwTerminate
  * --------------------------------
  */
-ZEND_NAMED_FUNCTION(zif_glfwTerminate)
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glfwTerminate, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glfwTerminate)
 {
 
     glfwTerminate();
@@ -135,12 +141,12 @@ ZEND_BEGIN_ARG_INFO_EX(arginfo_glfwGetVersion, 0, 0, 1)
     ZEND_ARG_INFO(1, rev)
 ZEND_END_ARG_INFO()
 
-ZEND_NAMED_FUNCTION(zif_glfwGetVersion)
+PHP_FUNCTION(glfwGetVersion)
 {
     zval *z_major;
     zval *z_minor;
     zval *z_rev;
-    if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "zzz", &z_major, &z_minor, &z_rev) == FAILURE) {
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "zzz", &z_major, &z_minor, &z_rev) == FAILURE) {
        return;
     }
     ZVAL_DEREF(z_major); convert_to_long(z_major);
@@ -153,7 +159,10 @@ ZEND_NAMED_FUNCTION(zif_glfwGetVersion)
  * glfwGetVersionString
  * --------------------------------
  */
-ZEND_NAMED_FUNCTION(zif_glfwGetVersionString)
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glfwGetVersionString, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glfwGetVersionString)
 {
 
     RETURN_STRING(glfwGetVersionString());
@@ -167,13 +176,13 @@ ZEND_BEGIN_ARG_INFO_EX(arginfo_glfwMakeContextCurrent, 0, 0, 1)
     ZEND_ARG_INFO(0, glfwwindow)
 ZEND_END_ARG_INFO()
 
-ZEND_NAMED_FUNCTION(zif_glfwMakeContextCurrent)
+PHP_FUNCTION(glfwMakeContextCurrent)
 {
     zval *glfwwindow_resource;
-    if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "r", &glfwwindow_resource) == FAILURE) {
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "r", &glfwwindow_resource) == FAILURE) {
        return;
     }
-    GLFWwindow *glfwwindow = phpglfw_fetch_glfwwindow(glfwwindow_resource TSRMLS_CC);
+    GLFWwindow *glfwwindow = phpglfw_fetch_glfwwindow(glfwwindow_resource );
     glfwMakeContextCurrent(glfwwindow);
     if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress)) {
     zend_error(E_ERROR, "Could not load glad.");
@@ -184,7 +193,10 @@ ZEND_NAMED_FUNCTION(zif_glfwMakeContextCurrent)
  * glfwGetCurrentContext
  * --------------------------------
  */
-ZEND_NAMED_FUNCTION(zif_glfwGetCurrentContext)
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glfwGetCurrentContext, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glfwGetCurrentContext)
 {
 
     GLFWwindow* glfwwindow = glfwGetCurrentContext();
@@ -200,10 +212,10 @@ ZEND_BEGIN_ARG_INFO_EX(arginfo_glfwSwapInterval, 0, 0, 1)
     ZEND_ARG_INFO(0, interval)
 ZEND_END_ARG_INFO()
 
-ZEND_NAMED_FUNCTION(zif_glfwSwapInterval)
+PHP_FUNCTION(glfwSwapInterval)
 {
     zend_long interval;
-    if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "l", &interval) == FAILURE) {
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "l", &interval) == FAILURE) {
        return;
     }
     glfwSwapInterval(interval);
@@ -217,11 +229,11 @@ ZEND_BEGIN_ARG_INFO_EX(arginfo_glfwExtensionSupported, 0, 0, 1)
     ZEND_ARG_INFO(0, extension)
 ZEND_END_ARG_INFO()
 
-ZEND_NAMED_FUNCTION(zif_glfwExtensionSupported)
+PHP_FUNCTION(glfwExtensionSupported)
 {
     const char *extension;
     size_t extension_size;
-    if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "s", &extension, &extension_size) == FAILURE) {
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "s", &extension, &extension_size) == FAILURE) {
        return;
     }
     if (glfwExtensionSupported(extension)) { RETURN_TRUE; } RETURN_FALSE;
@@ -235,11 +247,11 @@ ZEND_BEGIN_ARG_INFO_EX(arginfo_glfwGetProcAddress, 0, 0, 1)
     ZEND_ARG_INFO(0, procname)
 ZEND_END_ARG_INFO()
 
-ZEND_NAMED_FUNCTION(zif_glfwGetProcAddress)
+PHP_FUNCTION(glfwGetProcAddress)
 {
     const char *procname;
     size_t procname_size;
-    if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "s", &procname, &procname_size) == FAILURE) {
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "s", &procname, &procname_size) == FAILURE) {
        return;
     }
     glfwGetProcAddress(procname);
@@ -249,7 +261,10 @@ ZEND_NAMED_FUNCTION(zif_glfwGetProcAddress)
  * glfwDefaultWindowHints
  * --------------------------------
  */
-ZEND_NAMED_FUNCTION(zif_glfwDefaultWindowHints)
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glfwDefaultWindowHints, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glfwDefaultWindowHints)
 {
 
     glfwDefaultWindowHints();
@@ -264,11 +279,11 @@ ZEND_BEGIN_ARG_INFO_EX(arginfo_glfwWindowHint, 0, 0, 1)
     ZEND_ARG_INFO(0, value)
 ZEND_END_ARG_INFO()
 
-ZEND_NAMED_FUNCTION(zif_glfwWindowHint)
+PHP_FUNCTION(glfwWindowHint)
 {
     zend_long hint;
     zend_long value;
-    if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "ll", &hint, &value) == FAILURE) {
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "ll", &hint, &value) == FAILURE) {
        return;
     }
     glfwWindowHint(hint, value);
@@ -282,13 +297,13 @@ ZEND_BEGIN_ARG_INFO_EX(arginfo_glfwDestroyWindow, 0, 0, 1)
     ZEND_ARG_INFO(0, glfwwindow)
 ZEND_END_ARG_INFO()
 
-ZEND_NAMED_FUNCTION(zif_glfwDestroyWindow)
+PHP_FUNCTION(glfwDestroyWindow)
 {
     zval *glfwwindow_resource;
-    if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "r", &glfwwindow_resource) == FAILURE) {
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "r", &glfwwindow_resource) == FAILURE) {
        return;
     }
-    GLFWwindow *glfwwindow = phpglfw_fetch_glfwwindow(glfwwindow_resource TSRMLS_CC);
+    GLFWwindow *glfwwindow = phpglfw_fetch_glfwwindow(glfwwindow_resource );
     zend_list_close(Z_RES_P(glfwwindow_resource));
 }
  
@@ -302,13 +317,13 @@ ZEND_BEGIN_ARG_INFO_EX(arginfo_glfwCreateWindow, 0, 0, 1)
     ZEND_ARG_INFO(0, title)
 ZEND_END_ARG_INFO()
 
-ZEND_NAMED_FUNCTION(zif_glfwCreateWindow)
+PHP_FUNCTION(glfwCreateWindow)
 {
     zend_long width;
     zend_long height;
     const char *title;
     size_t title_size;
-    if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "lls", &width, &height, &title, &title_size) == FAILURE) {
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "lls", &width, &height, &title, &title_size) == FAILURE) {
        return;
     }
     GLFWwindow* glfwwindow = glfwCreateWindow(width, height, title, NULL, NULL);
@@ -324,13 +339,13 @@ ZEND_BEGIN_ARG_INFO_EX(arginfo_glfwWindowShouldClose, 0, 0, 1)
     ZEND_ARG_INFO(0, glfwwindow)
 ZEND_END_ARG_INFO()
 
-ZEND_NAMED_FUNCTION(zif_glfwWindowShouldClose)
+PHP_FUNCTION(glfwWindowShouldClose)
 {
     zval *glfwwindow_resource;
-    if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "r", &glfwwindow_resource) == FAILURE) {
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "r", &glfwwindow_resource) == FAILURE) {
        return;
     }
-    GLFWwindow *glfwwindow = phpglfw_fetch_glfwwindow(glfwwindow_resource TSRMLS_CC);
+    GLFWwindow *glfwwindow = phpglfw_fetch_glfwwindow(glfwwindow_resource );
     if (glfwWindowShouldClose(glfwwindow)) { RETURN_TRUE; } RETURN_FALSE;
 }
  
@@ -343,14 +358,14 @@ ZEND_BEGIN_ARG_INFO_EX(arginfo_glfwSetWindowShouldClose, 0, 0, 1)
     ZEND_ARG_INFO(0, value)
 ZEND_END_ARG_INFO()
 
-ZEND_NAMED_FUNCTION(zif_glfwSetWindowShouldClose)
+PHP_FUNCTION(glfwSetWindowShouldClose)
 {
     zval *glfwwindow_resource;
     zend_bool value;
-    if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "rb", &glfwwindow_resource, &value) == FAILURE) {
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "rb", &glfwwindow_resource, &value) == FAILURE) {
        return;
     }
-    GLFWwindow *glfwwindow = phpglfw_fetch_glfwwindow(glfwwindow_resource TSRMLS_CC);
+    GLFWwindow *glfwwindow = phpglfw_fetch_glfwwindow(glfwwindow_resource );
     glfwSetWindowShouldClose(glfwwindow, value);
 }
  
@@ -362,13 +377,13 @@ ZEND_BEGIN_ARG_INFO_EX(arginfo_glfwSwapBuffers, 0, 0, 1)
     ZEND_ARG_INFO(0, glfwwindow)
 ZEND_END_ARG_INFO()
 
-ZEND_NAMED_FUNCTION(zif_glfwSwapBuffers)
+PHP_FUNCTION(glfwSwapBuffers)
 {
     zval *glfwwindow_resource;
-    if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "r", &glfwwindow_resource) == FAILURE) {
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "r", &glfwwindow_resource) == FAILURE) {
        return;
     }
-    GLFWwindow *glfwwindow = phpglfw_fetch_glfwwindow(glfwwindow_resource TSRMLS_CC);
+    GLFWwindow *glfwwindow = phpglfw_fetch_glfwwindow(glfwwindow_resource );
     glfwSwapBuffers(glfwwindow);
 }
  
@@ -376,7 +391,10 @@ ZEND_NAMED_FUNCTION(zif_glfwSwapBuffers)
  * glfwPollEvents
  * --------------------------------
  */
-ZEND_NAMED_FUNCTION(zif_glfwPollEvents)
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glfwPollEvents, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glfwPollEvents)
 {
 
     glfwPollEvents();
@@ -386,7 +404,10 @@ ZEND_NAMED_FUNCTION(zif_glfwPollEvents)
  * glfwGetTime
  * --------------------------------
  */
-ZEND_NAMED_FUNCTION(zif_glfwGetTime)
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glfwGetTime, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glfwGetTime)
 {
 
     RETURN_DOUBLE(glfwGetTime());
@@ -400,10 +421,10 @@ ZEND_BEGIN_ARG_INFO_EX(arginfo_glfwCreateStandardCursor, 0, 0, 1)
     ZEND_ARG_INFO(0, shape)
 ZEND_END_ARG_INFO()
 
-ZEND_NAMED_FUNCTION(zif_glfwCreateStandardCursor)
+PHP_FUNCTION(glfwCreateStandardCursor)
 {
     zend_long shape;
-    if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "l", &shape) == FAILURE) {
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "l", &shape) == FAILURE) {
        return;
     }
     GLFWcursor * glfwcursor = glfwCreateStandardCursor(shape);
@@ -418,13 +439,13 @@ ZEND_BEGIN_ARG_INFO_EX(arginfo_glfwDestroyCursor, 0, 0, 1)
     ZEND_ARG_INFO(0, glfwcursor)
 ZEND_END_ARG_INFO()
 
-ZEND_NAMED_FUNCTION(zif_glfwDestroyCursor)
+PHP_FUNCTION(glfwDestroyCursor)
 {
     zval *glfwcursor_resource;
-    if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "r", &glfwcursor_resource) == FAILURE) {
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "r", &glfwcursor_resource) == FAILURE) {
        return;
     }
-    GLFWcursor *glfwcursor = phpglfw_fetch_glfwcursor(glfwcursor_resource TSRMLS_CC);
+    GLFWcursor *glfwcursor = phpglfw_fetch_glfwcursor(glfwcursor_resource );
     zend_list_close(Z_RES_P(glfwcursor_resource));
 }
  
@@ -436,13 +457,13 @@ ZEND_BEGIN_ARG_INFO_EX(arginfo_glfwGetClipboardString, 0, 0, 1)
     ZEND_ARG_INFO(0, glfwwindow)
 ZEND_END_ARG_INFO()
 
-ZEND_NAMED_FUNCTION(zif_glfwGetClipboardString)
+PHP_FUNCTION(glfwGetClipboardString)
 {
     zval *glfwwindow_resource;
-    if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "r", &glfwwindow_resource) == FAILURE) {
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "r", &glfwwindow_resource) == FAILURE) {
        return;
     }
-    GLFWwindow *glfwwindow = phpglfw_fetch_glfwwindow(glfwwindow_resource TSRMLS_CC);
+    GLFWwindow *glfwwindow = phpglfw_fetch_glfwwindow(glfwwindow_resource );
     RETURN_STRING(glfwGetClipboardString(glfwwindow));
 }
  
@@ -456,17 +477,17 @@ ZEND_BEGIN_ARG_INFO_EX(arginfo_glfwGetCursorPos, 0, 0, 1)
     ZEND_ARG_INFO(1, ypos)
 ZEND_END_ARG_INFO()
 
-ZEND_NAMED_FUNCTION(zif_glfwGetCursorPos)
+PHP_FUNCTION(glfwGetCursorPos)
 {
     zval *glfwwindow_resource;
     zval *z_xpos;
     zval *z_ypos;
-    if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "rzz", &glfwwindow_resource, &z_xpos, &z_ypos) == FAILURE) {
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "rzz", &glfwwindow_resource, &z_xpos, &z_ypos) == FAILURE) {
        return;
     }
     ZVAL_DEREF(z_xpos); convert_to_double(z_xpos);
     ZVAL_DEREF(z_ypos); convert_to_double(z_ypos);
-    GLFWwindow *glfwwindow = phpglfw_fetch_glfwwindow(glfwwindow_resource TSRMLS_CC);
+    GLFWwindow *glfwwindow = phpglfw_fetch_glfwwindow(glfwwindow_resource );
     glfwGetCursorPos(glfwwindow, (double *)&z_xpos->value, (double *)&z_ypos->value);
 }
  
@@ -479,14 +500,14 @@ ZEND_BEGIN_ARG_INFO_EX(arginfo_glfwGetKey, 0, 0, 1)
     ZEND_ARG_INFO(0, key)
 ZEND_END_ARG_INFO()
 
-ZEND_NAMED_FUNCTION(zif_glfwGetKey)
+PHP_FUNCTION(glfwGetKey)
 {
     zval *glfwwindow_resource;
     zend_long key;
-    if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "rl", &glfwwindow_resource, &key) == FAILURE) {
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "rl", &glfwwindow_resource, &key) == FAILURE) {
        return;
     }
-    GLFWwindow *glfwwindow = phpglfw_fetch_glfwwindow(glfwwindow_resource TSRMLS_CC);
+    GLFWwindow *glfwwindow = phpglfw_fetch_glfwwindow(glfwwindow_resource );
     RETURN_LONG(glfwGetKey(glfwwindow, key));
 }
  
@@ -499,14 +520,14 @@ ZEND_BEGIN_ARG_INFO_EX(arginfo_glfwGetMouseButton, 0, 0, 1)
     ZEND_ARG_INFO(0, key)
 ZEND_END_ARG_INFO()
 
-ZEND_NAMED_FUNCTION(zif_glfwGetMouseButton)
+PHP_FUNCTION(glfwGetMouseButton)
 {
     zval *glfwwindow_resource;
     zend_long key;
-    if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "rl", &glfwwindow_resource, &key) == FAILURE) {
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "rl", &glfwwindow_resource, &key) == FAILURE) {
        return;
     }
-    GLFWwindow *glfwwindow = phpglfw_fetch_glfwwindow(glfwwindow_resource TSRMLS_CC);
+    GLFWwindow *glfwwindow = phpglfw_fetch_glfwwindow(glfwwindow_resource );
     RETURN_LONG(glfwGetMouseButton(glfwwindow, key));
 }
  
@@ -520,50 +541,101 @@ ZEND_BEGIN_ARG_INFO_EX(arginfo_glfwSetInputMode, 0, 0, 1)
     ZEND_ARG_INFO(0, value)
 ZEND_END_ARG_INFO()
 
-ZEND_NAMED_FUNCTION(zif_glfwSetInputMode)
+PHP_FUNCTION(glfwSetInputMode)
 {
     zval *glfwwindow_resource;
     zend_long param;
     zend_long value;
-    if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "rll", &glfwwindow_resource, &param, &value) == FAILURE) {
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "rll", &glfwwindow_resource, &param, &value) == FAILURE) {
        return;
     }
-    GLFWwindow *glfwwindow = phpglfw_fetch_glfwwindow(glfwwindow_resource TSRMLS_CC);
+    GLFWwindow *glfwwindow = phpglfw_fetch_glfwwindow(glfwwindow_resource );
     glfwSetInputMode(glfwwindow, param, value);
 }
  
 /**
- * glEnable
+ * glfwSetCursorPosCallback
  * --------------------------------
  */
-ZEND_BEGIN_ARG_INFO_EX(arginfo_glEnable, 0, 0, 1)
-    ZEND_ARG_INFO(0, cap)
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glfwSetCursorPosCallback, 0, 0, 1)
+    ZEND_ARG_INFO(0, glfwwindow)
+    ZEND_ARG_INFO(0, param)
 ZEND_END_ARG_INFO()
 
-ZEND_NAMED_FUNCTION(zif_glEnable)
+PHP_FUNCTION(glfwSetCursorPosCallback)
 {
-    zend_long cap;
-    if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "l", &cap) == FAILURE) {
+    zval *glfwwindow_resource;
+    zend_long param;
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "rl", &glfwwindow_resource, &param) == FAILURE) {
        return;
     }
-    glEnable(cap);
+    GLFWwindow *glfwwindow = phpglfw_fetch_glfwwindow(glfwwindow_resource );
+    glfwSetCursorPosCallback(glfwwindow, param);
 }
  
 /**
- * glDisable
+ * glCullFace
  * --------------------------------
  */
-ZEND_BEGIN_ARG_INFO_EX(arginfo_glDisable, 0, 0, 1)
-    ZEND_ARG_INFO(0, cap)
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glCullFace, 0, 0, 1)
 ZEND_END_ARG_INFO()
 
-ZEND_NAMED_FUNCTION(zif_glDisable)
+PHP_FUNCTION(glCullFace)
 {
-    zend_long cap;
-    if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "l", &cap) == FAILURE) {
-       return;
-    }
-    glDisable(cap);
+
+    glCullFace();
+}
+ 
+/**
+ * glFrontFace
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glFrontFace, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glFrontFace)
+{
+
+    glFrontFace();
+}
+ 
+/**
+ * glHint
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glHint, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glHint)
+{
+
+    glHint();
+}
+ 
+/**
+ * glLineWidth
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glLineWidth, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glLineWidth)
+{
+
+    glLineWidth();
+}
+ 
+/**
+ * glPointSize
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glPointSize, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glPointSize)
+{
+
+    glPointSize();
 }
  
 /**
@@ -571,873 +643,25 @@ ZEND_NAMED_FUNCTION(zif_glDisable)
  * --------------------------------
  */
 ZEND_BEGIN_ARG_INFO_EX(arginfo_glPolygonMode, 0, 0, 1)
-    ZEND_ARG_INFO(0, face)
-    ZEND_ARG_INFO(0, mode)
 ZEND_END_ARG_INFO()
 
-ZEND_NAMED_FUNCTION(zif_glPolygonMode)
+PHP_FUNCTION(glPolygonMode)
 {
-    zend_long face;
-    zend_long mode;
-    if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "ll", &face, &mode) == FAILURE) {
-       return;
-    }
-    glPolygonMode(face, mode);
+
+    glPolygonMode();
 }
  
 /**
- * glBlendFunc
+ * glScissor
  * --------------------------------
  */
-ZEND_BEGIN_ARG_INFO_EX(arginfo_glBlendFunc, 0, 0, 1)
-    ZEND_ARG_INFO(0, sfactor)
-    ZEND_ARG_INFO(0, dfactor)
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glScissor, 0, 0, 1)
 ZEND_END_ARG_INFO()
 
-ZEND_NAMED_FUNCTION(zif_glBlendFunc)
-{
-    zend_long sfactor;
-    zend_long dfactor;
-    if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "ll", &sfactor, &dfactor) == FAILURE) {
-       return;
-    }
-    glBlendFunc(sfactor, dfactor);
-}
- 
-/**
- * glViewport
- * --------------------------------
- */
-ZEND_BEGIN_ARG_INFO_EX(arginfo_glViewport, 0, 0, 1)
-    ZEND_ARG_INFO(0, x)
-    ZEND_ARG_INFO(0, y)
-    ZEND_ARG_INFO(0, w)
-    ZEND_ARG_INFO(0, h)
-ZEND_END_ARG_INFO()
-
-ZEND_NAMED_FUNCTION(zif_glViewport)
-{
-    double x;
-    double y;
-    double w;
-    double h;
-    if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "dddd", &x, &y, &w, &h) == FAILURE) {
-       return;
-    }
-    glViewport(x, y, w, h);
-}
- 
-/**
- * glClearColor
- * --------------------------------
- */
-ZEND_BEGIN_ARG_INFO_EX(arginfo_glClearColor, 0, 0, 1)
-    ZEND_ARG_INFO(0, r)
-    ZEND_ARG_INFO(0, g)
-    ZEND_ARG_INFO(0, b)
-    ZEND_ARG_INFO(0, a)
-ZEND_END_ARG_INFO()
-
-ZEND_NAMED_FUNCTION(zif_glClearColor)
-{
-    double r;
-    double g;
-    double b;
-    double a;
-    if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "dddd", &r, &g, &b, &a) == FAILURE) {
-       return;
-    }
-    glClearColor(r, g, b, a);
-}
- 
-/**
- * glClear
- * --------------------------------
- */
-ZEND_BEGIN_ARG_INFO_EX(arginfo_glClear, 0, 0, 1)
-    ZEND_ARG_INFO(0, mask)
-ZEND_END_ARG_INFO()
-
-ZEND_NAMED_FUNCTION(zif_glClear)
-{
-    zend_long mask;
-    if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "l", &mask) == FAILURE) {
-       return;
-    }
-    glClear(mask);
-}
- 
-/**
- * glGenBuffers
- * --------------------------------
- */
-ZEND_BEGIN_ARG_INFO_EX(arginfo_glGenBuffers, 0, 0, 1)
-    ZEND_ARG_INFO(0, n)
-    ZEND_ARG_INFO(1, buffers)
-ZEND_END_ARG_INFO()
-
-ZEND_NAMED_FUNCTION(zif_glGenBuffers)
-{
-    zend_long n;
-    zval *z_buffers;
-    if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "lz", &n, &z_buffers) == FAILURE) {
-       return;
-    }
-    ZVAL_DEREF(z_buffers); convert_to_long(z_buffers);
-    glGenBuffers(n, (GLuint *)&z_buffers->value);
-}
- 
-/**
- * glDeleteBuffers
- * --------------------------------
- */
-ZEND_BEGIN_ARG_INFO_EX(arginfo_glDeleteBuffers, 0, 0, 1)
-    ZEND_ARG_INFO(0, n)
-    ZEND_ARG_INFO(1, buffers)
-ZEND_END_ARG_INFO()
-
-ZEND_NAMED_FUNCTION(zif_glDeleteBuffers)
-{
-    zend_long n;
-    zval *z_buffers;
-    if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "lz", &n, &z_buffers) == FAILURE) {
-       return;
-    }
-    ZVAL_DEREF(z_buffers); convert_to_long(z_buffers);
-    glDeleteBuffers(n, (GLuint *)&z_buffers->value);
-}
- 
-/**
- * glGenVertexArrays
- * --------------------------------
- */
-ZEND_BEGIN_ARG_INFO_EX(arginfo_glGenVertexArrays, 0, 0, 1)
-    ZEND_ARG_INFO(0, n)
-    ZEND_ARG_INFO(1, buffers)
-ZEND_END_ARG_INFO()
-
-ZEND_NAMED_FUNCTION(zif_glGenVertexArrays)
-{
-    zend_long n;
-    zval *z_buffers;
-    if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "lz", &n, &z_buffers) == FAILURE) {
-       return;
-    }
-    ZVAL_DEREF(z_buffers); convert_to_long(z_buffers);
-    glGenVertexArrays(n, (GLuint *)&z_buffers->value);
-}
- 
-/**
- * glDeleteVertexArrays
- * --------------------------------
- */
-ZEND_BEGIN_ARG_INFO_EX(arginfo_glDeleteVertexArrays, 0, 0, 1)
-    ZEND_ARG_INFO(0, n)
-    ZEND_ARG_INFO(1, buffers)
-ZEND_END_ARG_INFO()
-
-ZEND_NAMED_FUNCTION(zif_glDeleteVertexArrays)
-{
-    zend_long n;
-    zval *z_buffers;
-    if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "lz", &n, &z_buffers) == FAILURE) {
-       return;
-    }
-    ZVAL_DEREF(z_buffers); convert_to_long(z_buffers);
-    glDeleteVertexArrays(n, (GLuint *)&z_buffers->value);
-}
- 
-/**
- * glBindBuffer
- * --------------------------------
- */
-ZEND_BEGIN_ARG_INFO_EX(arginfo_glBindBuffer, 0, 0, 1)
-    ZEND_ARG_INFO(0, target)
-    ZEND_ARG_INFO(0, buffer)
-ZEND_END_ARG_INFO()
-
-ZEND_NAMED_FUNCTION(zif_glBindBuffer)
-{
-    zend_long target;
-    zend_long buffer;
-    if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "ll", &target, &buffer) == FAILURE) {
-       return;
-    }
-    glBindBuffer(target, buffer);
-}
- 
-/**
- * glBindVertexArray
- * --------------------------------
- */
-ZEND_BEGIN_ARG_INFO_EX(arginfo_glBindVertexArray, 0, 0, 1)
-    ZEND_ARG_INFO(0, target)
-ZEND_END_ARG_INFO()
-
-ZEND_NAMED_FUNCTION(zif_glBindVertexArray)
-{
-    zend_long target;
-    if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "l", &target) == FAILURE) {
-       return;
-    }
-    glBindVertexArray(target);
-}
- 
-/**
- * glBufferData
- * --------------------------------
- */
-ZEND_BEGIN_ARG_INFO_EX(arginfo_glBufferData, 0, 0, 1)
-    ZEND_ARG_INFO(0, target)
-    ZEND_ARG_INFO(0, size)
-    ZEND_ARG_INFO(0, data)
-    ZEND_ARG_INFO(0, usage)
-ZEND_END_ARG_INFO()
-
-ZEND_NAMED_FUNCTION(zif_glBufferData)
-{
-    zend_long target;
-    zend_long size;
-    HashTable *data; zval *data_data;
-    zend_long usage;
-    if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "llhl", &target, &size, &data, &usage) == FAILURE) {
-       return;
-    }
-    zend_error(E_ERROR, "This method is unavailable in PHP-GLFW. Please use `glBufferDataFloat(long target, array data, long usage)`, `glBufferDataDouble(long target, array data, long usage)`, `glBufferDataInt(long target, array data, long usage)` or `glBufferDataLong(long target, array data, long usage)`");
-}
- 
-/**
- * glBufferDataFloat
- * --------------------------------
- */
-ZEND_BEGIN_ARG_INFO_EX(arginfo_glBufferDataFloat, 0, 0, 1)
-    ZEND_ARG_INFO(0, target)
-    ZEND_ARG_INFO(0, data)
-    ZEND_ARG_INFO(0, usage)
-ZEND_END_ARG_INFO()
-
-ZEND_NAMED_FUNCTION(zif_glBufferDataFloat)
-{
-    zend_long target;
-    HashTable *data; zval *data_data;
-    zend_long usage;
-    if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "lhl", &target, &data, &usage) == FAILURE) {
-       return;
-    }
-    float cdata[zend_hash_num_elements(data)];
-    int i = 0;
-    ZEND_HASH_FOREACH_VAL(data, data_data)
-      ZVAL_DEREF(data_data);
-      convert_to_double(data_data);
-      cdata[i] = (float) Z_DVAL_P(data_data);
-      i++;
-    ZEND_HASH_FOREACH_END();
-    glBufferData(target, sizeof(cdata), cdata, usage);
-}
- 
-/**
- * glBufferDataInt
- * --------------------------------
- */
-ZEND_BEGIN_ARG_INFO_EX(arginfo_glBufferDataInt, 0, 0, 1)
-    ZEND_ARG_INFO(0, target)
-    ZEND_ARG_INFO(0, data)
-    ZEND_ARG_INFO(0, usage)
-ZEND_END_ARG_INFO()
-
-ZEND_NAMED_FUNCTION(zif_glBufferDataInt)
-{
-    zend_long target;
-    HashTable *data; zval *data_data;
-    zend_long usage;
-    if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "lhl", &target, &data, &usage) == FAILURE) {
-       return;
-    }
-    int cdata[zend_hash_num_elements(data)];
-    int i = 0;
-    ZEND_HASH_FOREACH_VAL(data, data_data)
-      ZVAL_DEREF(data_data);
-      convert_to_long(data_data);
-      cdata[i] = (int) Z_LVAL_P(data_data);
-      i++;
-    ZEND_HASH_FOREACH_END();
-    glBufferData(target, sizeof(cdata), cdata, usage);
-}
- 
-/**
- * glVertexAttribPointer
- * --------------------------------
- */
-ZEND_BEGIN_ARG_INFO_EX(arginfo_glVertexAttribPointer, 0, 0, 1)
-    ZEND_ARG_INFO(0, index)
-    ZEND_ARG_INFO(0, size)
-    ZEND_ARG_INFO(0, type)
-    ZEND_ARG_INFO(0, normalized)
-    ZEND_ARG_INFO(0, stride)
-    ZEND_ARG_INFO(0, pointer)
-ZEND_END_ARG_INFO()
-
-ZEND_NAMED_FUNCTION(zif_glVertexAttribPointer)
-{
-    zend_long index;
-    zend_long size;
-    zend_long type;
-    zend_long normalized;
-    zend_long stride;
-    zend_long pointer;
-    if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "llllll", &index, &size, &type, &normalized, &stride, &pointer) == FAILURE) {
-       return;
-    }
-    glVertexAttribPointer(index, size, type, normalized, stride * sizeof(float), (void*)(pointer * sizeof(float)));
-}
- 
-/**
- * glEnableVertexAttribArray
- * --------------------------------
- */
-ZEND_BEGIN_ARG_INFO_EX(arginfo_glEnableVertexAttribArray, 0, 0, 1)
-    ZEND_ARG_INFO(0, index)
-ZEND_END_ARG_INFO()
-
-ZEND_NAMED_FUNCTION(zif_glEnableVertexAttribArray)
-{
-    zend_long index;
-    if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "l", &index) == FAILURE) {
-       return;
-    }
-    glEnableVertexAttribArray(index);
-}
- 
-/**
- * glDrawArrays
- * --------------------------------
- */
-ZEND_BEGIN_ARG_INFO_EX(arginfo_glDrawArrays, 0, 0, 1)
-    ZEND_ARG_INFO(0, mode)
-    ZEND_ARG_INFO(0, first)
-    ZEND_ARG_INFO(0, count)
-ZEND_END_ARG_INFO()
-
-ZEND_NAMED_FUNCTION(zif_glDrawArrays)
-{
-    zend_long mode;
-    zend_long first;
-    zend_long count;
-    if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "lll", &mode, &first, &count) == FAILURE) {
-       return;
-    }
-    glDrawArrays(mode, first, count);
-}
- 
-/**
- * glDrawElements
- * --------------------------------
- */
-ZEND_BEGIN_ARG_INFO_EX(arginfo_glDrawElements, 0, 0, 1)
-    ZEND_ARG_INFO(0, mode)
-    ZEND_ARG_INFO(0, count)
-    ZEND_ARG_INFO(0, type)
-    ZEND_ARG_INFO(0, indices)
-ZEND_END_ARG_INFO()
-
-ZEND_NAMED_FUNCTION(zif_glDrawElements)
-{
-    zend_long mode;
-    zend_long count;
-    zend_long type;
-    zend_long indices;
-    if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "llll", &mode, &count, &type, &indices) == FAILURE) {
-       return;
-    }
-    glDrawElements(mode, count, type, indices);
-}
- 
-/**
- * glCreateShader
- * --------------------------------
- */
-ZEND_BEGIN_ARG_INFO_EX(arginfo_glCreateShader, 0, 0, 1)
-    ZEND_ARG_INFO(0, target)
-ZEND_END_ARG_INFO()
-
-ZEND_NAMED_FUNCTION(zif_glCreateShader)
-{
-    zend_long target;
-    if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "l", &target) == FAILURE) {
-       return;
-    }
-    RETURN_LONG(glCreateShader(target));
-}
- 
-/**
- * glCreateProgram
- * --------------------------------
- */
-ZEND_NAMED_FUNCTION(zif_glCreateProgram)
+PHP_FUNCTION(glScissor)
 {
 
-    RETURN_LONG(glCreateProgram());
-}
- 
-/**
- * glShaderSource
- * --------------------------------
- */
-ZEND_BEGIN_ARG_INFO_EX(arginfo_glShaderSource, 0, 0, 1)
-    ZEND_ARG_INFO(0, shader)
-    ZEND_ARG_INFO(0, count)
-    ZEND_ARG_INFO(0, source)
-ZEND_END_ARG_INFO()
-
-ZEND_NAMED_FUNCTION(zif_glShaderSource)
-{
-    zend_long shader;
-    zend_long count;
-    const char *source;
-    size_t source_size;
-    if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "lls", &shader, &count, &source, &source_size) == FAILURE) {
-       return;
-    }
-    glShaderSource(shader, count, &source, NULL);
-}
- 
-/**
- * glCompileShader
- * --------------------------------
- */
-ZEND_BEGIN_ARG_INFO_EX(arginfo_glCompileShader, 0, 0, 1)
-    ZEND_ARG_INFO(0, shader)
-ZEND_END_ARG_INFO()
-
-ZEND_NAMED_FUNCTION(zif_glCompileShader)
-{
-    zend_long shader;
-    if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "l", &shader) == FAILURE) {
-       return;
-    }
-    glCompileShader(shader);
-}
- 
-/**
- * glDeleteShader
- * --------------------------------
- */
-ZEND_BEGIN_ARG_INFO_EX(arginfo_glDeleteShader, 0, 0, 1)
-    ZEND_ARG_INFO(0, shader)
-ZEND_END_ARG_INFO()
-
-ZEND_NAMED_FUNCTION(zif_glDeleteShader)
-{
-    zend_long shader;
-    if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "l", &shader) == FAILURE) {
-       return;
-    }
-    glDeleteShader(shader);
-}
- 
-/**
- * glAttachShader
- * --------------------------------
- */
-ZEND_BEGIN_ARG_INFO_EX(arginfo_glAttachShader, 0, 0, 1)
-    ZEND_ARG_INFO(0, program)
-    ZEND_ARG_INFO(0, index)
-ZEND_END_ARG_INFO()
-
-ZEND_NAMED_FUNCTION(zif_glAttachShader)
-{
-    zend_long program;
-    zend_long index;
-    if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "ll", &program, &index) == FAILURE) {
-       return;
-    }
-    glAttachShader(program, index);
-}
- 
-/**
- * glGetUniformLocation
- * --------------------------------
- */
-ZEND_BEGIN_ARG_INFO_EX(arginfo_glGetUniformLocation, 0, 0, 1)
-    ZEND_ARG_INFO(0, program)
-    ZEND_ARG_INFO(0, name)
-ZEND_END_ARG_INFO()
-
-ZEND_NAMED_FUNCTION(zif_glGetUniformLocation)
-{
-    zend_long program;
-    const char *name;
-    size_t name_size;
-    if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "ls", &program, &name, &name_size) == FAILURE) {
-       return;
-    }
-    RETURN_LONG(glGetUniformLocation(program, name));
-}
- 
-/**
- * glUniform1i
- * --------------------------------
- */
-ZEND_BEGIN_ARG_INFO_EX(arginfo_glUniform1i, 0, 0, 1)
-    ZEND_ARG_INFO(0, location)
-    ZEND_ARG_INFO(0, value)
-ZEND_END_ARG_INFO()
-
-ZEND_NAMED_FUNCTION(zif_glUniform1i)
-{
-    zend_long location;
-    zend_long value;
-    if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "ll", &location, &value) == FAILURE) {
-       return;
-    }
-    glUniform1i(location, value);
-}
- 
-/**
- * glUniform2i
- * --------------------------------
- */
-ZEND_BEGIN_ARG_INFO_EX(arginfo_glUniform2i, 0, 0, 1)
-    ZEND_ARG_INFO(0, location)
-    ZEND_ARG_INFO(0, value0)
-    ZEND_ARG_INFO(0, value1)
-ZEND_END_ARG_INFO()
-
-ZEND_NAMED_FUNCTION(zif_glUniform2i)
-{
-    zend_long location;
-    zend_long value0;
-    zend_long value1;
-    if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "lll", &location, &value0, &value1) == FAILURE) {
-       return;
-    }
-    glUniform2i(location, value0, value1);
-}
- 
-/**
- * glUniform3i
- * --------------------------------
- */
-ZEND_BEGIN_ARG_INFO_EX(arginfo_glUniform3i, 0, 0, 1)
-    ZEND_ARG_INFO(0, location)
-    ZEND_ARG_INFO(0, value0)
-    ZEND_ARG_INFO(0, value1)
-    ZEND_ARG_INFO(0, value2)
-ZEND_END_ARG_INFO()
-
-ZEND_NAMED_FUNCTION(zif_glUniform3i)
-{
-    zend_long location;
-    zend_long value0;
-    zend_long value1;
-    zend_long value2;
-    if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "llll", &location, &value0, &value1, &value2) == FAILURE) {
-       return;
-    }
-    glUniform3i(location, value0, value1, value2);
-}
- 
-/**
- * glUniform4i
- * --------------------------------
- */
-ZEND_BEGIN_ARG_INFO_EX(arginfo_glUniform4i, 0, 0, 1)
-    ZEND_ARG_INFO(0, location)
-    ZEND_ARG_INFO(0, value0)
-    ZEND_ARG_INFO(0, value1)
-    ZEND_ARG_INFO(0, value2)
-    ZEND_ARG_INFO(0, value3)
-ZEND_END_ARG_INFO()
-
-ZEND_NAMED_FUNCTION(zif_glUniform4i)
-{
-    zend_long location;
-    zend_long value0;
-    zend_long value1;
-    zend_long value2;
-    zend_long value3;
-    if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "lllll", &location, &value0, &value1, &value2, &value3) == FAILURE) {
-       return;
-    }
-    glUniform4i(location, value0, value1, value2, value3);
-}
- 
-/**
- * glUniform1f
- * --------------------------------
- */
-ZEND_BEGIN_ARG_INFO_EX(arginfo_glUniform1f, 0, 0, 1)
-    ZEND_ARG_INFO(0, location)
-    ZEND_ARG_INFO(0, value)
-ZEND_END_ARG_INFO()
-
-ZEND_NAMED_FUNCTION(zif_glUniform1f)
-{
-    zend_long location;
-    double value;
-    if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "ld", &location, &value) == FAILURE) {
-       return;
-    }
-    glUniform1f(location, value);
-}
- 
-/**
- * glUniform2f
- * --------------------------------
- */
-ZEND_BEGIN_ARG_INFO_EX(arginfo_glUniform2f, 0, 0, 1)
-    ZEND_ARG_INFO(0, location)
-    ZEND_ARG_INFO(0, value0)
-    ZEND_ARG_INFO(0, value1)
-ZEND_END_ARG_INFO()
-
-ZEND_NAMED_FUNCTION(zif_glUniform2f)
-{
-    zend_long location;
-    double value0;
-    double value1;
-    if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "ldd", &location, &value0, &value1) == FAILURE) {
-       return;
-    }
-    glUniform2f(location, value0, value1);
-}
- 
-/**
- * glUniform3f
- * --------------------------------
- */
-ZEND_BEGIN_ARG_INFO_EX(arginfo_glUniform3f, 0, 0, 1)
-    ZEND_ARG_INFO(0, location)
-    ZEND_ARG_INFO(0, value0)
-    ZEND_ARG_INFO(0, value1)
-    ZEND_ARG_INFO(0, value2)
-ZEND_END_ARG_INFO()
-
-ZEND_NAMED_FUNCTION(zif_glUniform3f)
-{
-    zend_long location;
-    double value0;
-    double value1;
-    double value2;
-    if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "lddd", &location, &value0, &value1, &value2) == FAILURE) {
-       return;
-    }
-    glUniform3f(location, value0, value1, value2);
-}
- 
-/**
- * glUniform4f
- * --------------------------------
- */
-ZEND_BEGIN_ARG_INFO_EX(arginfo_glUniform4f, 0, 0, 1)
-    ZEND_ARG_INFO(0, location)
-    ZEND_ARG_INFO(0, value0)
-    ZEND_ARG_INFO(0, value1)
-    ZEND_ARG_INFO(0, value2)
-    ZEND_ARG_INFO(0, value3)
-ZEND_END_ARG_INFO()
-
-ZEND_NAMED_FUNCTION(zif_glUniform4f)
-{
-    zend_long location;
-    double value0;
-    double value1;
-    double value2;
-    double value3;
-    if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "ldddd", &location, &value0, &value1, &value2, &value3) == FAILURE) {
-       return;
-    }
-    glUniform4f(location, value0, value1, value2, value3);
-}
- 
-/**
- * glUniformMatrix4fv
- * --------------------------------
- */
-ZEND_BEGIN_ARG_INFO_EX(arginfo_glUniformMatrix4fv, 0, 0, 1)
-    ZEND_ARG_INFO(0, location)
-    ZEND_ARG_INFO(0, count)
-    ZEND_ARG_INFO(0, transpose)
-    ZEND_ARG_INFO(0, value)
-ZEND_END_ARG_INFO()
-
-ZEND_NAMED_FUNCTION(zif_glUniformMatrix4fv)
-{
-    zend_long location;
-    zend_long count;
-    zend_bool transpose;
-    HashTable *value; zval *value_data;
-    if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "llbh", &location, &count, &transpose, &value) == FAILURE) {
-       return;
-    }
-    float cdata[zend_hash_num_elements(value)];
-    uint32_t i = 0;
-    ZEND_HASH_FOREACH_VAL(value, value_data)
-      ZVAL_DEREF(value_data);
-      convert_to_double(value_data);
-      cdata[i] = (float) Z_DVAL_P(value_data);
-      i++;
-    ZEND_HASH_FOREACH_END();
-    glUniformMatrix4fv(location, count, transpose, &cdata[0]);
-}
- 
-/**
- * glLinkProgram
- * --------------------------------
- */
-ZEND_BEGIN_ARG_INFO_EX(arginfo_glLinkProgram, 0, 0, 1)
-    ZEND_ARG_INFO(0, program)
-ZEND_END_ARG_INFO()
-
-ZEND_NAMED_FUNCTION(zif_glLinkProgram)
-{
-    zend_long program;
-    if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "l", &program) == FAILURE) {
-       return;
-    }
-    glLinkProgram(program);
-}
- 
-/**
- * glGetShaderiv
- * --------------------------------
- */
-ZEND_BEGIN_ARG_INFO_EX(arginfo_glGetShaderiv, 0, 0, 1)
-    ZEND_ARG_INFO(0, shader)
-    ZEND_ARG_INFO(0, pname)
-    ZEND_ARG_INFO(1, params)
-ZEND_END_ARG_INFO()
-
-ZEND_NAMED_FUNCTION(zif_glGetShaderiv)
-{
-    zend_long shader;
-    zend_long pname;
-    zval *z_params;
-    if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "llz", &shader, &pname, &z_params) == FAILURE) {
-       return;
-    }
-    ZVAL_DEREF(z_params); convert_to_long(z_params);
-    glGetShaderiv(shader, pname, (void *)&z_params->value);
-}
- 
-/**
- * glGetProgramiv
- * --------------------------------
- */
-ZEND_BEGIN_ARG_INFO_EX(arginfo_glGetProgramiv, 0, 0, 1)
-    ZEND_ARG_INFO(0, program)
-    ZEND_ARG_INFO(0, pname)
-    ZEND_ARG_INFO(1, params)
-ZEND_END_ARG_INFO()
-
-ZEND_NAMED_FUNCTION(zif_glGetProgramiv)
-{
-    zend_long program;
-    zend_long pname;
-    zval *z_params;
-    if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "llz", &program, &pname, &z_params) == FAILURE) {
-       return;
-    }
-    ZVAL_DEREF(z_params); convert_to_long(z_params);
-    glGetProgramiv(program, pname, (void *)&z_params->value);
-}
- 
-/**
- * glUseProgram
- * --------------------------------
- */
-ZEND_BEGIN_ARG_INFO_EX(arginfo_glUseProgram, 0, 0, 1)
-    ZEND_ARG_INFO(0, program)
-ZEND_END_ARG_INFO()
-
-ZEND_NAMED_FUNCTION(zif_glUseProgram)
-{
-    zend_long program;
-    if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "l", &program) == FAILURE) {
-       return;
-    }
-    glUseProgram(program);
-}
- 
-/**
- * glGenTextures
- * --------------------------------
- */
-ZEND_BEGIN_ARG_INFO_EX(arginfo_glGenTextures, 0, 0, 1)
-    ZEND_ARG_INFO(0, n)
-    ZEND_ARG_INFO(1, textures)
-ZEND_END_ARG_INFO()
-
-ZEND_NAMED_FUNCTION(zif_glGenTextures)
-{
-    zend_long n;
-    zval *z_textures;
-    if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "lz", &n, &z_textures) == FAILURE) {
-       return;
-    }
-    ZVAL_DEREF(z_textures); convert_to_long(z_textures);
-    glGenTextures(n, (GLuint *)&z_textures->value);
-}
- 
-/**
- * glBindTexture
- * --------------------------------
- */
-ZEND_BEGIN_ARG_INFO_EX(arginfo_glBindTexture, 0, 0, 1)
-    ZEND_ARG_INFO(0, target)
-    ZEND_ARG_INFO(0, texture)
-ZEND_END_ARG_INFO()
-
-ZEND_NAMED_FUNCTION(zif_glBindTexture)
-{
-    zend_long target;
-    zend_long texture;
-    if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "ll", &target, &texture) == FAILURE) {
-       return;
-    }
-    glBindTexture(target, texture);
-}
- 
-/**
- * glTexParameteri
- * --------------------------------
- */
-ZEND_BEGIN_ARG_INFO_EX(arginfo_glTexParameteri, 0, 0, 1)
-    ZEND_ARG_INFO(0, target)
-    ZEND_ARG_INFO(0, pname)
-    ZEND_ARG_INFO(0, param)
-ZEND_END_ARG_INFO()
-
-ZEND_NAMED_FUNCTION(zif_glTexParameteri)
-{
-    zend_long target;
-    zend_long pname;
-    zend_long param;
-    if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "lll", &target, &pname, &param) == FAILURE) {
-       return;
-    }
-    glTexParameteri(target, pname, param);
-}
- 
-/**
- * glTextureParameteri
- * --------------------------------
- */
-ZEND_BEGIN_ARG_INFO_EX(arginfo_glTextureParameteri, 0, 0, 1)
-    ZEND_ARG_INFO(0, target)
-    ZEND_ARG_INFO(0, pname)
-    ZEND_ARG_INFO(0, param)
-ZEND_END_ARG_INFO()
-
-ZEND_NAMED_FUNCTION(zif_glTextureParameteri)
-{
-    zend_long target;
-    zend_long pname;
-    zend_long param;
-    if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "lll", &target, &pname, &param) == FAILURE) {
-       return;
-    }
-    glTextureParameteri(target, pname, param);
+    glScissor();
 }
  
 /**
@@ -1445,41 +669,64 @@ ZEND_NAMED_FUNCTION(zif_glTextureParameteri)
  * --------------------------------
  */
 ZEND_BEGIN_ARG_INFO_EX(arginfo_glTexParameterf, 0, 0, 1)
-    ZEND_ARG_INFO(0, target)
-    ZEND_ARG_INFO(0, pname)
-    ZEND_ARG_INFO(0, param)
 ZEND_END_ARG_INFO()
 
-ZEND_NAMED_FUNCTION(zif_glTexParameterf)
+PHP_FUNCTION(glTexParameterf)
 {
-    zend_long target;
-    zend_long pname;
-    double param;
-    if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "lld", &target, &pname, &param) == FAILURE) {
-       return;
-    }
-    glTexParameterf(target, pname, param);
+
+    glTexParameterf();
 }
  
 /**
- * glTextureParameterf
+ * glTexParameterfv
  * --------------------------------
  */
-ZEND_BEGIN_ARG_INFO_EX(arginfo_glTextureParameterf, 0, 0, 1)
-    ZEND_ARG_INFO(0, target)
-    ZEND_ARG_INFO(0, pname)
-    ZEND_ARG_INFO(0, param)
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glTexParameterfv, 0, 0, 1)
 ZEND_END_ARG_INFO()
 
-ZEND_NAMED_FUNCTION(zif_glTextureParameterf)
+PHP_FUNCTION(glTexParameterfv)
 {
-    zend_long target;
-    zend_long pname;
-    double param;
-    if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "lld", &target, &pname, &param) == FAILURE) {
-       return;
-    }
-    glTextureParameterf(target, pname, param);
+
+    glTexParameterfv();
+}
+ 
+/**
+ * glTexParameteri
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glTexParameteri, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glTexParameteri)
+{
+
+    glTexParameteri();
+}
+ 
+/**
+ * glTexParameteriv
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glTexParameteriv, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glTexParameteriv)
+{
+
+    glTexParameteriv();
+}
+ 
+/**
+ * glTexImage1D
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glTexImage1D, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glTexImage1D)
+{
+
+    glTexImage1D();
 }
  
 /**
@@ -1487,50 +734,4263 @@ ZEND_NAMED_FUNCTION(zif_glTextureParameterf)
  * --------------------------------
  */
 ZEND_BEGIN_ARG_INFO_EX(arginfo_glTexImage2D, 0, 0, 1)
-    ZEND_ARG_INFO(0, target)
-    ZEND_ARG_INFO(0, level)
-    ZEND_ARG_INFO(0, internal_format)
-    ZEND_ARG_INFO(0, width)
-    ZEND_ARG_INFO(0, height)
-    ZEND_ARG_INFO(0, border)
-    ZEND_ARG_INFO(0, format)
-    ZEND_ARG_INFO(0, type)
-    ZEND_ARG_INFO(0, stbimagedata)
 ZEND_END_ARG_INFO()
 
-ZEND_NAMED_FUNCTION(zif_glTexImage2D)
+PHP_FUNCTION(glTexImage2D)
 {
-    zend_long target;
-    zend_long level;
-    zend_long internal_format;
-    zend_long width;
-    zend_long height;
-    zend_long border;
-    zend_long format;
-    zend_long type;
-    zval *stbimagedata_resource;
-    if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "llllllllr", &target, &level, &internal_format, &width, &height, &border, &format, &type, &stbimagedata_resource) == FAILURE) {
-       return;
-    }
-    unsigned char *stbimagedata = phpglfw_fetch_stbimagedata(stbimagedata_resource TSRMLS_CC);
-    glTexImage2D(target, level, internal_format, width, height, border, format, type, stbimagedata);
+
+    glTexImage2D();
 }
  
 /**
- * glGenerateMipmap
+ * glDrawBuffer
  * --------------------------------
  */
-ZEND_BEGIN_ARG_INFO_EX(arginfo_glGenerateMipmap, 0, 0, 1)
-    ZEND_ARG_INFO(0, target)
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glDrawBuffer, 0, 0, 1)
 ZEND_END_ARG_INFO()
 
-ZEND_NAMED_FUNCTION(zif_glGenerateMipmap)
+PHP_FUNCTION(glDrawBuffer)
 {
-    zend_long target;
-    if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "l", &target) == FAILURE) {
-       return;
-    }
-    glGenerateMipmap(target);
+
+    glDrawBuffer();
+}
+ 
+/**
+ * glClear
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glClear, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glClear)
+{
+
+    glClear();
+}
+ 
+/**
+ * glClearColor
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glClearColor, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glClearColor)
+{
+
+    glClearColor();
+}
+ 
+/**
+ * glClearStencil
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glClearStencil, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glClearStencil)
+{
+
+    glClearStencil();
+}
+ 
+/**
+ * glClearDepth
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glClearDepth, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glClearDepth)
+{
+
+    glClearDepth();
+}
+ 
+/**
+ * glStencilMask
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glStencilMask, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glStencilMask)
+{
+
+    glStencilMask();
+}
+ 
+/**
+ * glColorMask
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glColorMask, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glColorMask)
+{
+
+    glColorMask();
+}
+ 
+/**
+ * glDepthMask
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glDepthMask, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glDepthMask)
+{
+
+    glDepthMask();
+}
+ 
+/**
+ * glDisable
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glDisable, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glDisable)
+{
+
+    glDisable();
+}
+ 
+/**
+ * glEnable
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glEnable, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glEnable)
+{
+
+    glEnable();
+}
+ 
+/**
+ * glFinish
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glFinish, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glFinish)
+{
+
+    glFinish();
+}
+ 
+/**
+ * glFlush
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glFlush, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glFlush)
+{
+
+    glFlush();
+}
+ 
+/**
+ * glBlendFunc
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glBlendFunc, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glBlendFunc)
+{
+
+    glBlendFunc();
+}
+ 
+/**
+ * glLogicOp
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glLogicOp, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glLogicOp)
+{
+
+    glLogicOp();
+}
+ 
+/**
+ * glStencilFunc
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glStencilFunc, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glStencilFunc)
+{
+
+    glStencilFunc();
+}
+ 
+/**
+ * glStencilOp
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glStencilOp, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glStencilOp)
+{
+
+    glStencilOp();
+}
+ 
+/**
+ * glDepthFunc
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glDepthFunc, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glDepthFunc)
+{
+
+    glDepthFunc();
+}
+ 
+/**
+ * glPixelStoref
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glPixelStoref, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glPixelStoref)
+{
+
+    glPixelStoref();
+}
+ 
+/**
+ * glPixelStorei
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glPixelStorei, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glPixelStorei)
+{
+
+    glPixelStorei();
+}
+ 
+/**
+ * glReadBuffer
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glReadBuffer, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glReadBuffer)
+{
+
+    glReadBuffer();
+}
+ 
+/**
+ * glReadPixels
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glReadPixels, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glReadPixels)
+{
+
+    glReadPixels();
+}
+ 
+/**
+ * glGetBooleanv
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glGetBooleanv, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glGetBooleanv)
+{
+
+    glGetBooleanv();
+}
+ 
+/**
+ * glGetDoublev
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glGetDoublev, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glGetDoublev)
+{
+
+    glGetDoublev();
+}
+ 
+/**
+ * glGetError
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glGetError, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glGetError)
+{
+
+    glGetError();
+}
+ 
+/**
+ * glGetFloatv
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glGetFloatv, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glGetFloatv)
+{
+
+    glGetFloatv();
+}
+ 
+/**
+ * glGetIntegerv
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glGetIntegerv, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glGetIntegerv)
+{
+
+    glGetIntegerv();
+}
+ 
+/**
+ * glGetString
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glGetString, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glGetString)
+{
+
+    glGetString();
+}
+ 
+/**
+ * glGetTexImage
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glGetTexImage, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glGetTexImage)
+{
+
+    glGetTexImage();
+}
+ 
+/**
+ * glGetTexParameterfv
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glGetTexParameterfv, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glGetTexParameterfv)
+{
+
+    glGetTexParameterfv();
+}
+ 
+/**
+ * glGetTexParameteriv
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glGetTexParameteriv, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glGetTexParameteriv)
+{
+
+    glGetTexParameteriv();
+}
+ 
+/**
+ * glGetTexLevelParameterfv
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glGetTexLevelParameterfv, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glGetTexLevelParameterfv)
+{
+
+    glGetTexLevelParameterfv();
+}
+ 
+/**
+ * glGetTexLevelParameteriv
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glGetTexLevelParameteriv, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glGetTexLevelParameteriv)
+{
+
+    glGetTexLevelParameteriv();
+}
+ 
+/**
+ * glIsEnabled
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glIsEnabled, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glIsEnabled)
+{
+
+    glIsEnabled();
+}
+ 
+/**
+ * glDepthRange
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glDepthRange, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glDepthRange)
+{
+
+    glDepthRange();
+}
+ 
+/**
+ * glViewport
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glViewport, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glViewport)
+{
+
+    glViewport();
+}
+ 
+/**
+ * glNewList
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glNewList, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glNewList)
+{
+
+    glNewList();
+}
+ 
+/**
+ * glEndList
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glEndList, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glEndList)
+{
+
+    glEndList();
+}
+ 
+/**
+ * glCallList
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glCallList, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glCallList)
+{
+
+    glCallList();
+}
+ 
+/**
+ * glCallLists
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glCallLists, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glCallLists)
+{
+
+    glCallLists();
+}
+ 
+/**
+ * glDeleteLists
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glDeleteLists, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glDeleteLists)
+{
+
+    glDeleteLists();
+}
+ 
+/**
+ * glGenLists
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glGenLists, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glGenLists)
+{
+
+    glGenLists();
+}
+ 
+/**
+ * glListBase
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glListBase, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glListBase)
+{
+
+    glListBase();
+}
+ 
+/**
+ * glBegin
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glBegin, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glBegin)
+{
+
+    glBegin();
+}
+ 
+/**
+ * glBitmap
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glBitmap, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glBitmap)
+{
+
+    glBitmap();
+}
+ 
+/**
+ * glColor3b
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glColor3b, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glColor3b)
+{
+
+    glColor3b();
+}
+ 
+/**
+ * glColor3bv
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glColor3bv, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glColor3bv)
+{
+
+    glColor3bv();
+}
+ 
+/**
+ * glColor3d
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glColor3d, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glColor3d)
+{
+
+    glColor3d();
+}
+ 
+/**
+ * glColor3dv
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glColor3dv, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glColor3dv)
+{
+
+    glColor3dv();
+}
+ 
+/**
+ * glColor3f
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glColor3f, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glColor3f)
+{
+
+    glColor3f();
+}
+ 
+/**
+ * glColor3fv
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glColor3fv, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glColor3fv)
+{
+
+    glColor3fv();
+}
+ 
+/**
+ * glColor3i
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glColor3i, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glColor3i)
+{
+
+    glColor3i();
+}
+ 
+/**
+ * glColor3iv
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glColor3iv, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glColor3iv)
+{
+
+    glColor3iv();
+}
+ 
+/**
+ * glColor3s
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glColor3s, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glColor3s)
+{
+
+    glColor3s();
+}
+ 
+/**
+ * glColor3sv
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glColor3sv, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glColor3sv)
+{
+
+    glColor3sv();
+}
+ 
+/**
+ * glColor3ub
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glColor3ub, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glColor3ub)
+{
+
+    glColor3ub();
+}
+ 
+/**
+ * glColor3ubv
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glColor3ubv, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glColor3ubv)
+{
+
+    glColor3ubv();
+}
+ 
+/**
+ * glColor3ui
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glColor3ui, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glColor3ui)
+{
+
+    glColor3ui();
+}
+ 
+/**
+ * glColor3uiv
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glColor3uiv, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glColor3uiv)
+{
+
+    glColor3uiv();
+}
+ 
+/**
+ * glColor3us
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glColor3us, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glColor3us)
+{
+
+    glColor3us();
+}
+ 
+/**
+ * glColor3usv
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glColor3usv, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glColor3usv)
+{
+
+    glColor3usv();
+}
+ 
+/**
+ * glColor4b
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glColor4b, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glColor4b)
+{
+
+    glColor4b();
+}
+ 
+/**
+ * glColor4bv
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glColor4bv, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glColor4bv)
+{
+
+    glColor4bv();
+}
+ 
+/**
+ * glColor4d
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glColor4d, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glColor4d)
+{
+
+    glColor4d();
+}
+ 
+/**
+ * glColor4dv
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glColor4dv, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glColor4dv)
+{
+
+    glColor4dv();
+}
+ 
+/**
+ * glColor4f
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glColor4f, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glColor4f)
+{
+
+    glColor4f();
+}
+ 
+/**
+ * glColor4fv
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glColor4fv, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glColor4fv)
+{
+
+    glColor4fv();
+}
+ 
+/**
+ * glColor4i
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glColor4i, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glColor4i)
+{
+
+    glColor4i();
+}
+ 
+/**
+ * glColor4iv
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glColor4iv, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glColor4iv)
+{
+
+    glColor4iv();
+}
+ 
+/**
+ * glColor4s
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glColor4s, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glColor4s)
+{
+
+    glColor4s();
+}
+ 
+/**
+ * glColor4sv
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glColor4sv, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glColor4sv)
+{
+
+    glColor4sv();
+}
+ 
+/**
+ * glColor4ub
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glColor4ub, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glColor4ub)
+{
+
+    glColor4ub();
+}
+ 
+/**
+ * glColor4ubv
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glColor4ubv, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glColor4ubv)
+{
+
+    glColor4ubv();
+}
+ 
+/**
+ * glColor4ui
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glColor4ui, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glColor4ui)
+{
+
+    glColor4ui();
+}
+ 
+/**
+ * glColor4uiv
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glColor4uiv, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glColor4uiv)
+{
+
+    glColor4uiv();
+}
+ 
+/**
+ * glColor4us
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glColor4us, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glColor4us)
+{
+
+    glColor4us();
+}
+ 
+/**
+ * glColor4usv
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glColor4usv, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glColor4usv)
+{
+
+    glColor4usv();
+}
+ 
+/**
+ * glEdgeFlag
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glEdgeFlag, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glEdgeFlag)
+{
+
+    glEdgeFlag();
+}
+ 
+/**
+ * glEdgeFlagv
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glEdgeFlagv, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glEdgeFlagv)
+{
+
+    glEdgeFlagv();
+}
+ 
+/**
+ * glEnd
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glEnd, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glEnd)
+{
+
+    glEnd();
+}
+ 
+/**
+ * glIndexd
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glIndexd, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glIndexd)
+{
+
+    glIndexd();
+}
+ 
+/**
+ * glIndexdv
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glIndexdv, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glIndexdv)
+{
+
+    glIndexdv();
+}
+ 
+/**
+ * glIndexf
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glIndexf, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glIndexf)
+{
+
+    glIndexf();
+}
+ 
+/**
+ * glIndexfv
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glIndexfv, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glIndexfv)
+{
+
+    glIndexfv();
+}
+ 
+/**
+ * glIndexi
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glIndexi, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glIndexi)
+{
+
+    glIndexi();
+}
+ 
+/**
+ * glIndexiv
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glIndexiv, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glIndexiv)
+{
+
+    glIndexiv();
+}
+ 
+/**
+ * glIndexs
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glIndexs, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glIndexs)
+{
+
+    glIndexs();
+}
+ 
+/**
+ * glIndexsv
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glIndexsv, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glIndexsv)
+{
+
+    glIndexsv();
+}
+ 
+/**
+ * glNormal3b
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glNormal3b, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glNormal3b)
+{
+
+    glNormal3b();
+}
+ 
+/**
+ * glNormal3bv
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glNormal3bv, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glNormal3bv)
+{
+
+    glNormal3bv();
+}
+ 
+/**
+ * glNormal3d
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glNormal3d, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glNormal3d)
+{
+
+    glNormal3d();
+}
+ 
+/**
+ * glNormal3dv
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glNormal3dv, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glNormal3dv)
+{
+
+    glNormal3dv();
+}
+ 
+/**
+ * glNormal3f
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glNormal3f, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glNormal3f)
+{
+
+    glNormal3f();
+}
+ 
+/**
+ * glNormal3fv
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glNormal3fv, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glNormal3fv)
+{
+
+    glNormal3fv();
+}
+ 
+/**
+ * glNormal3i
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glNormal3i, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glNormal3i)
+{
+
+    glNormal3i();
+}
+ 
+/**
+ * glNormal3iv
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glNormal3iv, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glNormal3iv)
+{
+
+    glNormal3iv();
+}
+ 
+/**
+ * glNormal3s
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glNormal3s, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glNormal3s)
+{
+
+    glNormal3s();
+}
+ 
+/**
+ * glNormal3sv
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glNormal3sv, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glNormal3sv)
+{
+
+    glNormal3sv();
+}
+ 
+/**
+ * glRasterPos2d
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glRasterPos2d, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glRasterPos2d)
+{
+
+    glRasterPos2d();
+}
+ 
+/**
+ * glRasterPos2dv
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glRasterPos2dv, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glRasterPos2dv)
+{
+
+    glRasterPos2dv();
+}
+ 
+/**
+ * glRasterPos2f
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glRasterPos2f, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glRasterPos2f)
+{
+
+    glRasterPos2f();
+}
+ 
+/**
+ * glRasterPos2fv
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glRasterPos2fv, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glRasterPos2fv)
+{
+
+    glRasterPos2fv();
+}
+ 
+/**
+ * glRasterPos2i
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glRasterPos2i, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glRasterPos2i)
+{
+
+    glRasterPos2i();
+}
+ 
+/**
+ * glRasterPos2iv
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glRasterPos2iv, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glRasterPos2iv)
+{
+
+    glRasterPos2iv();
+}
+ 
+/**
+ * glRasterPos2s
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glRasterPos2s, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glRasterPos2s)
+{
+
+    glRasterPos2s();
+}
+ 
+/**
+ * glRasterPos2sv
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glRasterPos2sv, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glRasterPos2sv)
+{
+
+    glRasterPos2sv();
+}
+ 
+/**
+ * glRasterPos3d
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glRasterPos3d, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glRasterPos3d)
+{
+
+    glRasterPos3d();
+}
+ 
+/**
+ * glRasterPos3dv
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glRasterPos3dv, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glRasterPos3dv)
+{
+
+    glRasterPos3dv();
+}
+ 
+/**
+ * glRasterPos3f
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glRasterPos3f, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glRasterPos3f)
+{
+
+    glRasterPos3f();
+}
+ 
+/**
+ * glRasterPos3fv
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glRasterPos3fv, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glRasterPos3fv)
+{
+
+    glRasterPos3fv();
+}
+ 
+/**
+ * glRasterPos3i
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glRasterPos3i, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glRasterPos3i)
+{
+
+    glRasterPos3i();
+}
+ 
+/**
+ * glRasterPos3iv
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glRasterPos3iv, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glRasterPos3iv)
+{
+
+    glRasterPos3iv();
+}
+ 
+/**
+ * glRasterPos3s
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glRasterPos3s, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glRasterPos3s)
+{
+
+    glRasterPos3s();
+}
+ 
+/**
+ * glRasterPos3sv
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glRasterPos3sv, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glRasterPos3sv)
+{
+
+    glRasterPos3sv();
+}
+ 
+/**
+ * glRasterPos4d
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glRasterPos4d, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glRasterPos4d)
+{
+
+    glRasterPos4d();
+}
+ 
+/**
+ * glRasterPos4dv
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glRasterPos4dv, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glRasterPos4dv)
+{
+
+    glRasterPos4dv();
+}
+ 
+/**
+ * glRasterPos4f
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glRasterPos4f, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glRasterPos4f)
+{
+
+    glRasterPos4f();
+}
+ 
+/**
+ * glRasterPos4fv
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glRasterPos4fv, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glRasterPos4fv)
+{
+
+    glRasterPos4fv();
+}
+ 
+/**
+ * glRasterPos4i
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glRasterPos4i, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glRasterPos4i)
+{
+
+    glRasterPos4i();
+}
+ 
+/**
+ * glRasterPos4iv
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glRasterPos4iv, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glRasterPos4iv)
+{
+
+    glRasterPos4iv();
+}
+ 
+/**
+ * glRasterPos4s
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glRasterPos4s, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glRasterPos4s)
+{
+
+    glRasterPos4s();
+}
+ 
+/**
+ * glRasterPos4sv
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glRasterPos4sv, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glRasterPos4sv)
+{
+
+    glRasterPos4sv();
+}
+ 
+/**
+ * glRectd
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glRectd, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glRectd)
+{
+
+    glRectd();
+}
+ 
+/**
+ * glRectdv
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glRectdv, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glRectdv)
+{
+
+    glRectdv();
+}
+ 
+/**
+ * glRectf
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glRectf, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glRectf)
+{
+
+    glRectf();
+}
+ 
+/**
+ * glRectfv
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glRectfv, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glRectfv)
+{
+
+    glRectfv();
+}
+ 
+/**
+ * glRecti
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glRecti, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glRecti)
+{
+
+    glRecti();
+}
+ 
+/**
+ * glRectiv
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glRectiv, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glRectiv)
+{
+
+    glRectiv();
+}
+ 
+/**
+ * glRects
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glRects, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glRects)
+{
+
+    glRects();
+}
+ 
+/**
+ * glRectsv
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glRectsv, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glRectsv)
+{
+
+    glRectsv();
+}
+ 
+/**
+ * glTexCoord1d
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glTexCoord1d, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glTexCoord1d)
+{
+
+    glTexCoord1d();
+}
+ 
+/**
+ * glTexCoord1dv
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glTexCoord1dv, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glTexCoord1dv)
+{
+
+    glTexCoord1dv();
+}
+ 
+/**
+ * glTexCoord1f
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glTexCoord1f, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glTexCoord1f)
+{
+
+    glTexCoord1f();
+}
+ 
+/**
+ * glTexCoord1fv
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glTexCoord1fv, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glTexCoord1fv)
+{
+
+    glTexCoord1fv();
+}
+ 
+/**
+ * glTexCoord1i
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glTexCoord1i, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glTexCoord1i)
+{
+
+    glTexCoord1i();
+}
+ 
+/**
+ * glTexCoord1iv
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glTexCoord1iv, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glTexCoord1iv)
+{
+
+    glTexCoord1iv();
+}
+ 
+/**
+ * glTexCoord1s
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glTexCoord1s, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glTexCoord1s)
+{
+
+    glTexCoord1s();
+}
+ 
+/**
+ * glTexCoord1sv
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glTexCoord1sv, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glTexCoord1sv)
+{
+
+    glTexCoord1sv();
+}
+ 
+/**
+ * glTexCoord2d
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glTexCoord2d, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glTexCoord2d)
+{
+
+    glTexCoord2d();
+}
+ 
+/**
+ * glTexCoord2dv
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glTexCoord2dv, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glTexCoord2dv)
+{
+
+    glTexCoord2dv();
+}
+ 
+/**
+ * glTexCoord2f
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glTexCoord2f, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glTexCoord2f)
+{
+
+    glTexCoord2f();
+}
+ 
+/**
+ * glTexCoord2fv
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glTexCoord2fv, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glTexCoord2fv)
+{
+
+    glTexCoord2fv();
+}
+ 
+/**
+ * glTexCoord2i
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glTexCoord2i, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glTexCoord2i)
+{
+
+    glTexCoord2i();
+}
+ 
+/**
+ * glTexCoord2iv
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glTexCoord2iv, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glTexCoord2iv)
+{
+
+    glTexCoord2iv();
+}
+ 
+/**
+ * glTexCoord2s
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glTexCoord2s, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glTexCoord2s)
+{
+
+    glTexCoord2s();
+}
+ 
+/**
+ * glTexCoord2sv
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glTexCoord2sv, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glTexCoord2sv)
+{
+
+    glTexCoord2sv();
+}
+ 
+/**
+ * glTexCoord3d
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glTexCoord3d, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glTexCoord3d)
+{
+
+    glTexCoord3d();
+}
+ 
+/**
+ * glTexCoord3dv
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glTexCoord3dv, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glTexCoord3dv)
+{
+
+    glTexCoord3dv();
+}
+ 
+/**
+ * glTexCoord3f
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glTexCoord3f, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glTexCoord3f)
+{
+
+    glTexCoord3f();
+}
+ 
+/**
+ * glTexCoord3fv
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glTexCoord3fv, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glTexCoord3fv)
+{
+
+    glTexCoord3fv();
+}
+ 
+/**
+ * glTexCoord3i
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glTexCoord3i, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glTexCoord3i)
+{
+
+    glTexCoord3i();
+}
+ 
+/**
+ * glTexCoord3iv
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glTexCoord3iv, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glTexCoord3iv)
+{
+
+    glTexCoord3iv();
+}
+ 
+/**
+ * glTexCoord3s
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glTexCoord3s, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glTexCoord3s)
+{
+
+    glTexCoord3s();
+}
+ 
+/**
+ * glTexCoord3sv
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glTexCoord3sv, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glTexCoord3sv)
+{
+
+    glTexCoord3sv();
+}
+ 
+/**
+ * glTexCoord4d
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glTexCoord4d, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glTexCoord4d)
+{
+
+    glTexCoord4d();
+}
+ 
+/**
+ * glTexCoord4dv
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glTexCoord4dv, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glTexCoord4dv)
+{
+
+    glTexCoord4dv();
+}
+ 
+/**
+ * glTexCoord4f
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glTexCoord4f, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glTexCoord4f)
+{
+
+    glTexCoord4f();
+}
+ 
+/**
+ * glTexCoord4fv
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glTexCoord4fv, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glTexCoord4fv)
+{
+
+    glTexCoord4fv();
+}
+ 
+/**
+ * glTexCoord4i
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glTexCoord4i, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glTexCoord4i)
+{
+
+    glTexCoord4i();
+}
+ 
+/**
+ * glTexCoord4iv
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glTexCoord4iv, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glTexCoord4iv)
+{
+
+    glTexCoord4iv();
+}
+ 
+/**
+ * glTexCoord4s
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glTexCoord4s, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glTexCoord4s)
+{
+
+    glTexCoord4s();
+}
+ 
+/**
+ * glTexCoord4sv
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glTexCoord4sv, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glTexCoord4sv)
+{
+
+    glTexCoord4sv();
+}
+ 
+/**
+ * glVertex2d
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glVertex2d, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glVertex2d)
+{
+
+    glVertex2d();
+}
+ 
+/**
+ * glVertex2dv
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glVertex2dv, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glVertex2dv)
+{
+
+    glVertex2dv();
+}
+ 
+/**
+ * glVertex2f
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glVertex2f, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glVertex2f)
+{
+
+    glVertex2f();
+}
+ 
+/**
+ * glVertex2fv
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glVertex2fv, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glVertex2fv)
+{
+
+    glVertex2fv();
+}
+ 
+/**
+ * glVertex2i
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glVertex2i, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glVertex2i)
+{
+
+    glVertex2i();
+}
+ 
+/**
+ * glVertex2iv
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glVertex2iv, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glVertex2iv)
+{
+
+    glVertex2iv();
+}
+ 
+/**
+ * glVertex2s
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glVertex2s, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glVertex2s)
+{
+
+    glVertex2s();
+}
+ 
+/**
+ * glVertex2sv
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glVertex2sv, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glVertex2sv)
+{
+
+    glVertex2sv();
+}
+ 
+/**
+ * glVertex3d
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glVertex3d, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glVertex3d)
+{
+
+    glVertex3d();
+}
+ 
+/**
+ * glVertex3dv
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glVertex3dv, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glVertex3dv)
+{
+
+    glVertex3dv();
+}
+ 
+/**
+ * glVertex3f
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glVertex3f, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glVertex3f)
+{
+
+    glVertex3f();
+}
+ 
+/**
+ * glVertex3fv
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glVertex3fv, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glVertex3fv)
+{
+
+    glVertex3fv();
+}
+ 
+/**
+ * glVertex3i
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glVertex3i, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glVertex3i)
+{
+
+    glVertex3i();
+}
+ 
+/**
+ * glVertex3iv
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glVertex3iv, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glVertex3iv)
+{
+
+    glVertex3iv();
+}
+ 
+/**
+ * glVertex3s
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glVertex3s, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glVertex3s)
+{
+
+    glVertex3s();
+}
+ 
+/**
+ * glVertex3sv
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glVertex3sv, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glVertex3sv)
+{
+
+    glVertex3sv();
+}
+ 
+/**
+ * glVertex4d
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glVertex4d, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glVertex4d)
+{
+
+    glVertex4d();
+}
+ 
+/**
+ * glVertex4dv
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glVertex4dv, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glVertex4dv)
+{
+
+    glVertex4dv();
+}
+ 
+/**
+ * glVertex4f
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glVertex4f, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glVertex4f)
+{
+
+    glVertex4f();
+}
+ 
+/**
+ * glVertex4fv
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glVertex4fv, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glVertex4fv)
+{
+
+    glVertex4fv();
+}
+ 
+/**
+ * glVertex4i
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glVertex4i, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glVertex4i)
+{
+
+    glVertex4i();
+}
+ 
+/**
+ * glVertex4iv
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glVertex4iv, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glVertex4iv)
+{
+
+    glVertex4iv();
+}
+ 
+/**
+ * glVertex4s
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glVertex4s, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glVertex4s)
+{
+
+    glVertex4s();
+}
+ 
+/**
+ * glVertex4sv
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glVertex4sv, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glVertex4sv)
+{
+
+    glVertex4sv();
+}
+ 
+/**
+ * glClipPlane
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glClipPlane, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glClipPlane)
+{
+
+    glClipPlane();
+}
+ 
+/**
+ * glColorMaterial
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glColorMaterial, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glColorMaterial)
+{
+
+    glColorMaterial();
+}
+ 
+/**
+ * glFogf
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glFogf, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glFogf)
+{
+
+    glFogf();
+}
+ 
+/**
+ * glFogfv
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glFogfv, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glFogfv)
+{
+
+    glFogfv();
+}
+ 
+/**
+ * glFogi
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glFogi, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glFogi)
+{
+
+    glFogi();
+}
+ 
+/**
+ * glFogiv
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glFogiv, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glFogiv)
+{
+
+    glFogiv();
+}
+ 
+/**
+ * glLightf
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glLightf, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glLightf)
+{
+
+    glLightf();
+}
+ 
+/**
+ * glLightfv
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glLightfv, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glLightfv)
+{
+
+    glLightfv();
+}
+ 
+/**
+ * glLighti
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glLighti, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glLighti)
+{
+
+    glLighti();
+}
+ 
+/**
+ * glLightiv
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glLightiv, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glLightiv)
+{
+
+    glLightiv();
+}
+ 
+/**
+ * glLightModelf
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glLightModelf, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glLightModelf)
+{
+
+    glLightModelf();
+}
+ 
+/**
+ * glLightModelfv
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glLightModelfv, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glLightModelfv)
+{
+
+    glLightModelfv();
+}
+ 
+/**
+ * glLightModeli
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glLightModeli, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glLightModeli)
+{
+
+    glLightModeli();
+}
+ 
+/**
+ * glLightModeliv
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glLightModeliv, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glLightModeliv)
+{
+
+    glLightModeliv();
+}
+ 
+/**
+ * glLineStipple
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glLineStipple, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glLineStipple)
+{
+
+    glLineStipple();
+}
+ 
+/**
+ * glMaterialf
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glMaterialf, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glMaterialf)
+{
+
+    glMaterialf();
+}
+ 
+/**
+ * glMaterialfv
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glMaterialfv, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glMaterialfv)
+{
+
+    glMaterialfv();
+}
+ 
+/**
+ * glMateriali
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glMateriali, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glMateriali)
+{
+
+    glMateriali();
+}
+ 
+/**
+ * glMaterialiv
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glMaterialiv, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glMaterialiv)
+{
+
+    glMaterialiv();
+}
+ 
+/**
+ * glPolygonStipple
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glPolygonStipple, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glPolygonStipple)
+{
+
+    glPolygonStipple();
+}
+ 
+/**
+ * glShadeModel
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glShadeModel, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glShadeModel)
+{
+
+    glShadeModel();
+}
+ 
+/**
+ * glTexEnvf
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glTexEnvf, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glTexEnvf)
+{
+
+    glTexEnvf();
+}
+ 
+/**
+ * glTexEnvfv
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glTexEnvfv, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glTexEnvfv)
+{
+
+    glTexEnvfv();
+}
+ 
+/**
+ * glTexEnvi
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glTexEnvi, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glTexEnvi)
+{
+
+    glTexEnvi();
+}
+ 
+/**
+ * glTexEnviv
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glTexEnviv, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glTexEnviv)
+{
+
+    glTexEnviv();
+}
+ 
+/**
+ * glTexGend
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glTexGend, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glTexGend)
+{
+
+    glTexGend();
+}
+ 
+/**
+ * glTexGendv
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glTexGendv, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glTexGendv)
+{
+
+    glTexGendv();
+}
+ 
+/**
+ * glTexGenf
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glTexGenf, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glTexGenf)
+{
+
+    glTexGenf();
+}
+ 
+/**
+ * glTexGenfv
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glTexGenfv, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glTexGenfv)
+{
+
+    glTexGenfv();
+}
+ 
+/**
+ * glTexGeni
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glTexGeni, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glTexGeni)
+{
+
+    glTexGeni();
+}
+ 
+/**
+ * glTexGeniv
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glTexGeniv, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glTexGeniv)
+{
+
+    glTexGeniv();
+}
+ 
+/**
+ * glFeedbackBuffer
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glFeedbackBuffer, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glFeedbackBuffer)
+{
+
+    glFeedbackBuffer();
+}
+ 
+/**
+ * glSelectBuffer
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glSelectBuffer, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glSelectBuffer)
+{
+
+    glSelectBuffer();
+}
+ 
+/**
+ * glRenderMode
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glRenderMode, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glRenderMode)
+{
+
+    glRenderMode();
+}
+ 
+/**
+ * glInitNames
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glInitNames, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glInitNames)
+{
+
+    glInitNames();
+}
+ 
+/**
+ * glLoadName
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glLoadName, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glLoadName)
+{
+
+    glLoadName();
+}
+ 
+/**
+ * glPassThrough
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glPassThrough, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glPassThrough)
+{
+
+    glPassThrough();
+}
+ 
+/**
+ * glPopName
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glPopName, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glPopName)
+{
+
+    glPopName();
+}
+ 
+/**
+ * glPushName
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glPushName, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glPushName)
+{
+
+    glPushName();
+}
+ 
+/**
+ * glClearAccum
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glClearAccum, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glClearAccum)
+{
+
+    glClearAccum();
+}
+ 
+/**
+ * glClearIndex
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glClearIndex, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glClearIndex)
+{
+
+    glClearIndex();
+}
+ 
+/**
+ * glIndexMask
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glIndexMask, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glIndexMask)
+{
+
+    glIndexMask();
+}
+ 
+/**
+ * glAccum
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glAccum, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glAccum)
+{
+
+    glAccum();
+}
+ 
+/**
+ * glPopAttrib
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glPopAttrib, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glPopAttrib)
+{
+
+    glPopAttrib();
+}
+ 
+/**
+ * glPushAttrib
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glPushAttrib, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glPushAttrib)
+{
+
+    glPushAttrib();
+}
+ 
+/**
+ * glMap1d
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glMap1d, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glMap1d)
+{
+
+    glMap1d();
+}
+ 
+/**
+ * glMap1f
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glMap1f, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glMap1f)
+{
+
+    glMap1f();
+}
+ 
+/**
+ * glMap2d
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glMap2d, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glMap2d)
+{
+
+    glMap2d();
+}
+ 
+/**
+ * glMap2f
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glMap2f, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glMap2f)
+{
+
+    glMap2f();
+}
+ 
+/**
+ * glMapGrid1d
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glMapGrid1d, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glMapGrid1d)
+{
+
+    glMapGrid1d();
+}
+ 
+/**
+ * glMapGrid1f
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glMapGrid1f, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glMapGrid1f)
+{
+
+    glMapGrid1f();
+}
+ 
+/**
+ * glMapGrid2d
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glMapGrid2d, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glMapGrid2d)
+{
+
+    glMapGrid2d();
+}
+ 
+/**
+ * glMapGrid2f
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glMapGrid2f, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glMapGrid2f)
+{
+
+    glMapGrid2f();
+}
+ 
+/**
+ * glEvalCoord1d
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glEvalCoord1d, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glEvalCoord1d)
+{
+
+    glEvalCoord1d();
+}
+ 
+/**
+ * glEvalCoord1dv
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glEvalCoord1dv, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glEvalCoord1dv)
+{
+
+    glEvalCoord1dv();
+}
+ 
+/**
+ * glEvalCoord1f
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glEvalCoord1f, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glEvalCoord1f)
+{
+
+    glEvalCoord1f();
+}
+ 
+/**
+ * glEvalCoord1fv
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glEvalCoord1fv, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glEvalCoord1fv)
+{
+
+    glEvalCoord1fv();
+}
+ 
+/**
+ * glEvalCoord2d
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glEvalCoord2d, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glEvalCoord2d)
+{
+
+    glEvalCoord2d();
+}
+ 
+/**
+ * glEvalCoord2dv
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glEvalCoord2dv, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glEvalCoord2dv)
+{
+
+    glEvalCoord2dv();
+}
+ 
+/**
+ * glEvalCoord2f
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glEvalCoord2f, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glEvalCoord2f)
+{
+
+    glEvalCoord2f();
+}
+ 
+/**
+ * glEvalCoord2fv
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glEvalCoord2fv, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glEvalCoord2fv)
+{
+
+    glEvalCoord2fv();
+}
+ 
+/**
+ * glEvalMesh1
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glEvalMesh1, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glEvalMesh1)
+{
+
+    glEvalMesh1();
+}
+ 
+/**
+ * glEvalPoint1
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glEvalPoint1, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glEvalPoint1)
+{
+
+    glEvalPoint1();
+}
+ 
+/**
+ * glEvalMesh2
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glEvalMesh2, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glEvalMesh2)
+{
+
+    glEvalMesh2();
+}
+ 
+/**
+ * glEvalPoint2
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glEvalPoint2, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glEvalPoint2)
+{
+
+    glEvalPoint2();
+}
+ 
+/**
+ * glAlphaFunc
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glAlphaFunc, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glAlphaFunc)
+{
+
+    glAlphaFunc();
+}
+ 
+/**
+ * glPixelZoom
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glPixelZoom, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glPixelZoom)
+{
+
+    glPixelZoom();
+}
+ 
+/**
+ * glPixelTransferf
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glPixelTransferf, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glPixelTransferf)
+{
+
+    glPixelTransferf();
+}
+ 
+/**
+ * glPixelTransferi
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glPixelTransferi, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glPixelTransferi)
+{
+
+    glPixelTransferi();
+}
+ 
+/**
+ * glPixelMapfv
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glPixelMapfv, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glPixelMapfv)
+{
+
+    glPixelMapfv();
+}
+ 
+/**
+ * glPixelMapuiv
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glPixelMapuiv, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glPixelMapuiv)
+{
+
+    glPixelMapuiv();
+}
+ 
+/**
+ * glPixelMapusv
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glPixelMapusv, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glPixelMapusv)
+{
+
+    glPixelMapusv();
+}
+ 
+/**
+ * glCopyPixels
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glCopyPixels, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glCopyPixels)
+{
+
+    glCopyPixels();
+}
+ 
+/**
+ * glDrawPixels
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glDrawPixels, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glDrawPixels)
+{
+
+    glDrawPixels();
+}
+ 
+/**
+ * glGetClipPlane
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glGetClipPlane, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glGetClipPlane)
+{
+
+    glGetClipPlane();
+}
+ 
+/**
+ * glGetLightfv
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glGetLightfv, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glGetLightfv)
+{
+
+    glGetLightfv();
+}
+ 
+/**
+ * glGetLightiv
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glGetLightiv, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glGetLightiv)
+{
+
+    glGetLightiv();
+}
+ 
+/**
+ * glGetMapdv
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glGetMapdv, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glGetMapdv)
+{
+
+    glGetMapdv();
+}
+ 
+/**
+ * glGetMapfv
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glGetMapfv, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glGetMapfv)
+{
+
+    glGetMapfv();
+}
+ 
+/**
+ * glGetMapiv
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glGetMapiv, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glGetMapiv)
+{
+
+    glGetMapiv();
+}
+ 
+/**
+ * glGetMaterialfv
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glGetMaterialfv, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glGetMaterialfv)
+{
+
+    glGetMaterialfv();
+}
+ 
+/**
+ * glGetMaterialiv
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glGetMaterialiv, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glGetMaterialiv)
+{
+
+    glGetMaterialiv();
+}
+ 
+/**
+ * glGetPixelMapfv
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glGetPixelMapfv, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glGetPixelMapfv)
+{
+
+    glGetPixelMapfv();
+}
+ 
+/**
+ * glGetPixelMapuiv
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glGetPixelMapuiv, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glGetPixelMapuiv)
+{
+
+    glGetPixelMapuiv();
+}
+ 
+/**
+ * glGetPixelMapusv
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glGetPixelMapusv, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glGetPixelMapusv)
+{
+
+    glGetPixelMapusv();
+}
+ 
+/**
+ * glGetPolygonStipple
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glGetPolygonStipple, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glGetPolygonStipple)
+{
+
+    glGetPolygonStipple();
+}
+ 
+/**
+ * glGetTexEnvfv
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glGetTexEnvfv, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glGetTexEnvfv)
+{
+
+    glGetTexEnvfv();
+}
+ 
+/**
+ * glGetTexEnviv
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glGetTexEnviv, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glGetTexEnviv)
+{
+
+    glGetTexEnviv();
+}
+ 
+/**
+ * glGetTexGendv
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glGetTexGendv, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glGetTexGendv)
+{
+
+    glGetTexGendv();
+}
+ 
+/**
+ * glGetTexGenfv
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glGetTexGenfv, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glGetTexGenfv)
+{
+
+    glGetTexGenfv();
+}
+ 
+/**
+ * glGetTexGeniv
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glGetTexGeniv, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glGetTexGeniv)
+{
+
+    glGetTexGeniv();
+}
+ 
+/**
+ * glIsList
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glIsList, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glIsList)
+{
+
+    glIsList();
+}
+ 
+/**
+ * glFrustum
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glFrustum, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glFrustum)
+{
+
+    glFrustum();
+}
+ 
+/**
+ * glLoadIdentity
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glLoadIdentity, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glLoadIdentity)
+{
+
+    glLoadIdentity();
+}
+ 
+/**
+ * glLoadMatrixf
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glLoadMatrixf, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glLoadMatrixf)
+{
+
+    glLoadMatrixf();
+}
+ 
+/**
+ * glLoadMatrixd
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glLoadMatrixd, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glLoadMatrixd)
+{
+
+    glLoadMatrixd();
+}
+ 
+/**
+ * glMatrixMode
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glMatrixMode, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glMatrixMode)
+{
+
+    glMatrixMode();
+}
+ 
+/**
+ * glMultMatrixf
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glMultMatrixf, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glMultMatrixf)
+{
+
+    glMultMatrixf();
+}
+ 
+/**
+ * glMultMatrixd
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glMultMatrixd, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glMultMatrixd)
+{
+
+    glMultMatrixd();
+}
+ 
+/**
+ * glOrtho
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glOrtho, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glOrtho)
+{
+
+    glOrtho();
+}
+ 
+/**
+ * glPopMatrix
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glPopMatrix, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glPopMatrix)
+{
+
+    glPopMatrix();
+}
+ 
+/**
+ * glPushMatrix
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glPushMatrix, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glPushMatrix)
+{
+
+    glPushMatrix();
+}
+ 
+/**
+ * glRotated
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glRotated, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glRotated)
+{
+
+    glRotated();
+}
+ 
+/**
+ * glRotatef
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glRotatef, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glRotatef)
+{
+
+    glRotatef();
+}
+ 
+/**
+ * glScaled
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glScaled, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glScaled)
+{
+
+    glScaled();
+}
+ 
+/**
+ * glScalef
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glScalef, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glScalef)
+{
+
+    glScalef();
+}
+ 
+/**
+ * glTranslated
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glTranslated, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glTranslated)
+{
+
+    glTranslated();
+}
+ 
+/**
+ * glTranslatef
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glTranslatef, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glTranslatef)
+{
+
+    glTranslatef();
+}
+ 
+/**
+ * glDrawArrays
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glDrawArrays, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glDrawArrays)
+{
+
+    glDrawArrays();
+}
+ 
+/**
+ * glDrawElements
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glDrawElements, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glDrawElements)
+{
+
+    glDrawElements();
+}
+ 
+/**
+ * glGetPointerv
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glGetPointerv, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glGetPointerv)
+{
+
+    glGetPointerv();
+}
+ 
+/**
+ * glPolygonOffset
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glPolygonOffset, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glPolygonOffset)
+{
+
+    glPolygonOffset();
+}
+ 
+/**
+ * glCopyTexImage1D
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glCopyTexImage1D, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glCopyTexImage1D)
+{
+
+    glCopyTexImage1D();
+}
+ 
+/**
+ * glCopyTexImage2D
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glCopyTexImage2D, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glCopyTexImage2D)
+{
+
+    glCopyTexImage2D();
+}
+ 
+/**
+ * glCopyTexSubImage1D
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glCopyTexSubImage1D, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glCopyTexSubImage1D)
+{
+
+    glCopyTexSubImage1D();
+}
+ 
+/**
+ * glCopyTexSubImage2D
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glCopyTexSubImage2D, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glCopyTexSubImage2D)
+{
+
+    glCopyTexSubImage2D();
+}
+ 
+/**
+ * glTexSubImage1D
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glTexSubImage1D, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glTexSubImage1D)
+{
+
+    glTexSubImage1D();
+}
+ 
+/**
+ * glTexSubImage2D
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glTexSubImage2D, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glTexSubImage2D)
+{
+
+    glTexSubImage2D();
+}
+ 
+/**
+ * glBindTexture
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glBindTexture, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glBindTexture)
+{
+
+    glBindTexture();
+}
+ 
+/**
+ * glDeleteTextures
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glDeleteTextures, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glDeleteTextures)
+{
+
+    glDeleteTextures();
+}
+ 
+/**
+ * glGenTextures
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glGenTextures, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glGenTextures)
+{
+
+    glGenTextures();
+}
+ 
+/**
+ * glIsTexture
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glIsTexture, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glIsTexture)
+{
+
+    glIsTexture();
+}
+ 
+/**
+ * glArrayElement
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glArrayElement, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glArrayElement)
+{
+
+    glArrayElement();
+}
+ 
+/**
+ * glColorPointer
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glColorPointer, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glColorPointer)
+{
+
+    glColorPointer();
+}
+ 
+/**
+ * glDisableClientState
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glDisableClientState, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glDisableClientState)
+{
+
+    glDisableClientState();
+}
+ 
+/**
+ * glEdgeFlagPointer
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glEdgeFlagPointer, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glEdgeFlagPointer)
+{
+
+    glEdgeFlagPointer();
+}
+ 
+/**
+ * glEnableClientState
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glEnableClientState, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glEnableClientState)
+{
+
+    glEnableClientState();
+}
+ 
+/**
+ * glIndexPointer
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glIndexPointer, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glIndexPointer)
+{
+
+    glIndexPointer();
+}
+ 
+/**
+ * glInterleavedArrays
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glInterleavedArrays, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glInterleavedArrays)
+{
+
+    glInterleavedArrays();
+}
+ 
+/**
+ * glNormalPointer
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glNormalPointer, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glNormalPointer)
+{
+
+    glNormalPointer();
+}
+ 
+/**
+ * glTexCoordPointer
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glTexCoordPointer, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glTexCoordPointer)
+{
+
+    glTexCoordPointer();
+}
+ 
+/**
+ * glVertexPointer
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glVertexPointer, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glVertexPointer)
+{
+
+    glVertexPointer();
+}
+ 
+/**
+ * glAreTexturesResident
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glAreTexturesResident, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glAreTexturesResident)
+{
+
+    glAreTexturesResident();
+}
+ 
+/**
+ * glPrioritizeTextures
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glPrioritizeTextures, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glPrioritizeTextures)
+{
+
+    glPrioritizeTextures();
+}
+ 
+/**
+ * glIndexub
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glIndexub, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glIndexub)
+{
+
+    glIndexub();
+}
+ 
+/**
+ * glIndexubv
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glIndexubv, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glIndexubv)
+{
+
+    glIndexubv();
+}
+ 
+/**
+ * glPopClientAttrib
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glPopClientAttrib, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glPopClientAttrib)
+{
+
+    glPopClientAttrib();
+}
+ 
+/**
+ * glPushClientAttrib
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glPushClientAttrib, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glPushClientAttrib)
+{
+
+    glPushClientAttrib();
+}
+ 
+/**
+ * glDrawRangeElements
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glDrawRangeElements, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glDrawRangeElements)
+{
+
+    glDrawRangeElements();
+}
+ 
+/**
+ * glTexImage3D
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glTexImage3D, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glTexImage3D)
+{
+
+    glTexImage3D();
+}
+ 
+/**
+ * glTexSubImage3D
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glTexSubImage3D, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glTexSubImage3D)
+{
+
+    glTexSubImage3D();
+}
+ 
+/**
+ * glCopyTexSubImage3D
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glCopyTexSubImage3D, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glCopyTexSubImage3D)
+{
+
+    glCopyTexSubImage3D();
 }
  
 /**
@@ -1538,47 +4998,3522 @@ ZEND_NAMED_FUNCTION(zif_glGenerateMipmap)
  * --------------------------------
  */
 ZEND_BEGIN_ARG_INFO_EX(arginfo_glActiveTexture, 0, 0, 1)
-    ZEND_ARG_INFO(0, texture)
 ZEND_END_ARG_INFO()
 
-ZEND_NAMED_FUNCTION(zif_glActiveTexture)
+PHP_FUNCTION(glActiveTexture)
 {
-    zend_long texture;
-    if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "l", &texture) == FAILURE) {
-       return;
-    }
-    glActiveTexture(texture);
+
+    glActiveTexture();
 }
  
 /**
- * stbi_load
+ * glSampleCoverage
  * --------------------------------
  */
-ZEND_BEGIN_ARG_INFO_EX(arginfo_stbi_load, 0, 0, 1)
-    ZEND_ARG_INFO(0, path)
-    ZEND_ARG_INFO(1, width)
-    ZEND_ARG_INFO(1, height)
-    ZEND_ARG_INFO(1, number_or_channels)
-    ZEND_ARG_INFO(0, force_n_comp)
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glSampleCoverage, 0, 0, 1)
 ZEND_END_ARG_INFO()
 
-ZEND_NAMED_FUNCTION(zif_stbi_load)
+PHP_FUNCTION(glSampleCoverage)
 {
-    const char *path;
-    size_t path_size;
-    zval *z_width;
-    zval *z_height;
-    zval *z_number_or_channels;
-    zend_long force_n_comp;
-    if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "szzzl", &path, &path_size, &z_width, &z_height, &z_number_or_channels, &force_n_comp) == FAILURE) {
-       return;
-    }
-    ZVAL_DEREF(z_width); convert_to_long(z_width);
-    ZVAL_DEREF(z_height); convert_to_long(z_height);
-    ZVAL_DEREF(z_number_or_channels); convert_to_long(z_number_or_channels);
-    unsigned char * stbimagedata = stbi_load(path, (int *)&z_width->value, (int *)&z_height->value, (int *)&z_number_or_channels->value, force_n_comp);
-    if (!stbimagedata) RETURN_FALSE;
-    PHPGLFW_RETURN_STBIMAGEDATA_RESOURCE(stbimagedata, phpglfw_stbimagedata_context);
+
+    glSampleCoverage();
+}
+ 
+/**
+ * glCompressedTexImage3D
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glCompressedTexImage3D, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glCompressedTexImage3D)
+{
+
+    glCompressedTexImage3D();
+}
+ 
+/**
+ * glCompressedTexImage2D
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glCompressedTexImage2D, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glCompressedTexImage2D)
+{
+
+    glCompressedTexImage2D();
+}
+ 
+/**
+ * glCompressedTexImage1D
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glCompressedTexImage1D, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glCompressedTexImage1D)
+{
+
+    glCompressedTexImage1D();
+}
+ 
+/**
+ * glCompressedTexSubImage3D
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glCompressedTexSubImage3D, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glCompressedTexSubImage3D)
+{
+
+    glCompressedTexSubImage3D();
+}
+ 
+/**
+ * glCompressedTexSubImage2D
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glCompressedTexSubImage2D, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glCompressedTexSubImage2D)
+{
+
+    glCompressedTexSubImage2D();
+}
+ 
+/**
+ * glCompressedTexSubImage1D
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glCompressedTexSubImage1D, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glCompressedTexSubImage1D)
+{
+
+    glCompressedTexSubImage1D();
+}
+ 
+/**
+ * glGetCompressedTexImage
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glGetCompressedTexImage, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glGetCompressedTexImage)
+{
+
+    glGetCompressedTexImage();
+}
+ 
+/**
+ * glClientActiveTexture
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glClientActiveTexture, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glClientActiveTexture)
+{
+
+    glClientActiveTexture();
+}
+ 
+/**
+ * glMultiTexCoord1d
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glMultiTexCoord1d, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glMultiTexCoord1d)
+{
+
+    glMultiTexCoord1d();
+}
+ 
+/**
+ * glMultiTexCoord1dv
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glMultiTexCoord1dv, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glMultiTexCoord1dv)
+{
+
+    glMultiTexCoord1dv();
+}
+ 
+/**
+ * glMultiTexCoord1f
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glMultiTexCoord1f, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glMultiTexCoord1f)
+{
+
+    glMultiTexCoord1f();
+}
+ 
+/**
+ * glMultiTexCoord1fv
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glMultiTexCoord1fv, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glMultiTexCoord1fv)
+{
+
+    glMultiTexCoord1fv();
+}
+ 
+/**
+ * glMultiTexCoord1i
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glMultiTexCoord1i, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glMultiTexCoord1i)
+{
+
+    glMultiTexCoord1i();
+}
+ 
+/**
+ * glMultiTexCoord1iv
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glMultiTexCoord1iv, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glMultiTexCoord1iv)
+{
+
+    glMultiTexCoord1iv();
+}
+ 
+/**
+ * glMultiTexCoord1s
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glMultiTexCoord1s, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glMultiTexCoord1s)
+{
+
+    glMultiTexCoord1s();
+}
+ 
+/**
+ * glMultiTexCoord1sv
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glMultiTexCoord1sv, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glMultiTexCoord1sv)
+{
+
+    glMultiTexCoord1sv();
+}
+ 
+/**
+ * glMultiTexCoord2d
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glMultiTexCoord2d, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glMultiTexCoord2d)
+{
+
+    glMultiTexCoord2d();
+}
+ 
+/**
+ * glMultiTexCoord2dv
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glMultiTexCoord2dv, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glMultiTexCoord2dv)
+{
+
+    glMultiTexCoord2dv();
+}
+ 
+/**
+ * glMultiTexCoord2f
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glMultiTexCoord2f, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glMultiTexCoord2f)
+{
+
+    glMultiTexCoord2f();
+}
+ 
+/**
+ * glMultiTexCoord2fv
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glMultiTexCoord2fv, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glMultiTexCoord2fv)
+{
+
+    glMultiTexCoord2fv();
+}
+ 
+/**
+ * glMultiTexCoord2i
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glMultiTexCoord2i, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glMultiTexCoord2i)
+{
+
+    glMultiTexCoord2i();
+}
+ 
+/**
+ * glMultiTexCoord2iv
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glMultiTexCoord2iv, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glMultiTexCoord2iv)
+{
+
+    glMultiTexCoord2iv();
+}
+ 
+/**
+ * glMultiTexCoord2s
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glMultiTexCoord2s, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glMultiTexCoord2s)
+{
+
+    glMultiTexCoord2s();
+}
+ 
+/**
+ * glMultiTexCoord2sv
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glMultiTexCoord2sv, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glMultiTexCoord2sv)
+{
+
+    glMultiTexCoord2sv();
+}
+ 
+/**
+ * glMultiTexCoord3d
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glMultiTexCoord3d, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glMultiTexCoord3d)
+{
+
+    glMultiTexCoord3d();
+}
+ 
+/**
+ * glMultiTexCoord3dv
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glMultiTexCoord3dv, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glMultiTexCoord3dv)
+{
+
+    glMultiTexCoord3dv();
+}
+ 
+/**
+ * glMultiTexCoord3f
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glMultiTexCoord3f, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glMultiTexCoord3f)
+{
+
+    glMultiTexCoord3f();
+}
+ 
+/**
+ * glMultiTexCoord3fv
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glMultiTexCoord3fv, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glMultiTexCoord3fv)
+{
+
+    glMultiTexCoord3fv();
+}
+ 
+/**
+ * glMultiTexCoord3i
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glMultiTexCoord3i, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glMultiTexCoord3i)
+{
+
+    glMultiTexCoord3i();
+}
+ 
+/**
+ * glMultiTexCoord3iv
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glMultiTexCoord3iv, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glMultiTexCoord3iv)
+{
+
+    glMultiTexCoord3iv();
+}
+ 
+/**
+ * glMultiTexCoord3s
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glMultiTexCoord3s, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glMultiTexCoord3s)
+{
+
+    glMultiTexCoord3s();
+}
+ 
+/**
+ * glMultiTexCoord3sv
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glMultiTexCoord3sv, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glMultiTexCoord3sv)
+{
+
+    glMultiTexCoord3sv();
+}
+ 
+/**
+ * glMultiTexCoord4d
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glMultiTexCoord4d, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glMultiTexCoord4d)
+{
+
+    glMultiTexCoord4d();
+}
+ 
+/**
+ * glMultiTexCoord4dv
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glMultiTexCoord4dv, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glMultiTexCoord4dv)
+{
+
+    glMultiTexCoord4dv();
+}
+ 
+/**
+ * glMultiTexCoord4f
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glMultiTexCoord4f, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glMultiTexCoord4f)
+{
+
+    glMultiTexCoord4f();
+}
+ 
+/**
+ * glMultiTexCoord4fv
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glMultiTexCoord4fv, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glMultiTexCoord4fv)
+{
+
+    glMultiTexCoord4fv();
+}
+ 
+/**
+ * glMultiTexCoord4i
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glMultiTexCoord4i, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glMultiTexCoord4i)
+{
+
+    glMultiTexCoord4i();
+}
+ 
+/**
+ * glMultiTexCoord4iv
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glMultiTexCoord4iv, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glMultiTexCoord4iv)
+{
+
+    glMultiTexCoord4iv();
+}
+ 
+/**
+ * glMultiTexCoord4s
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glMultiTexCoord4s, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glMultiTexCoord4s)
+{
+
+    glMultiTexCoord4s();
+}
+ 
+/**
+ * glMultiTexCoord4sv
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glMultiTexCoord4sv, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glMultiTexCoord4sv)
+{
+
+    glMultiTexCoord4sv();
+}
+ 
+/**
+ * glLoadTransposeMatrixf
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glLoadTransposeMatrixf, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glLoadTransposeMatrixf)
+{
+
+    glLoadTransposeMatrixf();
+}
+ 
+/**
+ * glLoadTransposeMatrixd
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glLoadTransposeMatrixd, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glLoadTransposeMatrixd)
+{
+
+    glLoadTransposeMatrixd();
+}
+ 
+/**
+ * glMultTransposeMatrixf
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glMultTransposeMatrixf, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glMultTransposeMatrixf)
+{
+
+    glMultTransposeMatrixf();
+}
+ 
+/**
+ * glMultTransposeMatrixd
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glMultTransposeMatrixd, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glMultTransposeMatrixd)
+{
+
+    glMultTransposeMatrixd();
+}
+ 
+/**
+ * glBlendFuncSeparate
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glBlendFuncSeparate, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glBlendFuncSeparate)
+{
+
+    glBlendFuncSeparate();
+}
+ 
+/**
+ * glMultiDrawArrays
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glMultiDrawArrays, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glMultiDrawArrays)
+{
+
+    glMultiDrawArrays();
+}
+ 
+/**
+ * glMultiDrawElements
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glMultiDrawElements, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glMultiDrawElements)
+{
+
+    glMultiDrawElements();
+}
+ 
+/**
+ * glPointParameterf
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glPointParameterf, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glPointParameterf)
+{
+
+    glPointParameterf();
+}
+ 
+/**
+ * glPointParameterfv
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glPointParameterfv, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glPointParameterfv)
+{
+
+    glPointParameterfv();
+}
+ 
+/**
+ * glPointParameteri
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glPointParameteri, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glPointParameteri)
+{
+
+    glPointParameteri();
+}
+ 
+/**
+ * glPointParameteriv
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glPointParameteriv, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glPointParameteriv)
+{
+
+    glPointParameteriv();
+}
+ 
+/**
+ * glFogCoordf
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glFogCoordf, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glFogCoordf)
+{
+
+    glFogCoordf();
+}
+ 
+/**
+ * glFogCoordfv
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glFogCoordfv, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glFogCoordfv)
+{
+
+    glFogCoordfv();
+}
+ 
+/**
+ * glFogCoordd
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glFogCoordd, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glFogCoordd)
+{
+
+    glFogCoordd();
+}
+ 
+/**
+ * glFogCoorddv
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glFogCoorddv, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glFogCoorddv)
+{
+
+    glFogCoorddv();
+}
+ 
+/**
+ * glFogCoordPointer
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glFogCoordPointer, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glFogCoordPointer)
+{
+
+    glFogCoordPointer();
+}
+ 
+/**
+ * glSecondaryColor3b
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glSecondaryColor3b, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glSecondaryColor3b)
+{
+
+    glSecondaryColor3b();
+}
+ 
+/**
+ * glSecondaryColor3bv
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glSecondaryColor3bv, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glSecondaryColor3bv)
+{
+
+    glSecondaryColor3bv();
+}
+ 
+/**
+ * glSecondaryColor3d
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glSecondaryColor3d, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glSecondaryColor3d)
+{
+
+    glSecondaryColor3d();
+}
+ 
+/**
+ * glSecondaryColor3dv
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glSecondaryColor3dv, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glSecondaryColor3dv)
+{
+
+    glSecondaryColor3dv();
+}
+ 
+/**
+ * glSecondaryColor3f
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glSecondaryColor3f, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glSecondaryColor3f)
+{
+
+    glSecondaryColor3f();
+}
+ 
+/**
+ * glSecondaryColor3fv
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glSecondaryColor3fv, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glSecondaryColor3fv)
+{
+
+    glSecondaryColor3fv();
+}
+ 
+/**
+ * glSecondaryColor3i
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glSecondaryColor3i, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glSecondaryColor3i)
+{
+
+    glSecondaryColor3i();
+}
+ 
+/**
+ * glSecondaryColor3iv
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glSecondaryColor3iv, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glSecondaryColor3iv)
+{
+
+    glSecondaryColor3iv();
+}
+ 
+/**
+ * glSecondaryColor3s
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glSecondaryColor3s, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glSecondaryColor3s)
+{
+
+    glSecondaryColor3s();
+}
+ 
+/**
+ * glSecondaryColor3sv
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glSecondaryColor3sv, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glSecondaryColor3sv)
+{
+
+    glSecondaryColor3sv();
+}
+ 
+/**
+ * glSecondaryColor3ub
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glSecondaryColor3ub, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glSecondaryColor3ub)
+{
+
+    glSecondaryColor3ub();
+}
+ 
+/**
+ * glSecondaryColor3ubv
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glSecondaryColor3ubv, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glSecondaryColor3ubv)
+{
+
+    glSecondaryColor3ubv();
+}
+ 
+/**
+ * glSecondaryColor3ui
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glSecondaryColor3ui, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glSecondaryColor3ui)
+{
+
+    glSecondaryColor3ui();
+}
+ 
+/**
+ * glSecondaryColor3uiv
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glSecondaryColor3uiv, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glSecondaryColor3uiv)
+{
+
+    glSecondaryColor3uiv();
+}
+ 
+/**
+ * glSecondaryColor3us
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glSecondaryColor3us, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glSecondaryColor3us)
+{
+
+    glSecondaryColor3us();
+}
+ 
+/**
+ * glSecondaryColor3usv
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glSecondaryColor3usv, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glSecondaryColor3usv)
+{
+
+    glSecondaryColor3usv();
+}
+ 
+/**
+ * glSecondaryColorPointer
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glSecondaryColorPointer, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glSecondaryColorPointer)
+{
+
+    glSecondaryColorPointer();
+}
+ 
+/**
+ * glWindowPos2d
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glWindowPos2d, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glWindowPos2d)
+{
+
+    glWindowPos2d();
+}
+ 
+/**
+ * glWindowPos2dv
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glWindowPos2dv, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glWindowPos2dv)
+{
+
+    glWindowPos2dv();
+}
+ 
+/**
+ * glWindowPos2f
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glWindowPos2f, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glWindowPos2f)
+{
+
+    glWindowPos2f();
+}
+ 
+/**
+ * glWindowPos2fv
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glWindowPos2fv, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glWindowPos2fv)
+{
+
+    glWindowPos2fv();
+}
+ 
+/**
+ * glWindowPos2i
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glWindowPos2i, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glWindowPos2i)
+{
+
+    glWindowPos2i();
+}
+ 
+/**
+ * glWindowPos2iv
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glWindowPos2iv, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glWindowPos2iv)
+{
+
+    glWindowPos2iv();
+}
+ 
+/**
+ * glWindowPos2s
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glWindowPos2s, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glWindowPos2s)
+{
+
+    glWindowPos2s();
+}
+ 
+/**
+ * glWindowPos2sv
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glWindowPos2sv, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glWindowPos2sv)
+{
+
+    glWindowPos2sv();
+}
+ 
+/**
+ * glWindowPos3d
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glWindowPos3d, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glWindowPos3d)
+{
+
+    glWindowPos3d();
+}
+ 
+/**
+ * glWindowPos3dv
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glWindowPos3dv, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glWindowPos3dv)
+{
+
+    glWindowPos3dv();
+}
+ 
+/**
+ * glWindowPos3f
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glWindowPos3f, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glWindowPos3f)
+{
+
+    glWindowPos3f();
+}
+ 
+/**
+ * glWindowPos3fv
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glWindowPos3fv, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glWindowPos3fv)
+{
+
+    glWindowPos3fv();
+}
+ 
+/**
+ * glWindowPos3i
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glWindowPos3i, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glWindowPos3i)
+{
+
+    glWindowPos3i();
+}
+ 
+/**
+ * glWindowPos3iv
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glWindowPos3iv, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glWindowPos3iv)
+{
+
+    glWindowPos3iv();
+}
+ 
+/**
+ * glWindowPos3s
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glWindowPos3s, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glWindowPos3s)
+{
+
+    glWindowPos3s();
+}
+ 
+/**
+ * glWindowPos3sv
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glWindowPos3sv, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glWindowPos3sv)
+{
+
+    glWindowPos3sv();
+}
+ 
+/**
+ * glGenQueries
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glGenQueries, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glGenQueries)
+{
+
+    glGenQueries();
+}
+ 
+/**
+ * glDeleteQueries
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glDeleteQueries, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glDeleteQueries)
+{
+
+    glDeleteQueries();
+}
+ 
+/**
+ * glIsQuery
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glIsQuery, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glIsQuery)
+{
+
+    glIsQuery();
+}
+ 
+/**
+ * glBeginQuery
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glBeginQuery, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glBeginQuery)
+{
+
+    glBeginQuery();
+}
+ 
+/**
+ * glEndQuery
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glEndQuery, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glEndQuery)
+{
+
+    glEndQuery();
+}
+ 
+/**
+ * glGetQueryiv
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glGetQueryiv, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glGetQueryiv)
+{
+
+    glGetQueryiv();
+}
+ 
+/**
+ * glGetQueryObjectiv
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glGetQueryObjectiv, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glGetQueryObjectiv)
+{
+
+    glGetQueryObjectiv();
+}
+ 
+/**
+ * glGetQueryObjectuiv
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glGetQueryObjectuiv, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glGetQueryObjectuiv)
+{
+
+    glGetQueryObjectuiv();
+}
+ 
+/**
+ * glBindBuffer
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glBindBuffer, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glBindBuffer)
+{
+
+    glBindBuffer();
+}
+ 
+/**
+ * glDeleteBuffers
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glDeleteBuffers, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glDeleteBuffers)
+{
+
+    glDeleteBuffers();
+}
+ 
+/**
+ * glGenBuffers
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glGenBuffers, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glGenBuffers)
+{
+
+    glGenBuffers();
+}
+ 
+/**
+ * glIsBuffer
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glIsBuffer, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glIsBuffer)
+{
+
+    glIsBuffer();
+}
+ 
+/**
+ * glBufferData
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glBufferData, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glBufferData)
+{
+
+    glBufferData();
+}
+ 
+/**
+ * glBufferSubData
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glBufferSubData, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glBufferSubData)
+{
+
+    glBufferSubData();
+}
+ 
+/**
+ * glGetBufferSubData
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glGetBufferSubData, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glGetBufferSubData)
+{
+
+    glGetBufferSubData();
+}
+ 
+/**
+ * glMapBuffer
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glMapBuffer, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glMapBuffer)
+{
+
+    glMapBuffer();
+}
+ 
+/**
+ * glUnmapBuffer
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glUnmapBuffer, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glUnmapBuffer)
+{
+
+    glUnmapBuffer();
+}
+ 
+/**
+ * glGetBufferParameteriv
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glGetBufferParameteriv, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glGetBufferParameteriv)
+{
+
+    glGetBufferParameteriv();
+}
+ 
+/**
+ * glGetBufferPointerv
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glGetBufferPointerv, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glGetBufferPointerv)
+{
+
+    glGetBufferPointerv();
+}
+ 
+/**
+ * glBlendEquationSeparate
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glBlendEquationSeparate, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glBlendEquationSeparate)
+{
+
+    glBlendEquationSeparate();
+}
+ 
+/**
+ * glDrawBuffers
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glDrawBuffers, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glDrawBuffers)
+{
+
+    glDrawBuffers();
+}
+ 
+/**
+ * glStencilOpSeparate
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glStencilOpSeparate, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glStencilOpSeparate)
+{
+
+    glStencilOpSeparate();
+}
+ 
+/**
+ * glStencilFuncSeparate
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glStencilFuncSeparate, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glStencilFuncSeparate)
+{
+
+    glStencilFuncSeparate();
+}
+ 
+/**
+ * glStencilMaskSeparate
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glStencilMaskSeparate, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glStencilMaskSeparate)
+{
+
+    glStencilMaskSeparate();
+}
+ 
+/**
+ * glAttachShader
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glAttachShader, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glAttachShader)
+{
+
+    glAttachShader();
+}
+ 
+/**
+ * glBindAttribLocation
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glBindAttribLocation, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glBindAttribLocation)
+{
+
+    glBindAttribLocation();
+}
+ 
+/**
+ * glCompileShader
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glCompileShader, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glCompileShader)
+{
+
+    glCompileShader();
+}
+ 
+/**
+ * glCreateProgram
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glCreateProgram, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glCreateProgram)
+{
+
+    glCreateProgram();
+}
+ 
+/**
+ * glCreateShader
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glCreateShader, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glCreateShader)
+{
+
+    glCreateShader();
+}
+ 
+/**
+ * glDeleteProgram
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glDeleteProgram, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glDeleteProgram)
+{
+
+    glDeleteProgram();
+}
+ 
+/**
+ * glDeleteShader
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glDeleteShader, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glDeleteShader)
+{
+
+    glDeleteShader();
+}
+ 
+/**
+ * glDetachShader
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glDetachShader, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glDetachShader)
+{
+
+    glDetachShader();
+}
+ 
+/**
+ * glDisableVertexAttribArray
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glDisableVertexAttribArray, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glDisableVertexAttribArray)
+{
+
+    glDisableVertexAttribArray();
+}
+ 
+/**
+ * glEnableVertexAttribArray
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glEnableVertexAttribArray, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glEnableVertexAttribArray)
+{
+
+    glEnableVertexAttribArray();
+}
+ 
+/**
+ * glGetActiveAttrib
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glGetActiveAttrib, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glGetActiveAttrib)
+{
+
+    glGetActiveAttrib();
+}
+ 
+/**
+ * glGetActiveUniform
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glGetActiveUniform, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glGetActiveUniform)
+{
+
+    glGetActiveUniform();
+}
+ 
+/**
+ * glGetAttachedShaders
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glGetAttachedShaders, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glGetAttachedShaders)
+{
+
+    glGetAttachedShaders();
+}
+ 
+/**
+ * glGetAttribLocation
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glGetAttribLocation, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glGetAttribLocation)
+{
+
+    glGetAttribLocation();
+}
+ 
+/**
+ * glGetProgramiv
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glGetProgramiv, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glGetProgramiv)
+{
+
+    glGetProgramiv();
+}
+ 
+/**
+ * glGetProgramInfoLog
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glGetProgramInfoLog, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glGetProgramInfoLog)
+{
+
+    glGetProgramInfoLog();
+}
+ 
+/**
+ * glGetShaderiv
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glGetShaderiv, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glGetShaderiv)
+{
+
+    glGetShaderiv();
+}
+ 
+/**
+ * glGetShaderInfoLog
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glGetShaderInfoLog, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glGetShaderInfoLog)
+{
+
+    glGetShaderInfoLog();
+}
+ 
+/**
+ * glGetShaderSource
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glGetShaderSource, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glGetShaderSource)
+{
+
+    glGetShaderSource();
+}
+ 
+/**
+ * glGetUniformLocation
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glGetUniformLocation, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glGetUniformLocation)
+{
+
+    glGetUniformLocation();
+}
+ 
+/**
+ * glGetUniformfv
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glGetUniformfv, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glGetUniformfv)
+{
+
+    glGetUniformfv();
+}
+ 
+/**
+ * glGetUniformiv
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glGetUniformiv, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glGetUniformiv)
+{
+
+    glGetUniformiv();
+}
+ 
+/**
+ * glGetVertexAttribdv
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glGetVertexAttribdv, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glGetVertexAttribdv)
+{
+
+    glGetVertexAttribdv();
+}
+ 
+/**
+ * glGetVertexAttribfv
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glGetVertexAttribfv, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glGetVertexAttribfv)
+{
+
+    glGetVertexAttribfv();
+}
+ 
+/**
+ * glGetVertexAttribiv
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glGetVertexAttribiv, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glGetVertexAttribiv)
+{
+
+    glGetVertexAttribiv();
+}
+ 
+/**
+ * glGetVertexAttribPointerv
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glGetVertexAttribPointerv, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glGetVertexAttribPointerv)
+{
+
+    glGetVertexAttribPointerv();
+}
+ 
+/**
+ * glIsProgram
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glIsProgram, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glIsProgram)
+{
+
+    glIsProgram();
+}
+ 
+/**
+ * glIsShader
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glIsShader, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glIsShader)
+{
+
+    glIsShader();
+}
+ 
+/**
+ * glLinkProgram
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glLinkProgram, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glLinkProgram)
+{
+
+    glLinkProgram();
+}
+ 
+/**
+ * glShaderSource
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glShaderSource, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glShaderSource)
+{
+
+    glShaderSource();
+}
+ 
+/**
+ * glUseProgram
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glUseProgram, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glUseProgram)
+{
+
+    glUseProgram();
+}
+ 
+/**
+ * glUniform1f
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glUniform1f, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glUniform1f)
+{
+
+    glUniform1f();
+}
+ 
+/**
+ * glUniform2f
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glUniform2f, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glUniform2f)
+{
+
+    glUniform2f();
+}
+ 
+/**
+ * glUniform3f
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glUniform3f, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glUniform3f)
+{
+
+    glUniform3f();
+}
+ 
+/**
+ * glUniform4f
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glUniform4f, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glUniform4f)
+{
+
+    glUniform4f();
+}
+ 
+/**
+ * glUniform1i
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glUniform1i, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glUniform1i)
+{
+
+    glUniform1i();
+}
+ 
+/**
+ * glUniform2i
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glUniform2i, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glUniform2i)
+{
+
+    glUniform2i();
+}
+ 
+/**
+ * glUniform3i
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glUniform3i, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glUniform3i)
+{
+
+    glUniform3i();
+}
+ 
+/**
+ * glUniform4i
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glUniform4i, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glUniform4i)
+{
+
+    glUniform4i();
+}
+ 
+/**
+ * glUniform1fv
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glUniform1fv, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glUniform1fv)
+{
+
+    glUniform1fv();
+}
+ 
+/**
+ * glUniform2fv
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glUniform2fv, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glUniform2fv)
+{
+
+    glUniform2fv();
+}
+ 
+/**
+ * glUniform3fv
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glUniform3fv, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glUniform3fv)
+{
+
+    glUniform3fv();
+}
+ 
+/**
+ * glUniform4fv
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glUniform4fv, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glUniform4fv)
+{
+
+    glUniform4fv();
+}
+ 
+/**
+ * glUniform1iv
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glUniform1iv, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glUniform1iv)
+{
+
+    glUniform1iv();
+}
+ 
+/**
+ * glUniform2iv
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glUniform2iv, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glUniform2iv)
+{
+
+    glUniform2iv();
+}
+ 
+/**
+ * glUniform3iv
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glUniform3iv, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glUniform3iv)
+{
+
+    glUniform3iv();
+}
+ 
+/**
+ * glUniform4iv
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glUniform4iv, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glUniform4iv)
+{
+
+    glUniform4iv();
+}
+ 
+/**
+ * glUniformMatrix2fv
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glUniformMatrix2fv, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glUniformMatrix2fv)
+{
+
+    glUniformMatrix2fv();
+}
+ 
+/**
+ * glUniformMatrix3fv
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glUniformMatrix3fv, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glUniformMatrix3fv)
+{
+
+    glUniformMatrix3fv();
+}
+ 
+/**
+ * glUniformMatrix4fv
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glUniformMatrix4fv, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glUniformMatrix4fv)
+{
+
+    glUniformMatrix4fv();
+}
+ 
+/**
+ * glValidateProgram
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glValidateProgram, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glValidateProgram)
+{
+
+    glValidateProgram();
+}
+ 
+/**
+ * glVertexAttrib1d
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glVertexAttrib1d, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glVertexAttrib1d)
+{
+
+    glVertexAttrib1d();
+}
+ 
+/**
+ * glVertexAttrib1dv
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glVertexAttrib1dv, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glVertexAttrib1dv)
+{
+
+    glVertexAttrib1dv();
+}
+ 
+/**
+ * glVertexAttrib1f
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glVertexAttrib1f, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glVertexAttrib1f)
+{
+
+    glVertexAttrib1f();
+}
+ 
+/**
+ * glVertexAttrib1fv
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glVertexAttrib1fv, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glVertexAttrib1fv)
+{
+
+    glVertexAttrib1fv();
+}
+ 
+/**
+ * glVertexAttrib1s
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glVertexAttrib1s, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glVertexAttrib1s)
+{
+
+    glVertexAttrib1s();
+}
+ 
+/**
+ * glVertexAttrib1sv
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glVertexAttrib1sv, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glVertexAttrib1sv)
+{
+
+    glVertexAttrib1sv();
+}
+ 
+/**
+ * glVertexAttrib2d
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glVertexAttrib2d, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glVertexAttrib2d)
+{
+
+    glVertexAttrib2d();
+}
+ 
+/**
+ * glVertexAttrib2dv
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glVertexAttrib2dv, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glVertexAttrib2dv)
+{
+
+    glVertexAttrib2dv();
+}
+ 
+/**
+ * glVertexAttrib2f
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glVertexAttrib2f, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glVertexAttrib2f)
+{
+
+    glVertexAttrib2f();
+}
+ 
+/**
+ * glVertexAttrib2fv
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glVertexAttrib2fv, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glVertexAttrib2fv)
+{
+
+    glVertexAttrib2fv();
+}
+ 
+/**
+ * glVertexAttrib2s
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glVertexAttrib2s, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glVertexAttrib2s)
+{
+
+    glVertexAttrib2s();
+}
+ 
+/**
+ * glVertexAttrib2sv
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glVertexAttrib2sv, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glVertexAttrib2sv)
+{
+
+    glVertexAttrib2sv();
+}
+ 
+/**
+ * glVertexAttrib3d
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glVertexAttrib3d, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glVertexAttrib3d)
+{
+
+    glVertexAttrib3d();
+}
+ 
+/**
+ * glVertexAttrib3dv
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glVertexAttrib3dv, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glVertexAttrib3dv)
+{
+
+    glVertexAttrib3dv();
+}
+ 
+/**
+ * glVertexAttrib3f
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glVertexAttrib3f, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glVertexAttrib3f)
+{
+
+    glVertexAttrib3f();
+}
+ 
+/**
+ * glVertexAttrib3fv
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glVertexAttrib3fv, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glVertexAttrib3fv)
+{
+
+    glVertexAttrib3fv();
+}
+ 
+/**
+ * glVertexAttrib3s
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glVertexAttrib3s, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glVertexAttrib3s)
+{
+
+    glVertexAttrib3s();
+}
+ 
+/**
+ * glVertexAttrib3sv
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glVertexAttrib3sv, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glVertexAttrib3sv)
+{
+
+    glVertexAttrib3sv();
+}
+ 
+/**
+ * glVertexAttrib4Nbv
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glVertexAttrib4Nbv, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glVertexAttrib4Nbv)
+{
+
+    glVertexAttrib4Nbv();
+}
+ 
+/**
+ * glVertexAttrib4Niv
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glVertexAttrib4Niv, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glVertexAttrib4Niv)
+{
+
+    glVertexAttrib4Niv();
+}
+ 
+/**
+ * glVertexAttrib4Nsv
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glVertexAttrib4Nsv, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glVertexAttrib4Nsv)
+{
+
+    glVertexAttrib4Nsv();
+}
+ 
+/**
+ * glVertexAttrib4Nub
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glVertexAttrib4Nub, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glVertexAttrib4Nub)
+{
+
+    glVertexAttrib4Nub();
+}
+ 
+/**
+ * glVertexAttrib4Nubv
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glVertexAttrib4Nubv, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glVertexAttrib4Nubv)
+{
+
+    glVertexAttrib4Nubv();
+}
+ 
+/**
+ * glVertexAttrib4Nuiv
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glVertexAttrib4Nuiv, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glVertexAttrib4Nuiv)
+{
+
+    glVertexAttrib4Nuiv();
+}
+ 
+/**
+ * glVertexAttrib4Nusv
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glVertexAttrib4Nusv, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glVertexAttrib4Nusv)
+{
+
+    glVertexAttrib4Nusv();
+}
+ 
+/**
+ * glVertexAttrib4bv
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glVertexAttrib4bv, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glVertexAttrib4bv)
+{
+
+    glVertexAttrib4bv();
+}
+ 
+/**
+ * glVertexAttrib4d
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glVertexAttrib4d, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glVertexAttrib4d)
+{
+
+    glVertexAttrib4d();
+}
+ 
+/**
+ * glVertexAttrib4dv
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glVertexAttrib4dv, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glVertexAttrib4dv)
+{
+
+    glVertexAttrib4dv();
+}
+ 
+/**
+ * glVertexAttrib4f
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glVertexAttrib4f, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glVertexAttrib4f)
+{
+
+    glVertexAttrib4f();
+}
+ 
+/**
+ * glVertexAttrib4fv
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glVertexAttrib4fv, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glVertexAttrib4fv)
+{
+
+    glVertexAttrib4fv();
+}
+ 
+/**
+ * glVertexAttrib4iv
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glVertexAttrib4iv, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glVertexAttrib4iv)
+{
+
+    glVertexAttrib4iv();
+}
+ 
+/**
+ * glVertexAttrib4s
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glVertexAttrib4s, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glVertexAttrib4s)
+{
+
+    glVertexAttrib4s();
+}
+ 
+/**
+ * glVertexAttrib4sv
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glVertexAttrib4sv, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glVertexAttrib4sv)
+{
+
+    glVertexAttrib4sv();
+}
+ 
+/**
+ * glVertexAttrib4ubv
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glVertexAttrib4ubv, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glVertexAttrib4ubv)
+{
+
+    glVertexAttrib4ubv();
+}
+ 
+/**
+ * glVertexAttrib4uiv
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glVertexAttrib4uiv, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glVertexAttrib4uiv)
+{
+
+    glVertexAttrib4uiv();
+}
+ 
+/**
+ * glVertexAttrib4usv
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glVertexAttrib4usv, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glVertexAttrib4usv)
+{
+
+    glVertexAttrib4usv();
+}
+ 
+/**
+ * glVertexAttribPointer
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glVertexAttribPointer, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glVertexAttribPointer)
+{
+
+    glVertexAttribPointer();
+}
+ 
+/**
+ * glUniformMatrix2x3fv
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glUniformMatrix2x3fv, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glUniformMatrix2x3fv)
+{
+
+    glUniformMatrix2x3fv();
+}
+ 
+/**
+ * glUniformMatrix3x2fv
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glUniformMatrix3x2fv, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glUniformMatrix3x2fv)
+{
+
+    glUniformMatrix3x2fv();
+}
+ 
+/**
+ * glUniformMatrix2x4fv
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glUniformMatrix2x4fv, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glUniformMatrix2x4fv)
+{
+
+    glUniformMatrix2x4fv();
+}
+ 
+/**
+ * glUniformMatrix4x2fv
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glUniformMatrix4x2fv, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glUniformMatrix4x2fv)
+{
+
+    glUniformMatrix4x2fv();
+}
+ 
+/**
+ * glUniformMatrix3x4fv
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glUniformMatrix3x4fv, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glUniformMatrix3x4fv)
+{
+
+    glUniformMatrix3x4fv();
+}
+ 
+/**
+ * glUniformMatrix4x3fv
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glUniformMatrix4x3fv, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glUniformMatrix4x3fv)
+{
+
+    glUniformMatrix4x3fv();
+}
+ 
+/**
+ * glColorMaski
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glColorMaski, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glColorMaski)
+{
+
+    glColorMaski();
+}
+ 
+/**
+ * glGetBooleani_v
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glGetBooleani_v, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glGetBooleani_v)
+{
+
+    glGetBooleani_v();
+}
+ 
+/**
+ * glGetIntegeri_v
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glGetIntegeri_v, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glGetIntegeri_v)
+{
+
+    glGetIntegeri_v();
+}
+ 
+/**
+ * glEnablei
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glEnablei, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glEnablei)
+{
+
+    glEnablei();
+}
+ 
+/**
+ * glDisablei
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glDisablei, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glDisablei)
+{
+
+    glDisablei();
+}
+ 
+/**
+ * glIsEnabledi
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glIsEnabledi, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glIsEnabledi)
+{
+
+    glIsEnabledi();
+}
+ 
+/**
+ * glBeginTransformFeedback
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glBeginTransformFeedback, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glBeginTransformFeedback)
+{
+
+    glBeginTransformFeedback();
+}
+ 
+/**
+ * glEndTransformFeedback
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glEndTransformFeedback, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glEndTransformFeedback)
+{
+
+    glEndTransformFeedback();
+}
+ 
+/**
+ * glBindBufferRange
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glBindBufferRange, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glBindBufferRange)
+{
+
+    glBindBufferRange();
+}
+ 
+/**
+ * glBindBufferBase
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glBindBufferBase, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glBindBufferBase)
+{
+
+    glBindBufferBase();
+}
+ 
+/**
+ * glTransformFeedbackVaryings
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glTransformFeedbackVaryings, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glTransformFeedbackVaryings)
+{
+
+    glTransformFeedbackVaryings();
+}
+ 
+/**
+ * glGetTransformFeedbackVarying
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glGetTransformFeedbackVarying, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glGetTransformFeedbackVarying)
+{
+
+    glGetTransformFeedbackVarying();
+}
+ 
+/**
+ * glClampColor
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glClampColor, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glClampColor)
+{
+
+    glClampColor();
+}
+ 
+/**
+ * glBeginConditionalRender
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glBeginConditionalRender, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glBeginConditionalRender)
+{
+
+    glBeginConditionalRender();
+}
+ 
+/**
+ * glEndConditionalRender
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glEndConditionalRender, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glEndConditionalRender)
+{
+
+    glEndConditionalRender();
+}
+ 
+/**
+ * glVertexAttribIPointer
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glVertexAttribIPointer, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glVertexAttribIPointer)
+{
+
+    glVertexAttribIPointer();
+}
+ 
+/**
+ * glGetVertexAttribIiv
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glGetVertexAttribIiv, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glGetVertexAttribIiv)
+{
+
+    glGetVertexAttribIiv();
+}
+ 
+/**
+ * glGetVertexAttribIuiv
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glGetVertexAttribIuiv, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glGetVertexAttribIuiv)
+{
+
+    glGetVertexAttribIuiv();
+}
+ 
+/**
+ * glVertexAttribI1i
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glVertexAttribI1i, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glVertexAttribI1i)
+{
+
+    glVertexAttribI1i();
+}
+ 
+/**
+ * glVertexAttribI2i
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glVertexAttribI2i, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glVertexAttribI2i)
+{
+
+    glVertexAttribI2i();
+}
+ 
+/**
+ * glVertexAttribI3i
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glVertexAttribI3i, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glVertexAttribI3i)
+{
+
+    glVertexAttribI3i();
+}
+ 
+/**
+ * glVertexAttribI4i
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glVertexAttribI4i, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glVertexAttribI4i)
+{
+
+    glVertexAttribI4i();
+}
+ 
+/**
+ * glVertexAttribI1ui
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glVertexAttribI1ui, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glVertexAttribI1ui)
+{
+
+    glVertexAttribI1ui();
+}
+ 
+/**
+ * glVertexAttribI2ui
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glVertexAttribI2ui, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glVertexAttribI2ui)
+{
+
+    glVertexAttribI2ui();
+}
+ 
+/**
+ * glVertexAttribI3ui
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glVertexAttribI3ui, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glVertexAttribI3ui)
+{
+
+    glVertexAttribI3ui();
+}
+ 
+/**
+ * glVertexAttribI4ui
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glVertexAttribI4ui, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glVertexAttribI4ui)
+{
+
+    glVertexAttribI4ui();
+}
+ 
+/**
+ * glVertexAttribI1iv
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glVertexAttribI1iv, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glVertexAttribI1iv)
+{
+
+    glVertexAttribI1iv();
+}
+ 
+/**
+ * glVertexAttribI2iv
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glVertexAttribI2iv, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glVertexAttribI2iv)
+{
+
+    glVertexAttribI2iv();
+}
+ 
+/**
+ * glVertexAttribI3iv
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glVertexAttribI3iv, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glVertexAttribI3iv)
+{
+
+    glVertexAttribI3iv();
+}
+ 
+/**
+ * glVertexAttribI4iv
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glVertexAttribI4iv, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glVertexAttribI4iv)
+{
+
+    glVertexAttribI4iv();
+}
+ 
+/**
+ * glVertexAttribI1uiv
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glVertexAttribI1uiv, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glVertexAttribI1uiv)
+{
+
+    glVertexAttribI1uiv();
+}
+ 
+/**
+ * glVertexAttribI2uiv
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glVertexAttribI2uiv, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glVertexAttribI2uiv)
+{
+
+    glVertexAttribI2uiv();
+}
+ 
+/**
+ * glVertexAttribI3uiv
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glVertexAttribI3uiv, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glVertexAttribI3uiv)
+{
+
+    glVertexAttribI3uiv();
+}
+ 
+/**
+ * glVertexAttribI4uiv
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glVertexAttribI4uiv, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glVertexAttribI4uiv)
+{
+
+    glVertexAttribI4uiv();
+}
+ 
+/**
+ * glVertexAttribI4bv
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glVertexAttribI4bv, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glVertexAttribI4bv)
+{
+
+    glVertexAttribI4bv();
+}
+ 
+/**
+ * glVertexAttribI4sv
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glVertexAttribI4sv, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glVertexAttribI4sv)
+{
+
+    glVertexAttribI4sv();
+}
+ 
+/**
+ * glVertexAttribI4ubv
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glVertexAttribI4ubv, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glVertexAttribI4ubv)
+{
+
+    glVertexAttribI4ubv();
+}
+ 
+/**
+ * glVertexAttribI4usv
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glVertexAttribI4usv, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glVertexAttribI4usv)
+{
+
+    glVertexAttribI4usv();
+}
+ 
+/**
+ * glGetUniformuiv
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glGetUniformuiv, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glGetUniformuiv)
+{
+
+    glGetUniformuiv();
+}
+ 
+/**
+ * glBindFragDataLocation
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glBindFragDataLocation, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glBindFragDataLocation)
+{
+
+    glBindFragDataLocation();
+}
+ 
+/**
+ * glGetFragDataLocation
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glGetFragDataLocation, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glGetFragDataLocation)
+{
+
+    glGetFragDataLocation();
+}
+ 
+/**
+ * glUniform1ui
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glUniform1ui, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glUniform1ui)
+{
+
+    glUniform1ui();
+}
+ 
+/**
+ * glUniform2ui
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glUniform2ui, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glUniform2ui)
+{
+
+    glUniform2ui();
+}
+ 
+/**
+ * glUniform3ui
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glUniform3ui, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glUniform3ui)
+{
+
+    glUniform3ui();
+}
+ 
+/**
+ * glUniform4ui
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glUniform4ui, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glUniform4ui)
+{
+
+    glUniform4ui();
+}
+ 
+/**
+ * glUniform1uiv
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glUniform1uiv, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glUniform1uiv)
+{
+
+    glUniform1uiv();
+}
+ 
+/**
+ * glUniform2uiv
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glUniform2uiv, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glUniform2uiv)
+{
+
+    glUniform2uiv();
+}
+ 
+/**
+ * glUniform3uiv
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glUniform3uiv, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glUniform3uiv)
+{
+
+    glUniform3uiv();
+}
+ 
+/**
+ * glUniform4uiv
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glUniform4uiv, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glUniform4uiv)
+{
+
+    glUniform4uiv();
+}
+ 
+/**
+ * glTexParameterIiv
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glTexParameterIiv, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glTexParameterIiv)
+{
+
+    glTexParameterIiv();
+}
+ 
+/**
+ * glTexParameterIuiv
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glTexParameterIuiv, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glTexParameterIuiv)
+{
+
+    glTexParameterIuiv();
+}
+ 
+/**
+ * glGetTexParameterIiv
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glGetTexParameterIiv, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glGetTexParameterIiv)
+{
+
+    glGetTexParameterIiv();
+}
+ 
+/**
+ * glGetTexParameterIuiv
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glGetTexParameterIuiv, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glGetTexParameterIuiv)
+{
+
+    glGetTexParameterIuiv();
+}
+ 
+/**
+ * glClearBufferiv
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glClearBufferiv, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glClearBufferiv)
+{
+
+    glClearBufferiv();
+}
+ 
+/**
+ * glClearBufferuiv
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glClearBufferuiv, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glClearBufferuiv)
+{
+
+    glClearBufferuiv();
+}
+ 
+/**
+ * glClearBufferfv
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glClearBufferfv, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glClearBufferfv)
+{
+
+    glClearBufferfv();
+}
+ 
+/**
+ * glClearBufferfi
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glClearBufferfi, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glClearBufferfi)
+{
+
+    glClearBufferfi();
+}
+ 
+/**
+ * glGetStringi
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glGetStringi, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glGetStringi)
+{
+
+    glGetStringi();
+}
+ 
+/**
+ * glDrawArraysInstanced
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glDrawArraysInstanced, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glDrawArraysInstanced)
+{
+
+    glDrawArraysInstanced();
+}
+ 
+/**
+ * glDrawElementsInstanced
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glDrawElementsInstanced, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glDrawElementsInstanced)
+{
+
+    glDrawElementsInstanced();
+}
+ 
+/**
+ * glTexBuffer
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glTexBuffer, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glTexBuffer)
+{
+
+    glTexBuffer();
+}
+ 
+/**
+ * glPrimitiveRestartIndex
+ * --------------------------------
+ */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_glPrimitiveRestartIndex, 0, 0, 1)
+ZEND_END_ARG_INFO()
+
+PHP_FUNCTION(glPrimitiveRestartIndex)
+{
+
+    glPrimitiveRestartIndex();
 }
  
 
@@ -6532,81 +13467,643 @@ PHP_MINIT_FUNCTION(glfw)
  * --------------------------------
  */
 static zend_function_entry glfw_functions[] = {
-    ZEND_RAW_NAMED_FE(glfwInit, zif_glfwInit, NULL) 
-    ZEND_RAW_NAMED_FE(glfwTerminate, zif_glfwTerminate, NULL) 
-    ZEND_RAW_NAMED_FE(glfwGetVersion, zif_glfwGetVersion, arginfo_glfwGetVersion) 
-    ZEND_RAW_NAMED_FE(glfwGetVersionString, zif_glfwGetVersionString, NULL) 
-    ZEND_RAW_NAMED_FE(glfwMakeContextCurrent, zif_glfwMakeContextCurrent, arginfo_glfwMakeContextCurrent) 
-    ZEND_RAW_NAMED_FE(glfwGetCurrentContext, zif_glfwGetCurrentContext, NULL) 
-    ZEND_RAW_NAMED_FE(glfwSwapInterval, zif_glfwSwapInterval, arginfo_glfwSwapInterval) 
-    ZEND_RAW_NAMED_FE(glfwExtensionSupported, zif_glfwExtensionSupported, arginfo_glfwExtensionSupported) 
-    ZEND_RAW_NAMED_FE(glfwGetProcAddress, zif_glfwGetProcAddress, arginfo_glfwGetProcAddress) 
-    ZEND_RAW_NAMED_FE(glfwDefaultWindowHints, zif_glfwDefaultWindowHints, NULL) 
-    ZEND_RAW_NAMED_FE(glfwWindowHint, zif_glfwWindowHint, arginfo_glfwWindowHint) 
-    ZEND_RAW_NAMED_FE(glfwDestroyWindow, zif_glfwDestroyWindow, arginfo_glfwDestroyWindow) 
-    ZEND_RAW_NAMED_FE(glfwCreateWindow, zif_glfwCreateWindow, arginfo_glfwCreateWindow) 
-    ZEND_RAW_NAMED_FE(glfwWindowShouldClose, zif_glfwWindowShouldClose, arginfo_glfwWindowShouldClose) 
-    ZEND_RAW_NAMED_FE(glfwSetWindowShouldClose, zif_glfwSetWindowShouldClose, arginfo_glfwSetWindowShouldClose) 
-    ZEND_RAW_NAMED_FE(glfwSwapBuffers, zif_glfwSwapBuffers, arginfo_glfwSwapBuffers) 
-    ZEND_RAW_NAMED_FE(glfwPollEvents, zif_glfwPollEvents, NULL) 
-    ZEND_RAW_NAMED_FE(glfwGetTime, zif_glfwGetTime, NULL) 
-    ZEND_RAW_NAMED_FE(glfwCreateStandardCursor, zif_glfwCreateStandardCursor, arginfo_glfwCreateStandardCursor) 
-    ZEND_RAW_NAMED_FE(glfwDestroyCursor, zif_glfwDestroyCursor, arginfo_glfwDestroyCursor) 
-    ZEND_RAW_NAMED_FE(glfwGetClipboardString, zif_glfwGetClipboardString, arginfo_glfwGetClipboardString) 
-    ZEND_RAW_NAMED_FE(glfwGetCursorPos, zif_glfwGetCursorPos, arginfo_glfwGetCursorPos) 
-    ZEND_RAW_NAMED_FE(glfwGetKey, zif_glfwGetKey, arginfo_glfwGetKey) 
-    ZEND_RAW_NAMED_FE(glfwGetMouseButton, zif_glfwGetMouseButton, arginfo_glfwGetMouseButton) 
-    ZEND_RAW_NAMED_FE(glfwSetInputMode, zif_glfwSetInputMode, arginfo_glfwSetInputMode) 
-    ZEND_RAW_NAMED_FE(glEnable, zif_glEnable, arginfo_glEnable) 
-    ZEND_RAW_NAMED_FE(glDisable, zif_glDisable, arginfo_glDisable) 
-    ZEND_RAW_NAMED_FE(glPolygonMode, zif_glPolygonMode, arginfo_glPolygonMode) 
-    ZEND_RAW_NAMED_FE(glBlendFunc, zif_glBlendFunc, arginfo_glBlendFunc) 
-    ZEND_RAW_NAMED_FE(glViewport, zif_glViewport, arginfo_glViewport) 
-    ZEND_RAW_NAMED_FE(glClearColor, zif_glClearColor, arginfo_glClearColor) 
-    ZEND_RAW_NAMED_FE(glClear, zif_glClear, arginfo_glClear) 
-    ZEND_RAW_NAMED_FE(glGenBuffers, zif_glGenBuffers, arginfo_glGenBuffers) 
-    ZEND_RAW_NAMED_FE(glDeleteBuffers, zif_glDeleteBuffers, arginfo_glDeleteBuffers) 
-    ZEND_RAW_NAMED_FE(glGenVertexArrays, zif_glGenVertexArrays, arginfo_glGenVertexArrays) 
-    ZEND_RAW_NAMED_FE(glDeleteVertexArrays, zif_glDeleteVertexArrays, arginfo_glDeleteVertexArrays) 
-    ZEND_RAW_NAMED_FE(glBindBuffer, zif_glBindBuffer, arginfo_glBindBuffer) 
-    ZEND_RAW_NAMED_FE(glBindVertexArray, zif_glBindVertexArray, arginfo_glBindVertexArray) 
-    ZEND_RAW_NAMED_FE(glBufferData, zif_glBufferData, arginfo_glBufferData) 
-    ZEND_RAW_NAMED_FE(glBufferDataFloat, zif_glBufferDataFloat, arginfo_glBufferDataFloat) 
-    ZEND_RAW_NAMED_FE(glBufferDataInt, zif_glBufferDataInt, arginfo_glBufferDataInt) 
-    ZEND_RAW_NAMED_FE(glVertexAttribPointer, zif_glVertexAttribPointer, arginfo_glVertexAttribPointer) 
-    ZEND_RAW_NAMED_FE(glEnableVertexAttribArray, zif_glEnableVertexAttribArray, arginfo_glEnableVertexAttribArray) 
-    ZEND_RAW_NAMED_FE(glDrawArrays, zif_glDrawArrays, arginfo_glDrawArrays) 
-    ZEND_RAW_NAMED_FE(glDrawElements, zif_glDrawElements, arginfo_glDrawElements) 
-    ZEND_RAW_NAMED_FE(glCreateShader, zif_glCreateShader, arginfo_glCreateShader) 
-    ZEND_RAW_NAMED_FE(glCreateProgram, zif_glCreateProgram, NULL) 
-    ZEND_RAW_NAMED_FE(glShaderSource, zif_glShaderSource, arginfo_glShaderSource) 
-    ZEND_RAW_NAMED_FE(glCompileShader, zif_glCompileShader, arginfo_glCompileShader) 
-    ZEND_RAW_NAMED_FE(glDeleteShader, zif_glDeleteShader, arginfo_glDeleteShader) 
-    ZEND_RAW_NAMED_FE(glAttachShader, zif_glAttachShader, arginfo_glAttachShader) 
-    ZEND_RAW_NAMED_FE(glGetUniformLocation, zif_glGetUniformLocation, arginfo_glGetUniformLocation) 
-    ZEND_RAW_NAMED_FE(glUniform1i, zif_glUniform1i, arginfo_glUniform1i) 
-    ZEND_RAW_NAMED_FE(glUniform2i, zif_glUniform2i, arginfo_glUniform2i) 
-    ZEND_RAW_NAMED_FE(glUniform3i, zif_glUniform3i, arginfo_glUniform3i) 
-    ZEND_RAW_NAMED_FE(glUniform4i, zif_glUniform4i, arginfo_glUniform4i) 
-    ZEND_RAW_NAMED_FE(glUniform1f, zif_glUniform1f, arginfo_glUniform1f) 
-    ZEND_RAW_NAMED_FE(glUniform2f, zif_glUniform2f, arginfo_glUniform2f) 
-    ZEND_RAW_NAMED_FE(glUniform3f, zif_glUniform3f, arginfo_glUniform3f) 
-    ZEND_RAW_NAMED_FE(glUniform4f, zif_glUniform4f, arginfo_glUniform4f) 
-    ZEND_RAW_NAMED_FE(glUniformMatrix4fv, zif_glUniformMatrix4fv, arginfo_glUniformMatrix4fv) 
-    ZEND_RAW_NAMED_FE(glLinkProgram, zif_glLinkProgram, arginfo_glLinkProgram) 
-    ZEND_RAW_NAMED_FE(glGetShaderiv, zif_glGetShaderiv, arginfo_glGetShaderiv) 
-    ZEND_RAW_NAMED_FE(glGetProgramiv, zif_glGetProgramiv, arginfo_glGetProgramiv) 
-    ZEND_RAW_NAMED_FE(glUseProgram, zif_glUseProgram, arginfo_glUseProgram) 
-    ZEND_RAW_NAMED_FE(glGenTextures, zif_glGenTextures, arginfo_glGenTextures) 
-    ZEND_RAW_NAMED_FE(glBindTexture, zif_glBindTexture, arginfo_glBindTexture) 
-    ZEND_RAW_NAMED_FE(glTexParameteri, zif_glTexParameteri, arginfo_glTexParameteri) 
-    ZEND_RAW_NAMED_FE(glTextureParameteri, zif_glTextureParameteri, arginfo_glTextureParameteri) 
-    ZEND_RAW_NAMED_FE(glTexParameterf, zif_glTexParameterf, arginfo_glTexParameterf) 
-    ZEND_RAW_NAMED_FE(glTextureParameterf, zif_glTextureParameterf, arginfo_glTextureParameterf) 
-    ZEND_RAW_NAMED_FE(glTexImage2D, zif_glTexImage2D, arginfo_glTexImage2D) 
-    ZEND_RAW_NAMED_FE(glGenerateMipmap, zif_glGenerateMipmap, arginfo_glGenerateMipmap) 
-    ZEND_RAW_NAMED_FE(glActiveTexture, zif_glActiveTexture, arginfo_glActiveTexture) 
-    ZEND_RAW_NAMED_FE(stbi_load, zif_stbi_load, arginfo_stbi_load) 
+    PHP_FE(glfwInit, arginfo_glfwInit) 
+    PHP_FE(glfwTerminate, arginfo_glfwTerminate) 
+    PHP_FE(glfwGetVersion, arginfo_glfwGetVersion) 
+    PHP_FE(glfwGetVersionString, arginfo_glfwGetVersionString) 
+    PHP_FE(glfwMakeContextCurrent, arginfo_glfwMakeContextCurrent) 
+    PHP_FE(glfwGetCurrentContext, arginfo_glfwGetCurrentContext) 
+    PHP_FE(glfwSwapInterval, arginfo_glfwSwapInterval) 
+    PHP_FE(glfwExtensionSupported, arginfo_glfwExtensionSupported) 
+    PHP_FE(glfwGetProcAddress, arginfo_glfwGetProcAddress) 
+    PHP_FE(glfwDefaultWindowHints, arginfo_glfwDefaultWindowHints) 
+    PHP_FE(glfwWindowHint, arginfo_glfwWindowHint) 
+    PHP_FE(glfwDestroyWindow, arginfo_glfwDestroyWindow) 
+    PHP_FE(glfwCreateWindow, arginfo_glfwCreateWindow) 
+    PHP_FE(glfwWindowShouldClose, arginfo_glfwWindowShouldClose) 
+    PHP_FE(glfwSetWindowShouldClose, arginfo_glfwSetWindowShouldClose) 
+    PHP_FE(glfwSwapBuffers, arginfo_glfwSwapBuffers) 
+    PHP_FE(glfwPollEvents, arginfo_glfwPollEvents) 
+    PHP_FE(glfwGetTime, arginfo_glfwGetTime) 
+    PHP_FE(glfwCreateStandardCursor, arginfo_glfwCreateStandardCursor) 
+    PHP_FE(glfwDestroyCursor, arginfo_glfwDestroyCursor) 
+    PHP_FE(glfwGetClipboardString, arginfo_glfwGetClipboardString) 
+    PHP_FE(glfwGetCursorPos, arginfo_glfwGetCursorPos) 
+    PHP_FE(glfwGetKey, arginfo_glfwGetKey) 
+    PHP_FE(glfwGetMouseButton, arginfo_glfwGetMouseButton) 
+    PHP_FE(glfwSetInputMode, arginfo_glfwSetInputMode) 
+    PHP_FE(glfwSetCursorPosCallback, arginfo_glfwSetCursorPosCallback) 
+    PHP_FE(glCullFace, arginfo_glCullFace) 
+    PHP_FE(glFrontFace, arginfo_glFrontFace) 
+    PHP_FE(glHint, arginfo_glHint) 
+    PHP_FE(glLineWidth, arginfo_glLineWidth) 
+    PHP_FE(glPointSize, arginfo_glPointSize) 
+    PHP_FE(glPolygonMode, arginfo_glPolygonMode) 
+    PHP_FE(glScissor, arginfo_glScissor) 
+    PHP_FE(glTexParameterf, arginfo_glTexParameterf) 
+    PHP_FE(glTexParameterfv, arginfo_glTexParameterfv) 
+    PHP_FE(glTexParameteri, arginfo_glTexParameteri) 
+    PHP_FE(glTexParameteriv, arginfo_glTexParameteriv) 
+    PHP_FE(glTexImage1D, arginfo_glTexImage1D) 
+    PHP_FE(glTexImage2D, arginfo_glTexImage2D) 
+    PHP_FE(glDrawBuffer, arginfo_glDrawBuffer) 
+    PHP_FE(glClear, arginfo_glClear) 
+    PHP_FE(glClearColor, arginfo_glClearColor) 
+    PHP_FE(glClearStencil, arginfo_glClearStencil) 
+    PHP_FE(glClearDepth, arginfo_glClearDepth) 
+    PHP_FE(glStencilMask, arginfo_glStencilMask) 
+    PHP_FE(glColorMask, arginfo_glColorMask) 
+    PHP_FE(glDepthMask, arginfo_glDepthMask) 
+    PHP_FE(glDisable, arginfo_glDisable) 
+    PHP_FE(glEnable, arginfo_glEnable) 
+    PHP_FE(glFinish, arginfo_glFinish) 
+    PHP_FE(glFlush, arginfo_glFlush) 
+    PHP_FE(glBlendFunc, arginfo_glBlendFunc) 
+    PHP_FE(glLogicOp, arginfo_glLogicOp) 
+    PHP_FE(glStencilFunc, arginfo_glStencilFunc) 
+    PHP_FE(glStencilOp, arginfo_glStencilOp) 
+    PHP_FE(glDepthFunc, arginfo_glDepthFunc) 
+    PHP_FE(glPixelStoref, arginfo_glPixelStoref) 
+    PHP_FE(glPixelStorei, arginfo_glPixelStorei) 
+    PHP_FE(glReadBuffer, arginfo_glReadBuffer) 
+    PHP_FE(glReadPixels, arginfo_glReadPixels) 
+    PHP_FE(glGetBooleanv, arginfo_glGetBooleanv) 
+    PHP_FE(glGetDoublev, arginfo_glGetDoublev) 
+    PHP_FE(glGetError, arginfo_glGetError) 
+    PHP_FE(glGetFloatv, arginfo_glGetFloatv) 
+    PHP_FE(glGetIntegerv, arginfo_glGetIntegerv) 
+    PHP_FE(glGetString, arginfo_glGetString) 
+    PHP_FE(glGetTexImage, arginfo_glGetTexImage) 
+    PHP_FE(glGetTexParameterfv, arginfo_glGetTexParameterfv) 
+    PHP_FE(glGetTexParameteriv, arginfo_glGetTexParameteriv) 
+    PHP_FE(glGetTexLevelParameterfv, arginfo_glGetTexLevelParameterfv) 
+    PHP_FE(glGetTexLevelParameteriv, arginfo_glGetTexLevelParameteriv) 
+    PHP_FE(glIsEnabled, arginfo_glIsEnabled) 
+    PHP_FE(glDepthRange, arginfo_glDepthRange) 
+    PHP_FE(glViewport, arginfo_glViewport) 
+    PHP_FE(glNewList, arginfo_glNewList) 
+    PHP_FE(glEndList, arginfo_glEndList) 
+    PHP_FE(glCallList, arginfo_glCallList) 
+    PHP_FE(glCallLists, arginfo_glCallLists) 
+    PHP_FE(glDeleteLists, arginfo_glDeleteLists) 
+    PHP_FE(glGenLists, arginfo_glGenLists) 
+    PHP_FE(glListBase, arginfo_glListBase) 
+    PHP_FE(glBegin, arginfo_glBegin) 
+    PHP_FE(glBitmap, arginfo_glBitmap) 
+    PHP_FE(glColor3b, arginfo_glColor3b) 
+    PHP_FE(glColor3bv, arginfo_glColor3bv) 
+    PHP_FE(glColor3d, arginfo_glColor3d) 
+    PHP_FE(glColor3dv, arginfo_glColor3dv) 
+    PHP_FE(glColor3f, arginfo_glColor3f) 
+    PHP_FE(glColor3fv, arginfo_glColor3fv) 
+    PHP_FE(glColor3i, arginfo_glColor3i) 
+    PHP_FE(glColor3iv, arginfo_glColor3iv) 
+    PHP_FE(glColor3s, arginfo_glColor3s) 
+    PHP_FE(glColor3sv, arginfo_glColor3sv) 
+    PHP_FE(glColor3ub, arginfo_glColor3ub) 
+    PHP_FE(glColor3ubv, arginfo_glColor3ubv) 
+    PHP_FE(glColor3ui, arginfo_glColor3ui) 
+    PHP_FE(glColor3uiv, arginfo_glColor3uiv) 
+    PHP_FE(glColor3us, arginfo_glColor3us) 
+    PHP_FE(glColor3usv, arginfo_glColor3usv) 
+    PHP_FE(glColor4b, arginfo_glColor4b) 
+    PHP_FE(glColor4bv, arginfo_glColor4bv) 
+    PHP_FE(glColor4d, arginfo_glColor4d) 
+    PHP_FE(glColor4dv, arginfo_glColor4dv) 
+    PHP_FE(glColor4f, arginfo_glColor4f) 
+    PHP_FE(glColor4fv, arginfo_glColor4fv) 
+    PHP_FE(glColor4i, arginfo_glColor4i) 
+    PHP_FE(glColor4iv, arginfo_glColor4iv) 
+    PHP_FE(glColor4s, arginfo_glColor4s) 
+    PHP_FE(glColor4sv, arginfo_glColor4sv) 
+    PHP_FE(glColor4ub, arginfo_glColor4ub) 
+    PHP_FE(glColor4ubv, arginfo_glColor4ubv) 
+    PHP_FE(glColor4ui, arginfo_glColor4ui) 
+    PHP_FE(glColor4uiv, arginfo_glColor4uiv) 
+    PHP_FE(glColor4us, arginfo_glColor4us) 
+    PHP_FE(glColor4usv, arginfo_glColor4usv) 
+    PHP_FE(glEdgeFlag, arginfo_glEdgeFlag) 
+    PHP_FE(glEdgeFlagv, arginfo_glEdgeFlagv) 
+    PHP_FE(glEnd, arginfo_glEnd) 
+    PHP_FE(glIndexd, arginfo_glIndexd) 
+    PHP_FE(glIndexdv, arginfo_glIndexdv) 
+    PHP_FE(glIndexf, arginfo_glIndexf) 
+    PHP_FE(glIndexfv, arginfo_glIndexfv) 
+    PHP_FE(glIndexi, arginfo_glIndexi) 
+    PHP_FE(glIndexiv, arginfo_glIndexiv) 
+    PHP_FE(glIndexs, arginfo_glIndexs) 
+    PHP_FE(glIndexsv, arginfo_glIndexsv) 
+    PHP_FE(glNormal3b, arginfo_glNormal3b) 
+    PHP_FE(glNormal3bv, arginfo_glNormal3bv) 
+    PHP_FE(glNormal3d, arginfo_glNormal3d) 
+    PHP_FE(glNormal3dv, arginfo_glNormal3dv) 
+    PHP_FE(glNormal3f, arginfo_glNormal3f) 
+    PHP_FE(glNormal3fv, arginfo_glNormal3fv) 
+    PHP_FE(glNormal3i, arginfo_glNormal3i) 
+    PHP_FE(glNormal3iv, arginfo_glNormal3iv) 
+    PHP_FE(glNormal3s, arginfo_glNormal3s) 
+    PHP_FE(glNormal3sv, arginfo_glNormal3sv) 
+    PHP_FE(glRasterPos2d, arginfo_glRasterPos2d) 
+    PHP_FE(glRasterPos2dv, arginfo_glRasterPos2dv) 
+    PHP_FE(glRasterPos2f, arginfo_glRasterPos2f) 
+    PHP_FE(glRasterPos2fv, arginfo_glRasterPos2fv) 
+    PHP_FE(glRasterPos2i, arginfo_glRasterPos2i) 
+    PHP_FE(glRasterPos2iv, arginfo_glRasterPos2iv) 
+    PHP_FE(glRasterPos2s, arginfo_glRasterPos2s) 
+    PHP_FE(glRasterPos2sv, arginfo_glRasterPos2sv) 
+    PHP_FE(glRasterPos3d, arginfo_glRasterPos3d) 
+    PHP_FE(glRasterPos3dv, arginfo_glRasterPos3dv) 
+    PHP_FE(glRasterPos3f, arginfo_glRasterPos3f) 
+    PHP_FE(glRasterPos3fv, arginfo_glRasterPos3fv) 
+    PHP_FE(glRasterPos3i, arginfo_glRasterPos3i) 
+    PHP_FE(glRasterPos3iv, arginfo_glRasterPos3iv) 
+    PHP_FE(glRasterPos3s, arginfo_glRasterPos3s) 
+    PHP_FE(glRasterPos3sv, arginfo_glRasterPos3sv) 
+    PHP_FE(glRasterPos4d, arginfo_glRasterPos4d) 
+    PHP_FE(glRasterPos4dv, arginfo_glRasterPos4dv) 
+    PHP_FE(glRasterPos4f, arginfo_glRasterPos4f) 
+    PHP_FE(glRasterPos4fv, arginfo_glRasterPos4fv) 
+    PHP_FE(glRasterPos4i, arginfo_glRasterPos4i) 
+    PHP_FE(glRasterPos4iv, arginfo_glRasterPos4iv) 
+    PHP_FE(glRasterPos4s, arginfo_glRasterPos4s) 
+    PHP_FE(glRasterPos4sv, arginfo_glRasterPos4sv) 
+    PHP_FE(glRectd, arginfo_glRectd) 
+    PHP_FE(glRectdv, arginfo_glRectdv) 
+    PHP_FE(glRectf, arginfo_glRectf) 
+    PHP_FE(glRectfv, arginfo_glRectfv) 
+    PHP_FE(glRecti, arginfo_glRecti) 
+    PHP_FE(glRectiv, arginfo_glRectiv) 
+    PHP_FE(glRects, arginfo_glRects) 
+    PHP_FE(glRectsv, arginfo_glRectsv) 
+    PHP_FE(glTexCoord1d, arginfo_glTexCoord1d) 
+    PHP_FE(glTexCoord1dv, arginfo_glTexCoord1dv) 
+    PHP_FE(glTexCoord1f, arginfo_glTexCoord1f) 
+    PHP_FE(glTexCoord1fv, arginfo_glTexCoord1fv) 
+    PHP_FE(glTexCoord1i, arginfo_glTexCoord1i) 
+    PHP_FE(glTexCoord1iv, arginfo_glTexCoord1iv) 
+    PHP_FE(glTexCoord1s, arginfo_glTexCoord1s) 
+    PHP_FE(glTexCoord1sv, arginfo_glTexCoord1sv) 
+    PHP_FE(glTexCoord2d, arginfo_glTexCoord2d) 
+    PHP_FE(glTexCoord2dv, arginfo_glTexCoord2dv) 
+    PHP_FE(glTexCoord2f, arginfo_glTexCoord2f) 
+    PHP_FE(glTexCoord2fv, arginfo_glTexCoord2fv) 
+    PHP_FE(glTexCoord2i, arginfo_glTexCoord2i) 
+    PHP_FE(glTexCoord2iv, arginfo_glTexCoord2iv) 
+    PHP_FE(glTexCoord2s, arginfo_glTexCoord2s) 
+    PHP_FE(glTexCoord2sv, arginfo_glTexCoord2sv) 
+    PHP_FE(glTexCoord3d, arginfo_glTexCoord3d) 
+    PHP_FE(glTexCoord3dv, arginfo_glTexCoord3dv) 
+    PHP_FE(glTexCoord3f, arginfo_glTexCoord3f) 
+    PHP_FE(glTexCoord3fv, arginfo_glTexCoord3fv) 
+    PHP_FE(glTexCoord3i, arginfo_glTexCoord3i) 
+    PHP_FE(glTexCoord3iv, arginfo_glTexCoord3iv) 
+    PHP_FE(glTexCoord3s, arginfo_glTexCoord3s) 
+    PHP_FE(glTexCoord3sv, arginfo_glTexCoord3sv) 
+    PHP_FE(glTexCoord4d, arginfo_glTexCoord4d) 
+    PHP_FE(glTexCoord4dv, arginfo_glTexCoord4dv) 
+    PHP_FE(glTexCoord4f, arginfo_glTexCoord4f) 
+    PHP_FE(glTexCoord4fv, arginfo_glTexCoord4fv) 
+    PHP_FE(glTexCoord4i, arginfo_glTexCoord4i) 
+    PHP_FE(glTexCoord4iv, arginfo_glTexCoord4iv) 
+    PHP_FE(glTexCoord4s, arginfo_glTexCoord4s) 
+    PHP_FE(glTexCoord4sv, arginfo_glTexCoord4sv) 
+    PHP_FE(glVertex2d, arginfo_glVertex2d) 
+    PHP_FE(glVertex2dv, arginfo_glVertex2dv) 
+    PHP_FE(glVertex2f, arginfo_glVertex2f) 
+    PHP_FE(glVertex2fv, arginfo_glVertex2fv) 
+    PHP_FE(glVertex2i, arginfo_glVertex2i) 
+    PHP_FE(glVertex2iv, arginfo_glVertex2iv) 
+    PHP_FE(glVertex2s, arginfo_glVertex2s) 
+    PHP_FE(glVertex2sv, arginfo_glVertex2sv) 
+    PHP_FE(glVertex3d, arginfo_glVertex3d) 
+    PHP_FE(glVertex3dv, arginfo_glVertex3dv) 
+    PHP_FE(glVertex3f, arginfo_glVertex3f) 
+    PHP_FE(glVertex3fv, arginfo_glVertex3fv) 
+    PHP_FE(glVertex3i, arginfo_glVertex3i) 
+    PHP_FE(glVertex3iv, arginfo_glVertex3iv) 
+    PHP_FE(glVertex3s, arginfo_glVertex3s) 
+    PHP_FE(glVertex3sv, arginfo_glVertex3sv) 
+    PHP_FE(glVertex4d, arginfo_glVertex4d) 
+    PHP_FE(glVertex4dv, arginfo_glVertex4dv) 
+    PHP_FE(glVertex4f, arginfo_glVertex4f) 
+    PHP_FE(glVertex4fv, arginfo_glVertex4fv) 
+    PHP_FE(glVertex4i, arginfo_glVertex4i) 
+    PHP_FE(glVertex4iv, arginfo_glVertex4iv) 
+    PHP_FE(glVertex4s, arginfo_glVertex4s) 
+    PHP_FE(glVertex4sv, arginfo_glVertex4sv) 
+    PHP_FE(glClipPlane, arginfo_glClipPlane) 
+    PHP_FE(glColorMaterial, arginfo_glColorMaterial) 
+    PHP_FE(glFogf, arginfo_glFogf) 
+    PHP_FE(glFogfv, arginfo_glFogfv) 
+    PHP_FE(glFogi, arginfo_glFogi) 
+    PHP_FE(glFogiv, arginfo_glFogiv) 
+    PHP_FE(glLightf, arginfo_glLightf) 
+    PHP_FE(glLightfv, arginfo_glLightfv) 
+    PHP_FE(glLighti, arginfo_glLighti) 
+    PHP_FE(glLightiv, arginfo_glLightiv) 
+    PHP_FE(glLightModelf, arginfo_glLightModelf) 
+    PHP_FE(glLightModelfv, arginfo_glLightModelfv) 
+    PHP_FE(glLightModeli, arginfo_glLightModeli) 
+    PHP_FE(glLightModeliv, arginfo_glLightModeliv) 
+    PHP_FE(glLineStipple, arginfo_glLineStipple) 
+    PHP_FE(glMaterialf, arginfo_glMaterialf) 
+    PHP_FE(glMaterialfv, arginfo_glMaterialfv) 
+    PHP_FE(glMateriali, arginfo_glMateriali) 
+    PHP_FE(glMaterialiv, arginfo_glMaterialiv) 
+    PHP_FE(glPolygonStipple, arginfo_glPolygonStipple) 
+    PHP_FE(glShadeModel, arginfo_glShadeModel) 
+    PHP_FE(glTexEnvf, arginfo_glTexEnvf) 
+    PHP_FE(glTexEnvfv, arginfo_glTexEnvfv) 
+    PHP_FE(glTexEnvi, arginfo_glTexEnvi) 
+    PHP_FE(glTexEnviv, arginfo_glTexEnviv) 
+    PHP_FE(glTexGend, arginfo_glTexGend) 
+    PHP_FE(glTexGendv, arginfo_glTexGendv) 
+    PHP_FE(glTexGenf, arginfo_glTexGenf) 
+    PHP_FE(glTexGenfv, arginfo_glTexGenfv) 
+    PHP_FE(glTexGeni, arginfo_glTexGeni) 
+    PHP_FE(glTexGeniv, arginfo_glTexGeniv) 
+    PHP_FE(glFeedbackBuffer, arginfo_glFeedbackBuffer) 
+    PHP_FE(glSelectBuffer, arginfo_glSelectBuffer) 
+    PHP_FE(glRenderMode, arginfo_glRenderMode) 
+    PHP_FE(glInitNames, arginfo_glInitNames) 
+    PHP_FE(glLoadName, arginfo_glLoadName) 
+    PHP_FE(glPassThrough, arginfo_glPassThrough) 
+    PHP_FE(glPopName, arginfo_glPopName) 
+    PHP_FE(glPushName, arginfo_glPushName) 
+    PHP_FE(glClearAccum, arginfo_glClearAccum) 
+    PHP_FE(glClearIndex, arginfo_glClearIndex) 
+    PHP_FE(glIndexMask, arginfo_glIndexMask) 
+    PHP_FE(glAccum, arginfo_glAccum) 
+    PHP_FE(glPopAttrib, arginfo_glPopAttrib) 
+    PHP_FE(glPushAttrib, arginfo_glPushAttrib) 
+    PHP_FE(glMap1d, arginfo_glMap1d) 
+    PHP_FE(glMap1f, arginfo_glMap1f) 
+    PHP_FE(glMap2d, arginfo_glMap2d) 
+    PHP_FE(glMap2f, arginfo_glMap2f) 
+    PHP_FE(glMapGrid1d, arginfo_glMapGrid1d) 
+    PHP_FE(glMapGrid1f, arginfo_glMapGrid1f) 
+    PHP_FE(glMapGrid2d, arginfo_glMapGrid2d) 
+    PHP_FE(glMapGrid2f, arginfo_glMapGrid2f) 
+    PHP_FE(glEvalCoord1d, arginfo_glEvalCoord1d) 
+    PHP_FE(glEvalCoord1dv, arginfo_glEvalCoord1dv) 
+    PHP_FE(glEvalCoord1f, arginfo_glEvalCoord1f) 
+    PHP_FE(glEvalCoord1fv, arginfo_glEvalCoord1fv) 
+    PHP_FE(glEvalCoord2d, arginfo_glEvalCoord2d) 
+    PHP_FE(glEvalCoord2dv, arginfo_glEvalCoord2dv) 
+    PHP_FE(glEvalCoord2f, arginfo_glEvalCoord2f) 
+    PHP_FE(glEvalCoord2fv, arginfo_glEvalCoord2fv) 
+    PHP_FE(glEvalMesh1, arginfo_glEvalMesh1) 
+    PHP_FE(glEvalPoint1, arginfo_glEvalPoint1) 
+    PHP_FE(glEvalMesh2, arginfo_glEvalMesh2) 
+    PHP_FE(glEvalPoint2, arginfo_glEvalPoint2) 
+    PHP_FE(glAlphaFunc, arginfo_glAlphaFunc) 
+    PHP_FE(glPixelZoom, arginfo_glPixelZoom) 
+    PHP_FE(glPixelTransferf, arginfo_glPixelTransferf) 
+    PHP_FE(glPixelTransferi, arginfo_glPixelTransferi) 
+    PHP_FE(glPixelMapfv, arginfo_glPixelMapfv) 
+    PHP_FE(glPixelMapuiv, arginfo_glPixelMapuiv) 
+    PHP_FE(glPixelMapusv, arginfo_glPixelMapusv) 
+    PHP_FE(glCopyPixels, arginfo_glCopyPixels) 
+    PHP_FE(glDrawPixels, arginfo_glDrawPixels) 
+    PHP_FE(glGetClipPlane, arginfo_glGetClipPlane) 
+    PHP_FE(glGetLightfv, arginfo_glGetLightfv) 
+    PHP_FE(glGetLightiv, arginfo_glGetLightiv) 
+    PHP_FE(glGetMapdv, arginfo_glGetMapdv) 
+    PHP_FE(glGetMapfv, arginfo_glGetMapfv) 
+    PHP_FE(glGetMapiv, arginfo_glGetMapiv) 
+    PHP_FE(glGetMaterialfv, arginfo_glGetMaterialfv) 
+    PHP_FE(glGetMaterialiv, arginfo_glGetMaterialiv) 
+    PHP_FE(glGetPixelMapfv, arginfo_glGetPixelMapfv) 
+    PHP_FE(glGetPixelMapuiv, arginfo_glGetPixelMapuiv) 
+    PHP_FE(glGetPixelMapusv, arginfo_glGetPixelMapusv) 
+    PHP_FE(glGetPolygonStipple, arginfo_glGetPolygonStipple) 
+    PHP_FE(glGetTexEnvfv, arginfo_glGetTexEnvfv) 
+    PHP_FE(glGetTexEnviv, arginfo_glGetTexEnviv) 
+    PHP_FE(glGetTexGendv, arginfo_glGetTexGendv) 
+    PHP_FE(glGetTexGenfv, arginfo_glGetTexGenfv) 
+    PHP_FE(glGetTexGeniv, arginfo_glGetTexGeniv) 
+    PHP_FE(glIsList, arginfo_glIsList) 
+    PHP_FE(glFrustum, arginfo_glFrustum) 
+    PHP_FE(glLoadIdentity, arginfo_glLoadIdentity) 
+    PHP_FE(glLoadMatrixf, arginfo_glLoadMatrixf) 
+    PHP_FE(glLoadMatrixd, arginfo_glLoadMatrixd) 
+    PHP_FE(glMatrixMode, arginfo_glMatrixMode) 
+    PHP_FE(glMultMatrixf, arginfo_glMultMatrixf) 
+    PHP_FE(glMultMatrixd, arginfo_glMultMatrixd) 
+    PHP_FE(glOrtho, arginfo_glOrtho) 
+    PHP_FE(glPopMatrix, arginfo_glPopMatrix) 
+    PHP_FE(glPushMatrix, arginfo_glPushMatrix) 
+    PHP_FE(glRotated, arginfo_glRotated) 
+    PHP_FE(glRotatef, arginfo_glRotatef) 
+    PHP_FE(glScaled, arginfo_glScaled) 
+    PHP_FE(glScalef, arginfo_glScalef) 
+    PHP_FE(glTranslated, arginfo_glTranslated) 
+    PHP_FE(glTranslatef, arginfo_glTranslatef) 
+    PHP_FE(glDrawArrays, arginfo_glDrawArrays) 
+    PHP_FE(glDrawElements, arginfo_glDrawElements) 
+    PHP_FE(glGetPointerv, arginfo_glGetPointerv) 
+    PHP_FE(glPolygonOffset, arginfo_glPolygonOffset) 
+    PHP_FE(glCopyTexImage1D, arginfo_glCopyTexImage1D) 
+    PHP_FE(glCopyTexImage2D, arginfo_glCopyTexImage2D) 
+    PHP_FE(glCopyTexSubImage1D, arginfo_glCopyTexSubImage1D) 
+    PHP_FE(glCopyTexSubImage2D, arginfo_glCopyTexSubImage2D) 
+    PHP_FE(glTexSubImage1D, arginfo_glTexSubImage1D) 
+    PHP_FE(glTexSubImage2D, arginfo_glTexSubImage2D) 
+    PHP_FE(glBindTexture, arginfo_glBindTexture) 
+    PHP_FE(glDeleteTextures, arginfo_glDeleteTextures) 
+    PHP_FE(glGenTextures, arginfo_glGenTextures) 
+    PHP_FE(glIsTexture, arginfo_glIsTexture) 
+    PHP_FE(glArrayElement, arginfo_glArrayElement) 
+    PHP_FE(glColorPointer, arginfo_glColorPointer) 
+    PHP_FE(glDisableClientState, arginfo_glDisableClientState) 
+    PHP_FE(glEdgeFlagPointer, arginfo_glEdgeFlagPointer) 
+    PHP_FE(glEnableClientState, arginfo_glEnableClientState) 
+    PHP_FE(glIndexPointer, arginfo_glIndexPointer) 
+    PHP_FE(glInterleavedArrays, arginfo_glInterleavedArrays) 
+    PHP_FE(glNormalPointer, arginfo_glNormalPointer) 
+    PHP_FE(glTexCoordPointer, arginfo_glTexCoordPointer) 
+    PHP_FE(glVertexPointer, arginfo_glVertexPointer) 
+    PHP_FE(glAreTexturesResident, arginfo_glAreTexturesResident) 
+    PHP_FE(glPrioritizeTextures, arginfo_glPrioritizeTextures) 
+    PHP_FE(glIndexub, arginfo_glIndexub) 
+    PHP_FE(glIndexubv, arginfo_glIndexubv) 
+    PHP_FE(glPopClientAttrib, arginfo_glPopClientAttrib) 
+    PHP_FE(glPushClientAttrib, arginfo_glPushClientAttrib) 
+    PHP_FE(glDrawRangeElements, arginfo_glDrawRangeElements) 
+    PHP_FE(glTexImage3D, arginfo_glTexImage3D) 
+    PHP_FE(glTexSubImage3D, arginfo_glTexSubImage3D) 
+    PHP_FE(glCopyTexSubImage3D, arginfo_glCopyTexSubImage3D) 
+    PHP_FE(glActiveTexture, arginfo_glActiveTexture) 
+    PHP_FE(glSampleCoverage, arginfo_glSampleCoverage) 
+    PHP_FE(glCompressedTexImage3D, arginfo_glCompressedTexImage3D) 
+    PHP_FE(glCompressedTexImage2D, arginfo_glCompressedTexImage2D) 
+    PHP_FE(glCompressedTexImage1D, arginfo_glCompressedTexImage1D) 
+    PHP_FE(glCompressedTexSubImage3D, arginfo_glCompressedTexSubImage3D) 
+    PHP_FE(glCompressedTexSubImage2D, arginfo_glCompressedTexSubImage2D) 
+    PHP_FE(glCompressedTexSubImage1D, arginfo_glCompressedTexSubImage1D) 
+    PHP_FE(glGetCompressedTexImage, arginfo_glGetCompressedTexImage) 
+    PHP_FE(glClientActiveTexture, arginfo_glClientActiveTexture) 
+    PHP_FE(glMultiTexCoord1d, arginfo_glMultiTexCoord1d) 
+    PHP_FE(glMultiTexCoord1dv, arginfo_glMultiTexCoord1dv) 
+    PHP_FE(glMultiTexCoord1f, arginfo_glMultiTexCoord1f) 
+    PHP_FE(glMultiTexCoord1fv, arginfo_glMultiTexCoord1fv) 
+    PHP_FE(glMultiTexCoord1i, arginfo_glMultiTexCoord1i) 
+    PHP_FE(glMultiTexCoord1iv, arginfo_glMultiTexCoord1iv) 
+    PHP_FE(glMultiTexCoord1s, arginfo_glMultiTexCoord1s) 
+    PHP_FE(glMultiTexCoord1sv, arginfo_glMultiTexCoord1sv) 
+    PHP_FE(glMultiTexCoord2d, arginfo_glMultiTexCoord2d) 
+    PHP_FE(glMultiTexCoord2dv, arginfo_glMultiTexCoord2dv) 
+    PHP_FE(glMultiTexCoord2f, arginfo_glMultiTexCoord2f) 
+    PHP_FE(glMultiTexCoord2fv, arginfo_glMultiTexCoord2fv) 
+    PHP_FE(glMultiTexCoord2i, arginfo_glMultiTexCoord2i) 
+    PHP_FE(glMultiTexCoord2iv, arginfo_glMultiTexCoord2iv) 
+    PHP_FE(glMultiTexCoord2s, arginfo_glMultiTexCoord2s) 
+    PHP_FE(glMultiTexCoord2sv, arginfo_glMultiTexCoord2sv) 
+    PHP_FE(glMultiTexCoord3d, arginfo_glMultiTexCoord3d) 
+    PHP_FE(glMultiTexCoord3dv, arginfo_glMultiTexCoord3dv) 
+    PHP_FE(glMultiTexCoord3f, arginfo_glMultiTexCoord3f) 
+    PHP_FE(glMultiTexCoord3fv, arginfo_glMultiTexCoord3fv) 
+    PHP_FE(glMultiTexCoord3i, arginfo_glMultiTexCoord3i) 
+    PHP_FE(glMultiTexCoord3iv, arginfo_glMultiTexCoord3iv) 
+    PHP_FE(glMultiTexCoord3s, arginfo_glMultiTexCoord3s) 
+    PHP_FE(glMultiTexCoord3sv, arginfo_glMultiTexCoord3sv) 
+    PHP_FE(glMultiTexCoord4d, arginfo_glMultiTexCoord4d) 
+    PHP_FE(glMultiTexCoord4dv, arginfo_glMultiTexCoord4dv) 
+    PHP_FE(glMultiTexCoord4f, arginfo_glMultiTexCoord4f) 
+    PHP_FE(glMultiTexCoord4fv, arginfo_glMultiTexCoord4fv) 
+    PHP_FE(glMultiTexCoord4i, arginfo_glMultiTexCoord4i) 
+    PHP_FE(glMultiTexCoord4iv, arginfo_glMultiTexCoord4iv) 
+    PHP_FE(glMultiTexCoord4s, arginfo_glMultiTexCoord4s) 
+    PHP_FE(glMultiTexCoord4sv, arginfo_glMultiTexCoord4sv) 
+    PHP_FE(glLoadTransposeMatrixf, arginfo_glLoadTransposeMatrixf) 
+    PHP_FE(glLoadTransposeMatrixd, arginfo_glLoadTransposeMatrixd) 
+    PHP_FE(glMultTransposeMatrixf, arginfo_glMultTransposeMatrixf) 
+    PHP_FE(glMultTransposeMatrixd, arginfo_glMultTransposeMatrixd) 
+    PHP_FE(glBlendFuncSeparate, arginfo_glBlendFuncSeparate) 
+    PHP_FE(glMultiDrawArrays, arginfo_glMultiDrawArrays) 
+    PHP_FE(glMultiDrawElements, arginfo_glMultiDrawElements) 
+    PHP_FE(glPointParameterf, arginfo_glPointParameterf) 
+    PHP_FE(glPointParameterfv, arginfo_glPointParameterfv) 
+    PHP_FE(glPointParameteri, arginfo_glPointParameteri) 
+    PHP_FE(glPointParameteriv, arginfo_glPointParameteriv) 
+    PHP_FE(glFogCoordf, arginfo_glFogCoordf) 
+    PHP_FE(glFogCoordfv, arginfo_glFogCoordfv) 
+    PHP_FE(glFogCoordd, arginfo_glFogCoordd) 
+    PHP_FE(glFogCoorddv, arginfo_glFogCoorddv) 
+    PHP_FE(glFogCoordPointer, arginfo_glFogCoordPointer) 
+    PHP_FE(glSecondaryColor3b, arginfo_glSecondaryColor3b) 
+    PHP_FE(glSecondaryColor3bv, arginfo_glSecondaryColor3bv) 
+    PHP_FE(glSecondaryColor3d, arginfo_glSecondaryColor3d) 
+    PHP_FE(glSecondaryColor3dv, arginfo_glSecondaryColor3dv) 
+    PHP_FE(glSecondaryColor3f, arginfo_glSecondaryColor3f) 
+    PHP_FE(glSecondaryColor3fv, arginfo_glSecondaryColor3fv) 
+    PHP_FE(glSecondaryColor3i, arginfo_glSecondaryColor3i) 
+    PHP_FE(glSecondaryColor3iv, arginfo_glSecondaryColor3iv) 
+    PHP_FE(glSecondaryColor3s, arginfo_glSecondaryColor3s) 
+    PHP_FE(glSecondaryColor3sv, arginfo_glSecondaryColor3sv) 
+    PHP_FE(glSecondaryColor3ub, arginfo_glSecondaryColor3ub) 
+    PHP_FE(glSecondaryColor3ubv, arginfo_glSecondaryColor3ubv) 
+    PHP_FE(glSecondaryColor3ui, arginfo_glSecondaryColor3ui) 
+    PHP_FE(glSecondaryColor3uiv, arginfo_glSecondaryColor3uiv) 
+    PHP_FE(glSecondaryColor3us, arginfo_glSecondaryColor3us) 
+    PHP_FE(glSecondaryColor3usv, arginfo_glSecondaryColor3usv) 
+    PHP_FE(glSecondaryColorPointer, arginfo_glSecondaryColorPointer) 
+    PHP_FE(glWindowPos2d, arginfo_glWindowPos2d) 
+    PHP_FE(glWindowPos2dv, arginfo_glWindowPos2dv) 
+    PHP_FE(glWindowPos2f, arginfo_glWindowPos2f) 
+    PHP_FE(glWindowPos2fv, arginfo_glWindowPos2fv) 
+    PHP_FE(glWindowPos2i, arginfo_glWindowPos2i) 
+    PHP_FE(glWindowPos2iv, arginfo_glWindowPos2iv) 
+    PHP_FE(glWindowPos2s, arginfo_glWindowPos2s) 
+    PHP_FE(glWindowPos2sv, arginfo_glWindowPos2sv) 
+    PHP_FE(glWindowPos3d, arginfo_glWindowPos3d) 
+    PHP_FE(glWindowPos3dv, arginfo_glWindowPos3dv) 
+    PHP_FE(glWindowPos3f, arginfo_glWindowPos3f) 
+    PHP_FE(glWindowPos3fv, arginfo_glWindowPos3fv) 
+    PHP_FE(glWindowPos3i, arginfo_glWindowPos3i) 
+    PHP_FE(glWindowPos3iv, arginfo_glWindowPos3iv) 
+    PHP_FE(glWindowPos3s, arginfo_glWindowPos3s) 
+    PHP_FE(glWindowPos3sv, arginfo_glWindowPos3sv) 
+    PHP_FE(glGenQueries, arginfo_glGenQueries) 
+    PHP_FE(glDeleteQueries, arginfo_glDeleteQueries) 
+    PHP_FE(glIsQuery, arginfo_glIsQuery) 
+    PHP_FE(glBeginQuery, arginfo_glBeginQuery) 
+    PHP_FE(glEndQuery, arginfo_glEndQuery) 
+    PHP_FE(glGetQueryiv, arginfo_glGetQueryiv) 
+    PHP_FE(glGetQueryObjectiv, arginfo_glGetQueryObjectiv) 
+    PHP_FE(glGetQueryObjectuiv, arginfo_glGetQueryObjectuiv) 
+    PHP_FE(glBindBuffer, arginfo_glBindBuffer) 
+    PHP_FE(glDeleteBuffers, arginfo_glDeleteBuffers) 
+    PHP_FE(glGenBuffers, arginfo_glGenBuffers) 
+    PHP_FE(glIsBuffer, arginfo_glIsBuffer) 
+    PHP_FE(glBufferData, arginfo_glBufferData) 
+    PHP_FE(glBufferSubData, arginfo_glBufferSubData) 
+    PHP_FE(glGetBufferSubData, arginfo_glGetBufferSubData) 
+    PHP_FE(glMapBuffer, arginfo_glMapBuffer) 
+    PHP_FE(glUnmapBuffer, arginfo_glUnmapBuffer) 
+    PHP_FE(glGetBufferParameteriv, arginfo_glGetBufferParameteriv) 
+    PHP_FE(glGetBufferPointerv, arginfo_glGetBufferPointerv) 
+    PHP_FE(glBlendEquationSeparate, arginfo_glBlendEquationSeparate) 
+    PHP_FE(glDrawBuffers, arginfo_glDrawBuffers) 
+    PHP_FE(glStencilOpSeparate, arginfo_glStencilOpSeparate) 
+    PHP_FE(glStencilFuncSeparate, arginfo_glStencilFuncSeparate) 
+    PHP_FE(glStencilMaskSeparate, arginfo_glStencilMaskSeparate) 
+    PHP_FE(glAttachShader, arginfo_glAttachShader) 
+    PHP_FE(glBindAttribLocation, arginfo_glBindAttribLocation) 
+    PHP_FE(glCompileShader, arginfo_glCompileShader) 
+    PHP_FE(glCreateProgram, arginfo_glCreateProgram) 
+    PHP_FE(glCreateShader, arginfo_glCreateShader) 
+    PHP_FE(glDeleteProgram, arginfo_glDeleteProgram) 
+    PHP_FE(glDeleteShader, arginfo_glDeleteShader) 
+    PHP_FE(glDetachShader, arginfo_glDetachShader) 
+    PHP_FE(glDisableVertexAttribArray, arginfo_glDisableVertexAttribArray) 
+    PHP_FE(glEnableVertexAttribArray, arginfo_glEnableVertexAttribArray) 
+    PHP_FE(glGetActiveAttrib, arginfo_glGetActiveAttrib) 
+    PHP_FE(glGetActiveUniform, arginfo_glGetActiveUniform) 
+    PHP_FE(glGetAttachedShaders, arginfo_glGetAttachedShaders) 
+    PHP_FE(glGetAttribLocation, arginfo_glGetAttribLocation) 
+    PHP_FE(glGetProgramiv, arginfo_glGetProgramiv) 
+    PHP_FE(glGetProgramInfoLog, arginfo_glGetProgramInfoLog) 
+    PHP_FE(glGetShaderiv, arginfo_glGetShaderiv) 
+    PHP_FE(glGetShaderInfoLog, arginfo_glGetShaderInfoLog) 
+    PHP_FE(glGetShaderSource, arginfo_glGetShaderSource) 
+    PHP_FE(glGetUniformLocation, arginfo_glGetUniformLocation) 
+    PHP_FE(glGetUniformfv, arginfo_glGetUniformfv) 
+    PHP_FE(glGetUniformiv, arginfo_glGetUniformiv) 
+    PHP_FE(glGetVertexAttribdv, arginfo_glGetVertexAttribdv) 
+    PHP_FE(glGetVertexAttribfv, arginfo_glGetVertexAttribfv) 
+    PHP_FE(glGetVertexAttribiv, arginfo_glGetVertexAttribiv) 
+    PHP_FE(glGetVertexAttribPointerv, arginfo_glGetVertexAttribPointerv) 
+    PHP_FE(glIsProgram, arginfo_glIsProgram) 
+    PHP_FE(glIsShader, arginfo_glIsShader) 
+    PHP_FE(glLinkProgram, arginfo_glLinkProgram) 
+    PHP_FE(glShaderSource, arginfo_glShaderSource) 
+    PHP_FE(glUseProgram, arginfo_glUseProgram) 
+    PHP_FE(glUniform1f, arginfo_glUniform1f) 
+    PHP_FE(glUniform2f, arginfo_glUniform2f) 
+    PHP_FE(glUniform3f, arginfo_glUniform3f) 
+    PHP_FE(glUniform4f, arginfo_glUniform4f) 
+    PHP_FE(glUniform1i, arginfo_glUniform1i) 
+    PHP_FE(glUniform2i, arginfo_glUniform2i) 
+    PHP_FE(glUniform3i, arginfo_glUniform3i) 
+    PHP_FE(glUniform4i, arginfo_glUniform4i) 
+    PHP_FE(glUniform1fv, arginfo_glUniform1fv) 
+    PHP_FE(glUniform2fv, arginfo_glUniform2fv) 
+    PHP_FE(glUniform3fv, arginfo_glUniform3fv) 
+    PHP_FE(glUniform4fv, arginfo_glUniform4fv) 
+    PHP_FE(glUniform1iv, arginfo_glUniform1iv) 
+    PHP_FE(glUniform2iv, arginfo_glUniform2iv) 
+    PHP_FE(glUniform3iv, arginfo_glUniform3iv) 
+    PHP_FE(glUniform4iv, arginfo_glUniform4iv) 
+    PHP_FE(glUniformMatrix2fv, arginfo_glUniformMatrix2fv) 
+    PHP_FE(glUniformMatrix3fv, arginfo_glUniformMatrix3fv) 
+    PHP_FE(glUniformMatrix4fv, arginfo_glUniformMatrix4fv) 
+    PHP_FE(glValidateProgram, arginfo_glValidateProgram) 
+    PHP_FE(glVertexAttrib1d, arginfo_glVertexAttrib1d) 
+    PHP_FE(glVertexAttrib1dv, arginfo_glVertexAttrib1dv) 
+    PHP_FE(glVertexAttrib1f, arginfo_glVertexAttrib1f) 
+    PHP_FE(glVertexAttrib1fv, arginfo_glVertexAttrib1fv) 
+    PHP_FE(glVertexAttrib1s, arginfo_glVertexAttrib1s) 
+    PHP_FE(glVertexAttrib1sv, arginfo_glVertexAttrib1sv) 
+    PHP_FE(glVertexAttrib2d, arginfo_glVertexAttrib2d) 
+    PHP_FE(glVertexAttrib2dv, arginfo_glVertexAttrib2dv) 
+    PHP_FE(glVertexAttrib2f, arginfo_glVertexAttrib2f) 
+    PHP_FE(glVertexAttrib2fv, arginfo_glVertexAttrib2fv) 
+    PHP_FE(glVertexAttrib2s, arginfo_glVertexAttrib2s) 
+    PHP_FE(glVertexAttrib2sv, arginfo_glVertexAttrib2sv) 
+    PHP_FE(glVertexAttrib3d, arginfo_glVertexAttrib3d) 
+    PHP_FE(glVertexAttrib3dv, arginfo_glVertexAttrib3dv) 
+    PHP_FE(glVertexAttrib3f, arginfo_glVertexAttrib3f) 
+    PHP_FE(glVertexAttrib3fv, arginfo_glVertexAttrib3fv) 
+    PHP_FE(glVertexAttrib3s, arginfo_glVertexAttrib3s) 
+    PHP_FE(glVertexAttrib3sv, arginfo_glVertexAttrib3sv) 
+    PHP_FE(glVertexAttrib4Nbv, arginfo_glVertexAttrib4Nbv) 
+    PHP_FE(glVertexAttrib4Niv, arginfo_glVertexAttrib4Niv) 
+    PHP_FE(glVertexAttrib4Nsv, arginfo_glVertexAttrib4Nsv) 
+    PHP_FE(glVertexAttrib4Nub, arginfo_glVertexAttrib4Nub) 
+    PHP_FE(glVertexAttrib4Nubv, arginfo_glVertexAttrib4Nubv) 
+    PHP_FE(glVertexAttrib4Nuiv, arginfo_glVertexAttrib4Nuiv) 
+    PHP_FE(glVertexAttrib4Nusv, arginfo_glVertexAttrib4Nusv) 
+    PHP_FE(glVertexAttrib4bv, arginfo_glVertexAttrib4bv) 
+    PHP_FE(glVertexAttrib4d, arginfo_glVertexAttrib4d) 
+    PHP_FE(glVertexAttrib4dv, arginfo_glVertexAttrib4dv) 
+    PHP_FE(glVertexAttrib4f, arginfo_glVertexAttrib4f) 
+    PHP_FE(glVertexAttrib4fv, arginfo_glVertexAttrib4fv) 
+    PHP_FE(glVertexAttrib4iv, arginfo_glVertexAttrib4iv) 
+    PHP_FE(glVertexAttrib4s, arginfo_glVertexAttrib4s) 
+    PHP_FE(glVertexAttrib4sv, arginfo_glVertexAttrib4sv) 
+    PHP_FE(glVertexAttrib4ubv, arginfo_glVertexAttrib4ubv) 
+    PHP_FE(glVertexAttrib4uiv, arginfo_glVertexAttrib4uiv) 
+    PHP_FE(glVertexAttrib4usv, arginfo_glVertexAttrib4usv) 
+    PHP_FE(glVertexAttribPointer, arginfo_glVertexAttribPointer) 
+    PHP_FE(glUniformMatrix2x3fv, arginfo_glUniformMatrix2x3fv) 
+    PHP_FE(glUniformMatrix3x2fv, arginfo_glUniformMatrix3x2fv) 
+    PHP_FE(glUniformMatrix2x4fv, arginfo_glUniformMatrix2x4fv) 
+    PHP_FE(glUniformMatrix4x2fv, arginfo_glUniformMatrix4x2fv) 
+    PHP_FE(glUniformMatrix3x4fv, arginfo_glUniformMatrix3x4fv) 
+    PHP_FE(glUniformMatrix4x3fv, arginfo_glUniformMatrix4x3fv) 
+    PHP_FE(glColorMaski, arginfo_glColorMaski) 
+    PHP_FE(glGetBooleani_v, arginfo_glGetBooleani_v) 
+    PHP_FE(glGetIntegeri_v, arginfo_glGetIntegeri_v) 
+    PHP_FE(glEnablei, arginfo_glEnablei) 
+    PHP_FE(glDisablei, arginfo_glDisablei) 
+    PHP_FE(glIsEnabledi, arginfo_glIsEnabledi) 
+    PHP_FE(glBeginTransformFeedback, arginfo_glBeginTransformFeedback) 
+    PHP_FE(glEndTransformFeedback, arginfo_glEndTransformFeedback) 
+    PHP_FE(glBindBufferRange, arginfo_glBindBufferRange) 
+    PHP_FE(glBindBufferBase, arginfo_glBindBufferBase) 
+    PHP_FE(glTransformFeedbackVaryings, arginfo_glTransformFeedbackVaryings) 
+    PHP_FE(glGetTransformFeedbackVarying, arginfo_glGetTransformFeedbackVarying) 
+    PHP_FE(glClampColor, arginfo_glClampColor) 
+    PHP_FE(glBeginConditionalRender, arginfo_glBeginConditionalRender) 
+    PHP_FE(glEndConditionalRender, arginfo_glEndConditionalRender) 
+    PHP_FE(glVertexAttribIPointer, arginfo_glVertexAttribIPointer) 
+    PHP_FE(glGetVertexAttribIiv, arginfo_glGetVertexAttribIiv) 
+    PHP_FE(glGetVertexAttribIuiv, arginfo_glGetVertexAttribIuiv) 
+    PHP_FE(glVertexAttribI1i, arginfo_glVertexAttribI1i) 
+    PHP_FE(glVertexAttribI2i, arginfo_glVertexAttribI2i) 
+    PHP_FE(glVertexAttribI3i, arginfo_glVertexAttribI3i) 
+    PHP_FE(glVertexAttribI4i, arginfo_glVertexAttribI4i) 
+    PHP_FE(glVertexAttribI1ui, arginfo_glVertexAttribI1ui) 
+    PHP_FE(glVertexAttribI2ui, arginfo_glVertexAttribI2ui) 
+    PHP_FE(glVertexAttribI3ui, arginfo_glVertexAttribI3ui) 
+    PHP_FE(glVertexAttribI4ui, arginfo_glVertexAttribI4ui) 
+    PHP_FE(glVertexAttribI1iv, arginfo_glVertexAttribI1iv) 
+    PHP_FE(glVertexAttribI2iv, arginfo_glVertexAttribI2iv) 
+    PHP_FE(glVertexAttribI3iv, arginfo_glVertexAttribI3iv) 
+    PHP_FE(glVertexAttribI4iv, arginfo_glVertexAttribI4iv) 
+    PHP_FE(glVertexAttribI1uiv, arginfo_glVertexAttribI1uiv) 
+    PHP_FE(glVertexAttribI2uiv, arginfo_glVertexAttribI2uiv) 
+    PHP_FE(glVertexAttribI3uiv, arginfo_glVertexAttribI3uiv) 
+    PHP_FE(glVertexAttribI4uiv, arginfo_glVertexAttribI4uiv) 
+    PHP_FE(glVertexAttribI4bv, arginfo_glVertexAttribI4bv) 
+    PHP_FE(glVertexAttribI4sv, arginfo_glVertexAttribI4sv) 
+    PHP_FE(glVertexAttribI4ubv, arginfo_glVertexAttribI4ubv) 
+    PHP_FE(glVertexAttribI4usv, arginfo_glVertexAttribI4usv) 
+    PHP_FE(glGetUniformuiv, arginfo_glGetUniformuiv) 
+    PHP_FE(glBindFragDataLocation, arginfo_glBindFragDataLocation) 
+    PHP_FE(glGetFragDataLocation, arginfo_glGetFragDataLocation) 
+    PHP_FE(glUniform1ui, arginfo_glUniform1ui) 
+    PHP_FE(glUniform2ui, arginfo_glUniform2ui) 
+    PHP_FE(glUniform3ui, arginfo_glUniform3ui) 
+    PHP_FE(glUniform4ui, arginfo_glUniform4ui) 
+    PHP_FE(glUniform1uiv, arginfo_glUniform1uiv) 
+    PHP_FE(glUniform2uiv, arginfo_glUniform2uiv) 
+    PHP_FE(glUniform3uiv, arginfo_glUniform3uiv) 
+    PHP_FE(glUniform4uiv, arginfo_glUniform4uiv) 
+    PHP_FE(glTexParameterIiv, arginfo_glTexParameterIiv) 
+    PHP_FE(glTexParameterIuiv, arginfo_glTexParameterIuiv) 
+    PHP_FE(glGetTexParameterIiv, arginfo_glGetTexParameterIiv) 
+    PHP_FE(glGetTexParameterIuiv, arginfo_glGetTexParameterIuiv) 
+    PHP_FE(glClearBufferiv, arginfo_glClearBufferiv) 
+    PHP_FE(glClearBufferuiv, arginfo_glClearBufferuiv) 
+    PHP_FE(glClearBufferfv, arginfo_glClearBufferfv) 
+    PHP_FE(glClearBufferfi, arginfo_glClearBufferfi) 
+    PHP_FE(glGetStringi, arginfo_glGetStringi) 
+    PHP_FE(glDrawArraysInstanced, arginfo_glDrawArraysInstanced) 
+    PHP_FE(glDrawElementsInstanced, arginfo_glDrawElementsInstanced) 
+    PHP_FE(glTexBuffer, arginfo_glTexBuffer) 
+    PHP_FE(glPrimitiveRestartIndex, arginfo_glPrimitiveRestartIndex) 
 #ifdef PHP_FE_END
     PHP_FE_END
 #else
