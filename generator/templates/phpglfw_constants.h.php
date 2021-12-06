@@ -23,6 +23,8 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
+#ifndef PHP_GLFW_CONSTANTS_H
+#define PHP_GLFW_CONSTANTS_H 1
 #include <glad/glad.h>
 
 <?php foreach($groupedConstants as list($group, $constants)) : //var_dump($group); die; ?>
@@ -44,3 +46,4 @@
 <?php endforeach; ?>
 
 <?php endforeach; ?>
+#endif

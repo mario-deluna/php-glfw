@@ -19,8 +19,12 @@ $reader->parse($spec, __DIR__ . '/data/gl.xml');
 // import the gl spec into the generator
 $gen->import($spec, 'gl', '3.2');
 
+// parse the glfw header
+$glfwparser = new GLFWHeaderParser;
+$glfwparser->process(GEN_PATH_EXT . '/vendor/glfw/include/GLFW/glfw3.h', $gen);
+
 // build the extension
-$gen->build(__DIR__ . '/..');
+$gen->build(GEN_PATH_EXT . '/');
 
 die;
 
