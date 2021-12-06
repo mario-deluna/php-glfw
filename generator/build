@@ -19,7 +19,10 @@ $reader->parse($spec, __DIR__ . '/data/gl.xml');
 // import the gl spec into the generator
 $gen->import($spec, 'gl', '3.2');
 
-var_dump($spec); die;
+// build the extension
+$gen->build(__DIR__ . '/..');
+
+die;
 
 
 /**

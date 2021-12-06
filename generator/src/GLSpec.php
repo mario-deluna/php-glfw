@@ -59,6 +59,33 @@ class GLSpecVersion
     }
 }
 
+class GLSpecConstantGroup
+{
+    public ?string $group = null;
+    public ?string $vendor = null;
+    public ?string $comment = null;
+}
+
+class GLSpecConstant
+{
+    public string $name;
+    public string $stringVal;
+    public ?int $intVal = null;
+    public array $groups = [];
+    public ?string $comment = null;
+    public ?GLSpecConstantGroup $constGroup = null;
+
+    public function setStringValue(string $stringValue) : void
+    {
+        $this->stringVal = $stringValue;
+        if (substr($this->stringVal, 0, 2) === '0x') {
+            $this->intVal = (int) hexdec(substr($this->stringVal, 2));
+        } elseif (is_numeric($this->stringVal)) {
+            $this->intVal = (int) $this->stringVal;
+        }
+    }
+}
+
 class GLSpec
 {
     /**
@@ -74,6 +101,13 @@ class GLSpec
      * @var array<GLSpecVersion>
      */
     private array $versions = [];
+
+    /**
+     * Spec constants
+     * 
+     * @var array<GLSpecConstant>
+     */
+    private array $constants = [];
 
     /**
      * Make a spec function object
@@ -101,7 +135,28 @@ class GLSpec
         return $version;
     }
 
-    public function functionIterator(string $api, string $versionString)
+    /**
+     * Make a spec constant object
+     * 
+     * @return GLSpecConstant
+     */
+    public function makeConstant(string $constName, string $stringValue) : GLSpecConstant
+    {
+        $const = new GLSpecConstant;
+        $const->name = $constName;
+        $const->setStringValue($stringValue);
+        $this->constants[$constName] = $const;
+        return $const;
+    }
+
+    /**
+     * Iterates over all function definitions in the given API and version
+     * 
+     * @param string            $api
+     * @param string            $versionString
+     * @return Generator
+     */
+    public function functionIterator(string $api, string $versionString) : Generator
     {
         $versionInt = GLSpecVersion::versionIntFromString($versionString);
 
@@ -111,6 +166,30 @@ class GLSpec
                     foreach($version->functions as $func) {
                         if (isset($this->functions[$func])) {
                             yield $this->functions[$func];
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    /**
+     * Iterates over all constant definitions in the given API and version
+     * 
+     * @param string            $api
+     * @param string            $versionString
+     * @return Generator
+     */
+    public function constantIterator(string $api, string $versionString) : Generator
+    {
+        $versionInt = GLSpecVersion::versionIntFromString($versionString);
+
+        foreach($this->versions as $version) {
+            if ($version->api === $api) {
+                if ($version->versionInt() <= $versionInt) {
+                    foreach($version->enums as $constName) {
+                        if (isset($this->constants[$constName])) {
+                            yield $this->constants[$constName];
                         }
                     }
                 }

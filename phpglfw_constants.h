@@ -1,0 +1,5165 @@
+/**
+ * PHP-glfw 
+ * 
+ * Extension constants
+ *
+ * Copyright (c) 2018-2022 Mario Döring
+ * 
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ * 
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ * 
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ */
+#include <glad/glad.h>
+
+/**
+ 
+ * AttribMask 
+ * ----------------------------------------------------------------------------
+ *  
+ */
+ 
+#ifdef GL_DEPTH_BUFFER_BIT 
+#define PHPGLFW_C_GL_DEPTH_BUFFER_BIT GL_DEPTH_BUFFER_BIT // => 0x00000100  
+#endif
+ 
+#ifdef GL_STENCIL_BUFFER_BIT 
+#define PHPGLFW_C_GL_STENCIL_BUFFER_BIT GL_STENCIL_BUFFER_BIT // => 0x00000400  
+#endif
+ 
+#ifdef GL_COLOR_BUFFER_BIT 
+#define PHPGLFW_C_GL_COLOR_BUFFER_BIT GL_COLOR_BUFFER_BIT // => 0x00004000  
+#endif
+ 
+#ifdef GL_CURRENT_BIT 
+#define PHPGLFW_C_GL_CURRENT_BIT GL_CURRENT_BIT // => 0x00000001  
+#endif
+ 
+#ifdef GL_POINT_BIT 
+#define PHPGLFW_C_GL_POINT_BIT GL_POINT_BIT // => 0x00000002  
+#endif
+ 
+#ifdef GL_LINE_BIT 
+#define PHPGLFW_C_GL_LINE_BIT GL_LINE_BIT // => 0x00000004  
+#endif
+ 
+#ifdef GL_POLYGON_BIT 
+#define PHPGLFW_C_GL_POLYGON_BIT GL_POLYGON_BIT // => 0x00000008  
+#endif
+ 
+#ifdef GL_POLYGON_STIPPLE_BIT 
+#define PHPGLFW_C_GL_POLYGON_STIPPLE_BIT GL_POLYGON_STIPPLE_BIT // => 0x00000010  
+#endif
+ 
+#ifdef GL_PIXEL_MODE_BIT 
+#define PHPGLFW_C_GL_PIXEL_MODE_BIT GL_PIXEL_MODE_BIT // => 0x00000020  
+#endif
+ 
+#ifdef GL_LIGHTING_BIT 
+#define PHPGLFW_C_GL_LIGHTING_BIT GL_LIGHTING_BIT // => 0x00000040  
+#endif
+ 
+#ifdef GL_FOG_BIT 
+#define PHPGLFW_C_GL_FOG_BIT GL_FOG_BIT // => 0x00000080  
+#endif
+ 
+#ifdef GL_ACCUM_BUFFER_BIT 
+#define PHPGLFW_C_GL_ACCUM_BUFFER_BIT GL_ACCUM_BUFFER_BIT // => 0x00000200  
+#endif
+ 
+#ifdef GL_VIEWPORT_BIT 
+#define PHPGLFW_C_GL_VIEWPORT_BIT GL_VIEWPORT_BIT // => 0x00000800  
+#endif
+ 
+#ifdef GL_TRANSFORM_BIT 
+#define PHPGLFW_C_GL_TRANSFORM_BIT GL_TRANSFORM_BIT // => 0x00001000  
+#endif
+ 
+#ifdef GL_ENABLE_BIT 
+#define PHPGLFW_C_GL_ENABLE_BIT GL_ENABLE_BIT // => 0x00002000  
+#endif
+ 
+#ifdef GL_HINT_BIT 
+#define PHPGLFW_C_GL_HINT_BIT GL_HINT_BIT // => 0x00008000  
+#endif
+ 
+#ifdef GL_EVAL_BIT 
+#define PHPGLFW_C_GL_EVAL_BIT GL_EVAL_BIT // => 0x00010000  
+#endif
+ 
+#ifdef GL_LIST_BIT 
+#define PHPGLFW_C_GL_LIST_BIT GL_LIST_BIT // => 0x00020000  
+#endif
+ 
+#ifdef GL_TEXTURE_BIT 
+#define PHPGLFW_C_GL_TEXTURE_BIT GL_TEXTURE_BIT // => 0x00040000  
+#endif
+ 
+#ifdef GL_SCISSOR_BIT 
+#define PHPGLFW_C_GL_SCISSOR_BIT GL_SCISSOR_BIT // => 0x00080000  
+#endif
+ 
+#ifdef GL_ALL_ATTRIB_BITS 
+#define PHPGLFW_C_GL_ALL_ATTRIB_BITS GL_ALL_ATTRIB_BITS // => 0xFFFFFFFF  
+#endif
+ 
+#ifdef GL_MULTISAMPLE_BIT 
+#define PHPGLFW_C_GL_MULTISAMPLE_BIT GL_MULTISAMPLE_BIT // => 0x20000000  
+#endif
+
+/**
+ 
+ * SpecialNumbers 
+ * ----------------------------------------------------------------------------
+ * @vendor ARB
+ * Tokens whose numeric value is intrinsically meaningful 
+ */
+ 
+#ifdef GL_FALSE 
+#define PHPGLFW_C_GL_FALSE GL_FALSE // => 0  
+#endif
+ 
+#ifdef GL_TRUE 
+#define PHPGLFW_C_GL_TRUE GL_TRUE // => 1  
+#endif
+ 
+#ifdef GL_ZERO 
+#define PHPGLFW_C_GL_ZERO GL_ZERO // => 0  
+#endif
+ 
+#ifdef GL_ONE 
+#define PHPGLFW_C_GL_ONE GL_ONE // => 1  
+#endif
+ 
+#ifdef GL_NONE 
+#define PHPGLFW_C_GL_NONE GL_NONE // => 0  
+#endif
+ 
+#ifdef GL_NO_ERROR 
+#define PHPGLFW_C_GL_NO_ERROR GL_NO_ERROR // => 0  
+#endif
+ 
+#ifdef GL_INVALID_INDEX 
+#define PHPGLFW_C_GL_INVALID_INDEX GL_INVALID_INDEX // => 0xFFFFFFFF  
+#endif
+ 
+#ifdef GL_TIMEOUT_IGNORED 
+#define PHPGLFW_C_GL_TIMEOUT_IGNORED GL_TIMEOUT_IGNORED // => 0xFFFFFFFFFFFFFFFF  
+#endif
+
+/**
+ * @vendor ARB
+ * Mostly OpenGL 1.0/1.1 enum assignments. Unused ranges should generally remain
+ * unused. 
+ */
+ 
+#ifdef GL_POINTS 
+#define PHPGLFW_C_GL_POINTS GL_POINTS // => 0x0000  
+#endif
+ 
+#ifdef GL_LINES 
+#define PHPGLFW_C_GL_LINES GL_LINES // => 0x0001  
+#endif
+ 
+#ifdef GL_LINE_LOOP 
+#define PHPGLFW_C_GL_LINE_LOOP GL_LINE_LOOP // => 0x0002  
+#endif
+ 
+#ifdef GL_LINE_STRIP 
+#define PHPGLFW_C_GL_LINE_STRIP GL_LINE_STRIP // => 0x0003  
+#endif
+ 
+#ifdef GL_TRIANGLES 
+#define PHPGLFW_C_GL_TRIANGLES GL_TRIANGLES // => 0x0004  
+#endif
+ 
+#ifdef GL_TRIANGLE_STRIP 
+#define PHPGLFW_C_GL_TRIANGLE_STRIP GL_TRIANGLE_STRIP // => 0x0005  
+#endif
+ 
+#ifdef GL_TRIANGLE_FAN 
+#define PHPGLFW_C_GL_TRIANGLE_FAN GL_TRIANGLE_FAN // => 0x0006  
+#endif
+ 
+#ifdef GL_QUADS 
+#define PHPGLFW_C_GL_QUADS GL_QUADS // => 0x0007  
+#endif
+ 
+#ifdef GL_NEVER 
+#define PHPGLFW_C_GL_NEVER GL_NEVER // => 0x0200  
+#endif
+ 
+#ifdef GL_LESS 
+#define PHPGLFW_C_GL_LESS GL_LESS // => 0x0201  
+#endif
+ 
+#ifdef GL_EQUAL 
+#define PHPGLFW_C_GL_EQUAL GL_EQUAL // => 0x0202  
+#endif
+ 
+#ifdef GL_LEQUAL 
+#define PHPGLFW_C_GL_LEQUAL GL_LEQUAL // => 0x0203  
+#endif
+ 
+#ifdef GL_GREATER 
+#define PHPGLFW_C_GL_GREATER GL_GREATER // => 0x0204  
+#endif
+ 
+#ifdef GL_NOTEQUAL 
+#define PHPGLFW_C_GL_NOTEQUAL GL_NOTEQUAL // => 0x0205  
+#endif
+ 
+#ifdef GL_GEQUAL 
+#define PHPGLFW_C_GL_GEQUAL GL_GEQUAL // => 0x0206  
+#endif
+ 
+#ifdef GL_ALWAYS 
+#define PHPGLFW_C_GL_ALWAYS GL_ALWAYS // => 0x0207  
+#endif
+ 
+#ifdef GL_SRC_COLOR 
+#define PHPGLFW_C_GL_SRC_COLOR GL_SRC_COLOR // => 0x0300  
+#endif
+ 
+#ifdef GL_ONE_MINUS_SRC_COLOR 
+#define PHPGLFW_C_GL_ONE_MINUS_SRC_COLOR GL_ONE_MINUS_SRC_COLOR // => 0x0301  
+#endif
+ 
+#ifdef GL_SRC_ALPHA 
+#define PHPGLFW_C_GL_SRC_ALPHA GL_SRC_ALPHA // => 0x0302  
+#endif
+ 
+#ifdef GL_ONE_MINUS_SRC_ALPHA 
+#define PHPGLFW_C_GL_ONE_MINUS_SRC_ALPHA GL_ONE_MINUS_SRC_ALPHA // => 0x0303  
+#endif
+ 
+#ifdef GL_DST_ALPHA 
+#define PHPGLFW_C_GL_DST_ALPHA GL_DST_ALPHA // => 0x0304  
+#endif
+ 
+#ifdef GL_ONE_MINUS_DST_ALPHA 
+#define PHPGLFW_C_GL_ONE_MINUS_DST_ALPHA GL_ONE_MINUS_DST_ALPHA // => 0x0305  
+#endif
+ 
+#ifdef GL_DST_COLOR 
+#define PHPGLFW_C_GL_DST_COLOR GL_DST_COLOR // => 0x0306  
+#endif
+ 
+#ifdef GL_ONE_MINUS_DST_COLOR 
+#define PHPGLFW_C_GL_ONE_MINUS_DST_COLOR GL_ONE_MINUS_DST_COLOR // => 0x0307  
+#endif
+ 
+#ifdef GL_SRC_ALPHA_SATURATE 
+#define PHPGLFW_C_GL_SRC_ALPHA_SATURATE GL_SRC_ALPHA_SATURATE // => 0x0308  
+#endif
+ 
+#ifdef GL_FRONT_LEFT 
+#define PHPGLFW_C_GL_FRONT_LEFT GL_FRONT_LEFT // => 0x0400  
+#endif
+ 
+#ifdef GL_FRONT_RIGHT 
+#define PHPGLFW_C_GL_FRONT_RIGHT GL_FRONT_RIGHT // => 0x0401  
+#endif
+ 
+#ifdef GL_BACK_LEFT 
+#define PHPGLFW_C_GL_BACK_LEFT GL_BACK_LEFT // => 0x0402  
+#endif
+ 
+#ifdef GL_BACK_RIGHT 
+#define PHPGLFW_C_GL_BACK_RIGHT GL_BACK_RIGHT // => 0x0403  
+#endif
+ 
+#ifdef GL_FRONT 
+#define PHPGLFW_C_GL_FRONT GL_FRONT // => 0x0404  
+#endif
+ 
+#ifdef GL_BACK 
+#define PHPGLFW_C_GL_BACK GL_BACK // => 0x0405  
+#endif
+ 
+#ifdef GL_LEFT 
+#define PHPGLFW_C_GL_LEFT GL_LEFT // => 0x0406  
+#endif
+ 
+#ifdef GL_RIGHT 
+#define PHPGLFW_C_GL_RIGHT GL_RIGHT // => 0x0407  
+#endif
+ 
+#ifdef GL_FRONT_AND_BACK 
+#define PHPGLFW_C_GL_FRONT_AND_BACK GL_FRONT_AND_BACK // => 0x0408  
+#endif
+ 
+#ifdef GL_INVALID_ENUM 
+#define PHPGLFW_C_GL_INVALID_ENUM GL_INVALID_ENUM // => 0x0500  
+#endif
+ 
+#ifdef GL_INVALID_VALUE 
+#define PHPGLFW_C_GL_INVALID_VALUE GL_INVALID_VALUE // => 0x0501  
+#endif
+ 
+#ifdef GL_INVALID_OPERATION 
+#define PHPGLFW_C_GL_INVALID_OPERATION GL_INVALID_OPERATION // => 0x0502  
+#endif
+ 
+#ifdef GL_OUT_OF_MEMORY 
+#define PHPGLFW_C_GL_OUT_OF_MEMORY GL_OUT_OF_MEMORY // => 0x0505  
+#endif
+ 
+#ifdef GL_CW 
+#define PHPGLFW_C_GL_CW GL_CW // => 0x0900  
+#endif
+ 
+#ifdef GL_CCW 
+#define PHPGLFW_C_GL_CCW GL_CCW // => 0x0901  
+#endif
+ 
+#ifdef GL_POINT_SIZE 
+#define PHPGLFW_C_GL_POINT_SIZE GL_POINT_SIZE // => 0x0B11  
+#endif
+ 
+#ifdef GL_POINT_SIZE_RANGE 
+#define PHPGLFW_C_GL_POINT_SIZE_RANGE GL_POINT_SIZE_RANGE // => 0x0B12  
+#endif
+ 
+#ifdef GL_POINT_SIZE_GRANULARITY 
+#define PHPGLFW_C_GL_POINT_SIZE_GRANULARITY GL_POINT_SIZE_GRANULARITY // => 0x0B13  
+#endif
+ 
+#ifdef GL_LINE_SMOOTH 
+#define PHPGLFW_C_GL_LINE_SMOOTH GL_LINE_SMOOTH // => 0x0B20  
+#endif
+ 
+#ifdef GL_LINE_WIDTH 
+#define PHPGLFW_C_GL_LINE_WIDTH GL_LINE_WIDTH // => 0x0B21  
+#endif
+ 
+#ifdef GL_LINE_WIDTH_RANGE 
+#define PHPGLFW_C_GL_LINE_WIDTH_RANGE GL_LINE_WIDTH_RANGE // => 0x0B22  
+#endif
+ 
+#ifdef GL_LINE_WIDTH_GRANULARITY 
+#define PHPGLFW_C_GL_LINE_WIDTH_GRANULARITY GL_LINE_WIDTH_GRANULARITY // => 0x0B23  
+#endif
+ 
+#ifdef GL_POLYGON_MODE 
+#define PHPGLFW_C_GL_POLYGON_MODE GL_POLYGON_MODE // => 0x0B40  
+#endif
+ 
+#ifdef GL_POLYGON_SMOOTH 
+#define PHPGLFW_C_GL_POLYGON_SMOOTH GL_POLYGON_SMOOTH // => 0x0B41  
+#endif
+ 
+#ifdef GL_CULL_FACE 
+#define PHPGLFW_C_GL_CULL_FACE GL_CULL_FACE // => 0x0B44  
+#endif
+ 
+#ifdef GL_CULL_FACE_MODE 
+#define PHPGLFW_C_GL_CULL_FACE_MODE GL_CULL_FACE_MODE // => 0x0B45  
+#endif
+ 
+#ifdef GL_FRONT_FACE 
+#define PHPGLFW_C_GL_FRONT_FACE GL_FRONT_FACE // => 0x0B46  
+#endif
+ 
+#ifdef GL_DEPTH_RANGE 
+#define PHPGLFW_C_GL_DEPTH_RANGE GL_DEPTH_RANGE // => 0x0B70  
+#endif
+ 
+#ifdef GL_DEPTH_TEST 
+#define PHPGLFW_C_GL_DEPTH_TEST GL_DEPTH_TEST // => 0x0B71  
+#endif
+ 
+#ifdef GL_DEPTH_WRITEMASK 
+#define PHPGLFW_C_GL_DEPTH_WRITEMASK GL_DEPTH_WRITEMASK // => 0x0B72  
+#endif
+ 
+#ifdef GL_DEPTH_CLEAR_VALUE 
+#define PHPGLFW_C_GL_DEPTH_CLEAR_VALUE GL_DEPTH_CLEAR_VALUE // => 0x0B73  
+#endif
+ 
+#ifdef GL_DEPTH_FUNC 
+#define PHPGLFW_C_GL_DEPTH_FUNC GL_DEPTH_FUNC // => 0x0B74  
+#endif
+ 
+#ifdef GL_STENCIL_TEST 
+#define PHPGLFW_C_GL_STENCIL_TEST GL_STENCIL_TEST // => 0x0B90  
+#endif
+ 
+#ifdef GL_STENCIL_CLEAR_VALUE 
+#define PHPGLFW_C_GL_STENCIL_CLEAR_VALUE GL_STENCIL_CLEAR_VALUE // => 0x0B91  
+#endif
+ 
+#ifdef GL_STENCIL_FUNC 
+#define PHPGLFW_C_GL_STENCIL_FUNC GL_STENCIL_FUNC // => 0x0B92  
+#endif
+ 
+#ifdef GL_STENCIL_VALUE_MASK 
+#define PHPGLFW_C_GL_STENCIL_VALUE_MASK GL_STENCIL_VALUE_MASK // => 0x0B93  
+#endif
+ 
+#ifdef GL_STENCIL_FAIL 
+#define PHPGLFW_C_GL_STENCIL_FAIL GL_STENCIL_FAIL // => 0x0B94  
+#endif
+ 
+#ifdef GL_STENCIL_PASS_DEPTH_FAIL 
+#define PHPGLFW_C_GL_STENCIL_PASS_DEPTH_FAIL GL_STENCIL_PASS_DEPTH_FAIL // => 0x0B95  
+#endif
+ 
+#ifdef GL_STENCIL_PASS_DEPTH_PASS 
+#define PHPGLFW_C_GL_STENCIL_PASS_DEPTH_PASS GL_STENCIL_PASS_DEPTH_PASS // => 0x0B96  
+#endif
+ 
+#ifdef GL_STENCIL_REF 
+#define PHPGLFW_C_GL_STENCIL_REF GL_STENCIL_REF // => 0x0B97  
+#endif
+ 
+#ifdef GL_STENCIL_WRITEMASK 
+#define PHPGLFW_C_GL_STENCIL_WRITEMASK GL_STENCIL_WRITEMASK // => 0x0B98  
+#endif
+ 
+#ifdef GL_VIEWPORT 
+#define PHPGLFW_C_GL_VIEWPORT GL_VIEWPORT // => 0x0BA2  
+#endif
+ 
+#ifdef GL_DITHER 
+#define PHPGLFW_C_GL_DITHER GL_DITHER // => 0x0BD0  
+#endif
+ 
+#ifdef GL_BLEND_DST 
+#define PHPGLFW_C_GL_BLEND_DST GL_BLEND_DST // => 0x0BE0  
+#endif
+ 
+#ifdef GL_BLEND_SRC 
+#define PHPGLFW_C_GL_BLEND_SRC GL_BLEND_SRC // => 0x0BE1  
+#endif
+ 
+#ifdef GL_BLEND 
+#define PHPGLFW_C_GL_BLEND GL_BLEND // => 0x0BE2  
+#endif
+ 
+#ifdef GL_LOGIC_OP_MODE 
+#define PHPGLFW_C_GL_LOGIC_OP_MODE GL_LOGIC_OP_MODE // => 0x0BF0  
+#endif
+ 
+#ifdef GL_DRAW_BUFFER 
+#define PHPGLFW_C_GL_DRAW_BUFFER GL_DRAW_BUFFER // => 0x0C01  
+#endif
+ 
+#ifdef GL_READ_BUFFER 
+#define PHPGLFW_C_GL_READ_BUFFER GL_READ_BUFFER // => 0x0C02  
+#endif
+ 
+#ifdef GL_SCISSOR_BOX 
+#define PHPGLFW_C_GL_SCISSOR_BOX GL_SCISSOR_BOX // => 0x0C10  
+#endif
+ 
+#ifdef GL_SCISSOR_TEST 
+#define PHPGLFW_C_GL_SCISSOR_TEST GL_SCISSOR_TEST // => 0x0C11  
+#endif
+ 
+#ifdef GL_COLOR_CLEAR_VALUE 
+#define PHPGLFW_C_GL_COLOR_CLEAR_VALUE GL_COLOR_CLEAR_VALUE // => 0x0C22  
+#endif
+ 
+#ifdef GL_COLOR_WRITEMASK 
+#define PHPGLFW_C_GL_COLOR_WRITEMASK GL_COLOR_WRITEMASK // => 0x0C23  
+#endif
+ 
+#ifdef GL_DOUBLEBUFFER 
+#define PHPGLFW_C_GL_DOUBLEBUFFER GL_DOUBLEBUFFER // => 0x0C32  
+#endif
+ 
+#ifdef GL_STEREO 
+#define PHPGLFW_C_GL_STEREO GL_STEREO // => 0x0C33  
+#endif
+ 
+#ifdef GL_LINE_SMOOTH_HINT 
+#define PHPGLFW_C_GL_LINE_SMOOTH_HINT GL_LINE_SMOOTH_HINT // => 0x0C52  
+#endif
+ 
+#ifdef GL_POLYGON_SMOOTH_HINT 
+#define PHPGLFW_C_GL_POLYGON_SMOOTH_HINT GL_POLYGON_SMOOTH_HINT // => 0x0C53  
+#endif
+ 
+#ifdef GL_UNPACK_SWAP_BYTES 
+#define PHPGLFW_C_GL_UNPACK_SWAP_BYTES GL_UNPACK_SWAP_BYTES // => 0x0CF0  
+#endif
+ 
+#ifdef GL_UNPACK_LSB_FIRST 
+#define PHPGLFW_C_GL_UNPACK_LSB_FIRST GL_UNPACK_LSB_FIRST // => 0x0CF1  
+#endif
+ 
+#ifdef GL_UNPACK_ROW_LENGTH 
+#define PHPGLFW_C_GL_UNPACK_ROW_LENGTH GL_UNPACK_ROW_LENGTH // => 0x0CF2  
+#endif
+ 
+#ifdef GL_UNPACK_SKIP_ROWS 
+#define PHPGLFW_C_GL_UNPACK_SKIP_ROWS GL_UNPACK_SKIP_ROWS // => 0x0CF3  
+#endif
+ 
+#ifdef GL_UNPACK_SKIP_PIXELS 
+#define PHPGLFW_C_GL_UNPACK_SKIP_PIXELS GL_UNPACK_SKIP_PIXELS // => 0x0CF4  
+#endif
+ 
+#ifdef GL_UNPACK_ALIGNMENT 
+#define PHPGLFW_C_GL_UNPACK_ALIGNMENT GL_UNPACK_ALIGNMENT // => 0x0CF5  
+#endif
+ 
+#ifdef GL_PACK_SWAP_BYTES 
+#define PHPGLFW_C_GL_PACK_SWAP_BYTES GL_PACK_SWAP_BYTES // => 0x0D00  
+#endif
+ 
+#ifdef GL_PACK_LSB_FIRST 
+#define PHPGLFW_C_GL_PACK_LSB_FIRST GL_PACK_LSB_FIRST // => 0x0D01  
+#endif
+ 
+#ifdef GL_PACK_ROW_LENGTH 
+#define PHPGLFW_C_GL_PACK_ROW_LENGTH GL_PACK_ROW_LENGTH // => 0x0D02  
+#endif
+ 
+#ifdef GL_PACK_SKIP_ROWS 
+#define PHPGLFW_C_GL_PACK_SKIP_ROWS GL_PACK_SKIP_ROWS // => 0x0D03  
+#endif
+ 
+#ifdef GL_PACK_SKIP_PIXELS 
+#define PHPGLFW_C_GL_PACK_SKIP_PIXELS GL_PACK_SKIP_PIXELS // => 0x0D04  
+#endif
+ 
+#ifdef GL_PACK_ALIGNMENT 
+#define PHPGLFW_C_GL_PACK_ALIGNMENT GL_PACK_ALIGNMENT // => 0x0D05  
+#endif
+ 
+#ifdef GL_MAX_TEXTURE_SIZE 
+#define PHPGLFW_C_GL_MAX_TEXTURE_SIZE GL_MAX_TEXTURE_SIZE // => 0x0D33  
+#endif
+ 
+#ifdef GL_MAX_VIEWPORT_DIMS 
+#define PHPGLFW_C_GL_MAX_VIEWPORT_DIMS GL_MAX_VIEWPORT_DIMS // => 0x0D3A  
+#endif
+ 
+#ifdef GL_SUBPIXEL_BITS 
+#define PHPGLFW_C_GL_SUBPIXEL_BITS GL_SUBPIXEL_BITS // => 0x0D50  
+#endif
+ 
+#ifdef GL_TEXTURE_1D 
+#define PHPGLFW_C_GL_TEXTURE_1D GL_TEXTURE_1D // => 0x0DE0  
+#endif
+ 
+#ifdef GL_TEXTURE_2D 
+#define PHPGLFW_C_GL_TEXTURE_2D GL_TEXTURE_2D // => 0x0DE1  
+#endif
+ 
+#ifdef GL_TEXTURE_WIDTH 
+#define PHPGLFW_C_GL_TEXTURE_WIDTH GL_TEXTURE_WIDTH // => 0x1000  
+#endif
+ 
+#ifdef GL_TEXTURE_HEIGHT 
+#define PHPGLFW_C_GL_TEXTURE_HEIGHT GL_TEXTURE_HEIGHT // => 0x1001  
+#endif
+ 
+#ifdef GL_TEXTURE_BORDER_COLOR 
+#define PHPGLFW_C_GL_TEXTURE_BORDER_COLOR GL_TEXTURE_BORDER_COLOR // => 0x1004  
+#endif
+ 
+#ifdef GL_DONT_CARE 
+#define PHPGLFW_C_GL_DONT_CARE GL_DONT_CARE // => 0x1100  
+#endif
+ 
+#ifdef GL_FASTEST 
+#define PHPGLFW_C_GL_FASTEST GL_FASTEST // => 0x1101  
+#endif
+ 
+#ifdef GL_NICEST 
+#define PHPGLFW_C_GL_NICEST GL_NICEST // => 0x1102  
+#endif
+ 
+#ifdef GL_BYTE 
+#define PHPGLFW_C_GL_BYTE GL_BYTE // => 0x1400  
+#endif
+ 
+#ifdef GL_UNSIGNED_BYTE 
+#define PHPGLFW_C_GL_UNSIGNED_BYTE GL_UNSIGNED_BYTE // => 0x1401  
+#endif
+ 
+#ifdef GL_SHORT 
+#define PHPGLFW_C_GL_SHORT GL_SHORT // => 0x1402  
+#endif
+ 
+#ifdef GL_UNSIGNED_SHORT 
+#define PHPGLFW_C_GL_UNSIGNED_SHORT GL_UNSIGNED_SHORT // => 0x1403  
+#endif
+ 
+#ifdef GL_INT 
+#define PHPGLFW_C_GL_INT GL_INT // => 0x1404  
+#endif
+ 
+#ifdef GL_UNSIGNED_INT 
+#define PHPGLFW_C_GL_UNSIGNED_INT GL_UNSIGNED_INT // => 0x1405  
+#endif
+ 
+#ifdef GL_FLOAT 
+#define PHPGLFW_C_GL_FLOAT GL_FLOAT // => 0x1406  
+#endif
+ 
+#ifdef GL_STACK_OVERFLOW 
+#define PHPGLFW_C_GL_STACK_OVERFLOW GL_STACK_OVERFLOW // => 0x0503  
+#endif
+ 
+#ifdef GL_STACK_UNDERFLOW 
+#define PHPGLFW_C_GL_STACK_UNDERFLOW GL_STACK_UNDERFLOW // => 0x0504  
+#endif
+ 
+#ifdef GL_CLEAR 
+#define PHPGLFW_C_GL_CLEAR GL_CLEAR // => 0x1500  
+#endif
+ 
+#ifdef GL_AND 
+#define PHPGLFW_C_GL_AND GL_AND // => 0x1501  
+#endif
+ 
+#ifdef GL_AND_REVERSE 
+#define PHPGLFW_C_GL_AND_REVERSE GL_AND_REVERSE // => 0x1502  
+#endif
+ 
+#ifdef GL_COPY 
+#define PHPGLFW_C_GL_COPY GL_COPY // => 0x1503  
+#endif
+ 
+#ifdef GL_AND_INVERTED 
+#define PHPGLFW_C_GL_AND_INVERTED GL_AND_INVERTED // => 0x1504  
+#endif
+ 
+#ifdef GL_NOOP 
+#define PHPGLFW_C_GL_NOOP GL_NOOP // => 0x1505  
+#endif
+ 
+#ifdef GL_XOR 
+#define PHPGLFW_C_GL_XOR GL_XOR // => 0x1506  
+#endif
+ 
+#ifdef GL_OR 
+#define PHPGLFW_C_GL_OR GL_OR // => 0x1507  
+#endif
+ 
+#ifdef GL_NOR 
+#define PHPGLFW_C_GL_NOR GL_NOR // => 0x1508  
+#endif
+ 
+#ifdef GL_EQUIV 
+#define PHPGLFW_C_GL_EQUIV GL_EQUIV // => 0x1509  
+#endif
+ 
+#ifdef GL_INVERT 
+#define PHPGLFW_C_GL_INVERT GL_INVERT // => 0x150A  
+#endif
+ 
+#ifdef GL_OR_REVERSE 
+#define PHPGLFW_C_GL_OR_REVERSE GL_OR_REVERSE // => 0x150B  
+#endif
+ 
+#ifdef GL_COPY_INVERTED 
+#define PHPGLFW_C_GL_COPY_INVERTED GL_COPY_INVERTED // => 0x150C  
+#endif
+ 
+#ifdef GL_OR_INVERTED 
+#define PHPGLFW_C_GL_OR_INVERTED GL_OR_INVERTED // => 0x150D  
+#endif
+ 
+#ifdef GL_NAND 
+#define PHPGLFW_C_GL_NAND GL_NAND // => 0x150E  
+#endif
+ 
+#ifdef GL_SET 
+#define PHPGLFW_C_GL_SET GL_SET // => 0x150F  
+#endif
+ 
+#ifdef GL_TEXTURE 
+#define PHPGLFW_C_GL_TEXTURE GL_TEXTURE // => 0x1702  
+#endif
+ 
+#ifdef GL_COLOR 
+#define PHPGLFW_C_GL_COLOR GL_COLOR // => 0x1800  
+#endif
+ 
+#ifdef GL_DEPTH 
+#define PHPGLFW_C_GL_DEPTH GL_DEPTH // => 0x1801  
+#endif
+ 
+#ifdef GL_STENCIL 
+#define PHPGLFW_C_GL_STENCIL GL_STENCIL // => 0x1802  
+#endif
+ 
+#ifdef GL_STENCIL_INDEX 
+#define PHPGLFW_C_GL_STENCIL_INDEX GL_STENCIL_INDEX // => 0x1901  
+#endif
+ 
+#ifdef GL_DEPTH_COMPONENT 
+#define PHPGLFW_C_GL_DEPTH_COMPONENT GL_DEPTH_COMPONENT // => 0x1902  
+#endif
+ 
+#ifdef GL_RED 
+#define PHPGLFW_C_GL_RED GL_RED // => 0x1903  
+#endif
+ 
+#ifdef GL_GREEN 
+#define PHPGLFW_C_GL_GREEN GL_GREEN // => 0x1904  
+#endif
+ 
+#ifdef GL_BLUE 
+#define PHPGLFW_C_GL_BLUE GL_BLUE // => 0x1905  
+#endif
+ 
+#ifdef GL_ALPHA 
+#define PHPGLFW_C_GL_ALPHA GL_ALPHA // => 0x1906  
+#endif
+ 
+#ifdef GL_RGB 
+#define PHPGLFW_C_GL_RGB GL_RGB // => 0x1907  
+#endif
+ 
+#ifdef GL_RGBA 
+#define PHPGLFW_C_GL_RGBA GL_RGBA // => 0x1908  
+#endif
+ 
+#ifdef GL_POINT 
+#define PHPGLFW_C_GL_POINT GL_POINT // => 0x1B00  
+#endif
+ 
+#ifdef GL_LINE 
+#define PHPGLFW_C_GL_LINE GL_LINE // => 0x1B01  
+#endif
+ 
+#ifdef GL_FILL 
+#define PHPGLFW_C_GL_FILL GL_FILL // => 0x1B02  
+#endif
+ 
+#ifdef GL_KEEP 
+#define PHPGLFW_C_GL_KEEP GL_KEEP // => 0x1E00  
+#endif
+ 
+#ifdef GL_REPLACE 
+#define PHPGLFW_C_GL_REPLACE GL_REPLACE // => 0x1E01  
+#endif
+ 
+#ifdef GL_INCR 
+#define PHPGLFW_C_GL_INCR GL_INCR // => 0x1E02  
+#endif
+ 
+#ifdef GL_DECR 
+#define PHPGLFW_C_GL_DECR GL_DECR // => 0x1E03  
+#endif
+ 
+#ifdef GL_VENDOR 
+#define PHPGLFW_C_GL_VENDOR GL_VENDOR // => 0x1F00  
+#endif
+ 
+#ifdef GL_RENDERER 
+#define PHPGLFW_C_GL_RENDERER GL_RENDERER // => 0x1F01  
+#endif
+ 
+#ifdef GL_VERSION 
+#define PHPGLFW_C_GL_VERSION GL_VERSION // => 0x1F02  
+#endif
+ 
+#ifdef GL_EXTENSIONS 
+#define PHPGLFW_C_GL_EXTENSIONS GL_EXTENSIONS // => 0x1F03  
+#endif
+ 
+#ifdef GL_NEAREST 
+#define PHPGLFW_C_GL_NEAREST GL_NEAREST // => 0x2600  
+#endif
+ 
+#ifdef GL_LINEAR 
+#define PHPGLFW_C_GL_LINEAR GL_LINEAR // => 0x2601  
+#endif
+ 
+#ifdef GL_NEAREST_MIPMAP_NEAREST 
+#define PHPGLFW_C_GL_NEAREST_MIPMAP_NEAREST GL_NEAREST_MIPMAP_NEAREST // => 0x2700  
+#endif
+ 
+#ifdef GL_LINEAR_MIPMAP_NEAREST 
+#define PHPGLFW_C_GL_LINEAR_MIPMAP_NEAREST GL_LINEAR_MIPMAP_NEAREST // => 0x2701  
+#endif
+ 
+#ifdef GL_NEAREST_MIPMAP_LINEAR 
+#define PHPGLFW_C_GL_NEAREST_MIPMAP_LINEAR GL_NEAREST_MIPMAP_LINEAR // => 0x2702  
+#endif
+ 
+#ifdef GL_LINEAR_MIPMAP_LINEAR 
+#define PHPGLFW_C_GL_LINEAR_MIPMAP_LINEAR GL_LINEAR_MIPMAP_LINEAR // => 0x2703  
+#endif
+ 
+#ifdef GL_TEXTURE_MAG_FILTER 
+#define PHPGLFW_C_GL_TEXTURE_MAG_FILTER GL_TEXTURE_MAG_FILTER // => 0x2800  
+#endif
+ 
+#ifdef GL_TEXTURE_MIN_FILTER 
+#define PHPGLFW_C_GL_TEXTURE_MIN_FILTER GL_TEXTURE_MIN_FILTER // => 0x2801  
+#endif
+ 
+#ifdef GL_TEXTURE_WRAP_S 
+#define PHPGLFW_C_GL_TEXTURE_WRAP_S GL_TEXTURE_WRAP_S // => 0x2802  
+#endif
+ 
+#ifdef GL_TEXTURE_WRAP_T 
+#define PHPGLFW_C_GL_TEXTURE_WRAP_T GL_TEXTURE_WRAP_T // => 0x2803  
+#endif
+ 
+#ifdef GL_REPEAT 
+#define PHPGLFW_C_GL_REPEAT GL_REPEAT // => 0x2901  
+#endif
+ 
+#ifdef GL_QUAD_STRIP 
+#define PHPGLFW_C_GL_QUAD_STRIP GL_QUAD_STRIP // => 0x0008  
+#endif
+ 
+#ifdef GL_POLYGON 
+#define PHPGLFW_C_GL_POLYGON GL_POLYGON // => 0x0009  
+#endif
+ 
+#ifdef GL_ACCUM 
+#define PHPGLFW_C_GL_ACCUM GL_ACCUM // => 0x0100  
+#endif
+ 
+#ifdef GL_LOAD 
+#define PHPGLFW_C_GL_LOAD GL_LOAD // => 0x0101  
+#endif
+ 
+#ifdef GL_RETURN 
+#define PHPGLFW_C_GL_RETURN GL_RETURN // => 0x0102  
+#endif
+ 
+#ifdef GL_MULT 
+#define PHPGLFW_C_GL_MULT GL_MULT // => 0x0103  
+#endif
+ 
+#ifdef GL_ADD 
+#define PHPGLFW_C_GL_ADD GL_ADD // => 0x0104  
+#endif
+ 
+#ifdef GL_AUX0 
+#define PHPGLFW_C_GL_AUX0 GL_AUX0 // => 0x0409  
+#endif
+ 
+#ifdef GL_AUX1 
+#define PHPGLFW_C_GL_AUX1 GL_AUX1 // => 0x040A  
+#endif
+ 
+#ifdef GL_AUX2 
+#define PHPGLFW_C_GL_AUX2 GL_AUX2 // => 0x040B  
+#endif
+ 
+#ifdef GL_AUX3 
+#define PHPGLFW_C_GL_AUX3 GL_AUX3 // => 0x040C  
+#endif
+ 
+#ifdef GL_2D 
+#define PHPGLFW_C_GL_2D GL_2D // => 0x0600  
+#endif
+ 
+#ifdef GL_3D 
+#define PHPGLFW_C_GL_3D GL_3D // => 0x0601  
+#endif
+ 
+#ifdef GL_3D_COLOR 
+#define PHPGLFW_C_GL_3D_COLOR GL_3D_COLOR // => 0x0602  
+#endif
+ 
+#ifdef GL_3D_COLOR_TEXTURE 
+#define PHPGLFW_C_GL_3D_COLOR_TEXTURE GL_3D_COLOR_TEXTURE // => 0x0603  
+#endif
+ 
+#ifdef GL_4D_COLOR_TEXTURE 
+#define PHPGLFW_C_GL_4D_COLOR_TEXTURE GL_4D_COLOR_TEXTURE // => 0x0604  
+#endif
+ 
+#ifdef GL_PASS_THROUGH_TOKEN 
+#define PHPGLFW_C_GL_PASS_THROUGH_TOKEN GL_PASS_THROUGH_TOKEN // => 0x0700  
+#endif
+ 
+#ifdef GL_POINT_TOKEN 
+#define PHPGLFW_C_GL_POINT_TOKEN GL_POINT_TOKEN // => 0x0701  
+#endif
+ 
+#ifdef GL_LINE_TOKEN 
+#define PHPGLFW_C_GL_LINE_TOKEN GL_LINE_TOKEN // => 0x0702  
+#endif
+ 
+#ifdef GL_POLYGON_TOKEN 
+#define PHPGLFW_C_GL_POLYGON_TOKEN GL_POLYGON_TOKEN // => 0x0703  
+#endif
+ 
+#ifdef GL_BITMAP_TOKEN 
+#define PHPGLFW_C_GL_BITMAP_TOKEN GL_BITMAP_TOKEN // => 0x0704  
+#endif
+ 
+#ifdef GL_DRAW_PIXEL_TOKEN 
+#define PHPGLFW_C_GL_DRAW_PIXEL_TOKEN GL_DRAW_PIXEL_TOKEN // => 0x0705  
+#endif
+ 
+#ifdef GL_COPY_PIXEL_TOKEN 
+#define PHPGLFW_C_GL_COPY_PIXEL_TOKEN GL_COPY_PIXEL_TOKEN // => 0x0706  
+#endif
+ 
+#ifdef GL_LINE_RESET_TOKEN 
+#define PHPGLFW_C_GL_LINE_RESET_TOKEN GL_LINE_RESET_TOKEN // => 0x0707  
+#endif
+ 
+#ifdef GL_EXP 
+#define PHPGLFW_C_GL_EXP GL_EXP // => 0x0800  
+#endif
+ 
+#ifdef GL_EXP2 
+#define PHPGLFW_C_GL_EXP2 GL_EXP2 // => 0x0801  
+#endif
+ 
+#ifdef GL_COEFF 
+#define PHPGLFW_C_GL_COEFF GL_COEFF // => 0x0A00  
+#endif
+ 
+#ifdef GL_ORDER 
+#define PHPGLFW_C_GL_ORDER GL_ORDER // => 0x0A01  
+#endif
+ 
+#ifdef GL_DOMAIN 
+#define PHPGLFW_C_GL_DOMAIN GL_DOMAIN // => 0x0A02  
+#endif
+ 
+#ifdef GL_PIXEL_MAP_I_TO_I 
+#define PHPGLFW_C_GL_PIXEL_MAP_I_TO_I GL_PIXEL_MAP_I_TO_I // => 0x0C70  
+#endif
+ 
+#ifdef GL_PIXEL_MAP_S_TO_S 
+#define PHPGLFW_C_GL_PIXEL_MAP_S_TO_S GL_PIXEL_MAP_S_TO_S // => 0x0C71  
+#endif
+ 
+#ifdef GL_PIXEL_MAP_I_TO_R 
+#define PHPGLFW_C_GL_PIXEL_MAP_I_TO_R GL_PIXEL_MAP_I_TO_R // => 0x0C72  
+#endif
+ 
+#ifdef GL_PIXEL_MAP_I_TO_G 
+#define PHPGLFW_C_GL_PIXEL_MAP_I_TO_G GL_PIXEL_MAP_I_TO_G // => 0x0C73  
+#endif
+ 
+#ifdef GL_PIXEL_MAP_I_TO_B 
+#define PHPGLFW_C_GL_PIXEL_MAP_I_TO_B GL_PIXEL_MAP_I_TO_B // => 0x0C74  
+#endif
+ 
+#ifdef GL_PIXEL_MAP_I_TO_A 
+#define PHPGLFW_C_GL_PIXEL_MAP_I_TO_A GL_PIXEL_MAP_I_TO_A // => 0x0C75  
+#endif
+ 
+#ifdef GL_PIXEL_MAP_R_TO_R 
+#define PHPGLFW_C_GL_PIXEL_MAP_R_TO_R GL_PIXEL_MAP_R_TO_R // => 0x0C76  
+#endif
+ 
+#ifdef GL_PIXEL_MAP_G_TO_G 
+#define PHPGLFW_C_GL_PIXEL_MAP_G_TO_G GL_PIXEL_MAP_G_TO_G // => 0x0C77  
+#endif
+ 
+#ifdef GL_PIXEL_MAP_B_TO_B 
+#define PHPGLFW_C_GL_PIXEL_MAP_B_TO_B GL_PIXEL_MAP_B_TO_B // => 0x0C78  
+#endif
+ 
+#ifdef GL_PIXEL_MAP_A_TO_A 
+#define PHPGLFW_C_GL_PIXEL_MAP_A_TO_A GL_PIXEL_MAP_A_TO_A // => 0x0C79  
+#endif
+ 
+#ifdef GL_CURRENT_COLOR 
+#define PHPGLFW_C_GL_CURRENT_COLOR GL_CURRENT_COLOR // => 0x0B00  
+#endif
+ 
+#ifdef GL_CURRENT_INDEX 
+#define PHPGLFW_C_GL_CURRENT_INDEX GL_CURRENT_INDEX // => 0x0B01  
+#endif
+ 
+#ifdef GL_CURRENT_NORMAL 
+#define PHPGLFW_C_GL_CURRENT_NORMAL GL_CURRENT_NORMAL // => 0x0B02  
+#endif
+ 
+#ifdef GL_CURRENT_TEXTURE_COORDS 
+#define PHPGLFW_C_GL_CURRENT_TEXTURE_COORDS GL_CURRENT_TEXTURE_COORDS // => 0x0B03  
+#endif
+ 
+#ifdef GL_CURRENT_RASTER_COLOR 
+#define PHPGLFW_C_GL_CURRENT_RASTER_COLOR GL_CURRENT_RASTER_COLOR // => 0x0B04  
+#endif
+ 
+#ifdef GL_CURRENT_RASTER_INDEX 
+#define PHPGLFW_C_GL_CURRENT_RASTER_INDEX GL_CURRENT_RASTER_INDEX // => 0x0B05  
+#endif
+ 
+#ifdef GL_CURRENT_RASTER_TEXTURE_COORDS 
+#define PHPGLFW_C_GL_CURRENT_RASTER_TEXTURE_COORDS GL_CURRENT_RASTER_TEXTURE_COORDS // => 0x0B06  
+#endif
+ 
+#ifdef GL_CURRENT_RASTER_POSITION 
+#define PHPGLFW_C_GL_CURRENT_RASTER_POSITION GL_CURRENT_RASTER_POSITION // => 0x0B07  
+#endif
+ 
+#ifdef GL_CURRENT_RASTER_POSITION_VALID 
+#define PHPGLFW_C_GL_CURRENT_RASTER_POSITION_VALID GL_CURRENT_RASTER_POSITION_VALID // => 0x0B08  
+#endif
+ 
+#ifdef GL_CURRENT_RASTER_DISTANCE 
+#define PHPGLFW_C_GL_CURRENT_RASTER_DISTANCE GL_CURRENT_RASTER_DISTANCE // => 0x0B09  
+#endif
+ 
+#ifdef GL_POINT_SMOOTH 
+#define PHPGLFW_C_GL_POINT_SMOOTH GL_POINT_SMOOTH // => 0x0B10  
+#endif
+ 
+#ifdef GL_LINE_STIPPLE 
+#define PHPGLFW_C_GL_LINE_STIPPLE GL_LINE_STIPPLE // => 0x0B24  
+#endif
+ 
+#ifdef GL_LINE_STIPPLE_PATTERN 
+#define PHPGLFW_C_GL_LINE_STIPPLE_PATTERN GL_LINE_STIPPLE_PATTERN // => 0x0B25  
+#endif
+ 
+#ifdef GL_LINE_STIPPLE_REPEAT 
+#define PHPGLFW_C_GL_LINE_STIPPLE_REPEAT GL_LINE_STIPPLE_REPEAT // => 0x0B26  
+#endif
+ 
+#ifdef GL_LIST_MODE 
+#define PHPGLFW_C_GL_LIST_MODE GL_LIST_MODE // => 0x0B30  
+#endif
+ 
+#ifdef GL_MAX_LIST_NESTING 
+#define PHPGLFW_C_GL_MAX_LIST_NESTING GL_MAX_LIST_NESTING // => 0x0B31  
+#endif
+ 
+#ifdef GL_LIST_BASE 
+#define PHPGLFW_C_GL_LIST_BASE GL_LIST_BASE // => 0x0B32  
+#endif
+ 
+#ifdef GL_LIST_INDEX 
+#define PHPGLFW_C_GL_LIST_INDEX GL_LIST_INDEX // => 0x0B33  
+#endif
+ 
+#ifdef GL_POLYGON_STIPPLE 
+#define PHPGLFW_C_GL_POLYGON_STIPPLE GL_POLYGON_STIPPLE // => 0x0B42  
+#endif
+ 
+#ifdef GL_EDGE_FLAG 
+#define PHPGLFW_C_GL_EDGE_FLAG GL_EDGE_FLAG // => 0x0B43  
+#endif
+ 
+#ifdef GL_LIGHTING 
+#define PHPGLFW_C_GL_LIGHTING GL_LIGHTING // => 0x0B50  
+#endif
+ 
+#ifdef GL_LIGHT_MODEL_LOCAL_VIEWER 
+#define PHPGLFW_C_GL_LIGHT_MODEL_LOCAL_VIEWER GL_LIGHT_MODEL_LOCAL_VIEWER // => 0x0B51  
+#endif
+ 
+#ifdef GL_LIGHT_MODEL_TWO_SIDE 
+#define PHPGLFW_C_GL_LIGHT_MODEL_TWO_SIDE GL_LIGHT_MODEL_TWO_SIDE // => 0x0B52  
+#endif
+ 
+#ifdef GL_LIGHT_MODEL_AMBIENT 
+#define PHPGLFW_C_GL_LIGHT_MODEL_AMBIENT GL_LIGHT_MODEL_AMBIENT // => 0x0B53  
+#endif
+ 
+#ifdef GL_SHADE_MODEL 
+#define PHPGLFW_C_GL_SHADE_MODEL GL_SHADE_MODEL // => 0x0B54  
+#endif
+ 
+#ifdef GL_COLOR_MATERIAL_FACE 
+#define PHPGLFW_C_GL_COLOR_MATERIAL_FACE GL_COLOR_MATERIAL_FACE // => 0x0B55  
+#endif
+ 
+#ifdef GL_COLOR_MATERIAL_PARAMETER 
+#define PHPGLFW_C_GL_COLOR_MATERIAL_PARAMETER GL_COLOR_MATERIAL_PARAMETER // => 0x0B56  
+#endif
+ 
+#ifdef GL_COLOR_MATERIAL 
+#define PHPGLFW_C_GL_COLOR_MATERIAL GL_COLOR_MATERIAL // => 0x0B57  
+#endif
+ 
+#ifdef GL_FOG 
+#define PHPGLFW_C_GL_FOG GL_FOG // => 0x0B60  
+#endif
+ 
+#ifdef GL_FOG_INDEX 
+#define PHPGLFW_C_GL_FOG_INDEX GL_FOG_INDEX // => 0x0B61  
+#endif
+ 
+#ifdef GL_FOG_DENSITY 
+#define PHPGLFW_C_GL_FOG_DENSITY GL_FOG_DENSITY // => 0x0B62  
+#endif
+ 
+#ifdef GL_FOG_START 
+#define PHPGLFW_C_GL_FOG_START GL_FOG_START // => 0x0B63  
+#endif
+ 
+#ifdef GL_FOG_END 
+#define PHPGLFW_C_GL_FOG_END GL_FOG_END // => 0x0B64  
+#endif
+ 
+#ifdef GL_FOG_MODE 
+#define PHPGLFW_C_GL_FOG_MODE GL_FOG_MODE // => 0x0B65  
+#endif
+ 
+#ifdef GL_FOG_COLOR 
+#define PHPGLFW_C_GL_FOG_COLOR GL_FOG_COLOR // => 0x0B66  
+#endif
+ 
+#ifdef GL_ACCUM_CLEAR_VALUE 
+#define PHPGLFW_C_GL_ACCUM_CLEAR_VALUE GL_ACCUM_CLEAR_VALUE // => 0x0B80  
+#endif
+ 
+#ifdef GL_MATRIX_MODE 
+#define PHPGLFW_C_GL_MATRIX_MODE GL_MATRIX_MODE // => 0x0BA0  
+#endif
+ 
+#ifdef GL_NORMALIZE 
+#define PHPGLFW_C_GL_NORMALIZE GL_NORMALIZE // => 0x0BA1  
+#endif
+ 
+#ifdef GL_MODELVIEW_STACK_DEPTH 
+#define PHPGLFW_C_GL_MODELVIEW_STACK_DEPTH GL_MODELVIEW_STACK_DEPTH // => 0x0BA3  
+#endif
+ 
+#ifdef GL_PROJECTION_STACK_DEPTH 
+#define PHPGLFW_C_GL_PROJECTION_STACK_DEPTH GL_PROJECTION_STACK_DEPTH // => 0x0BA4  
+#endif
+ 
+#ifdef GL_TEXTURE_STACK_DEPTH 
+#define PHPGLFW_C_GL_TEXTURE_STACK_DEPTH GL_TEXTURE_STACK_DEPTH // => 0x0BA5  
+#endif
+ 
+#ifdef GL_MODELVIEW_MATRIX 
+#define PHPGLFW_C_GL_MODELVIEW_MATRIX GL_MODELVIEW_MATRIX // => 0x0BA6  
+#endif
+ 
+#ifdef GL_PROJECTION_MATRIX 
+#define PHPGLFW_C_GL_PROJECTION_MATRIX GL_PROJECTION_MATRIX // => 0x0BA7  
+#endif
+ 
+#ifdef GL_TEXTURE_MATRIX 
+#define PHPGLFW_C_GL_TEXTURE_MATRIX GL_TEXTURE_MATRIX // => 0x0BA8  
+#endif
+ 
+#ifdef GL_ATTRIB_STACK_DEPTH 
+#define PHPGLFW_C_GL_ATTRIB_STACK_DEPTH GL_ATTRIB_STACK_DEPTH // => 0x0BB0  
+#endif
+ 
+#ifdef GL_ALPHA_TEST 
+#define PHPGLFW_C_GL_ALPHA_TEST GL_ALPHA_TEST // => 0x0BC0  
+#endif
+ 
+#ifdef GL_ALPHA_TEST_FUNC 
+#define PHPGLFW_C_GL_ALPHA_TEST_FUNC GL_ALPHA_TEST_FUNC // => 0x0BC1  
+#endif
+ 
+#ifdef GL_ALPHA_TEST_REF 
+#define PHPGLFW_C_GL_ALPHA_TEST_REF GL_ALPHA_TEST_REF // => 0x0BC2  
+#endif
+ 
+#ifdef GL_LOGIC_OP 
+#define PHPGLFW_C_GL_LOGIC_OP GL_LOGIC_OP // => 0x0BF1  
+#endif
+ 
+#ifdef GL_AUX_BUFFERS 
+#define PHPGLFW_C_GL_AUX_BUFFERS GL_AUX_BUFFERS // => 0x0C00  
+#endif
+ 
+#ifdef GL_INDEX_CLEAR_VALUE 
+#define PHPGLFW_C_GL_INDEX_CLEAR_VALUE GL_INDEX_CLEAR_VALUE // => 0x0C20  
+#endif
+ 
+#ifdef GL_INDEX_WRITEMASK 
+#define PHPGLFW_C_GL_INDEX_WRITEMASK GL_INDEX_WRITEMASK // => 0x0C21  
+#endif
+ 
+#ifdef GL_INDEX_MODE 
+#define PHPGLFW_C_GL_INDEX_MODE GL_INDEX_MODE // => 0x0C30  
+#endif
+ 
+#ifdef GL_RGBA_MODE 
+#define PHPGLFW_C_GL_RGBA_MODE GL_RGBA_MODE // => 0x0C31  
+#endif
+ 
+#ifdef GL_RENDER_MODE 
+#define PHPGLFW_C_GL_RENDER_MODE GL_RENDER_MODE // => 0x0C40  
+#endif
+ 
+#ifdef GL_PERSPECTIVE_CORRECTION_HINT 
+#define PHPGLFW_C_GL_PERSPECTIVE_CORRECTION_HINT GL_PERSPECTIVE_CORRECTION_HINT // => 0x0C50  
+#endif
+ 
+#ifdef GL_POINT_SMOOTH_HINT 
+#define PHPGLFW_C_GL_POINT_SMOOTH_HINT GL_POINT_SMOOTH_HINT // => 0x0C51  
+#endif
+ 
+#ifdef GL_FOG_HINT 
+#define PHPGLFW_C_GL_FOG_HINT GL_FOG_HINT // => 0x0C54  
+#endif
+ 
+#ifdef GL_TEXTURE_GEN_S 
+#define PHPGLFW_C_GL_TEXTURE_GEN_S GL_TEXTURE_GEN_S // => 0x0C60  
+#endif
+ 
+#ifdef GL_TEXTURE_GEN_T 
+#define PHPGLFW_C_GL_TEXTURE_GEN_T GL_TEXTURE_GEN_T // => 0x0C61  
+#endif
+ 
+#ifdef GL_TEXTURE_GEN_R 
+#define PHPGLFW_C_GL_TEXTURE_GEN_R GL_TEXTURE_GEN_R // => 0x0C62  
+#endif
+ 
+#ifdef GL_TEXTURE_GEN_Q 
+#define PHPGLFW_C_GL_TEXTURE_GEN_Q GL_TEXTURE_GEN_Q // => 0x0C63  
+#endif
+ 
+#ifdef GL_PIXEL_MAP_I_TO_I_SIZE 
+#define PHPGLFW_C_GL_PIXEL_MAP_I_TO_I_SIZE GL_PIXEL_MAP_I_TO_I_SIZE // => 0x0CB0  
+#endif
+ 
+#ifdef GL_PIXEL_MAP_S_TO_S_SIZE 
+#define PHPGLFW_C_GL_PIXEL_MAP_S_TO_S_SIZE GL_PIXEL_MAP_S_TO_S_SIZE // => 0x0CB1  
+#endif
+ 
+#ifdef GL_PIXEL_MAP_I_TO_R_SIZE 
+#define PHPGLFW_C_GL_PIXEL_MAP_I_TO_R_SIZE GL_PIXEL_MAP_I_TO_R_SIZE // => 0x0CB2  
+#endif
+ 
+#ifdef GL_PIXEL_MAP_I_TO_G_SIZE 
+#define PHPGLFW_C_GL_PIXEL_MAP_I_TO_G_SIZE GL_PIXEL_MAP_I_TO_G_SIZE // => 0x0CB3  
+#endif
+ 
+#ifdef GL_PIXEL_MAP_I_TO_B_SIZE 
+#define PHPGLFW_C_GL_PIXEL_MAP_I_TO_B_SIZE GL_PIXEL_MAP_I_TO_B_SIZE // => 0x0CB4  
+#endif
+ 
+#ifdef GL_PIXEL_MAP_I_TO_A_SIZE 
+#define PHPGLFW_C_GL_PIXEL_MAP_I_TO_A_SIZE GL_PIXEL_MAP_I_TO_A_SIZE // => 0x0CB5  
+#endif
+ 
+#ifdef GL_PIXEL_MAP_R_TO_R_SIZE 
+#define PHPGLFW_C_GL_PIXEL_MAP_R_TO_R_SIZE GL_PIXEL_MAP_R_TO_R_SIZE // => 0x0CB6  
+#endif
+ 
+#ifdef GL_PIXEL_MAP_G_TO_G_SIZE 
+#define PHPGLFW_C_GL_PIXEL_MAP_G_TO_G_SIZE GL_PIXEL_MAP_G_TO_G_SIZE // => 0x0CB7  
+#endif
+ 
+#ifdef GL_PIXEL_MAP_B_TO_B_SIZE 
+#define PHPGLFW_C_GL_PIXEL_MAP_B_TO_B_SIZE GL_PIXEL_MAP_B_TO_B_SIZE // => 0x0CB8  
+#endif
+ 
+#ifdef GL_PIXEL_MAP_A_TO_A_SIZE 
+#define PHPGLFW_C_GL_PIXEL_MAP_A_TO_A_SIZE GL_PIXEL_MAP_A_TO_A_SIZE // => 0x0CB9  
+#endif
+ 
+#ifdef GL_MAP_COLOR 
+#define PHPGLFW_C_GL_MAP_COLOR GL_MAP_COLOR // => 0x0D10  
+#endif
+ 
+#ifdef GL_MAP_STENCIL 
+#define PHPGLFW_C_GL_MAP_STENCIL GL_MAP_STENCIL // => 0x0D11  
+#endif
+ 
+#ifdef GL_INDEX_SHIFT 
+#define PHPGLFW_C_GL_INDEX_SHIFT GL_INDEX_SHIFT // => 0x0D12  
+#endif
+ 
+#ifdef GL_INDEX_OFFSET 
+#define PHPGLFW_C_GL_INDEX_OFFSET GL_INDEX_OFFSET // => 0x0D13  
+#endif
+ 
+#ifdef GL_RED_SCALE 
+#define PHPGLFW_C_GL_RED_SCALE GL_RED_SCALE // => 0x0D14  
+#endif
+ 
+#ifdef GL_RED_BIAS 
+#define PHPGLFW_C_GL_RED_BIAS GL_RED_BIAS // => 0x0D15  
+#endif
+ 
+#ifdef GL_ZOOM_X 
+#define PHPGLFW_C_GL_ZOOM_X GL_ZOOM_X // => 0x0D16  
+#endif
+ 
+#ifdef GL_ZOOM_Y 
+#define PHPGLFW_C_GL_ZOOM_Y GL_ZOOM_Y // => 0x0D17  
+#endif
+ 
+#ifdef GL_GREEN_SCALE 
+#define PHPGLFW_C_GL_GREEN_SCALE GL_GREEN_SCALE // => 0x0D18  
+#endif
+ 
+#ifdef GL_GREEN_BIAS 
+#define PHPGLFW_C_GL_GREEN_BIAS GL_GREEN_BIAS // => 0x0D19  
+#endif
+ 
+#ifdef GL_BLUE_SCALE 
+#define PHPGLFW_C_GL_BLUE_SCALE GL_BLUE_SCALE // => 0x0D1A  
+#endif
+ 
+#ifdef GL_BLUE_BIAS 
+#define PHPGLFW_C_GL_BLUE_BIAS GL_BLUE_BIAS // => 0x0D1B  
+#endif
+ 
+#ifdef GL_ALPHA_SCALE 
+#define PHPGLFW_C_GL_ALPHA_SCALE GL_ALPHA_SCALE // => 0x0D1C  
+#endif
+ 
+#ifdef GL_ALPHA_BIAS 
+#define PHPGLFW_C_GL_ALPHA_BIAS GL_ALPHA_BIAS // => 0x0D1D  
+#endif
+ 
+#ifdef GL_DEPTH_SCALE 
+#define PHPGLFW_C_GL_DEPTH_SCALE GL_DEPTH_SCALE // => 0x0D1E  
+#endif
+ 
+#ifdef GL_DEPTH_BIAS 
+#define PHPGLFW_C_GL_DEPTH_BIAS GL_DEPTH_BIAS // => 0x0D1F  
+#endif
+ 
+#ifdef GL_MAX_EVAL_ORDER 
+#define PHPGLFW_C_GL_MAX_EVAL_ORDER GL_MAX_EVAL_ORDER // => 0x0D30  
+#endif
+ 
+#ifdef GL_MAX_LIGHTS 
+#define PHPGLFW_C_GL_MAX_LIGHTS GL_MAX_LIGHTS // => 0x0D31  
+#endif
+ 
+#ifdef GL_MAX_CLIP_PLANES 
+#define PHPGLFW_C_GL_MAX_CLIP_PLANES GL_MAX_CLIP_PLANES // => 0x0D32  
+#endif
+ 
+#ifdef GL_MAX_PIXEL_MAP_TABLE 
+#define PHPGLFW_C_GL_MAX_PIXEL_MAP_TABLE GL_MAX_PIXEL_MAP_TABLE // => 0x0D34  
+#endif
+ 
+#ifdef GL_MAX_ATTRIB_STACK_DEPTH 
+#define PHPGLFW_C_GL_MAX_ATTRIB_STACK_DEPTH GL_MAX_ATTRIB_STACK_DEPTH // => 0x0D35  
+#endif
+ 
+#ifdef GL_MAX_MODELVIEW_STACK_DEPTH 
+#define PHPGLFW_C_GL_MAX_MODELVIEW_STACK_DEPTH GL_MAX_MODELVIEW_STACK_DEPTH // => 0x0D36  
+#endif
+ 
+#ifdef GL_MAX_NAME_STACK_DEPTH 
+#define PHPGLFW_C_GL_MAX_NAME_STACK_DEPTH GL_MAX_NAME_STACK_DEPTH // => 0x0D37  
+#endif
+ 
+#ifdef GL_MAX_PROJECTION_STACK_DEPTH 
+#define PHPGLFW_C_GL_MAX_PROJECTION_STACK_DEPTH GL_MAX_PROJECTION_STACK_DEPTH // => 0x0D38  
+#endif
+ 
+#ifdef GL_MAX_TEXTURE_STACK_DEPTH 
+#define PHPGLFW_C_GL_MAX_TEXTURE_STACK_DEPTH GL_MAX_TEXTURE_STACK_DEPTH // => 0x0D39  
+#endif
+ 
+#ifdef GL_INDEX_BITS 
+#define PHPGLFW_C_GL_INDEX_BITS GL_INDEX_BITS // => 0x0D51  
+#endif
+ 
+#ifdef GL_RED_BITS 
+#define PHPGLFW_C_GL_RED_BITS GL_RED_BITS // => 0x0D52  
+#endif
+ 
+#ifdef GL_GREEN_BITS 
+#define PHPGLFW_C_GL_GREEN_BITS GL_GREEN_BITS // => 0x0D53  
+#endif
+ 
+#ifdef GL_BLUE_BITS 
+#define PHPGLFW_C_GL_BLUE_BITS GL_BLUE_BITS // => 0x0D54  
+#endif
+ 
+#ifdef GL_ALPHA_BITS 
+#define PHPGLFW_C_GL_ALPHA_BITS GL_ALPHA_BITS // => 0x0D55  
+#endif
+ 
+#ifdef GL_DEPTH_BITS 
+#define PHPGLFW_C_GL_DEPTH_BITS GL_DEPTH_BITS // => 0x0D56  
+#endif
+ 
+#ifdef GL_STENCIL_BITS 
+#define PHPGLFW_C_GL_STENCIL_BITS GL_STENCIL_BITS // => 0x0D57  
+#endif
+ 
+#ifdef GL_ACCUM_RED_BITS 
+#define PHPGLFW_C_GL_ACCUM_RED_BITS GL_ACCUM_RED_BITS // => 0x0D58  
+#endif
+ 
+#ifdef GL_ACCUM_GREEN_BITS 
+#define PHPGLFW_C_GL_ACCUM_GREEN_BITS GL_ACCUM_GREEN_BITS // => 0x0D59  
+#endif
+ 
+#ifdef GL_ACCUM_BLUE_BITS 
+#define PHPGLFW_C_GL_ACCUM_BLUE_BITS GL_ACCUM_BLUE_BITS // => 0x0D5A  
+#endif
+ 
+#ifdef GL_ACCUM_ALPHA_BITS 
+#define PHPGLFW_C_GL_ACCUM_ALPHA_BITS GL_ACCUM_ALPHA_BITS // => 0x0D5B  
+#endif
+ 
+#ifdef GL_NAME_STACK_DEPTH 
+#define PHPGLFW_C_GL_NAME_STACK_DEPTH GL_NAME_STACK_DEPTH // => 0x0D70  
+#endif
+ 
+#ifdef GL_AUTO_NORMAL 
+#define PHPGLFW_C_GL_AUTO_NORMAL GL_AUTO_NORMAL // => 0x0D80  
+#endif
+ 
+#ifdef GL_MAP1_COLOR_4 
+#define PHPGLFW_C_GL_MAP1_COLOR_4 GL_MAP1_COLOR_4 // => 0x0D90  
+#endif
+ 
+#ifdef GL_MAP1_INDEX 
+#define PHPGLFW_C_GL_MAP1_INDEX GL_MAP1_INDEX // => 0x0D91  
+#endif
+ 
+#ifdef GL_MAP1_NORMAL 
+#define PHPGLFW_C_GL_MAP1_NORMAL GL_MAP1_NORMAL // => 0x0D92  
+#endif
+ 
+#ifdef GL_MAP1_TEXTURE_COORD_1 
+#define PHPGLFW_C_GL_MAP1_TEXTURE_COORD_1 GL_MAP1_TEXTURE_COORD_1 // => 0x0D93  
+#endif
+ 
+#ifdef GL_MAP1_TEXTURE_COORD_2 
+#define PHPGLFW_C_GL_MAP1_TEXTURE_COORD_2 GL_MAP1_TEXTURE_COORD_2 // => 0x0D94  
+#endif
+ 
+#ifdef GL_MAP1_TEXTURE_COORD_3 
+#define PHPGLFW_C_GL_MAP1_TEXTURE_COORD_3 GL_MAP1_TEXTURE_COORD_3 // => 0x0D95  
+#endif
+ 
+#ifdef GL_MAP1_TEXTURE_COORD_4 
+#define PHPGLFW_C_GL_MAP1_TEXTURE_COORD_4 GL_MAP1_TEXTURE_COORD_4 // => 0x0D96  
+#endif
+ 
+#ifdef GL_MAP1_VERTEX_3 
+#define PHPGLFW_C_GL_MAP1_VERTEX_3 GL_MAP1_VERTEX_3 // => 0x0D97  
+#endif
+ 
+#ifdef GL_MAP1_VERTEX_4 
+#define PHPGLFW_C_GL_MAP1_VERTEX_4 GL_MAP1_VERTEX_4 // => 0x0D98  
+#endif
+ 
+#ifdef GL_MAP2_COLOR_4 
+#define PHPGLFW_C_GL_MAP2_COLOR_4 GL_MAP2_COLOR_4 // => 0x0DB0  
+#endif
+ 
+#ifdef GL_MAP2_INDEX 
+#define PHPGLFW_C_GL_MAP2_INDEX GL_MAP2_INDEX // => 0x0DB1  
+#endif
+ 
+#ifdef GL_MAP2_NORMAL 
+#define PHPGLFW_C_GL_MAP2_NORMAL GL_MAP2_NORMAL // => 0x0DB2  
+#endif
+ 
+#ifdef GL_MAP2_TEXTURE_COORD_1 
+#define PHPGLFW_C_GL_MAP2_TEXTURE_COORD_1 GL_MAP2_TEXTURE_COORD_1 // => 0x0DB3  
+#endif
+ 
+#ifdef GL_MAP2_TEXTURE_COORD_2 
+#define PHPGLFW_C_GL_MAP2_TEXTURE_COORD_2 GL_MAP2_TEXTURE_COORD_2 // => 0x0DB4  
+#endif
+ 
+#ifdef GL_MAP2_TEXTURE_COORD_3 
+#define PHPGLFW_C_GL_MAP2_TEXTURE_COORD_3 GL_MAP2_TEXTURE_COORD_3 // => 0x0DB5  
+#endif
+ 
+#ifdef GL_MAP2_TEXTURE_COORD_4 
+#define PHPGLFW_C_GL_MAP2_TEXTURE_COORD_4 GL_MAP2_TEXTURE_COORD_4 // => 0x0DB6  
+#endif
+ 
+#ifdef GL_MAP2_VERTEX_3 
+#define PHPGLFW_C_GL_MAP2_VERTEX_3 GL_MAP2_VERTEX_3 // => 0x0DB7  
+#endif
+ 
+#ifdef GL_MAP2_VERTEX_4 
+#define PHPGLFW_C_GL_MAP2_VERTEX_4 GL_MAP2_VERTEX_4 // => 0x0DB8  
+#endif
+ 
+#ifdef GL_MAP1_GRID_DOMAIN 
+#define PHPGLFW_C_GL_MAP1_GRID_DOMAIN GL_MAP1_GRID_DOMAIN // => 0x0DD0  
+#endif
+ 
+#ifdef GL_MAP1_GRID_SEGMENTS 
+#define PHPGLFW_C_GL_MAP1_GRID_SEGMENTS GL_MAP1_GRID_SEGMENTS // => 0x0DD1  
+#endif
+ 
+#ifdef GL_MAP2_GRID_DOMAIN 
+#define PHPGLFW_C_GL_MAP2_GRID_DOMAIN GL_MAP2_GRID_DOMAIN // => 0x0DD2  
+#endif
+ 
+#ifdef GL_MAP2_GRID_SEGMENTS 
+#define PHPGLFW_C_GL_MAP2_GRID_SEGMENTS GL_MAP2_GRID_SEGMENTS // => 0x0DD3  
+#endif
+ 
+#ifdef GL_TEXTURE_COMPONENTS 
+#define PHPGLFW_C_GL_TEXTURE_COMPONENTS GL_TEXTURE_COMPONENTS // => 0x1003  
+#endif
+ 
+#ifdef GL_TEXTURE_BORDER 
+#define PHPGLFW_C_GL_TEXTURE_BORDER GL_TEXTURE_BORDER // => 0x1005  
+#endif
+ 
+#ifdef GL_AMBIENT 
+#define PHPGLFW_C_GL_AMBIENT GL_AMBIENT // => 0x1200  
+#endif
+ 
+#ifdef GL_DIFFUSE 
+#define PHPGLFW_C_GL_DIFFUSE GL_DIFFUSE // => 0x1201  
+#endif
+ 
+#ifdef GL_SPECULAR 
+#define PHPGLFW_C_GL_SPECULAR GL_SPECULAR // => 0x1202  
+#endif
+ 
+#ifdef GL_POSITION 
+#define PHPGLFW_C_GL_POSITION GL_POSITION // => 0x1203  
+#endif
+ 
+#ifdef GL_SPOT_DIRECTION 
+#define PHPGLFW_C_GL_SPOT_DIRECTION GL_SPOT_DIRECTION // => 0x1204  
+#endif
+ 
+#ifdef GL_SPOT_EXPONENT 
+#define PHPGLFW_C_GL_SPOT_EXPONENT GL_SPOT_EXPONENT // => 0x1205  
+#endif
+ 
+#ifdef GL_SPOT_CUTOFF 
+#define PHPGLFW_C_GL_SPOT_CUTOFF GL_SPOT_CUTOFF // => 0x1206  
+#endif
+ 
+#ifdef GL_CONSTANT_ATTENUATION 
+#define PHPGLFW_C_GL_CONSTANT_ATTENUATION GL_CONSTANT_ATTENUATION // => 0x1207  
+#endif
+ 
+#ifdef GL_LINEAR_ATTENUATION 
+#define PHPGLFW_C_GL_LINEAR_ATTENUATION GL_LINEAR_ATTENUATION // => 0x1208  
+#endif
+ 
+#ifdef GL_QUADRATIC_ATTENUATION 
+#define PHPGLFW_C_GL_QUADRATIC_ATTENUATION GL_QUADRATIC_ATTENUATION // => 0x1209  
+#endif
+ 
+#ifdef GL_COMPILE 
+#define PHPGLFW_C_GL_COMPILE GL_COMPILE // => 0x1300  
+#endif
+ 
+#ifdef GL_COMPILE_AND_EXECUTE 
+#define PHPGLFW_C_GL_COMPILE_AND_EXECUTE GL_COMPILE_AND_EXECUTE // => 0x1301  
+#endif
+ 
+#ifdef GL_2_BYTES 
+#define PHPGLFW_C_GL_2_BYTES GL_2_BYTES // => 0x1407  
+#endif
+ 
+#ifdef GL_3_BYTES 
+#define PHPGLFW_C_GL_3_BYTES GL_3_BYTES // => 0x1408  
+#endif
+ 
+#ifdef GL_4_BYTES 
+#define PHPGLFW_C_GL_4_BYTES GL_4_BYTES // => 0x1409  
+#endif
+ 
+#ifdef GL_EMISSION 
+#define PHPGLFW_C_GL_EMISSION GL_EMISSION // => 0x1600  
+#endif
+ 
+#ifdef GL_SHININESS 
+#define PHPGLFW_C_GL_SHININESS GL_SHININESS // => 0x1601  
+#endif
+ 
+#ifdef GL_AMBIENT_AND_DIFFUSE 
+#define PHPGLFW_C_GL_AMBIENT_AND_DIFFUSE GL_AMBIENT_AND_DIFFUSE // => 0x1602  
+#endif
+ 
+#ifdef GL_COLOR_INDEXES 
+#define PHPGLFW_C_GL_COLOR_INDEXES GL_COLOR_INDEXES // => 0x1603  
+#endif
+ 
+#ifdef GL_MODELVIEW 
+#define PHPGLFW_C_GL_MODELVIEW GL_MODELVIEW // => 0x1700  
+#endif
+ 
+#ifdef GL_PROJECTION 
+#define PHPGLFW_C_GL_PROJECTION GL_PROJECTION // => 0x1701  
+#endif
+ 
+#ifdef GL_COLOR_INDEX 
+#define PHPGLFW_C_GL_COLOR_INDEX GL_COLOR_INDEX // => 0x1900  
+#endif
+ 
+#ifdef GL_LUMINANCE 
+#define PHPGLFW_C_GL_LUMINANCE GL_LUMINANCE // => 0x1909  
+#endif
+ 
+#ifdef GL_LUMINANCE_ALPHA 
+#define PHPGLFW_C_GL_LUMINANCE_ALPHA GL_LUMINANCE_ALPHA // => 0x190A  
+#endif
+ 
+#ifdef GL_BITMAP 
+#define PHPGLFW_C_GL_BITMAP GL_BITMAP // => 0x1A00  
+#endif
+ 
+#ifdef GL_RENDER 
+#define PHPGLFW_C_GL_RENDER GL_RENDER // => 0x1C00  
+#endif
+ 
+#ifdef GL_FEEDBACK 
+#define PHPGLFW_C_GL_FEEDBACK GL_FEEDBACK // => 0x1C01  
+#endif
+ 
+#ifdef GL_SELECT 
+#define PHPGLFW_C_GL_SELECT GL_SELECT // => 0x1C02  
+#endif
+ 
+#ifdef GL_FLAT 
+#define PHPGLFW_C_GL_FLAT GL_FLAT // => 0x1D00  
+#endif
+ 
+#ifdef GL_SMOOTH 
+#define PHPGLFW_C_GL_SMOOTH GL_SMOOTH // => 0x1D01  
+#endif
+ 
+#ifdef GL_S 
+#define PHPGLFW_C_GL_S GL_S // => 0x2000  
+#endif
+ 
+#ifdef GL_T 
+#define PHPGLFW_C_GL_T GL_T // => 0x2001  
+#endif
+ 
+#ifdef GL_R 
+#define PHPGLFW_C_GL_R GL_R // => 0x2002  
+#endif
+ 
+#ifdef GL_Q 
+#define PHPGLFW_C_GL_Q GL_Q // => 0x2003  
+#endif
+ 
+#ifdef GL_MODULATE 
+#define PHPGLFW_C_GL_MODULATE GL_MODULATE // => 0x2100  
+#endif
+ 
+#ifdef GL_DECAL 
+#define PHPGLFW_C_GL_DECAL GL_DECAL // => 0x2101  
+#endif
+ 
+#ifdef GL_TEXTURE_ENV_MODE 
+#define PHPGLFW_C_GL_TEXTURE_ENV_MODE GL_TEXTURE_ENV_MODE // => 0x2200  
+#endif
+ 
+#ifdef GL_TEXTURE_ENV_COLOR 
+#define PHPGLFW_C_GL_TEXTURE_ENV_COLOR GL_TEXTURE_ENV_COLOR // => 0x2201  
+#endif
+ 
+#ifdef GL_TEXTURE_ENV 
+#define PHPGLFW_C_GL_TEXTURE_ENV GL_TEXTURE_ENV // => 0x2300  
+#endif
+ 
+#ifdef GL_EYE_LINEAR 
+#define PHPGLFW_C_GL_EYE_LINEAR GL_EYE_LINEAR // => 0x2400  
+#endif
+ 
+#ifdef GL_OBJECT_LINEAR 
+#define PHPGLFW_C_GL_OBJECT_LINEAR GL_OBJECT_LINEAR // => 0x2401  
+#endif
+ 
+#ifdef GL_SPHERE_MAP 
+#define PHPGLFW_C_GL_SPHERE_MAP GL_SPHERE_MAP // => 0x2402  
+#endif
+ 
+#ifdef GL_TEXTURE_GEN_MODE 
+#define PHPGLFW_C_GL_TEXTURE_GEN_MODE GL_TEXTURE_GEN_MODE // => 0x2500  
+#endif
+ 
+#ifdef GL_OBJECT_PLANE 
+#define PHPGLFW_C_GL_OBJECT_PLANE GL_OBJECT_PLANE // => 0x2501  
+#endif
+ 
+#ifdef GL_EYE_PLANE 
+#define PHPGLFW_C_GL_EYE_PLANE GL_EYE_PLANE // => 0x2502  
+#endif
+ 
+#ifdef GL_CLAMP 
+#define PHPGLFW_C_GL_CLAMP GL_CLAMP // => 0x2900  
+#endif
+ 
+#ifdef GL_CLIP_PLANE0 
+#define PHPGLFW_C_GL_CLIP_PLANE0 GL_CLIP_PLANE0 // => 0x3000  
+#endif
+ 
+#ifdef GL_CLIP_PLANE1 
+#define PHPGLFW_C_GL_CLIP_PLANE1 GL_CLIP_PLANE1 // => 0x3001  
+#endif
+ 
+#ifdef GL_CLIP_PLANE2 
+#define PHPGLFW_C_GL_CLIP_PLANE2 GL_CLIP_PLANE2 // => 0x3002  
+#endif
+ 
+#ifdef GL_CLIP_PLANE3 
+#define PHPGLFW_C_GL_CLIP_PLANE3 GL_CLIP_PLANE3 // => 0x3003  
+#endif
+ 
+#ifdef GL_CLIP_PLANE4 
+#define PHPGLFW_C_GL_CLIP_PLANE4 GL_CLIP_PLANE4 // => 0x3004  
+#endif
+ 
+#ifdef GL_CLIP_PLANE5 
+#define PHPGLFW_C_GL_CLIP_PLANE5 GL_CLIP_PLANE5 // => 0x3005  
+#endif
+ 
+#ifdef GL_LIGHT0 
+#define PHPGLFW_C_GL_LIGHT0 GL_LIGHT0 // => 0x4000  
+#endif
+ 
+#ifdef GL_LIGHT1 
+#define PHPGLFW_C_GL_LIGHT1 GL_LIGHT1 // => 0x4001  
+#endif
+ 
+#ifdef GL_LIGHT2 
+#define PHPGLFW_C_GL_LIGHT2 GL_LIGHT2 // => 0x4002  
+#endif
+ 
+#ifdef GL_LIGHT3 
+#define PHPGLFW_C_GL_LIGHT3 GL_LIGHT3 // => 0x4003  
+#endif
+ 
+#ifdef GL_LIGHT4 
+#define PHPGLFW_C_GL_LIGHT4 GL_LIGHT4 // => 0x4004  
+#endif
+ 
+#ifdef GL_LIGHT5 
+#define PHPGLFW_C_GL_LIGHT5 GL_LIGHT5 // => 0x4005  
+#endif
+ 
+#ifdef GL_LIGHT6 
+#define PHPGLFW_C_GL_LIGHT6 GL_LIGHT6 // => 0x4006  
+#endif
+ 
+#ifdef GL_LIGHT7 
+#define PHPGLFW_C_GL_LIGHT7 GL_LIGHT7 // => 0x4007  
+#endif
+ 
+#ifdef GL_COLOR_LOGIC_OP 
+#define PHPGLFW_C_GL_COLOR_LOGIC_OP GL_COLOR_LOGIC_OP // => 0x0BF2  
+#endif
+ 
+#ifdef GL_POLYGON_OFFSET_UNITS 
+#define PHPGLFW_C_GL_POLYGON_OFFSET_UNITS GL_POLYGON_OFFSET_UNITS // => 0x2A00  
+#endif
+ 
+#ifdef GL_POLYGON_OFFSET_POINT 
+#define PHPGLFW_C_GL_POLYGON_OFFSET_POINT GL_POLYGON_OFFSET_POINT // => 0x2A01  
+#endif
+ 
+#ifdef GL_POLYGON_OFFSET_LINE 
+#define PHPGLFW_C_GL_POLYGON_OFFSET_LINE GL_POLYGON_OFFSET_LINE // => 0x2A02  
+#endif
+ 
+#ifdef GL_TEXTURE_INTERNAL_FORMAT 
+#define PHPGLFW_C_GL_TEXTURE_INTERNAL_FORMAT GL_TEXTURE_INTERNAL_FORMAT // => 0x1003  
+#endif
+ 
+#ifdef GL_DOUBLE 
+#define PHPGLFW_C_GL_DOUBLE GL_DOUBLE // => 0x140A  
+#endif
+ 
+#ifdef GL_R3_G3_B2 
+#define PHPGLFW_C_GL_R3_G3_B2 GL_R3_G3_B2 // => 0x2A10  
+#endif
+ 
+#ifdef GL_FEEDBACK_BUFFER_POINTER 
+#define PHPGLFW_C_GL_FEEDBACK_BUFFER_POINTER GL_FEEDBACK_BUFFER_POINTER // => 0x0DF0  
+#endif
+ 
+#ifdef GL_SELECTION_BUFFER_POINTER 
+#define PHPGLFW_C_GL_SELECTION_BUFFER_POINTER GL_SELECTION_BUFFER_POINTER // => 0x0DF3  
+#endif
+ 
+#ifdef GL_CLIENT_ATTRIB_STACK_DEPTH 
+#define PHPGLFW_C_GL_CLIENT_ATTRIB_STACK_DEPTH GL_CLIENT_ATTRIB_STACK_DEPTH // => 0x0BB1  
+#endif
+ 
+#ifdef GL_INDEX_LOGIC_OP 
+#define PHPGLFW_C_GL_INDEX_LOGIC_OP GL_INDEX_LOGIC_OP // => 0x0BF1  
+#endif
+ 
+#ifdef GL_MAX_CLIENT_ATTRIB_STACK_DEPTH 
+#define PHPGLFW_C_GL_MAX_CLIENT_ATTRIB_STACK_DEPTH GL_MAX_CLIENT_ATTRIB_STACK_DEPTH // => 0x0D3B  
+#endif
+ 
+#ifdef GL_FEEDBACK_BUFFER_SIZE 
+#define PHPGLFW_C_GL_FEEDBACK_BUFFER_SIZE GL_FEEDBACK_BUFFER_SIZE // => 0x0DF1  
+#endif
+ 
+#ifdef GL_FEEDBACK_BUFFER_TYPE 
+#define PHPGLFW_C_GL_FEEDBACK_BUFFER_TYPE GL_FEEDBACK_BUFFER_TYPE // => 0x0DF2  
+#endif
+ 
+#ifdef GL_SELECTION_BUFFER_SIZE 
+#define PHPGLFW_C_GL_SELECTION_BUFFER_SIZE GL_SELECTION_BUFFER_SIZE // => 0x0DF4  
+#endif
+ 
+#ifdef GL_V2F 
+#define PHPGLFW_C_GL_V2F GL_V2F // => 0x2A20  
+#endif
+ 
+#ifdef GL_V3F 
+#define PHPGLFW_C_GL_V3F GL_V3F // => 0x2A21  
+#endif
+ 
+#ifdef GL_C4UB_V2F 
+#define PHPGLFW_C_GL_C4UB_V2F GL_C4UB_V2F // => 0x2A22  
+#endif
+ 
+#ifdef GL_C4UB_V3F 
+#define PHPGLFW_C_GL_C4UB_V3F GL_C4UB_V3F // => 0x2A23  
+#endif
+ 
+#ifdef GL_C3F_V3F 
+#define PHPGLFW_C_GL_C3F_V3F GL_C3F_V3F // => 0x2A24  
+#endif
+ 
+#ifdef GL_N3F_V3F 
+#define PHPGLFW_C_GL_N3F_V3F GL_N3F_V3F // => 0x2A25  
+#endif
+ 
+#ifdef GL_C4F_N3F_V3F 
+#define PHPGLFW_C_GL_C4F_N3F_V3F GL_C4F_N3F_V3F // => 0x2A26  
+#endif
+ 
+#ifdef GL_T2F_V3F 
+#define PHPGLFW_C_GL_T2F_V3F GL_T2F_V3F // => 0x2A27  
+#endif
+ 
+#ifdef GL_T4F_V4F 
+#define PHPGLFW_C_GL_T4F_V4F GL_T4F_V4F // => 0x2A28  
+#endif
+ 
+#ifdef GL_T2F_C4UB_V3F 
+#define PHPGLFW_C_GL_T2F_C4UB_V3F GL_T2F_C4UB_V3F // => 0x2A29  
+#endif
+ 
+#ifdef GL_T2F_C3F_V3F 
+#define PHPGLFW_C_GL_T2F_C3F_V3F GL_T2F_C3F_V3F // => 0x2A2A  
+#endif
+ 
+#ifdef GL_T2F_N3F_V3F 
+#define PHPGLFW_C_GL_T2F_N3F_V3F GL_T2F_N3F_V3F // => 0x2A2B  
+#endif
+ 
+#ifdef GL_T2F_C4F_N3F_V3F 
+#define PHPGLFW_C_GL_T2F_C4F_N3F_V3F GL_T2F_C4F_N3F_V3F // => 0x2A2C  
+#endif
+ 
+#ifdef GL_T4F_C4F_N3F_V4F 
+#define PHPGLFW_C_GL_T4F_C4F_N3F_V4F GL_T4F_C4F_N3F_V4F // => 0x2A2D  
+#endif
+ 
+#ifdef GL_SMOOTH_POINT_SIZE_RANGE 
+#define PHPGLFW_C_GL_SMOOTH_POINT_SIZE_RANGE GL_SMOOTH_POINT_SIZE_RANGE // => 0x0B12  
+#endif
+ 
+#ifdef GL_SMOOTH_POINT_SIZE_GRANULARITY 
+#define PHPGLFW_C_GL_SMOOTH_POINT_SIZE_GRANULARITY GL_SMOOTH_POINT_SIZE_GRANULARITY // => 0x0B13  
+#endif
+ 
+#ifdef GL_SMOOTH_LINE_WIDTH_RANGE 
+#define PHPGLFW_C_GL_SMOOTH_LINE_WIDTH_RANGE GL_SMOOTH_LINE_WIDTH_RANGE // => 0x0B22  
+#endif
+ 
+#ifdef GL_SMOOTH_LINE_WIDTH_GRANULARITY 
+#define PHPGLFW_C_GL_SMOOTH_LINE_WIDTH_GRANULARITY GL_SMOOTH_LINE_WIDTH_GRANULARITY // => 0x0B23  
+#endif
+ 
+#ifdef GL_CLIP_DISTANCE0 
+#define PHPGLFW_C_GL_CLIP_DISTANCE0 GL_CLIP_DISTANCE0 // => 0x3000  
+#endif
+ 
+#ifdef GL_CLIP_DISTANCE1 
+#define PHPGLFW_C_GL_CLIP_DISTANCE1 GL_CLIP_DISTANCE1 // => 0x3001  
+#endif
+ 
+#ifdef GL_CLIP_DISTANCE2 
+#define PHPGLFW_C_GL_CLIP_DISTANCE2 GL_CLIP_DISTANCE2 // => 0x3002  
+#endif
+ 
+#ifdef GL_CLIP_DISTANCE3 
+#define PHPGLFW_C_GL_CLIP_DISTANCE3 GL_CLIP_DISTANCE3 // => 0x3003  
+#endif
+ 
+#ifdef GL_CLIP_DISTANCE4 
+#define PHPGLFW_C_GL_CLIP_DISTANCE4 GL_CLIP_DISTANCE4 // => 0x3004  
+#endif
+ 
+#ifdef GL_CLIP_DISTANCE5 
+#define PHPGLFW_C_GL_CLIP_DISTANCE5 GL_CLIP_DISTANCE5 // => 0x3005  
+#endif
+ 
+#ifdef GL_CLIP_DISTANCE6 
+#define PHPGLFW_C_GL_CLIP_DISTANCE6 GL_CLIP_DISTANCE6 // => 0x3006  
+#endif
+ 
+#ifdef GL_CLIP_DISTANCE7 
+#define PHPGLFW_C_GL_CLIP_DISTANCE7 GL_CLIP_DISTANCE7 // => 0x3007  
+#endif
+ 
+#ifdef GL_MAX_CLIP_DISTANCES 
+#define PHPGLFW_C_GL_MAX_CLIP_DISTANCES GL_MAX_CLIP_DISTANCES // => 0x0D32  
+#endif
+ 
+#ifdef GL_INVALID_FRAMEBUFFER_OPERATION 
+#define PHPGLFW_C_GL_INVALID_FRAMEBUFFER_OPERATION GL_INVALID_FRAMEBUFFER_OPERATION // => 0x0506  
+#endif
+ 
+#ifdef GL_HALF_FLOAT 
+#define PHPGLFW_C_GL_HALF_FLOAT GL_HALF_FLOAT // => 0x140B  
+#endif
+ 
+#ifdef GL_LINES_ADJACENCY 
+#define PHPGLFW_C_GL_LINES_ADJACENCY GL_LINES_ADJACENCY // => 0x000A  
+#endif
+ 
+#ifdef GL_LINE_STRIP_ADJACENCY 
+#define PHPGLFW_C_GL_LINE_STRIP_ADJACENCY GL_LINE_STRIP_ADJACENCY // => 0x000B  
+#endif
+ 
+#ifdef GL_TRIANGLES_ADJACENCY 
+#define PHPGLFW_C_GL_TRIANGLES_ADJACENCY GL_TRIANGLES_ADJACENCY // => 0x000C  
+#endif
+ 
+#ifdef GL_TRIANGLE_STRIP_ADJACENCY 
+#define PHPGLFW_C_GL_TRIANGLE_STRIP_ADJACENCY GL_TRIANGLE_STRIP_ADJACENCY // => 0x000D  
+#endif
+
+/**
+ * @vendor ARB
+ * The primary GL enumerant space begins here. All modern enum allocations are
+ * in this range. These enums are mostly assigned the default class since it's a
+ * great deal of not very useful work to be more specific 
+ */
+ 
+#ifdef GL_POLYGON_OFFSET_FILL 
+#define PHPGLFW_C_GL_POLYGON_OFFSET_FILL GL_POLYGON_OFFSET_FILL // => 0x8037  
+#endif
+ 
+#ifdef GL_POLYGON_OFFSET_FACTOR 
+#define PHPGLFW_C_GL_POLYGON_OFFSET_FACTOR GL_POLYGON_OFFSET_FACTOR // => 0x8038  
+#endif
+ 
+#ifdef GL_TEXTURE_BINDING_1D 
+#define PHPGLFW_C_GL_TEXTURE_BINDING_1D GL_TEXTURE_BINDING_1D // => 0x8068  
+#endif
+ 
+#ifdef GL_TEXTURE_BINDING_2D 
+#define PHPGLFW_C_GL_TEXTURE_BINDING_2D GL_TEXTURE_BINDING_2D // => 0x8069  
+#endif
+ 
+#ifdef GL_TEXTURE_RED_SIZE 
+#define PHPGLFW_C_GL_TEXTURE_RED_SIZE GL_TEXTURE_RED_SIZE // => 0x805C  
+#endif
+ 
+#ifdef GL_TEXTURE_GREEN_SIZE 
+#define PHPGLFW_C_GL_TEXTURE_GREEN_SIZE GL_TEXTURE_GREEN_SIZE // => 0x805D  
+#endif
+ 
+#ifdef GL_TEXTURE_BLUE_SIZE 
+#define PHPGLFW_C_GL_TEXTURE_BLUE_SIZE GL_TEXTURE_BLUE_SIZE // => 0x805E  
+#endif
+ 
+#ifdef GL_TEXTURE_ALPHA_SIZE 
+#define PHPGLFW_C_GL_TEXTURE_ALPHA_SIZE GL_TEXTURE_ALPHA_SIZE // => 0x805F  
+#endif
+ 
+#ifdef GL_PROXY_TEXTURE_1D 
+#define PHPGLFW_C_GL_PROXY_TEXTURE_1D GL_PROXY_TEXTURE_1D // => 0x8063  
+#endif
+ 
+#ifdef GL_PROXY_TEXTURE_2D 
+#define PHPGLFW_C_GL_PROXY_TEXTURE_2D GL_PROXY_TEXTURE_2D // => 0x8064  
+#endif
+ 
+#ifdef GL_RGB4 
+#define PHPGLFW_C_GL_RGB4 GL_RGB4 // => 0x804F  
+#endif
+ 
+#ifdef GL_RGB5 
+#define PHPGLFW_C_GL_RGB5 GL_RGB5 // => 0x8050  
+#endif
+ 
+#ifdef GL_RGB8 
+#define PHPGLFW_C_GL_RGB8 GL_RGB8 // => 0x8051  
+#endif
+ 
+#ifdef GL_RGB10 
+#define PHPGLFW_C_GL_RGB10 GL_RGB10 // => 0x8052  
+#endif
+ 
+#ifdef GL_RGB12 
+#define PHPGLFW_C_GL_RGB12 GL_RGB12 // => 0x8053  
+#endif
+ 
+#ifdef GL_RGB16 
+#define PHPGLFW_C_GL_RGB16 GL_RGB16 // => 0x8054  
+#endif
+ 
+#ifdef GL_RGBA2 
+#define PHPGLFW_C_GL_RGBA2 GL_RGBA2 // => 0x8055  
+#endif
+ 
+#ifdef GL_RGBA4 
+#define PHPGLFW_C_GL_RGBA4 GL_RGBA4 // => 0x8056  
+#endif
+ 
+#ifdef GL_RGB5_A1 
+#define PHPGLFW_C_GL_RGB5_A1 GL_RGB5_A1 // => 0x8057  
+#endif
+ 
+#ifdef GL_RGBA8 
+#define PHPGLFW_C_GL_RGBA8 GL_RGBA8 // => 0x8058  
+#endif
+ 
+#ifdef GL_RGB10_A2 
+#define PHPGLFW_C_GL_RGB10_A2 GL_RGB10_A2 // => 0x8059  
+#endif
+ 
+#ifdef GL_RGBA12 
+#define PHPGLFW_C_GL_RGBA12 GL_RGBA12 // => 0x805A  
+#endif
+ 
+#ifdef GL_RGBA16 
+#define PHPGLFW_C_GL_RGBA16 GL_RGBA16 // => 0x805B  
+#endif
+ 
+#ifdef GL_VERTEX_ARRAY_POINTER 
+#define PHPGLFW_C_GL_VERTEX_ARRAY_POINTER GL_VERTEX_ARRAY_POINTER // => 0x808E  
+#endif
+ 
+#ifdef GL_NORMAL_ARRAY_POINTER 
+#define PHPGLFW_C_GL_NORMAL_ARRAY_POINTER GL_NORMAL_ARRAY_POINTER // => 0x808F  
+#endif
+ 
+#ifdef GL_COLOR_ARRAY_POINTER 
+#define PHPGLFW_C_GL_COLOR_ARRAY_POINTER GL_COLOR_ARRAY_POINTER // => 0x8090  
+#endif
+ 
+#ifdef GL_INDEX_ARRAY_POINTER 
+#define PHPGLFW_C_GL_INDEX_ARRAY_POINTER GL_INDEX_ARRAY_POINTER // => 0x8091  
+#endif
+ 
+#ifdef GL_TEXTURE_COORD_ARRAY_POINTER 
+#define PHPGLFW_C_GL_TEXTURE_COORD_ARRAY_POINTER GL_TEXTURE_COORD_ARRAY_POINTER // => 0x8092  
+#endif
+ 
+#ifdef GL_EDGE_FLAG_ARRAY_POINTER 
+#define PHPGLFW_C_GL_EDGE_FLAG_ARRAY_POINTER GL_EDGE_FLAG_ARRAY_POINTER // => 0x8093  
+#endif
+ 
+#ifdef GL_VERTEX_ARRAY 
+#define PHPGLFW_C_GL_VERTEX_ARRAY GL_VERTEX_ARRAY // => 0x8074  
+#endif
+ 
+#ifdef GL_NORMAL_ARRAY 
+#define PHPGLFW_C_GL_NORMAL_ARRAY GL_NORMAL_ARRAY // => 0x8075  
+#endif
+ 
+#ifdef GL_COLOR_ARRAY 
+#define PHPGLFW_C_GL_COLOR_ARRAY GL_COLOR_ARRAY // => 0x8076  
+#endif
+ 
+#ifdef GL_INDEX_ARRAY 
+#define PHPGLFW_C_GL_INDEX_ARRAY GL_INDEX_ARRAY // => 0x8077  
+#endif
+ 
+#ifdef GL_TEXTURE_COORD_ARRAY 
+#define PHPGLFW_C_GL_TEXTURE_COORD_ARRAY GL_TEXTURE_COORD_ARRAY // => 0x8078  
+#endif
+ 
+#ifdef GL_EDGE_FLAG_ARRAY 
+#define PHPGLFW_C_GL_EDGE_FLAG_ARRAY GL_EDGE_FLAG_ARRAY // => 0x8079  
+#endif
+ 
+#ifdef GL_VERTEX_ARRAY_SIZE 
+#define PHPGLFW_C_GL_VERTEX_ARRAY_SIZE GL_VERTEX_ARRAY_SIZE // => 0x807A  
+#endif
+ 
+#ifdef GL_VERTEX_ARRAY_TYPE 
+#define PHPGLFW_C_GL_VERTEX_ARRAY_TYPE GL_VERTEX_ARRAY_TYPE // => 0x807B  
+#endif
+ 
+#ifdef GL_VERTEX_ARRAY_STRIDE 
+#define PHPGLFW_C_GL_VERTEX_ARRAY_STRIDE GL_VERTEX_ARRAY_STRIDE // => 0x807C  
+#endif
+ 
+#ifdef GL_NORMAL_ARRAY_TYPE 
+#define PHPGLFW_C_GL_NORMAL_ARRAY_TYPE GL_NORMAL_ARRAY_TYPE // => 0x807E  
+#endif
+ 
+#ifdef GL_NORMAL_ARRAY_STRIDE 
+#define PHPGLFW_C_GL_NORMAL_ARRAY_STRIDE GL_NORMAL_ARRAY_STRIDE // => 0x807F  
+#endif
+ 
+#ifdef GL_COLOR_ARRAY_SIZE 
+#define PHPGLFW_C_GL_COLOR_ARRAY_SIZE GL_COLOR_ARRAY_SIZE // => 0x8081  
+#endif
+ 
+#ifdef GL_COLOR_ARRAY_TYPE 
+#define PHPGLFW_C_GL_COLOR_ARRAY_TYPE GL_COLOR_ARRAY_TYPE // => 0x8082  
+#endif
+ 
+#ifdef GL_COLOR_ARRAY_STRIDE 
+#define PHPGLFW_C_GL_COLOR_ARRAY_STRIDE GL_COLOR_ARRAY_STRIDE // => 0x8083  
+#endif
+ 
+#ifdef GL_INDEX_ARRAY_TYPE 
+#define PHPGLFW_C_GL_INDEX_ARRAY_TYPE GL_INDEX_ARRAY_TYPE // => 0x8085  
+#endif
+ 
+#ifdef GL_INDEX_ARRAY_STRIDE 
+#define PHPGLFW_C_GL_INDEX_ARRAY_STRIDE GL_INDEX_ARRAY_STRIDE // => 0x8086  
+#endif
+ 
+#ifdef GL_TEXTURE_COORD_ARRAY_SIZE 
+#define PHPGLFW_C_GL_TEXTURE_COORD_ARRAY_SIZE GL_TEXTURE_COORD_ARRAY_SIZE // => 0x8088  
+#endif
+ 
+#ifdef GL_TEXTURE_COORD_ARRAY_TYPE 
+#define PHPGLFW_C_GL_TEXTURE_COORD_ARRAY_TYPE GL_TEXTURE_COORD_ARRAY_TYPE // => 0x8089  
+#endif
+ 
+#ifdef GL_TEXTURE_COORD_ARRAY_STRIDE 
+#define PHPGLFW_C_GL_TEXTURE_COORD_ARRAY_STRIDE GL_TEXTURE_COORD_ARRAY_STRIDE // => 0x808A  
+#endif
+ 
+#ifdef GL_EDGE_FLAG_ARRAY_STRIDE 
+#define PHPGLFW_C_GL_EDGE_FLAG_ARRAY_STRIDE GL_EDGE_FLAG_ARRAY_STRIDE // => 0x808C  
+#endif
+ 
+#ifdef GL_TEXTURE_LUMINANCE_SIZE 
+#define PHPGLFW_C_GL_TEXTURE_LUMINANCE_SIZE GL_TEXTURE_LUMINANCE_SIZE // => 0x8060  
+#endif
+ 
+#ifdef GL_TEXTURE_INTENSITY_SIZE 
+#define PHPGLFW_C_GL_TEXTURE_INTENSITY_SIZE GL_TEXTURE_INTENSITY_SIZE // => 0x8061  
+#endif
+ 
+#ifdef GL_TEXTURE_PRIORITY 
+#define PHPGLFW_C_GL_TEXTURE_PRIORITY GL_TEXTURE_PRIORITY // => 0x8066  
+#endif
+ 
+#ifdef GL_TEXTURE_RESIDENT 
+#define PHPGLFW_C_GL_TEXTURE_RESIDENT GL_TEXTURE_RESIDENT // => 0x8067  
+#endif
+ 
+#ifdef GL_ALPHA4 
+#define PHPGLFW_C_GL_ALPHA4 GL_ALPHA4 // => 0x803B  
+#endif
+ 
+#ifdef GL_ALPHA8 
+#define PHPGLFW_C_GL_ALPHA8 GL_ALPHA8 // => 0x803C  
+#endif
+ 
+#ifdef GL_ALPHA12 
+#define PHPGLFW_C_GL_ALPHA12 GL_ALPHA12 // => 0x803D  
+#endif
+ 
+#ifdef GL_ALPHA16 
+#define PHPGLFW_C_GL_ALPHA16 GL_ALPHA16 // => 0x803E  
+#endif
+ 
+#ifdef GL_LUMINANCE4 
+#define PHPGLFW_C_GL_LUMINANCE4 GL_LUMINANCE4 // => 0x803F  
+#endif
+ 
+#ifdef GL_LUMINANCE8 
+#define PHPGLFW_C_GL_LUMINANCE8 GL_LUMINANCE8 // => 0x8040  
+#endif
+ 
+#ifdef GL_LUMINANCE12 
+#define PHPGLFW_C_GL_LUMINANCE12 GL_LUMINANCE12 // => 0x8041  
+#endif
+ 
+#ifdef GL_LUMINANCE16 
+#define PHPGLFW_C_GL_LUMINANCE16 GL_LUMINANCE16 // => 0x8042  
+#endif
+ 
+#ifdef GL_LUMINANCE4_ALPHA4 
+#define PHPGLFW_C_GL_LUMINANCE4_ALPHA4 GL_LUMINANCE4_ALPHA4 // => 0x8043  
+#endif
+ 
+#ifdef GL_LUMINANCE6_ALPHA2 
+#define PHPGLFW_C_GL_LUMINANCE6_ALPHA2 GL_LUMINANCE6_ALPHA2 // => 0x8044  
+#endif
+ 
+#ifdef GL_LUMINANCE8_ALPHA8 
+#define PHPGLFW_C_GL_LUMINANCE8_ALPHA8 GL_LUMINANCE8_ALPHA8 // => 0x8045  
+#endif
+ 
+#ifdef GL_LUMINANCE12_ALPHA4 
+#define PHPGLFW_C_GL_LUMINANCE12_ALPHA4 GL_LUMINANCE12_ALPHA4 // => 0x8046  
+#endif
+ 
+#ifdef GL_LUMINANCE12_ALPHA12 
+#define PHPGLFW_C_GL_LUMINANCE12_ALPHA12 GL_LUMINANCE12_ALPHA12 // => 0x8047  
+#endif
+ 
+#ifdef GL_LUMINANCE16_ALPHA16 
+#define PHPGLFW_C_GL_LUMINANCE16_ALPHA16 GL_LUMINANCE16_ALPHA16 // => 0x8048  
+#endif
+ 
+#ifdef GL_INTENSITY 
+#define PHPGLFW_C_GL_INTENSITY GL_INTENSITY // => 0x8049  
+#endif
+ 
+#ifdef GL_INTENSITY4 
+#define PHPGLFW_C_GL_INTENSITY4 GL_INTENSITY4 // => 0x804A  
+#endif
+ 
+#ifdef GL_INTENSITY8 
+#define PHPGLFW_C_GL_INTENSITY8 GL_INTENSITY8 // => 0x804B  
+#endif
+ 
+#ifdef GL_INTENSITY12 
+#define PHPGLFW_C_GL_INTENSITY12 GL_INTENSITY12 // => 0x804C  
+#endif
+ 
+#ifdef GL_INTENSITY16 
+#define PHPGLFW_C_GL_INTENSITY16 GL_INTENSITY16 // => 0x804D  
+#endif
+ 
+#ifdef GL_UNSIGNED_BYTE_3_3_2 
+#define PHPGLFW_C_GL_UNSIGNED_BYTE_3_3_2 GL_UNSIGNED_BYTE_3_3_2 // => 0x8032  
+#endif
+ 
+#ifdef GL_UNSIGNED_SHORT_4_4_4_4 
+#define PHPGLFW_C_GL_UNSIGNED_SHORT_4_4_4_4 GL_UNSIGNED_SHORT_4_4_4_4 // => 0x8033  
+#endif
+ 
+#ifdef GL_UNSIGNED_SHORT_5_5_5_1 
+#define PHPGLFW_C_GL_UNSIGNED_SHORT_5_5_5_1 GL_UNSIGNED_SHORT_5_5_5_1 // => 0x8034  
+#endif
+ 
+#ifdef GL_UNSIGNED_INT_8_8_8_8 
+#define PHPGLFW_C_GL_UNSIGNED_INT_8_8_8_8 GL_UNSIGNED_INT_8_8_8_8 // => 0x8035  
+#endif
+ 
+#ifdef GL_UNSIGNED_INT_10_10_10_2 
+#define PHPGLFW_C_GL_UNSIGNED_INT_10_10_10_2 GL_UNSIGNED_INT_10_10_10_2 // => 0x8036  
+#endif
+ 
+#ifdef GL_TEXTURE_BINDING_3D 
+#define PHPGLFW_C_GL_TEXTURE_BINDING_3D GL_TEXTURE_BINDING_3D // => 0x806A  
+#endif
+ 
+#ifdef GL_PACK_SKIP_IMAGES 
+#define PHPGLFW_C_GL_PACK_SKIP_IMAGES GL_PACK_SKIP_IMAGES // => 0x806B  
+#endif
+ 
+#ifdef GL_PACK_IMAGE_HEIGHT 
+#define PHPGLFW_C_GL_PACK_IMAGE_HEIGHT GL_PACK_IMAGE_HEIGHT // => 0x806C  
+#endif
+ 
+#ifdef GL_UNPACK_SKIP_IMAGES 
+#define PHPGLFW_C_GL_UNPACK_SKIP_IMAGES GL_UNPACK_SKIP_IMAGES // => 0x806D  
+#endif
+ 
+#ifdef GL_UNPACK_IMAGE_HEIGHT 
+#define PHPGLFW_C_GL_UNPACK_IMAGE_HEIGHT GL_UNPACK_IMAGE_HEIGHT // => 0x806E  
+#endif
+ 
+#ifdef GL_TEXTURE_3D 
+#define PHPGLFW_C_GL_TEXTURE_3D GL_TEXTURE_3D // => 0x806F  
+#endif
+ 
+#ifdef GL_PROXY_TEXTURE_3D 
+#define PHPGLFW_C_GL_PROXY_TEXTURE_3D GL_PROXY_TEXTURE_3D // => 0x8070  
+#endif
+ 
+#ifdef GL_TEXTURE_DEPTH 
+#define PHPGLFW_C_GL_TEXTURE_DEPTH GL_TEXTURE_DEPTH // => 0x8071  
+#endif
+ 
+#ifdef GL_TEXTURE_WRAP_R 
+#define PHPGLFW_C_GL_TEXTURE_WRAP_R GL_TEXTURE_WRAP_R // => 0x8072  
+#endif
+ 
+#ifdef GL_MAX_3D_TEXTURE_SIZE 
+#define PHPGLFW_C_GL_MAX_3D_TEXTURE_SIZE GL_MAX_3D_TEXTURE_SIZE // => 0x8073  
+#endif
+ 
+#ifdef GL_RESCALE_NORMAL 
+#define PHPGLFW_C_GL_RESCALE_NORMAL GL_RESCALE_NORMAL // => 0x803A  
+#endif
+ 
+#ifdef GL_MULTISAMPLE 
+#define PHPGLFW_C_GL_MULTISAMPLE GL_MULTISAMPLE // => 0x809D  
+#endif
+ 
+#ifdef GL_SAMPLE_ALPHA_TO_COVERAGE 
+#define PHPGLFW_C_GL_SAMPLE_ALPHA_TO_COVERAGE GL_SAMPLE_ALPHA_TO_COVERAGE // => 0x809E  
+#endif
+ 
+#ifdef GL_SAMPLE_ALPHA_TO_ONE 
+#define PHPGLFW_C_GL_SAMPLE_ALPHA_TO_ONE GL_SAMPLE_ALPHA_TO_ONE // => 0x809F  
+#endif
+ 
+#ifdef GL_SAMPLE_COVERAGE 
+#define PHPGLFW_C_GL_SAMPLE_COVERAGE GL_SAMPLE_COVERAGE // => 0x80A0  
+#endif
+ 
+#ifdef GL_SAMPLE_BUFFERS 
+#define PHPGLFW_C_GL_SAMPLE_BUFFERS GL_SAMPLE_BUFFERS // => 0x80A8  
+#endif
+ 
+#ifdef GL_SAMPLES 
+#define PHPGLFW_C_GL_SAMPLES GL_SAMPLES // => 0x80A9  
+#endif
+ 
+#ifdef GL_SAMPLE_COVERAGE_VALUE 
+#define PHPGLFW_C_GL_SAMPLE_COVERAGE_VALUE GL_SAMPLE_COVERAGE_VALUE // => 0x80AA  
+#endif
+ 
+#ifdef GL_SAMPLE_COVERAGE_INVERT 
+#define PHPGLFW_C_GL_SAMPLE_COVERAGE_INVERT GL_SAMPLE_COVERAGE_INVERT // => 0x80AB  
+#endif
+ 
+#ifdef GL_BLEND_COLOR 
+#define PHPGLFW_C_GL_BLEND_COLOR GL_BLEND_COLOR // => 0x8005  
+#endif
+ 
+#ifdef GL_BLEND_EQUATION 
+#define PHPGLFW_C_GL_BLEND_EQUATION GL_BLEND_EQUATION // => 0x8009  
+#endif
+ 
+#ifdef GL_CONSTANT_COLOR 
+#define PHPGLFW_C_GL_CONSTANT_COLOR GL_CONSTANT_COLOR // => 0x8001  
+#endif
+ 
+#ifdef GL_ONE_MINUS_CONSTANT_COLOR 
+#define PHPGLFW_C_GL_ONE_MINUS_CONSTANT_COLOR GL_ONE_MINUS_CONSTANT_COLOR // => 0x8002  
+#endif
+ 
+#ifdef GL_CONSTANT_ALPHA 
+#define PHPGLFW_C_GL_CONSTANT_ALPHA GL_CONSTANT_ALPHA // => 0x8003  
+#endif
+ 
+#ifdef GL_ONE_MINUS_CONSTANT_ALPHA 
+#define PHPGLFW_C_GL_ONE_MINUS_CONSTANT_ALPHA GL_ONE_MINUS_CONSTANT_ALPHA // => 0x8004  
+#endif
+ 
+#ifdef GL_FUNC_ADD 
+#define PHPGLFW_C_GL_FUNC_ADD GL_FUNC_ADD // => 0x8006  
+#endif
+ 
+#ifdef GL_FUNC_REVERSE_SUBTRACT 
+#define PHPGLFW_C_GL_FUNC_REVERSE_SUBTRACT GL_FUNC_REVERSE_SUBTRACT // => 0x800B  
+#endif
+ 
+#ifdef GL_FUNC_SUBTRACT 
+#define PHPGLFW_C_GL_FUNC_SUBTRACT GL_FUNC_SUBTRACT // => 0x800A  
+#endif
+ 
+#ifdef GL_MIN 
+#define PHPGLFW_C_GL_MIN GL_MIN // => 0x8007  
+#endif
+ 
+#ifdef GL_MAX 
+#define PHPGLFW_C_GL_MAX GL_MAX // => 0x8008  
+#endif
+ 
+#ifdef GL_BLEND_EQUATION_RGB 
+#define PHPGLFW_C_GL_BLEND_EQUATION_RGB GL_BLEND_EQUATION_RGB // => 0x8009  
+#endif
+
+/**
+ 
+ * ClientAttribMask 
+ * ----------------------------------------------------------------------------
+ *  
+ */
+ 
+#ifdef GL_CLIENT_PIXEL_STORE_BIT 
+#define PHPGLFW_C_GL_CLIENT_PIXEL_STORE_BIT GL_CLIENT_PIXEL_STORE_BIT // => 0x00000001  
+#endif
+ 
+#ifdef GL_CLIENT_VERTEX_ARRAY_BIT 
+#define PHPGLFW_C_GL_CLIENT_VERTEX_ARRAY_BIT GL_CLIENT_VERTEX_ARRAY_BIT // => 0x00000002  
+#endif
+ 
+#ifdef GL_CLIENT_ALL_ATTRIB_BITS 
+#define PHPGLFW_C_GL_CLIENT_ALL_ATTRIB_BITS GL_CLIENT_ALL_ATTRIB_BITS // => 0xFFFFFFFF  
+#endif
+
+/**
+ * @vendor SGI 
+ */
+ 
+#ifdef GL_UNSIGNED_BYTE_2_3_3_REV 
+#define PHPGLFW_C_GL_UNSIGNED_BYTE_2_3_3_REV GL_UNSIGNED_BYTE_2_3_3_REV // => 0x8362  
+#endif
+ 
+#ifdef GL_UNSIGNED_SHORT_5_6_5 
+#define PHPGLFW_C_GL_UNSIGNED_SHORT_5_6_5 GL_UNSIGNED_SHORT_5_6_5 // => 0x8363  
+#endif
+ 
+#ifdef GL_UNSIGNED_SHORT_5_6_5_REV 
+#define PHPGLFW_C_GL_UNSIGNED_SHORT_5_6_5_REV GL_UNSIGNED_SHORT_5_6_5_REV // => 0x8364  
+#endif
+ 
+#ifdef GL_UNSIGNED_SHORT_4_4_4_4_REV 
+#define PHPGLFW_C_GL_UNSIGNED_SHORT_4_4_4_4_REV GL_UNSIGNED_SHORT_4_4_4_4_REV // => 0x8365  
+#endif
+ 
+#ifdef GL_UNSIGNED_SHORT_1_5_5_5_REV 
+#define PHPGLFW_C_GL_UNSIGNED_SHORT_1_5_5_5_REV GL_UNSIGNED_SHORT_1_5_5_5_REV // => 0x8366  
+#endif
+ 
+#ifdef GL_UNSIGNED_INT_8_8_8_8_REV 
+#define PHPGLFW_C_GL_UNSIGNED_INT_8_8_8_8_REV GL_UNSIGNED_INT_8_8_8_8_REV // => 0x8367  
+#endif
+ 
+#ifdef GL_UNSIGNED_INT_2_10_10_10_REV 
+#define PHPGLFW_C_GL_UNSIGNED_INT_2_10_10_10_REV GL_UNSIGNED_INT_2_10_10_10_REV // => 0x8368  
+#endif
+
+/**
+ * @vendor MS 
+ */
+ 
+#ifdef GL_BGR 
+#define PHPGLFW_C_GL_BGR GL_BGR // => 0x80E0  
+#endif
+ 
+#ifdef GL_BGRA 
+#define PHPGLFW_C_GL_BGRA GL_BGRA // => 0x80E1  
+#endif
+ 
+#ifdef GL_MAX_ELEMENTS_VERTICES 
+#define PHPGLFW_C_GL_MAX_ELEMENTS_VERTICES GL_MAX_ELEMENTS_VERTICES // => 0x80E8  
+#endif
+ 
+#ifdef GL_MAX_ELEMENTS_INDICES 
+#define PHPGLFW_C_GL_MAX_ELEMENTS_INDICES GL_MAX_ELEMENTS_INDICES // => 0x80E9  
+#endif
+
+/**
+ * @vendor SGI 
+ */
+ 
+#ifdef GL_CLAMP_TO_EDGE 
+#define PHPGLFW_C_GL_CLAMP_TO_EDGE GL_CLAMP_TO_EDGE // => 0x812F  
+#endif
+ 
+#ifdef GL_TEXTURE_MIN_LOD 
+#define PHPGLFW_C_GL_TEXTURE_MIN_LOD GL_TEXTURE_MIN_LOD // => 0x813A  
+#endif
+ 
+#ifdef GL_TEXTURE_MAX_LOD 
+#define PHPGLFW_C_GL_TEXTURE_MAX_LOD GL_TEXTURE_MAX_LOD // => 0x813B  
+#endif
+ 
+#ifdef GL_TEXTURE_BASE_LEVEL 
+#define PHPGLFW_C_GL_TEXTURE_BASE_LEVEL GL_TEXTURE_BASE_LEVEL // => 0x813C  
+#endif
+ 
+#ifdef GL_TEXTURE_MAX_LEVEL 
+#define PHPGLFW_C_GL_TEXTURE_MAX_LEVEL GL_TEXTURE_MAX_LEVEL // => 0x813D  
+#endif
+ 
+#ifdef GL_CLAMP_TO_BORDER 
+#define PHPGLFW_C_GL_CLAMP_TO_BORDER GL_CLAMP_TO_BORDER // => 0x812D  
+#endif
+ 
+#ifdef GL_POINT_FADE_THRESHOLD_SIZE 
+#define PHPGLFW_C_GL_POINT_FADE_THRESHOLD_SIZE GL_POINT_FADE_THRESHOLD_SIZE // => 0x8128  
+#endif
+ 
+#ifdef GL_POINT_SIZE_MIN 
+#define PHPGLFW_C_GL_POINT_SIZE_MIN GL_POINT_SIZE_MIN // => 0x8126  
+#endif
+ 
+#ifdef GL_POINT_SIZE_MAX 
+#define PHPGLFW_C_GL_POINT_SIZE_MAX GL_POINT_SIZE_MAX // => 0x8127  
+#endif
+ 
+#ifdef GL_POINT_DISTANCE_ATTENUATION 
+#define PHPGLFW_C_GL_POINT_DISTANCE_ATTENUATION GL_POINT_DISTANCE_ATTENUATION // => 0x8129  
+#endif
+
+/**
+ * @vendor SGI 
+ */
+ 
+#ifdef GL_ALIASED_LINE_WIDTH_RANGE 
+#define PHPGLFW_C_GL_ALIASED_LINE_WIDTH_RANGE GL_ALIASED_LINE_WIDTH_RANGE // => 0x846E  
+#endif
+ 
+#ifdef GL_ALIASED_POINT_SIZE_RANGE 
+#define PHPGLFW_C_GL_ALIASED_POINT_SIZE_RANGE GL_ALIASED_POINT_SIZE_RANGE // => 0x846D  
+#endif
+ 
+#ifdef GL_FOG_COORDINATE_SOURCE 
+#define PHPGLFW_C_GL_FOG_COORDINATE_SOURCE GL_FOG_COORDINATE_SOURCE // => 0x8450  
+#endif
+ 
+#ifdef GL_FOG_COORDINATE 
+#define PHPGLFW_C_GL_FOG_COORDINATE GL_FOG_COORDINATE // => 0x8451  
+#endif
+ 
+#ifdef GL_FRAGMENT_DEPTH 
+#define PHPGLFW_C_GL_FRAGMENT_DEPTH GL_FRAGMENT_DEPTH // => 0x8452  
+#endif
+ 
+#ifdef GL_CURRENT_FOG_COORDINATE 
+#define PHPGLFW_C_GL_CURRENT_FOG_COORDINATE GL_CURRENT_FOG_COORDINATE // => 0x8453  
+#endif
+ 
+#ifdef GL_FOG_COORDINATE_ARRAY_TYPE 
+#define PHPGLFW_C_GL_FOG_COORDINATE_ARRAY_TYPE GL_FOG_COORDINATE_ARRAY_TYPE // => 0x8454  
+#endif
+ 
+#ifdef GL_FOG_COORDINATE_ARRAY_STRIDE 
+#define PHPGLFW_C_GL_FOG_COORDINATE_ARRAY_STRIDE GL_FOG_COORDINATE_ARRAY_STRIDE // => 0x8455  
+#endif
+ 
+#ifdef GL_FOG_COORDINATE_ARRAY_POINTER 
+#define PHPGLFW_C_GL_FOG_COORDINATE_ARRAY_POINTER GL_FOG_COORDINATE_ARRAY_POINTER // => 0x8456  
+#endif
+ 
+#ifdef GL_FOG_COORDINATE_ARRAY 
+#define PHPGLFW_C_GL_FOG_COORDINATE_ARRAY GL_FOG_COORDINATE_ARRAY // => 0x8457  
+#endif
+ 
+#ifdef GL_COLOR_SUM 
+#define PHPGLFW_C_GL_COLOR_SUM GL_COLOR_SUM // => 0x8458  
+#endif
+ 
+#ifdef GL_CURRENT_SECONDARY_COLOR 
+#define PHPGLFW_C_GL_CURRENT_SECONDARY_COLOR GL_CURRENT_SECONDARY_COLOR // => 0x8459  
+#endif
+ 
+#ifdef GL_SECONDARY_COLOR_ARRAY_SIZE 
+#define PHPGLFW_C_GL_SECONDARY_COLOR_ARRAY_SIZE GL_SECONDARY_COLOR_ARRAY_SIZE // => 0x845A  
+#endif
+ 
+#ifdef GL_SECONDARY_COLOR_ARRAY_TYPE 
+#define PHPGLFW_C_GL_SECONDARY_COLOR_ARRAY_TYPE GL_SECONDARY_COLOR_ARRAY_TYPE // => 0x845B  
+#endif
+ 
+#ifdef GL_SECONDARY_COLOR_ARRAY_STRIDE 
+#define PHPGLFW_C_GL_SECONDARY_COLOR_ARRAY_STRIDE GL_SECONDARY_COLOR_ARRAY_STRIDE // => 0x845C  
+#endif
+ 
+#ifdef GL_SECONDARY_COLOR_ARRAY_POINTER 
+#define PHPGLFW_C_GL_SECONDARY_COLOR_ARRAY_POINTER GL_SECONDARY_COLOR_ARRAY_POINTER // => 0x845D  
+#endif
+ 
+#ifdef GL_SECONDARY_COLOR_ARRAY 
+#define PHPGLFW_C_GL_SECONDARY_COLOR_ARRAY GL_SECONDARY_COLOR_ARRAY // => 0x845E  
+#endif
+ 
+#ifdef GL_FOG_COORD_SRC 
+#define PHPGLFW_C_GL_FOG_COORD_SRC GL_FOG_COORD_SRC // => 0x8450  
+#endif
+ 
+#ifdef GL_FOG_COORD 
+#define PHPGLFW_C_GL_FOG_COORD GL_FOG_COORD // => 0x8451  
+#endif
+ 
+#ifdef GL_CURRENT_FOG_COORD 
+#define PHPGLFW_C_GL_CURRENT_FOG_COORD GL_CURRENT_FOG_COORD // => 0x8453  
+#endif
+ 
+#ifdef GL_FOG_COORD_ARRAY_TYPE 
+#define PHPGLFW_C_GL_FOG_COORD_ARRAY_TYPE GL_FOG_COORD_ARRAY_TYPE // => 0x8454  
+#endif
+ 
+#ifdef GL_FOG_COORD_ARRAY_STRIDE 
+#define PHPGLFW_C_GL_FOG_COORD_ARRAY_STRIDE GL_FOG_COORD_ARRAY_STRIDE // => 0x8455  
+#endif
+ 
+#ifdef GL_FOG_COORD_ARRAY_POINTER 
+#define PHPGLFW_C_GL_FOG_COORD_ARRAY_POINTER GL_FOG_COORD_ARRAY_POINTER // => 0x8456  
+#endif
+ 
+#ifdef GL_FOG_COORD_ARRAY 
+#define PHPGLFW_C_GL_FOG_COORD_ARRAY GL_FOG_COORD_ARRAY // => 0x8457  
+#endif
+ 
+#ifdef GL_CURRENT_RASTER_SECONDARY_COLOR 
+#define PHPGLFW_C_GL_CURRENT_RASTER_SECONDARY_COLOR GL_CURRENT_RASTER_SECONDARY_COLOR // => 0x845F  
+#endif
+
+/**
+ * @vendor SGI 
+ */
+ 
+#ifdef GL_LIGHT_MODEL_COLOR_CONTROL 
+#define PHPGLFW_C_GL_LIGHT_MODEL_COLOR_CONTROL GL_LIGHT_MODEL_COLOR_CONTROL // => 0x81F8  
+#endif
+ 
+#ifdef GL_SINGLE_COLOR 
+#define PHPGLFW_C_GL_SINGLE_COLOR GL_SINGLE_COLOR // => 0x81F9  
+#endif
+ 
+#ifdef GL_SEPARATE_SPECULAR_COLOR 
+#define PHPGLFW_C_GL_SEPARATE_SPECULAR_COLOR GL_SEPARATE_SPECULAR_COLOR // => 0x81FA  
+#endif
+
+/**
+ * @vendor ARB 
+ */
+ 
+#ifdef GL_TEXTURE0 
+#define PHPGLFW_C_GL_TEXTURE0 GL_TEXTURE0 // => 0x84C0  
+#endif
+ 
+#ifdef GL_TEXTURE1 
+#define PHPGLFW_C_GL_TEXTURE1 GL_TEXTURE1 // => 0x84C1  
+#endif
+ 
+#ifdef GL_TEXTURE2 
+#define PHPGLFW_C_GL_TEXTURE2 GL_TEXTURE2 // => 0x84C2  
+#endif
+ 
+#ifdef GL_TEXTURE3 
+#define PHPGLFW_C_GL_TEXTURE3 GL_TEXTURE3 // => 0x84C3  
+#endif
+ 
+#ifdef GL_TEXTURE4 
+#define PHPGLFW_C_GL_TEXTURE4 GL_TEXTURE4 // => 0x84C4  
+#endif
+ 
+#ifdef GL_TEXTURE5 
+#define PHPGLFW_C_GL_TEXTURE5 GL_TEXTURE5 // => 0x84C5  
+#endif
+ 
+#ifdef GL_TEXTURE6 
+#define PHPGLFW_C_GL_TEXTURE6 GL_TEXTURE6 // => 0x84C6  
+#endif
+ 
+#ifdef GL_TEXTURE7 
+#define PHPGLFW_C_GL_TEXTURE7 GL_TEXTURE7 // => 0x84C7  
+#endif
+ 
+#ifdef GL_TEXTURE8 
+#define PHPGLFW_C_GL_TEXTURE8 GL_TEXTURE8 // => 0x84C8  
+#endif
+ 
+#ifdef GL_TEXTURE9 
+#define PHPGLFW_C_GL_TEXTURE9 GL_TEXTURE9 // => 0x84C9  
+#endif
+ 
+#ifdef GL_TEXTURE10 
+#define PHPGLFW_C_GL_TEXTURE10 GL_TEXTURE10 // => 0x84CA  
+#endif
+ 
+#ifdef GL_TEXTURE11 
+#define PHPGLFW_C_GL_TEXTURE11 GL_TEXTURE11 // => 0x84CB  
+#endif
+ 
+#ifdef GL_TEXTURE12 
+#define PHPGLFW_C_GL_TEXTURE12 GL_TEXTURE12 // => 0x84CC  
+#endif
+ 
+#ifdef GL_TEXTURE13 
+#define PHPGLFW_C_GL_TEXTURE13 GL_TEXTURE13 // => 0x84CD  
+#endif
+ 
+#ifdef GL_TEXTURE14 
+#define PHPGLFW_C_GL_TEXTURE14 GL_TEXTURE14 // => 0x84CE  
+#endif
+ 
+#ifdef GL_TEXTURE15 
+#define PHPGLFW_C_GL_TEXTURE15 GL_TEXTURE15 // => 0x84CF  
+#endif
+ 
+#ifdef GL_TEXTURE16 
+#define PHPGLFW_C_GL_TEXTURE16 GL_TEXTURE16 // => 0x84D0  
+#endif
+ 
+#ifdef GL_TEXTURE17 
+#define PHPGLFW_C_GL_TEXTURE17 GL_TEXTURE17 // => 0x84D1  
+#endif
+ 
+#ifdef GL_TEXTURE18 
+#define PHPGLFW_C_GL_TEXTURE18 GL_TEXTURE18 // => 0x84D2  
+#endif
+ 
+#ifdef GL_TEXTURE19 
+#define PHPGLFW_C_GL_TEXTURE19 GL_TEXTURE19 // => 0x84D3  
+#endif
+ 
+#ifdef GL_TEXTURE20 
+#define PHPGLFW_C_GL_TEXTURE20 GL_TEXTURE20 // => 0x84D4  
+#endif
+ 
+#ifdef GL_TEXTURE21 
+#define PHPGLFW_C_GL_TEXTURE21 GL_TEXTURE21 // => 0x84D5  
+#endif
+ 
+#ifdef GL_TEXTURE22 
+#define PHPGLFW_C_GL_TEXTURE22 GL_TEXTURE22 // => 0x84D6  
+#endif
+ 
+#ifdef GL_TEXTURE23 
+#define PHPGLFW_C_GL_TEXTURE23 GL_TEXTURE23 // => 0x84D7  
+#endif
+ 
+#ifdef GL_TEXTURE24 
+#define PHPGLFW_C_GL_TEXTURE24 GL_TEXTURE24 // => 0x84D8  
+#endif
+ 
+#ifdef GL_TEXTURE25 
+#define PHPGLFW_C_GL_TEXTURE25 GL_TEXTURE25 // => 0x84D9  
+#endif
+ 
+#ifdef GL_TEXTURE26 
+#define PHPGLFW_C_GL_TEXTURE26 GL_TEXTURE26 // => 0x84DA  
+#endif
+ 
+#ifdef GL_TEXTURE27 
+#define PHPGLFW_C_GL_TEXTURE27 GL_TEXTURE27 // => 0x84DB  
+#endif
+ 
+#ifdef GL_TEXTURE28 
+#define PHPGLFW_C_GL_TEXTURE28 GL_TEXTURE28 // => 0x84DC  
+#endif
+ 
+#ifdef GL_TEXTURE29 
+#define PHPGLFW_C_GL_TEXTURE29 GL_TEXTURE29 // => 0x84DD  
+#endif
+ 
+#ifdef GL_TEXTURE30 
+#define PHPGLFW_C_GL_TEXTURE30 GL_TEXTURE30 // => 0x84DE  
+#endif
+ 
+#ifdef GL_TEXTURE31 
+#define PHPGLFW_C_GL_TEXTURE31 GL_TEXTURE31 // => 0x84DF  
+#endif
+ 
+#ifdef GL_ACTIVE_TEXTURE 
+#define PHPGLFW_C_GL_ACTIVE_TEXTURE GL_ACTIVE_TEXTURE // => 0x84E0  
+#endif
+ 
+#ifdef GL_COMPRESSED_RGB 
+#define PHPGLFW_C_GL_COMPRESSED_RGB GL_COMPRESSED_RGB // => 0x84ED  
+#endif
+ 
+#ifdef GL_COMPRESSED_RGBA 
+#define PHPGLFW_C_GL_COMPRESSED_RGBA GL_COMPRESSED_RGBA // => 0x84EE  
+#endif
+ 
+#ifdef GL_TEXTURE_COMPRESSION_HINT 
+#define PHPGLFW_C_GL_TEXTURE_COMPRESSION_HINT GL_TEXTURE_COMPRESSION_HINT // => 0x84EF  
+#endif
+ 
+#ifdef GL_CLIENT_ACTIVE_TEXTURE 
+#define PHPGLFW_C_GL_CLIENT_ACTIVE_TEXTURE GL_CLIENT_ACTIVE_TEXTURE // => 0x84E1  
+#endif
+ 
+#ifdef GL_MAX_TEXTURE_UNITS 
+#define PHPGLFW_C_GL_MAX_TEXTURE_UNITS GL_MAX_TEXTURE_UNITS // => 0x84E2  
+#endif
+ 
+#ifdef GL_TRANSPOSE_MODELVIEW_MATRIX 
+#define PHPGLFW_C_GL_TRANSPOSE_MODELVIEW_MATRIX GL_TRANSPOSE_MODELVIEW_MATRIX // => 0x84E3  
+#endif
+ 
+#ifdef GL_TRANSPOSE_PROJECTION_MATRIX 
+#define PHPGLFW_C_GL_TRANSPOSE_PROJECTION_MATRIX GL_TRANSPOSE_PROJECTION_MATRIX // => 0x84E4  
+#endif
+ 
+#ifdef GL_TRANSPOSE_TEXTURE_MATRIX 
+#define PHPGLFW_C_GL_TRANSPOSE_TEXTURE_MATRIX GL_TRANSPOSE_TEXTURE_MATRIX // => 0x84E5  
+#endif
+ 
+#ifdef GL_TRANSPOSE_COLOR_MATRIX 
+#define PHPGLFW_C_GL_TRANSPOSE_COLOR_MATRIX GL_TRANSPOSE_COLOR_MATRIX // => 0x84E6  
+#endif
+ 
+#ifdef GL_COMPRESSED_ALPHA 
+#define PHPGLFW_C_GL_COMPRESSED_ALPHA GL_COMPRESSED_ALPHA // => 0x84E9  
+#endif
+ 
+#ifdef GL_COMPRESSED_LUMINANCE 
+#define PHPGLFW_C_GL_COMPRESSED_LUMINANCE GL_COMPRESSED_LUMINANCE // => 0x84EA  
+#endif
+ 
+#ifdef GL_COMPRESSED_LUMINANCE_ALPHA 
+#define PHPGLFW_C_GL_COMPRESSED_LUMINANCE_ALPHA GL_COMPRESSED_LUMINANCE_ALPHA // => 0x84EB  
+#endif
+ 
+#ifdef GL_COMPRESSED_INTENSITY 
+#define PHPGLFW_C_GL_COMPRESSED_INTENSITY GL_COMPRESSED_INTENSITY // => 0x84EC  
+#endif
+ 
+#ifdef GL_SUBTRACT 
+#define PHPGLFW_C_GL_SUBTRACT GL_SUBTRACT // => 0x84E7  
+#endif
+ 
+#ifdef GL_MAX_RENDERBUFFER_SIZE 
+#define PHPGLFW_C_GL_MAX_RENDERBUFFER_SIZE GL_MAX_RENDERBUFFER_SIZE // => 0x84E8  
+#endif
+
+/**
+ * @vendor NV 
+ */
+ 
+#ifdef GL_TEXTURE_CUBE_MAP 
+#define PHPGLFW_C_GL_TEXTURE_CUBE_MAP GL_TEXTURE_CUBE_MAP // => 0x8513  
+#endif
+ 
+#ifdef GL_TEXTURE_BINDING_CUBE_MAP 
+#define PHPGLFW_C_GL_TEXTURE_BINDING_CUBE_MAP GL_TEXTURE_BINDING_CUBE_MAP // => 0x8514  
+#endif
+ 
+#ifdef GL_TEXTURE_CUBE_MAP_POSITIVE_X 
+#define PHPGLFW_C_GL_TEXTURE_CUBE_MAP_POSITIVE_X GL_TEXTURE_CUBE_MAP_POSITIVE_X // => 0x8515  
+#endif
+ 
+#ifdef GL_TEXTURE_CUBE_MAP_NEGATIVE_X 
+#define PHPGLFW_C_GL_TEXTURE_CUBE_MAP_NEGATIVE_X GL_TEXTURE_CUBE_MAP_NEGATIVE_X // => 0x8516  
+#endif
+ 
+#ifdef GL_TEXTURE_CUBE_MAP_POSITIVE_Y 
+#define PHPGLFW_C_GL_TEXTURE_CUBE_MAP_POSITIVE_Y GL_TEXTURE_CUBE_MAP_POSITIVE_Y // => 0x8517  
+#endif
+ 
+#ifdef GL_TEXTURE_CUBE_MAP_NEGATIVE_Y 
+#define PHPGLFW_C_GL_TEXTURE_CUBE_MAP_NEGATIVE_Y GL_TEXTURE_CUBE_MAP_NEGATIVE_Y // => 0x8518  
+#endif
+ 
+#ifdef GL_TEXTURE_CUBE_MAP_POSITIVE_Z 
+#define PHPGLFW_C_GL_TEXTURE_CUBE_MAP_POSITIVE_Z GL_TEXTURE_CUBE_MAP_POSITIVE_Z // => 0x8519  
+#endif
+ 
+#ifdef GL_TEXTURE_CUBE_MAP_NEGATIVE_Z 
+#define PHPGLFW_C_GL_TEXTURE_CUBE_MAP_NEGATIVE_Z GL_TEXTURE_CUBE_MAP_NEGATIVE_Z // => 0x851A  
+#endif
+ 
+#ifdef GL_PROXY_TEXTURE_CUBE_MAP 
+#define PHPGLFW_C_GL_PROXY_TEXTURE_CUBE_MAP GL_PROXY_TEXTURE_CUBE_MAP // => 0x851B  
+#endif
+ 
+#ifdef GL_MAX_CUBE_MAP_TEXTURE_SIZE 
+#define PHPGLFW_C_GL_MAX_CUBE_MAP_TEXTURE_SIZE GL_MAX_CUBE_MAP_TEXTURE_SIZE // => 0x851C  
+#endif
+ 
+#ifdef GL_NORMAL_MAP 
+#define PHPGLFW_C_GL_NORMAL_MAP GL_NORMAL_MAP // => 0x8511  
+#endif
+ 
+#ifdef GL_REFLECTION_MAP 
+#define PHPGLFW_C_GL_REFLECTION_MAP GL_REFLECTION_MAP // => 0x8512  
+#endif
+ 
+#ifdef GL_MAX_TEXTURE_LOD_BIAS 
+#define PHPGLFW_C_GL_MAX_TEXTURE_LOD_BIAS GL_MAX_TEXTURE_LOD_BIAS // => 0x84FD  
+#endif
+ 
+#ifdef GL_TEXTURE_LOD_BIAS 
+#define PHPGLFW_C_GL_TEXTURE_LOD_BIAS GL_TEXTURE_LOD_BIAS // => 0x8501  
+#endif
+ 
+#ifdef GL_INCR_WRAP 
+#define PHPGLFW_C_GL_INCR_WRAP GL_INCR_WRAP // => 0x8507  
+#endif
+ 
+#ifdef GL_DECR_WRAP 
+#define PHPGLFW_C_GL_DECR_WRAP GL_DECR_WRAP // => 0x8508  
+#endif
+ 
+#ifdef GL_TEXTURE_FILTER_CONTROL 
+#define PHPGLFW_C_GL_TEXTURE_FILTER_CONTROL GL_TEXTURE_FILTER_CONTROL // => 0x8500  
+#endif
+ 
+#ifdef GL_DEPTH_STENCIL 
+#define PHPGLFW_C_GL_DEPTH_STENCIL GL_DEPTH_STENCIL // => 0x84F9  
+#endif
+ 
+#ifdef GL_UNSIGNED_INT_24_8 
+#define PHPGLFW_C_GL_UNSIGNED_INT_24_8 GL_UNSIGNED_INT_24_8 // => 0x84FA  
+#endif
+ 
+#ifdef GL_TEXTURE_RECTANGLE 
+#define PHPGLFW_C_GL_TEXTURE_RECTANGLE GL_TEXTURE_RECTANGLE // => 0x84F5  
+#endif
+ 
+#ifdef GL_TEXTURE_BINDING_RECTANGLE 
+#define PHPGLFW_C_GL_TEXTURE_BINDING_RECTANGLE GL_TEXTURE_BINDING_RECTANGLE // => 0x84F6  
+#endif
+ 
+#ifdef GL_PROXY_TEXTURE_RECTANGLE 
+#define PHPGLFW_C_GL_PROXY_TEXTURE_RECTANGLE GL_PROXY_TEXTURE_RECTANGLE // => 0x84F7  
+#endif
+ 
+#ifdef GL_MAX_RECTANGLE_TEXTURE_SIZE 
+#define PHPGLFW_C_GL_MAX_RECTANGLE_TEXTURE_SIZE GL_MAX_RECTANGLE_TEXTURE_SIZE // => 0x84F8  
+#endif
+
+/**
+ * @vendor ARB 
+ */
+ 
+#ifdef GL_TEXTURE_COMPRESSED_IMAGE_SIZE 
+#define PHPGLFW_C_GL_TEXTURE_COMPRESSED_IMAGE_SIZE GL_TEXTURE_COMPRESSED_IMAGE_SIZE // => 0x86A0  
+#endif
+ 
+#ifdef GL_TEXTURE_COMPRESSED 
+#define PHPGLFW_C_GL_TEXTURE_COMPRESSED GL_TEXTURE_COMPRESSED // => 0x86A1  
+#endif
+ 
+#ifdef GL_NUM_COMPRESSED_TEXTURE_FORMATS 
+#define PHPGLFW_C_GL_NUM_COMPRESSED_TEXTURE_FORMATS GL_NUM_COMPRESSED_TEXTURE_FORMATS // => 0x86A2  
+#endif
+ 
+#ifdef GL_COMPRESSED_TEXTURE_FORMATS 
+#define PHPGLFW_C_GL_COMPRESSED_TEXTURE_FORMATS GL_COMPRESSED_TEXTURE_FORMATS // => 0x86A3  
+#endif
+ 
+#ifdef GL_DOT3_RGB 
+#define PHPGLFW_C_GL_DOT3_RGB GL_DOT3_RGB // => 0x86AE  
+#endif
+ 
+#ifdef GL_DOT3_RGBA 
+#define PHPGLFW_C_GL_DOT3_RGBA GL_DOT3_RGBA // => 0x86AF  
+#endif
+
+/**
+ 
+ * RegisterCombinerPname 
+ * ----------------------------------------------------------------------------
+ * @vendor AMD/NV 
+ */
+ 
+#ifdef GL_COMBINE 
+#define PHPGLFW_C_GL_COMBINE GL_COMBINE // => 0x8570  
+#endif
+ 
+#ifdef GL_COMBINE_RGB 
+#define PHPGLFW_C_GL_COMBINE_RGB GL_COMBINE_RGB // => 0x8571  
+#endif
+ 
+#ifdef GL_COMBINE_ALPHA 
+#define PHPGLFW_C_GL_COMBINE_ALPHA GL_COMBINE_ALPHA // => 0x8572  
+#endif
+ 
+#ifdef GL_SOURCE0_RGB 
+#define PHPGLFW_C_GL_SOURCE0_RGB GL_SOURCE0_RGB // => 0x8580  
+#endif
+ 
+#ifdef GL_SOURCE1_RGB 
+#define PHPGLFW_C_GL_SOURCE1_RGB GL_SOURCE1_RGB // => 0x8581  
+#endif
+ 
+#ifdef GL_SOURCE2_RGB 
+#define PHPGLFW_C_GL_SOURCE2_RGB GL_SOURCE2_RGB // => 0x8582  
+#endif
+ 
+#ifdef GL_SOURCE0_ALPHA 
+#define PHPGLFW_C_GL_SOURCE0_ALPHA GL_SOURCE0_ALPHA // => 0x8588  
+#endif
+ 
+#ifdef GL_SOURCE1_ALPHA 
+#define PHPGLFW_C_GL_SOURCE1_ALPHA GL_SOURCE1_ALPHA // => 0x8589  
+#endif
+ 
+#ifdef GL_SOURCE2_ALPHA 
+#define PHPGLFW_C_GL_SOURCE2_ALPHA GL_SOURCE2_ALPHA // => 0x858A  
+#endif
+ 
+#ifdef GL_OPERAND0_RGB 
+#define PHPGLFW_C_GL_OPERAND0_RGB GL_OPERAND0_RGB // => 0x8590  
+#endif
+ 
+#ifdef GL_OPERAND1_RGB 
+#define PHPGLFW_C_GL_OPERAND1_RGB GL_OPERAND1_RGB // => 0x8591  
+#endif
+ 
+#ifdef GL_OPERAND2_RGB 
+#define PHPGLFW_C_GL_OPERAND2_RGB GL_OPERAND2_RGB // => 0x8592  
+#endif
+ 
+#ifdef GL_OPERAND0_ALPHA 
+#define PHPGLFW_C_GL_OPERAND0_ALPHA GL_OPERAND0_ALPHA // => 0x8598  
+#endif
+ 
+#ifdef GL_OPERAND1_ALPHA 
+#define PHPGLFW_C_GL_OPERAND1_ALPHA GL_OPERAND1_ALPHA // => 0x8599  
+#endif
+ 
+#ifdef GL_OPERAND2_ALPHA 
+#define PHPGLFW_C_GL_OPERAND2_ALPHA GL_OPERAND2_ALPHA // => 0x859A  
+#endif
+ 
+#ifdef GL_RGB_SCALE 
+#define PHPGLFW_C_GL_RGB_SCALE GL_RGB_SCALE // => 0x8573  
+#endif
+ 
+#ifdef GL_ADD_SIGNED 
+#define PHPGLFW_C_GL_ADD_SIGNED GL_ADD_SIGNED // => 0x8574  
+#endif
+ 
+#ifdef GL_INTERPOLATE 
+#define PHPGLFW_C_GL_INTERPOLATE GL_INTERPOLATE // => 0x8575  
+#endif
+ 
+#ifdef GL_CONSTANT 
+#define PHPGLFW_C_GL_CONSTANT GL_CONSTANT // => 0x8576  
+#endif
+ 
+#ifdef GL_PRIMARY_COLOR 
+#define PHPGLFW_C_GL_PRIMARY_COLOR GL_PRIMARY_COLOR // => 0x8577  
+#endif
+ 
+#ifdef GL_PREVIOUS 
+#define PHPGLFW_C_GL_PREVIOUS GL_PREVIOUS // => 0x8578  
+#endif
+ 
+#ifdef GL_SRC1_ALPHA 
+#define PHPGLFW_C_GL_SRC1_ALPHA GL_SRC1_ALPHA // => 0x8589  
+#endif
+ 
+#ifdef GL_SRC0_RGB 
+#define PHPGLFW_C_GL_SRC0_RGB GL_SRC0_RGB // => 0x8580  
+#endif
+ 
+#ifdef GL_SRC1_RGB 
+#define PHPGLFW_C_GL_SRC1_RGB GL_SRC1_RGB // => 0x8581  
+#endif
+ 
+#ifdef GL_SRC2_RGB 
+#define PHPGLFW_C_GL_SRC2_RGB GL_SRC2_RGB // => 0x8582  
+#endif
+ 
+#ifdef GL_SRC0_ALPHA 
+#define PHPGLFW_C_GL_SRC0_ALPHA GL_SRC0_ALPHA // => 0x8588  
+#endif
+ 
+#ifdef GL_SRC2_ALPHA 
+#define PHPGLFW_C_GL_SRC2_ALPHA GL_SRC2_ALPHA // => 0x858A  
+#endif
+
+/**
+ * @vendor ZiiLabs 
+ */
+ 
+#ifdef GL_BLEND_DST_RGB 
+#define PHPGLFW_C_GL_BLEND_DST_RGB GL_BLEND_DST_RGB // => 0x80C8  
+#endif
+ 
+#ifdef GL_BLEND_SRC_RGB 
+#define PHPGLFW_C_GL_BLEND_SRC_RGB GL_BLEND_SRC_RGB // => 0x80C9  
+#endif
+ 
+#ifdef GL_BLEND_DST_ALPHA 
+#define PHPGLFW_C_GL_BLEND_DST_ALPHA GL_BLEND_DST_ALPHA // => 0x80CA  
+#endif
+ 
+#ifdef GL_BLEND_SRC_ALPHA 
+#define PHPGLFW_C_GL_BLEND_SRC_ALPHA GL_BLEND_SRC_ALPHA // => 0x80CB  
+#endif
+
+/**
+ * @vendor SGI 
+ */
+ 
+#ifdef GL_DEPTH_COMPONENT16 
+#define PHPGLFW_C_GL_DEPTH_COMPONENT16 GL_DEPTH_COMPONENT16 // => 0x81A5  
+#endif
+ 
+#ifdef GL_DEPTH_COMPONENT24 
+#define PHPGLFW_C_GL_DEPTH_COMPONENT24 GL_DEPTH_COMPONENT24 // => 0x81A6  
+#endif
+ 
+#ifdef GL_DEPTH_COMPONENT32 
+#define PHPGLFW_C_GL_DEPTH_COMPONENT32 GL_DEPTH_COMPONENT32 // => 0x81A7  
+#endif
+ 
+#ifdef GL_GENERATE_MIPMAP 
+#define PHPGLFW_C_GL_GENERATE_MIPMAP GL_GENERATE_MIPMAP // => 0x8191  
+#endif
+ 
+#ifdef GL_GENERATE_MIPMAP_HINT 
+#define PHPGLFW_C_GL_GENERATE_MIPMAP_HINT GL_GENERATE_MIPMAP_HINT // => 0x8192  
+#endif
+
+/**
+ * @vendor HP 
+ */
+ 
+#ifdef GL_MIRRORED_REPEAT 
+#define PHPGLFW_C_GL_MIRRORED_REPEAT GL_MIRRORED_REPEAT // => 0x8370  
+#endif
+
+/**
+ * @vendor ARB 
+ */
+ 
+#ifdef GL_TEXTURE_DEPTH_SIZE 
+#define PHPGLFW_C_GL_TEXTURE_DEPTH_SIZE GL_TEXTURE_DEPTH_SIZE // => 0x884A  
+#endif
+ 
+#ifdef GL_TEXTURE_COMPARE_MODE 
+#define PHPGLFW_C_GL_TEXTURE_COMPARE_MODE GL_TEXTURE_COMPARE_MODE // => 0x884C  
+#endif
+ 
+#ifdef GL_TEXTURE_COMPARE_FUNC 
+#define PHPGLFW_C_GL_TEXTURE_COMPARE_FUNC GL_TEXTURE_COMPARE_FUNC // => 0x884D  
+#endif
+ 
+#ifdef GL_DEPTH_TEXTURE_MODE 
+#define PHPGLFW_C_GL_DEPTH_TEXTURE_MODE GL_DEPTH_TEXTURE_MODE // => 0x884B  
+#endif
+ 
+#ifdef GL_COMPARE_R_TO_TEXTURE 
+#define PHPGLFW_C_GL_COMPARE_R_TO_TEXTURE GL_COMPARE_R_TO_TEXTURE // => 0x884E  
+#endif
+ 
+#ifdef GL_COMPARE_REF_TO_TEXTURE 
+#define PHPGLFW_C_GL_COMPARE_REF_TO_TEXTURE GL_COMPARE_REF_TO_TEXTURE // => 0x884E  
+#endif
+ 
+#ifdef GL_TEXTURE_CUBE_MAP_SEAMLESS 
+#define PHPGLFW_C_GL_TEXTURE_CUBE_MAP_SEAMLESS GL_TEXTURE_CUBE_MAP_SEAMLESS // => 0x884F  
+#endif
+
+/**
+ * @vendor AMD 
+ */
+ 
+#ifdef GL_BUFFER_SIZE 
+#define PHPGLFW_C_GL_BUFFER_SIZE GL_BUFFER_SIZE // => 0x8764  
+#endif
+ 
+#ifdef GL_BUFFER_USAGE 
+#define PHPGLFW_C_GL_BUFFER_USAGE GL_BUFFER_USAGE // => 0x8765  
+#endif
+ 
+#ifdef GL_STENCIL_BACK_FUNC 
+#define PHPGLFW_C_GL_STENCIL_BACK_FUNC GL_STENCIL_BACK_FUNC // => 0x8800  
+#endif
+ 
+#ifdef GL_STENCIL_BACK_FAIL 
+#define PHPGLFW_C_GL_STENCIL_BACK_FAIL GL_STENCIL_BACK_FAIL // => 0x8801  
+#endif
+ 
+#ifdef GL_STENCIL_BACK_PASS_DEPTH_FAIL 
+#define PHPGLFW_C_GL_STENCIL_BACK_PASS_DEPTH_FAIL GL_STENCIL_BACK_PASS_DEPTH_FAIL // => 0x8802  
+#endif
+ 
+#ifdef GL_STENCIL_BACK_PASS_DEPTH_PASS 
+#define PHPGLFW_C_GL_STENCIL_BACK_PASS_DEPTH_PASS GL_STENCIL_BACK_PASS_DEPTH_PASS // => 0x8803  
+#endif
+ 
+#ifdef GL_MAX_DRAW_BUFFERS 
+#define PHPGLFW_C_GL_MAX_DRAW_BUFFERS GL_MAX_DRAW_BUFFERS // => 0x8824  
+#endif
+ 
+#ifdef GL_DRAW_BUFFER0 
+#define PHPGLFW_C_GL_DRAW_BUFFER0 GL_DRAW_BUFFER0 // => 0x8825  
+#endif
+ 
+#ifdef GL_DRAW_BUFFER1 
+#define PHPGLFW_C_GL_DRAW_BUFFER1 GL_DRAW_BUFFER1 // => 0x8826  
+#endif
+ 
+#ifdef GL_DRAW_BUFFER2 
+#define PHPGLFW_C_GL_DRAW_BUFFER2 GL_DRAW_BUFFER2 // => 0x8827  
+#endif
+ 
+#ifdef GL_DRAW_BUFFER3 
+#define PHPGLFW_C_GL_DRAW_BUFFER3 GL_DRAW_BUFFER3 // => 0x8828  
+#endif
+ 
+#ifdef GL_DRAW_BUFFER4 
+#define PHPGLFW_C_GL_DRAW_BUFFER4 GL_DRAW_BUFFER4 // => 0x8829  
+#endif
+ 
+#ifdef GL_DRAW_BUFFER5 
+#define PHPGLFW_C_GL_DRAW_BUFFER5 GL_DRAW_BUFFER5 // => 0x882A  
+#endif
+ 
+#ifdef GL_DRAW_BUFFER6 
+#define PHPGLFW_C_GL_DRAW_BUFFER6 GL_DRAW_BUFFER6 // => 0x882B  
+#endif
+ 
+#ifdef GL_DRAW_BUFFER7 
+#define PHPGLFW_C_GL_DRAW_BUFFER7 GL_DRAW_BUFFER7 // => 0x882C  
+#endif
+ 
+#ifdef GL_DRAW_BUFFER8 
+#define PHPGLFW_C_GL_DRAW_BUFFER8 GL_DRAW_BUFFER8 // => 0x882D  
+#endif
+ 
+#ifdef GL_DRAW_BUFFER9 
+#define PHPGLFW_C_GL_DRAW_BUFFER9 GL_DRAW_BUFFER9 // => 0x882E  
+#endif
+ 
+#ifdef GL_DRAW_BUFFER10 
+#define PHPGLFW_C_GL_DRAW_BUFFER10 GL_DRAW_BUFFER10 // => 0x882F  
+#endif
+ 
+#ifdef GL_DRAW_BUFFER11 
+#define PHPGLFW_C_GL_DRAW_BUFFER11 GL_DRAW_BUFFER11 // => 0x8830  
+#endif
+ 
+#ifdef GL_DRAW_BUFFER12 
+#define PHPGLFW_C_GL_DRAW_BUFFER12 GL_DRAW_BUFFER12 // => 0x8831  
+#endif
+ 
+#ifdef GL_DRAW_BUFFER13 
+#define PHPGLFW_C_GL_DRAW_BUFFER13 GL_DRAW_BUFFER13 // => 0x8832  
+#endif
+ 
+#ifdef GL_DRAW_BUFFER14 
+#define PHPGLFW_C_GL_DRAW_BUFFER14 GL_DRAW_BUFFER14 // => 0x8833  
+#endif
+ 
+#ifdef GL_DRAW_BUFFER15 
+#define PHPGLFW_C_GL_DRAW_BUFFER15 GL_DRAW_BUFFER15 // => 0x8834  
+#endif
+ 
+#ifdef GL_BLEND_EQUATION_ALPHA 
+#define PHPGLFW_C_GL_BLEND_EQUATION_ALPHA GL_BLEND_EQUATION_ALPHA // => 0x883D  
+#endif
+ 
+#ifdef GL_RGBA32F 
+#define PHPGLFW_C_GL_RGBA32F GL_RGBA32F // => 0x8814  
+#endif
+ 
+#ifdef GL_RGB32F 
+#define PHPGLFW_C_GL_RGB32F GL_RGB32F // => 0x8815  
+#endif
+ 
+#ifdef GL_RGBA16F 
+#define PHPGLFW_C_GL_RGBA16F GL_RGBA16F // => 0x881A  
+#endif
+ 
+#ifdef GL_RGB16F 
+#define PHPGLFW_C_GL_RGB16F GL_RGB16F // => 0x881B  
+#endif
+
+/**
+ * @vendor NV 
+ */
+ 
+#ifdef GL_QUERY_COUNTER_BITS 
+#define PHPGLFW_C_GL_QUERY_COUNTER_BITS GL_QUERY_COUNTER_BITS // => 0x8864  
+#endif
+ 
+#ifdef GL_CURRENT_QUERY 
+#define PHPGLFW_C_GL_CURRENT_QUERY GL_CURRENT_QUERY // => 0x8865  
+#endif
+ 
+#ifdef GL_QUERY_RESULT 
+#define PHPGLFW_C_GL_QUERY_RESULT GL_QUERY_RESULT // => 0x8866  
+#endif
+ 
+#ifdef GL_QUERY_RESULT_AVAILABLE 
+#define PHPGLFW_C_GL_QUERY_RESULT_AVAILABLE GL_QUERY_RESULT_AVAILABLE // => 0x8867  
+#endif
+ 
+#ifdef GL_ARRAY_BUFFER 
+#define PHPGLFW_C_GL_ARRAY_BUFFER GL_ARRAY_BUFFER // => 0x8892  
+#endif
+ 
+#ifdef GL_ELEMENT_ARRAY_BUFFER 
+#define PHPGLFW_C_GL_ELEMENT_ARRAY_BUFFER GL_ELEMENT_ARRAY_BUFFER // => 0x8893  
+#endif
+ 
+#ifdef GL_ARRAY_BUFFER_BINDING 
+#define PHPGLFW_C_GL_ARRAY_BUFFER_BINDING GL_ARRAY_BUFFER_BINDING // => 0x8894  
+#endif
+ 
+#ifdef GL_ELEMENT_ARRAY_BUFFER_BINDING 
+#define PHPGLFW_C_GL_ELEMENT_ARRAY_BUFFER_BINDING GL_ELEMENT_ARRAY_BUFFER_BINDING // => 0x8895  
+#endif
+ 
+#ifdef GL_VERTEX_ATTRIB_ARRAY_BUFFER_BINDING 
+#define PHPGLFW_C_GL_VERTEX_ATTRIB_ARRAY_BUFFER_BINDING GL_VERTEX_ATTRIB_ARRAY_BUFFER_BINDING // => 0x889F  
+#endif
+ 
+#ifdef GL_READ_ONLY 
+#define PHPGLFW_C_GL_READ_ONLY GL_READ_ONLY // => 0x88B8  
+#endif
+ 
+#ifdef GL_WRITE_ONLY 
+#define PHPGLFW_C_GL_WRITE_ONLY GL_WRITE_ONLY // => 0x88B9  
+#endif
+ 
+#ifdef GL_READ_WRITE 
+#define PHPGLFW_C_GL_READ_WRITE GL_READ_WRITE // => 0x88BA  
+#endif
+ 
+#ifdef GL_BUFFER_ACCESS 
+#define PHPGLFW_C_GL_BUFFER_ACCESS GL_BUFFER_ACCESS // => 0x88BB  
+#endif
+ 
+#ifdef GL_BUFFER_MAPPED 
+#define PHPGLFW_C_GL_BUFFER_MAPPED GL_BUFFER_MAPPED // => 0x88BC  
+#endif
+ 
+#ifdef GL_BUFFER_MAP_POINTER 
+#define PHPGLFW_C_GL_BUFFER_MAP_POINTER GL_BUFFER_MAP_POINTER // => 0x88BD  
+#endif
+ 
+#ifdef GL_STREAM_DRAW 
+#define PHPGLFW_C_GL_STREAM_DRAW GL_STREAM_DRAW // => 0x88E0  
+#endif
+ 
+#ifdef GL_STREAM_READ 
+#define PHPGLFW_C_GL_STREAM_READ GL_STREAM_READ // => 0x88E1  
+#endif
+ 
+#ifdef GL_STREAM_COPY 
+#define PHPGLFW_C_GL_STREAM_COPY GL_STREAM_COPY // => 0x88E2  
+#endif
+ 
+#ifdef GL_STATIC_DRAW 
+#define PHPGLFW_C_GL_STATIC_DRAW GL_STATIC_DRAW // => 0x88E4  
+#endif
+ 
+#ifdef GL_STATIC_READ 
+#define PHPGLFW_C_GL_STATIC_READ GL_STATIC_READ // => 0x88E5  
+#endif
+ 
+#ifdef GL_STATIC_COPY 
+#define PHPGLFW_C_GL_STATIC_COPY GL_STATIC_COPY // => 0x88E6  
+#endif
+ 
+#ifdef GL_DYNAMIC_DRAW 
+#define PHPGLFW_C_GL_DYNAMIC_DRAW GL_DYNAMIC_DRAW // => 0x88E8  
+#endif
+ 
+#ifdef GL_DYNAMIC_READ 
+#define PHPGLFW_C_GL_DYNAMIC_READ GL_DYNAMIC_READ // => 0x88E9  
+#endif
+ 
+#ifdef GL_DYNAMIC_COPY 
+#define PHPGLFW_C_GL_DYNAMIC_COPY GL_DYNAMIC_COPY // => 0x88EA  
+#endif
+ 
+#ifdef GL_SAMPLES_PASSED 
+#define PHPGLFW_C_GL_SAMPLES_PASSED GL_SAMPLES_PASSED // => 0x8914  
+#endif
+ 
+#ifdef GL_VERTEX_ARRAY_BUFFER_BINDING 
+#define PHPGLFW_C_GL_VERTEX_ARRAY_BUFFER_BINDING GL_VERTEX_ARRAY_BUFFER_BINDING // => 0x8896  
+#endif
+ 
+#ifdef GL_NORMAL_ARRAY_BUFFER_BINDING 
+#define PHPGLFW_C_GL_NORMAL_ARRAY_BUFFER_BINDING GL_NORMAL_ARRAY_BUFFER_BINDING // => 0x8897  
+#endif
+ 
+#ifdef GL_COLOR_ARRAY_BUFFER_BINDING 
+#define PHPGLFW_C_GL_COLOR_ARRAY_BUFFER_BINDING GL_COLOR_ARRAY_BUFFER_BINDING // => 0x8898  
+#endif
+ 
+#ifdef GL_INDEX_ARRAY_BUFFER_BINDING 
+#define PHPGLFW_C_GL_INDEX_ARRAY_BUFFER_BINDING GL_INDEX_ARRAY_BUFFER_BINDING // => 0x8899  
+#endif
+ 
+#ifdef GL_TEXTURE_COORD_ARRAY_BUFFER_BINDING 
+#define PHPGLFW_C_GL_TEXTURE_COORD_ARRAY_BUFFER_BINDING GL_TEXTURE_COORD_ARRAY_BUFFER_BINDING // => 0x889A  
+#endif
+ 
+#ifdef GL_EDGE_FLAG_ARRAY_BUFFER_BINDING 
+#define PHPGLFW_C_GL_EDGE_FLAG_ARRAY_BUFFER_BINDING GL_EDGE_FLAG_ARRAY_BUFFER_BINDING // => 0x889B  
+#endif
+ 
+#ifdef GL_SECONDARY_COLOR_ARRAY_BUFFER_BINDING 
+#define PHPGLFW_C_GL_SECONDARY_COLOR_ARRAY_BUFFER_BINDING GL_SECONDARY_COLOR_ARRAY_BUFFER_BINDING // => 0x889C  
+#endif
+ 
+#ifdef GL_FOG_COORDINATE_ARRAY_BUFFER_BINDING 
+#define PHPGLFW_C_GL_FOG_COORDINATE_ARRAY_BUFFER_BINDING GL_FOG_COORDINATE_ARRAY_BUFFER_BINDING // => 0x889D  
+#endif
+ 
+#ifdef GL_WEIGHT_ARRAY_BUFFER_BINDING 
+#define PHPGLFW_C_GL_WEIGHT_ARRAY_BUFFER_BINDING GL_WEIGHT_ARRAY_BUFFER_BINDING // => 0x889E  
+#endif
+ 
+#ifdef GL_FOG_COORD_ARRAY_BUFFER_BINDING 
+#define PHPGLFW_C_GL_FOG_COORD_ARRAY_BUFFER_BINDING GL_FOG_COORD_ARRAY_BUFFER_BINDING // => 0x889D  
+#endif
+ 
+#ifdef GL_MAX_VERTEX_ATTRIBS 
+#define PHPGLFW_C_GL_MAX_VERTEX_ATTRIBS GL_MAX_VERTEX_ATTRIBS // => 0x8869  
+#endif
+ 
+#ifdef GL_VERTEX_ATTRIB_ARRAY_NORMALIZED 
+#define PHPGLFW_C_GL_VERTEX_ATTRIB_ARRAY_NORMALIZED GL_VERTEX_ATTRIB_ARRAY_NORMALIZED // => 0x886A  
+#endif
+ 
+#ifdef GL_MAX_TEXTURE_IMAGE_UNITS 
+#define PHPGLFW_C_GL_MAX_TEXTURE_IMAGE_UNITS GL_MAX_TEXTURE_IMAGE_UNITS // => 0x8872  
+#endif
+ 
+#ifdef GL_POINT_SPRITE 
+#define PHPGLFW_C_GL_POINT_SPRITE GL_POINT_SPRITE // => 0x8861  
+#endif
+ 
+#ifdef GL_COORD_REPLACE 
+#define PHPGLFW_C_GL_COORD_REPLACE GL_COORD_REPLACE // => 0x8862  
+#endif
+ 
+#ifdef GL_MAX_TEXTURE_COORDS 
+#define PHPGLFW_C_GL_MAX_TEXTURE_COORDS GL_MAX_TEXTURE_COORDS // => 0x8871  
+#endif
+ 
+#ifdef GL_PIXEL_PACK_BUFFER 
+#define PHPGLFW_C_GL_PIXEL_PACK_BUFFER GL_PIXEL_PACK_BUFFER // => 0x88EB  
+#endif
+ 
+#ifdef GL_PIXEL_UNPACK_BUFFER 
+#define PHPGLFW_C_GL_PIXEL_UNPACK_BUFFER GL_PIXEL_UNPACK_BUFFER // => 0x88EC  
+#endif
+ 
+#ifdef GL_PIXEL_PACK_BUFFER_BINDING 
+#define PHPGLFW_C_GL_PIXEL_PACK_BUFFER_BINDING GL_PIXEL_PACK_BUFFER_BINDING // => 0x88ED  
+#endif
+ 
+#ifdef GL_PIXEL_UNPACK_BUFFER_BINDING 
+#define PHPGLFW_C_GL_PIXEL_UNPACK_BUFFER_BINDING GL_PIXEL_UNPACK_BUFFER_BINDING // => 0x88EF  
+#endif
+ 
+#ifdef GL_VERTEX_ATTRIB_ARRAY_INTEGER 
+#define PHPGLFW_C_GL_VERTEX_ATTRIB_ARRAY_INTEGER GL_VERTEX_ATTRIB_ARRAY_INTEGER // => 0x88FD  
+#endif
+ 
+#ifdef GL_MAX_ARRAY_TEXTURE_LAYERS 
+#define PHPGLFW_C_GL_MAX_ARRAY_TEXTURE_LAYERS GL_MAX_ARRAY_TEXTURE_LAYERS // => 0x88FF  
+#endif
+ 
+#ifdef GL_MIN_PROGRAM_TEXEL_OFFSET 
+#define PHPGLFW_C_GL_MIN_PROGRAM_TEXEL_OFFSET GL_MIN_PROGRAM_TEXEL_OFFSET // => 0x8904  
+#endif
+ 
+#ifdef GL_MAX_PROGRAM_TEXEL_OFFSET 
+#define PHPGLFW_C_GL_MAX_PROGRAM_TEXEL_OFFSET GL_MAX_PROGRAM_TEXEL_OFFSET // => 0x8905  
+#endif
+ 
+#ifdef GL_CLAMP_READ_COLOR 
+#define PHPGLFW_C_GL_CLAMP_READ_COLOR GL_CLAMP_READ_COLOR // => 0x891C  
+#endif
+ 
+#ifdef GL_FIXED_ONLY 
+#define PHPGLFW_C_GL_FIXED_ONLY GL_FIXED_ONLY // => 0x891D  
+#endif
+ 
+#ifdef GL_DEPTH24_STENCIL8 
+#define PHPGLFW_C_GL_DEPTH24_STENCIL8 GL_DEPTH24_STENCIL8 // => 0x88F0  
+#endif
+ 
+#ifdef GL_TEXTURE_STENCIL_SIZE 
+#define PHPGLFW_C_GL_TEXTURE_STENCIL_SIZE GL_TEXTURE_STENCIL_SIZE // => 0x88F1  
+#endif
+ 
+#ifdef GL_CLAMP_VERTEX_COLOR 
+#define PHPGLFW_C_GL_CLAMP_VERTEX_COLOR GL_CLAMP_VERTEX_COLOR // => 0x891A  
+#endif
+ 
+#ifdef GL_CLAMP_FRAGMENT_COLOR 
+#define PHPGLFW_C_GL_CLAMP_FRAGMENT_COLOR GL_CLAMP_FRAGMENT_COLOR // => 0x891B  
+#endif
+ 
+#ifdef GL_GEOMETRY_VERTICES_OUT 
+#define PHPGLFW_C_GL_GEOMETRY_VERTICES_OUT GL_GEOMETRY_VERTICES_OUT // => 0x8916  
+#endif
+ 
+#ifdef GL_GEOMETRY_INPUT_TYPE 
+#define PHPGLFW_C_GL_GEOMETRY_INPUT_TYPE GL_GEOMETRY_INPUT_TYPE // => 0x8917  
+#endif
+ 
+#ifdef GL_GEOMETRY_OUTPUT_TYPE 
+#define PHPGLFW_C_GL_GEOMETRY_OUTPUT_TYPE GL_GEOMETRY_OUTPUT_TYPE // => 0x8918  
+#endif
+
+/**
+ * @vendor NV 
+ */
+ 
+#ifdef GL_VERTEX_ATTRIB_ARRAY_ENABLED 
+#define PHPGLFW_C_GL_VERTEX_ATTRIB_ARRAY_ENABLED GL_VERTEX_ATTRIB_ARRAY_ENABLED // => 0x8622  
+#endif
+ 
+#ifdef GL_VERTEX_ATTRIB_ARRAY_SIZE 
+#define PHPGLFW_C_GL_VERTEX_ATTRIB_ARRAY_SIZE GL_VERTEX_ATTRIB_ARRAY_SIZE // => 0x8623  
+#endif
+ 
+#ifdef GL_VERTEX_ATTRIB_ARRAY_STRIDE 
+#define PHPGLFW_C_GL_VERTEX_ATTRIB_ARRAY_STRIDE GL_VERTEX_ATTRIB_ARRAY_STRIDE // => 0x8624  
+#endif
+ 
+#ifdef GL_VERTEX_ATTRIB_ARRAY_TYPE 
+#define PHPGLFW_C_GL_VERTEX_ATTRIB_ARRAY_TYPE GL_VERTEX_ATTRIB_ARRAY_TYPE // => 0x8625  
+#endif
+ 
+#ifdef GL_CURRENT_VERTEX_ATTRIB 
+#define PHPGLFW_C_GL_CURRENT_VERTEX_ATTRIB GL_CURRENT_VERTEX_ATTRIB // => 0x8626  
+#endif
+ 
+#ifdef GL_VERTEX_PROGRAM_POINT_SIZE 
+#define PHPGLFW_C_GL_VERTEX_PROGRAM_POINT_SIZE GL_VERTEX_PROGRAM_POINT_SIZE // => 0x8642  
+#endif
+ 
+#ifdef GL_VERTEX_ATTRIB_ARRAY_POINTER 
+#define PHPGLFW_C_GL_VERTEX_ATTRIB_ARRAY_POINTER GL_VERTEX_ATTRIB_ARRAY_POINTER // => 0x8645  
+#endif
+ 
+#ifdef GL_VERTEX_PROGRAM_TWO_SIDE 
+#define PHPGLFW_C_GL_VERTEX_PROGRAM_TWO_SIDE GL_VERTEX_PROGRAM_TWO_SIDE // => 0x8643  
+#endif
+ 
+#ifdef GL_PROGRAM_POINT_SIZE 
+#define PHPGLFW_C_GL_PROGRAM_POINT_SIZE GL_PROGRAM_POINT_SIZE // => 0x8642  
+#endif
+ 
+#ifdef GL_DEPTH_CLAMP 
+#define PHPGLFW_C_GL_DEPTH_CLAMP GL_DEPTH_CLAMP // => 0x864F  
+#endif
+
+/**
+ 
+ * ShaderType 
+ * ----------------------------------------------------------------------------
+ * @vendor ARB 
+ */
+ 
+#ifdef GL_FRAGMENT_SHADER 
+#define PHPGLFW_C_GL_FRAGMENT_SHADER GL_FRAGMENT_SHADER // => 0x8B30  
+#endif
+ 
+#ifdef GL_VERTEX_SHADER 
+#define PHPGLFW_C_GL_VERTEX_SHADER GL_VERTEX_SHADER // => 0x8B31  
+#endif
+
+/**
+ * @vendor ARB 
+ */
+ 
+#ifdef GL_MAX_FRAGMENT_UNIFORM_COMPONENTS 
+#define PHPGLFW_C_GL_MAX_FRAGMENT_UNIFORM_COMPONENTS GL_MAX_FRAGMENT_UNIFORM_COMPONENTS // => 0x8B49  
+#endif
+ 
+#ifdef GL_MAX_VERTEX_UNIFORM_COMPONENTS 
+#define PHPGLFW_C_GL_MAX_VERTEX_UNIFORM_COMPONENTS GL_MAX_VERTEX_UNIFORM_COMPONENTS // => 0x8B4A  
+#endif
+ 
+#ifdef GL_MAX_VARYING_FLOATS 
+#define PHPGLFW_C_GL_MAX_VARYING_FLOATS GL_MAX_VARYING_FLOATS // => 0x8B4B  
+#endif
+ 
+#ifdef GL_MAX_VERTEX_TEXTURE_IMAGE_UNITS 
+#define PHPGLFW_C_GL_MAX_VERTEX_TEXTURE_IMAGE_UNITS GL_MAX_VERTEX_TEXTURE_IMAGE_UNITS // => 0x8B4C  
+#endif
+ 
+#ifdef GL_MAX_COMBINED_TEXTURE_IMAGE_UNITS 
+#define PHPGLFW_C_GL_MAX_COMBINED_TEXTURE_IMAGE_UNITS GL_MAX_COMBINED_TEXTURE_IMAGE_UNITS // => 0x8B4D  
+#endif
+ 
+#ifdef GL_SHADER_TYPE 
+#define PHPGLFW_C_GL_SHADER_TYPE GL_SHADER_TYPE // => 0x8B4F  
+#endif
+ 
+#ifdef GL_MAX_VARYING_COMPONENTS 
+#define PHPGLFW_C_GL_MAX_VARYING_COMPONENTS GL_MAX_VARYING_COMPONENTS // => 0x8B4B  
+#endif
+
+/**
+ 
+ * AttributeType 
+ * ----------------------------------------------------------------------------
+ * @vendor ARB 
+ */
+ 
+#ifdef GL_FLOAT_VEC2 
+#define PHPGLFW_C_GL_FLOAT_VEC2 GL_FLOAT_VEC2 // => 0x8B50  
+#endif
+ 
+#ifdef GL_FLOAT_VEC3 
+#define PHPGLFW_C_GL_FLOAT_VEC3 GL_FLOAT_VEC3 // => 0x8B51  
+#endif
+ 
+#ifdef GL_FLOAT_VEC4 
+#define PHPGLFW_C_GL_FLOAT_VEC4 GL_FLOAT_VEC4 // => 0x8B52  
+#endif
+ 
+#ifdef GL_INT_VEC2 
+#define PHPGLFW_C_GL_INT_VEC2 GL_INT_VEC2 // => 0x8B53  
+#endif
+ 
+#ifdef GL_INT_VEC3 
+#define PHPGLFW_C_GL_INT_VEC3 GL_INT_VEC3 // => 0x8B54  
+#endif
+ 
+#ifdef GL_INT_VEC4 
+#define PHPGLFW_C_GL_INT_VEC4 GL_INT_VEC4 // => 0x8B55  
+#endif
+ 
+#ifdef GL_BOOL 
+#define PHPGLFW_C_GL_BOOL GL_BOOL // => 0x8B56  
+#endif
+ 
+#ifdef GL_BOOL_VEC2 
+#define PHPGLFW_C_GL_BOOL_VEC2 GL_BOOL_VEC2 // => 0x8B57  
+#endif
+ 
+#ifdef GL_BOOL_VEC3 
+#define PHPGLFW_C_GL_BOOL_VEC3 GL_BOOL_VEC3 // => 0x8B58  
+#endif
+ 
+#ifdef GL_BOOL_VEC4 
+#define PHPGLFW_C_GL_BOOL_VEC4 GL_BOOL_VEC4 // => 0x8B59  
+#endif
+ 
+#ifdef GL_FLOAT_MAT2 
+#define PHPGLFW_C_GL_FLOAT_MAT2 GL_FLOAT_MAT2 // => 0x8B5A  
+#endif
+ 
+#ifdef GL_FLOAT_MAT3 
+#define PHPGLFW_C_GL_FLOAT_MAT3 GL_FLOAT_MAT3 // => 0x8B5B  
+#endif
+ 
+#ifdef GL_FLOAT_MAT4 
+#define PHPGLFW_C_GL_FLOAT_MAT4 GL_FLOAT_MAT4 // => 0x8B5C  
+#endif
+ 
+#ifdef GL_SAMPLER_1D 
+#define PHPGLFW_C_GL_SAMPLER_1D GL_SAMPLER_1D // => 0x8B5D  
+#endif
+ 
+#ifdef GL_SAMPLER_2D 
+#define PHPGLFW_C_GL_SAMPLER_2D GL_SAMPLER_2D // => 0x8B5E  
+#endif
+ 
+#ifdef GL_SAMPLER_3D 
+#define PHPGLFW_C_GL_SAMPLER_3D GL_SAMPLER_3D // => 0x8B5F  
+#endif
+ 
+#ifdef GL_SAMPLER_CUBE 
+#define PHPGLFW_C_GL_SAMPLER_CUBE GL_SAMPLER_CUBE // => 0x8B60  
+#endif
+ 
+#ifdef GL_SAMPLER_1D_SHADOW 
+#define PHPGLFW_C_GL_SAMPLER_1D_SHADOW GL_SAMPLER_1D_SHADOW // => 0x8B61  
+#endif
+ 
+#ifdef GL_SAMPLER_2D_SHADOW 
+#define PHPGLFW_C_GL_SAMPLER_2D_SHADOW GL_SAMPLER_2D_SHADOW // => 0x8B62  
+#endif
+ 
+#ifdef GL_FLOAT_MAT2x3 
+#define PHPGLFW_C_GL_FLOAT_MAT2x3 GL_FLOAT_MAT2x3 // => 0x8B65  
+#endif
+ 
+#ifdef GL_FLOAT_MAT2x4 
+#define PHPGLFW_C_GL_FLOAT_MAT2x4 GL_FLOAT_MAT2x4 // => 0x8B66  
+#endif
+ 
+#ifdef GL_FLOAT_MAT3x2 
+#define PHPGLFW_C_GL_FLOAT_MAT3x2 GL_FLOAT_MAT3x2 // => 0x8B67  
+#endif
+ 
+#ifdef GL_FLOAT_MAT3x4 
+#define PHPGLFW_C_GL_FLOAT_MAT3x4 GL_FLOAT_MAT3x4 // => 0x8B68  
+#endif
+ 
+#ifdef GL_FLOAT_MAT4x2 
+#define PHPGLFW_C_GL_FLOAT_MAT4x2 GL_FLOAT_MAT4x2 // => 0x8B69  
+#endif
+ 
+#ifdef GL_FLOAT_MAT4x3 
+#define PHPGLFW_C_GL_FLOAT_MAT4x3 GL_FLOAT_MAT4x3 // => 0x8B6A  
+#endif
+ 
+#ifdef GL_SAMPLER_2D_RECT 
+#define PHPGLFW_C_GL_SAMPLER_2D_RECT GL_SAMPLER_2D_RECT // => 0x8B63  
+#endif
+ 
+#ifdef GL_SAMPLER_2D_RECT_SHADOW 
+#define PHPGLFW_C_GL_SAMPLER_2D_RECT_SHADOW GL_SAMPLER_2D_RECT_SHADOW // => 0x8B64  
+#endif
+
+/**
+ * @vendor ARB 
+ */
+ 
+#ifdef GL_DELETE_STATUS 
+#define PHPGLFW_C_GL_DELETE_STATUS GL_DELETE_STATUS // => 0x8B80  
+#endif
+ 
+#ifdef GL_COMPILE_STATUS 
+#define PHPGLFW_C_GL_COMPILE_STATUS GL_COMPILE_STATUS // => 0x8B81  
+#endif
+ 
+#ifdef GL_LINK_STATUS 
+#define PHPGLFW_C_GL_LINK_STATUS GL_LINK_STATUS // => 0x8B82  
+#endif
+ 
+#ifdef GL_VALIDATE_STATUS 
+#define PHPGLFW_C_GL_VALIDATE_STATUS GL_VALIDATE_STATUS // => 0x8B83  
+#endif
+ 
+#ifdef GL_INFO_LOG_LENGTH 
+#define PHPGLFW_C_GL_INFO_LOG_LENGTH GL_INFO_LOG_LENGTH // => 0x8B84  
+#endif
+ 
+#ifdef GL_ATTACHED_SHADERS 
+#define PHPGLFW_C_GL_ATTACHED_SHADERS GL_ATTACHED_SHADERS // => 0x8B85  
+#endif
+ 
+#ifdef GL_ACTIVE_UNIFORMS 
+#define PHPGLFW_C_GL_ACTIVE_UNIFORMS GL_ACTIVE_UNIFORMS // => 0x8B86  
+#endif
+ 
+#ifdef GL_ACTIVE_UNIFORM_MAX_LENGTH 
+#define PHPGLFW_C_GL_ACTIVE_UNIFORM_MAX_LENGTH GL_ACTIVE_UNIFORM_MAX_LENGTH // => 0x8B87  
+#endif
+ 
+#ifdef GL_SHADER_SOURCE_LENGTH 
+#define PHPGLFW_C_GL_SHADER_SOURCE_LENGTH GL_SHADER_SOURCE_LENGTH // => 0x8B88  
+#endif
+ 
+#ifdef GL_ACTIVE_ATTRIBUTES 
+#define PHPGLFW_C_GL_ACTIVE_ATTRIBUTES GL_ACTIVE_ATTRIBUTES // => 0x8B89  
+#endif
+ 
+#ifdef GL_ACTIVE_ATTRIBUTE_MAX_LENGTH 
+#define PHPGLFW_C_GL_ACTIVE_ATTRIBUTE_MAX_LENGTH GL_ACTIVE_ATTRIBUTE_MAX_LENGTH // => 0x8B8A  
+#endif
+ 
+#ifdef GL_FRAGMENT_SHADER_DERIVATIVE_HINT 
+#define PHPGLFW_C_GL_FRAGMENT_SHADER_DERIVATIVE_HINT GL_FRAGMENT_SHADER_DERIVATIVE_HINT // => 0x8B8B  
+#endif
+ 
+#ifdef GL_SHADING_LANGUAGE_VERSION 
+#define PHPGLFW_C_GL_SHADING_LANGUAGE_VERSION GL_SHADING_LANGUAGE_VERSION // => 0x8B8C  
+#endif
+ 
+#ifdef GL_CURRENT_PROGRAM 
+#define PHPGLFW_C_GL_CURRENT_PROGRAM GL_CURRENT_PROGRAM // => 0x8B8D  
+#endif
+
+/**
+ * @vendor ARB 
+ */
+ 
+#ifdef GL_POINT_SPRITE_COORD_ORIGIN 
+#define PHPGLFW_C_GL_POINT_SPRITE_COORD_ORIGIN GL_POINT_SPRITE_COORD_ORIGIN // => 0x8CA0  
+#endif
+ 
+#ifdef GL_LOWER_LEFT 
+#define PHPGLFW_C_GL_LOWER_LEFT GL_LOWER_LEFT // => 0x8CA1  
+#endif
+ 
+#ifdef GL_UPPER_LEFT 
+#define PHPGLFW_C_GL_UPPER_LEFT GL_UPPER_LEFT // => 0x8CA2  
+#endif
+ 
+#ifdef GL_STENCIL_BACK_REF 
+#define PHPGLFW_C_GL_STENCIL_BACK_REF GL_STENCIL_BACK_REF // => 0x8CA3  
+#endif
+ 
+#ifdef GL_STENCIL_BACK_VALUE_MASK 
+#define PHPGLFW_C_GL_STENCIL_BACK_VALUE_MASK GL_STENCIL_BACK_VALUE_MASK // => 0x8CA4  
+#endif
+ 
+#ifdef GL_STENCIL_BACK_WRITEMASK 
+#define PHPGLFW_C_GL_STENCIL_BACK_WRITEMASK GL_STENCIL_BACK_WRITEMASK // => 0x8CA5  
+#endif
+ 
+#ifdef GL_DEPTH_COMPONENT32F 
+#define PHPGLFW_C_GL_DEPTH_COMPONENT32F GL_DEPTH_COMPONENT32F // => 0x8CAC  
+#endif
+ 
+#ifdef GL_DEPTH32F_STENCIL8 
+#define PHPGLFW_C_GL_DEPTH32F_STENCIL8 GL_DEPTH32F_STENCIL8 // => 0x8CAD  
+#endif
+ 
+#ifdef GL_FRAMEBUFFER_BINDING 
+#define PHPGLFW_C_GL_FRAMEBUFFER_BINDING GL_FRAMEBUFFER_BINDING // => 0x8CA6  
+#endif
+ 
+#ifdef GL_DRAW_FRAMEBUFFER_BINDING 
+#define PHPGLFW_C_GL_DRAW_FRAMEBUFFER_BINDING GL_DRAW_FRAMEBUFFER_BINDING // => 0x8CA6  
+#endif
+ 
+#ifdef GL_RENDERBUFFER_BINDING 
+#define PHPGLFW_C_GL_RENDERBUFFER_BINDING GL_RENDERBUFFER_BINDING // => 0x8CA7  
+#endif
+ 
+#ifdef GL_READ_FRAMEBUFFER 
+#define PHPGLFW_C_GL_READ_FRAMEBUFFER GL_READ_FRAMEBUFFER // => 0x8CA8  
+#endif
+ 
+#ifdef GL_DRAW_FRAMEBUFFER 
+#define PHPGLFW_C_GL_DRAW_FRAMEBUFFER GL_DRAW_FRAMEBUFFER // => 0x8CA9  
+#endif
+ 
+#ifdef GL_READ_FRAMEBUFFER_BINDING 
+#define PHPGLFW_C_GL_READ_FRAMEBUFFER_BINDING GL_READ_FRAMEBUFFER_BINDING // => 0x8CAA  
+#endif
+ 
+#ifdef GL_RENDERBUFFER_SAMPLES 
+#define PHPGLFW_C_GL_RENDERBUFFER_SAMPLES GL_RENDERBUFFER_SAMPLES // => 0x8CAB  
+#endif
+
+/**
+ * @vendor NV
+ * For Pat Brown 
+ */
+ 
+#ifdef GL_SRGB 
+#define PHPGLFW_C_GL_SRGB GL_SRGB // => 0x8C40  
+#endif
+ 
+#ifdef GL_SRGB8 
+#define PHPGLFW_C_GL_SRGB8 GL_SRGB8 // => 0x8C41  
+#endif
+ 
+#ifdef GL_SRGB_ALPHA 
+#define PHPGLFW_C_GL_SRGB_ALPHA GL_SRGB_ALPHA // => 0x8C42  
+#endif
+ 
+#ifdef GL_SRGB8_ALPHA8 
+#define PHPGLFW_C_GL_SRGB8_ALPHA8 GL_SRGB8_ALPHA8 // => 0x8C43  
+#endif
+ 
+#ifdef GL_COMPRESSED_SRGB 
+#define PHPGLFW_C_GL_COMPRESSED_SRGB GL_COMPRESSED_SRGB // => 0x8C48  
+#endif
+ 
+#ifdef GL_COMPRESSED_SRGB_ALPHA 
+#define PHPGLFW_C_GL_COMPRESSED_SRGB_ALPHA GL_COMPRESSED_SRGB_ALPHA // => 0x8C49  
+#endif
+ 
+#ifdef GL_SLUMINANCE_ALPHA 
+#define PHPGLFW_C_GL_SLUMINANCE_ALPHA GL_SLUMINANCE_ALPHA // => 0x8C44  
+#endif
+ 
+#ifdef GL_SLUMINANCE8_ALPHA8 
+#define PHPGLFW_C_GL_SLUMINANCE8_ALPHA8 GL_SLUMINANCE8_ALPHA8 // => 0x8C45  
+#endif
+ 
+#ifdef GL_SLUMINANCE 
+#define PHPGLFW_C_GL_SLUMINANCE GL_SLUMINANCE // => 0x8C46  
+#endif
+ 
+#ifdef GL_SLUMINANCE8 
+#define PHPGLFW_C_GL_SLUMINANCE8 GL_SLUMINANCE8 // => 0x8C47  
+#endif
+ 
+#ifdef GL_COMPRESSED_SLUMINANCE 
+#define PHPGLFW_C_GL_COMPRESSED_SLUMINANCE GL_COMPRESSED_SLUMINANCE // => 0x8C4A  
+#endif
+ 
+#ifdef GL_COMPRESSED_SLUMINANCE_ALPHA 
+#define PHPGLFW_C_GL_COMPRESSED_SLUMINANCE_ALPHA GL_COMPRESSED_SLUMINANCE_ALPHA // => 0x8C4B  
+#endif
+ 
+#ifdef GL_TEXTURE_1D_ARRAY 
+#define PHPGLFW_C_GL_TEXTURE_1D_ARRAY GL_TEXTURE_1D_ARRAY // => 0x8C18  
+#endif
+ 
+#ifdef GL_PROXY_TEXTURE_1D_ARRAY 
+#define PHPGLFW_C_GL_PROXY_TEXTURE_1D_ARRAY GL_PROXY_TEXTURE_1D_ARRAY // => 0x8C19  
+#endif
+ 
+#ifdef GL_TEXTURE_2D_ARRAY 
+#define PHPGLFW_C_GL_TEXTURE_2D_ARRAY GL_TEXTURE_2D_ARRAY // => 0x8C1A  
+#endif
+ 
+#ifdef GL_PROXY_TEXTURE_2D_ARRAY 
+#define PHPGLFW_C_GL_PROXY_TEXTURE_2D_ARRAY GL_PROXY_TEXTURE_2D_ARRAY // => 0x8C1B  
+#endif
+ 
+#ifdef GL_TEXTURE_BINDING_1D_ARRAY 
+#define PHPGLFW_C_GL_TEXTURE_BINDING_1D_ARRAY GL_TEXTURE_BINDING_1D_ARRAY // => 0x8C1C  
+#endif
+ 
+#ifdef GL_TEXTURE_BINDING_2D_ARRAY 
+#define PHPGLFW_C_GL_TEXTURE_BINDING_2D_ARRAY GL_TEXTURE_BINDING_2D_ARRAY // => 0x8C1D  
+#endif
+ 
+#ifdef GL_R11F_G11F_B10F 
+#define PHPGLFW_C_GL_R11F_G11F_B10F GL_R11F_G11F_B10F // => 0x8C3A  
+#endif
+ 
+#ifdef GL_UNSIGNED_INT_10F_11F_11F_REV 
+#define PHPGLFW_C_GL_UNSIGNED_INT_10F_11F_11F_REV GL_UNSIGNED_INT_10F_11F_11F_REV // => 0x8C3B  
+#endif
+ 
+#ifdef GL_RGB9_E5 
+#define PHPGLFW_C_GL_RGB9_E5 GL_RGB9_E5 // => 0x8C3D  
+#endif
+ 
+#ifdef GL_UNSIGNED_INT_5_9_9_9_REV 
+#define PHPGLFW_C_GL_UNSIGNED_INT_5_9_9_9_REV GL_UNSIGNED_INT_5_9_9_9_REV // => 0x8C3E  
+#endif
+ 
+#ifdef GL_TEXTURE_SHARED_SIZE 
+#define PHPGLFW_C_GL_TEXTURE_SHARED_SIZE GL_TEXTURE_SHARED_SIZE // => 0x8C3F  
+#endif
+ 
+#ifdef GL_TRANSFORM_FEEDBACK_VARYING_MAX_LENGTH 
+#define PHPGLFW_C_GL_TRANSFORM_FEEDBACK_VARYING_MAX_LENGTH GL_TRANSFORM_FEEDBACK_VARYING_MAX_LENGTH // => 0x8C76  
+#endif
+ 
+#ifdef GL_TRANSFORM_FEEDBACK_BUFFER_MODE 
+#define PHPGLFW_C_GL_TRANSFORM_FEEDBACK_BUFFER_MODE GL_TRANSFORM_FEEDBACK_BUFFER_MODE // => 0x8C7F  
+#endif
+ 
+#ifdef GL_MAX_TRANSFORM_FEEDBACK_SEPARATE_COMPONENTS 
+#define PHPGLFW_C_GL_MAX_TRANSFORM_FEEDBACK_SEPARATE_COMPONENTS GL_MAX_TRANSFORM_FEEDBACK_SEPARATE_COMPONENTS // => 0x8C80  
+#endif
+ 
+#ifdef GL_TRANSFORM_FEEDBACK_VARYINGS 
+#define PHPGLFW_C_GL_TRANSFORM_FEEDBACK_VARYINGS GL_TRANSFORM_FEEDBACK_VARYINGS // => 0x8C83  
+#endif
+ 
+#ifdef GL_TRANSFORM_FEEDBACK_BUFFER_START 
+#define PHPGLFW_C_GL_TRANSFORM_FEEDBACK_BUFFER_START GL_TRANSFORM_FEEDBACK_BUFFER_START // => 0x8C84  
+#endif
+ 
+#ifdef GL_TRANSFORM_FEEDBACK_BUFFER_SIZE 
+#define PHPGLFW_C_GL_TRANSFORM_FEEDBACK_BUFFER_SIZE GL_TRANSFORM_FEEDBACK_BUFFER_SIZE // => 0x8C85  
+#endif
+ 
+#ifdef GL_PRIMITIVES_GENERATED 
+#define PHPGLFW_C_GL_PRIMITIVES_GENERATED GL_PRIMITIVES_GENERATED // => 0x8C87  
+#endif
+ 
+#ifdef GL_TRANSFORM_FEEDBACK_PRIMITIVES_WRITTEN 
+#define PHPGLFW_C_GL_TRANSFORM_FEEDBACK_PRIMITIVES_WRITTEN GL_TRANSFORM_FEEDBACK_PRIMITIVES_WRITTEN // => 0x8C88  
+#endif
+ 
+#ifdef GL_RASTERIZER_DISCARD 
+#define PHPGLFW_C_GL_RASTERIZER_DISCARD GL_RASTERIZER_DISCARD // => 0x8C89  
+#endif
+ 
+#ifdef GL_MAX_TRANSFORM_FEEDBACK_INTERLEAVED_COMPONENTS 
+#define PHPGLFW_C_GL_MAX_TRANSFORM_FEEDBACK_INTERLEAVED_COMPONENTS GL_MAX_TRANSFORM_FEEDBACK_INTERLEAVED_COMPONENTS // => 0x8C8A  
+#endif
+ 
+#ifdef GL_MAX_TRANSFORM_FEEDBACK_SEPARATE_ATTRIBS 
+#define PHPGLFW_C_GL_MAX_TRANSFORM_FEEDBACK_SEPARATE_ATTRIBS GL_MAX_TRANSFORM_FEEDBACK_SEPARATE_ATTRIBS // => 0x8C8B  
+#endif
+ 
+#ifdef GL_INTERLEAVED_ATTRIBS 
+#define PHPGLFW_C_GL_INTERLEAVED_ATTRIBS GL_INTERLEAVED_ATTRIBS // => 0x8C8C  
+#endif
+ 
+#ifdef GL_SEPARATE_ATTRIBS 
+#define PHPGLFW_C_GL_SEPARATE_ATTRIBS GL_SEPARATE_ATTRIBS // => 0x8C8D  
+#endif
+ 
+#ifdef GL_TRANSFORM_FEEDBACK_BUFFER 
+#define PHPGLFW_C_GL_TRANSFORM_FEEDBACK_BUFFER GL_TRANSFORM_FEEDBACK_BUFFER // => 0x8C8E  
+#endif
+ 
+#ifdef GL_TRANSFORM_FEEDBACK_BUFFER_BINDING 
+#define PHPGLFW_C_GL_TRANSFORM_FEEDBACK_BUFFER_BINDING GL_TRANSFORM_FEEDBACK_BUFFER_BINDING // => 0x8C8F  
+#endif
+ 
+#ifdef GL_TEXTURE_RED_TYPE 
+#define PHPGLFW_C_GL_TEXTURE_RED_TYPE GL_TEXTURE_RED_TYPE // => 0x8C10  
+#endif
+ 
+#ifdef GL_TEXTURE_GREEN_TYPE 
+#define PHPGLFW_C_GL_TEXTURE_GREEN_TYPE GL_TEXTURE_GREEN_TYPE // => 0x8C11  
+#endif
+ 
+#ifdef GL_TEXTURE_BLUE_TYPE 
+#define PHPGLFW_C_GL_TEXTURE_BLUE_TYPE GL_TEXTURE_BLUE_TYPE // => 0x8C12  
+#endif
+ 
+#ifdef GL_TEXTURE_ALPHA_TYPE 
+#define PHPGLFW_C_GL_TEXTURE_ALPHA_TYPE GL_TEXTURE_ALPHA_TYPE // => 0x8C13  
+#endif
+ 
+#ifdef GL_TEXTURE_DEPTH_TYPE 
+#define PHPGLFW_C_GL_TEXTURE_DEPTH_TYPE GL_TEXTURE_DEPTH_TYPE // => 0x8C16  
+#endif
+ 
+#ifdef GL_UNSIGNED_NORMALIZED 
+#define PHPGLFW_C_GL_UNSIGNED_NORMALIZED GL_UNSIGNED_NORMALIZED // => 0x8C17  
+#endif
+ 
+#ifdef GL_TEXTURE_LUMINANCE_TYPE 
+#define PHPGLFW_C_GL_TEXTURE_LUMINANCE_TYPE GL_TEXTURE_LUMINANCE_TYPE // => 0x8C14  
+#endif
+ 
+#ifdef GL_TEXTURE_INTENSITY_TYPE 
+#define PHPGLFW_C_GL_TEXTURE_INTENSITY_TYPE GL_TEXTURE_INTENSITY_TYPE // => 0x8C15  
+#endif
+ 
+#ifdef GL_TEXTURE_BUFFER 
+#define PHPGLFW_C_GL_TEXTURE_BUFFER GL_TEXTURE_BUFFER // => 0x8C2A  
+#endif
+ 
+#ifdef GL_MAX_TEXTURE_BUFFER_SIZE 
+#define PHPGLFW_C_GL_MAX_TEXTURE_BUFFER_SIZE GL_MAX_TEXTURE_BUFFER_SIZE // => 0x8C2B  
+#endif
+ 
+#ifdef GL_TEXTURE_BINDING_BUFFER 
+#define PHPGLFW_C_GL_TEXTURE_BINDING_BUFFER GL_TEXTURE_BINDING_BUFFER // => 0x8C2C  
+#endif
+ 
+#ifdef GL_TEXTURE_BUFFER_DATA_STORE_BINDING 
+#define PHPGLFW_C_GL_TEXTURE_BUFFER_DATA_STORE_BINDING GL_TEXTURE_BUFFER_DATA_STORE_BINDING // => 0x8C2D  
+#endif
+ 
+#ifdef GL_MAX_GEOMETRY_TEXTURE_IMAGE_UNITS 
+#define PHPGLFW_C_GL_MAX_GEOMETRY_TEXTURE_IMAGE_UNITS GL_MAX_GEOMETRY_TEXTURE_IMAGE_UNITS // => 0x8C29  
+#endif
+
+/**
+ * @vendor ARB 
+ */
+ 
+#ifdef GL_MAJOR_VERSION 
+#define PHPGLFW_C_GL_MAJOR_VERSION GL_MAJOR_VERSION // => 0x821B  
+#endif
+ 
+#ifdef GL_MINOR_VERSION 
+#define PHPGLFW_C_GL_MINOR_VERSION GL_MINOR_VERSION // => 0x821C  
+#endif
+ 
+#ifdef GL_NUM_EXTENSIONS 
+#define PHPGLFW_C_GL_NUM_EXTENSIONS GL_NUM_EXTENSIONS // => 0x821D  
+#endif
+ 
+#ifdef GL_CONTEXT_FLAGS 
+#define PHPGLFW_C_GL_CONTEXT_FLAGS GL_CONTEXT_FLAGS // => 0x821E  
+#endif
+ 
+#ifdef GL_COMPRESSED_RED 
+#define PHPGLFW_C_GL_COMPRESSED_RED GL_COMPRESSED_RED // => 0x8225  
+#endif
+ 
+#ifdef GL_COMPRESSED_RG 
+#define PHPGLFW_C_GL_COMPRESSED_RG GL_COMPRESSED_RG // => 0x8226  
+#endif
+ 
+#ifdef GL_FRAMEBUFFER_ATTACHMENT_COLOR_ENCODING 
+#define PHPGLFW_C_GL_FRAMEBUFFER_ATTACHMENT_COLOR_ENCODING GL_FRAMEBUFFER_ATTACHMENT_COLOR_ENCODING // => 0x8210  
+#endif
+ 
+#ifdef GL_FRAMEBUFFER_ATTACHMENT_COMPONENT_TYPE 
+#define PHPGLFW_C_GL_FRAMEBUFFER_ATTACHMENT_COMPONENT_TYPE GL_FRAMEBUFFER_ATTACHMENT_COMPONENT_TYPE // => 0x8211  
+#endif
+ 
+#ifdef GL_FRAMEBUFFER_ATTACHMENT_RED_SIZE 
+#define PHPGLFW_C_GL_FRAMEBUFFER_ATTACHMENT_RED_SIZE GL_FRAMEBUFFER_ATTACHMENT_RED_SIZE // => 0x8212  
+#endif
+ 
+#ifdef GL_FRAMEBUFFER_ATTACHMENT_GREEN_SIZE 
+#define PHPGLFW_C_GL_FRAMEBUFFER_ATTACHMENT_GREEN_SIZE GL_FRAMEBUFFER_ATTACHMENT_GREEN_SIZE // => 0x8213  
+#endif
+ 
+#ifdef GL_FRAMEBUFFER_ATTACHMENT_BLUE_SIZE 
+#define PHPGLFW_C_GL_FRAMEBUFFER_ATTACHMENT_BLUE_SIZE GL_FRAMEBUFFER_ATTACHMENT_BLUE_SIZE // => 0x8214  
+#endif
+ 
+#ifdef GL_FRAMEBUFFER_ATTACHMENT_ALPHA_SIZE 
+#define PHPGLFW_C_GL_FRAMEBUFFER_ATTACHMENT_ALPHA_SIZE GL_FRAMEBUFFER_ATTACHMENT_ALPHA_SIZE // => 0x8215  
+#endif
+ 
+#ifdef GL_FRAMEBUFFER_ATTACHMENT_DEPTH_SIZE 
+#define PHPGLFW_C_GL_FRAMEBUFFER_ATTACHMENT_DEPTH_SIZE GL_FRAMEBUFFER_ATTACHMENT_DEPTH_SIZE // => 0x8216  
+#endif
+ 
+#ifdef GL_FRAMEBUFFER_ATTACHMENT_STENCIL_SIZE 
+#define PHPGLFW_C_GL_FRAMEBUFFER_ATTACHMENT_STENCIL_SIZE GL_FRAMEBUFFER_ATTACHMENT_STENCIL_SIZE // => 0x8217  
+#endif
+ 
+#ifdef GL_FRAMEBUFFER_DEFAULT 
+#define PHPGLFW_C_GL_FRAMEBUFFER_DEFAULT GL_FRAMEBUFFER_DEFAULT // => 0x8218  
+#endif
+ 
+#ifdef GL_FRAMEBUFFER_UNDEFINED 
+#define PHPGLFW_C_GL_FRAMEBUFFER_UNDEFINED GL_FRAMEBUFFER_UNDEFINED // => 0x8219  
+#endif
+ 
+#ifdef GL_DEPTH_STENCIL_ATTACHMENT 
+#define PHPGLFW_C_GL_DEPTH_STENCIL_ATTACHMENT GL_DEPTH_STENCIL_ATTACHMENT // => 0x821A  
+#endif
+ 
+#ifdef GL_INDEX 
+#define PHPGLFW_C_GL_INDEX GL_INDEX // => 0x8222  
+#endif
+ 
+#ifdef GL_RG 
+#define PHPGLFW_C_GL_RG GL_RG // => 0x8227  
+#endif
+ 
+#ifdef GL_RG_INTEGER 
+#define PHPGLFW_C_GL_RG_INTEGER GL_RG_INTEGER // => 0x8228  
+#endif
+ 
+#ifdef GL_R8 
+#define PHPGLFW_C_GL_R8 GL_R8 // => 0x8229  
+#endif
+ 
+#ifdef GL_R16 
+#define PHPGLFW_C_GL_R16 GL_R16 // => 0x822A  
+#endif
+ 
+#ifdef GL_RG8 
+#define PHPGLFW_C_GL_RG8 GL_RG8 // => 0x822B  
+#endif
+ 
+#ifdef GL_RG16 
+#define PHPGLFW_C_GL_RG16 GL_RG16 // => 0x822C  
+#endif
+ 
+#ifdef GL_R16F 
+#define PHPGLFW_C_GL_R16F GL_R16F // => 0x822D  
+#endif
+ 
+#ifdef GL_R32F 
+#define PHPGLFW_C_GL_R32F GL_R32F // => 0x822E  
+#endif
+ 
+#ifdef GL_RG16F 
+#define PHPGLFW_C_GL_RG16F GL_RG16F // => 0x822F  
+#endif
+ 
+#ifdef GL_RG32F 
+#define PHPGLFW_C_GL_RG32F GL_RG32F // => 0x8230  
+#endif
+ 
+#ifdef GL_R8I 
+#define PHPGLFW_C_GL_R8I GL_R8I // => 0x8231  
+#endif
+ 
+#ifdef GL_R8UI 
+#define PHPGLFW_C_GL_R8UI GL_R8UI // => 0x8232  
+#endif
+ 
+#ifdef GL_R16I 
+#define PHPGLFW_C_GL_R16I GL_R16I // => 0x8233  
+#endif
+ 
+#ifdef GL_R16UI 
+#define PHPGLFW_C_GL_R16UI GL_R16UI // => 0x8234  
+#endif
+ 
+#ifdef GL_R32I 
+#define PHPGLFW_C_GL_R32I GL_R32I // => 0x8235  
+#endif
+ 
+#ifdef GL_R32UI 
+#define PHPGLFW_C_GL_R32UI GL_R32UI // => 0x8236  
+#endif
+ 
+#ifdef GL_RG8I 
+#define PHPGLFW_C_GL_RG8I GL_RG8I // => 0x8237  
+#endif
+ 
+#ifdef GL_RG8UI 
+#define PHPGLFW_C_GL_RG8UI GL_RG8UI // => 0x8238  
+#endif
+ 
+#ifdef GL_RG16I 
+#define PHPGLFW_C_GL_RG16I GL_RG16I // => 0x8239  
+#endif
+ 
+#ifdef GL_RG16UI 
+#define PHPGLFW_C_GL_RG16UI GL_RG16UI // => 0x823A  
+#endif
+ 
+#ifdef GL_RG32I 
+#define PHPGLFW_C_GL_RG32I GL_RG32I // => 0x823B  
+#endif
+ 
+#ifdef GL_RG32UI 
+#define PHPGLFW_C_GL_RG32UI GL_RG32UI // => 0x823C  
+#endif
+
+/**
+ 
+ * ContextFlagMask 
+ * ----------------------------------------------------------------------------
+ * Should be shared with WGL/GLX, but aren't since the FORWARD_COMPATIBLE and
+ * DEBUG values are swapped vs. WGL/GLX. 
+ */
+ 
+#ifdef GL_CONTEXT_FLAG_FORWARD_COMPATIBLE_BIT 
+#define PHPGLFW_C_GL_CONTEXT_FLAG_FORWARD_COMPATIBLE_BIT GL_CONTEXT_FLAG_FORWARD_COMPATIBLE_BIT // => 0x00000001  
+#endif
+
+/**
+ * @vendor NV
+ * For Pat Brown 2005/10/13 
+ */
+ 
+#ifdef GL_RGBA32UI 
+#define PHPGLFW_C_GL_RGBA32UI GL_RGBA32UI // => 0x8D70  
+#endif
+ 
+#ifdef GL_RGB32UI 
+#define PHPGLFW_C_GL_RGB32UI GL_RGB32UI // => 0x8D71  
+#endif
+ 
+#ifdef GL_RGBA16UI 
+#define PHPGLFW_C_GL_RGBA16UI GL_RGBA16UI // => 0x8D76  
+#endif
+ 
+#ifdef GL_RGB16UI 
+#define PHPGLFW_C_GL_RGB16UI GL_RGB16UI // => 0x8D77  
+#endif
+ 
+#ifdef GL_RGBA8UI 
+#define PHPGLFW_C_GL_RGBA8UI GL_RGBA8UI // => 0x8D7C  
+#endif
+ 
+#ifdef GL_RGB8UI 
+#define PHPGLFW_C_GL_RGB8UI GL_RGB8UI // => 0x8D7D  
+#endif
+ 
+#ifdef GL_RGBA32I 
+#define PHPGLFW_C_GL_RGBA32I GL_RGBA32I // => 0x8D82  
+#endif
+ 
+#ifdef GL_RGB32I 
+#define PHPGLFW_C_GL_RGB32I GL_RGB32I // => 0x8D83  
+#endif
+ 
+#ifdef GL_RGBA16I 
+#define PHPGLFW_C_GL_RGBA16I GL_RGBA16I // => 0x8D88  
+#endif
+ 
+#ifdef GL_RGB16I 
+#define PHPGLFW_C_GL_RGB16I GL_RGB16I // => 0x8D89  
+#endif
+ 
+#ifdef GL_RGBA8I 
+#define PHPGLFW_C_GL_RGBA8I GL_RGBA8I // => 0x8D8E  
+#endif
+ 
+#ifdef GL_RGB8I 
+#define PHPGLFW_C_GL_RGB8I GL_RGB8I // => 0x8D8F  
+#endif
+ 
+#ifdef GL_RED_INTEGER 
+#define PHPGLFW_C_GL_RED_INTEGER GL_RED_INTEGER // => 0x8D94  
+#endif
+ 
+#ifdef GL_GREEN_INTEGER 
+#define PHPGLFW_C_GL_GREEN_INTEGER GL_GREEN_INTEGER // => 0x8D95  
+#endif
+ 
+#ifdef GL_BLUE_INTEGER 
+#define PHPGLFW_C_GL_BLUE_INTEGER GL_BLUE_INTEGER // => 0x8D96  
+#endif
+ 
+#ifdef GL_RGB_INTEGER 
+#define PHPGLFW_C_GL_RGB_INTEGER GL_RGB_INTEGER // => 0x8D98  
+#endif
+ 
+#ifdef GL_RGBA_INTEGER 
+#define PHPGLFW_C_GL_RGBA_INTEGER GL_RGBA_INTEGER // => 0x8D99  
+#endif
+ 
+#ifdef GL_BGR_INTEGER 
+#define PHPGLFW_C_GL_BGR_INTEGER GL_BGR_INTEGER // => 0x8D9A  
+#endif
+ 
+#ifdef GL_BGRA_INTEGER 
+#define PHPGLFW_C_GL_BGRA_INTEGER GL_BGRA_INTEGER // => 0x8D9B  
+#endif
+ 
+#ifdef GL_SAMPLER_1D_ARRAY 
+#define PHPGLFW_C_GL_SAMPLER_1D_ARRAY GL_SAMPLER_1D_ARRAY // => 0x8DC0  
+#endif
+ 
+#ifdef GL_SAMPLER_2D_ARRAY 
+#define PHPGLFW_C_GL_SAMPLER_2D_ARRAY GL_SAMPLER_2D_ARRAY // => 0x8DC1  
+#endif
+ 
+#ifdef GL_SAMPLER_1D_ARRAY_SHADOW 
+#define PHPGLFW_C_GL_SAMPLER_1D_ARRAY_SHADOW GL_SAMPLER_1D_ARRAY_SHADOW // => 0x8DC3  
+#endif
+ 
+#ifdef GL_SAMPLER_2D_ARRAY_SHADOW 
+#define PHPGLFW_C_GL_SAMPLER_2D_ARRAY_SHADOW GL_SAMPLER_2D_ARRAY_SHADOW // => 0x8DC4  
+#endif
+ 
+#ifdef GL_SAMPLER_CUBE_SHADOW 
+#define PHPGLFW_C_GL_SAMPLER_CUBE_SHADOW GL_SAMPLER_CUBE_SHADOW // => 0x8DC5  
+#endif
+ 
+#ifdef GL_UNSIGNED_INT_VEC2 
+#define PHPGLFW_C_GL_UNSIGNED_INT_VEC2 GL_UNSIGNED_INT_VEC2 // => 0x8DC6  
+#endif
+ 
+#ifdef GL_UNSIGNED_INT_VEC3 
+#define PHPGLFW_C_GL_UNSIGNED_INT_VEC3 GL_UNSIGNED_INT_VEC3 // => 0x8DC7  
+#endif
+ 
+#ifdef GL_UNSIGNED_INT_VEC4 
+#define PHPGLFW_C_GL_UNSIGNED_INT_VEC4 GL_UNSIGNED_INT_VEC4 // => 0x8DC8  
+#endif
+ 
+#ifdef GL_INT_SAMPLER_1D 
+#define PHPGLFW_C_GL_INT_SAMPLER_1D GL_INT_SAMPLER_1D // => 0x8DC9  
+#endif
+ 
+#ifdef GL_INT_SAMPLER_2D 
+#define PHPGLFW_C_GL_INT_SAMPLER_2D GL_INT_SAMPLER_2D // => 0x8DCA  
+#endif
+ 
+#ifdef GL_INT_SAMPLER_3D 
+#define PHPGLFW_C_GL_INT_SAMPLER_3D GL_INT_SAMPLER_3D // => 0x8DCB  
+#endif
+ 
+#ifdef GL_INT_SAMPLER_CUBE 
+#define PHPGLFW_C_GL_INT_SAMPLER_CUBE GL_INT_SAMPLER_CUBE // => 0x8DCC  
+#endif
+ 
+#ifdef GL_INT_SAMPLER_1D_ARRAY 
+#define PHPGLFW_C_GL_INT_SAMPLER_1D_ARRAY GL_INT_SAMPLER_1D_ARRAY // => 0x8DCE  
+#endif
+ 
+#ifdef GL_INT_SAMPLER_2D_ARRAY 
+#define PHPGLFW_C_GL_INT_SAMPLER_2D_ARRAY GL_INT_SAMPLER_2D_ARRAY // => 0x8DCF  
+#endif
+ 
+#ifdef GL_UNSIGNED_INT_SAMPLER_1D 
+#define PHPGLFW_C_GL_UNSIGNED_INT_SAMPLER_1D GL_UNSIGNED_INT_SAMPLER_1D // => 0x8DD1  
+#endif
+ 
+#ifdef GL_UNSIGNED_INT_SAMPLER_2D 
+#define PHPGLFW_C_GL_UNSIGNED_INT_SAMPLER_2D GL_UNSIGNED_INT_SAMPLER_2D // => 0x8DD2  
+#endif
+ 
+#ifdef GL_UNSIGNED_INT_SAMPLER_3D 
+#define PHPGLFW_C_GL_UNSIGNED_INT_SAMPLER_3D GL_UNSIGNED_INT_SAMPLER_3D // => 0x8DD3  
+#endif
+ 
+#ifdef GL_UNSIGNED_INT_SAMPLER_CUBE 
+#define PHPGLFW_C_GL_UNSIGNED_INT_SAMPLER_CUBE GL_UNSIGNED_INT_SAMPLER_CUBE // => 0x8DD4  
+#endif
+ 
+#ifdef GL_UNSIGNED_INT_SAMPLER_1D_ARRAY 
+#define PHPGLFW_C_GL_UNSIGNED_INT_SAMPLER_1D_ARRAY GL_UNSIGNED_INT_SAMPLER_1D_ARRAY // => 0x8DD6  
+#endif
+ 
+#ifdef GL_UNSIGNED_INT_SAMPLER_2D_ARRAY 
+#define PHPGLFW_C_GL_UNSIGNED_INT_SAMPLER_2D_ARRAY GL_UNSIGNED_INT_SAMPLER_2D_ARRAY // => 0x8DD7  
+#endif
+ 
+#ifdef GL_FLOAT_32_UNSIGNED_INT_24_8_REV 
+#define PHPGLFW_C_GL_FLOAT_32_UNSIGNED_INT_24_8_REV GL_FLOAT_32_UNSIGNED_INT_24_8_REV // => 0x8DAD  
+#endif
+ 
+#ifdef GL_FRAMEBUFFER_SRGB 
+#define PHPGLFW_C_GL_FRAMEBUFFER_SRGB GL_FRAMEBUFFER_SRGB // => 0x8DB9  
+#endif
+ 
+#ifdef GL_COMPRESSED_RED_RGTC1 
+#define PHPGLFW_C_GL_COMPRESSED_RED_RGTC1 GL_COMPRESSED_RED_RGTC1 // => 0x8DBB  
+#endif
+ 
+#ifdef GL_COMPRESSED_SIGNED_RED_RGTC1 
+#define PHPGLFW_C_GL_COMPRESSED_SIGNED_RED_RGTC1 GL_COMPRESSED_SIGNED_RED_RGTC1 // => 0x8DBC  
+#endif
+ 
+#ifdef GL_COMPRESSED_RG_RGTC2 
+#define PHPGLFW_C_GL_COMPRESSED_RG_RGTC2 GL_COMPRESSED_RG_RGTC2 // => 0x8DBD  
+#endif
+ 
+#ifdef GL_COMPRESSED_SIGNED_RG_RGTC2 
+#define PHPGLFW_C_GL_COMPRESSED_SIGNED_RG_RGTC2 GL_COMPRESSED_SIGNED_RG_RGTC2 // => 0x8DBE  
+#endif
+ 
+#ifdef GL_ALPHA_INTEGER 
+#define PHPGLFW_C_GL_ALPHA_INTEGER GL_ALPHA_INTEGER // => 0x8D97  
+#endif
+ 
+#ifdef GL_SAMPLER_BUFFER 
+#define PHPGLFW_C_GL_SAMPLER_BUFFER GL_SAMPLER_BUFFER // => 0x8DC2  
+#endif
+ 
+#ifdef GL_INT_SAMPLER_2D_RECT 
+#define PHPGLFW_C_GL_INT_SAMPLER_2D_RECT GL_INT_SAMPLER_2D_RECT // => 0x8DCD  
+#endif
+ 
+#ifdef GL_INT_SAMPLER_BUFFER 
+#define PHPGLFW_C_GL_INT_SAMPLER_BUFFER GL_INT_SAMPLER_BUFFER // => 0x8DD0  
+#endif
+ 
+#ifdef GL_UNSIGNED_INT_SAMPLER_2D_RECT 
+#define PHPGLFW_C_GL_UNSIGNED_INT_SAMPLER_2D_RECT GL_UNSIGNED_INT_SAMPLER_2D_RECT // => 0x8DD5  
+#endif
+ 
+#ifdef GL_UNSIGNED_INT_SAMPLER_BUFFER 
+#define PHPGLFW_C_GL_UNSIGNED_INT_SAMPLER_BUFFER GL_UNSIGNED_INT_SAMPLER_BUFFER // => 0x8DD8  
+#endif
+ 
+#ifdef GL_FRAMEBUFFER_ATTACHMENT_LAYERED 
+#define PHPGLFW_C_GL_FRAMEBUFFER_ATTACHMENT_LAYERED GL_FRAMEBUFFER_ATTACHMENT_LAYERED // => 0x8DA7  
+#endif
+ 
+#ifdef GL_FRAMEBUFFER_INCOMPLETE_LAYER_TARGETS 
+#define PHPGLFW_C_GL_FRAMEBUFFER_INCOMPLETE_LAYER_TARGETS GL_FRAMEBUFFER_INCOMPLETE_LAYER_TARGETS // => 0x8DA8  
+#endif
+ 
+#ifdef GL_GEOMETRY_SHADER 
+#define PHPGLFW_C_GL_GEOMETRY_SHADER GL_GEOMETRY_SHADER // => 0x8DD9  
+#endif
+ 
+#ifdef GL_MAX_GEOMETRY_UNIFORM_COMPONENTS 
+#define PHPGLFW_C_GL_MAX_GEOMETRY_UNIFORM_COMPONENTS GL_MAX_GEOMETRY_UNIFORM_COMPONENTS // => 0x8DDF  
+#endif
+ 
+#ifdef GL_MAX_GEOMETRY_OUTPUT_VERTICES 
+#define PHPGLFW_C_GL_MAX_GEOMETRY_OUTPUT_VERTICES GL_MAX_GEOMETRY_OUTPUT_VERTICES // => 0x8DE0  
+#endif
+ 
+#ifdef GL_MAX_GEOMETRY_TOTAL_OUTPUT_COMPONENTS 
+#define PHPGLFW_C_GL_MAX_GEOMETRY_TOTAL_OUTPUT_COMPONENTS GL_MAX_GEOMETRY_TOTAL_OUTPUT_COMPONENTS // => 0x8DE1  
+#endif
+
+/**
+ * @vendor NV
+ * For Michael Gold 2006/08/07 
+ */
+ 
+#ifdef GL_QUERY_WAIT 
+#define PHPGLFW_C_GL_QUERY_WAIT GL_QUERY_WAIT // => 0x8E13  
+#endif
+ 
+#ifdef GL_QUERY_NO_WAIT 
+#define PHPGLFW_C_GL_QUERY_NO_WAIT GL_QUERY_NO_WAIT // => 0x8E14  
+#endif
+ 
+#ifdef GL_QUERY_BY_REGION_WAIT 
+#define PHPGLFW_C_GL_QUERY_BY_REGION_WAIT GL_QUERY_BY_REGION_WAIT // => 0x8E15  
+#endif
+ 
+#ifdef GL_QUERY_BY_REGION_NO_WAIT 
+#define PHPGLFW_C_GL_QUERY_BY_REGION_NO_WAIT GL_QUERY_BY_REGION_NO_WAIT // => 0x8E16  
+#endif
+ 
+#ifdef GL_QUADS_FOLLOW_PROVOKING_VERTEX_CONVENTION 
+#define PHPGLFW_C_GL_QUADS_FOLLOW_PROVOKING_VERTEX_CONVENTION GL_QUADS_FOLLOW_PROVOKING_VERTEX_CONVENTION // => 0x8E4C  
+#endif
+ 
+#ifdef GL_FIRST_VERTEX_CONVENTION 
+#define PHPGLFW_C_GL_FIRST_VERTEX_CONVENTION GL_FIRST_VERTEX_CONVENTION // => 0x8E4D  
+#endif
+ 
+#ifdef GL_LAST_VERTEX_CONVENTION 
+#define PHPGLFW_C_GL_LAST_VERTEX_CONVENTION GL_LAST_VERTEX_CONVENTION // => 0x8E4E  
+#endif
+ 
+#ifdef GL_PROVOKING_VERTEX 
+#define PHPGLFW_C_GL_PROVOKING_VERTEX GL_PROVOKING_VERTEX // => 0x8E4F  
+#endif
+ 
+#ifdef GL_SAMPLE_POSITION 
+#define PHPGLFW_C_GL_SAMPLE_POSITION GL_SAMPLE_POSITION // => 0x8E50  
+#endif
+ 
+#ifdef GL_SAMPLE_MASK 
+#define PHPGLFW_C_GL_SAMPLE_MASK GL_SAMPLE_MASK // => 0x8E51  
+#endif
+ 
+#ifdef GL_SAMPLE_MASK_VALUE 
+#define PHPGLFW_C_GL_SAMPLE_MASK_VALUE GL_SAMPLE_MASK_VALUE // => 0x8E52  
+#endif
+ 
+#ifdef GL_MAX_SAMPLE_MASK_WORDS 
+#define PHPGLFW_C_GL_MAX_SAMPLE_MASK_WORDS GL_MAX_SAMPLE_MASK_WORDS // => 0x8E59  
+#endif
+
+/**
+ * @vendor ARB 
+ */
+ 
+#ifdef GL_BUFFER_ACCESS_FLAGS 
+#define PHPGLFW_C_GL_BUFFER_ACCESS_FLAGS GL_BUFFER_ACCESS_FLAGS // => 0x911F  
+#endif
+ 
+#ifdef GL_BUFFER_MAP_LENGTH 
+#define PHPGLFW_C_GL_BUFFER_MAP_LENGTH GL_BUFFER_MAP_LENGTH // => 0x9120  
+#endif
+ 
+#ifdef GL_BUFFER_MAP_OFFSET 
+#define PHPGLFW_C_GL_BUFFER_MAP_OFFSET GL_BUFFER_MAP_OFFSET // => 0x9121  
+#endif
+ 
+#ifdef GL_MAX_VERTEX_OUTPUT_COMPONENTS 
+#define PHPGLFW_C_GL_MAX_VERTEX_OUTPUT_COMPONENTS GL_MAX_VERTEX_OUTPUT_COMPONENTS // => 0x9122  
+#endif
+ 
+#ifdef GL_MAX_GEOMETRY_INPUT_COMPONENTS 
+#define PHPGLFW_C_GL_MAX_GEOMETRY_INPUT_COMPONENTS GL_MAX_GEOMETRY_INPUT_COMPONENTS // => 0x9123  
+#endif
+ 
+#ifdef GL_MAX_GEOMETRY_OUTPUT_COMPONENTS 
+#define PHPGLFW_C_GL_MAX_GEOMETRY_OUTPUT_COMPONENTS GL_MAX_GEOMETRY_OUTPUT_COMPONENTS // => 0x9124  
+#endif
+ 
+#ifdef GL_MAX_FRAGMENT_INPUT_COMPONENTS 
+#define PHPGLFW_C_GL_MAX_FRAGMENT_INPUT_COMPONENTS GL_MAX_FRAGMENT_INPUT_COMPONENTS // => 0x9125  
+#endif
+ 
+#ifdef GL_CONTEXT_PROFILE_MASK 
+#define PHPGLFW_C_GL_CONTEXT_PROFILE_MASK GL_CONTEXT_PROFILE_MASK // => 0x9126  
+#endif
+ 
+#ifdef GL_MAX_SERVER_WAIT_TIMEOUT 
+#define PHPGLFW_C_GL_MAX_SERVER_WAIT_TIMEOUT GL_MAX_SERVER_WAIT_TIMEOUT // => 0x9111  
+#endif
+ 
+#ifdef GL_OBJECT_TYPE 
+#define PHPGLFW_C_GL_OBJECT_TYPE GL_OBJECT_TYPE // => 0x9112  
+#endif
+ 
+#ifdef GL_SYNC_CONDITION 
+#define PHPGLFW_C_GL_SYNC_CONDITION GL_SYNC_CONDITION // => 0x9113  
+#endif
+ 
+#ifdef GL_SYNC_STATUS 
+#define PHPGLFW_C_GL_SYNC_STATUS GL_SYNC_STATUS // => 0x9114  
+#endif
+ 
+#ifdef GL_SYNC_FLAGS 
+#define PHPGLFW_C_GL_SYNC_FLAGS GL_SYNC_FLAGS // => 0x9115  
+#endif
+ 
+#ifdef GL_SYNC_FENCE 
+#define PHPGLFW_C_GL_SYNC_FENCE GL_SYNC_FENCE // => 0x9116  
+#endif
+ 
+#ifdef GL_SYNC_GPU_COMMANDS_COMPLETE 
+#define PHPGLFW_C_GL_SYNC_GPU_COMMANDS_COMPLETE GL_SYNC_GPU_COMMANDS_COMPLETE // => 0x9117  
+#endif
+ 
+#ifdef GL_UNSIGNALED 
+#define PHPGLFW_C_GL_UNSIGNALED GL_UNSIGNALED // => 0x9118  
+#endif
+ 
+#ifdef GL_SIGNALED 
+#define PHPGLFW_C_GL_SIGNALED GL_SIGNALED // => 0x9119  
+#endif
+ 
+#ifdef GL_ALREADY_SIGNALED 
+#define PHPGLFW_C_GL_ALREADY_SIGNALED GL_ALREADY_SIGNALED // => 0x911A  
+#endif
+ 
+#ifdef GL_TIMEOUT_EXPIRED 
+#define PHPGLFW_C_GL_TIMEOUT_EXPIRED GL_TIMEOUT_EXPIRED // => 0x911B  
+#endif
+ 
+#ifdef GL_CONDITION_SATISFIED 
+#define PHPGLFW_C_GL_CONDITION_SATISFIED GL_CONDITION_SATISFIED // => 0x911C  
+#endif
+ 
+#ifdef GL_WAIT_FAILED 
+#define PHPGLFW_C_GL_WAIT_FAILED GL_WAIT_FAILED // => 0x911D  
+#endif
+ 
+#ifdef GL_TEXTURE_2D_MULTISAMPLE 
+#define PHPGLFW_C_GL_TEXTURE_2D_MULTISAMPLE GL_TEXTURE_2D_MULTISAMPLE // => 0x9100  
+#endif
+ 
+#ifdef GL_PROXY_TEXTURE_2D_MULTISAMPLE 
+#define PHPGLFW_C_GL_PROXY_TEXTURE_2D_MULTISAMPLE GL_PROXY_TEXTURE_2D_MULTISAMPLE // => 0x9101  
+#endif
+ 
+#ifdef GL_TEXTURE_2D_MULTISAMPLE_ARRAY 
+#define PHPGLFW_C_GL_TEXTURE_2D_MULTISAMPLE_ARRAY GL_TEXTURE_2D_MULTISAMPLE_ARRAY // => 0x9102  
+#endif
+ 
+#ifdef GL_PROXY_TEXTURE_2D_MULTISAMPLE_ARRAY 
+#define PHPGLFW_C_GL_PROXY_TEXTURE_2D_MULTISAMPLE_ARRAY GL_PROXY_TEXTURE_2D_MULTISAMPLE_ARRAY // => 0x9103  
+#endif
+ 
+#ifdef GL_TEXTURE_BINDING_2D_MULTISAMPLE 
+#define PHPGLFW_C_GL_TEXTURE_BINDING_2D_MULTISAMPLE GL_TEXTURE_BINDING_2D_MULTISAMPLE // => 0x9104  
+#endif
+ 
+#ifdef GL_TEXTURE_BINDING_2D_MULTISAMPLE_ARRAY 
+#define PHPGLFW_C_GL_TEXTURE_BINDING_2D_MULTISAMPLE_ARRAY GL_TEXTURE_BINDING_2D_MULTISAMPLE_ARRAY // => 0x9105  
+#endif
+ 
+#ifdef GL_TEXTURE_SAMPLES 
+#define PHPGLFW_C_GL_TEXTURE_SAMPLES GL_TEXTURE_SAMPLES // => 0x9106  
+#endif
+ 
+#ifdef GL_TEXTURE_FIXED_SAMPLE_LOCATIONS 
+#define PHPGLFW_C_GL_TEXTURE_FIXED_SAMPLE_LOCATIONS GL_TEXTURE_FIXED_SAMPLE_LOCATIONS // => 0x9107  
+#endif
+ 
+#ifdef GL_SAMPLER_2D_MULTISAMPLE 
+#define PHPGLFW_C_GL_SAMPLER_2D_MULTISAMPLE GL_SAMPLER_2D_MULTISAMPLE // => 0x9108  
+#endif
+ 
+#ifdef GL_INT_SAMPLER_2D_MULTISAMPLE 
+#define PHPGLFW_C_GL_INT_SAMPLER_2D_MULTISAMPLE GL_INT_SAMPLER_2D_MULTISAMPLE // => 0x9109  
+#endif
+ 
+#ifdef GL_UNSIGNED_INT_SAMPLER_2D_MULTISAMPLE 
+#define PHPGLFW_C_GL_UNSIGNED_INT_SAMPLER_2D_MULTISAMPLE GL_UNSIGNED_INT_SAMPLER_2D_MULTISAMPLE // => 0x910A  
+#endif
+ 
+#ifdef GL_SAMPLER_2D_MULTISAMPLE_ARRAY 
+#define PHPGLFW_C_GL_SAMPLER_2D_MULTISAMPLE_ARRAY GL_SAMPLER_2D_MULTISAMPLE_ARRAY // => 0x910B  
+#endif
+ 
+#ifdef GL_INT_SAMPLER_2D_MULTISAMPLE_ARRAY 
+#define PHPGLFW_C_GL_INT_SAMPLER_2D_MULTISAMPLE_ARRAY GL_INT_SAMPLER_2D_MULTISAMPLE_ARRAY // => 0x910C  
+#endif
+ 
+#ifdef GL_UNSIGNED_INT_SAMPLER_2D_MULTISAMPLE_ARRAY 
+#define PHPGLFW_C_GL_UNSIGNED_INT_SAMPLER_2D_MULTISAMPLE_ARRAY GL_UNSIGNED_INT_SAMPLER_2D_MULTISAMPLE_ARRAY // => 0x910D  
+#endif
+ 
+#ifdef GL_MAX_COLOR_TEXTURE_SAMPLES 
+#define PHPGLFW_C_GL_MAX_COLOR_TEXTURE_SAMPLES GL_MAX_COLOR_TEXTURE_SAMPLES // => 0x910E  
+#endif
+ 
+#ifdef GL_MAX_DEPTH_TEXTURE_SAMPLES 
+#define PHPGLFW_C_GL_MAX_DEPTH_TEXTURE_SAMPLES GL_MAX_DEPTH_TEXTURE_SAMPLES // => 0x910F  
+#endif
+ 
+#ifdef GL_MAX_INTEGER_SAMPLES 
+#define PHPGLFW_C_GL_MAX_INTEGER_SAMPLES GL_MAX_INTEGER_SAMPLES // => 0x9110  
+#endif
+
+/**
+ * @vendor ARB
+ * Framebuffer object specification + headroom 
+ */
+ 
+#ifdef GL_FRAMEBUFFER_ATTACHMENT_OBJECT_TYPE 
+#define PHPGLFW_C_GL_FRAMEBUFFER_ATTACHMENT_OBJECT_TYPE GL_FRAMEBUFFER_ATTACHMENT_OBJECT_TYPE // => 0x8CD0  
+#endif
+ 
+#ifdef GL_FRAMEBUFFER_ATTACHMENT_OBJECT_NAME 
+#define PHPGLFW_C_GL_FRAMEBUFFER_ATTACHMENT_OBJECT_NAME GL_FRAMEBUFFER_ATTACHMENT_OBJECT_NAME // => 0x8CD1  
+#endif
+ 
+#ifdef GL_FRAMEBUFFER_ATTACHMENT_TEXTURE_LEVEL 
+#define PHPGLFW_C_GL_FRAMEBUFFER_ATTACHMENT_TEXTURE_LEVEL GL_FRAMEBUFFER_ATTACHMENT_TEXTURE_LEVEL // => 0x8CD2  
+#endif
+ 
+#ifdef GL_FRAMEBUFFER_ATTACHMENT_TEXTURE_CUBE_MAP_FACE 
+#define PHPGLFW_C_GL_FRAMEBUFFER_ATTACHMENT_TEXTURE_CUBE_MAP_FACE GL_FRAMEBUFFER_ATTACHMENT_TEXTURE_CUBE_MAP_FACE // => 0x8CD3  
+#endif
+ 
+#ifdef GL_FRAMEBUFFER_ATTACHMENT_TEXTURE_LAYER 
+#define PHPGLFW_C_GL_FRAMEBUFFER_ATTACHMENT_TEXTURE_LAYER GL_FRAMEBUFFER_ATTACHMENT_TEXTURE_LAYER // => 0x8CD4  
+#endif
+ 
+#ifdef GL_FRAMEBUFFER_COMPLETE 
+#define PHPGLFW_C_GL_FRAMEBUFFER_COMPLETE GL_FRAMEBUFFER_COMPLETE // => 0x8CD5  
+#endif
+ 
+#ifdef GL_FRAMEBUFFER_INCOMPLETE_ATTACHMENT 
+#define PHPGLFW_C_GL_FRAMEBUFFER_INCOMPLETE_ATTACHMENT GL_FRAMEBUFFER_INCOMPLETE_ATTACHMENT // => 0x8CD6  
+#endif
+ 
+#ifdef GL_FRAMEBUFFER_INCOMPLETE_MISSING_ATTACHMENT 
+#define PHPGLFW_C_GL_FRAMEBUFFER_INCOMPLETE_MISSING_ATTACHMENT GL_FRAMEBUFFER_INCOMPLETE_MISSING_ATTACHMENT // => 0x8CD7  
+#endif
+ 
+#ifdef GL_FRAMEBUFFER_INCOMPLETE_DRAW_BUFFER 
+#define PHPGLFW_C_GL_FRAMEBUFFER_INCOMPLETE_DRAW_BUFFER GL_FRAMEBUFFER_INCOMPLETE_DRAW_BUFFER // => 0x8CDB  
+#endif
+ 
+#ifdef GL_FRAMEBUFFER_INCOMPLETE_READ_BUFFER 
+#define PHPGLFW_C_GL_FRAMEBUFFER_INCOMPLETE_READ_BUFFER GL_FRAMEBUFFER_INCOMPLETE_READ_BUFFER // => 0x8CDC  
+#endif
+ 
+#ifdef GL_FRAMEBUFFER_UNSUPPORTED 
+#define PHPGLFW_C_GL_FRAMEBUFFER_UNSUPPORTED GL_FRAMEBUFFER_UNSUPPORTED // => 0x8CDD  
+#endif
+ 
+#ifdef GL_MAX_COLOR_ATTACHMENTS 
+#define PHPGLFW_C_GL_MAX_COLOR_ATTACHMENTS GL_MAX_COLOR_ATTACHMENTS // => 0x8CDF  
+#endif
+ 
+#ifdef GL_COLOR_ATTACHMENT0 
+#define PHPGLFW_C_GL_COLOR_ATTACHMENT0 GL_COLOR_ATTACHMENT0 // => 0x8CE0  
+#endif
+ 
+#ifdef GL_COLOR_ATTACHMENT1 
+#define PHPGLFW_C_GL_COLOR_ATTACHMENT1 GL_COLOR_ATTACHMENT1 // => 0x8CE1  
+#endif
+ 
+#ifdef GL_COLOR_ATTACHMENT2 
+#define PHPGLFW_C_GL_COLOR_ATTACHMENT2 GL_COLOR_ATTACHMENT2 // => 0x8CE2  
+#endif
+ 
+#ifdef GL_COLOR_ATTACHMENT3 
+#define PHPGLFW_C_GL_COLOR_ATTACHMENT3 GL_COLOR_ATTACHMENT3 // => 0x8CE3  
+#endif
+ 
+#ifdef GL_COLOR_ATTACHMENT4 
+#define PHPGLFW_C_GL_COLOR_ATTACHMENT4 GL_COLOR_ATTACHMENT4 // => 0x8CE4  
+#endif
+ 
+#ifdef GL_COLOR_ATTACHMENT5 
+#define PHPGLFW_C_GL_COLOR_ATTACHMENT5 GL_COLOR_ATTACHMENT5 // => 0x8CE5  
+#endif
+ 
+#ifdef GL_COLOR_ATTACHMENT6 
+#define PHPGLFW_C_GL_COLOR_ATTACHMENT6 GL_COLOR_ATTACHMENT6 // => 0x8CE6  
+#endif
+ 
+#ifdef GL_COLOR_ATTACHMENT7 
+#define PHPGLFW_C_GL_COLOR_ATTACHMENT7 GL_COLOR_ATTACHMENT7 // => 0x8CE7  
+#endif
+ 
+#ifdef GL_COLOR_ATTACHMENT8 
+#define PHPGLFW_C_GL_COLOR_ATTACHMENT8 GL_COLOR_ATTACHMENT8 // => 0x8CE8  
+#endif
+ 
+#ifdef GL_COLOR_ATTACHMENT9 
+#define PHPGLFW_C_GL_COLOR_ATTACHMENT9 GL_COLOR_ATTACHMENT9 // => 0x8CE9  
+#endif
+ 
+#ifdef GL_COLOR_ATTACHMENT10 
+#define PHPGLFW_C_GL_COLOR_ATTACHMENT10 GL_COLOR_ATTACHMENT10 // => 0x8CEA  
+#endif
+ 
+#ifdef GL_COLOR_ATTACHMENT11 
+#define PHPGLFW_C_GL_COLOR_ATTACHMENT11 GL_COLOR_ATTACHMENT11 // => 0x8CEB  
+#endif
+ 
+#ifdef GL_COLOR_ATTACHMENT12 
+#define PHPGLFW_C_GL_COLOR_ATTACHMENT12 GL_COLOR_ATTACHMENT12 // => 0x8CEC  
+#endif
+ 
+#ifdef GL_COLOR_ATTACHMENT13 
+#define PHPGLFW_C_GL_COLOR_ATTACHMENT13 GL_COLOR_ATTACHMENT13 // => 0x8CED  
+#endif
+ 
+#ifdef GL_COLOR_ATTACHMENT14 
+#define PHPGLFW_C_GL_COLOR_ATTACHMENT14 GL_COLOR_ATTACHMENT14 // => 0x8CEE  
+#endif
+ 
+#ifdef GL_COLOR_ATTACHMENT15 
+#define PHPGLFW_C_GL_COLOR_ATTACHMENT15 GL_COLOR_ATTACHMENT15 // => 0x8CEF  
+#endif
+ 
+#ifdef GL_COLOR_ATTACHMENT16 
+#define PHPGLFW_C_GL_COLOR_ATTACHMENT16 GL_COLOR_ATTACHMENT16 // => 0x8CF0  
+#endif
+ 
+#ifdef GL_COLOR_ATTACHMENT17 
+#define PHPGLFW_C_GL_COLOR_ATTACHMENT17 GL_COLOR_ATTACHMENT17 // => 0x8CF1  
+#endif
+ 
+#ifdef GL_COLOR_ATTACHMENT18 
+#define PHPGLFW_C_GL_COLOR_ATTACHMENT18 GL_COLOR_ATTACHMENT18 // => 0x8CF2  
+#endif
+ 
+#ifdef GL_COLOR_ATTACHMENT19 
+#define PHPGLFW_C_GL_COLOR_ATTACHMENT19 GL_COLOR_ATTACHMENT19 // => 0x8CF3  
+#endif
+ 
+#ifdef GL_COLOR_ATTACHMENT20 
+#define PHPGLFW_C_GL_COLOR_ATTACHMENT20 GL_COLOR_ATTACHMENT20 // => 0x8CF4  
+#endif
+ 
+#ifdef GL_COLOR_ATTACHMENT21 
+#define PHPGLFW_C_GL_COLOR_ATTACHMENT21 GL_COLOR_ATTACHMENT21 // => 0x8CF5  
+#endif
+ 
+#ifdef GL_COLOR_ATTACHMENT22 
+#define PHPGLFW_C_GL_COLOR_ATTACHMENT22 GL_COLOR_ATTACHMENT22 // => 0x8CF6  
+#endif
+ 
+#ifdef GL_COLOR_ATTACHMENT23 
+#define PHPGLFW_C_GL_COLOR_ATTACHMENT23 GL_COLOR_ATTACHMENT23 // => 0x8CF7  
+#endif
+ 
+#ifdef GL_COLOR_ATTACHMENT24 
+#define PHPGLFW_C_GL_COLOR_ATTACHMENT24 GL_COLOR_ATTACHMENT24 // => 0x8CF8  
+#endif
+ 
+#ifdef GL_COLOR_ATTACHMENT25 
+#define PHPGLFW_C_GL_COLOR_ATTACHMENT25 GL_COLOR_ATTACHMENT25 // => 0x8CF9  
+#endif
+ 
+#ifdef GL_COLOR_ATTACHMENT26 
+#define PHPGLFW_C_GL_COLOR_ATTACHMENT26 GL_COLOR_ATTACHMENT26 // => 0x8CFA  
+#endif
+ 
+#ifdef GL_COLOR_ATTACHMENT27 
+#define PHPGLFW_C_GL_COLOR_ATTACHMENT27 GL_COLOR_ATTACHMENT27 // => 0x8CFB  
+#endif
+ 
+#ifdef GL_COLOR_ATTACHMENT28 
+#define PHPGLFW_C_GL_COLOR_ATTACHMENT28 GL_COLOR_ATTACHMENT28 // => 0x8CFC  
+#endif
+ 
+#ifdef GL_COLOR_ATTACHMENT29 
+#define PHPGLFW_C_GL_COLOR_ATTACHMENT29 GL_COLOR_ATTACHMENT29 // => 0x8CFD  
+#endif
+ 
+#ifdef GL_COLOR_ATTACHMENT30 
+#define PHPGLFW_C_GL_COLOR_ATTACHMENT30 GL_COLOR_ATTACHMENT30 // => 0x8CFE  
+#endif
+ 
+#ifdef GL_COLOR_ATTACHMENT31 
+#define PHPGLFW_C_GL_COLOR_ATTACHMENT31 GL_COLOR_ATTACHMENT31 // => 0x8CFF  
+#endif
+ 
+#ifdef GL_DEPTH_ATTACHMENT 
+#define PHPGLFW_C_GL_DEPTH_ATTACHMENT GL_DEPTH_ATTACHMENT // => 0x8D00  
+#endif
+ 
+#ifdef GL_STENCIL_ATTACHMENT 
+#define PHPGLFW_C_GL_STENCIL_ATTACHMENT GL_STENCIL_ATTACHMENT // => 0x8D20  
+#endif
+ 
+#ifdef GL_FRAMEBUFFER 
+#define PHPGLFW_C_GL_FRAMEBUFFER GL_FRAMEBUFFER // => 0x8D40  
+#endif
+ 
+#ifdef GL_RENDERBUFFER 
+#define PHPGLFW_C_GL_RENDERBUFFER GL_RENDERBUFFER // => 0x8D41  
+#endif
+ 
+#ifdef GL_RENDERBUFFER_WIDTH 
+#define PHPGLFW_C_GL_RENDERBUFFER_WIDTH GL_RENDERBUFFER_WIDTH // => 0x8D42  
+#endif
+ 
+#ifdef GL_RENDERBUFFER_HEIGHT 
+#define PHPGLFW_C_GL_RENDERBUFFER_HEIGHT GL_RENDERBUFFER_HEIGHT // => 0x8D43  
+#endif
+ 
+#ifdef GL_RENDERBUFFER_INTERNAL_FORMAT 
+#define PHPGLFW_C_GL_RENDERBUFFER_INTERNAL_FORMAT GL_RENDERBUFFER_INTERNAL_FORMAT // => 0x8D44  
+#endif
+ 
+#ifdef GL_STENCIL_INDEX1 
+#define PHPGLFW_C_GL_STENCIL_INDEX1 GL_STENCIL_INDEX1 // => 0x8D46  
+#endif
+ 
+#ifdef GL_STENCIL_INDEX4 
+#define PHPGLFW_C_GL_STENCIL_INDEX4 GL_STENCIL_INDEX4 // => 0x8D47  
+#endif
+ 
+#ifdef GL_STENCIL_INDEX8 
+#define PHPGLFW_C_GL_STENCIL_INDEX8 GL_STENCIL_INDEX8 // => 0x8D48  
+#endif
+ 
+#ifdef GL_STENCIL_INDEX16 
+#define PHPGLFW_C_GL_STENCIL_INDEX16 GL_STENCIL_INDEX16 // => 0x8D49  
+#endif
+ 
+#ifdef GL_RENDERBUFFER_RED_SIZE 
+#define PHPGLFW_C_GL_RENDERBUFFER_RED_SIZE GL_RENDERBUFFER_RED_SIZE // => 0x8D50  
+#endif
+ 
+#ifdef GL_RENDERBUFFER_GREEN_SIZE 
+#define PHPGLFW_C_GL_RENDERBUFFER_GREEN_SIZE GL_RENDERBUFFER_GREEN_SIZE // => 0x8D51  
+#endif
+ 
+#ifdef GL_RENDERBUFFER_BLUE_SIZE 
+#define PHPGLFW_C_GL_RENDERBUFFER_BLUE_SIZE GL_RENDERBUFFER_BLUE_SIZE // => 0x8D52  
+#endif
+ 
+#ifdef GL_RENDERBUFFER_ALPHA_SIZE 
+#define PHPGLFW_C_GL_RENDERBUFFER_ALPHA_SIZE GL_RENDERBUFFER_ALPHA_SIZE // => 0x8D53  
+#endif
+ 
+#ifdef GL_RENDERBUFFER_DEPTH_SIZE 
+#define PHPGLFW_C_GL_RENDERBUFFER_DEPTH_SIZE GL_RENDERBUFFER_DEPTH_SIZE // => 0x8D54  
+#endif
+ 
+#ifdef GL_RENDERBUFFER_STENCIL_SIZE 
+#define PHPGLFW_C_GL_RENDERBUFFER_STENCIL_SIZE GL_RENDERBUFFER_STENCIL_SIZE // => 0x8D55  
+#endif
+ 
+#ifdef GL_FRAMEBUFFER_INCOMPLETE_MULTISAMPLE 
+#define PHPGLFW_C_GL_FRAMEBUFFER_INCOMPLETE_MULTISAMPLE GL_FRAMEBUFFER_INCOMPLETE_MULTISAMPLE // => 0x8D56  
+#endif
+ 
+#ifdef GL_MAX_SAMPLES 
+#define PHPGLFW_C_GL_MAX_SAMPLES GL_MAX_SAMPLES // => 0x8D57  
+#endif
+
+/**
+ 
+ * MapBufferAccessMask 
+ * ----------------------------------------------------------------------------
+ *  
+ */
+ 
+#ifdef GL_MAP_READ_BIT 
+#define PHPGLFW_C_GL_MAP_READ_BIT GL_MAP_READ_BIT // => 0x0001  
+#endif
+ 
+#ifdef GL_MAP_WRITE_BIT 
+#define PHPGLFW_C_GL_MAP_WRITE_BIT GL_MAP_WRITE_BIT // => 0x0002  
+#endif
+ 
+#ifdef GL_MAP_INVALIDATE_RANGE_BIT 
+#define PHPGLFW_C_GL_MAP_INVALIDATE_RANGE_BIT GL_MAP_INVALIDATE_RANGE_BIT // => 0x0004  
+#endif
+ 
+#ifdef GL_MAP_INVALIDATE_BUFFER_BIT 
+#define PHPGLFW_C_GL_MAP_INVALIDATE_BUFFER_BIT GL_MAP_INVALIDATE_BUFFER_BIT // => 0x0008  
+#endif
+ 
+#ifdef GL_MAP_FLUSH_EXPLICIT_BIT 
+#define PHPGLFW_C_GL_MAP_FLUSH_EXPLICIT_BIT GL_MAP_FLUSH_EXPLICIT_BIT // => 0x0010  
+#endif
+ 
+#ifdef GL_MAP_UNSYNCHRONIZED_BIT 
+#define PHPGLFW_C_GL_MAP_UNSYNCHRONIZED_BIT GL_MAP_UNSYNCHRONIZED_BIT // => 0x0020  
+#endif
+
+/**
+ * @vendor APPLE 
+ */
+ 
+#ifdef GL_VERTEX_ARRAY_BINDING 
+#define PHPGLFW_C_GL_VERTEX_ARRAY_BINDING GL_VERTEX_ARRAY_BINDING // => 0x85B5  
+#endif
+
+/**
+ * @vendor ARB 
+ */
+ 
+#ifdef GL_R8_SNORM 
+#define PHPGLFW_C_GL_R8_SNORM GL_R8_SNORM // => 0x8F94  
+#endif
+ 
+#ifdef GL_RG8_SNORM 
+#define PHPGLFW_C_GL_RG8_SNORM GL_RG8_SNORM // => 0x8F95  
+#endif
+ 
+#ifdef GL_RGB8_SNORM 
+#define PHPGLFW_C_GL_RGB8_SNORM GL_RGB8_SNORM // => 0x8F96  
+#endif
+ 
+#ifdef GL_RGBA8_SNORM 
+#define PHPGLFW_C_GL_RGBA8_SNORM GL_RGBA8_SNORM // => 0x8F97  
+#endif
+ 
+#ifdef GL_R16_SNORM 
+#define PHPGLFW_C_GL_R16_SNORM GL_R16_SNORM // => 0x8F98  
+#endif
+ 
+#ifdef GL_RG16_SNORM 
+#define PHPGLFW_C_GL_RG16_SNORM GL_RG16_SNORM // => 0x8F99  
+#endif
+ 
+#ifdef GL_RGB16_SNORM 
+#define PHPGLFW_C_GL_RGB16_SNORM GL_RGB16_SNORM // => 0x8F9A  
+#endif
+ 
+#ifdef GL_RGBA16_SNORM 
+#define PHPGLFW_C_GL_RGBA16_SNORM GL_RGBA16_SNORM // => 0x8F9B  
+#endif
+ 
+#ifdef GL_SIGNED_NORMALIZED 
+#define PHPGLFW_C_GL_SIGNED_NORMALIZED GL_SIGNED_NORMALIZED // => 0x8F9C  
+#endif
+ 
+#ifdef GL_PRIMITIVE_RESTART 
+#define PHPGLFW_C_GL_PRIMITIVE_RESTART GL_PRIMITIVE_RESTART // => 0x8F9D  
+#endif
+ 
+#ifdef GL_PRIMITIVE_RESTART_INDEX 
+#define PHPGLFW_C_GL_PRIMITIVE_RESTART_INDEX GL_PRIMITIVE_RESTART_INDEX // => 0x8F9E  
+#endif
+
+/**
+ * @vendor NV
+ * For Pat Brown, Khronos bug 3191 
+ */
+ 
+#ifdef GL_COPY_READ_BUFFER 
+#define PHPGLFW_C_GL_COPY_READ_BUFFER GL_COPY_READ_BUFFER // => 0x8F36  
+#endif
+ 
+#ifdef GL_COPY_WRITE_BUFFER 
+#define PHPGLFW_C_GL_COPY_WRITE_BUFFER GL_COPY_WRITE_BUFFER // => 0x8F37  
+#endif
+
+/**
+ * @vendor APPLE 
+ */
+ 
+#ifdef GL_UNIFORM_BUFFER 
+#define PHPGLFW_C_GL_UNIFORM_BUFFER GL_UNIFORM_BUFFER // => 0x8A11  
+#endif
+ 
+#ifdef GL_UNIFORM_BUFFER_BINDING 
+#define PHPGLFW_C_GL_UNIFORM_BUFFER_BINDING GL_UNIFORM_BUFFER_BINDING // => 0x8A28  
+#endif
+ 
+#ifdef GL_UNIFORM_BUFFER_START 
+#define PHPGLFW_C_GL_UNIFORM_BUFFER_START GL_UNIFORM_BUFFER_START // => 0x8A29  
+#endif
+ 
+#ifdef GL_UNIFORM_BUFFER_SIZE 
+#define PHPGLFW_C_GL_UNIFORM_BUFFER_SIZE GL_UNIFORM_BUFFER_SIZE // => 0x8A2A  
+#endif
+ 
+#ifdef GL_MAX_VERTEX_UNIFORM_BLOCKS 
+#define PHPGLFW_C_GL_MAX_VERTEX_UNIFORM_BLOCKS GL_MAX_VERTEX_UNIFORM_BLOCKS // => 0x8A2B  
+#endif
+ 
+#ifdef GL_MAX_GEOMETRY_UNIFORM_BLOCKS 
+#define PHPGLFW_C_GL_MAX_GEOMETRY_UNIFORM_BLOCKS GL_MAX_GEOMETRY_UNIFORM_BLOCKS // => 0x8A2C  
+#endif
+ 
+#ifdef GL_MAX_FRAGMENT_UNIFORM_BLOCKS 
+#define PHPGLFW_C_GL_MAX_FRAGMENT_UNIFORM_BLOCKS GL_MAX_FRAGMENT_UNIFORM_BLOCKS // => 0x8A2D  
+#endif
+ 
+#ifdef GL_MAX_COMBINED_UNIFORM_BLOCKS 
+#define PHPGLFW_C_GL_MAX_COMBINED_UNIFORM_BLOCKS GL_MAX_COMBINED_UNIFORM_BLOCKS // => 0x8A2E  
+#endif
+ 
+#ifdef GL_MAX_UNIFORM_BUFFER_BINDINGS 
+#define PHPGLFW_C_GL_MAX_UNIFORM_BUFFER_BINDINGS GL_MAX_UNIFORM_BUFFER_BINDINGS // => 0x8A2F  
+#endif
+ 
+#ifdef GL_MAX_UNIFORM_BLOCK_SIZE 
+#define PHPGLFW_C_GL_MAX_UNIFORM_BLOCK_SIZE GL_MAX_UNIFORM_BLOCK_SIZE // => 0x8A30  
+#endif
+ 
+#ifdef GL_MAX_COMBINED_VERTEX_UNIFORM_COMPONENTS 
+#define PHPGLFW_C_GL_MAX_COMBINED_VERTEX_UNIFORM_COMPONENTS GL_MAX_COMBINED_VERTEX_UNIFORM_COMPONENTS // => 0x8A31  
+#endif
+ 
+#ifdef GL_MAX_COMBINED_GEOMETRY_UNIFORM_COMPONENTS 
+#define PHPGLFW_C_GL_MAX_COMBINED_GEOMETRY_UNIFORM_COMPONENTS GL_MAX_COMBINED_GEOMETRY_UNIFORM_COMPONENTS // => 0x8A32  
+#endif
+ 
+#ifdef GL_MAX_COMBINED_FRAGMENT_UNIFORM_COMPONENTS 
+#define PHPGLFW_C_GL_MAX_COMBINED_FRAGMENT_UNIFORM_COMPONENTS GL_MAX_COMBINED_FRAGMENT_UNIFORM_COMPONENTS // => 0x8A33  
+#endif
+ 
+#ifdef GL_UNIFORM_BUFFER_OFFSET_ALIGNMENT 
+#define PHPGLFW_C_GL_UNIFORM_BUFFER_OFFSET_ALIGNMENT GL_UNIFORM_BUFFER_OFFSET_ALIGNMENT // => 0x8A34  
+#endif
+ 
+#ifdef GL_ACTIVE_UNIFORM_BLOCK_MAX_NAME_LENGTH 
+#define PHPGLFW_C_GL_ACTIVE_UNIFORM_BLOCK_MAX_NAME_LENGTH GL_ACTIVE_UNIFORM_BLOCK_MAX_NAME_LENGTH // => 0x8A35  
+#endif
+ 
+#ifdef GL_ACTIVE_UNIFORM_BLOCKS 
+#define PHPGLFW_C_GL_ACTIVE_UNIFORM_BLOCKS GL_ACTIVE_UNIFORM_BLOCKS // => 0x8A36  
+#endif
+ 
+#ifdef GL_UNIFORM_TYPE 
+#define PHPGLFW_C_GL_UNIFORM_TYPE GL_UNIFORM_TYPE // => 0x8A37  
+#endif
+ 
+#ifdef GL_UNIFORM_SIZE 
+#define PHPGLFW_C_GL_UNIFORM_SIZE GL_UNIFORM_SIZE // => 0x8A38  
+#endif
+ 
+#ifdef GL_UNIFORM_NAME_LENGTH 
+#define PHPGLFW_C_GL_UNIFORM_NAME_LENGTH GL_UNIFORM_NAME_LENGTH // => 0x8A39  
+#endif
+ 
+#ifdef GL_UNIFORM_BLOCK_INDEX 
+#define PHPGLFW_C_GL_UNIFORM_BLOCK_INDEX GL_UNIFORM_BLOCK_INDEX // => 0x8A3A  
+#endif
+ 
+#ifdef GL_UNIFORM_OFFSET 
+#define PHPGLFW_C_GL_UNIFORM_OFFSET GL_UNIFORM_OFFSET // => 0x8A3B  
+#endif
+ 
+#ifdef GL_UNIFORM_ARRAY_STRIDE 
+#define PHPGLFW_C_GL_UNIFORM_ARRAY_STRIDE GL_UNIFORM_ARRAY_STRIDE // => 0x8A3C  
+#endif
+ 
+#ifdef GL_UNIFORM_MATRIX_STRIDE 
+#define PHPGLFW_C_GL_UNIFORM_MATRIX_STRIDE GL_UNIFORM_MATRIX_STRIDE // => 0x8A3D  
+#endif
+ 
+#ifdef GL_UNIFORM_IS_ROW_MAJOR 
+#define PHPGLFW_C_GL_UNIFORM_IS_ROW_MAJOR GL_UNIFORM_IS_ROW_MAJOR // => 0x8A3E  
+#endif
+ 
+#ifdef GL_UNIFORM_BLOCK_BINDING 
+#define PHPGLFW_C_GL_UNIFORM_BLOCK_BINDING GL_UNIFORM_BLOCK_BINDING // => 0x8A3F  
+#endif
+ 
+#ifdef GL_UNIFORM_BLOCK_DATA_SIZE 
+#define PHPGLFW_C_GL_UNIFORM_BLOCK_DATA_SIZE GL_UNIFORM_BLOCK_DATA_SIZE // => 0x8A40  
+#endif
+ 
+#ifdef GL_UNIFORM_BLOCK_NAME_LENGTH 
+#define PHPGLFW_C_GL_UNIFORM_BLOCK_NAME_LENGTH GL_UNIFORM_BLOCK_NAME_LENGTH // => 0x8A41  
+#endif
+ 
+#ifdef GL_UNIFORM_BLOCK_ACTIVE_UNIFORMS 
+#define PHPGLFW_C_GL_UNIFORM_BLOCK_ACTIVE_UNIFORMS GL_UNIFORM_BLOCK_ACTIVE_UNIFORMS // => 0x8A42  
+#endif
+ 
+#ifdef GL_UNIFORM_BLOCK_ACTIVE_UNIFORM_INDICES 
+#define PHPGLFW_C_GL_UNIFORM_BLOCK_ACTIVE_UNIFORM_INDICES GL_UNIFORM_BLOCK_ACTIVE_UNIFORM_INDICES // => 0x8A43  
+#endif
+ 
+#ifdef GL_UNIFORM_BLOCK_REFERENCED_BY_VERTEX_SHADER 
+#define PHPGLFW_C_GL_UNIFORM_BLOCK_REFERENCED_BY_VERTEX_SHADER GL_UNIFORM_BLOCK_REFERENCED_BY_VERTEX_SHADER // => 0x8A44  
+#endif
+ 
+#ifdef GL_UNIFORM_BLOCK_REFERENCED_BY_GEOMETRY_SHADER 
+#define PHPGLFW_C_GL_UNIFORM_BLOCK_REFERENCED_BY_GEOMETRY_SHADER GL_UNIFORM_BLOCK_REFERENCED_BY_GEOMETRY_SHADER // => 0x8A45  
+#endif
+ 
+#ifdef GL_UNIFORM_BLOCK_REFERENCED_BY_FRAGMENT_SHADER 
+#define PHPGLFW_C_GL_UNIFORM_BLOCK_REFERENCED_BY_FRAGMENT_SHADER GL_UNIFORM_BLOCK_REFERENCED_BY_FRAGMENT_SHADER // => 0x8A46  
+#endif
+
+/**
+ 
+ * ContextProfileMask 
+ * ----------------------------------------------------------------------------
+ *  
+ */
+ 
+#ifdef GL_CONTEXT_CORE_PROFILE_BIT 
+#define PHPGLFW_C_GL_CONTEXT_CORE_PROFILE_BIT GL_CONTEXT_CORE_PROFILE_BIT // => 0x00000001  
+#endif
+ 
+#ifdef GL_CONTEXT_COMPATIBILITY_PROFILE_BIT 
+#define PHPGLFW_C_GL_CONTEXT_COMPATIBILITY_PROFILE_BIT GL_CONTEXT_COMPATIBILITY_PROFILE_BIT // => 0x00000002  
+#endif
+
+/**
+ 
+ * SyncObjectMask 
+ * ----------------------------------------------------------------------------
+ *  
+ */
+ 
+#ifdef GL_SYNC_FLUSH_COMMANDS_BIT 
+#define PHPGLFW_C_GL_SYNC_FLUSH_COMMANDS_BIT GL_SYNC_FLUSH_COMMANDS_BIT // => 0x00000001  
+#endif
+

@@ -26,6 +26,8 @@ class GLSpecReader
                 $this->parseCommands($spec, $el);
             } elseif ($name === 'feature') {
                 $this->parseFeatures($spec, $el);
+            } elseif ($name === 'enums') {
+                $this->parseEnums($spec, $el);
             }
         }
     }
@@ -41,6 +43,36 @@ class GLSpecReader
     }
 
     /**
+     * Parse an element of enums
+     * 
+     * @param GLSpec                $spec
+     * @param SimpleXMLElement      $enums
+     */
+    private function parseEnums(GLSpec $spec, SimpleXMLElement $enums)
+    {
+        $constGroup = new GLSpecConstantGroup;
+        $constGroup->group = $enums->attributes()->group;
+        $constGroup->vendor = $enums->attributes()->vendor;
+        $constGroup->comment = $enums->attributes()->comment;
+
+        foreach($enums->children() as $enumDef) 
+        {
+            if ($enumDef->getName() === 'enum') {
+                $const = $spec->makeConstant($enumDef->attributes()->name, (string) $enumDef->attributes()->value);
+                $const->constGroup = $constGroup;
+
+                if ($group = (string) $enumDef->attributes()->group) {
+                    $const->groups = explode(',', $group);
+                }
+
+                if ($comment = (string) $enumDef->attributes()->comment) {
+                    $const->comment = $comment;
+                }
+            }
+        }
+    }
+
+    /**
      * Parse an element of commands
      * 
      * @param GLSpec                $feature
@@ -52,15 +84,22 @@ class GLSpecReader
         $version->versionString = $feature->attributes()->number;
         $version->api = $feature->attributes()->api;
 
-        // required features
-        foreach($feature->require->children() as $cat) 
-        {   
-            if ($cat->getName() === 'enum') {
-                $version->enums[] = (string) $cat->attributes()->name;
+        foreach($feature->children() as $child) 
+        {
+            if ($child->getName() !== 'require') {
+                continue;
             }
 
-            elseif ($cat->getName() === 'command') {
-                $version->functions[] = (string) $cat->attributes()->name;
+            // required features
+            foreach($child->children() as $cat) 
+            {   
+                if ($cat->getName() === 'enum') {
+                    $version->enums[] = (string) $cat->attributes()->name;
+                }
+
+                elseif ($cat->getName() === 'command') {
+                    $version->functions[] = (string) $cat->attributes()->name;
+                }
             }
         }
     }
