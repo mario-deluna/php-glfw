@@ -33,7 +33,7 @@ if test "$PHP_GLFW" != "no"; then
 
   # GLAD
   #PHP_ADD_LIBRARY_WITH_PATH(glad, glad/$PHP_LIBDIR, GLFW_SHARED_LIBADD)
-  PHP_ADD_INCLUDE(glad/include)
+  PHP_ADD_INCLUDE(vendor/glad/include)
   
   # GLFW
   PHP_ADD_LIBRARY_WITH_PATH(glfw, [$GLFW_DIR/$PHP_LIBDIR], GLFW_SHARED_LIBADD)
@@ -45,5 +45,5 @@ if test "$PHP_GLFW" != "no"; then
   AC_DEFINE(HAVE_GLFW, 1, [Whether you have glfw])
   PHP_SUBST(GLFW_SHARED_LIBADD)
 
-  PHP_NEW_EXTENSION(glfw, glfw_gen.c glad/src/glad.c, $ext_shared)
+  PHP_NEW_EXTENSION(glfw, phpglfw.c phpglfw_constants.c vendor/glad/src/glad.c, $ext_shared)
 fi

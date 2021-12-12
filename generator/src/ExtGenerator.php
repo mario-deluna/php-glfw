@@ -113,6 +113,7 @@ class ExtGenerator
     public function build(string $path)
     {
         $this->buildConstantsHeader();
+        $this->buildConstantsBody();
         $this->buildStubs();
     }
 
@@ -134,13 +135,18 @@ class ExtGenerator
         ]);
     }
 
+    private function buildConstantsBody()
+    {
+        $buffer = $this->generateTemplate('phpglfw_constants.c', [
+            'constants' => $this->constants,
+        ]);
+    }
+
     private function buildStubs()
     {
         $buffer = $this->generateTemplate('phpglfw.stub.php', [
             'constants' => $this->constants,
             '__buffer_prefix' => '<?php ' . PHP_EOL
         ]);
-
-        var_dump($buffer);
     }
 }

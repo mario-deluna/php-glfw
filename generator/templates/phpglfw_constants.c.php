@@ -23,32 +23,17 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-#ifndef PHP_GLFW_CONSTANTS_H
-#define PHP_GLFW_CONSTANTS_H 1
+#include "phpglfw_constants.h"
 
+#include "php.h"
+#include "phpglfw.h"
 #include <zend_API.h>
-#include <glad/glad.h>
-#include <GLFW/glfw3.h>
 
-void phpglfw_register_constants(INIT_FUNC_ARGS);
-
-<?php foreach($groupedConstants as list($group, $constants)) : //var_dump($group); die; ?>
-/**
-<?php if ($group->name) : ?> 
- * <?php echo $group->name; ?> 
- * ----------------------------------------------------------------------------
-<?php endif; ?>
-<?php echo commentifyString($group->desc); ?> 
- */
+void phpglfw_register_constants(INIT_FUNC_ARGS)
+{
 <?php foreach($constants as $const) : //var_dump($const); die; ?>
-<?php if ($const->isForwardDefinition) : ?> 
-#ifdef <?php echo $const->definition; ?> 
-<?php endif; ?>
-#define <?php echo $const->internalConstantName(); ?> <?php echo $const->definition; ?><?php if ($const->comment) : ?> // <?php echo $const->comment; ?> <?php endif; ?> 
-<?php if ($const->isForwardDefinition) : ?>
+#ifdef <?php echo $const->internalConstantName(); ?> 
+    REGISTER_LONG_CONSTANT("<?php echo $const->name; ?>", <?php echo $const->internalConstantName(); ?>, CONST_CS|CONST_PERSISTENT);
 #endif
-<?php endif; ?>
 <?php endforeach; ?>
-
-<?php endforeach; ?>
-#endif
+}

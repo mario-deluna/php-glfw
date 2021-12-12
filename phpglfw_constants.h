@@ -25,7 +25,12 @@
  */
 #ifndef PHP_GLFW_CONSTANTS_H
 #define PHP_GLFW_CONSTANTS_H 1
+
+#include <zend_API.h>
 #include <glad/glad.h>
+#include <GLFW/glfw3.h>
+
+void phpglfw_register_constants(INIT_FUNC_ARGS);
 
 /**
  
@@ -5224,22 +5229,6 @@
 #define PHPGLFW_C_GLFW_HAT_LEFT GLFW_HAT_LEFT // => 8  
 #endif
  
-#ifdef GLFW_HAT_RIGHT_UP           (GLFW_HAT_RIGHT | 
-#define PHPGLFW_C_GLFW_HAT_RIGHT_UP           (GLFW_HAT_RIGHT | GLFW_HAT_RIGHT_UP           (GLFW_HAT_RIGHT | // => GLFW_HAT_UP  
-#endif
- 
-#ifdef GLFW_HAT_RIGHT_DOWN         (GLFW_HAT_RIGHT | 
-#define PHPGLFW_C_GLFW_HAT_RIGHT_DOWN         (GLFW_HAT_RIGHT | GLFW_HAT_RIGHT_DOWN         (GLFW_HAT_RIGHT | // => GLFW_HAT_DOWN  
-#endif
- 
-#ifdef GLFW_HAT_LEFT_UP            (GLFW_HAT_LEFT  | 
-#define PHPGLFW_C_GLFW_HAT_LEFT_UP            (GLFW_HAT_LEFT  | GLFW_HAT_LEFT_UP            (GLFW_HAT_LEFT  | // => GLFW_HAT_UP  
-#endif
- 
-#ifdef GLFW_HAT_LEFT_DOWN          (GLFW_HAT_LEFT  | 
-#define PHPGLFW_C_GLFW_HAT_LEFT_DOWN          (GLFW_HAT_LEFT  | GLFW_HAT_LEFT_DOWN          (GLFW_HAT_LEFT  | // => GLFW_HAT_DOWN  
-#endif
- 
 #ifdef GLFW_KEY_SPACE 
 #define PHPGLFW_C_GLFW_KEY_SPACE GLFW_KEY_SPACE // => 32  
 #endif
@@ -5262,46 +5251,6 @@
  
 #ifdef GLFW_KEY_SLASH 
 #define PHPGLFW_C_GLFW_KEY_SLASH GLFW_KEY_SLASH // => 47  
-#endif
- 
-#ifdef GLFW_KEY_0 
-#define PHPGLFW_C_GLFW_KEY_0 GLFW_KEY_0 // => 48  
-#endif
- 
-#ifdef GLFW_KEY_1 
-#define PHPGLFW_C_GLFW_KEY_1 GLFW_KEY_1 // => 49  
-#endif
- 
-#ifdef GLFW_KEY_2 
-#define PHPGLFW_C_GLFW_KEY_2 GLFW_KEY_2 // => 50  
-#endif
- 
-#ifdef GLFW_KEY_3 
-#define PHPGLFW_C_GLFW_KEY_3 GLFW_KEY_3 // => 51  
-#endif
- 
-#ifdef GLFW_KEY_4 
-#define PHPGLFW_C_GLFW_KEY_4 GLFW_KEY_4 // => 52  
-#endif
- 
-#ifdef GLFW_KEY_5 
-#define PHPGLFW_C_GLFW_KEY_5 GLFW_KEY_5 // => 53  
-#endif
- 
-#ifdef GLFW_KEY_6 
-#define PHPGLFW_C_GLFW_KEY_6 GLFW_KEY_6 // => 54  
-#endif
- 
-#ifdef GLFW_KEY_7 
-#define PHPGLFW_C_GLFW_KEY_7 GLFW_KEY_7 // => 55  
-#endif
- 
-#ifdef GLFW_KEY_8 
-#define PHPGLFW_C_GLFW_KEY_8 GLFW_KEY_8 // => 56  
-#endif
- 
-#ifdef GLFW_KEY_9 
-#define PHPGLFW_C_GLFW_KEY_9 GLFW_KEY_9 // => 57  
 #endif
  
 #ifdef GLFW_KEY_SEMICOLON 
@@ -5432,14 +5381,6 @@
 #define PHPGLFW_C_GLFW_KEY_GRAVE_ACCENT GLFW_KEY_GRAVE_ACCENT // => 96  
 #endif
  
-#ifdef GLFW_KEY_WORLD_1 
-#define PHPGLFW_C_GLFW_KEY_WORLD_1 GLFW_KEY_WORLD_1 // => 161  
-#endif
- 
-#ifdef GLFW_KEY_WORLD_2 
-#define PHPGLFW_C_GLFW_KEY_WORLD_2 GLFW_KEY_WORLD_2 // => 162  
-#endif
- 
 #ifdef GLFW_KEY_ESCAPE 
 #define PHPGLFW_C_GLFW_KEY_ESCAPE GLFW_KEY_ESCAPE // => 256  
 #endif
@@ -5514,146 +5455,6 @@
  
 #ifdef GLFW_KEY_PAUSE 
 #define PHPGLFW_C_GLFW_KEY_PAUSE GLFW_KEY_PAUSE // => 284  
-#endif
- 
-#ifdef GLFW_KEY_F1 
-#define PHPGLFW_C_GLFW_KEY_F1 GLFW_KEY_F1 // => 290  
-#endif
- 
-#ifdef GLFW_KEY_F2 
-#define PHPGLFW_C_GLFW_KEY_F2 GLFW_KEY_F2 // => 291  
-#endif
- 
-#ifdef GLFW_KEY_F3 
-#define PHPGLFW_C_GLFW_KEY_F3 GLFW_KEY_F3 // => 292  
-#endif
- 
-#ifdef GLFW_KEY_F4 
-#define PHPGLFW_C_GLFW_KEY_F4 GLFW_KEY_F4 // => 293  
-#endif
- 
-#ifdef GLFW_KEY_F5 
-#define PHPGLFW_C_GLFW_KEY_F5 GLFW_KEY_F5 // => 294  
-#endif
- 
-#ifdef GLFW_KEY_F6 
-#define PHPGLFW_C_GLFW_KEY_F6 GLFW_KEY_F6 // => 295  
-#endif
- 
-#ifdef GLFW_KEY_F7 
-#define PHPGLFW_C_GLFW_KEY_F7 GLFW_KEY_F7 // => 296  
-#endif
- 
-#ifdef GLFW_KEY_F8 
-#define PHPGLFW_C_GLFW_KEY_F8 GLFW_KEY_F8 // => 297  
-#endif
- 
-#ifdef GLFW_KEY_F9 
-#define PHPGLFW_C_GLFW_KEY_F9 GLFW_KEY_F9 // => 298  
-#endif
- 
-#ifdef GLFW_KEY_F10 
-#define PHPGLFW_C_GLFW_KEY_F10 GLFW_KEY_F10 // => 299  
-#endif
- 
-#ifdef GLFW_KEY_F11 
-#define PHPGLFW_C_GLFW_KEY_F11 GLFW_KEY_F11 // => 300  
-#endif
- 
-#ifdef GLFW_KEY_F12 
-#define PHPGLFW_C_GLFW_KEY_F12 GLFW_KEY_F12 // => 301  
-#endif
- 
-#ifdef GLFW_KEY_F13 
-#define PHPGLFW_C_GLFW_KEY_F13 GLFW_KEY_F13 // => 302  
-#endif
- 
-#ifdef GLFW_KEY_F14 
-#define PHPGLFW_C_GLFW_KEY_F14 GLFW_KEY_F14 // => 303  
-#endif
- 
-#ifdef GLFW_KEY_F15 
-#define PHPGLFW_C_GLFW_KEY_F15 GLFW_KEY_F15 // => 304  
-#endif
- 
-#ifdef GLFW_KEY_F16 
-#define PHPGLFW_C_GLFW_KEY_F16 GLFW_KEY_F16 // => 305  
-#endif
- 
-#ifdef GLFW_KEY_F17 
-#define PHPGLFW_C_GLFW_KEY_F17 GLFW_KEY_F17 // => 306  
-#endif
- 
-#ifdef GLFW_KEY_F18 
-#define PHPGLFW_C_GLFW_KEY_F18 GLFW_KEY_F18 // => 307  
-#endif
- 
-#ifdef GLFW_KEY_F19 
-#define PHPGLFW_C_GLFW_KEY_F19 GLFW_KEY_F19 // => 308  
-#endif
- 
-#ifdef GLFW_KEY_F20 
-#define PHPGLFW_C_GLFW_KEY_F20 GLFW_KEY_F20 // => 309  
-#endif
- 
-#ifdef GLFW_KEY_F21 
-#define PHPGLFW_C_GLFW_KEY_F21 GLFW_KEY_F21 // => 310  
-#endif
- 
-#ifdef GLFW_KEY_F22 
-#define PHPGLFW_C_GLFW_KEY_F22 GLFW_KEY_F22 // => 311  
-#endif
- 
-#ifdef GLFW_KEY_F23 
-#define PHPGLFW_C_GLFW_KEY_F23 GLFW_KEY_F23 // => 312  
-#endif
- 
-#ifdef GLFW_KEY_F24 
-#define PHPGLFW_C_GLFW_KEY_F24 GLFW_KEY_F24 // => 313  
-#endif
- 
-#ifdef GLFW_KEY_F25 
-#define PHPGLFW_C_GLFW_KEY_F25 GLFW_KEY_F25 // => 314  
-#endif
- 
-#ifdef GLFW_KEY_KP_0 
-#define PHPGLFW_C_GLFW_KEY_KP_0 GLFW_KEY_KP_0 // => 320  
-#endif
- 
-#ifdef GLFW_KEY_KP_1 
-#define PHPGLFW_C_GLFW_KEY_KP_1 GLFW_KEY_KP_1 // => 321  
-#endif
- 
-#ifdef GLFW_KEY_KP_2 
-#define PHPGLFW_C_GLFW_KEY_KP_2 GLFW_KEY_KP_2 // => 322  
-#endif
- 
-#ifdef GLFW_KEY_KP_3 
-#define PHPGLFW_C_GLFW_KEY_KP_3 GLFW_KEY_KP_3 // => 323  
-#endif
- 
-#ifdef GLFW_KEY_KP_4 
-#define PHPGLFW_C_GLFW_KEY_KP_4 GLFW_KEY_KP_4 // => 324  
-#endif
- 
-#ifdef GLFW_KEY_KP_5 
-#define PHPGLFW_C_GLFW_KEY_KP_5 GLFW_KEY_KP_5 // => 325  
-#endif
- 
-#ifdef GLFW_KEY_KP_6 
-#define PHPGLFW_C_GLFW_KEY_KP_6 GLFW_KEY_KP_6 // => 326  
-#endif
- 
-#ifdef GLFW_KEY_KP_7 
-#define PHPGLFW_C_GLFW_KEY_KP_7 GLFW_KEY_KP_7 // => 327  
-#endif
- 
-#ifdef GLFW_KEY_KP_8 
-#define PHPGLFW_C_GLFW_KEY_KP_8 GLFW_KEY_KP_8 // => 328  
-#endif
- 
-#ifdef GLFW_KEY_KP_9 
-#define PHPGLFW_C_GLFW_KEY_KP_9 GLFW_KEY_KP_9 // => 329  
 #endif
  
 #ifdef GLFW_KEY_KP_DECIMAL 
@@ -5748,38 +5549,6 @@
 #define PHPGLFW_C_GLFW_MOD_NUM_LOCK GLFW_MOD_NUM_LOCK // => 0x0020  
 #endif
  
-#ifdef GLFW_MOUSE_BUTTON_1 
-#define PHPGLFW_C_GLFW_MOUSE_BUTTON_1 GLFW_MOUSE_BUTTON_1 // => 0  
-#endif
- 
-#ifdef GLFW_MOUSE_BUTTON_2 
-#define PHPGLFW_C_GLFW_MOUSE_BUTTON_2 GLFW_MOUSE_BUTTON_2 // => 1  
-#endif
- 
-#ifdef GLFW_MOUSE_BUTTON_3 
-#define PHPGLFW_C_GLFW_MOUSE_BUTTON_3 GLFW_MOUSE_BUTTON_3 // => 2  
-#endif
- 
-#ifdef GLFW_MOUSE_BUTTON_4 
-#define PHPGLFW_C_GLFW_MOUSE_BUTTON_4 GLFW_MOUSE_BUTTON_4 // => 3  
-#endif
- 
-#ifdef GLFW_MOUSE_BUTTON_5 
-#define PHPGLFW_C_GLFW_MOUSE_BUTTON_5 GLFW_MOUSE_BUTTON_5 // => 4  
-#endif
- 
-#ifdef GLFW_MOUSE_BUTTON_6 
-#define PHPGLFW_C_GLFW_MOUSE_BUTTON_6 GLFW_MOUSE_BUTTON_6 // => 5  
-#endif
- 
-#ifdef GLFW_MOUSE_BUTTON_7 
-#define PHPGLFW_C_GLFW_MOUSE_BUTTON_7 GLFW_MOUSE_BUTTON_7 // => 6  
-#endif
- 
-#ifdef GLFW_MOUSE_BUTTON_8 
-#define PHPGLFW_C_GLFW_MOUSE_BUTTON_8 GLFW_MOUSE_BUTTON_8 // => 7  
-#endif
- 
 #ifdef GLFW_MOUSE_BUTTON_LAST 
 #define PHPGLFW_C_GLFW_MOUSE_BUTTON_LAST GLFW_MOUSE_BUTTON_LAST // => GLFW_MOUSE_BUTTON_8  
 #endif
@@ -5794,70 +5563,6 @@
  
 #ifdef GLFW_MOUSE_BUTTON_MIDDLE 
 #define PHPGLFW_C_GLFW_MOUSE_BUTTON_MIDDLE GLFW_MOUSE_BUTTON_MIDDLE // => GLFW_MOUSE_BUTTON_3  
-#endif
- 
-#ifdef GLFW_JOYSTICK_1 
-#define PHPGLFW_C_GLFW_JOYSTICK_1 GLFW_JOYSTICK_1 // => 0  
-#endif
- 
-#ifdef GLFW_JOYSTICK_2 
-#define PHPGLFW_C_GLFW_JOYSTICK_2 GLFW_JOYSTICK_2 // => 1  
-#endif
- 
-#ifdef GLFW_JOYSTICK_3 
-#define PHPGLFW_C_GLFW_JOYSTICK_3 GLFW_JOYSTICK_3 // => 2  
-#endif
- 
-#ifdef GLFW_JOYSTICK_4 
-#define PHPGLFW_C_GLFW_JOYSTICK_4 GLFW_JOYSTICK_4 // => 3  
-#endif
- 
-#ifdef GLFW_JOYSTICK_5 
-#define PHPGLFW_C_GLFW_JOYSTICK_5 GLFW_JOYSTICK_5 // => 4  
-#endif
- 
-#ifdef GLFW_JOYSTICK_6 
-#define PHPGLFW_C_GLFW_JOYSTICK_6 GLFW_JOYSTICK_6 // => 5  
-#endif
- 
-#ifdef GLFW_JOYSTICK_7 
-#define PHPGLFW_C_GLFW_JOYSTICK_7 GLFW_JOYSTICK_7 // => 6  
-#endif
- 
-#ifdef GLFW_JOYSTICK_8 
-#define PHPGLFW_C_GLFW_JOYSTICK_8 GLFW_JOYSTICK_8 // => 7  
-#endif
- 
-#ifdef GLFW_JOYSTICK_9 
-#define PHPGLFW_C_GLFW_JOYSTICK_9 GLFW_JOYSTICK_9 // => 8  
-#endif
- 
-#ifdef GLFW_JOYSTICK_10 
-#define PHPGLFW_C_GLFW_JOYSTICK_10 GLFW_JOYSTICK_10 // => 9  
-#endif
- 
-#ifdef GLFW_JOYSTICK_11 
-#define PHPGLFW_C_GLFW_JOYSTICK_11 GLFW_JOYSTICK_11 // => 10  
-#endif
- 
-#ifdef GLFW_JOYSTICK_12 
-#define PHPGLFW_C_GLFW_JOYSTICK_12 GLFW_JOYSTICK_12 // => 11  
-#endif
- 
-#ifdef GLFW_JOYSTICK_13 
-#define PHPGLFW_C_GLFW_JOYSTICK_13 GLFW_JOYSTICK_13 // => 12  
-#endif
- 
-#ifdef GLFW_JOYSTICK_14 
-#define PHPGLFW_C_GLFW_JOYSTICK_14 GLFW_JOYSTICK_14 // => 13  
-#endif
- 
-#ifdef GLFW_JOYSTICK_15 
-#define PHPGLFW_C_GLFW_JOYSTICK_15 GLFW_JOYSTICK_15 // => 14  
-#endif
- 
-#ifdef GLFW_JOYSTICK_16 
-#define PHPGLFW_C_GLFW_JOYSTICK_16 GLFW_JOYSTICK_16 // => 15  
 #endif
  
 #ifdef GLFW_JOYSTICK_LAST 
@@ -6186,14 +5891,6 @@
  
 #ifdef GLFW_COCOA_GRAPHICS_SWITCHING 
 #define PHPGLFW_C_GLFW_COCOA_GRAPHICS_SWITCHING GLFW_COCOA_GRAPHICS_SWITCHING // => 0x00023003  
-#endif
- 
-#ifdef GLFW_X11_CLASS_NAME 
-#define PHPGLFW_C_GLFW_X11_CLASS_NAME GLFW_X11_CLASS_NAME // => 0x00024001  
-#endif
- 
-#ifdef GLFW_X11_INSTANCE_NAME 
-#define PHPGLFW_C_GLFW_X11_INSTANCE_NAME GLFW_X11_INSTANCE_NAME // => 0x00024002  
 #endif
  
 #ifdef GLFW_NO_API 
