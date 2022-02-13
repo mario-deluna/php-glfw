@@ -13,6 +13,7 @@ require __DIR__ . '/src/GLSpecReader.php';
 require __DIR__ . '/src/GLSpec.php';
 require __DIR__ . '/src/GLFWHeaderParser.php';
 require __DIR__ . '/src/ExtConstant.php';
+require __DIR__ . '/src/ExtFunction.php';
 require __DIR__ . '/src/ExtGenerator.php';
 require __DIR__ . '/src/Method.php';
 require __DIR__ . '/src/Argument.php';

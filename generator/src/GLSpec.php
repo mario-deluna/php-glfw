@@ -21,7 +21,7 @@ class GLSpecFunction
 
     public string $returnTypeString;
 
-    private array $arguments = [];
+    public array $arguments = [];
 
     public function makeArg() : GLSpecFunctionArg
     {

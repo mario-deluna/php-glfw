@@ -72,6 +72,8 @@ PHP_MINFO_FUNCTION(glfw)
     php_info_print_table_start();
     php_info_print_table_row(2, "GLFW extension support", "enabled");
     php_info_print_table_row(2, "PHP-GLFW Version", PHP_GLFW_VERSION);
+    php_info_print_table_row(2, "PHP-GLFW Compiled API", PHPGLFW_C_PHPGLFW_COMPILED_API);
+    php_info_print_table_row(2, "PHP-GLFW Compiled API Version", PHPGLFW_C_PHPGLFW_COMPILED_API_VERSION);
     php_info_print_table_row(2, "GLFW Version", glfwGetVersionString());
     //php_info_print_table_row(2, "OpengGL Version", glGetString(PHPGLFW_C_GL_VERSION));
     php_info_print_table_row(2, "Author", "Mario Döring");
@@ -92,9 +94,9 @@ PHP_MINFO_FUNCTION(glfw)
 // #endif
 // };
 
-/* {{{ Return cURL version information. */
-PHP_FUNCTION(glGetVersion)
-{
-    RETURN_TRUE;
-}
-/* }}} */
+// /* {{{ Return cURL version information. */
+// PHP_FUNCTION(glGetVersion)
+// {
+//     RETURN_TRUE;
+// }
+// /* }}} */

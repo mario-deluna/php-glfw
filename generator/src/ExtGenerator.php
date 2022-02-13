@@ -82,8 +82,12 @@ class ExtGenerator
 
         foreach($spec->functionIterator($api, $version) as $func) 
         {
-            $phpfunc = new Method();
-            $phpfunc->name = $func->name;
+            $phpfunc = new ExtFunction($func->name);
+
+            if ($func->returnTypeString !== 'void') continue;
+            if (count($func->arguments) > 0) continue;
+            
+            // var_dump($phpfunc,$func);
 
             $this->methods[] = $phpfunc;
         }

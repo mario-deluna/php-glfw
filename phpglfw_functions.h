@@ -1,7 +1,7 @@
 /**
  * PHP-glfw 
  * 
- * Extension functions
+ * Extension constants
  *
  * Copyright (c) 2018-2022 Mario Döring
  * 
@@ -23,13 +23,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-#include "phpglfw_functions.h"
+#ifndef PHP_GLFW_FUNCTIONS_H
+#define PHP_GLFW_FUNCTIONS_H 1
 
-#include "php.h"
-#include "phpglfw.h"
-#include <zend_API.h>
-
-PHP_FUNCTION(glGetVersion)
-{
-    RETURN_TRUE;
-}
+#endif

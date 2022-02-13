@@ -45,5 +45,5 @@ if test "$PHP_GLFW" != "no"; then
   AC_DEFINE(HAVE_GLFW, 1, [Whether you have glfw])
   PHP_SUBST(GLFW_SHARED_LIBADD)
 
-  PHP_NEW_EXTENSION(glfw, phpglfw.c phpglfw_constants.c vendor/glad/src/glad.c, $ext_shared)
+  PHP_NEW_EXTENSION(glfw, phpglfw.c phpglfw_constants.c phpglfw_functions.c vendor/glad/src/glad.c, $ext_shared)
 fi
