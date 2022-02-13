@@ -24,14 +24,32 @@
 #ifdef HAVE_CONFIG_H
 #include "config.h"
 #endif
-#include "php.h"
-#include "phpglfw.h"
 
-#include "phpglfw_constants.h"
-
+#include <php.h>
 #include <zend_API.h>
 #include <ext/standard/info.h>
 
+#include "phpglfw.h"
+#include "phpglfw_arginfo.h"
+#include "phpglfw_constants.h"
+
+
+zend_module_entry glfw_module_entry = {
+    STANDARD_MODULE_HEADER,
+    PHP_GLFW_EXTNAME,
+    ext_functions,
+    PHP_MINIT(glfw),
+    NULL, // PHP_MSHUTDOWN(glfw),
+    NULL,
+    NULL,
+    PHP_MINFO(glfw),
+    PHP_GLFW_VERSION,
+    STANDARD_MODULE_PROPERTIES
+};
+
+#ifdef COMPILE_DL_GLFW
+ZEND_GET_MODULE(glfw)
+#endif
 
 /**
  * MINIT
@@ -62,49 +80,21 @@ PHP_MINFO_FUNCTION(glfw)
     DISPLAY_INI_ENTRIES();
 }
 
-/**
- * Register
- * --------------------------------
- */
-static zend_function_entry glfw_functions[] = {
-#ifdef PHP_FE_END
-    PHP_FE_END
-#else
-    {NULL, NULL, NULL}
-#endif
-};
-
-zend_module_entry glfw_module_entry = {
-    STANDARD_MODULE_HEADER,
-    PHP_GLFW_EXTNAME,
-    glfw_functions,
-    PHP_MINIT(glfw),
-    NULL, // PHP_MSHUTDOWN(glfw),
-    NULL,
-    NULL,
-    PHP_MINFO(glfw),
-    PHP_GLFW_VERSION,
-    STANDARD_MODULE_PROPERTIES
-};
-
-
-// zend_module_entry glfw_module_entry = {
-// #if ZEND_MODULE_API_NO >= 20010901
-//     STANDARD_MODULE_HEADER,
+// /**
+//  * Register
+//  * --------------------------------
+//  */
+// static zend_function_entry glfw_functions[] = {
+// #ifdef PHP_FE_END
+//     PHP_FE_END
+// #else
+//     {NULL, NULL, NULL}
 // #endif
-//     PHP_GLFW_EXTNAME,
-//     glfw_functions,
-//     PHP_MINIT(glfw),
-//     NULL,
-//     NULL,
-//     NULL,
-//     NULL,
-// #if ZEND_MODULE_API_NO >= 20010901
-//     PHP_GLFW_VERSION,
-// #endif
-//     STANDARD_MODULE_PROPERTIES
 // };
 
-#ifdef COMPILE_DL_GLFW
-ZEND_GET_MODULE(glfw)
-#endif
+/* {{{ Return cURL version information. */
+PHP_FUNCTION(glGetVersion)
+{
+    RETURN_TRUE;
+}
+/* }}} */

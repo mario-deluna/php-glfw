@@ -34,6 +34,15 @@ void phpglfw_register_constants(INIT_FUNC_ARGS);
 
 /**
  
+ * PHPGlfw Extension 
+ * ----------------------------------------------------------------------------
+ *  
+ */
+#define PHPGLFW_C_PHPGLFW_COMPILED_API "gl" 
+#define PHPGLFW_C_PHPGLFW_COMPILED_API_VERSION "3.2" 
+
+/**
+ 
  * AttribMask 
  * ----------------------------------------------------------------------------
  *  

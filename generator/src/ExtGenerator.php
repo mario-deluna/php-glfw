@@ -28,6 +28,22 @@ class ExtGenerator
      */
     function import(GLSpec $spec, string $api, string $version)
     {
+        // add custom constants for the build API + version 
+        $glfwExtCG = new ExtConstantGroup();
+        $glfwExtCG->name = "PHPGlfw Extension";
+
+        $apiConst = new ExtConstant("PHPGLFW_COMPILED_API", $api);
+        $apiConst->isForwardDefinition = false;
+        $apiConst->constantCompiledType = ExtConstant::TYPE_STRING;
+        $apiConst->group = $glfwExtCG;
+        $this->addConstant($apiConst);
+
+        $apiVersionConst = new ExtConstant("PHPGLFW_COMPILED_API_VERSION", $version);
+        $apiVersionConst->isForwardDefinition = false;
+        $apiVersionConst->constantCompiledType = ExtConstant::TYPE_STRING;
+        $apiVersionConst->group = $glfwExtCG;
+        $this->addConstant($apiVersionConst);
+
         // group the GL constants
         $groupedConstants = [];
         foreach($spec->constantIterator($api, $version) as $const) 
@@ -114,6 +130,7 @@ class ExtGenerator
     {
         $this->buildConstantsHeader();
         $this->buildConstantsBody();
+        $this->buildFunctionsBody();
         $this->buildStubs();
     }
 
@@ -149,4 +166,12 @@ class ExtGenerator
             '__buffer_prefix' => '<?php ' . PHP_EOL
         ]);
     }
+
+    private function buildFunctionsBody()
+    {
+        $buffer = $this->generateTemplate('phpglfw_functions.c', [
+            'constants' => $this->constants,
+        ]);
+    }
+
 }

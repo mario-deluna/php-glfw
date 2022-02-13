@@ -30,6 +30,11 @@ class ExtConstant
      */
     public string $definitionValueString;
 
+    public const TYPE_PASSTHROUGH = 0;
+    public const TYPE_STRING = 1;
+
+    public int $constantCompiledType = 0;
+
     /**
      * A comment that should be outputted next to the definition
      */
@@ -52,5 +57,27 @@ class ExtConstant
     public function internalConstantName() : string
     {
         return 'PHPGLFW_C_' . $this->name;
+    }
+
+    /**
+     * Returns the definition value while respecting the type
+     * means will return a string type in double quotes..
+     */
+    public function getDefinitionValue() : string
+    {
+        if ($this->constantCompiledType === static::TYPE_STRING) {
+            return '"'.$this->definition.'"';
+        }
+
+        return $this->definition;
+    }
+
+    public function getPHPRegisterFunction() : string 
+    {
+        if ($this->constantCompiledType === static::TYPE_STRING) {
+            return 'REGISTER_STRING_CONSTANT';
+        }
+
+        return 'REGISTER_LONG_CONSTANT';
     }
 }

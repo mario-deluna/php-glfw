@@ -38,13 +38,13 @@ void phpglfw_register_constants(INIT_FUNC_ARGS);
  * <?php echo $group->name; ?> 
  * ----------------------------------------------------------------------------
 <?php endif; ?>
-<?php echo commentifyString($group->desc); ?> 
+<?php echo commentifyString($group->desc ?? ''); ?> 
  */
 <?php foreach($constants as $const) : //var_dump($const); die; ?>
 <?php if ($const->isForwardDefinition) : ?> 
 #ifdef <?php echo $const->definition; ?> 
 <?php endif; ?>
-#define <?php echo $const->internalConstantName(); ?> <?php echo $const->definition; ?><?php if ($const->comment) : ?> // <?php echo $const->comment; ?> <?php endif; ?> 
+#define <?php echo $const->internalConstantName(); ?> <?php echo $const->getDefinitionValue(); ?><?php if ($const->comment) : ?> // <?php echo $const->comment; ?> <?php endif; ?> 
 <?php if ($const->isForwardDefinition) : ?>
 #endif
 <?php endif; ?>

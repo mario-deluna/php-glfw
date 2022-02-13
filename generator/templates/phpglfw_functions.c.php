@@ -1,7 +1,7 @@
 /**
  * PHP-glfw 
  * 
- * Extension constants
+ * Extension functions
  *
  * Copyright (c) 2018-2022 Mario Döring
  * 
