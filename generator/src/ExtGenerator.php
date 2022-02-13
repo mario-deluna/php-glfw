@@ -174,7 +174,7 @@ class ExtGenerator
     private function buildFunctionsBody()
     {
         $buffer = $this->generateTemplate('phpglfw_functions.c', [
-            'constants' => $this->constants,
+            'functions' => $this->methods,
         ]);
     }
 

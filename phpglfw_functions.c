@@ -29,7 +29,39 @@
 #include "phpglfw.h"
 #include <zend_API.h>
 
-PHP_FUNCTION(glGetVersion)
+/**
+ * glFinish 
+ *  
+ */
+PHP_FUNCTION(glFinish)
 {
-    RETURN_TRUE;
+    glFinish();
 }
+
+/**
+ * glFlush 
+ *  
+ */
+PHP_FUNCTION(glFlush)
+{
+    glFlush();
+}
+
+/**
+ * glEndTransformFeedback 
+ *  
+ */
+PHP_FUNCTION(glEndTransformFeedback)
+{
+    glEndTransformFeedback();
+}
+
+/**
+ * glEndConditionalRender 
+ *  
+ */
+PHP_FUNCTION(glEndConditionalRender)
+{
+    glEndConditionalRender();
+}
+

@@ -86,19 +86,32 @@ class GLSpecReader
 
         foreach($feature->children() as $child) 
         {
-            if ($child->getName() !== 'require') {
-                continue;
-            }
+            if ($child->getName() === 'require') 
+            {
+                // required features
+                foreach($child->children() as $cat) 
+                {   
+                    if ($cat->getName() === 'enum') {
+                        $version->enums[] = (string) $cat->attributes()->name;
+                    }
 
-            // required features
-            foreach($child->children() as $cat) 
-            {   
-                if ($cat->getName() === 'enum') {
-                    $version->enums[] = (string) $cat->attributes()->name;
+                    elseif ($cat->getName() === 'command') {
+                        $version->functions[] = (string) $cat->attributes()->name;
+                    }
                 }
+            }
+            elseif ($child->getName() === 'remove') 
+            {
+                // required features
+                foreach($child->children() as $cat) 
+                {   
+                    if ($cat->getName() === 'enum') {
+                        $version->removedEnums[] = (string) $cat->attributes()->name;
+                    }
 
-                elseif ($cat->getName() === 'command') {
-                    $version->functions[] = (string) $cat->attributes()->name;
+                    elseif ($cat->getName() === 'command') {
+                        $version->removedFunctions[] = (string) $cat->attributes()->name;
+                    }
                 }
             }
         }

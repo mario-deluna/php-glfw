@@ -29,7 +29,14 @@
 #include "phpglfw.h"
 #include <zend_API.h>
 
-PHP_FUNCTION(glGetVersion)
+<?php foreach($functions as $func) : ?>
+/**
+ * <?php echo $func->name; ?> 
+ * <?php echo $func->comment; ?> 
+ */
+PHP_FUNCTION(<?php echo $func->name; ?>)
 {
-    RETURN_TRUE;
+    <?php echo $func->internalCallFunc; ?>();
 }
+
+<?php endforeach; ?>

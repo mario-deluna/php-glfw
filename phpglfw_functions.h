@@ -26,4 +26,8 @@
 #ifndef PHP_GLFW_FUNCTIONS_H
 #define PHP_GLFW_FUNCTIONS_H 1
 
+#include "phpglfw_constants.h"
+#include <glad/glad.h>
+#include <GLFW/glfw3.h>
+
 #endif

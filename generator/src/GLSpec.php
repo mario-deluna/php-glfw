@@ -43,6 +43,10 @@ class GLSpecVersion
 
     public $enums = [];
 
+    public $removedFunctions = [];
+
+    public $removedEnums = [];
+
     public function versionInt() : int
     {
         return static::versionIntFromString($this->versionString);
@@ -160,11 +164,21 @@ class GLSpec
     {
         $versionInt = GLSpecVersion::versionIntFromString($versionString);
 
+        $removedFunctions = [];
+
+        foreach($this->versions as $version) {
+            if ($version->api === $api) {
+                if ($version->versionInt() <= $versionInt) {
+                    $removedFunctions = array_merge($removedFunctions, $version->removedFunctions);
+                }
+            }
+        }
+
         foreach($this->versions as $version) {
             if ($version->api === $api) {
                 if ($version->versionInt() <= $versionInt) {
                     foreach($version->functions as $func) {
-                        if (isset($this->functions[$func])) {
+                        if (isset($this->functions[$func]) && (!in_array($func, $removedFunctions))) {
                             yield $this->functions[$func];
                         }
                     }
