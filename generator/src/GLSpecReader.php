@@ -75,8 +75,8 @@ class GLSpecReader
     /**
      * Parse an element of commands
      * 
-     * @param GLSpec                $feature
-     * @param SimpleXMLElement      $commands
+     * @param GLSpec                $spec
+     * @param SimpleXMLElement      $feature
      */
     private function parseFeatures(GLSpec $spec, SimpleXMLElement $feature)
     {
@@ -139,6 +139,7 @@ class GLSpecReader
 
             $funcPtype = trim((string) $proto->ptype);
             $func->returnTypeString = $funcPtype ?: trim((string) $proto);
+            $func->fullReturnTypeString = substr(strip_tags((string) $proto->asXML()), 0, -strlen($func->name));
 
             // go over arguments
             foreach($commandDef->param as $argDef) 
@@ -146,6 +147,7 @@ class GLSpecReader
                 $arg = $func->makeArg();
                 $arg->name = (string) $argDef->name;
                 $arg->typeString = (string) $argDef->ptype;
+                $arg->fullTypeString = strip_tags((string) $argDef->asXML());
                 $arg->class = $argDef->attributes()->class;
                 $arg->group = $argDef->attributes()->group;
             }

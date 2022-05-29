@@ -32,11 +32,8 @@
 <?php foreach($functions as $func) : ?>
 /**
  * <?php echo $func->name; ?> 
- * <?php echo $func->comment; ?> 
+<?php echo commentifyString($func->comment ?? ''); ?>
  */
-PHP_FUNCTION(<?php echo $func->name; ?>)
-{
-    <?php echo $func->internalCallFunc; ?>();
-}
+<?php echo $func->generateExtImplementation(); ?>
 
 <?php endforeach; ?>

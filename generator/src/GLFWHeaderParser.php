@@ -2,8 +2,26 @@
 
 class GLFWHeaderParser 
 {
+    private array $glfwTypeToExt = 
+    [
+        'void' => ExtType::T_VOID,
+        'int' => ExtType::T_LONG,
+        'long' => ExtType::T_LONG,
+        'float' => ExtType::T_DOUBLE,
+        'double' => ExtType::T_DOUBLE,
+    ];
+
+    private function createResourceDefinitions(ExtGenerator $extGen)
+    {
+        $extGen->resources[] = new ExtResource('GLFWwindow');
+        $extGen->resources[] = new ExtResource('GLFWcursor');
+    }
+
     public function process(string $headerFilePath, ExtGenerator $extGen)
     {
+        // first create required resource definitions
+
+        // begin reading the header
         $headerContents = file_get_contents($headerFilePath);
         preg_match_all("/#define (GLFW_[A-Z_]+) +([A-Z0-9x_]+)/", $headerContents, $matches);
 
@@ -32,5 +50,27 @@ class GLFWHeaderParser
             
             $extGen->addConstant($const);
         }
+
+        preg_match_all("/GLFWAPI (.*) (glfw.*)\((.*)?\)/", $headerContents, $funcmatches);
+
+        foreach($funcmatches[0] as $k => $fullSig) 
+        {
+            $funcReturnValue = $funcmatches[1][$k];
+            $funcName = $funcmatches[2][$k];
+            $funcArgs = $funcmatches[3][$k];
+
+            if (!isset($this->glfwTypeToExt[$funcReturnValue])) continue;
+
+            if ($funcArgs !== 'void') continue;
+
+            $phpfunc = new ExtFunction($funcName);
+            $phpfunc->returnType = $this->glfwTypeToExt[$funcReturnValue];
+
+            $extGen->methods[] = $phpfunc;
+
+            // var_dump($funcReturnValue, $funcName, $funcArgs); die;
+        }
+
+        // var_dump($funcmatches); die;
     }
 }

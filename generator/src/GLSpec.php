@@ -5,10 +5,22 @@ class GLSpecFunctionArg
     public string $name;
 
     public string $typeString;
+    
+    public string $fullTypeString;
 
     public ?string $class;
 
     public ?string $group;
+
+    public function isPointer() : bool
+    {
+        return strpos($this->fullTypeString, '*') !== false;
+    }
+
+    public function isConst() : bool
+    {
+        return strpos($this->fullTypeString, 'const') !== false;
+    }
 }
 
 class GLSpecFunction
@@ -21,7 +33,14 @@ class GLSpecFunction
 
     public string $returnTypeString;
 
+    public string $fullReturnTypeString;
+
     public array $arguments = [];
+
+    public function isPointerReturn() : bool
+    {
+        return strpos($this->fullReturnTypeString, '*') !== false;
+    }
 
     public function makeArg() : GLSpecFunctionArg
     {
@@ -158,7 +177,7 @@ class GLSpec
      * 
      * @param string            $api
      * @param string            $versionString
-     * @return Generator
+     * @return Generator<GLSpecFunction>
      */
     public function functionIterator(string $api, string $versionString) : Generator
     {

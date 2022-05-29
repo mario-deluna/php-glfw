@@ -7,9 +7,54 @@ class ExtGenerator
      */
     public array $constants = [];
 
+    /**
+     * @var array<ExtFunction>
+     */
     public array $methods = [];
 
+    private array $funcSignatures = [];
+
     public array $resources = [];
+
+    /**
+     * Map of GLTypes to extension type
+     *
+     * @var array<string, string>
+     */
+    private array $glTypeToExtType = 
+    [
+        // base types
+        'int' => ExtType::T_LONG,
+        'long' => ExtType::T_LONG,
+        'float' => ExtType::T_DOUBLE,
+        'float' => ExtType::T_DOUBLE,
+        'bool' => ExtType::T_BOOL,
+        'void' => ExtType::T_VOID,
+
+        // gl spec
+        // as php only supports long, double and bool....
+        'GLboolean' => ExtType::T_BOOL,
+        'GLbyte' => ExtType::T_LONG,
+        'GLubyte' => ExtType::T_LONG,
+        'GLshort' => ExtType::T_LONG,
+        'GLushort' => ExtType::T_LONG,
+        'GLint' => ExtType::T_LONG,
+        'GLuint' => ExtType::T_LONG,
+        'GLfixed' => ExtType::T_LONG,
+        'GLint64' => ExtType::T_LONG,
+        'GLuint64' => ExtType::T_LONG,
+        'GLsizei' => ExtType::T_LONG,
+        'GLenum' => ExtType::T_LONG,
+        'GLintptr' => ExtType::T_LONG,
+        'GLsizeiptr' => ExtType::T_LONG,
+        'GLsync' => ExtType::T_LONG,
+        'GLbitfield' => ExtType::T_LONG,
+        'GLhalf' => ExtType::T_DOUBLE,
+        'GLfloat' => ExtType::T_DOUBLE,
+        'GLclampf' => ExtType::T_DOUBLE,
+        'GLdouble' => ExtType::T_DOUBLE,
+        'GLclampd' => ExtType::T_DOUBLE,
+    ];
 
     /**
      * Adds a constant to the extension
@@ -17,6 +62,18 @@ class ExtGenerator
     public function addConstant(ExtConstant $const)
     {
         $this->constants[] = $const;
+    }
+
+    /**
+     * Maps the given GLType to an extension function type
+     */
+    private function mapGlTypeToExtType(string $glType) : string
+    {
+        if (!isset($this->glTypeToExtType[$glType])) {
+            throw new Exception("Cannot map GLType {$glType} to extension type..");
+        }
+
+        return $this->glTypeToExtType[$glType];
     }
 
     /**
@@ -84,10 +141,45 @@ class ExtGenerator
         {
             $phpfunc = new ExtFunction($func->name);
 
-            if ($func->returnTypeString !== 'void') continue;
-            if (count($func->arguments) > 0) continue;
+            $sig = $func->name . '(' . implode(',', array_column($func->arguments, 'name')) . ')';
+
+            // skip duplicated signitures 
+            // @todo: figure out why they exist in the first place..
+            if (isset($this->funcSignatures[$sig])) {
+                continue;
+            }
+            $this->funcSignatures[$sig] = true;
             
-            // var_dump($phpfunc,$func);
+            // if ($func->name === 'glGetString') {
+            //     var_dump($func, $sig); die;
+            // }
+
+            // skip unmapped return types
+            if (!isset($this->glTypeToExtType[$func->returnTypeString])) continue;
+
+            // skip pointer return types
+            if ($func->isPointerReturn()) continue;
+
+            // skip functions with unmapped arguments
+            foreach($func->arguments as $argument) {
+
+                // skip currently unsupported functions
+                if (!isset($this->glTypeToExtType[$argument->typeString])) {
+                    continue 2;
+                }
+
+                if ($argument->isPointer()) continue 2;
+
+                $phparg = ExtArgument::make($argument->name, $this->glTypeToExtType[$argument->typeString]);
+                if ($argument->typeString != $phparg->argumentType) {
+                    $phparg->argumentTypeFrom = $argument->typeString;
+                }
+                $phpfunc->arguments[] = $phparg;
+            }
+
+            //  assign return type
+            $phpfunc->returnType = $this->mapGlTypeToExtType($func->returnTypeString);
+            $phpfunc->returnTypeFrom = ($phpfunc->returnType != $func->returnTypeString) ? $func->returnTypeString : null;
 
             $this->methods[] = $phpfunc;
         }
@@ -167,12 +259,14 @@ class ExtGenerator
     {
         $buffer = $this->generateTemplate('phpglfw.stub.php', [
             'constants' => $this->constants,
+            'functions' => $this->methods,
             '__buffer_prefix' => '<?php ' . PHP_EOL
         ]);
     }
 
     private function buildFunctionsBody()
     {
+        // var_dump($this->methods); die;
         $buffer = $this->generateTemplate('phpglfw_functions.c', [
             'functions' => $this->methods,
         ]);

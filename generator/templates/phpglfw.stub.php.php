@@ -1,7 +1,13 @@
 
 /** @generate-function-entries */
 
-function glGetVersion(): bool {};
+/**
+ * Functions
+ * ------------------------------------------------------------------
+ */
+<?php foreach($functions as $func) : ?>
+<?php echo $func->generateStub(); ?>
+<?php endforeach; ?>
 
 /**
  * Constants
