@@ -32,6 +32,7 @@
 #include "phpglfw.h"
 #include "phpglfw_arginfo.h"
 #include "phpglfw_constants.h"
+#include "phpglfw_functions.h"
 
 
 zend_module_entry glfw_module_entry = {
@@ -59,6 +60,7 @@ PHP_MINIT_FUNCTION(glfw)
 {   
     // register constants
     phpglfw_register_constants(INIT_FUNC_ARGS_PASSTHRU);
+    phpglfw_register_resource_destructors(INIT_FUNC_ARGS_PASSTHRU);
 
     return SUCCESS;
 }

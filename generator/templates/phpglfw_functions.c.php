@@ -29,10 +29,72 @@
 #include "phpglfw.h"
 #include <zend_API.h>
 
+/**
+ * ----------------------------------------------------------------------------
+ * PHPGlfw Resources 
+ * ----------------------------------------------------------------------------
+ */
+
+<?php foreach ($resources as $resource) : ?>
+#define <?php echo $resource->getResourceName(); ?> "<?php echo $resource->name; ?>"
+int <?php echo $resource->getContextName(); ?>;
+<?php endforeach; ?>
+
+#define PHPGLFW_RESOURCE_TYPE zend_resource
+<?php foreach ($resources as $resource) : ?>
+#define <?php echo $resource->getReturnResource(); ?>(<?php echo $resource->name; ?>, context) \
+    RETURN_RES(zend_register_resource(<?php echo $resource->name; ?>, context))
+<?php endforeach; ?>
+
+<?php foreach ($resources as $resource) : ?>
+/**
+ * Get <?php echo $resource->type; ?> from resource 
+ * --------------------------------
+ */
+static <?php echo $resource->type; ?><?php echo $resource->getFetchMethod(); ?>(zval *resource)
+{
+    <?php echo $resource->type; ?><?php echo $resource->name; ?>;
+    ZEND_ASSERT(Z_TYPE_P(resource) == IS_RESOURCE);
+    <?php echo $resource->name; ?> = (<?php echo $resource->type; ?>)zend_fetch_resource(Z_RES_P(resource), <?php echo $resource->getResourceName(); ?>, <?php echo $resource->getContextName(); ?>);
+
+    return <?php echo $resource->name; ?>;
+}
+
+/**
+ * dtor <?php echo $resource->type; ?> 
+ * --------------------------------
+ */
+static void <?php echo $resource->getDtorMethod(); ?>(PHPGLFW_RESOURCE_TYPE *rsrc)
+{
+    <?php echo $resource->type; ?><?php echo $resource->name; ?> = (void *) rsrc->ptr;
+
+    if (<?php echo $resource->name; ?>) {
+        <?php echo $resource->generateDestroy(); ?> 
+    }
+}
+
+<?php endforeach; ?>
+
+
+/**
+ * Resources destructors..
+ */
+void phpglfw_register_resource_destructors(INIT_FUNC_ARGS)
+{
+<?php foreach ($resources as $resource) : ?>
+    <?php echo $resource->getContextName(); ?> = zend_register_list_destructors_ex(<?php echo $resource->getDtorMethod(); ?>, NULL, <?php echo $resource->getResourceName(); ?>, module_number);
+<?php endforeach; ?>
+}
+
+/**
+ * ----------------------------------------------------------------------------
+ * PHPGlfw Functions 
+ * ----------------------------------------------------------------------------
+ */
 <?php foreach($functions as $func) : ?>
 /**
  * <?php echo $func->name; ?> 
-<?php echo commentifyString($func->comment ?? ''); ?>
+<?php echo commentifyString($func->comment ?? ''); ?> 
  */
 <?php echo $func->generateExtImplementation(); ?>
 

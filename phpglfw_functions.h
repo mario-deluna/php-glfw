@@ -30,4 +30,6 @@
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 
+void phpglfw_register_resource_destructors(INIT_FUNC_ARGS);
+
 #endif

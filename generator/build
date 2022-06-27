@@ -13,6 +13,7 @@ $spec = new GLSpec;
 $reader = new GLSpecReader;
 $gen = new ExtGenerator;
 
+
 // parse the GL spec
 $reader->parse($spec, __DIR__ . '/data/gl.xml');
 

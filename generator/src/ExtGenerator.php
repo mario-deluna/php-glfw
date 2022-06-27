@@ -14,6 +14,9 @@ class ExtGenerator
 
     private array $funcSignatures = [];
 
+    /**
+     * @var array<string, ExtResource>
+     */
     public array $resources = [];
 
     /**
@@ -62,6 +65,11 @@ class ExtGenerator
     public function addConstant(ExtConstant $const)
     {
         $this->constants[] = $const;
+    }
+
+    public function addResource(ExtResource $res) 
+    {
+        $this->resources[$res->type] = $res;
     }
 
     /**
@@ -150,7 +158,7 @@ class ExtGenerator
             }
             $this->funcSignatures[$sig] = true;
             
-            // if ($func->name === 'glGetString') {
+            // if ($func->name === 'glfwCreateWindow') {
             //     var_dump($func, $sig); die;
             // }
 
@@ -266,9 +274,9 @@ class ExtGenerator
 
     private function buildFunctionsBody()
     {
-        // var_dump($this->methods); die;
         $buffer = $this->generateTemplate('phpglfw_functions.c', [
             'functions' => $this->methods,
+            'resources' => $this->resources,
         ]);
     }
 

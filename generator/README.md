@@ -11,3 +11,8 @@ To rebuild the `glfw_gen.c` file simply run the following command:
 ```
 $ ./generator/build
 ```
+
+https://github.com/KhronosGroup/OpenGL-Refpages/tree/main/gl4
+
+
+https://github.com/php/php-src/pull/342/files

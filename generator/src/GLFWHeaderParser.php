@@ -9,17 +9,28 @@ class GLFWHeaderParser
         'long' => ExtType::T_LONG,
         'float' => ExtType::T_DOUBLE,
         'double' => ExtType::T_DOUBLE,
+        'char*' => ExtType::T_STRING,
     ];
 
     private function createResourceDefinitions(ExtGenerator $extGen)
     {
-        $extGen->resources[] = new ExtResource('GLFWwindow');
-        $extGen->resources[] = new ExtResource('GLFWcursor');
+        $extGen->addResource(new class('glfwwindow', 'GLFWwindow*') extends ExtResource {
+            public function generateDestroy() : string {
+                return "glfwDestroyWindow($this->name);";
+            }
+        });
+
+        $extGen->addResource(new class('glfwcursor', 'GLFWcursor*') extends ExtResource {
+            public function generateDestroy() : string {
+                return "glfwDestroyCursor($this->name);";
+            }
+        });
     }
 
     public function process(string $headerFilePath, ExtGenerator $extGen)
     {
         // first create required resource definitions
+        $this->createResourceDefinitions($extGen);
 
         // begin reading the header
         $headerContents = file_get_contents($headerFilePath);
@@ -59,16 +70,67 @@ class GLFWHeaderParser
             $funcName = $funcmatches[2][$k];
             $funcArgs = $funcmatches[3][$k];
 
-            if (!isset($this->glfwTypeToExt[$funcReturnValue])) continue;
+            // flag that turns falls when we could not parse 
+            // or convert the function properly
+            $isValid = true;
 
-            if ($funcArgs !== 'void') continue;
+            // split the args
+            if ($funcArgs === 'void') {
+                $funcArgs = [];
+            } else {
+                $funcArgs = array_map('trim', explode(',', $funcArgs));
+            }
 
+            // parse the arguments (const, type, pointer, name)
+            foreach($funcArgs as &$arg) {
+                preg_match("/^(const +)?([a-zA-Z]+ ?\*?) ?(.*)/", $arg, $match);
+                $arg = array_combine(['full', 'const', 'type', 'name'], str_replace(' ', '', array_map('trim', $match)));
+            } 
+
+            // create func def
             $phpfunc = new ExtFunction($funcName);
-            $phpfunc->returnType = $this->glfwTypeToExt[$funcReturnValue];
 
-            $extGen->methods[] = $phpfunc;
+            // add the arguments 
+            foreach($funcArgs as $sourceArg) 
+            {
+                if (isset($this->glfwTypeToExt[$sourceArg['type']])) {
+                    $phparg = ExtArgument::make($sourceArg['name'], $this->glfwTypeToExt[$sourceArg['type']]);
+                    $phparg->argumentTypeFrom = $sourceArg['type'];
+                    $phpfunc->arguments[] = $phparg;
+                }
+                elseif (isset($extGen->resources[$sourceArg['type']])) {
+                    $res = $extGen->resources[$sourceArg['type']];
+                    var_dump($res, $sourceArg); die;
+                    $phparg = ExtArgument::make($sourceArg['name'], $this->glfwTypeToExt[$sourceArg['type']]);
+                } else {
+                    $isValid = false;
+                }
+            }
 
-            // var_dump($funcReturnValue, $funcName, $funcArgs); die;
+            // parse return argument
+            preg_match("/^(const +)?([a-zA-Z]+ ?\*?)/", $funcReturnValue, $match);
+            $funcReturnValue = array_combine(['full', 'const', 'type'], str_replace(' ', '', array_map('trim', $match)));
+
+            if (isset($this->glfwTypeToExt[$funcReturnValue['type']])) {
+                $phpfunc->returnType = $this->glfwTypeToExt[$funcReturnValue['type']];
+                $phpfunc->returnTypeFrom = $funcReturnValue['type'];
+            }
+            elseif (isset($extGen->resources[$funcReturnValue['type']])) {
+                $res = $extGen->resources[$funcReturnValue['type']];
+                $phpfunc->returnType = ExtFunction::RETURN_RESOURCE;
+                $phpfunc->returnTypeFrom = $res->type;
+                $phpfunc->returnResource = $res;
+            }
+            else {
+                $isValid = false;
+            }
+
+            if ($funcName === 'glfwCreateWindow') {
+                // var_dump($fullSig, $phpfunc); die;
+            }
+
+            // add the function if still valid
+            if ($isValid) $extGen->methods[] = $phpfunc;
         }
 
         // var_dump($funcmatches); die;

@@ -25,9 +25,11 @@ class ExtFunction
     public const RETURN_DOUBLE = ExtType::T_DOUBLE;
     public const RETURN_BOOL = ExtType::T_BOOL;
     public const RETURN_STRING = ExtType::T_STRING;
+    public const RETURN_RESOURCE = ExtType::T_RESOURCE;
 
     public ?string $returnTypeFrom = null;
     public string $returnType = self::RETURN_VOID;
+    public ?ExtResource $returnResource = null;
 
     /**
      * An array of extension arguments
@@ -100,6 +102,9 @@ class ExtFunction
                 case self::RETURN_STRING:
                     $b .= $this->generateExtImplementationReturnString($call);
                 break;
+                case self::RETURN_RESOURCE:
+                    $b .= $this->generateExtImplementationReturnResource($call);
+                break;
                 default: 
                     throw new \Exception("Unsupported return type {$this->returnType}");
             }
@@ -143,6 +148,17 @@ class ExtFunction
     }
 
     /**
+     * Generate the method call (Int)
+     */
+    protected function generateExtImplementationReturnResource(string $call) : string
+    {   
+        $resource = $this->returnResource;
+        $buffer = $this->returnTypeFrom . ' '.$resource->name.' = ' . $call . ';' . PHP_EOL;
+        $buffer .= $resource->getReturnResource(). "($resource->name, ".$resource->getContextName().");" . PHP_EOL;
+        return $buffer;
+    }
+
+    /**
      * Genreates the PHP stub
      */
     public function generateStub()
@@ -171,6 +187,9 @@ class ExtFunction
             break;
             case 'string':
                 return 'string';
+            break;
+            case '@res':
+                return 'resource';
             break;
             default: 
                 throw new \Exception("Unmappable type {$type}");

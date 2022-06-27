@@ -10,4 +10,5 @@ class ExtType
     public const T_DOUBLE = 'double';
     public const T_BOOL = 'bool';
     public const T_STRING = 'string';
+    public const T_RESOURCE = '@res';
 }

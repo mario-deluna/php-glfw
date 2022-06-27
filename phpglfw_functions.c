@@ -30,8 +30,94 @@
 #include <zend_API.h>
 
 /**
+ * ----------------------------------------------------------------------------
+ * PHPGlfw Resources 
+ * ----------------------------------------------------------------------------
+ */
+
+#define PHPGLFW_GLFWWINDOW_NAME "glfwwindow"
+int phpglfw_glfwwindow_context;
+#define PHPGLFW_GLFWCURSOR_NAME "glfwcursor"
+int phpglfw_glfwcursor_context;
+
+#define PHPGLFW_RESOURCE_TYPE zend_resource
+#define PHPGLFW_RETURN_GLFWWINDOW_RESOURCE(glfwwindow, context) \
+    RETURN_RES(zend_register_resource(glfwwindow, context))
+#define PHPGLFW_RETURN_GLFWCURSOR_RESOURCE(glfwcursor, context) \
+    RETURN_RES(zend_register_resource(glfwcursor, context))
+
+/**
+ * Get GLFWwindow* from resource 
+ * --------------------------------
+ */
+static GLFWwindow*phpglfw_fetch_glfwwindow(zval *resource)
+{
+    GLFWwindow*glfwwindow;
+    ZEND_ASSERT(Z_TYPE_P(resource) == IS_RESOURCE);
+    glfwwindow = (GLFWwindow*)zend_fetch_resource(Z_RES_P(resource), PHPGLFW_GLFWWINDOW_NAME, phpglfw_glfwwindow_context);
+
+    return glfwwindow;
+}
+
+/**
+ * dtor GLFWwindow* 
+ * --------------------------------
+ */
+static void phpglfw_dtor_glfwwindow(PHPGLFW_RESOURCE_TYPE *rsrc)
+{
+    GLFWwindow*glfwwindow = (void *) rsrc->ptr;
+
+    if (glfwwindow) {
+        glfwDestroyWindow(glfwwindow); 
+    }
+}
+
+/**
+ * Get GLFWcursor* from resource 
+ * --------------------------------
+ */
+static GLFWcursor*phpglfw_fetch_glfwcursor(zval *resource)
+{
+    GLFWcursor*glfwcursor;
+    ZEND_ASSERT(Z_TYPE_P(resource) == IS_RESOURCE);
+    glfwcursor = (GLFWcursor*)zend_fetch_resource(Z_RES_P(resource), PHPGLFW_GLFWCURSOR_NAME, phpglfw_glfwcursor_context);
+
+    return glfwcursor;
+}
+
+/**
+ * dtor GLFWcursor* 
+ * --------------------------------
+ */
+static void phpglfw_dtor_glfwcursor(PHPGLFW_RESOURCE_TYPE *rsrc)
+{
+    GLFWcursor*glfwcursor = (void *) rsrc->ptr;
+
+    if (glfwcursor) {
+        glfwDestroyCursor(glfwcursor); 
+    }
+}
+
+
+
+/**
+ * Resources destructors..
+ */
+void phpglfw_register_resource_destructors(INIT_FUNC_ARGS)
+{
+    phpglfw_glfwwindow_context = zend_register_list_destructors_ex(phpglfw_dtor_glfwwindow, NULL, PHPGLFW_GLFWWINDOW_NAME, module_number);
+    phpglfw_glfwcursor_context = zend_register_list_destructors_ex(phpglfw_dtor_glfwcursor, NULL, PHPGLFW_GLFWCURSOR_NAME, module_number);
+}
+
+/**
+ * ----------------------------------------------------------------------------
+ * PHPGlfw Functions 
+ * ----------------------------------------------------------------------------
+ */
+/**
  * glCullFace 
- *  */
+ *  
+ */
 PHP_FUNCTION(glCullFace)
 {
     zend_long mode;
@@ -43,7 +129,8 @@ PHP_FUNCTION(glCullFace)
 
 /**
  * glFrontFace 
- *  */
+ *  
+ */
 PHP_FUNCTION(glFrontFace)
 {
     zend_long mode;
@@ -55,7 +142,8 @@ PHP_FUNCTION(glFrontFace)
 
 /**
  * glHint 
- *  */
+ *  
+ */
 PHP_FUNCTION(glHint)
 {
     zend_long target;
@@ -68,7 +156,8 @@ PHP_FUNCTION(glHint)
 
 /**
  * glLineWidth 
- *  */
+ *  
+ */
 PHP_FUNCTION(glLineWidth)
 {
     double width;
@@ -80,7 +169,8 @@ PHP_FUNCTION(glLineWidth)
 
 /**
  * glPointSize 
- *  */
+ *  
+ */
 PHP_FUNCTION(glPointSize)
 {
     double size;
@@ -92,7 +182,8 @@ PHP_FUNCTION(glPointSize)
 
 /**
  * glPolygonMode 
- *  */
+ *  
+ */
 PHP_FUNCTION(glPolygonMode)
 {
     zend_long face;
@@ -105,7 +196,8 @@ PHP_FUNCTION(glPolygonMode)
 
 /**
  * glScissor 
- *  */
+ *  
+ */
 PHP_FUNCTION(glScissor)
 {
     zend_long x;
@@ -120,7 +212,8 @@ PHP_FUNCTION(glScissor)
 
 /**
  * glTexParameterf 
- *  */
+ *  
+ */
 PHP_FUNCTION(glTexParameterf)
 {
     zend_long target;
@@ -134,7 +227,8 @@ PHP_FUNCTION(glTexParameterf)
 
 /**
  * glTexParameteri 
- *  */
+ *  
+ */
 PHP_FUNCTION(glTexParameteri)
 {
     zend_long target;
@@ -148,7 +242,8 @@ PHP_FUNCTION(glTexParameteri)
 
 /**
  * glDrawBuffer 
- *  */
+ *  
+ */
 PHP_FUNCTION(glDrawBuffer)
 {
     zend_long buf;
@@ -160,7 +255,8 @@ PHP_FUNCTION(glDrawBuffer)
 
 /**
  * glClear 
- *  */
+ *  
+ */
 PHP_FUNCTION(glClear)
 {
     zend_long mask;
@@ -172,7 +268,8 @@ PHP_FUNCTION(glClear)
 
 /**
  * glClearColor 
- *  */
+ *  
+ */
 PHP_FUNCTION(glClearColor)
 {
     double red;
@@ -187,7 +284,8 @@ PHP_FUNCTION(glClearColor)
 
 /**
  * glClearStencil 
- *  */
+ *  
+ */
 PHP_FUNCTION(glClearStencil)
 {
     zend_long s;
@@ -199,7 +297,8 @@ PHP_FUNCTION(glClearStencil)
 
 /**
  * glClearDepth 
- *  */
+ *  
+ */
 PHP_FUNCTION(glClearDepth)
 {
     double depth;
@@ -211,7 +310,8 @@ PHP_FUNCTION(glClearDepth)
 
 /**
  * glStencilMask 
- *  */
+ *  
+ */
 PHP_FUNCTION(glStencilMask)
 {
     zend_long mask;
@@ -223,7 +323,8 @@ PHP_FUNCTION(glStencilMask)
 
 /**
  * glColorMask 
- *  */
+ *  
+ */
 PHP_FUNCTION(glColorMask)
 {
     bool red;
@@ -238,7 +339,8 @@ PHP_FUNCTION(glColorMask)
 
 /**
  * glDepthMask 
- *  */
+ *  
+ */
 PHP_FUNCTION(glDepthMask)
 {
     bool flag;
@@ -250,7 +352,8 @@ PHP_FUNCTION(glDepthMask)
 
 /**
  * glDisable 
- *  */
+ *  
+ */
 PHP_FUNCTION(glDisable)
 {
     zend_long cap;
@@ -262,7 +365,8 @@ PHP_FUNCTION(glDisable)
 
 /**
  * glEnable 
- *  */
+ *  
+ */
 PHP_FUNCTION(glEnable)
 {
     zend_long cap;
@@ -274,7 +378,8 @@ PHP_FUNCTION(glEnable)
 
 /**
  * glFinish 
- *  */
+ *  
+ */
 PHP_FUNCTION(glFinish)
 {
     glFinish();
@@ -282,7 +387,8 @@ PHP_FUNCTION(glFinish)
 
 /**
  * glFlush 
- *  */
+ *  
+ */
 PHP_FUNCTION(glFlush)
 {
     glFlush();
@@ -290,7 +396,8 @@ PHP_FUNCTION(glFlush)
 
 /**
  * glBlendFunc 
- *  */
+ *  
+ */
 PHP_FUNCTION(glBlendFunc)
 {
     zend_long sfactor;
@@ -303,7 +410,8 @@ PHP_FUNCTION(glBlendFunc)
 
 /**
  * glLogicOp 
- *  */
+ *  
+ */
 PHP_FUNCTION(glLogicOp)
 {
     zend_long opcode;
@@ -315,7 +423,8 @@ PHP_FUNCTION(glLogicOp)
 
 /**
  * glStencilFunc 
- *  */
+ *  
+ */
 PHP_FUNCTION(glStencilFunc)
 {
     zend_long func;
@@ -329,7 +438,8 @@ PHP_FUNCTION(glStencilFunc)
 
 /**
  * glStencilOp 
- *  */
+ *  
+ */
 PHP_FUNCTION(glStencilOp)
 {
     zend_long fail;
@@ -343,7 +453,8 @@ PHP_FUNCTION(glStencilOp)
 
 /**
  * glDepthFunc 
- *  */
+ *  
+ */
 PHP_FUNCTION(glDepthFunc)
 {
     zend_long func;
@@ -355,7 +466,8 @@ PHP_FUNCTION(glDepthFunc)
 
 /**
  * glPixelStoref 
- *  */
+ *  
+ */
 PHP_FUNCTION(glPixelStoref)
 {
     zend_long pname;
@@ -368,7 +480,8 @@ PHP_FUNCTION(glPixelStoref)
 
 /**
  * glPixelStorei 
- *  */
+ *  
+ */
 PHP_FUNCTION(glPixelStorei)
 {
     zend_long pname;
@@ -381,7 +494,8 @@ PHP_FUNCTION(glPixelStorei)
 
 /**
  * glReadBuffer 
- *  */
+ *  
+ */
 PHP_FUNCTION(glReadBuffer)
 {
     zend_long src;
@@ -393,7 +507,8 @@ PHP_FUNCTION(glReadBuffer)
 
 /**
  * glGetError 
- *  */
+ *  
+ */
 PHP_FUNCTION(glGetError)
 {
     RETURN_LONG(glGetError());
@@ -401,7 +516,8 @@ PHP_FUNCTION(glGetError)
 
 /**
  * glIsEnabled 
- *  */
+ *  
+ */
 PHP_FUNCTION(glIsEnabled)
 {
     zend_long cap;
@@ -413,7 +529,8 @@ PHP_FUNCTION(glIsEnabled)
 
 /**
  * glDepthRange 
- *  */
+ *  
+ */
 PHP_FUNCTION(glDepthRange)
 {
     double n;
@@ -426,7 +543,8 @@ PHP_FUNCTION(glDepthRange)
 
 /**
  * glViewport 
- *  */
+ *  
+ */
 PHP_FUNCTION(glViewport)
 {
     zend_long x;
@@ -441,7 +559,8 @@ PHP_FUNCTION(glViewport)
 
 /**
  * glDrawArrays 
- *  */
+ *  
+ */
 PHP_FUNCTION(glDrawArrays)
 {
     zend_long mode;
@@ -455,7 +574,8 @@ PHP_FUNCTION(glDrawArrays)
 
 /**
  * glPolygonOffset 
- *  */
+ *  
+ */
 PHP_FUNCTION(glPolygonOffset)
 {
     double factor;
@@ -468,7 +588,8 @@ PHP_FUNCTION(glPolygonOffset)
 
 /**
  * glCopyTexImage1D 
- *  */
+ *  
+ */
 PHP_FUNCTION(glCopyTexImage1D)
 {
     zend_long target;
@@ -486,7 +607,8 @@ PHP_FUNCTION(glCopyTexImage1D)
 
 /**
  * glCopyTexImage2D 
- *  */
+ *  
+ */
 PHP_FUNCTION(glCopyTexImage2D)
 {
     zend_long target;
@@ -505,7 +627,8 @@ PHP_FUNCTION(glCopyTexImage2D)
 
 /**
  * glCopyTexSubImage1D 
- *  */
+ *  
+ */
 PHP_FUNCTION(glCopyTexSubImage1D)
 {
     zend_long target;
@@ -522,7 +645,8 @@ PHP_FUNCTION(glCopyTexSubImage1D)
 
 /**
  * glCopyTexSubImage2D 
- *  */
+ *  
+ */
 PHP_FUNCTION(glCopyTexSubImage2D)
 {
     zend_long target;
@@ -541,7 +665,8 @@ PHP_FUNCTION(glCopyTexSubImage2D)
 
 /**
  * glBindTexture 
- *  */
+ *  
+ */
 PHP_FUNCTION(glBindTexture)
 {
     zend_long target;
@@ -554,7 +679,8 @@ PHP_FUNCTION(glBindTexture)
 
 /**
  * glIsTexture 
- *  */
+ *  
+ */
 PHP_FUNCTION(glIsTexture)
 {
     zend_long texture;
@@ -566,7 +692,8 @@ PHP_FUNCTION(glIsTexture)
 
 /**
  * glCopyTexSubImage3D 
- *  */
+ *  
+ */
 PHP_FUNCTION(glCopyTexSubImage3D)
 {
     zend_long target;
@@ -586,7 +713,8 @@ PHP_FUNCTION(glCopyTexSubImage3D)
 
 /**
  * glActiveTexture 
- *  */
+ *  
+ */
 PHP_FUNCTION(glActiveTexture)
 {
     zend_long texture;
@@ -598,7 +726,8 @@ PHP_FUNCTION(glActiveTexture)
 
 /**
  * glSampleCoverage 
- *  */
+ *  
+ */
 PHP_FUNCTION(glSampleCoverage)
 {
     double value;
@@ -611,7 +740,8 @@ PHP_FUNCTION(glSampleCoverage)
 
 /**
  * glBlendFuncSeparate 
- *  */
+ *  
+ */
 PHP_FUNCTION(glBlendFuncSeparate)
 {
     zend_long sfactorRGB;
@@ -626,7 +756,8 @@ PHP_FUNCTION(glBlendFuncSeparate)
 
 /**
  * glPointParameterf 
- *  */
+ *  
+ */
 PHP_FUNCTION(glPointParameterf)
 {
     zend_long pname;
@@ -639,7 +770,8 @@ PHP_FUNCTION(glPointParameterf)
 
 /**
  * glPointParameteri 
- *  */
+ *  
+ */
 PHP_FUNCTION(glPointParameteri)
 {
     zend_long pname;
@@ -652,7 +784,8 @@ PHP_FUNCTION(glPointParameteri)
 
 /**
  * glBlendColor 
- *  */
+ *  
+ */
 PHP_FUNCTION(glBlendColor)
 {
     double red;
@@ -667,7 +800,8 @@ PHP_FUNCTION(glBlendColor)
 
 /**
  * glBlendEquation 
- *  */
+ *  
+ */
 PHP_FUNCTION(glBlendEquation)
 {
     zend_long mode;
@@ -679,7 +813,8 @@ PHP_FUNCTION(glBlendEquation)
 
 /**
  * glIsQuery 
- *  */
+ *  
+ */
 PHP_FUNCTION(glIsQuery)
 {
     zend_long id;
@@ -691,7 +826,8 @@ PHP_FUNCTION(glIsQuery)
 
 /**
  * glBeginQuery 
- *  */
+ *  
+ */
 PHP_FUNCTION(glBeginQuery)
 {
     zend_long target;
@@ -704,7 +840,8 @@ PHP_FUNCTION(glBeginQuery)
 
 /**
  * glEndQuery 
- *  */
+ *  
+ */
 PHP_FUNCTION(glEndQuery)
 {
     zend_long target;
@@ -716,7 +853,8 @@ PHP_FUNCTION(glEndQuery)
 
 /**
  * glBindBuffer 
- *  */
+ *  
+ */
 PHP_FUNCTION(glBindBuffer)
 {
     zend_long target;
@@ -729,7 +867,8 @@ PHP_FUNCTION(glBindBuffer)
 
 /**
  * glIsBuffer 
- *  */
+ *  
+ */
 PHP_FUNCTION(glIsBuffer)
 {
     zend_long buffer;
@@ -741,7 +880,8 @@ PHP_FUNCTION(glIsBuffer)
 
 /**
  * glUnmapBuffer 
- *  */
+ *  
+ */
 PHP_FUNCTION(glUnmapBuffer)
 {
     zend_long target;
@@ -753,7 +893,8 @@ PHP_FUNCTION(glUnmapBuffer)
 
 /**
  * glBlendEquationSeparate 
- *  */
+ *  
+ */
 PHP_FUNCTION(glBlendEquationSeparate)
 {
     zend_long modeRGB;
@@ -766,7 +907,8 @@ PHP_FUNCTION(glBlendEquationSeparate)
 
 /**
  * glStencilOpSeparate 
- *  */
+ *  
+ */
 PHP_FUNCTION(glStencilOpSeparate)
 {
     zend_long face;
@@ -781,7 +923,8 @@ PHP_FUNCTION(glStencilOpSeparate)
 
 /**
  * glStencilFuncSeparate 
- *  */
+ *  
+ */
 PHP_FUNCTION(glStencilFuncSeparate)
 {
     zend_long face;
@@ -796,7 +939,8 @@ PHP_FUNCTION(glStencilFuncSeparate)
 
 /**
  * glStencilMaskSeparate 
- *  */
+ *  
+ */
 PHP_FUNCTION(glStencilMaskSeparate)
 {
     zend_long face;
@@ -809,7 +953,8 @@ PHP_FUNCTION(glStencilMaskSeparate)
 
 /**
  * glAttachShader 
- *  */
+ *  
+ */
 PHP_FUNCTION(glAttachShader)
 {
     zend_long program;
@@ -822,7 +967,8 @@ PHP_FUNCTION(glAttachShader)
 
 /**
  * glCompileShader 
- *  */
+ *  
+ */
 PHP_FUNCTION(glCompileShader)
 {
     zend_long shader;
@@ -834,7 +980,8 @@ PHP_FUNCTION(glCompileShader)
 
 /**
  * glCreateProgram 
- *  */
+ *  
+ */
 PHP_FUNCTION(glCreateProgram)
 {
     RETURN_LONG(glCreateProgram());
@@ -842,7 +989,8 @@ PHP_FUNCTION(glCreateProgram)
 
 /**
  * glCreateShader 
- *  */
+ *  
+ */
 PHP_FUNCTION(glCreateShader)
 {
     zend_long type;
@@ -854,7 +1002,8 @@ PHP_FUNCTION(glCreateShader)
 
 /**
  * glDeleteProgram 
- *  */
+ *  
+ */
 PHP_FUNCTION(glDeleteProgram)
 {
     zend_long program;
@@ -866,7 +1015,8 @@ PHP_FUNCTION(glDeleteProgram)
 
 /**
  * glDeleteShader 
- *  */
+ *  
+ */
 PHP_FUNCTION(glDeleteShader)
 {
     zend_long shader;
@@ -878,7 +1028,8 @@ PHP_FUNCTION(glDeleteShader)
 
 /**
  * glDetachShader 
- *  */
+ *  
+ */
 PHP_FUNCTION(glDetachShader)
 {
     zend_long program;
@@ -891,7 +1042,8 @@ PHP_FUNCTION(glDetachShader)
 
 /**
  * glDisableVertexAttribArray 
- *  */
+ *  
+ */
 PHP_FUNCTION(glDisableVertexAttribArray)
 {
     zend_long index;
@@ -903,7 +1055,8 @@ PHP_FUNCTION(glDisableVertexAttribArray)
 
 /**
  * glEnableVertexAttribArray 
- *  */
+ *  
+ */
 PHP_FUNCTION(glEnableVertexAttribArray)
 {
     zend_long index;
@@ -915,7 +1068,8 @@ PHP_FUNCTION(glEnableVertexAttribArray)
 
 /**
  * glIsProgram 
- *  */
+ *  
+ */
 PHP_FUNCTION(glIsProgram)
 {
     zend_long program;
@@ -927,7 +1081,8 @@ PHP_FUNCTION(glIsProgram)
 
 /**
  * glIsShader 
- *  */
+ *  
+ */
 PHP_FUNCTION(glIsShader)
 {
     zend_long shader;
@@ -939,7 +1094,8 @@ PHP_FUNCTION(glIsShader)
 
 /**
  * glLinkProgram 
- *  */
+ *  
+ */
 PHP_FUNCTION(glLinkProgram)
 {
     zend_long program;
@@ -951,7 +1107,8 @@ PHP_FUNCTION(glLinkProgram)
 
 /**
  * glUseProgram 
- *  */
+ *  
+ */
 PHP_FUNCTION(glUseProgram)
 {
     zend_long program;
@@ -963,7 +1120,8 @@ PHP_FUNCTION(glUseProgram)
 
 /**
  * glUniform1f 
- *  */
+ *  
+ */
 PHP_FUNCTION(glUniform1f)
 {
     zend_long location;
@@ -976,7 +1134,8 @@ PHP_FUNCTION(glUniform1f)
 
 /**
  * glUniform2f 
- *  */
+ *  
+ */
 PHP_FUNCTION(glUniform2f)
 {
     zend_long location;
@@ -990,7 +1149,8 @@ PHP_FUNCTION(glUniform2f)
 
 /**
  * glUniform3f 
- *  */
+ *  
+ */
 PHP_FUNCTION(glUniform3f)
 {
     zend_long location;
@@ -1005,7 +1165,8 @@ PHP_FUNCTION(glUniform3f)
 
 /**
  * glUniform4f 
- *  */
+ *  
+ */
 PHP_FUNCTION(glUniform4f)
 {
     zend_long location;
@@ -1021,7 +1182,8 @@ PHP_FUNCTION(glUniform4f)
 
 /**
  * glUniform1i 
- *  */
+ *  
+ */
 PHP_FUNCTION(glUniform1i)
 {
     zend_long location;
@@ -1034,7 +1196,8 @@ PHP_FUNCTION(glUniform1i)
 
 /**
  * glUniform2i 
- *  */
+ *  
+ */
 PHP_FUNCTION(glUniform2i)
 {
     zend_long location;
@@ -1048,7 +1211,8 @@ PHP_FUNCTION(glUniform2i)
 
 /**
  * glUniform3i 
- *  */
+ *  
+ */
 PHP_FUNCTION(glUniform3i)
 {
     zend_long location;
@@ -1063,7 +1227,8 @@ PHP_FUNCTION(glUniform3i)
 
 /**
  * glUniform4i 
- *  */
+ *  
+ */
 PHP_FUNCTION(glUniform4i)
 {
     zend_long location;
@@ -1079,7 +1244,8 @@ PHP_FUNCTION(glUniform4i)
 
 /**
  * glValidateProgram 
- *  */
+ *  
+ */
 PHP_FUNCTION(glValidateProgram)
 {
     zend_long program;
@@ -1091,7 +1257,8 @@ PHP_FUNCTION(glValidateProgram)
 
 /**
  * glVertexAttrib1d 
- *  */
+ *  
+ */
 PHP_FUNCTION(glVertexAttrib1d)
 {
     zend_long index;
@@ -1104,7 +1271,8 @@ PHP_FUNCTION(glVertexAttrib1d)
 
 /**
  * glVertexAttrib1f 
- *  */
+ *  
+ */
 PHP_FUNCTION(glVertexAttrib1f)
 {
     zend_long index;
@@ -1117,7 +1285,8 @@ PHP_FUNCTION(glVertexAttrib1f)
 
 /**
  * glVertexAttrib1s 
- *  */
+ *  
+ */
 PHP_FUNCTION(glVertexAttrib1s)
 {
     zend_long index;
@@ -1130,7 +1299,8 @@ PHP_FUNCTION(glVertexAttrib1s)
 
 /**
  * glVertexAttrib2d 
- *  */
+ *  
+ */
 PHP_FUNCTION(glVertexAttrib2d)
 {
     zend_long index;
@@ -1144,7 +1314,8 @@ PHP_FUNCTION(glVertexAttrib2d)
 
 /**
  * glVertexAttrib2f 
- *  */
+ *  
+ */
 PHP_FUNCTION(glVertexAttrib2f)
 {
     zend_long index;
@@ -1158,7 +1329,8 @@ PHP_FUNCTION(glVertexAttrib2f)
 
 /**
  * glVertexAttrib2s 
- *  */
+ *  
+ */
 PHP_FUNCTION(glVertexAttrib2s)
 {
     zend_long index;
@@ -1172,7 +1344,8 @@ PHP_FUNCTION(glVertexAttrib2s)
 
 /**
  * glVertexAttrib3d 
- *  */
+ *  
+ */
 PHP_FUNCTION(glVertexAttrib3d)
 {
     zend_long index;
@@ -1187,7 +1360,8 @@ PHP_FUNCTION(glVertexAttrib3d)
 
 /**
  * glVertexAttrib3f 
- *  */
+ *  
+ */
 PHP_FUNCTION(glVertexAttrib3f)
 {
     zend_long index;
@@ -1202,7 +1376,8 @@ PHP_FUNCTION(glVertexAttrib3f)
 
 /**
  * glVertexAttrib3s 
- *  */
+ *  
+ */
 PHP_FUNCTION(glVertexAttrib3s)
 {
     zend_long index;
@@ -1217,7 +1392,8 @@ PHP_FUNCTION(glVertexAttrib3s)
 
 /**
  * glVertexAttrib4Nub 
- *  */
+ *  
+ */
 PHP_FUNCTION(glVertexAttrib4Nub)
 {
     zend_long index;
@@ -1233,7 +1409,8 @@ PHP_FUNCTION(glVertexAttrib4Nub)
 
 /**
  * glVertexAttrib4d 
- *  */
+ *  
+ */
 PHP_FUNCTION(glVertexAttrib4d)
 {
     zend_long index;
@@ -1249,7 +1426,8 @@ PHP_FUNCTION(glVertexAttrib4d)
 
 /**
  * glVertexAttrib4f 
- *  */
+ *  
+ */
 PHP_FUNCTION(glVertexAttrib4f)
 {
     zend_long index;
@@ -1265,7 +1443,8 @@ PHP_FUNCTION(glVertexAttrib4f)
 
 /**
  * glVertexAttrib4s 
- *  */
+ *  
+ */
 PHP_FUNCTION(glVertexAttrib4s)
 {
     zend_long index;
@@ -1281,7 +1460,8 @@ PHP_FUNCTION(glVertexAttrib4s)
 
 /**
  * glColorMaski 
- *  */
+ *  
+ */
 PHP_FUNCTION(glColorMaski)
 {
     zend_long index;
@@ -1297,7 +1477,8 @@ PHP_FUNCTION(glColorMaski)
 
 /**
  * glEnablei 
- *  */
+ *  
+ */
 PHP_FUNCTION(glEnablei)
 {
     zend_long target;
@@ -1310,7 +1491,8 @@ PHP_FUNCTION(glEnablei)
 
 /**
  * glDisablei 
- *  */
+ *  
+ */
 PHP_FUNCTION(glDisablei)
 {
     zend_long target;
@@ -1323,7 +1505,8 @@ PHP_FUNCTION(glDisablei)
 
 /**
  * glIsEnabledi 
- *  */
+ *  
+ */
 PHP_FUNCTION(glIsEnabledi)
 {
     zend_long target;
@@ -1336,7 +1519,8 @@ PHP_FUNCTION(glIsEnabledi)
 
 /**
  * glBeginTransformFeedback 
- *  */
+ *  
+ */
 PHP_FUNCTION(glBeginTransformFeedback)
 {
     zend_long primitiveMode;
@@ -1348,7 +1532,8 @@ PHP_FUNCTION(glBeginTransformFeedback)
 
 /**
  * glEndTransformFeedback 
- *  */
+ *  
+ */
 PHP_FUNCTION(glEndTransformFeedback)
 {
     glEndTransformFeedback();
@@ -1356,7 +1541,8 @@ PHP_FUNCTION(glEndTransformFeedback)
 
 /**
  * glBindBufferRange 
- *  */
+ *  
+ */
 PHP_FUNCTION(glBindBufferRange)
 {
     zend_long target;
@@ -1372,7 +1558,8 @@ PHP_FUNCTION(glBindBufferRange)
 
 /**
  * glBindBufferBase 
- *  */
+ *  
+ */
 PHP_FUNCTION(glBindBufferBase)
 {
     zend_long target;
@@ -1386,7 +1573,8 @@ PHP_FUNCTION(glBindBufferBase)
 
 /**
  * glClampColor 
- *  */
+ *  
+ */
 PHP_FUNCTION(glClampColor)
 {
     zend_long target;
@@ -1399,7 +1587,8 @@ PHP_FUNCTION(glClampColor)
 
 /**
  * glBeginConditionalRender 
- *  */
+ *  
+ */
 PHP_FUNCTION(glBeginConditionalRender)
 {
     zend_long id;
@@ -1412,7 +1601,8 @@ PHP_FUNCTION(glBeginConditionalRender)
 
 /**
  * glEndConditionalRender 
- *  */
+ *  
+ */
 PHP_FUNCTION(glEndConditionalRender)
 {
     glEndConditionalRender();
@@ -1420,7 +1610,8 @@ PHP_FUNCTION(glEndConditionalRender)
 
 /**
  * glVertexAttribI1i 
- *  */
+ *  
+ */
 PHP_FUNCTION(glVertexAttribI1i)
 {
     zend_long index;
@@ -1433,7 +1624,8 @@ PHP_FUNCTION(glVertexAttribI1i)
 
 /**
  * glVertexAttribI2i 
- *  */
+ *  
+ */
 PHP_FUNCTION(glVertexAttribI2i)
 {
     zend_long index;
@@ -1447,7 +1639,8 @@ PHP_FUNCTION(glVertexAttribI2i)
 
 /**
  * glVertexAttribI3i 
- *  */
+ *  
+ */
 PHP_FUNCTION(glVertexAttribI3i)
 {
     zend_long index;
@@ -1462,7 +1655,8 @@ PHP_FUNCTION(glVertexAttribI3i)
 
 /**
  * glVertexAttribI4i 
- *  */
+ *  
+ */
 PHP_FUNCTION(glVertexAttribI4i)
 {
     zend_long index;
@@ -1478,7 +1672,8 @@ PHP_FUNCTION(glVertexAttribI4i)
 
 /**
  * glVertexAttribI1ui 
- *  */
+ *  
+ */
 PHP_FUNCTION(glVertexAttribI1ui)
 {
     zend_long index;
@@ -1491,7 +1686,8 @@ PHP_FUNCTION(glVertexAttribI1ui)
 
 /**
  * glVertexAttribI2ui 
- *  */
+ *  
+ */
 PHP_FUNCTION(glVertexAttribI2ui)
 {
     zend_long index;
@@ -1505,7 +1701,8 @@ PHP_FUNCTION(glVertexAttribI2ui)
 
 /**
  * glVertexAttribI3ui 
- *  */
+ *  
+ */
 PHP_FUNCTION(glVertexAttribI3ui)
 {
     zend_long index;
@@ -1520,7 +1717,8 @@ PHP_FUNCTION(glVertexAttribI3ui)
 
 /**
  * glVertexAttribI4ui 
- *  */
+ *  
+ */
 PHP_FUNCTION(glVertexAttribI4ui)
 {
     zend_long index;
@@ -1536,7 +1734,8 @@ PHP_FUNCTION(glVertexAttribI4ui)
 
 /**
  * glUniform1ui 
- *  */
+ *  
+ */
 PHP_FUNCTION(glUniform1ui)
 {
     zend_long location;
@@ -1549,7 +1748,8 @@ PHP_FUNCTION(glUniform1ui)
 
 /**
  * glUniform2ui 
- *  */
+ *  
+ */
 PHP_FUNCTION(glUniform2ui)
 {
     zend_long location;
@@ -1563,7 +1763,8 @@ PHP_FUNCTION(glUniform2ui)
 
 /**
  * glUniform3ui 
- *  */
+ *  
+ */
 PHP_FUNCTION(glUniform3ui)
 {
     zend_long location;
@@ -1578,7 +1779,8 @@ PHP_FUNCTION(glUniform3ui)
 
 /**
  * glUniform4ui 
- *  */
+ *  
+ */
 PHP_FUNCTION(glUniform4ui)
 {
     zend_long location;
@@ -1594,7 +1796,8 @@ PHP_FUNCTION(glUniform4ui)
 
 /**
  * glClearBufferfi 
- *  */
+ *  
+ */
 PHP_FUNCTION(glClearBufferfi)
 {
     zend_long buffer;
@@ -1609,7 +1812,8 @@ PHP_FUNCTION(glClearBufferfi)
 
 /**
  * glIsRenderbuffer 
- *  */
+ *  
+ */
 PHP_FUNCTION(glIsRenderbuffer)
 {
     zend_long renderbuffer;
@@ -1621,7 +1825,8 @@ PHP_FUNCTION(glIsRenderbuffer)
 
 /**
  * glBindRenderbuffer 
- *  */
+ *  
+ */
 PHP_FUNCTION(glBindRenderbuffer)
 {
     zend_long target;
@@ -1634,7 +1839,8 @@ PHP_FUNCTION(glBindRenderbuffer)
 
 /**
  * glRenderbufferStorage 
- *  */
+ *  
+ */
 PHP_FUNCTION(glRenderbufferStorage)
 {
     zend_long target;
@@ -1649,7 +1855,8 @@ PHP_FUNCTION(glRenderbufferStorage)
 
 /**
  * glIsFramebuffer 
- *  */
+ *  
+ */
 PHP_FUNCTION(glIsFramebuffer)
 {
     zend_long framebuffer;
@@ -1661,7 +1868,8 @@ PHP_FUNCTION(glIsFramebuffer)
 
 /**
  * glBindFramebuffer 
- *  */
+ *  
+ */
 PHP_FUNCTION(glBindFramebuffer)
 {
     zend_long target;
@@ -1674,7 +1882,8 @@ PHP_FUNCTION(glBindFramebuffer)
 
 /**
  * glCheckFramebufferStatus 
- *  */
+ *  
+ */
 PHP_FUNCTION(glCheckFramebufferStatus)
 {
     zend_long target;
@@ -1686,7 +1895,8 @@ PHP_FUNCTION(glCheckFramebufferStatus)
 
 /**
  * glFramebufferTexture1D 
- *  */
+ *  
+ */
 PHP_FUNCTION(glFramebufferTexture1D)
 {
     zend_long target;
@@ -1702,7 +1912,8 @@ PHP_FUNCTION(glFramebufferTexture1D)
 
 /**
  * glFramebufferTexture2D 
- *  */
+ *  
+ */
 PHP_FUNCTION(glFramebufferTexture2D)
 {
     zend_long target;
@@ -1718,7 +1929,8 @@ PHP_FUNCTION(glFramebufferTexture2D)
 
 /**
  * glFramebufferTexture3D 
- *  */
+ *  
+ */
 PHP_FUNCTION(glFramebufferTexture3D)
 {
     zend_long target;
@@ -1735,7 +1947,8 @@ PHP_FUNCTION(glFramebufferTexture3D)
 
 /**
  * glFramebufferRenderbuffer 
- *  */
+ *  
+ */
 PHP_FUNCTION(glFramebufferRenderbuffer)
 {
     zend_long target;
@@ -1750,7 +1963,8 @@ PHP_FUNCTION(glFramebufferRenderbuffer)
 
 /**
  * glGenerateMipmap 
- *  */
+ *  
+ */
 PHP_FUNCTION(glGenerateMipmap)
 {
     zend_long target;
@@ -1762,7 +1976,8 @@ PHP_FUNCTION(glGenerateMipmap)
 
 /**
  * glBlitFramebuffer 
- *  */
+ *  
+ */
 PHP_FUNCTION(glBlitFramebuffer)
 {
     zend_long srcX0;
@@ -1783,7 +1998,8 @@ PHP_FUNCTION(glBlitFramebuffer)
 
 /**
  * glRenderbufferStorageMultisample 
- *  */
+ *  
+ */
 PHP_FUNCTION(glRenderbufferStorageMultisample)
 {
     zend_long target;
@@ -1799,7 +2015,8 @@ PHP_FUNCTION(glRenderbufferStorageMultisample)
 
 /**
  * glFramebufferTextureLayer 
- *  */
+ *  
+ */
 PHP_FUNCTION(glFramebufferTextureLayer)
 {
     zend_long target;
@@ -1815,7 +2032,8 @@ PHP_FUNCTION(glFramebufferTextureLayer)
 
 /**
  * glFlushMappedBufferRange 
- *  */
+ *  
+ */
 PHP_FUNCTION(glFlushMappedBufferRange)
 {
     zend_long target;
@@ -1829,7 +2047,8 @@ PHP_FUNCTION(glFlushMappedBufferRange)
 
 /**
  * glBindVertexArray 
- *  */
+ *  
+ */
 PHP_FUNCTION(glBindVertexArray)
 {
     zend_long array;
@@ -1841,7 +2060,8 @@ PHP_FUNCTION(glBindVertexArray)
 
 /**
  * glIsVertexArray 
- *  */
+ *  
+ */
 PHP_FUNCTION(glIsVertexArray)
 {
     zend_long array;
@@ -1853,7 +2073,8 @@ PHP_FUNCTION(glIsVertexArray)
 
 /**
  * glDrawArraysInstanced 
- *  */
+ *  
+ */
 PHP_FUNCTION(glDrawArraysInstanced)
 {
     zend_long mode;
@@ -1868,7 +2089,8 @@ PHP_FUNCTION(glDrawArraysInstanced)
 
 /**
  * glTexBuffer 
- *  */
+ *  
+ */
 PHP_FUNCTION(glTexBuffer)
 {
     zend_long target;
@@ -1882,7 +2104,8 @@ PHP_FUNCTION(glTexBuffer)
 
 /**
  * glPrimitiveRestartIndex 
- *  */
+ *  
+ */
 PHP_FUNCTION(glPrimitiveRestartIndex)
 {
     zend_long index;
@@ -1894,7 +2117,8 @@ PHP_FUNCTION(glPrimitiveRestartIndex)
 
 /**
  * glCopyBufferSubData 
- *  */
+ *  
+ */
 PHP_FUNCTION(glCopyBufferSubData)
 {
     zend_long readTarget;
@@ -1910,7 +2134,8 @@ PHP_FUNCTION(glCopyBufferSubData)
 
 /**
  * glUniformBlockBinding 
- *  */
+ *  
+ */
 PHP_FUNCTION(glUniformBlockBinding)
 {
     zend_long program;
@@ -1924,7 +2149,8 @@ PHP_FUNCTION(glUniformBlockBinding)
 
 /**
  * glProvokingVertex 
- *  */
+ *  
+ */
 PHP_FUNCTION(glProvokingVertex)
 {
     zend_long mode;
@@ -1936,7 +2162,8 @@ PHP_FUNCTION(glProvokingVertex)
 
 /**
  * glFenceSync 
- *  */
+ *  
+ */
 PHP_FUNCTION(glFenceSync)
 {
     zend_long condition;
@@ -1949,7 +2176,8 @@ PHP_FUNCTION(glFenceSync)
 
 /**
  * glIsSync 
- *  */
+ *  
+ */
 PHP_FUNCTION(glIsSync)
 {
     zend_long sync;
@@ -1961,7 +2189,8 @@ PHP_FUNCTION(glIsSync)
 
 /**
  * glDeleteSync 
- *  */
+ *  
+ */
 PHP_FUNCTION(glDeleteSync)
 {
     zend_long sync;
@@ -1973,7 +2202,8 @@ PHP_FUNCTION(glDeleteSync)
 
 /**
  * glClientWaitSync 
- *  */
+ *  
+ */
 PHP_FUNCTION(glClientWaitSync)
 {
     zend_long sync;
@@ -1987,7 +2217,8 @@ PHP_FUNCTION(glClientWaitSync)
 
 /**
  * glWaitSync 
- *  */
+ *  
+ */
 PHP_FUNCTION(glWaitSync)
 {
     zend_long sync;
@@ -2001,7 +2232,8 @@ PHP_FUNCTION(glWaitSync)
 
 /**
  * glFramebufferTexture 
- *  */
+ *  
+ */
 PHP_FUNCTION(glFramebufferTexture)
 {
     zend_long target;
@@ -2016,7 +2248,8 @@ PHP_FUNCTION(glFramebufferTexture)
 
 /**
  * glTexImage2DMultisample 
- *  */
+ *  
+ */
 PHP_FUNCTION(glTexImage2DMultisample)
 {
     zend_long target;
@@ -2033,7 +2266,8 @@ PHP_FUNCTION(glTexImage2DMultisample)
 
 /**
  * glTexImage3DMultisample 
- *  */
+ *  
+ */
 PHP_FUNCTION(glTexImage3DMultisample)
 {
     zend_long target;
@@ -2051,7 +2285,8 @@ PHP_FUNCTION(glTexImage3DMultisample)
 
 /**
  * glSampleMaski 
- *  */
+ *  
+ */
 PHP_FUNCTION(glSampleMaski)
 {
     zend_long maskNumber;
@@ -2064,7 +2299,8 @@ PHP_FUNCTION(glSampleMaski)
 
 /**
  * glfwInit 
- *  */
+ *  
+ */
 PHP_FUNCTION(glfwInit)
 {
     RETURN_LONG(glfwInit());
@@ -2072,23 +2308,92 @@ PHP_FUNCTION(glfwInit)
 
 /**
  * glfwTerminate 
- *  */
+ *  
+ */
 PHP_FUNCTION(glfwTerminate)
 {
     glfwTerminate();
 }
 
 /**
+ * glfwInitHint 
+ *  
+ */
+PHP_FUNCTION(glfwInitHint)
+{
+    zend_long hint;
+    zend_long value;
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "ll", &hint, &value) == FAILURE) {
+       return;
+    }
+    glfwInitHint(hint, value);
+}
+
+/**
+ * glfwGetVersionString 
+ *  
+ */
+PHP_FUNCTION(glfwGetVersionString)
+{
+    RETURN_STRING(glfwGetVersionString());
+}
+
+/**
+ * glfwGetError 
+ *  
+ */
+PHP_FUNCTION(glfwGetError)
+{
+    const char **description;
+    size_t *description_size;
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "s", &*description, &*description_size) == FAILURE) {
+       return;
+    }
+    RETURN_LONG(glfwGetError(*description));
+}
+
+/**
  * glfwDefaultWindowHints 
- *  */
+ *  
+ */
 PHP_FUNCTION(glfwDefaultWindowHints)
 {
     glfwDefaultWindowHints();
 }
 
 /**
+ * glfwWindowHint 
+ *  
+ */
+PHP_FUNCTION(glfwWindowHint)
+{
+    zend_long hint;
+    zend_long value;
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "ll", &hint, &value) == FAILURE) {
+       return;
+    }
+    glfwWindowHint(hint, value);
+}
+
+/**
+ * glfwWindowHintString 
+ *  
+ */
+PHP_FUNCTION(glfwWindowHintString)
+{
+    zend_long hint;
+    const char *value;
+    size_t value_size;
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "ls", &hint, &value, &value_size) == FAILURE) {
+       return;
+    }
+    glfwWindowHintString(hint, value);
+}
+
+/**
  * glfwPollEvents 
- *  */
+ *  
+ */
 PHP_FUNCTION(glfwPollEvents)
 {
     glfwPollEvents();
@@ -2096,15 +2401,30 @@ PHP_FUNCTION(glfwPollEvents)
 
 /**
  * glfwWaitEvents 
- *  */
+ *  
+ */
 PHP_FUNCTION(glfwWaitEvents)
 {
     glfwWaitEvents();
 }
 
 /**
+ * glfwWaitEventsTimeout 
+ *  
+ */
+PHP_FUNCTION(glfwWaitEventsTimeout)
+{
+    double timeout;
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "d", &timeout) == FAILURE) {
+       return;
+    }
+    glfwWaitEventsTimeout(timeout);
+}
+
+/**
  * glfwPostEmptyEvent 
- *  */
+ *  
+ */
 PHP_FUNCTION(glfwPostEmptyEvent)
 {
     glfwPostEmptyEvent();
@@ -2112,23 +2432,196 @@ PHP_FUNCTION(glfwPostEmptyEvent)
 
 /**
  * glfwRawMouseMotionSupported 
- *  */
+ *  
+ */
 PHP_FUNCTION(glfwRawMouseMotionSupported)
 {
     RETURN_LONG(glfwRawMouseMotionSupported());
 }
 
 /**
+ * glfwGetKeyName 
+ *  
+ */
+PHP_FUNCTION(glfwGetKeyName)
+{
+    zend_long key;
+    zend_long scancode;
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "ll", &key, &scancode) == FAILURE) {
+       return;
+    }
+    RETURN_STRING(glfwGetKeyName(key, scancode));
+}
+
+/**
+ * glfwGetKeyScancode 
+ *  
+ */
+PHP_FUNCTION(glfwGetKeyScancode)
+{
+    zend_long key;
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "l", &key) == FAILURE) {
+       return;
+    }
+    RETURN_LONG(glfwGetKeyScancode(key));
+}
+
+/**
+ * glfwCreateStandardCursor 
+ *  
+ */
+PHP_FUNCTION(glfwCreateStandardCursor)
+{
+    zend_long shape;
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "l", &shape) == FAILURE) {
+       return;
+    }
+    GLFWcursor* glfwcursor = glfwCreateStandardCursor(shape);
+    PHPGLFW_RETURN_GLFWCURSOR_RESOURCE(glfwcursor, phpglfw_glfwcursor_context);
+}
+
+/**
+ * glfwJoystickPresent 
+ *  
+ */
+PHP_FUNCTION(glfwJoystickPresent)
+{
+    zend_long jid;
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "l", &jid) == FAILURE) {
+       return;
+    }
+    RETURN_LONG(glfwJoystickPresent(jid));
+}
+
+/**
+ * glfwGetJoystickName 
+ *  
+ */
+PHP_FUNCTION(glfwGetJoystickName)
+{
+    zend_long jid;
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "l", &jid) == FAILURE) {
+       return;
+    }
+    RETURN_STRING(glfwGetJoystickName(jid));
+}
+
+/**
+ * glfwGetJoystickGUID 
+ *  
+ */
+PHP_FUNCTION(glfwGetJoystickGUID)
+{
+    zend_long jid;
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "l", &jid) == FAILURE) {
+       return;
+    }
+    RETURN_STRING(glfwGetJoystickGUID(jid));
+}
+
+/**
+ * glfwJoystickIsGamepad 
+ *  
+ */
+PHP_FUNCTION(glfwJoystickIsGamepad)
+{
+    zend_long jid;
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "l", &jid) == FAILURE) {
+       return;
+    }
+    RETURN_LONG(glfwJoystickIsGamepad(jid));
+}
+
+/**
+ * glfwUpdateGamepadMappings 
+ *  
+ */
+PHP_FUNCTION(glfwUpdateGamepadMappings)
+{
+    const char *string;
+    size_t string_size;
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "s", &string, &string_size) == FAILURE) {
+       return;
+    }
+    RETURN_LONG(glfwUpdateGamepadMappings(string));
+}
+
+/**
+ * glfwGetGamepadName 
+ *  
+ */
+PHP_FUNCTION(glfwGetGamepadName)
+{
+    zend_long jid;
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "l", &jid) == FAILURE) {
+       return;
+    }
+    RETURN_STRING(glfwGetGamepadName(jid));
+}
+
+/**
  * glfwGetTime 
- *  */
+ *  
+ */
 PHP_FUNCTION(glfwGetTime)
 {
     RETURN_DOUBLE(glfwGetTime());
 }
 
 /**
+ * glfwSetTime 
+ *  
+ */
+PHP_FUNCTION(glfwSetTime)
+{
+    double time;
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "d", &time) == FAILURE) {
+       return;
+    }
+    glfwSetTime(time);
+}
+
+/**
+ * glfwGetCurrentContext 
+ *  
+ */
+PHP_FUNCTION(glfwGetCurrentContext)
+{
+    GLFWwindow* glfwwindow = glfwGetCurrentContext();
+    PHPGLFW_RETURN_GLFWWINDOW_RESOURCE(glfwwindow, phpglfw_glfwwindow_context);
+}
+
+/**
+ * glfwSwapInterval 
+ *  
+ */
+PHP_FUNCTION(glfwSwapInterval)
+{
+    zend_long interval;
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "l", &interval) == FAILURE) {
+       return;
+    }
+    glfwSwapInterval(interval);
+}
+
+/**
+ * glfwExtensionSupported 
+ *  
+ */
+PHP_FUNCTION(glfwExtensionSupported)
+{
+    const char *extension;
+    size_t extension_size;
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "s", &extension, &extension_size) == FAILURE) {
+       return;
+    }
+    RETURN_LONG(glfwExtensionSupported(extension));
+}
+
+/**
  * glfwVulkanSupported 
- *  */
+ *  
+ */
 PHP_FUNCTION(glfwVulkanSupported)
 {
     RETURN_LONG(glfwVulkanSupported());

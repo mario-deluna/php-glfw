@@ -1,5 +1,5 @@
 /* This is a generated file, edit the .stub.php file instead.
- * Stub hash: e1c38ae6bf65b2cd235bc09ff55d7abc321d0d33 */
+ * Stub hash: 2e6dcfb269363799d5ff55493b1e0b037cd5a22c */
 
 ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_glCullFace, 0, 0, IS_VOID, 0)
 ZEND_END_ARG_INFO()
@@ -308,18 +308,58 @@ ZEND_END_ARG_INFO()
 
 #define arginfo_glfwTerminate arginfo_glCullFace
 
+#define arginfo_glfwInitHint arginfo_glCullFace
+
+ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_glfwGetVersionString, 0, 0, IS_STRING, 0)
+ZEND_END_ARG_INFO()
+
+#define arginfo_glfwGetError arginfo_glGetError
+
 #define arginfo_glfwDefaultWindowHints arginfo_glCullFace
+
+#define arginfo_glfwWindowHint arginfo_glCullFace
+
+#define arginfo_glfwWindowHintString arginfo_glCullFace
 
 #define arginfo_glfwPollEvents arginfo_glCullFace
 
 #define arginfo_glfwWaitEvents arginfo_glCullFace
 
+#define arginfo_glfwWaitEventsTimeout arginfo_glCullFace
+
 #define arginfo_glfwPostEmptyEvent arginfo_glCullFace
 
 #define arginfo_glfwRawMouseMotionSupported arginfo_glGetError
 
+#define arginfo_glfwGetKeyName arginfo_glfwGetVersionString
+
+#define arginfo_glfwGetKeyScancode arginfo_glGetError
+
+ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(arginfo_glfwCreateStandardCursor, 0, 0, resource, 0)
+ZEND_END_ARG_INFO()
+
+#define arginfo_glfwJoystickPresent arginfo_glGetError
+
+#define arginfo_glfwGetJoystickName arginfo_glfwGetVersionString
+
+#define arginfo_glfwGetJoystickGUID arginfo_glfwGetVersionString
+
+#define arginfo_glfwJoystickIsGamepad arginfo_glGetError
+
+#define arginfo_glfwUpdateGamepadMappings arginfo_glGetError
+
+#define arginfo_glfwGetGamepadName arginfo_glfwGetVersionString
+
 ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_glfwGetTime, 0, 0, IS_DOUBLE, 0)
 ZEND_END_ARG_INFO()
+
+#define arginfo_glfwSetTime arginfo_glCullFace
+
+#define arginfo_glfwGetCurrentContext arginfo_glfwCreateStandardCursor
+
+#define arginfo_glfwSwapInterval arginfo_glCullFace
+
+#define arginfo_glfwExtensionSupported arginfo_glGetError
 
 #define arginfo_glfwVulkanSupported arginfo_glGetError
 
@@ -476,12 +516,31 @@ ZEND_FUNCTION(glTexImage3DMultisample);
 ZEND_FUNCTION(glSampleMaski);
 ZEND_FUNCTION(glfwInit);
 ZEND_FUNCTION(glfwTerminate);
+ZEND_FUNCTION(glfwInitHint);
+ZEND_FUNCTION(glfwGetVersionString);
+ZEND_FUNCTION(glfwGetError);
 ZEND_FUNCTION(glfwDefaultWindowHints);
+ZEND_FUNCTION(glfwWindowHint);
+ZEND_FUNCTION(glfwWindowHintString);
 ZEND_FUNCTION(glfwPollEvents);
 ZEND_FUNCTION(glfwWaitEvents);
+ZEND_FUNCTION(glfwWaitEventsTimeout);
 ZEND_FUNCTION(glfwPostEmptyEvent);
 ZEND_FUNCTION(glfwRawMouseMotionSupported);
+ZEND_FUNCTION(glfwGetKeyName);
+ZEND_FUNCTION(glfwGetKeyScancode);
+ZEND_FUNCTION(glfwCreateStandardCursor);
+ZEND_FUNCTION(glfwJoystickPresent);
+ZEND_FUNCTION(glfwGetJoystickName);
+ZEND_FUNCTION(glfwGetJoystickGUID);
+ZEND_FUNCTION(glfwJoystickIsGamepad);
+ZEND_FUNCTION(glfwUpdateGamepadMappings);
+ZEND_FUNCTION(glfwGetGamepadName);
 ZEND_FUNCTION(glfwGetTime);
+ZEND_FUNCTION(glfwSetTime);
+ZEND_FUNCTION(glfwGetCurrentContext);
+ZEND_FUNCTION(glfwSwapInterval);
+ZEND_FUNCTION(glfwExtensionSupported);
 ZEND_FUNCTION(glfwVulkanSupported);
 
 
@@ -638,12 +697,31 @@ static const zend_function_entry ext_functions[] = {
 	ZEND_FE(glSampleMaski, arginfo_glSampleMaski)
 	ZEND_FE(glfwInit, arginfo_glfwInit)
 	ZEND_FE(glfwTerminate, arginfo_glfwTerminate)
+	ZEND_FE(glfwInitHint, arginfo_glfwInitHint)
+	ZEND_FE(glfwGetVersionString, arginfo_glfwGetVersionString)
+	ZEND_FE(glfwGetError, arginfo_glfwGetError)
 	ZEND_FE(glfwDefaultWindowHints, arginfo_glfwDefaultWindowHints)
+	ZEND_FE(glfwWindowHint, arginfo_glfwWindowHint)
+	ZEND_FE(glfwWindowHintString, arginfo_glfwWindowHintString)
 	ZEND_FE(glfwPollEvents, arginfo_glfwPollEvents)
 	ZEND_FE(glfwWaitEvents, arginfo_glfwWaitEvents)
+	ZEND_FE(glfwWaitEventsTimeout, arginfo_glfwWaitEventsTimeout)
 	ZEND_FE(glfwPostEmptyEvent, arginfo_glfwPostEmptyEvent)
 	ZEND_FE(glfwRawMouseMotionSupported, arginfo_glfwRawMouseMotionSupported)
+	ZEND_FE(glfwGetKeyName, arginfo_glfwGetKeyName)
+	ZEND_FE(glfwGetKeyScancode, arginfo_glfwGetKeyScancode)
+	ZEND_FE(glfwCreateStandardCursor, arginfo_glfwCreateStandardCursor)
+	ZEND_FE(glfwJoystickPresent, arginfo_glfwJoystickPresent)
+	ZEND_FE(glfwGetJoystickName, arginfo_glfwGetJoystickName)
+	ZEND_FE(glfwGetJoystickGUID, arginfo_glfwGetJoystickGUID)
+	ZEND_FE(glfwJoystickIsGamepad, arginfo_glfwJoystickIsGamepad)
+	ZEND_FE(glfwUpdateGamepadMappings, arginfo_glfwUpdateGamepadMappings)
+	ZEND_FE(glfwGetGamepadName, arginfo_glfwGetGamepadName)
 	ZEND_FE(glfwGetTime, arginfo_glfwGetTime)
+	ZEND_FE(glfwSetTime, arginfo_glfwSetTime)
+	ZEND_FE(glfwGetCurrentContext, arginfo_glfwGetCurrentContext)
+	ZEND_FE(glfwSwapInterval, arginfo_glfwSwapInterval)
+	ZEND_FE(glfwExtensionSupported, arginfo_glfwExtensionSupported)
 	ZEND_FE(glfwVulkanSupported, arginfo_glfwVulkanSupported)
 	ZEND_FE_END
 };
