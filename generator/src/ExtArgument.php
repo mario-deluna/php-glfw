@@ -22,6 +22,9 @@ abstract class ExtArgument
             case ExtType::T_STRING:
                 return new ExtStringArgument($name, $argumentType);
             break;
+            case ExtType::T_RESOURCE:
+                return new ExtResourceArgument($name, $argumentType);
+            break;
             default: 
                 throw new \Exception("Unsupported argument type {$argumentType}");
         }
@@ -32,6 +35,8 @@ abstract class ExtArgument
     public string $argumentType;
 
     public ?string $argumentTypeFrom = null;
+
+    public ?ExtResource $argumentResource = null;
 
     public string $charid;
 
@@ -222,6 +227,11 @@ class ExtResourceArgument extends ExtArgument
     public function getReferences()
     {
         return "&{$this->name}_resource";
+    }
+
+    public function generateDereferencing() : string 
+    {
+        return $this->argumentResource->getFetchCall($this->name, $this->name . '_resource');
     }
 }
 

@@ -60,6 +60,10 @@ PHP_MINIT_FUNCTION(glfw)
 {   
     // register constants
     phpglfw_register_constants(INIT_FUNC_ARGS_PASSTHRU);
+
+    // register objects
+    phpglfw_object_minit_helper();
+
     phpglfw_register_resource_destructors(INIT_FUNC_ARGS_PASSTHRU);
 
     return SUCCESS;

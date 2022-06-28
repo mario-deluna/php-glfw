@@ -1,0 +1,1 @@
+# PHP-GLFW binding generator

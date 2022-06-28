@@ -29,6 +29,92 @@
 #include "phpglfw.h"
 #include <zend_API.h>
 
+
+/** 
+ * Test
+ */
+zend_class_entry *phpglfw_window_ce;
+
+typedef struct _phpglfw_window_object {
+    GLFWwindow *window;
+    zend_object std;
+} phpglfw_window_object;
+
+static zend_object_handlers phpglfw_window_object_handlers;
+
+static const zend_function_entry class_GLFWwindow_methods[] = {
+    ZEND_FE_END
+};
+
+static zend_always_inline phpglfw_window_object* phpglfw_window_from_zobj_p(zend_object* obj)
+{
+    return (phpglfw_window_object *) ((char *) (obj) - XtOffsetOf(phpglfw_window_object, std));
+}
+
+static zend_function *phpglfw_window_object_get_constructor(zend_object *object)
+{
+    zend_throw_error(NULL, "You cannot initialize a GLFWwindow object except through helper functions");
+    return NULL;
+}
+
+static zend_class_entry *register_class_GLFWwindow(void)
+{
+    zend_class_entry ce, *class_entry;
+
+    INIT_CLASS_ENTRY(ce, "GLFWwindow", class_GLFWwindow_methods);
+    class_entry = zend_register_internal_class_ex(&ce, NULL);
+    class_entry->ce_flags |= ZEND_ACC_FINAL|ZEND_ACC_NO_DYNAMIC_PROPERTIES|ZEND_ACC_NOT_SERIALIZABLE;
+
+    return class_entry;
+}
+
+zend_object *phpglfw_window_object_create(zend_class_entry *class_type)
+{
+    size_t block_len = sizeof(phpglfw_window_object) + zend_object_properties_size(class_type);
+    phpglfw_window_object *intern = emalloc(block_len);
+    memset(intern, 0, block_len);
+
+    zend_object_std_init(&intern->std, class_type);
+    object_properties_init(&intern->std, class_type);
+    intern->std.handlers = &phpglfw_window_object_handlers;
+
+    return &intern->std;
+}
+
+static void phpglfw_window_object_free(zend_object *intern)
+{
+    phpglfw_window_object *obj_ptr = phpglfw_window_from_zobj_p(intern);
+    if (obj_ptr->window) {
+        glfwDestroyWindow(obj_ptr->window);
+    }
+    zend_object_std_dtor(intern);
+}
+
+void phpglfw_assign_glfwwindowptr_as_extglfwwindow(zval *val, GLFWwindow *window)
+{
+    object_init_ex(val, phpglfw_window_ce);
+    phpglfw_window_from_zobj_p(Z_OBJ_P(val))->window = window;
+}
+
+void phpglfw_object_minit_helper(void)
+{
+    phpglfw_window_ce = register_class_GLFWwindow();
+    phpglfw_window_ce->create_object = phpglfw_window_object_create;
+
+    /* setting up the object handlers for the GdImage class */
+    memcpy(&phpglfw_window_object_handlers, &std_object_handlers, sizeof(zend_object_handlers));
+    phpglfw_window_object_handlers.clone_obj = NULL;
+    phpglfw_window_object_handlers.free_obj = phpglfw_window_object_free;
+    phpglfw_window_object_handlers.get_constructor = phpglfw_window_object_get_constructor;
+    phpglfw_window_object_handlers.compare = zend_objects_not_comparable;
+    phpglfw_window_object_handlers.offset = XtOffsetOf(phpglfw_window_object, std);
+}
+
+GLFWwindow * phpglfw_glfwwindowptr_from_zval_p(zval* zp)
+{
+    return phpglfw_window_from_zobj_p(Z_OBJ_P(zp))->window;
+}
+
 /**
  * ----------------------------------------------------------------------------
  * PHPGlfw Resources 
@@ -37,12 +123,16 @@
 
 #define PHPGLFW_GLFWWINDOW_NAME "glfwwindow"
 int phpglfw_glfwwindow_context;
+#define PHPGLFW_GLFWMONITOR_NAME "glfwmonitor"
+int phpglfw_glfwmonitor_context;
 #define PHPGLFW_GLFWCURSOR_NAME "glfwcursor"
 int phpglfw_glfwcursor_context;
 
 #define PHPGLFW_RESOURCE_TYPE zend_resource
 #define PHPGLFW_RETURN_GLFWWINDOW_RESOURCE(glfwwindow, context) \
     RETURN_RES(zend_register_resource(glfwwindow, context))
+#define PHPGLFW_RETURN_GLFWMONITOR_RESOURCE(glfwmonitor, context) \
+    RETURN_RES(zend_register_resource(glfwmonitor, context))
 #define PHPGLFW_RETURN_GLFWCURSOR_RESOURCE(glfwcursor, context) \
     RETURN_RES(zend_register_resource(glfwcursor, context))
 
@@ -52,6 +142,10 @@ int phpglfw_glfwcursor_context;
  */
 static GLFWwindow*phpglfw_fetch_glfwwindow(zval *resource)
 {
+    if (Z_TYPE_P(resource) == IS_NULL) {
+        return NULL;
+    }
+
     GLFWwindow*glfwwindow;
     ZEND_ASSERT(Z_TYPE_P(resource) == IS_RESOURCE);
     glfwwindow = (GLFWwindow*)zend_fetch_resource(Z_RES_P(resource), PHPGLFW_GLFWWINDOW_NAME, phpglfw_glfwwindow_context);
@@ -73,11 +167,45 @@ static void phpglfw_dtor_glfwwindow(PHPGLFW_RESOURCE_TYPE *rsrc)
 }
 
 /**
+ * Get GLFWmonitor* from resource 
+ * --------------------------------
+ */
+static GLFWmonitor*phpglfw_fetch_glfwmonitor(zval *resource)
+{
+    if (Z_TYPE_P(resource) == IS_NULL) {
+        return NULL;
+    }
+
+    GLFWmonitor*glfwmonitor;
+    ZEND_ASSERT(Z_TYPE_P(resource) == IS_RESOURCE);
+    glfwmonitor = (GLFWmonitor*)zend_fetch_resource(Z_RES_P(resource), PHPGLFW_GLFWMONITOR_NAME, phpglfw_glfwmonitor_context);
+
+    return glfwmonitor;
+}
+
+/**
+ * dtor GLFWmonitor* 
+ * --------------------------------
+ */
+static void phpglfw_dtor_glfwmonitor(PHPGLFW_RESOURCE_TYPE *rsrc)
+{
+    GLFWmonitor*glfwmonitor = (void *) rsrc->ptr;
+
+    if (glfwmonitor) {
+         
+    }
+}
+
+/**
  * Get GLFWcursor* from resource 
  * --------------------------------
  */
 static GLFWcursor*phpglfw_fetch_glfwcursor(zval *resource)
 {
+    if (Z_TYPE_P(resource) == IS_NULL) {
+        return NULL;
+    }
+
     GLFWcursor*glfwcursor;
     ZEND_ASSERT(Z_TYPE_P(resource) == IS_RESOURCE);
     glfwcursor = (GLFWcursor*)zend_fetch_resource(Z_RES_P(resource), PHPGLFW_GLFWCURSOR_NAME, phpglfw_glfwcursor_context);
@@ -106,6 +234,7 @@ static void phpglfw_dtor_glfwcursor(PHPGLFW_RESOURCE_TYPE *rsrc)
 void phpglfw_register_resource_destructors(INIT_FUNC_ARGS)
 {
     phpglfw_glfwwindow_context = zend_register_list_destructors_ex(phpglfw_dtor_glfwwindow, NULL, PHPGLFW_GLFWWINDOW_NAME, module_number);
+    phpglfw_glfwmonitor_context = zend_register_list_destructors_ex(phpglfw_dtor_glfwmonitor, NULL, PHPGLFW_GLFWMONITOR_NAME, module_number);
     phpglfw_glfwcursor_context = zend_register_list_destructors_ex(phpglfw_dtor_glfwcursor, NULL, PHPGLFW_GLFWCURSOR_NAME, module_number);
 }
 
@@ -2353,6 +2482,45 @@ PHP_FUNCTION(glfwGetError)
 }
 
 /**
+ * glfwGetPrimaryMonitor 
+ *  
+ */
+PHP_FUNCTION(glfwGetPrimaryMonitor)
+{
+    GLFWmonitor* glfwmonitor = glfwGetPrimaryMonitor();
+    PHPGLFW_RETURN_GLFWMONITOR_RESOURCE(glfwmonitor, phpglfw_glfwmonitor_context);
+}
+
+/**
+ * glfwGetMonitorName 
+ *  
+ */
+PHP_FUNCTION(glfwGetMonitorName)
+{
+    zval *monitor_resource;
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "r", &monitor_resource) == FAILURE) {
+       return;
+    }
+    GLFWmonitor* monitor = phpglfw_fetch_glfwmonitor(monitor_resource);
+    RETURN_STRING(glfwGetMonitorName(monitor));
+}
+
+/**
+ * glfwSetGamma 
+ *  
+ */
+PHP_FUNCTION(glfwSetGamma)
+{
+    zval *monitor_resource;
+    double gamma;
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "rd", &monitor_resource, &gamma) == FAILURE) {
+       return;
+    }
+    GLFWmonitor* monitor = phpglfw_fetch_glfwmonitor(monitor_resource);
+    glfwSetGamma(monitor, gamma);
+}
+
+/**
  * glfwDefaultWindowHints 
  *  
  */
@@ -2388,6 +2556,354 @@ PHP_FUNCTION(glfwWindowHintString)
        return;
     }
     glfwWindowHintString(hint, value);
+}
+
+/**
+ * glfwCreateWindow 
+ *  
+ */
+PHP_FUNCTION(glfwCreateWindow)
+{
+    zend_long width;
+    zend_long height;
+    const char *title;
+    size_t title_size;
+    zval *monitor_resource;
+    zval *share_resource;
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "llsr!r!", &width, &height, &title, &title_size, &monitor_resource, &share_resource) == FAILURE) {
+       return;
+    }
+    // GLFWmonitor* monitor = phpglfw_fetch_glfwmonitor(monitor_resource);
+    // GLFWwindow* share = phpglfw_fetch_glfwwindow(share_resource);
+    // // GLFWwindow* glfwwindow = glfwCreateWindow(width, height, title, monitor, share);
+    GLFWwindow* glfwwindow = glfwCreateWindow(width, height, title, NULL, NULL);
+    // RETURN_NULL();
+    // 
+    // 
+    // zval *window;
+    // MAKE_STD_ZVAL(window);
+    phpglfw_assign_glfwwindowptr_as_extglfwwindow(return_value, glfwwindow);
+    // RETURN_ZVAL(window);
+    // PHPGLFW_RETURN_GLFWWINDOW_RESOURCE(glfwwindow, phpglfw_glfwwindow_context);
+}
+
+/**
+ * glfwDestroyWindow 
+ *  
+ */
+PHP_FUNCTION(glfwDestroyWindow)
+{
+    zval *window_resource;
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "r", &window_resource) == FAILURE) {
+       return;
+    }
+    GLFWwindow* window = phpglfw_fetch_glfwwindow(window_resource);
+    glfwDestroyWindow(window);
+}
+
+/**
+ * glfwWindowShouldClose 
+ *  
+ */
+PHP_FUNCTION(glfwWindowShouldClose)
+{
+    zval *window_resource;
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "r", &window_resource) == FAILURE) {
+       return;
+    }
+    GLFWwindow* window = phpglfw_fetch_glfwwindow(window_resource);
+    RETURN_LONG(glfwWindowShouldClose(window));
+}
+
+/**
+ * glfwSetWindowShouldClose 
+ *  
+ */
+PHP_FUNCTION(glfwSetWindowShouldClose)
+{
+    zval *window_resource;
+    zend_long value;
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "rl", &window_resource, &value) == FAILURE) {
+       return;
+    }
+    GLFWwindow* window = phpglfw_fetch_glfwwindow(window_resource);
+    glfwSetWindowShouldClose(window, value);
+}
+
+/**
+ * glfwSetWindowTitle 
+ *  
+ */
+PHP_FUNCTION(glfwSetWindowTitle)
+{
+    zval *window_resource;
+    const char *title;
+    size_t title_size;
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "rs", &window_resource, &title, &title_size) == FAILURE) {
+       return;
+    }
+    GLFWwindow* window = phpglfw_fetch_glfwwindow(window_resource);
+    glfwSetWindowTitle(window, title);
+}
+
+/**
+ * glfwSetWindowPos 
+ *  
+ */
+PHP_FUNCTION(glfwSetWindowPos)
+{
+    zval *window_resource;
+    zend_long xpos;
+    zend_long ypos;
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "rll", &window_resource, &xpos, &ypos) == FAILURE) {
+       return;
+    }
+    GLFWwindow* window = phpglfw_fetch_glfwwindow(window_resource);
+    glfwSetWindowPos(window, xpos, ypos);
+}
+
+/**
+ * glfwSetWindowSizeLimits 
+ *  
+ */
+PHP_FUNCTION(glfwSetWindowSizeLimits)
+{
+    zval *window_resource;
+    zend_long minwidth;
+    zend_long minheight;
+    zend_long maxwidth;
+    zend_long maxheight;
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "rllll", &window_resource, &minwidth, &minheight, &maxwidth, &maxheight) == FAILURE) {
+       return;
+    }
+    GLFWwindow* window = phpglfw_fetch_glfwwindow(window_resource);
+    glfwSetWindowSizeLimits(window, minwidth, minheight, maxwidth, maxheight);
+}
+
+/**
+ * glfwSetWindowAspectRatio 
+ *  
+ */
+PHP_FUNCTION(glfwSetWindowAspectRatio)
+{
+    zval *window_resource;
+    zend_long numer;
+    zend_long denom;
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "rll", &window_resource, &numer, &denom) == FAILURE) {
+       return;
+    }
+    GLFWwindow* window = phpglfw_fetch_glfwwindow(window_resource);
+    glfwSetWindowAspectRatio(window, numer, denom);
+}
+
+/**
+ * glfwSetWindowSize 
+ *  
+ */
+PHP_FUNCTION(glfwSetWindowSize)
+{
+    zval *window_resource;
+    zend_long width;
+    zend_long height;
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "rll", &window_resource, &width, &height) == FAILURE) {
+       return;
+    }
+    GLFWwindow* window = phpglfw_fetch_glfwwindow(window_resource);
+    glfwSetWindowSize(window, width, height);
+}
+
+/**
+ * glfwGetWindowOpacity 
+ *  
+ */
+PHP_FUNCTION(glfwGetWindowOpacity)
+{
+    zval *window_resource;
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "r", &window_resource) == FAILURE) {
+       return;
+    }
+    GLFWwindow* window = phpglfw_fetch_glfwwindow(window_resource);
+    RETURN_DOUBLE(glfwGetWindowOpacity(window));
+}
+
+/**
+ * glfwSetWindowOpacity 
+ *  
+ */
+PHP_FUNCTION(glfwSetWindowOpacity)
+{
+    zval *window_resource;
+    double opacity;
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "rd", &window_resource, &opacity) == FAILURE) {
+       return;
+    }
+    GLFWwindow* window = phpglfw_fetch_glfwwindow(window_resource);
+    glfwSetWindowOpacity(window, opacity);
+}
+
+/**
+ * glfwIconifyWindow 
+ *  
+ */
+PHP_FUNCTION(glfwIconifyWindow)
+{
+    zval *window_resource;
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "r", &window_resource) == FAILURE) {
+       return;
+    }
+    GLFWwindow* window = phpglfw_fetch_glfwwindow(window_resource);
+    glfwIconifyWindow(window);
+}
+
+/**
+ * glfwRestoreWindow 
+ *  
+ */
+PHP_FUNCTION(glfwRestoreWindow)
+{
+    zval *window_resource;
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "r", &window_resource) == FAILURE) {
+       return;
+    }
+    GLFWwindow* window = phpglfw_fetch_glfwwindow(window_resource);
+    glfwRestoreWindow(window);
+}
+
+/**
+ * glfwMaximizeWindow 
+ *  
+ */
+PHP_FUNCTION(glfwMaximizeWindow)
+{
+    zval *window_resource;
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "r", &window_resource) == FAILURE) {
+       return;
+    }
+    GLFWwindow* window = phpglfw_fetch_glfwwindow(window_resource);
+    glfwMaximizeWindow(window);
+}
+
+/**
+ * glfwShowWindow 
+ *  
+ */
+PHP_FUNCTION(glfwShowWindow)
+{
+    zval *window_resource;
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "r", &window_resource) == FAILURE) {
+       return;
+    }
+    GLFWwindow* window = phpglfw_fetch_glfwwindow(window_resource);
+    glfwShowWindow(window);
+}
+
+/**
+ * glfwHideWindow 
+ *  
+ */
+PHP_FUNCTION(glfwHideWindow)
+{
+    zval *window_resource;
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "r", &window_resource) == FAILURE) {
+       return;
+    }
+    GLFWwindow* window = phpglfw_fetch_glfwwindow(window_resource);
+    glfwHideWindow(window);
+}
+
+/**
+ * glfwFocusWindow 
+ *  
+ */
+PHP_FUNCTION(glfwFocusWindow)
+{
+    zval *window_resource;
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "r", &window_resource) == FAILURE) {
+       return;
+    }
+    GLFWwindow* window = phpglfw_fetch_glfwwindow(window_resource);
+    glfwFocusWindow(window);
+}
+
+/**
+ * glfwRequestWindowAttention 
+ *  
+ */
+PHP_FUNCTION(glfwRequestWindowAttention)
+{
+    zval *window_resource;
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "r", &window_resource) == FAILURE) {
+       return;
+    }
+    GLFWwindow* window = phpglfw_fetch_glfwwindow(window_resource);
+    glfwRequestWindowAttention(window);
+}
+
+/**
+ * glfwGetWindowMonitor 
+ *  
+ */
+PHP_FUNCTION(glfwGetWindowMonitor)
+{
+    zval *window_resource;
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "r", &window_resource) == FAILURE) {
+       return;
+    }
+    GLFWwindow* window = phpglfw_fetch_glfwwindow(window_resource);
+    GLFWmonitor* glfwmonitor = glfwGetWindowMonitor(window);
+    PHPGLFW_RETURN_GLFWMONITOR_RESOURCE(glfwmonitor, phpglfw_glfwmonitor_context);
+}
+
+/**
+ * glfwSetWindowMonitor 
+ *  
+ */
+PHP_FUNCTION(glfwSetWindowMonitor)
+{
+    zval *window_resource;
+    zval *monitor_resource;
+    zend_long xpos;
+    zend_long ypos;
+    zend_long width;
+    zend_long height;
+    zend_long refreshRate;
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "rrlllll", &window_resource, &monitor_resource, &xpos, &ypos, &width, &height, &refreshRate) == FAILURE) {
+       return;
+    }
+    GLFWwindow* window = phpglfw_fetch_glfwwindow(window_resource);
+    GLFWmonitor* monitor = phpglfw_fetch_glfwmonitor(monitor_resource);
+    glfwSetWindowMonitor(window, monitor, xpos, ypos, width, height, refreshRate);
+}
+
+/**
+ * glfwGetWindowAttrib 
+ *  
+ */
+PHP_FUNCTION(glfwGetWindowAttrib)
+{
+    zval *window_resource;
+    zend_long attrib;
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "rl", &window_resource, &attrib) == FAILURE) {
+       return;
+    }
+    GLFWwindow* window = phpglfw_fetch_glfwwindow(window_resource);
+    RETURN_LONG(glfwGetWindowAttrib(window, attrib));
+}
+
+/**
+ * glfwSetWindowAttrib 
+ *  
+ */
+PHP_FUNCTION(glfwSetWindowAttrib)
+{
+    zval *window_resource;
+    zend_long attrib;
+    zend_long value;
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "rll", &window_resource, &attrib, &value) == FAILURE) {
+       return;
+    }
+    GLFWwindow* window = phpglfw_fetch_glfwwindow(window_resource);
+    glfwSetWindowAttrib(window, attrib, value);
 }
 
 /**
@@ -2431,6 +2947,37 @@ PHP_FUNCTION(glfwPostEmptyEvent)
 }
 
 /**
+ * glfwGetInputMode 
+ *  
+ */
+PHP_FUNCTION(glfwGetInputMode)
+{
+    zval *window_resource;
+    zend_long mode;
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "rl", &window_resource, &mode) == FAILURE) {
+       return;
+    }
+    GLFWwindow* window = phpglfw_fetch_glfwwindow(window_resource);
+    RETURN_LONG(glfwGetInputMode(window, mode));
+}
+
+/**
+ * glfwSetInputMode 
+ *  
+ */
+PHP_FUNCTION(glfwSetInputMode)
+{
+    zval *window_resource;
+    zend_long mode;
+    zend_long value;
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "rll", &window_resource, &mode, &value) == FAILURE) {
+       return;
+    }
+    GLFWwindow* window = phpglfw_fetch_glfwwindow(window_resource);
+    glfwSetInputMode(window, mode, value);
+}
+
+/**
  * glfwRawMouseMotionSupported 
  *  
  */
@@ -2467,6 +3014,52 @@ PHP_FUNCTION(glfwGetKeyScancode)
 }
 
 /**
+ * glfwGetKey 
+ *  
+ */
+PHP_FUNCTION(glfwGetKey)
+{
+    zval *window_resource;
+    zend_long key;
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "rl", &window_resource, &key) == FAILURE) {
+       return;
+    }
+    GLFWwindow* window = phpglfw_fetch_glfwwindow(window_resource);
+    RETURN_LONG(glfwGetKey(window, key));
+}
+
+/**
+ * glfwGetMouseButton 
+ *  
+ */
+PHP_FUNCTION(glfwGetMouseButton)
+{
+    zval *window_resource;
+    zend_long button;
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "rl", &window_resource, &button) == FAILURE) {
+       return;
+    }
+    GLFWwindow* window = phpglfw_fetch_glfwwindow(window_resource);
+    RETURN_LONG(glfwGetMouseButton(window, button));
+}
+
+/**
+ * glfwSetCursorPos 
+ *  
+ */
+PHP_FUNCTION(glfwSetCursorPos)
+{
+    zval *window_resource;
+    double xpos;
+    double ypos;
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "rdd", &window_resource, &xpos, &ypos) == FAILURE) {
+       return;
+    }
+    GLFWwindow* window = phpglfw_fetch_glfwwindow(window_resource);
+    glfwSetCursorPos(window, xpos, ypos);
+}
+
+/**
  * glfwCreateStandardCursor 
  *  
  */
@@ -2478,6 +3071,36 @@ PHP_FUNCTION(glfwCreateStandardCursor)
     }
     GLFWcursor* glfwcursor = glfwCreateStandardCursor(shape);
     PHPGLFW_RETURN_GLFWCURSOR_RESOURCE(glfwcursor, phpglfw_glfwcursor_context);
+}
+
+/**
+ * glfwDestroyCursor 
+ *  
+ */
+PHP_FUNCTION(glfwDestroyCursor)
+{
+    zval *cursor_resource;
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "r", &cursor_resource) == FAILURE) {
+       return;
+    }
+    GLFWcursor* cursor = phpglfw_fetch_glfwcursor(cursor_resource);
+    glfwDestroyCursor(cursor);
+}
+
+/**
+ * glfwSetCursor 
+ *  
+ */
+PHP_FUNCTION(glfwSetCursor)
+{
+    zval *window_resource;
+    zval *cursor_resource;
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "rr", &window_resource, &cursor_resource) == FAILURE) {
+       return;
+    }
+    GLFWwindow* window = phpglfw_fetch_glfwwindow(window_resource);
+    GLFWcursor* cursor = phpglfw_fetch_glfwcursor(cursor_resource);
+    glfwSetCursor(window, cursor);
 }
 
 /**
@@ -2560,6 +3183,36 @@ PHP_FUNCTION(glfwGetGamepadName)
 }
 
 /**
+ * glfwSetClipboardString 
+ *  
+ */
+PHP_FUNCTION(glfwSetClipboardString)
+{
+    zval *window_resource;
+    const char *string;
+    size_t string_size;
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "rs", &window_resource, &string, &string_size) == FAILURE) {
+       return;
+    }
+    GLFWwindow* window = phpglfw_fetch_glfwwindow(window_resource);
+    glfwSetClipboardString(window, string);
+}
+
+/**
+ * glfwGetClipboardString 
+ *  
+ */
+PHP_FUNCTION(glfwGetClipboardString)
+{
+    zval *window_resource;
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "r", &window_resource) == FAILURE) {
+       return;
+    }
+    GLFWwindow* window = phpglfw_fetch_glfwwindow(window_resource);
+    RETURN_STRING(glfwGetClipboardString(window));
+}
+
+/**
  * glfwGetTime 
  *  
  */
@@ -2582,6 +3235,20 @@ PHP_FUNCTION(glfwSetTime)
 }
 
 /**
+ * glfwMakeContextCurrent 
+ *  
+ */
+PHP_FUNCTION(glfwMakeContextCurrent)
+{
+    zval *window_resource;
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "r", &window_resource) == FAILURE) {
+       return;
+    }
+    GLFWwindow* window = phpglfw_fetch_glfwwindow(window_resource);
+    glfwMakeContextCurrent(window);
+}
+
+/**
  * glfwGetCurrentContext 
  *  
  */
@@ -2589,6 +3256,22 @@ PHP_FUNCTION(glfwGetCurrentContext)
 {
     GLFWwindow* glfwwindow = glfwGetCurrentContext();
     PHPGLFW_RETURN_GLFWWINDOW_RESOURCE(glfwwindow, phpglfw_glfwwindow_context);
+}
+
+/**
+ * glfwSwapBuffers 
+ *  
+ */
+PHP_FUNCTION(glfwSwapBuffers)
+{
+    zval *window_zval;
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "O", &window_zval, phpglfw_window_ce) == FAILURE) {
+       return;
+    }
+    GLFWwindow* window;
+    window = phpglfw_glfwwindowptr_from_zval_p(window_zval);
+
+    glfwSwapBuffers(window);
 }
 
 /**

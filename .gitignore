@@ -32,3 +32,5 @@ tests/*.php
 tests/*.sh
 tmp-php.ini
 examples/vendor/
+generator/vendor/
+generator2/vendor/

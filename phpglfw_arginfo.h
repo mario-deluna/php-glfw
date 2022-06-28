@@ -1,5 +1,5 @@
 /* This is a generated file, edit the .stub.php file instead.
- * Stub hash: 2e6dcfb269363799d5ff55493b1e0b037cd5a22c */
+ * Stub hash: b650a46abd6c43536e143cf9d520192f289f9f33 */
 
 ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_glCullFace, 0, 0, IS_VOID, 0)
 ZEND_END_ARG_INFO()
@@ -315,11 +315,63 @@ ZEND_END_ARG_INFO()
 
 #define arginfo_glfwGetError arginfo_glGetError
 
+ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(arginfo_glfwGetPrimaryMonitor, 0, 0, resource, 0)
+ZEND_END_ARG_INFO()
+
+#define arginfo_glfwGetMonitorName arginfo_glfwGetVersionString
+
+#define arginfo_glfwSetGamma arginfo_glCullFace
+
 #define arginfo_glfwDefaultWindowHints arginfo_glCullFace
 
 #define arginfo_glfwWindowHint arginfo_glCullFace
 
 #define arginfo_glfwWindowHintString arginfo_glCullFace
+
+#define arginfo_glfwCreateWindow arginfo_glfwGetPrimaryMonitor
+
+#define arginfo_glfwDestroyWindow arginfo_glCullFace
+
+#define arginfo_glfwWindowShouldClose arginfo_glGetError
+
+#define arginfo_glfwSetWindowShouldClose arginfo_glCullFace
+
+#define arginfo_glfwSetWindowTitle arginfo_glCullFace
+
+#define arginfo_glfwSetWindowPos arginfo_glCullFace
+
+#define arginfo_glfwSetWindowSizeLimits arginfo_glCullFace
+
+#define arginfo_glfwSetWindowAspectRatio arginfo_glCullFace
+
+#define arginfo_glfwSetWindowSize arginfo_glCullFace
+
+ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_glfwGetWindowOpacity, 0, 0, IS_DOUBLE, 0)
+ZEND_END_ARG_INFO()
+
+#define arginfo_glfwSetWindowOpacity arginfo_glCullFace
+
+#define arginfo_glfwIconifyWindow arginfo_glCullFace
+
+#define arginfo_glfwRestoreWindow arginfo_glCullFace
+
+#define arginfo_glfwMaximizeWindow arginfo_glCullFace
+
+#define arginfo_glfwShowWindow arginfo_glCullFace
+
+#define arginfo_glfwHideWindow arginfo_glCullFace
+
+#define arginfo_glfwFocusWindow arginfo_glCullFace
+
+#define arginfo_glfwRequestWindowAttention arginfo_glCullFace
+
+#define arginfo_glfwGetWindowMonitor arginfo_glfwGetPrimaryMonitor
+
+#define arginfo_glfwSetWindowMonitor arginfo_glCullFace
+
+#define arginfo_glfwGetWindowAttrib arginfo_glGetError
+
+#define arginfo_glfwSetWindowAttrib arginfo_glCullFace
 
 #define arginfo_glfwPollEvents arginfo_glCullFace
 
@@ -329,14 +381,27 @@ ZEND_END_ARG_INFO()
 
 #define arginfo_glfwPostEmptyEvent arginfo_glCullFace
 
+#define arginfo_glfwGetInputMode arginfo_glGetError
+
+#define arginfo_glfwSetInputMode arginfo_glCullFace
+
 #define arginfo_glfwRawMouseMotionSupported arginfo_glGetError
 
 #define arginfo_glfwGetKeyName arginfo_glfwGetVersionString
 
 #define arginfo_glfwGetKeyScancode arginfo_glGetError
 
-ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(arginfo_glfwCreateStandardCursor, 0, 0, resource, 0)
-ZEND_END_ARG_INFO()
+#define arginfo_glfwGetKey arginfo_glGetError
+
+#define arginfo_glfwGetMouseButton arginfo_glGetError
+
+#define arginfo_glfwSetCursorPos arginfo_glCullFace
+
+#define arginfo_glfwCreateStandardCursor arginfo_glfwGetPrimaryMonitor
+
+#define arginfo_glfwDestroyCursor arginfo_glCullFace
+
+#define arginfo_glfwSetCursor arginfo_glCullFace
 
 #define arginfo_glfwJoystickPresent arginfo_glGetError
 
@@ -350,12 +415,19 @@ ZEND_END_ARG_INFO()
 
 #define arginfo_glfwGetGamepadName arginfo_glfwGetVersionString
 
-ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_glfwGetTime, 0, 0, IS_DOUBLE, 0)
-ZEND_END_ARG_INFO()
+#define arginfo_glfwSetClipboardString arginfo_glCullFace
+
+#define arginfo_glfwGetClipboardString arginfo_glfwGetVersionString
+
+#define arginfo_glfwGetTime arginfo_glfwGetWindowOpacity
 
 #define arginfo_glfwSetTime arginfo_glCullFace
 
-#define arginfo_glfwGetCurrentContext arginfo_glfwCreateStandardCursor
+#define arginfo_glfwMakeContextCurrent arginfo_glCullFace
+
+#define arginfo_glfwGetCurrentContext arginfo_glfwGetPrimaryMonitor
+
+#define arginfo_glfwSwapBuffers arginfo_glCullFace
 
 #define arginfo_glfwSwapInterval arginfo_glCullFace
 
@@ -519,26 +591,62 @@ ZEND_FUNCTION(glfwTerminate);
 ZEND_FUNCTION(glfwInitHint);
 ZEND_FUNCTION(glfwGetVersionString);
 ZEND_FUNCTION(glfwGetError);
+ZEND_FUNCTION(glfwGetPrimaryMonitor);
+ZEND_FUNCTION(glfwGetMonitorName);
+ZEND_FUNCTION(glfwSetGamma);
 ZEND_FUNCTION(glfwDefaultWindowHints);
 ZEND_FUNCTION(glfwWindowHint);
 ZEND_FUNCTION(glfwWindowHintString);
+ZEND_FUNCTION(glfwCreateWindow);
+ZEND_FUNCTION(glfwDestroyWindow);
+ZEND_FUNCTION(glfwWindowShouldClose);
+ZEND_FUNCTION(glfwSetWindowShouldClose);
+ZEND_FUNCTION(glfwSetWindowTitle);
+ZEND_FUNCTION(glfwSetWindowPos);
+ZEND_FUNCTION(glfwSetWindowSizeLimits);
+ZEND_FUNCTION(glfwSetWindowAspectRatio);
+ZEND_FUNCTION(glfwSetWindowSize);
+ZEND_FUNCTION(glfwGetWindowOpacity);
+ZEND_FUNCTION(glfwSetWindowOpacity);
+ZEND_FUNCTION(glfwIconifyWindow);
+ZEND_FUNCTION(glfwRestoreWindow);
+ZEND_FUNCTION(glfwMaximizeWindow);
+ZEND_FUNCTION(glfwShowWindow);
+ZEND_FUNCTION(glfwHideWindow);
+ZEND_FUNCTION(glfwFocusWindow);
+ZEND_FUNCTION(glfwRequestWindowAttention);
+ZEND_FUNCTION(glfwGetWindowMonitor);
+ZEND_FUNCTION(glfwSetWindowMonitor);
+ZEND_FUNCTION(glfwGetWindowAttrib);
+ZEND_FUNCTION(glfwSetWindowAttrib);
 ZEND_FUNCTION(glfwPollEvents);
 ZEND_FUNCTION(glfwWaitEvents);
 ZEND_FUNCTION(glfwWaitEventsTimeout);
 ZEND_FUNCTION(glfwPostEmptyEvent);
+ZEND_FUNCTION(glfwGetInputMode);
+ZEND_FUNCTION(glfwSetInputMode);
 ZEND_FUNCTION(glfwRawMouseMotionSupported);
 ZEND_FUNCTION(glfwGetKeyName);
 ZEND_FUNCTION(glfwGetKeyScancode);
+ZEND_FUNCTION(glfwGetKey);
+ZEND_FUNCTION(glfwGetMouseButton);
+ZEND_FUNCTION(glfwSetCursorPos);
 ZEND_FUNCTION(glfwCreateStandardCursor);
+ZEND_FUNCTION(glfwDestroyCursor);
+ZEND_FUNCTION(glfwSetCursor);
 ZEND_FUNCTION(glfwJoystickPresent);
 ZEND_FUNCTION(glfwGetJoystickName);
 ZEND_FUNCTION(glfwGetJoystickGUID);
 ZEND_FUNCTION(glfwJoystickIsGamepad);
 ZEND_FUNCTION(glfwUpdateGamepadMappings);
 ZEND_FUNCTION(glfwGetGamepadName);
+ZEND_FUNCTION(glfwSetClipboardString);
+ZEND_FUNCTION(glfwGetClipboardString);
 ZEND_FUNCTION(glfwGetTime);
 ZEND_FUNCTION(glfwSetTime);
+ZEND_FUNCTION(glfwMakeContextCurrent);
 ZEND_FUNCTION(glfwGetCurrentContext);
+ZEND_FUNCTION(glfwSwapBuffers);
 ZEND_FUNCTION(glfwSwapInterval);
 ZEND_FUNCTION(glfwExtensionSupported);
 ZEND_FUNCTION(glfwVulkanSupported);
@@ -700,26 +808,62 @@ static const zend_function_entry ext_functions[] = {
 	ZEND_FE(glfwInitHint, arginfo_glfwInitHint)
 	ZEND_FE(glfwGetVersionString, arginfo_glfwGetVersionString)
 	ZEND_FE(glfwGetError, arginfo_glfwGetError)
+	ZEND_FE(glfwGetPrimaryMonitor, arginfo_glfwGetPrimaryMonitor)
+	ZEND_FE(glfwGetMonitorName, arginfo_glfwGetMonitorName)
+	ZEND_FE(glfwSetGamma, arginfo_glfwSetGamma)
 	ZEND_FE(glfwDefaultWindowHints, arginfo_glfwDefaultWindowHints)
 	ZEND_FE(glfwWindowHint, arginfo_glfwWindowHint)
 	ZEND_FE(glfwWindowHintString, arginfo_glfwWindowHintString)
+	ZEND_FE(glfwCreateWindow, arginfo_glfwCreateWindow)
+	ZEND_FE(glfwDestroyWindow, arginfo_glfwDestroyWindow)
+	ZEND_FE(glfwWindowShouldClose, arginfo_glfwWindowShouldClose)
+	ZEND_FE(glfwSetWindowShouldClose, arginfo_glfwSetWindowShouldClose)
+	ZEND_FE(glfwSetWindowTitle, arginfo_glfwSetWindowTitle)
+	ZEND_FE(glfwSetWindowPos, arginfo_glfwSetWindowPos)
+	ZEND_FE(glfwSetWindowSizeLimits, arginfo_glfwSetWindowSizeLimits)
+	ZEND_FE(glfwSetWindowAspectRatio, arginfo_glfwSetWindowAspectRatio)
+	ZEND_FE(glfwSetWindowSize, arginfo_glfwSetWindowSize)
+	ZEND_FE(glfwGetWindowOpacity, arginfo_glfwGetWindowOpacity)
+	ZEND_FE(glfwSetWindowOpacity, arginfo_glfwSetWindowOpacity)
+	ZEND_FE(glfwIconifyWindow, arginfo_glfwIconifyWindow)
+	ZEND_FE(glfwRestoreWindow, arginfo_glfwRestoreWindow)
+	ZEND_FE(glfwMaximizeWindow, arginfo_glfwMaximizeWindow)
+	ZEND_FE(glfwShowWindow, arginfo_glfwShowWindow)
+	ZEND_FE(glfwHideWindow, arginfo_glfwHideWindow)
+	ZEND_FE(glfwFocusWindow, arginfo_glfwFocusWindow)
+	ZEND_FE(glfwRequestWindowAttention, arginfo_glfwRequestWindowAttention)
+	ZEND_FE(glfwGetWindowMonitor, arginfo_glfwGetWindowMonitor)
+	ZEND_FE(glfwSetWindowMonitor, arginfo_glfwSetWindowMonitor)
+	ZEND_FE(glfwGetWindowAttrib, arginfo_glfwGetWindowAttrib)
+	ZEND_FE(glfwSetWindowAttrib, arginfo_glfwSetWindowAttrib)
 	ZEND_FE(glfwPollEvents, arginfo_glfwPollEvents)
 	ZEND_FE(glfwWaitEvents, arginfo_glfwWaitEvents)
 	ZEND_FE(glfwWaitEventsTimeout, arginfo_glfwWaitEventsTimeout)
 	ZEND_FE(glfwPostEmptyEvent, arginfo_glfwPostEmptyEvent)
+	ZEND_FE(glfwGetInputMode, arginfo_glfwGetInputMode)
+	ZEND_FE(glfwSetInputMode, arginfo_glfwSetInputMode)
 	ZEND_FE(glfwRawMouseMotionSupported, arginfo_glfwRawMouseMotionSupported)
 	ZEND_FE(glfwGetKeyName, arginfo_glfwGetKeyName)
 	ZEND_FE(glfwGetKeyScancode, arginfo_glfwGetKeyScancode)
+	ZEND_FE(glfwGetKey, arginfo_glfwGetKey)
+	ZEND_FE(glfwGetMouseButton, arginfo_glfwGetMouseButton)
+	ZEND_FE(glfwSetCursorPos, arginfo_glfwSetCursorPos)
 	ZEND_FE(glfwCreateStandardCursor, arginfo_glfwCreateStandardCursor)
+	ZEND_FE(glfwDestroyCursor, arginfo_glfwDestroyCursor)
+	ZEND_FE(glfwSetCursor, arginfo_glfwSetCursor)
 	ZEND_FE(glfwJoystickPresent, arginfo_glfwJoystickPresent)
 	ZEND_FE(glfwGetJoystickName, arginfo_glfwGetJoystickName)
 	ZEND_FE(glfwGetJoystickGUID, arginfo_glfwGetJoystickGUID)
 	ZEND_FE(glfwJoystickIsGamepad, arginfo_glfwJoystickIsGamepad)
 	ZEND_FE(glfwUpdateGamepadMappings, arginfo_glfwUpdateGamepadMappings)
 	ZEND_FE(glfwGetGamepadName, arginfo_glfwGetGamepadName)
+	ZEND_FE(glfwSetClipboardString, arginfo_glfwSetClipboardString)
+	ZEND_FE(glfwGetClipboardString, arginfo_glfwGetClipboardString)
 	ZEND_FE(glfwGetTime, arginfo_glfwGetTime)
 	ZEND_FE(glfwSetTime, arginfo_glfwSetTime)
+	ZEND_FE(glfwMakeContextCurrent, arginfo_glfwMakeContextCurrent)
 	ZEND_FE(glfwGetCurrentContext, arginfo_glfwGetCurrentContext)
+	ZEND_FE(glfwSwapBuffers, arginfo_glfwSwapBuffers)
 	ZEND_FE(glfwSwapInterval, arginfo_glfwSwapInterval)
 	ZEND_FE(glfwExtensionSupported, arginfo_glfwExtensionSupported)
 	ZEND_FE(glfwVulkanSupported, arginfo_glfwVulkanSupported)

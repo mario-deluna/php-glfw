@@ -23,14 +23,17 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-#ifndef PHP_GLFW_FUNCTIONS_H
-#define PHP_GLFW_FUNCTIONS_H 1
-
 #include "phpglfw_constants.h"
-#include <glad/glad.h>
-#include <GLFW/glfw3.h>
 
-void phpglfw_object_minit_helper(void);
-void phpglfw_register_resource_destructors(INIT_FUNC_ARGS);
+#include "php.h"
+#include "phpglfw.h"
+#include <zend_API.h>
 
+void phpglfw_register_constants(INIT_FUNC_ARGS)
+{
+<?php foreach($constants as $const) : //var_dump($const); die; ?>
+#ifdef <?php echo $const->internalConstantName(); ?> 
+    <?php echo $const->getPHPRegisterFunction(); ?>("<?php echo $const->name; ?>", <?php echo $const->internalConstantName(); ?>, CONST_CS|CONST_PERSISTENT);
 #endif
+<?php endforeach; ?>
+}

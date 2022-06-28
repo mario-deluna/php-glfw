@@ -68,7 +68,11 @@ static void <?php echo $resource->getDtorMethod(); ?>(zend_resource *rsrc)
  */
 PHP_MINIT_FUNCTION(glfw)
 {
-<?php foreach ($resources as $resource) : ?>
+    // register objects
+    phpglfw_object_minit_helper();
+
+    // destructor list
+<?php foreach ($resources as $resource) : ?>    
     <?php echo $resource->getContextName(); ?> = zend_register_list_destructors_ex(<?php echo $resource->getDtorMethod(); ?>, NULL, <?php echo $resource->getResourceName(); ?>, module_number);
 <?php endforeach; ?>
 <?php foreach($constants as $constant) : ?>
