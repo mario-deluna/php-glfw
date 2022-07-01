@@ -28,162 +28,121 @@
 #include "php.h"
 #include "phpglfw.h"
 #include <zend_API.h>
-
-/** 
- * Test
+    
+/**
+ * ----------------------------------------------------------------------------
+ * PHPGlfw IPOs 
+ * ----------------------------------------------------------------------------
+ * IPOs (internal pointer object) is a simple PHP object which is attached to 
+ * a resource pointer in the extension like a "GLFWwindow" etc...
  */
-zend_class_entry *phpglfw_window_ce;
 
-typedef struct _phpglfw_window_object {
-    GLFWwindow *window;
+/**
+ * Class entries
+ */
+<?php foreach($ipos as $ipo) : ?>
+zend_class_entry *<?php echo $ipo->getClassEntryName(); ?>; 
+<?php endforeach; ?>
+
+/**
+ * Structs
+ */
+<?php foreach($ipos as $ipo) : ?>
+typedef struct _<?php echo $ipo->getObjectStructName(); ?> {
+    <?php echo $ipo->getType(); ?> <?php echo $ipo->getObjectStructPointerVar(); ?>;
     zend_object std;
-} phpglfw_window_object;
+} <?php echo $ipo->getObjectStructName(); ?>; 
 
-static zend_object_handlers phpglfw_window_object_handlers;
+<?php endforeach; ?>
 
-static const zend_function_entry class_GLFWwindow_methods[] = {
+<?php foreach($ipos as $ipo) : ?>
+/**
+ * <?php echo $ipo->name; ?> aka (<?php echo $ipo->getType(); ?>) 
+ * object handlers, initializers, helpers etc..
+ */
+static zend_object_handlers <?php echo $ipo->getObjectHandlersVar(); ?>;
+static const zend_function_entry <?php echo $ipo->getClassMethodEntriesVar(); ?>[] = {
     ZEND_FE_END
 };
 
-static zend_always_inline phpglfw_window_object* phpglfw_window_from_zobj_p(zend_object* obj)
+static zend_always_inline <?php echo $ipo->getObjectStructName(); ?>* <?php echo $ipo->getObjectStructPtrFromZObjPtrFunctionName(); ?>(zend_object* obj)
 {
-    return (phpglfw_window_object *) ((char *) (obj) - XtOffsetOf(phpglfw_window_object, std));
+    return (<?php echo $ipo->getObjectStructName(); ?> *) ((char *) (obj) - XtOffsetOf(<?php echo $ipo->getObjectStructName(); ?>, std));
 }
 
-static zend_function *phpglfw_window_object_get_constructor(zend_object *object)
+static zend_function *<?php echo $ipo->getClassConstructorFunctionName(); ?>(zend_object *object)
 {
-    zend_throw_error(NULL, "You cannot initialize a GLFWwindow object except through helper functions");
+    zend_throw_error(NULL, "You cannot initialize a <?php echo $ipo->getPHPClassName(); ?> object except through helper functions");
     return NULL;
 }
 
-static zend_class_entry *register_class_GLFWwindow(void)
+static zend_class_entry *<?php echo $ipo->getClassRegistrationFunctionName(); ?>(void)
 {
     zend_class_entry ce, *class_entry;
 
-    INIT_CLASS_ENTRY(ce, "GLFWwindow", class_GLFWwindow_methods);
+    INIT_CLASS_ENTRY(ce, "<?php echo $ipo->getPHPClassName(); ?>", <?php echo $ipo->getClassMethodEntriesVar(); ?>);
     class_entry = zend_register_internal_class_ex(&ce, NULL);
     class_entry->ce_flags |= ZEND_ACC_FINAL|ZEND_ACC_NO_DYNAMIC_PROPERTIES|ZEND_ACC_NOT_SERIALIZABLE;
 
     return class_entry;
 }
 
-zend_object *phpglfw_window_object_create(zend_class_entry *class_type)
+zend_object *<?php echo $ipo->getObjectCreateFunctionName(); ?>(zend_class_entry *class_type)
 {
-    size_t block_len = sizeof(phpglfw_window_object) + zend_object_properties_size(class_type);
-    phpglfw_window_object *intern = emalloc(block_len);
+    size_t block_len = sizeof(<?php echo $ipo->getObjectStructName(); ?>) + zend_object_properties_size(class_type);
+    <?php echo $ipo->getObjectStructName(); ?> *intern = emalloc(block_len);
     memset(intern, 0, block_len);
 
     zend_object_std_init(&intern->std, class_type);
     object_properties_init(&intern->std, class_type);
-    intern->std.handlers = &phpglfw_window_object_handlers;
+    intern->std.handlers = &<?php echo $ipo->getObjectHandlersVar(); ?>;
 
     return &intern->std;
 }
 
-static void phpglfw_window_object_free(zend_object *intern)
+static void <?php echo $ipo->getObjectFreeFunctionName(); ?>(zend_object *intern)
 {
-    phpglfw_window_object *obj_ptr = phpglfw_window_from_zobj_p(intern);
-    if (obj_ptr->window) {
-        glfwDestroyWindow(obj_ptr->window);
+    <?php echo $ipo->getObjectStructName(); ?> *obj_ptr = <?php echo $ipo->getObjectStructPtrFromZObjPtrFunctionName(); ?>(intern);
+    if (obj_ptr-><?php echo $ipo->getObjectStructPointerVar(); ?>) {
+        <?php echo $ipo->getDestructionCall('obj_ptr->' .  $ipo->getObjectStructPointerVar()); ?> 
     }
     zend_object_std_dtor(intern);
 }
 
-void phpglfw_assign_glfwwindowptr_as_extglfwwindow(zval *val, GLFWwindow *window)
+void <?php echo $ipo->getAssignPtrToZvalFunctionName(); ?>(zval *val, <?php echo $ipo->getType(); ?> <?php echo $ipo->getObjectStructPointerVar(); ?>)
 {
-    object_init_ex(val, phpglfw_window_ce);
-    phpglfw_window_from_zobj_p(Z_OBJ_P(val))->window = window;
+    object_init_ex(val, <?php echo $ipo->getClassEntryName(); ?>);
+    <?php echo $ipo->getObjectStructPtrFromZObjPtrFunctionName(); ?>(Z_OBJ_P(val))-><?php echo $ipo->getObjectStructPointerVar(); ?> = <?php echo $ipo->getObjectStructPointerVar(); ?>;
 }
 
-void phpglfw_object_minit_helper(void)
+void <?php echo $ipo->getObjectMinitHelperFunctionName(); ?>(void)
 {
-    phpglfw_window_ce = register_class_GLFWwindow();
-    phpglfw_window_ce->create_object = phpglfw_window_object_create;
+    <?php echo $ipo->getClassEntryName(); ?> = <?php echo $ipo->getClassRegistrationFunctionName(); ?>();
+    <?php echo $ipo->getClassEntryName(); ?>->create_object = <?php echo $ipo->getObjectCreateFunctionName(); ?>;
 
-    /* setting up the object handlers for the GdImage class */
-    memcpy(&phpglfw_window_object_handlers, &std_object_handlers, sizeof(zend_object_handlers));
-    phpglfw_window_object_handlers.clone_obj = NULL;
-    phpglfw_window_object_handlers.free_obj = phpglfw_window_object_free;
-    phpglfw_window_object_handlers.get_constructor = phpglfw_window_object_get_constructor;
-    phpglfw_window_object_handlers.compare = zend_objects_not_comparable;
-    phpglfw_window_object_handlers.offset = XtOffsetOf(phpglfw_window_object, std);
+    memcpy(&<?php echo $ipo->getObjectHandlersVar(); ?>, &std_object_handlers, sizeof(zend_object_handlers));
+    <?php echo $ipo->getObjectHandlersVar(); ?>.clone_obj = NULL;
+    <?php echo $ipo->getObjectHandlersVar(); ?>.free_obj = <?php echo $ipo->getObjectFreeFunctionName(); ?>;
+    <?php echo $ipo->getObjectHandlersVar(); ?>.get_constructor = <?php echo $ipo->getClassConstructorFunctionName(); ?>;
+    <?php echo $ipo->getObjectHandlersVar(); ?>.compare = zend_objects_not_comparable;
+    <?php echo $ipo->getObjectHandlersVar(); ?>.offset = XtOffsetOf(<?php echo $ipo->getObjectStructName(); ?>, std);
 }
 
-GLFWwindow * phpglfw_glfwwindowptr_from_zval_p(zval* zp)
+<?php echo $ipo->getType(); ?> <?php echo $ipo->getInternalPtrFromZValPtrFunctionName(); ?>(zval* zp)
 {
-    return phpglfw_window_from_zobj_p(Z_OBJ_P(zp))->window;
-}
-/**
- * ----------------------------------------------------------------------------
- * PHPGlfw Resources 
- * ----------------------------------------------------------------------------
- */
-
-<?php foreach ($resources as $resource) : ?>
-#define <?php echo $resource->getResourceName(); ?> "<?php echo $resource->name; ?>"
-int <?php echo $resource->getContextName(); ?>;
-<?php endforeach; ?>
-
-#define PHPGLFW_RESOURCE_TYPE zend_resource
-<?php foreach ($resources as $resource) : ?>
-#define <?php echo $resource->getReturnResource(); ?>(<?php echo $resource->name; ?>, context) \
-    RETURN_RES(zend_register_resource(<?php echo $resource->name; ?>, context))
-<?php endforeach; ?>
-
-<?php foreach ($resources as $resource) : ?>
-/**
- * Get <?php echo $resource->type; ?> from resource 
- * --------------------------------
- */
-static <?php echo $resource->type; ?><?php echo $resource->getFetchMethod(); ?>(zval *resource)
-{
-    if (Z_TYPE_P(resource) == IS_NULL) {
-        return NULL;
-    }
-
-    <?php echo $resource->type; ?><?php echo $resource->name; ?>;
-    ZEND_ASSERT(Z_TYPE_P(resource) == IS_RESOURCE);
-    <?php echo $resource->name; ?> = (<?php echo $resource->type; ?>)zend_fetch_resource(Z_RES_P(resource), <?php echo $resource->getResourceName(); ?>, <?php echo $resource->getContextName(); ?>);
-
-    return <?php echo $resource->name; ?>;
-}
-
-/**
- * dtor <?php echo $resource->type; ?> 
- * --------------------------------
- */
-static void <?php echo $resource->getDtorMethod(); ?>(PHPGLFW_RESOURCE_TYPE *rsrc)
-{
-    <?php echo $resource->type; ?><?php echo $resource->name; ?> = (void *) rsrc->ptr;
-
-    if (<?php echo $resource->name; ?>) {
-        <?php echo $resource->generateDestroy(); ?> 
-    }
+    return <?php echo $ipo->getObjectStructPtrFromZObjPtrFunctionName(); ?>(Z_OBJ_P(zp))-><?php echo $ipo->getObjectStructPointerVar(); ?>;
 }
 
 <?php endforeach; ?>
-
-
-/**
- * Resources destructors..
- */
-void phpglfw_register_resource_destructors(INIT_FUNC_ARGS)
-{
-<?php foreach ($resources as $resource) : ?>
-    <?php echo $resource->getContextName(); ?> = zend_register_list_destructors_ex(<?php echo $resource->getDtorMethod(); ?>, NULL, <?php echo $resource->getResourceName(); ?>, module_number);
-<?php endforeach; ?>
-}
 
 /**
  * ----------------------------------------------------------------------------
  * PHPGlfw Functions 
  * ----------------------------------------------------------------------------
+ * All the functions wrapped by the extension.
  */
 <?php foreach($functions as $func) : ?>
-/**
- * <?php echo $func->name; ?> 
-<?php echo commentifyString($func->comment ?? ''); ?> 
- */
-<?php echo $func->generateExtImplementation(); ?>
+<?php echo $func->getFunctionCommentBlock(); ?> 
+<?php echo $func->getFunctionImplementation(); ?> 
 
 <?php endforeach; ?>

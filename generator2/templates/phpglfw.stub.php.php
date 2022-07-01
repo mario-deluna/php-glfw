@@ -6,7 +6,7 @@
  * ------------------------------------------------------------------
  */
 <?php foreach($functions as $func) : ?>
-<?php echo $func->generateStub(); ?>
+<?php echo $func->getPHPStub(); ?>
 <?php endforeach; ?>
 
 /**

@@ -11,5 +11,6 @@ class ExtType
     public const T_BOOL = 'bool';
     public const T_STRING = 'string';
     public const T_NULL = 'null';
+    public const T_IPO = '@ibo'; // internal pointer object (ex. GLFWwindow)
     public const T_RESOURCE = '@res';
 }

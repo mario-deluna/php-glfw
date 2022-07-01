@@ -25,11 +25,23 @@ class ExtFunction
     public const RETURN_DOUBLE = ExtType::T_DOUBLE;
     public const RETURN_BOOL = ExtType::T_BOOL;
     public const RETURN_STRING = ExtType::T_STRING;
-    public const RETURN_RESOURCE = ExtType::T_RESOURCE;
+    public const RETURN_IPO = ExtType::T_IPO;
 
+    /**
+     * The original internal return type from the wrapped function
+     * @var null|string
+     */
     public ?string $returnTypeFrom = null;
+
+    /**
+     * The return type of the extension function
+     */
     public string $returnType = self::RETURN_VOID;
-    public ?ExtResource $returnResource = null;
+
+    /**
+     * The to be returned IPO 
+     */
+    public ?ExtInternalPtrObject $returnIPO = null;
 
     /**
      * An array of extension arguments
@@ -50,81 +62,123 @@ class ExtFunction
     /**
      * Returns the function paramter type list string
      */
-    public function getTypeCharList() : string 
+    public function getArgumentTypeCharList() : string 
     {
         $b = '';
+        $optionalSet = false;
         foreach($this->arguments as $arg) {
+            if ($arg->isOptional() && $optionalSet === false) {
+                $b .= '|';
+                $optionalSet = true;
+            }
             $b .= $arg->getCharId();
         }
         return $b;
     }
 
     /**
-     * Genreates the extension C impl
+     * Returns C code for the "zend_parse_parameters" arguments passed based on "getTypeCharList"
      */
-    public function generateExtImplementation()
+    public function getArgumentAssignmentList() : string 
     {
-        $s = "PHP_FUNCTION({$this->name})\n{\n";
-
-        $b = "";
-        $typecharlist = '';
-        $referencelist = [];
-        $argumentVars = [];
-
-        // if we have arguments...
-        if (!empty($this->arguments)) 
-        {
-            foreach($this->arguments as $argument)
-            {
-                $typecharlist .= $argument->getCharId();
-                $referencelist[] = $argument->getReferences();
-                $argumentVars[] = $argument->getCallName();
-
-                // add the variable
-                $b .= $argument->getVariable() . "\n";
-            }
-
-            // create the parser method
-            $b .= PHP_EOL . 'if (zend_parse_parameters(ZEND_NUM_ARGS() , "'.$typecharlist.'", '.implode(', ', $referencelist).') == FAILURE) {' . PHP_EOL;
-            $b .= '   return;' . PHP_EOL;
-            $b .= "}\n";
-
-            // generate dereferencing and converting
-            foreach($this->arguments as $argument)
-            {
-                $b .= $argument->generateDereferencing() . "\n";
+        $args = [];
+        foreach($this->arguments as $arg) {
+            foreach($arg->getZendParameterParseArguments() as $paramArg) {
+                $args[] = $paramArg;
             }
         }
 
-        $call = $this->internalCallFunc . '('. implode(', ', $argumentVars) .')';
+        return implode(', ', $args);
+    }
+
+    /**
+     * Returns the C code responsible for parsing the function arguments into local variables
+     */
+    public function getArgumentParseCode() : string
+    {
+        $b = '';
+
+        // define var declaration
+        foreach($this->arguments as $arg) {
+            $b .= $arg->getVariableDeclaration() . PHP_EOL;
+        }
+
+        $b .= PHP_EOL . sprintf('if (zend_parse_parameters(ZEND_NUM_ARGS() , "%s", %s) == FAILURE) {', $this->getArgumentTypeCharList(), $this->getArgumentAssignmentList()) . PHP_EOL;
+        $b .= '    return;' . PHP_EOL;
+        $b .= "}" . PHP_EOL;
+
+        foreach($this->arguments as $arg) {
+            $b .= $arg->getUsePrepCode() . PHP_EOL;
+        }
+
+        return trim($b);
+    }
+
+    /**
+     * Returns the C code of actually calling the intended function
+     */
+    public function getFunctionCallCode() : string
+    {
+        $arguments = [];
+        foreach($this->arguments as $arg) {
+            $arguments[] = $arg->getUsableVariable();
+        }
+
+        return $this->internalCallFunc . '('. implode(', ', $arguments) .')';
+    }
+
+    /**
+     * Returns the C code for the extension functions return, usally a macro setting "return_value"
+     */
+    public function getReturnStatement(string $val) : string
+    {
+        $b = "";
 
         if ($this->returnType === self::RETURN_VOID) {
-            $b .= $call . ';';
+            $b .= $val . ';';
         } else {
             switch($this->returnType) {
                 case self::RETURN_LONG:
-                    $b .= $this->generateExtImplementationReturnLong($call);
+                    $b .= $this->generateExtImplementationReturnLong($val);
                 break;
                 case self::RETURN_DOUBLE:
-                    $b .= $this->generateExtImplementationReturnDouble($call);
+                    $b .= $this->generateExtImplementationReturnDouble($val);
                 break;
                 case self::RETURN_BOOL:
-                    $b .= $this->generateExtImplementationReturnBool($call);
+                    $b .= $this->generateExtImplementationReturnBool($val);
                 break;
                 case self::RETURN_STRING:
-                    $b .= $this->generateExtImplementationReturnString($call);
+                    $b .= $this->generateExtImplementationReturnString($val);
                 break;
-                case self::RETURN_RESOURCE:
-                    $b .= $this->generateExtImplementationReturnResource($call);
+                case self::RETURN_IPO:
+                    $b .= $this->generateExtImplementationReturnIPO($val);
                 break;
                 default: 
                     throw new \Exception("Unsupported return type {$this->returnType}");
             }
         }
 
-        $b = tabulate($b);
+        return trim($b);
+    }
 
-        return "{$s}{$b}\n}\n";
+    /**
+     * Returns the PHP extension function implementation C code
+     */
+    public function getFunctionImplementation() : string
+    {
+        $b = "";
+        if (!empty($this->arguments)) $b .= $this->getArgumentParseCode() . PHP_EOL . PHP_EOL;
+        $b .= $this->getReturnStatement($this->getFunctionCallCode());
+
+        return sprintf("PHP_FUNCTION(%s)\n{\n%s\n}", $this->name, tabulate($b));
+    }
+
+    /**
+     * Generates a comment block for the current function
+     */
+    public function getFunctionCommentBlock() : string
+    {
+        return commentBlock(trim(sprintf("%s\n%s", $this->name, $this->comment)));
     }
 
     /**
@@ -144,7 +198,7 @@ class ExtFunction
     }
 
     /**
-     * Generate the method call (Int)
+     * Generate the method call (Long)
      */
     protected function generateExtImplementationReturnLong(string $call) : string
     {
@@ -152,7 +206,7 @@ class ExtFunction
     }
 
     /**
-     * Generate the method call (Int)
+     * Generate the method call (Double)
      */
     protected function generateExtImplementationReturnDouble(string $call) : string
     {
@@ -160,24 +214,42 @@ class ExtFunction
     }
 
     /**
-     * Generate the method call (Int)
+     * Generate the method call (IPO)
      */
-    protected function generateExtImplementationReturnResource(string $call) : string
+    protected function generateExtImplementationReturnIPO(string $call) : string
     {   
-        $resource = $this->returnResource;
-        $buffer = $this->returnTypeFrom . ' '.$resource->name.' = ' . $call . ';' . PHP_EOL;
-        $buffer .= $resource->getReturnResource(). "($resource->name, ".$resource->getContextName().");" . PHP_EOL;
-        return $buffer;
+        $b = sprintf("%s %s = %s;\n", $this->returnIPO->getType(), $this->returnIPO->getObjectStructPointerVar(), $call);
+        $b .= sprintf("%s(return_value, %s);", $this->returnIPO->getAssignPtrToZvalFunctionName(), $this->returnIPO->getObjectStructPointerVar()); 
+        
+        return $b;
     }
 
     /**
      * Genreates the PHP stub
      */
-    public function generateStub()
+    public function getPHPStub() : string
     {
-        $stubReturnType = $this->mapTypeToStubType($this->returnType);
+        if ($this->returnType === self::RETURN_IPO) {
+            $stubReturnType = $this->returnIPO->getPHPClassName();
+        } else {
+            $stubReturnType = $this->mapTypeToStubType($this->returnType);
+        }
 
-        return "function {$this->name}() : {$stubReturnType} {};\n";
+        return "function {$this->name}({$this->getPHPStubArguments()}) : {$stubReturnType} {};\n";
+    }
+
+    public function getPHPStubArguments() : string
+    {
+        $args = [];
+        foreach($this->arguments as $arg) {
+            if ($arg->argumentType === ExtType::T_IPO) {
+                $args[] = '?'.$arg->argInternalPtrObject->getPHPClassName() . ' ' . '$' . $arg->name;
+            } else {
+                $args[] = $this->mapTypeToStubType($arg->argumentType) . ' ' . ($arg->passedByReference ? '&' : '') . '$' . $arg->name;
+            }
+        }
+
+        return implode(', ', $args);
     }
 
     public function mapTypeToStubType(string $type) : string

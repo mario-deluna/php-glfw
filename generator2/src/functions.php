@@ -19,6 +19,14 @@ function commentifyString(string $text, string $linePrefix = ' * ', int $maxLeng
     return implode("\n", $lines);
 }
 
+/**
+ * Generates a comment block from the given text
+ */
+function commentBlock(string $text, string $linePrefix = ' * ', int $maxLength = 80) : string
+{
+    return sprintf("/**\n %s\n */", trim(commentifyString($text, $linePrefix, $maxLength)));
+}
+
 
 /**
  * Prefix every line of the given text

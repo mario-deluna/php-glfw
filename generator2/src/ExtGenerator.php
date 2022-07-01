@@ -15,9 +15,9 @@ class ExtGenerator
     private array $funcSignatures = [];
 
     /**
-     * @var array<string, ExtResource>
+     * @var array<string, ExtInternalPtrObject>
      */
-    public array $resources = [];
+    public array $IPOs = [];
 
     /**
      * Map of GLTypes to extension type
@@ -62,14 +62,17 @@ class ExtGenerator
     /**
      * Adds a constant to the extension
      */
-    public function addConstant(ExtConstant $const)
+    public function addConstant(ExtConstant $const) : void
     {
         $this->constants[] = $const;
     }
 
-    public function addResource(ExtResource $res) 
+    /**
+     * Adds an internal ptr object ot the extension
+     */
+    public function addIPO(ExtInternalPtrObject $res) : void 
     {
-        $this->resources[$res->type] = $res;
+        $this->IPOs[$res->type] = $res;
     }
 
     /**
@@ -145,6 +148,7 @@ class ExtGenerator
             }
         }
 
+        return;
         foreach($spec->functionIterator($api, $version) as $func) 
         {
             $phpfunc = new ExtFunction($func->name);
@@ -276,7 +280,8 @@ class ExtGenerator
     {
         $buffer = $this->generateTemplate('phpglfw_functions.c', [
             'functions' => $this->methods,
-            'resources' => $this->resources,
+            'ipos' => $this->IPOs,
+            // 'resources' => $this->resources,
         ]);
     }
 

@@ -31,6 +31,6 @@ class LongArgument extends ExtArgument
      */
     public function getUsableVariableFromZVal(string $zvalVar) : string 
     {
-        return 'Z_LVAL_P(' . $zvalVar . ')';
+        return '&Z_LVAL_P(' . $zvalVar . ')';
     }
 }

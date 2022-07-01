@@ -2,24 +2,79 @@
 
 namespace ExtArgument;
 
+use Exception;
 use ExtArgument;
+use ExtInternalPtrObject;
 
 class InternalPtrObjectArgument extends ExtArgument
 {
-    public string $charid = 'r';
+    /**
+     * The internal pointer object this argument should point to
+     * 
+     * @var null|ExtInternalPtrObject
+     */
+    public ?ExtInternalPtrObject $argInternalPtrObject = null;
 
-    public function generateVariable(): string
+    /**
+     * Is the argument passed by referenced?
+     */
+    public bool $passedByReference = true;
+
+    /**
+     * The char used for parsing the arguments with the zend engine
+     */
+    public string $charid = 'O!';
+
+    /**
+     * The prefix used for a var declaration
+     */
+    public string $variableDeclarationPrefix = 'zval *';
+
+    /**
+     * The IPO is always the default O, passed by reference does not change the type
+     */
+    public function getCharId() : string 
     {
-        return "zval *{$this->name}_resource;";
+        return $this->charid;
     }
 
-    public function getReferences()
+    /**
+     * Simple helper throwing an exception when the IPO is null
+     */
+    private function requireIPODef()
     {
-        return "&{$this->name}_resource";
+        if (!$this->argInternalPtrObject) {
+            throw new \Exception('Cannot continue with an IPO argument without an IPO assigned.');
+        }
     }
 
-    public function generateDereferencing() : string 
+    /**
+     * An array of C arguments passed to the "zend_parse_parameters" function. usally just one 
+     */
+    public function getZendParameterParseArguments() : array
     {
-        return $this->argumentResource->getFetchCall($this->name, $this->name . '_resource');
+        $this->requireIPODef();
+
+        return [
+            '&' . $this->getInternalVariable(),
+            $this->argInternalPtrObject->getClassEntryName(),
+        ];
+    }
+
+    /**
+     * Returns C code to be run after the argument has been assigned to the arguments 
+     * local var declaration
+     */
+    public function getUsePrepCode() : string 
+    {
+        return $this->argInternalPtrObject->getInternalPtrFromZValDeclarationCode($this->name, $this->getZValName());
+    }
+
+    /**
+     * Returns the usable C variable contining the arguments value
+     */
+    public function getUsableVariable() : string
+    {
+        return $this->name;
     }
 }

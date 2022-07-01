@@ -6,23 +6,31 @@ use ExtArgument;
 
 class DoubleArgument extends ExtArgument
 {
+    /**
+     * The char used for parsing the arguments with the zend engine
+     */
     public string $charid = 'd';
 
-    public function generateVariable(): string
+    /**
+     * The prefix used for a var declaration
+     */
+    public string $variableDeclarationPrefix = 'double';
+
+    /**
+     * Retruns the code for the zval to be converted to the arguments expected type
+     * return null if no conversion is required / possible
+     */
+    public function getZValConversionCode(string $zvalVar) : ?string 
     {
-        return "double {$this->name};";
+        return 'convert_to_double(' . $zvalVar . ');';
     }
 
-    public function generateZValConvertion(): string
+    /**
+     * If the argument is passed as a ZVal the actual value is behind a data structre
+     * this method should return the C code to the actual value
+     */
+    public function getUsableVariableFromZVal(string $zvalVar) : string 
     {
-        return " convert_to_double(z_{$this->name});";
-    }
-
-    public function getCallName()
-    {
-        if ($this->passedByRef) {
-            return "({$this->realType} *)" . parent::getCallName();
-        }
-        return parent::getCallName();
+        return '&Z_DVAL_P(' . $zvalVar . ')';
     }
 }

@@ -12,23 +12,23 @@ class GLFWHeaderParser
         'char*' => ExtType::T_STRING,
     ];
 
-    private function createResourceDefinitions(ExtGenerator $extGen)
+    private function createIPODefinitions(ExtGenerator $extGen)
     {
-        $extGen->addResource(new class('glfwwindow', 'GLFWwindow*') extends ExtResource {
-            public function generateDestroy() : string {
-                return "glfwDestroyWindow($this->name);";
+        $extGen->addIPO(new class('GLFWwindow', 'GLFWwindow*') extends ExtInternalPtrObject {
+            public function getDestructionCall(string $var) : string {
+                return "glfwDestroyWindow($var);";
             }
         });
 
-        $extGen->addResource(new class('glfwmonitor', 'GLFWmonitor*') extends ExtResource {
-            public function generateDestroy() : string {
+        $extGen->addIPO(new class('GLFWmonitor', 'GLFWmonitor*') extends ExtInternalPtrObject {
+            public function getDestructionCall(string $var) : string {
                 return "";
             }
         });
 
-        $extGen->addResource(new class('glfwcursor', 'GLFWcursor*') extends ExtResource {
-            public function generateDestroy() : string {
-                return "glfwDestroyCursor($this->name);";
+        $extGen->addIPO(new class('GLFWcursor', 'GLFWcursor*') extends ExtInternalPtrObject {
+            public function getDestructionCall(string $var) : string {
+                return "glfwDestroyCursor($var);";
             }
         });
     }
@@ -36,7 +36,7 @@ class GLFWHeaderParser
     public function process(string $headerFilePath, ExtGenerator $extGen)
     {
         // first create required resource definitions
-        $this->createResourceDefinitions($extGen);
+        $this->createIPODefinitions($extGen);
 
         // begin reading the header
         $headerContents = file_get_contents($headerFilePath);
@@ -89,7 +89,7 @@ class GLFWHeaderParser
 
             // parse the arguments (const, type, pointer, name)
             foreach($funcArgs as &$arg) {
-                preg_match("/^(const +)?([a-zA-Z]+ ?\*?) ?(.*)/", $arg, $match);
+                preg_match("/^(const +)?([a-zA-Z]+ ?[\*+]?) ?(.*)/", $arg, $match);
                 $arg = array_combine(['full', 'const', 'type', 'name'], str_replace(' ', '', array_map('trim', $match)));
             } 
 
@@ -99,47 +99,85 @@ class GLFWHeaderParser
             // add the arguments 
             foreach($funcArgs as $sourceArg) 
             {
-                if (isset($this->glfwTypeToExt[$sourceArg['type']])) {
-                    $phparg = ExtArgument::make($sourceArg['name'], $this->glfwTypeToExt[$sourceArg['type']]);
+                preg_match("/([a-zA-Z0-9]+)[ +]?(\*+)?/", $sourceArg['type'], $pointerTypeArg);
+                $rawArgType = $pointerTypeArg[1] ?? null;
+                $argIsPointer = ($pointerTypeArg[2] ?? null) === '*';
+
+                if (strpos($sourceArg['full'], '**') !== false) {
+                    if (GEN_VERBOSE) printf("** Args currently not supported. (%s)\n", $sourceArg['full']);
+                    $isValid = false;
+                    break;
+                }
+                // if ($funcName === 'glfwGetError') {
+                //     var_dump($sourceArg); die;
+                // }
+
+                // string workaround
+                if ($rawArgType === 'char' && $sourceArg['type'] === 'char*') {
+                    $rawArgType = 'char*';
+                    $argIsPointer = false;
+                }
+
+                // scalar
+                if (isset($this->glfwTypeToExt[$rawArgType]) && $rawArgType !== 'void') {
+                    $phparg = ExtArgument::make($sourceArg['name'], $this->glfwTypeToExt[$rawArgType]);
                     $phparg->argumentTypeFrom = $sourceArg['type'];
+                    $phparg->passedByReference = $argIsPointer;
                     $phpfunc->arguments[] = $phparg;
                 }
-                elseif (isset($extGen->resources[$sourceArg['type']])) {
-                    $res = $extGen->resources[$sourceArg['type']];
-                    $phparg = ExtArgument::make($sourceArg['name'], ExtType::T_RESOURCE);
-                    $phparg->argumentResource = $res;
+                // IPO
+                elseif (isset($extGen->IPOs[$sourceArg['type']])) {
+                    $ipo = $extGen->IPOs[$sourceArg['type']];
+                    $phparg = ExtArgument::make($sourceArg['name'], ExtType::T_IPO);
+                    $phparg->argInternalPtrObject = $ipo;
                     $phpfunc->arguments[] = $phparg;
-                } else {
+                }
+                // unmapped
+                else {
+                    if (GEN_VERBOSE) printf("Argument type %s is not mapped.\n", $sourceArg['type']);
                     $isValid = false;
                 }
             }
 
             // parse return argument
-            preg_match("/^(const +)?([a-zA-Z]+ ?\*?)/", $funcReturnValue, $match);
+            preg_match("/^(const +)?([a-zA-Z]+ ?\*?\*?)/", $funcReturnValue, $match);
             $funcReturnValue = array_combine(['full', 'const', 'type'], str_replace(' ', '', array_map('trim', $match)));
 
+            // we do not support pointer redirection yet..
+            if (strpos($funcReturnValue['full'], '**') !== false) {
+                if (GEN_VERBOSE) printf("** Return currently not supported. (%s)\n", $funcReturnValue['full']);
+                $isValid = false;
+            }
+
+            // scalar type 
             if (isset($this->glfwTypeToExt[$funcReturnValue['type']])) {
                 $phpfunc->returnType = $this->glfwTypeToExt[$funcReturnValue['type']];
                 $phpfunc->returnTypeFrom = $funcReturnValue['type'];
             }
-            elseif (isset($extGen->resources[$funcReturnValue['type']])) {
-                $res = $extGen->resources[$funcReturnValue['type']];
-                $phpfunc->returnType = ExtFunction::RETURN_RESOURCE;
-                $phpfunc->returnTypeFrom = $res->type;
-                $phpfunc->returnResource = $res;
+
+            // IPO
+            elseif (isset($extGen->IPOs[$funcReturnValue['type']])) {
+                $ipo = $extGen->IPOs[$funcReturnValue['type']];
+                $phpfunc->returnType = ExtFunction::RETURN_IPO;
+                $phpfunc->returnTypeFrom = $ipo->type;
+                $phpfunc->returnIPO = $ipo;
             }
+            // unmapped
             else {
+                if (GEN_VERBOSE) printf("Return type '%s' is not wrappable.\n", $funcReturnValue['full']);
                 $isValid = false;
             }
 
-            if ($funcName === 'glfwCreateWindow') {
-                // var_dump($fullSig, $phpfunc); die;
-            }
+            // if ($funcName === 'glfwCreateWindow') {
+            //     var_dump($fullSig, $phpfunc); die;
+            // }
 
             // add the function if still valid
             if ($isValid) $extGen->methods[] = $phpfunc;
+            else {
+                if (GEN_VERBOSE) printf("Skipping function '%s', not wrappable.\n", $funcName);
+            }
         }
-
         // var_dump($funcmatches); die;
     }
 }

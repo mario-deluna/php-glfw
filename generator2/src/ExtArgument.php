@@ -32,8 +32,8 @@ abstract class ExtArgument
             case ExtType::T_NULL:
                 return new NullArgument($name, $argumentType);
             break;
-            case ExtType::T_RESOURCE:
-                return new ResourceArgument($name, $argumentType);
+            case ExtType::T_IPO:
+                return new InternalPtrObjectArgument($name, $argumentType);
             break;
             default: 
                 throw new \Exception("Unsupported argument type {$argumentType}");
@@ -126,7 +126,11 @@ abstract class ExtArgument
             return 'zval *' . $this->getZValName() . ';';
         }
 
-        $b = $this->variableDeclarationPrefix . ' ' . $this->name;
+        if (!isset($this->variableDeclarationPrefix)) {
+            throw new Exception(sprintf("The current argument %s type does not define the variableDeclarationPrefix property..", get_class($this)));
+        }
+
+        $b = $this->variableDeclarationPrefix . ' ' . $this->getInternalVariable();
 
         if ($this->isOptional()) {
             $b .= ' = ' . $this->getDefaultValue();
@@ -194,6 +198,19 @@ abstract class ExtArgument
     }
 
     /**
+     * Returns the variable to hold the actual argument, this usally is simply
+     * the name but can be the zval when passed by reference
+     */
+    public function getInternalVariable() : string
+    {
+        if ($this->passedByReference) {
+            return $this->getZValName();
+        }
+
+        return $this->name;
+    }
+
+    /**
      * If the argument is passed as a ZVal the actual value is behind a data structre
      * this method should return the C code to the actual value
      */
@@ -212,5 +229,15 @@ abstract class ExtArgument
         }
         
         return $this->name;
+    }
+
+    /**
+     * An array of C arguments passed to the "zend_parse_parameters" function. usally just one 
+     */
+    public function getZendParameterParseArguments() : array
+    {
+        return [
+            '&' . $this->getInternalVariable(),
+        ];
     }
 }
