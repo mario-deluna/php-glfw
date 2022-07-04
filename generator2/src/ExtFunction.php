@@ -51,6 +51,20 @@ class ExtFunction
     public array $arguments = [];
 
     /**
+     * Copy ext function state from the given function
+     */
+    public function copyFrom(ExtFunction $from) : void
+    {
+        $this->name = $from->name;
+        $this->internalCallFunc = $from->internalCallFunc;
+        $this->comment = $from->comment;
+        $this->returnTypeFrom = $from->returnTypeFrom;
+        $this->returnType = $from->returnType;
+        $this->returnIPO = $from->returnIPO;
+        $this->arguments = $from->arguments;
+    }
+
+    /**
      * Constrctor
      */
     public function __construct(string $name) 
@@ -162,15 +176,23 @@ class ExtFunction
     }
 
     /**
-     * Returns the PHP extension function implementation C code
+     * Returns the PHP extension function inner C code
      */
-    public function getFunctionImplementation() : string
+    public function getFunctionImplementationBody() : string
     {
         $b = "";
         if (!empty($this->arguments)) $b .= $this->getArgumentParseCode() . PHP_EOL . PHP_EOL;
         $b .= $this->getReturnStatement($this->getFunctionCallCode());
 
-        return sprintf("PHP_FUNCTION(%s)\n{\n%s\n}", $this->name, tabulate($b));
+        return $b;
+    }
+
+    /**
+     * Returns the PHP extension function implementation C code
+     */
+    public function getFunctionImplementation() : string
+    {
+        return sprintf("PHP_FUNCTION(%s)\n{\n%s\n}", $this->name, tabulate($this->getFunctionImplementationBody()));
     }
 
     /**
@@ -243,7 +265,7 @@ class ExtFunction
         $args = [];
         foreach($this->arguments as $arg) {
             if ($arg->argumentType === ExtType::T_IPO) {
-                $args[] = '?'.$arg->argInternalPtrObject->getPHPClassName() . ' ' . '$' . $arg->name;
+                $args[] = ($arg->isOptional() ? '?' : '') . $arg->argInternalPtrObject->getPHPClassName() . ' ' . '$' . $arg->name;
             } else {
                 $args[] = $this->mapTypeToStubType($arg->argumentType) . ' ' . ($arg->passedByReference ? '&' : '') . '$' . $arg->name;
             }

@@ -62,9 +62,9 @@ PHP_MINIT_FUNCTION(glfw)
     phpglfw_register_constants(INIT_FUNC_ARGS_PASSTHRU);
 
     // register objects
-    phpglfw_object_minit_helper();
-
-    phpglfw_register_resource_destructors(INIT_FUNC_ARGS_PASSTHRU);
+    phpglfw_glfwwindow_object_minit_helper();
+    phpglfw_glfwcursor_object_minit_helper();
+    phpglfw_glfwmonitor_object_minit_helper();
 
     return SUCCESS;
 }

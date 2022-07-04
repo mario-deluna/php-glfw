@@ -27,10 +27,11 @@
 #define PHP_GLFW_FUNCTIONS_H 1
 
 #include "phpglfw_constants.h"
-#include <glad/glad.h>
-#include <GLFW/glfw3.h>
 
-void phpglfw_object_minit_helper(void);
+void phpglfw_glfwwindow_object_minit_helper(void);
+void phpglfw_glfwcursor_object_minit_helper(void);
+void phpglfw_glfwmonitor_object_minit_helper(void);
+
 void phpglfw_register_resource_destructors(INIT_FUNC_ARGS);
 
 #endif

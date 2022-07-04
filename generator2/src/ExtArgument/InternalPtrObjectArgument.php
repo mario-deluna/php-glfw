@@ -23,7 +23,7 @@ class InternalPtrObjectArgument extends ExtArgument
     /**
      * The char used for parsing the arguments with the zend engine
      */
-    public string $charid = 'O!';
+    public string $charid = 'O';
 
     /**
      * The prefix used for a var declaration
@@ -35,7 +35,10 @@ class InternalPtrObjectArgument extends ExtArgument
      */
     public function getCharId() : string 
     {
-        return $this->charid;
+        $c = $this->charid;
+        if ($this->isOptional()) $c .= '!';
+
+        return $c;
     }
 
     /**
@@ -67,7 +70,7 @@ class InternalPtrObjectArgument extends ExtArgument
      */
     public function getUsePrepCode() : string 
     {
-        return $this->argInternalPtrObject->getInternalPtrFromZValDeclarationCode($this->name, $this->getZValName());
+        return $this->argInternalPtrObject->getInternalPtrFromZValDeclarationCode($this->name, $this->getZValName(), $this->defaultValue);
     }
 
     /**

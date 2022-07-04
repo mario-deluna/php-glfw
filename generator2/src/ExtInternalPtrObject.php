@@ -122,8 +122,15 @@ class ExtInternalPtrObject
     /**
      * Returns C code that declares the given varname of the internal type by resolving a zval potiner
      */
-    public function getInternalPtrFromZValDeclarationCode(string $internalVarName, string $zvalVarName) : string 
+    public function getInternalPtrFromZValDeclarationCode(string $internalVarName, string $zvalVarName, ?string $defaultValue = null) : string 
     {
+        if ($defaultValue !== null) {
+            $b = $this->type . ' ' . $internalVarName . ' = NULL;' . PHP_EOL;
+            $b .= sprintf("if (%s != NULL && Z_TYPE_P(%s) == IS_OBJECT) {\n", $zvalVarName, $zvalVarName);
+            $b .= sprintf("    %s = %s(%s);\n}", $internalVarName, $this->getInternalPtrFromZValPtrFunctionName(), $zvalVarName);
+            return $b;
+        }
+        
         return $this->type . ' ' . $internalVarName . ' = ' . $this->getInternalPtrFromZValPtrFunctionName() . '(' . $zvalVarName . ');';
     }
 

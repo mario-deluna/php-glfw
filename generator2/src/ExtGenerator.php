@@ -1,5 +1,7 @@
 <?php
 
+use PHPGlfwAdjustments\AdjustmentInterface;
+
 class ExtGenerator
 {
     /**
@@ -88,6 +90,33 @@ class ExtGenerator
     }
 
     /**
+     * Find a extension function instance by name
+     */
+    public function getFunctionByName(string $functionName) : ?ExtFunction
+    {
+        foreach($this->methods as $func) {
+            if ($func->name === $functionName) {
+                return $func;
+            }
+        }
+
+        return null;
+    }
+
+    /**
+     * Find a extension function instance by name
+     */
+    public function replaceFunctionByName(string $functionName, ExtFunction $replacement) : void
+    {
+        foreach($this->methods as $k => $func) {
+            if ($func->name === $functionName) {
+                $this->methods[$k] = $replacement;
+                return;
+            }
+        }
+    }
+
+    /**
      * Import the given GLSpec into the extension generator
      * 
      * @param GLSpec            $spec
@@ -148,7 +177,7 @@ class ExtGenerator
             }
         }
 
-        return;
+        // return;
         foreach($spec->functionIterator($api, $version) as $func) 
         {
             $phpfunc = new ExtFunction($func->name);
@@ -227,6 +256,17 @@ class ExtGenerator
 
         file_put_contents(GEN_PATH_EXT . '/' . $templateName, $buffer);
         return $buffer;
+    }
+
+    /**
+     * Adjust the current generator based on the given adjustments
+     * 
+     * @param class-string<AdjustmentInterface>          $adjustmentClass
+     */
+    public function adjust(string $adjustmentClass) : void
+    {
+        $adjustment = new $adjustmentClass;
+        $adjustment->handle($this);
     }
 
     /**
