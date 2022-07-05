@@ -245,6 +245,14 @@ static int phpglfw_math_vec3_do_op_handler(zend_uchar opcode, zval *result, zval
         phpglfw_math_vec3_object *vecobj1 = phpglfw_math_vec3_objectptr_from_zobj_p(Z_OBJ_P(op1));
         return phpglfw_math_vec3_do_op_handler_vec_scalar(opcode, resobj, vecobj1, op2);
     }
+    // otherway around
+    else if (
+        Z_TYPE_P(op2) == IS_OBJECT && Z_OBJCE_P(op2) == phpglfw_math_vec3_ce &&
+        (Z_TYPE_P(op1) == IS_LONG || Z_TYPE_P(op1) == IS_DOUBLE)
+    ) {
+        phpglfw_math_vec3_object *vecobj1 = phpglfw_math_vec3_objectptr_from_zobj_p(Z_OBJ_P(op2));
+        return phpglfw_math_vec3_do_op_handler_vec_scalar(opcode, resobj, vecobj1, op1);
+    }
     else {
         return FAILURE;
     }
@@ -277,7 +285,7 @@ PHP_METHOD(PGL_Math_Vec3, __toString)
     smart_str_free(&my_str);
 }
 
-PHP_METHOD(PGL_Math_Vec3, mul)
+PHP_METHOD(PGL_Math_Vec3, length)
 {
 	if (zend_parse_parameters_none() == FAILURE) {
 		RETURN_THROWS();
@@ -287,23 +295,26 @@ PHP_METHOD(PGL_Math_Vec3, mul)
     obj = getThis();
     phpglfw_math_vec3_object *obj_ptr = phpglfw_math_vec3_objectptr_from_zobj_p(Z_OBJ_P(obj));
 
-    smart_str my_str = {0};
-
-    smart_str_appends(&my_str, "vec3(");
-    smart_str_append_double(&my_str, obj_ptr->vec[0], 4, true);
-    smart_str_appends(&my_str, ", ");
-    smart_str_append_double(&my_str, obj_ptr->vec[1], 4, true);
-    smart_str_appends(&my_str, ", ");
-    smart_str_append_double(&my_str, obj_ptr->vec[2], 4, true);
-    smart_str_appends(&my_str, ")");
-
-    smart_str_0(&my_str);
-
-    RETURN_STRINGL(ZSTR_VAL(my_str.s), ZSTR_LEN(my_str.s));
-
-    smart_str_free(&my_str);
+    RETURN_DOUBLE(vec3_len(obj_ptr->vec));
 }
 
+PHP_METHOD(PGL_Math_Vec3, normalize)
+{
+	if (zend_parse_parameters_none() == FAILURE) {
+		RETURN_THROWS();
+	}
+
+    zval *obj;
+    obj = getThis();
+    phpglfw_math_vec3_object *obj_ptr = phpglfw_math_vec3_objectptr_from_zobj_p(Z_OBJ_P(obj));
+
+    // create new vec
+    object_init_ex(return_value, phpglfw_math_vec3_ce);
+    phpglfw_math_vec3_object *resobj = phpglfw_math_vec3_objectptr_from_zobj_p(Z_OBJ_P(return_value));
+
+    // normalize
+    vec3_norm(resobj->vec, obj_ptr->vec);
+}
 
 // const zend_function_entry phpglfw_math_vec3_functions[] = {
 // 	PHP_ME(Vec3, __toString, NULL, ZEND_ACC_PUBLIC)

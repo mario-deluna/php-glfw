@@ -9,6 +9,8 @@
 namespace PGL\Math 
 {
     class Vec3 {
+        public function length() : float {}
+        public function normalize() : Vec3 {}
         public function __toString() : string {}
     }    
 };

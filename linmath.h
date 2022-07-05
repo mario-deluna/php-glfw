@@ -1,6 +1,14 @@
 #ifndef LINMATH_H
 #define LINMATH_H
 
+/**
+ * Linmath 
+ * Copyright (C) 2013 Wolfgang 'datenwolf' Draxinger <code@datenwolf.net>
+ * Released under WTFPL license
+ * 
+ * Modified by Mario Döring
+ */
+
 #include <math.h>
 
 #define LINMATH_H_DEFINE_VEC(n) \
