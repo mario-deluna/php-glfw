@@ -37,6 +37,13 @@
  * a resource pointer in the extension like a "GLFWwindow" etc...
  */
 
+void phpglfw_register_ipos(void)
+{
+<?php foreach($ipos as $ipo) : ?>
+    <?php echo $ipo->getObjectMinitHelperFunctionName(); ?>(); 
+<?php endforeach; ?>
+}
+
 /**
  * Class entries
  */

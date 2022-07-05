@@ -1,5 +1,5 @@
 /* This is a generated file, edit the .stub.php file instead.
- * Stub hash: 49811b0822e1b28b7efd7e2ca106089d920e3f73 */
+ * Stub hash: a5f68d86bd7d87c276215e3dfdd71126c670f4dd */
 
 ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_glCullFace, 0, 1, IS_VOID, 0)
 	ZEND_ARG_TYPE_INFO(0, mode, IS_LONG, 0)
@@ -1344,6 +1344,8 @@ ZEND_END_ARG_INFO()
 
 #define arginfo_glfwVulkanSupported arginfo_glGetError
 
+#define arginfo_class_PGL_Math_Vec3___toString arginfo_glfwGetVersionString
+
 
 ZEND_FUNCTION(glCullFace);
 ZEND_FUNCTION(glFrontFace);
@@ -1644,6 +1646,7 @@ ZEND_FUNCTION(glfwSwapBuffers);
 ZEND_FUNCTION(glfwSwapInterval);
 ZEND_FUNCTION(glfwExtensionSupported);
 ZEND_FUNCTION(glfwVulkanSupported);
+ZEND_METHOD(PGL_Math_Vec3, __toString);
 
 
 static const zend_function_entry ext_functions[] = {
@@ -1946,5 +1949,11 @@ static const zend_function_entry ext_functions[] = {
 	ZEND_FE(glfwSwapInterval, arginfo_glfwSwapInterval)
 	ZEND_FE(glfwExtensionSupported, arginfo_glfwExtensionSupported)
 	ZEND_FE(glfwVulkanSupported, arginfo_glfwVulkanSupported)
+	ZEND_FE_END
+};
+
+
+static const zend_function_entry class_PGL_Math_Vec3_methods[] = {
+	ZEND_ME(PGL_Math_Vec3, __toString, arginfo_class_PGL_Math_Vec3___toString, ZEND_ACC_PUBLIC)
 	ZEND_FE_END
 };

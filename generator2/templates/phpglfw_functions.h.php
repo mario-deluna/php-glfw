@@ -32,8 +32,8 @@
  * IPO's module init helpers 
  */
 void phpglfw_register_ipos(void);
-void phpglfw_glfwwindow_object_minit_helper(void); 
-void phpglfw_glfwmonitor_object_minit_helper(void); 
-void phpglfw_glfwcursor_object_minit_helper(void); 
+<?php foreach($ipos as $ipo) : ?>
+void <?php echo $ipo->getObjectMinitHelperFunctionName(); ?>(void); 
+<?php endforeach; ?>
 
 #endif

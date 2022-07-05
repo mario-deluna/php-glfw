@@ -1,7 +1,7 @@
 /**
  * PHP-glfw 
  * 
- * Extension functions
+ * Extension constants
  *
  * Copyright (c) 2018-2022 Mario Döring
  * 
@@ -23,17 +23,11 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-#ifndef PHP_GLFW_FUNCTIONS_H
-#define PHP_GLFW_FUNCTIONS_H 1
+#ifndef PHP_GLFW_MATH_H
+#define PHP_GLFW_MATH_H 1
 
 #include "phpglfw_constants.h"
 
-/**
- * IPO's module init helpers 
- */
-void phpglfw_register_ipos(void);
-void phpglfw_glfwwindow_object_minit_helper(void); 
-void phpglfw_glfwmonitor_object_minit_helper(void); 
-void phpglfw_glfwcursor_object_minit_helper(void); 
+void phpglfw_register_math_module(INIT_FUNC_ARGS);
 
 #endif

@@ -14,7 +14,6 @@ class GLFWGladLoader implements AdjustmentInterface
      */
     public function handle(ExtGenerator $gen) : void
     {
-
         /**
          * In PHPGlfw we automatically load GL function pointers over glad 
          * as soon as we have an active context. We could expose this call to the user 

@@ -1966,10 +1966,6 @@ void phpglfw_register_constants(INIT_FUNC_ARGS);
 #define PHPGLFW_C_GL_PATCHES GL_PATCHES // => 0x000E  
 #endif
  
-#ifdef GL_QUADS 
-#define PHPGLFW_C_GL_QUADS GL_QUADS // => 0x0007  
-#endif
- 
 #ifdef GL_FIXED 
 #define PHPGLFW_C_GL_FIXED GL_FIXED // => 0x140C  
 #endif
@@ -4806,10 +4802,6 @@ void phpglfw_register_constants(INIT_FUNC_ARGS);
  
 #ifdef GL_MAX_TRANSFORM_FEEDBACK_BUFFERS 
 #define PHPGLFW_C_GL_MAX_TRANSFORM_FEEDBACK_BUFFERS GL_MAX_TRANSFORM_FEEDBACK_BUFFERS // => 0x8E70  
-#endif
- 
-#ifdef GL_MAX_VERTEX_STREAMS 
-#define PHPGLFW_C_GL_MAX_VERTEX_STREAMS GL_MAX_VERTEX_STREAMS // => 0x8E71  
 #endif
 
 /**

@@ -4,6 +4,19 @@
 /** @generate-class-entries */
 
 /**
+ * Classes
+ */
+namespace PGL\Math 
+{
+    class Vec3 {
+        public function __toString() : string {}
+    }    
+};
+
+namespace {
+    
+
+/**
  * Constants
  * ----------------------------------------------------------------------------
  */
@@ -485,7 +498,6 @@
 // const GL_TRIANGLES_ADJACENCY = 0x000C;
 // const GL_TRIANGLE_STRIP_ADJACENCY = 0x000D;
 // const GL_PATCHES = 0x000E;
-// const GL_QUADS = 0x0007;
 // const GL_FIXED = 0x140C;
 // const GL_POLYGON_OFFSET_FILL = 0x8037;
 // const GL_POLYGON_OFFSET_FACTOR = 0x8038;
@@ -1162,7 +1174,6 @@
 // const GL_TRANSFORM_FEEDBACK_BUFFER_ACTIVE = 0x8E24;
 // const GL_TRANSFORM_FEEDBACK_BINDING = 0x8E25;
 // const GL_MAX_TRANSFORM_FEEDBACK_BUFFERS = 0x8E70;
-// const GL_MAX_VERTEX_STREAMS = 0x8E71;
 // const GL_BUFFER_ACCESS_FLAGS = 0x911F;
 // const GL_BUFFER_MAP_LENGTH = 0x9120;
 // const GL_BUFFER_MAP_OFFSET = 0x9121;
@@ -1890,3 +1901,5 @@ function glfwSwapBuffers(GLFWwindow $window) : void {};
 function glfwSwapInterval(int $interval) : void {};
 function glfwExtensionSupported(string $extension) : int {};
 function glfwVulkanSupported() : int {};
+
+};

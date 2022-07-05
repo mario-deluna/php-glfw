@@ -17,7 +17,7 @@ if test "$PHP_GLFW" != "no"; then
       break
     fi
   else
-    for i in /usr/local /usr /opt /opt/local; do
+    for i in vendor/glfw /usr/local /usr /opt /opt/local; do
       if test -r "$i/include/GLFW/glfw3.h"; then
         GLFW_DIR=$i
         break
@@ -45,5 +45,5 @@ if test "$PHP_GLFW" != "no"; then
   AC_DEFINE(HAVE_GLFW, 1, [Whether you have glfw])
   PHP_SUBST(GLFW_SHARED_LIBADD)
 
-  PHP_NEW_EXTENSION(glfw, phpglfw.c phpglfw_constants.c phpglfw_functions.c vendor/glad/src/glad.c, $ext_shared)
+  PHP_NEW_EXTENSION(glfw, phpglfw.c phpglfw_constants.c phpglfw_functions.c phpglfw_math.c vendor/glad/src/glad.c, $ext_shared)
 fi

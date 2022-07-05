@@ -5,7 +5,7 @@ use PHPGlfwAdjustments\AdjustmentInterface;
 class ExtGenerator
 {
     /**
-     * @var array<ExtConstant>
+     * @var array<string, ExtConstant>
      */
     public array $constants = [];
 
@@ -66,7 +66,7 @@ class ExtGenerator
      */
     public function addConstant(ExtConstant $const) : void
     {
-        $this->constants[] = $const;
+        $this->constants[$const->name] = $const;
     }
 
     /**
@@ -274,14 +274,18 @@ class ExtGenerator
      * 
      * @param string            $path
      */
-    public function build(string $path)
+    public function build(string $path) : void
     {
         $this->buildConstantsHeader();
         $this->buildConstantsBody();
+        $this->buildFunctionsHeader();
         $this->buildFunctionsBody();
         $this->buildStubs();
     }
 
+    /**
+     * Build the "phpglfw_constants" header file
+     */
     private function buildConstantsHeader()
     {
         $groupedConstants = [];
@@ -300,6 +304,9 @@ class ExtGenerator
         ]);
     }
 
+    /**
+     * Build the "phpglfw_constants" body file
+     */
     private function buildConstantsBody()
     {
         $buffer = $this->generateTemplate('phpglfw_constants.c', [
@@ -307,7 +314,32 @@ class ExtGenerator
         ]);
     }
 
-    private function buildStubs()
+    /**
+     * Build the "phpglfw_functions" header file
+     */
+    private function buildFunctionsHeader() : void
+    {
+        $buffer = $this->generateTemplate('phpglfw_functions.h', [
+            'functions' => $this->methods,
+            'ipos' => $this->IPOs,
+        ]);
+    }
+
+    /**
+     * Build the "phpglfw_functions" body file
+     */
+    private function buildFunctionsBody() : void
+    {
+        $buffer = $this->generateTemplate('phpglfw_functions.c', [
+            'functions' => $this->methods,
+            'ipos' => $this->IPOs,
+        ]);
+    }
+
+    /**
+     * Builds the PHP Stubs file
+     */
+    private function buildStubs() : void
     {
         $buffer = $this->generateTemplate('phpglfw.stub.php', [
             'constants' => $this->constants,
@@ -315,14 +347,4 @@ class ExtGenerator
             '__buffer_prefix' => '<?php ' . PHP_EOL
         ]);
     }
-
-    private function buildFunctionsBody()
-    {
-        $buffer = $this->generateTemplate('phpglfw_functions.c', [
-            'functions' => $this->methods,
-            'ipos' => $this->IPOs,
-            // 'resources' => $this->resources,
-        ]);
-    }
-
 }

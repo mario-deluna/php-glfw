@@ -37,6 +37,13 @@
  * a resource pointer in the extension like a "GLFWwindow" etc...
  */
 
+void phpglfw_register_ipos(void)
+{
+    phpglfw_glfwwindow_object_minit_helper(); 
+    phpglfw_glfwmonitor_object_minit_helper(); 
+    phpglfw_glfwcursor_object_minit_helper(); 
+}
+
 /**
  * Class entries
  */

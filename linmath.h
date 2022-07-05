@@ -17,11 +17,47 @@ static inline void vec##n##_sub(vec##n r, vec##n const a, vec##n const b) \
 	for(i=0; i<n; ++i) \
 		r[i] = a[i] - b[i]; \
 } \
+static inline void vec##n##_mul(vec##n r, vec##n const a, vec##n const b) \
+{ \
+	int i; \
+	for(i=0; i<n; ++i) \
+		r[i] = a[i] * b[i]; \
+} \
+static inline void vec##n##_div(vec##n r, vec##n const a, vec##n const b) \
+{ \
+	int i; \
+	for(i=0; i<n; ++i) \
+		r[i] = a[i] / b[i]; \
+} \
 static inline void vec##n##_scale(vec##n r, vec##n const v, float const s) \
 { \
 	int i; \
 	for(i=0; i<n; ++i) \
 		r[i] = v[i] * s; \
+} \
+static inline void vec##n##_s_add(vec##n r, vec##n const v, float const s) \
+{ \
+	int i; \
+	for(i=0; i<n; ++i) \
+		r[i] = v[i] + s; \
+} \
+static inline void vec##n##_s_sub(vec##n r, vec##n const v, float const s) \
+{ \
+	int i; \
+	for(i=0; i<n; ++i) \
+		r[i] = v[i] - s; \
+} \
+static inline void vec##n##_s_mul(vec##n r, vec##n const v, float const s) \
+{ \
+	int i; \
+	for(i=0; i<n; ++i) \
+		r[i] = v[i] * s; \
+} \
+static inline void vec##n##_s_div(vec##n r, vec##n const v, float const s) \
+{ \
+	int i; \
+	for(i=0; i<n; ++i) \
+		r[i] = v[i] / s; \
 } \
 static inline float vec##n##_mul_inner(vec##n const a, vec##n const b) \
 { \
