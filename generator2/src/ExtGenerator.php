@@ -104,16 +104,20 @@ class ExtGenerator
     }
 
     /**
-     * Find a extension function instance by name
+     * Find a extension function instance by name and replace it.
+     * If the function does not already exists it will simply be added.
      */
-    public function replaceFunctionByName(string $functionName, ExtFunction $replacement) : void
+    public function replaceFunctionByName(ExtFunction $replacement) : void
     {
         foreach($this->methods as $k => $func) {
-            if ($func->name === $functionName) {
+            if ($func->name === $replacement->name) {
                 $this->methods[$k] = $replacement;
                 return;
             }
         }
+
+        // just add it if not replacable
+        $this->methods[] = $replacement;
     }
 
     /**
@@ -122,8 +126,9 @@ class ExtGenerator
      * @param GLSpec            $spec
      * @param string            $api
      * @param string            $version
+     * @param array<string>     $ignoredFunctions an array of function names to be ignored during import
      */
-    function import(GLSpec $spec, string $api, string $version)
+    function import(GLSpec $spec, string $api, string $version, array $ignoredFunctions = [])
     {
         // add custom constants for the build API + version 
         $glfwExtCG = new ExtConstantGroup();
@@ -180,7 +185,13 @@ class ExtGenerator
         // return;
         foreach($spec->functionIterator($api, $version) as $func) 
         {
+            // skip ignored functions
+            if (in_array($func->name, $ignoredFunctions)) {
+                continue;
+            }
+
             $phpfunc = new ExtFunction($func->name);
+            $isValid = true;
 
             $sig = $func->name . '(' . implode(',', array_column($func->arguments, 'name')) . ')';
 
@@ -196,7 +207,10 @@ class ExtGenerator
             // }
 
             // skip unmapped return types
-            if (!isset($this->glTypeToExtType[$func->returnTypeString])) continue;
+            if (!isset($this->glTypeToExtType[$func->returnTypeString])) {
+                if (GEN_VERBOSE) printf("Unmapped return type '%s' in function (%s)\n", $func->returnTypeString, $func->name);
+                $isValid = false;
+            }
 
             // skip pointer return types
             if ($func->isPointerReturn()) continue;
@@ -204,25 +218,39 @@ class ExtGenerator
             // skip functions with unmapped arguments
             foreach($func->arguments as $argument) {
 
-                // skip currently unsupported functions
-                if (!isset($this->glTypeToExtType[$argument->typeString])) {
+                // direct map
+                if (isset($this->glTypeToExtType[$argument->typeString]) && $argument->isPointer() === false) 
+                {
+                    $phparg = ExtArgument::make($argument->name, $this->glTypeToExtType[$argument->typeString]);
+                    if ($argument->typeString != $phparg->argumentType) {
+                        $phparg->argumentTypeFrom = $argument->typeString;
+                    }
+
+                    $phpfunc->arguments[] = $phparg;
+                }
+                // we simply assume all "const GLchar pointers" to be strings 
+                elseif ($argument->typeString === 'GLchar' && $argument->isPointer() && $argument->isConst()) 
+                {
+                    $phparg = ExtArgument::make($argument->name, ExtType::T_STRING);
+                    $phparg->argumentTypeFrom = $argument->typeString;
+
+                    $phpfunc->arguments[] = $phparg;
+                }
+                // otherwise unmappable
+                else {
+                    if (GEN_VERBOSE) printf("Unmapped argument type '%s' (%s), in function (%s)\n", $argument->fullTypeString, $argument->typeString, $func->name);
+                    $isValid = false;
                     continue 2;
                 }
 
-                if ($argument->isPointer()) continue 2;
-
-                $phparg = ExtArgument::make($argument->name, $this->glTypeToExtType[$argument->typeString]);
-                if ($argument->typeString != $phparg->argumentType) {
-                    $phparg->argumentTypeFrom = $argument->typeString;
-                }
-                $phpfunc->arguments[] = $phparg;
+                
             }
 
             //  assign return type
             $phpfunc->returnType = $this->mapGlTypeToExtType($func->returnTypeString);
             $phpfunc->returnTypeFrom = ($phpfunc->returnType != $func->returnTypeString) ? $func->returnTypeString : null;
 
-            $this->methods[] = $phpfunc;
+            if ($isValid) $this->methods[] = $phpfunc;
         }
     }
 

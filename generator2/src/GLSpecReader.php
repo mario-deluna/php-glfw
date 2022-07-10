@@ -1,5 +1,7 @@
 <?php
 
+use GLSpec\GLConstantGroup;
+
 class GLSpecReader 
 {
     /**
@@ -50,7 +52,7 @@ class GLSpecReader
      */
     private function parseEnums(GLSpec $spec, SimpleXMLElement $enums)
     {
-        $constGroup = new GLSpecConstantGroup;
+        $constGroup = new GLConstantGroup;
         $constGroup->group = $enums->attributes()->group;
         $constGroup->vendor = $enums->attributes()->vendor;
         $constGroup->comment = $enums->attributes()->comment;

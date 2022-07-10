@@ -95,7 +95,14 @@ static inline void vec##n##_max(vec##n r, vec##n a, vec##n b) \
 	int i; \
 	for(i=0; i<n; ++i) \
 		r[i] = a[i]>b[i] ? a[i] : b[i]; \
+} \
+static inline void vec##n##_abs(vec##n r, vec##n a) \
+{ \
+	int i; \
+	for(i=0; i<n; ++i) \
+		r[i] = fabs(a[i]); \
 }
+
 
 LINMATH_H_DEFINE_VEC(2)
 LINMATH_H_DEFINE_VEC(3)

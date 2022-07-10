@@ -316,6 +316,23 @@ PHP_METHOD(PGL_Math_Vec3, normalize)
     vec3_norm(resobj->vec, obj_ptr->vec);
 }
 
+PHP_METHOD(PGL_Math_Vec3, abs)
+{
+	if (zend_parse_parameters_none() == FAILURE) {
+		RETURN_THROWS();
+	}
+
+    zval *obj;
+    obj = getThis();
+    phpglfw_math_vec3_object *obj_ptr = phpglfw_math_vec3_objectptr_from_zobj_p(Z_OBJ_P(obj));
+
+    // create new vec
+    object_init_ex(return_value, phpglfw_math_vec3_ce);
+    phpglfw_math_vec3_object *resobj = phpglfw_math_vec3_objectptr_from_zobj_p(Z_OBJ_P(return_value));
+
+    vec3_abs(resobj->vec, obj_ptr->vec);
+}
+
 // const zend_function_entry phpglfw_math_vec3_functions[] = {
 // 	PHP_ME(Vec3, __toString, NULL, ZEND_ACC_PUBLIC)
 //     PHP_FE_END

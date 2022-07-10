@@ -204,6 +204,22 @@ class ExtFunction
     }
 
     /**
+     * Returns the default comment, but allows specific override for the Stubs.
+     */
+    public function getFunctionPHPComment() : string
+    {
+        return $this->comment ?? '';
+    } 
+
+    /**
+     * Generates a comment block for the current function
+     */
+    public function getFunctionPHPCommentBlock() : string
+    {
+        return commentBlock(trim(sprintf("%s\n%s", $this->name, $this->getFunctionPHPComment())));
+    }
+
+    /**
      * Generate the method call (Bool)
      */
     protected function generateExtImplementationReturnBool(string $call) : string
@@ -265,7 +281,13 @@ class ExtFunction
         $args = [];
         foreach($this->arguments as $arg) {
             if ($arg->argumentType === ExtType::T_IPO) {
-                $args[] = ($arg->isOptional() ? '?' : '') . $arg->argInternalPtrObject->getPHPClassName() . ' ' . '$' . $arg->name;
+                $buffer = ($arg->isOptional() ? '?' : '') . $arg->argInternalPtrObject->getPHPClassName() . ' ' . '$' . $arg->name;
+                    
+                if ($arg->isOptional()) {
+                    $buffer .= ' = ' . $arg->defaultValue;
+                }
+
+                $args[] = $buffer;
             } else {
                 $args[] = $this->mapTypeToStubType($arg->argumentType) . ' ' . ($arg->passedByReference ? '&' : '') . '$' . $arg->name;
             }

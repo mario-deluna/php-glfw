@@ -1,5 +1,6 @@
 Makefile*
 .deps
+*.dep
 .libs
 /build
 ac*m4
@@ -34,3 +35,5 @@ tmp-php.ini
 examples/vendor/
 generator/vendor/
 generator2/vendor/
+.vscode/
+*.cache

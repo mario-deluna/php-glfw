@@ -1,5 +1,5 @@
 /* This is a generated file, edit the .stub.php file instead.
- * Stub hash: d5b588dd42e9565384f553eaea1db80acc231706 */
+ * Stub hash: e493e7f65006aecbc06e11ddcccdfa0a3a906d50 */
 
 ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_glCullFace, 0, 1, IS_VOID, 0)
 	ZEND_ARG_TYPE_INFO(0, mode, IS_LONG, 0)
@@ -296,6 +296,12 @@ ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_glAttachShader, 0, 2, IS_VOID, 0
 	ZEND_ARG_TYPE_INFO(0, shader, IS_LONG, 0)
 ZEND_END_ARG_INFO()
 
+ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_glBindAttribLocation, 0, 3, IS_VOID, 0)
+	ZEND_ARG_TYPE_INFO(0, program, IS_LONG, 0)
+	ZEND_ARG_TYPE_INFO(0, index, IS_LONG, 0)
+	ZEND_ARG_TYPE_INFO(0, name, IS_STRING, 0)
+ZEND_END_ARG_INFO()
+
 ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_glCompileShader, 0, 1, IS_VOID, 0)
 	ZEND_ARG_TYPE_INFO(0, shader, IS_LONG, 0)
 ZEND_END_ARG_INFO()
@@ -319,6 +325,13 @@ ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_glDisableVertexAttribArray, 0, 1
 ZEND_END_ARG_INFO()
 
 #define arginfo_glEnableVertexAttribArray arginfo_glDisableVertexAttribArray
+
+ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_glGetAttribLocation, 0, 2, IS_LONG, 0)
+	ZEND_ARG_TYPE_INFO(0, program, IS_LONG, 0)
+	ZEND_ARG_TYPE_INFO(0, name, IS_STRING, 0)
+ZEND_END_ARG_INFO()
+
+#define arginfo_glGetUniformLocation arginfo_glGetAttribLocation
 
 ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_glIsProgram, 0, 1, _IS_BOOL, 0)
 	ZEND_ARG_TYPE_INFO(0, program, IS_LONG, 0)
@@ -516,6 +529,14 @@ ZEND_END_ARG_INFO()
 
 #define arginfo_glVertexAttribI4ui arginfo_glVertexAttrib4Nub
 
+ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_glBindFragDataLocation, 0, 3, IS_VOID, 0)
+	ZEND_ARG_TYPE_INFO(0, program, IS_LONG, 0)
+	ZEND_ARG_TYPE_INFO(0, color, IS_LONG, 0)
+	ZEND_ARG_TYPE_INFO(0, name, IS_STRING, 0)
+ZEND_END_ARG_INFO()
+
+#define arginfo_glGetFragDataLocation arginfo_glGetAttribLocation
+
 #define arginfo_glUniform1ui arginfo_glUniform1i
 
 #define arginfo_glUniform2ui arginfo_glUniform2i
@@ -654,6 +675,11 @@ ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_glCopyBufferSubData, 0, 5, IS_VO
 	ZEND_ARG_TYPE_INFO(0, size, IS_LONG, 0)
 ZEND_END_ARG_INFO()
 
+ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_glGetUniformBlockIndex, 0, 2, IS_LONG, 0)
+	ZEND_ARG_TYPE_INFO(0, program, IS_LONG, 0)
+	ZEND_ARG_TYPE_INFO(0, uniformBlockName, IS_STRING, 0)
+ZEND_END_ARG_INFO()
+
 ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_glUniformBlockBinding, 0, 3, IS_VOID, 0)
 	ZEND_ARG_TYPE_INFO(0, program, IS_LONG, 0)
 	ZEND_ARG_TYPE_INFO(0, uniformBlockIndex, IS_LONG, 0)
@@ -717,6 +743,15 @@ ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_glSampleMaski, 0, 2, IS_VOID, 0)
 	ZEND_ARG_TYPE_INFO(0, maskNumber, IS_LONG, 0)
 	ZEND_ARG_TYPE_INFO(0, mask, IS_LONG, 0)
 ZEND_END_ARG_INFO()
+
+ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_glBindFragDataLocationIndexed, 0, 4, IS_VOID, 0)
+	ZEND_ARG_TYPE_INFO(0, program, IS_LONG, 0)
+	ZEND_ARG_TYPE_INFO(0, colorNumber, IS_LONG, 0)
+	ZEND_ARG_TYPE_INFO(0, index, IS_LONG, 0)
+	ZEND_ARG_TYPE_INFO(0, name, IS_STRING, 0)
+ZEND_END_ARG_INFO()
+
+#define arginfo_glGetFragDataIndex arginfo_glGetAttribLocation
 
 ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_glIsSampler, 0, 1, _IS_BOOL, 0)
 	ZEND_ARG_TYPE_INFO(0, sampler, IS_LONG, 0)
@@ -859,6 +894,14 @@ ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_glUniform4d, 0, 5, IS_VOID, 0)
 	ZEND_ARG_TYPE_INFO(0, z, IS_DOUBLE, 0)
 	ZEND_ARG_TYPE_INFO(0, w, IS_DOUBLE, 0)
 ZEND_END_ARG_INFO()
+
+ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_glGetSubroutineUniformLocation, 0, 3, IS_LONG, 0)
+	ZEND_ARG_TYPE_INFO(0, program, IS_LONG, 0)
+	ZEND_ARG_TYPE_INFO(0, shadertype, IS_LONG, 0)
+	ZEND_ARG_TYPE_INFO(0, name, IS_STRING, 0)
+ZEND_END_ARG_INFO()
+
+#define arginfo_glGetSubroutineIndex arginfo_glGetSubroutineUniformLocation
 
 ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_glPatchParameteri, 0, 2, IS_VOID, 0)
 	ZEND_ARG_TYPE_INFO(0, pname, IS_LONG, 0)
@@ -1098,12 +1141,12 @@ ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_glfwWindowHintString, 0, 2, IS_V
 	ZEND_ARG_TYPE_INFO(0, value, IS_STRING, 0)
 ZEND_END_ARG_INFO()
 
-ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(arginfo_glfwCreateWindow, 0, 5, GLFWwindow, 0)
+ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(arginfo_glfwCreateWindow, 0, 3, GLFWwindow, 0)
 	ZEND_ARG_TYPE_INFO(0, width, IS_LONG, 0)
 	ZEND_ARG_TYPE_INFO(0, height, IS_LONG, 0)
 	ZEND_ARG_TYPE_INFO(0, title, IS_STRING, 0)
-	ZEND_ARG_OBJ_INFO(0, monitor, GLFWmonitor, 1)
-	ZEND_ARG_OBJ_INFO(0, share, GLFWwindow, 1)
+	ZEND_ARG_OBJ_INFO_WITH_DEFAULT_VALUE(0, monitor, GLFWmonitor, 1, "NULL")
+	ZEND_ARG_OBJ_INFO_WITH_DEFAULT_VALUE(0, share, GLFWwindow, 1, "NULL")
 ZEND_END_ARG_INFO()
 
 ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_glfwDestroyWindow, 0, 1, IS_VOID, 0)
@@ -1344,10 +1387,17 @@ ZEND_END_ARG_INFO()
 
 #define arginfo_glfwVulkanSupported arginfo_glGetError
 
+ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_glShaderSource, 0, 2, IS_VOID, 0)
+	ZEND_ARG_TYPE_INFO(0, shader, IS_LONG, 0)
+	ZEND_ARG_TYPE_INFO(0, source, IS_STRING, 0)
+ZEND_END_ARG_INFO()
+
 #define arginfo_class_PGL_Math_Vec3_length arginfo_glfwGetTime
 
 ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(arginfo_class_PGL_Math_Vec3_normalize, 0, 0, PGL\\Math\\Vec3, 0)
 ZEND_END_ARG_INFO()
+
+#define arginfo_class_PGL_Math_Vec3_abs arginfo_class_PGL_Math_Vec3_normalize
 
 #define arginfo_class_PGL_Math_Vec3___toString arginfo_glfwGetVersionString
 
@@ -1412,6 +1462,7 @@ ZEND_FUNCTION(glStencilOpSeparate);
 ZEND_FUNCTION(glStencilFuncSeparate);
 ZEND_FUNCTION(glStencilMaskSeparate);
 ZEND_FUNCTION(glAttachShader);
+ZEND_FUNCTION(glBindAttribLocation);
 ZEND_FUNCTION(glCompileShader);
 ZEND_FUNCTION(glCreateProgram);
 ZEND_FUNCTION(glCreateShader);
@@ -1420,6 +1471,8 @@ ZEND_FUNCTION(glDeleteShader);
 ZEND_FUNCTION(glDetachShader);
 ZEND_FUNCTION(glDisableVertexAttribArray);
 ZEND_FUNCTION(glEnableVertexAttribArray);
+ZEND_FUNCTION(glGetAttribLocation);
+ZEND_FUNCTION(glGetUniformLocation);
 ZEND_FUNCTION(glIsProgram);
 ZEND_FUNCTION(glIsShader);
 ZEND_FUNCTION(glLinkProgram);
@@ -1465,6 +1518,8 @@ ZEND_FUNCTION(glVertexAttribI1ui);
 ZEND_FUNCTION(glVertexAttribI2ui);
 ZEND_FUNCTION(glVertexAttribI3ui);
 ZEND_FUNCTION(glVertexAttribI4ui);
+ZEND_FUNCTION(glBindFragDataLocation);
+ZEND_FUNCTION(glGetFragDataLocation);
 ZEND_FUNCTION(glUniform1ui);
 ZEND_FUNCTION(glUniform2ui);
 ZEND_FUNCTION(glUniform3ui);
@@ -1491,6 +1546,7 @@ ZEND_FUNCTION(glDrawArraysInstanced);
 ZEND_FUNCTION(glTexBuffer);
 ZEND_FUNCTION(glPrimitiveRestartIndex);
 ZEND_FUNCTION(glCopyBufferSubData);
+ZEND_FUNCTION(glGetUniformBlockIndex);
 ZEND_FUNCTION(glUniformBlockBinding);
 ZEND_FUNCTION(glProvokingVertex);
 ZEND_FUNCTION(glFenceSync);
@@ -1502,6 +1558,8 @@ ZEND_FUNCTION(glFramebufferTexture);
 ZEND_FUNCTION(glTexImage2DMultisample);
 ZEND_FUNCTION(glTexImage3DMultisample);
 ZEND_FUNCTION(glSampleMaski);
+ZEND_FUNCTION(glBindFragDataLocationIndexed);
+ZEND_FUNCTION(glGetFragDataIndex);
 ZEND_FUNCTION(glIsSampler);
 ZEND_FUNCTION(glBindSampler);
 ZEND_FUNCTION(glSamplerParameteri);
@@ -1536,6 +1594,8 @@ ZEND_FUNCTION(glUniform1d);
 ZEND_FUNCTION(glUniform2d);
 ZEND_FUNCTION(glUniform3d);
 ZEND_FUNCTION(glUniform4d);
+ZEND_FUNCTION(glGetSubroutineUniformLocation);
+ZEND_FUNCTION(glGetSubroutineIndex);
 ZEND_FUNCTION(glPatchParameteri);
 ZEND_FUNCTION(glBindTransformFeedback);
 ZEND_FUNCTION(glIsTransformFeedback);
@@ -1651,8 +1711,10 @@ ZEND_FUNCTION(glfwSwapBuffers);
 ZEND_FUNCTION(glfwSwapInterval);
 ZEND_FUNCTION(glfwExtensionSupported);
 ZEND_FUNCTION(glfwVulkanSupported);
+ZEND_FUNCTION(glShaderSource);
 ZEND_METHOD(PGL_Math_Vec3, length);
 ZEND_METHOD(PGL_Math_Vec3, normalize);
+ZEND_METHOD(PGL_Math_Vec3, abs);
 ZEND_METHOD(PGL_Math_Vec3, __toString);
 
 
@@ -1717,6 +1779,7 @@ static const zend_function_entry ext_functions[] = {
 	ZEND_FE(glStencilFuncSeparate, arginfo_glStencilFuncSeparate)
 	ZEND_FE(glStencilMaskSeparate, arginfo_glStencilMaskSeparate)
 	ZEND_FE(glAttachShader, arginfo_glAttachShader)
+	ZEND_FE(glBindAttribLocation, arginfo_glBindAttribLocation)
 	ZEND_FE(glCompileShader, arginfo_glCompileShader)
 	ZEND_FE(glCreateProgram, arginfo_glCreateProgram)
 	ZEND_FE(glCreateShader, arginfo_glCreateShader)
@@ -1725,6 +1788,8 @@ static const zend_function_entry ext_functions[] = {
 	ZEND_FE(glDetachShader, arginfo_glDetachShader)
 	ZEND_FE(glDisableVertexAttribArray, arginfo_glDisableVertexAttribArray)
 	ZEND_FE(glEnableVertexAttribArray, arginfo_glEnableVertexAttribArray)
+	ZEND_FE(glGetAttribLocation, arginfo_glGetAttribLocation)
+	ZEND_FE(glGetUniformLocation, arginfo_glGetUniformLocation)
 	ZEND_FE(glIsProgram, arginfo_glIsProgram)
 	ZEND_FE(glIsShader, arginfo_glIsShader)
 	ZEND_FE(glLinkProgram, arginfo_glLinkProgram)
@@ -1770,6 +1835,8 @@ static const zend_function_entry ext_functions[] = {
 	ZEND_FE(glVertexAttribI2ui, arginfo_glVertexAttribI2ui)
 	ZEND_FE(glVertexAttribI3ui, arginfo_glVertexAttribI3ui)
 	ZEND_FE(glVertexAttribI4ui, arginfo_glVertexAttribI4ui)
+	ZEND_FE(glBindFragDataLocation, arginfo_glBindFragDataLocation)
+	ZEND_FE(glGetFragDataLocation, arginfo_glGetFragDataLocation)
 	ZEND_FE(glUniform1ui, arginfo_glUniform1ui)
 	ZEND_FE(glUniform2ui, arginfo_glUniform2ui)
 	ZEND_FE(glUniform3ui, arginfo_glUniform3ui)
@@ -1796,6 +1863,7 @@ static const zend_function_entry ext_functions[] = {
 	ZEND_FE(glTexBuffer, arginfo_glTexBuffer)
 	ZEND_FE(glPrimitiveRestartIndex, arginfo_glPrimitiveRestartIndex)
 	ZEND_FE(glCopyBufferSubData, arginfo_glCopyBufferSubData)
+	ZEND_FE(glGetUniformBlockIndex, arginfo_glGetUniformBlockIndex)
 	ZEND_FE(glUniformBlockBinding, arginfo_glUniformBlockBinding)
 	ZEND_FE(glProvokingVertex, arginfo_glProvokingVertex)
 	ZEND_FE(glFenceSync, arginfo_glFenceSync)
@@ -1807,6 +1875,8 @@ static const zend_function_entry ext_functions[] = {
 	ZEND_FE(glTexImage2DMultisample, arginfo_glTexImage2DMultisample)
 	ZEND_FE(glTexImage3DMultisample, arginfo_glTexImage3DMultisample)
 	ZEND_FE(glSampleMaski, arginfo_glSampleMaski)
+	ZEND_FE(glBindFragDataLocationIndexed, arginfo_glBindFragDataLocationIndexed)
+	ZEND_FE(glGetFragDataIndex, arginfo_glGetFragDataIndex)
 	ZEND_FE(glIsSampler, arginfo_glIsSampler)
 	ZEND_FE(glBindSampler, arginfo_glBindSampler)
 	ZEND_FE(glSamplerParameteri, arginfo_glSamplerParameteri)
@@ -1841,6 +1911,8 @@ static const zend_function_entry ext_functions[] = {
 	ZEND_FE(glUniform2d, arginfo_glUniform2d)
 	ZEND_FE(glUniform3d, arginfo_glUniform3d)
 	ZEND_FE(glUniform4d, arginfo_glUniform4d)
+	ZEND_FE(glGetSubroutineUniformLocation, arginfo_glGetSubroutineUniformLocation)
+	ZEND_FE(glGetSubroutineIndex, arginfo_glGetSubroutineIndex)
 	ZEND_FE(glPatchParameteri, arginfo_glPatchParameteri)
 	ZEND_FE(glBindTransformFeedback, arginfo_glBindTransformFeedback)
 	ZEND_FE(glIsTransformFeedback, arginfo_glIsTransformFeedback)
@@ -1956,6 +2028,7 @@ static const zend_function_entry ext_functions[] = {
 	ZEND_FE(glfwSwapInterval, arginfo_glfwSwapInterval)
 	ZEND_FE(glfwExtensionSupported, arginfo_glfwExtensionSupported)
 	ZEND_FE(glfwVulkanSupported, arginfo_glfwVulkanSupported)
+	ZEND_FE(glShaderSource, arginfo_glShaderSource)
 	ZEND_FE_END
 };
 
@@ -1963,6 +2036,7 @@ static const zend_function_entry ext_functions[] = {
 static const zend_function_entry class_PGL_Math_Vec3_methods[] = {
 	ZEND_ME(PGL_Math_Vec3, length, arginfo_class_PGL_Math_Vec3_length, ZEND_ACC_PUBLIC)
 	ZEND_ME(PGL_Math_Vec3, normalize, arginfo_class_PGL_Math_Vec3_normalize, ZEND_ACC_PUBLIC)
+	ZEND_ME(PGL_Math_Vec3, abs, arginfo_class_PGL_Math_Vec3_abs, ZEND_ACC_PUBLIC)
 	ZEND_ME(PGL_Math_Vec3, __toString, arginfo_class_PGL_Math_Vec3___toString, ZEND_ACC_PUBLIC)
 	ZEND_FE_END
 };

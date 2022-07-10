@@ -123,7 +123,12 @@ abstract class ExtArgument
         // reference values are passed as zval's which have
         // to be dereferencd later
         if ($this->passedByReference) {
-            return 'zval *' . $this->getZValName() . ';';
+            $b = 'zval *' . $this->getZValName() . '';
+            if ($this->isOptional()) {
+                $b .= ' = ' . $this->getDefaultValue();
+            }
+            
+            return $b . ';';
         }
 
         if (!isset($this->variableDeclarationPrefix)) {

@@ -1100,6 +1100,21 @@ PHP_FUNCTION(glAttachShader)
 } 
 
 /**
+ * glBindAttribLocation
+ */ 
+PHP_FUNCTION(glBindAttribLocation)
+{
+    zend_long program;
+    zend_long index;
+    const char *name;
+    size_t name_size;
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "lls", &program, &index, &name, &name_size) == FAILURE) {
+        return;
+    }
+    glBindAttribLocation(program, index, name);
+} 
+
+/**
  * glCompileShader
  */ 
 PHP_FUNCTION(glCompileShader)
@@ -1190,6 +1205,34 @@ PHP_FUNCTION(glEnableVertexAttribArray)
         return;
     }
     glEnableVertexAttribArray(index);
+} 
+
+/**
+ * glGetAttribLocation
+ */ 
+PHP_FUNCTION(glGetAttribLocation)
+{
+    zend_long program;
+    const char *name;
+    size_t name_size;
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "ls", &program, &name, &name_size) == FAILURE) {
+        return;
+    }
+    RETURN_LONG(glGetAttribLocation(program, name));
+} 
+
+/**
+ * glGetUniformLocation
+ */ 
+PHP_FUNCTION(glGetUniformLocation)
+{
+    zend_long program;
+    const char *name;
+    size_t name_size;
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "ls", &program, &name, &name_size) == FAILURE) {
+        return;
+    }
+    RETURN_LONG(glGetUniformLocation(program, name));
 } 
 
 /**
@@ -1814,6 +1857,35 @@ PHP_FUNCTION(glVertexAttribI4ui)
 } 
 
 /**
+ * glBindFragDataLocation
+ */ 
+PHP_FUNCTION(glBindFragDataLocation)
+{
+    zend_long program;
+    zend_long color;
+    const char *name;
+    size_t name_size;
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "lls", &program, &color, &name, &name_size) == FAILURE) {
+        return;
+    }
+    glBindFragDataLocation(program, color, name);
+} 
+
+/**
+ * glGetFragDataLocation
+ */ 
+PHP_FUNCTION(glGetFragDataLocation)
+{
+    zend_long program;
+    const char *name;
+    size_t name_size;
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "ls", &program, &name, &name_size) == FAILURE) {
+        return;
+    }
+    RETURN_LONG(glGetFragDataLocation(program, name));
+} 
+
+/**
  * glUniform1ui
  */ 
 PHP_FUNCTION(glUniform1ui)
@@ -2188,6 +2260,20 @@ PHP_FUNCTION(glCopyBufferSubData)
 } 
 
 /**
+ * glGetUniformBlockIndex
+ */ 
+PHP_FUNCTION(glGetUniformBlockIndex)
+{
+    zend_long program;
+    const char *uniformBlockName;
+    size_t uniformBlockName_size;
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "ls", &program, &uniformBlockName, &uniformBlockName_size) == FAILURE) {
+        return;
+    }
+    RETURN_LONG(glGetUniformBlockIndex(program, uniformBlockName));
+} 
+
+/**
  * glUniformBlockBinding
  */ 
 PHP_FUNCTION(glUniformBlockBinding)
@@ -2339,6 +2425,36 @@ PHP_FUNCTION(glSampleMaski)
         return;
     }
     glSampleMaski(maskNumber, mask);
+} 
+
+/**
+ * glBindFragDataLocationIndexed
+ */ 
+PHP_FUNCTION(glBindFragDataLocationIndexed)
+{
+    zend_long program;
+    zend_long colorNumber;
+    zend_long index;
+    const char *name;
+    size_t name_size;
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "llls", &program, &colorNumber, &index, &name, &name_size) == FAILURE) {
+        return;
+    }
+    glBindFragDataLocationIndexed(program, colorNumber, index, name);
+} 
+
+/**
+ * glGetFragDataIndex
+ */ 
+PHP_FUNCTION(glGetFragDataIndex)
+{
+    zend_long program;
+    const char *name;
+    size_t name_size;
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "ls", &program, &name, &name_size) == FAILURE) {
+        return;
+    }
+    RETURN_LONG(glGetFragDataIndex(program, name));
 } 
 
 /**
@@ -2804,6 +2920,36 @@ PHP_FUNCTION(glUniform4d)
         return;
     }
     glUniform4d(location, x, y, z, w);
+} 
+
+/**
+ * glGetSubroutineUniformLocation
+ */ 
+PHP_FUNCTION(glGetSubroutineUniformLocation)
+{
+    zend_long program;
+    zend_long shadertype;
+    const char *name;
+    size_t name_size;
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "lls", &program, &shadertype, &name, &name_size) == FAILURE) {
+        return;
+    }
+    RETURN_LONG(glGetSubroutineUniformLocation(program, shadertype, name));
+} 
+
+/**
+ * glGetSubroutineIndex
+ */ 
+PHP_FUNCTION(glGetSubroutineIndex)
+{
+    zend_long program;
+    zend_long shadertype;
+    const char *name;
+    size_t name_size;
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "lls", &program, &shadertype, &name, &name_size) == FAILURE) {
+        return;
+    }
+    RETURN_LONG(glGetSubroutineIndex(program, shadertype, name));
 } 
 
 /**
@@ -3595,8 +3741,8 @@ PHP_FUNCTION(glfwCreateWindow)
     zend_long height;
     const char *title;
     size_t title_size;
-    zval *monitor_zval;
-    zval *share_zval;
+    zval *monitor_zval = NULL;
+    zval *share_zval = NULL;
     if (zend_parse_parameters(ZEND_NUM_ARGS() , "lls|O!O!", &width, &height, &title, &title_size, &monitor_zval, phpglfw_glfwmonitor_ce, &share_zval, phpglfw_glfwwindow_ce) == FAILURE) {
         return;
     }
@@ -4402,5 +4548,30 @@ PHP_FUNCTION(glfwExtensionSupported)
 PHP_FUNCTION(glfwVulkanSupported)
 {
     RETURN_LONG(glfwVulkanSupported());
+} 
+
+/**
+ * glShaderSource
+ * Replaces the source code in a shader object.
+ * 
+ * PHP-GLFW: As with PHP I don't see a reason to split up the shader source to
+ * multiple addresses. 
+ * This is why the function in PHP is simplyfied `glShaderSource(int $shader,
+ * string $soruce)`.
+ * 
+ * @param int $shader Specifies the handle of the shader object whose source
+ * code is to be replaced.
+ * @param string $source Specifies a string containing the source code to be
+ * loaded into the shader.
+ */ 
+PHP_FUNCTION(glShaderSource)
+{
+    zend_long shader;
+    const char *source;
+    size_t source_size;
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "ls", &shader, &source, &source_size) == FAILURE) {
+        return;
+    }
+    glShaderSource(shader, 1, &source, NULL);;
 } 
 

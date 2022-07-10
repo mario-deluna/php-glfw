@@ -1,0 +1,5 @@
+# GLFW Window
+
+## `glfwCreateWindow`
+
+## `glfwDestroyWindow`

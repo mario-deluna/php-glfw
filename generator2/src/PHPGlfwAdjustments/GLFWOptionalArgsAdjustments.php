@@ -14,8 +14,8 @@ class GLFWOptionalArgsAdjustments implements AdjustmentInterface
     public function handle(ExtGenerator $gen) : void
     {
         $createWinFunc = $gen->getFunctionByName('glfwCreateWindow');
-        $createWinFunc->arguments[3]->defaultValue = 'null';
-        $createWinFunc->arguments[4]->defaultValue = 'null';
+        $createWinFunc->arguments[3]->defaultValue = 'NULL';
+        $createWinFunc->arguments[4]->defaultValue = 'NULL';
 
         // var_dump($createWinFunc);
     }
