@@ -15,6 +15,15 @@ namespace PGL\Math
     }    
 };
 
+namespace PGL\Buffer 
+{
+    class FBuffer {
+        public function __toString() : string {}
+        public function push(float $value) : void {}
+        public function reserve(int $size) : void {}
+    }    
+};
+
 namespace {
     /**
      * Constants
@@ -1602,1566 +1611,375 @@ namespace {
      * Functions
      * ----------------------------------------------------------------------------
      */
-    /**
-     * glCullFace
-     */ 
     function glCullFace(int $mode) : void {};
- 
-    /**
-     * glFrontFace
-     */ 
     function glFrontFace(int $mode) : void {};
- 
-    /**
-     * glHint
-     */ 
     function glHint(int $target, int $mode) : void {};
- 
-    /**
-     * glLineWidth
-     */ 
     function glLineWidth(float $width) : void {};
- 
-    /**
-     * glPointSize
-     */ 
     function glPointSize(float $size) : void {};
- 
-    /**
-     * glPolygonMode
-     */ 
     function glPolygonMode(int $face, int $mode) : void {};
- 
-    /**
-     * glScissor
-     */ 
     function glScissor(int $x, int $y, int $width, int $height) : void {};
- 
-    /**
-     * glTexParameterf
-     */ 
     function glTexParameterf(int $target, int $pname, float $param) : void {};
- 
-    /**
-     * glTexParameteri
-     */ 
     function glTexParameteri(int $target, int $pname, int $param) : void {};
- 
-    /**
-     * glDrawBuffer
-     */ 
     function glDrawBuffer(int $buf) : void {};
- 
-    /**
-     * glClear
-     */ 
     function glClear(int $mask) : void {};
- 
-    /**
-     * glClearColor
-     */ 
     function glClearColor(float $red, float $green, float $blue, float $alpha) : void {};
- 
-    /**
-     * glClearStencil
-     */ 
     function glClearStencil(int $s) : void {};
- 
-    /**
-     * glClearDepth
-     */ 
     function glClearDepth(float $depth) : void {};
- 
-    /**
-     * glStencilMask
-     */ 
     function glStencilMask(int $mask) : void {};
- 
-    /**
-     * glColorMask
-     */ 
     function glColorMask(bool $red, bool $green, bool $blue, bool $alpha) : void {};
- 
-    /**
-     * glDepthMask
-     */ 
     function glDepthMask(bool $flag) : void {};
- 
-    /**
-     * glDisable
-     */ 
     function glDisable(int $cap) : void {};
- 
-    /**
-     * glEnable
-     */ 
     function glEnable(int $cap) : void {};
- 
-    /**
-     * glFinish
-     */ 
     function glFinish() : void {};
- 
-    /**
-     * glFlush
-     */ 
     function glFlush() : void {};
- 
-    /**
-     * glBlendFunc
-     */ 
     function glBlendFunc(int $sfactor, int $dfactor) : void {};
- 
-    /**
-     * glLogicOp
-     */ 
     function glLogicOp(int $opcode) : void {};
- 
-    /**
-     * glStencilFunc
-     */ 
     function glStencilFunc(int $func, int $ref, int $mask) : void {};
- 
-    /**
-     * glStencilOp
-     */ 
     function glStencilOp(int $fail, int $zfail, int $zpass) : void {};
- 
-    /**
-     * glDepthFunc
-     */ 
     function glDepthFunc(int $func) : void {};
- 
-    /**
-     * glPixelStoref
-     */ 
     function glPixelStoref(int $pname, float $param) : void {};
- 
-    /**
-     * glPixelStorei
-     */ 
     function glPixelStorei(int $pname, int $param) : void {};
- 
-    /**
-     * glReadBuffer
-     */ 
     function glReadBuffer(int $src) : void {};
- 
-    /**
-     * glGetError
-     */ 
+    function glGetBooleanv(int $pname, bool &$data) : void {};
+    function glGetDoublev(int $pname, float &$data) : void {};
     function glGetError() : int {};
- 
-    /**
-     * glIsEnabled
-     */ 
+    function glGetFloatv(int $pname, float &$data) : void {};
+    function glGetIntegerv(int $pname, int &$data) : void {};
+    function glGetTexParameterfv(int $target, int $pname, float &$params) : void {};
+    function glGetTexParameteriv(int $target, int $pname, int &$params) : void {};
+    function glGetTexLevelParameterfv(int $target, int $level, int $pname, float &$params) : void {};
+    function glGetTexLevelParameteriv(int $target, int $level, int $pname, int &$params) : void {};
     function glIsEnabled(int $cap) : bool {};
- 
-    /**
-     * glDepthRange
-     */ 
     function glDepthRange(float $n, float $f) : void {};
- 
-    /**
-     * glViewport
-     */ 
     function glViewport(int $x, int $y, int $width, int $height) : void {};
- 
-    /**
-     * glDrawArrays
-     */ 
     function glDrawArrays(int $mode, int $first, int $count) : void {};
- 
-    /**
-     * glPolygonOffset
-     */ 
     function glPolygonOffset(float $factor, float $units) : void {};
- 
-    /**
-     * glCopyTexImage1D
-     */ 
     function glCopyTexImage1D(int $target, int $level, int $internalformat, int $x, int $y, int $width, int $border) : void {};
- 
-    /**
-     * glCopyTexImage2D
-     */ 
     function glCopyTexImage2D(int $target, int $level, int $internalformat, int $x, int $y, int $width, int $height, int $border) : void {};
- 
-    /**
-     * glCopyTexSubImage1D
-     */ 
     function glCopyTexSubImage1D(int $target, int $level, int $xoffset, int $x, int $y, int $width) : void {};
- 
-    /**
-     * glCopyTexSubImage2D
-     */ 
     function glCopyTexSubImage2D(int $target, int $level, int $xoffset, int $yoffset, int $x, int $y, int $width, int $height) : void {};
- 
-    /**
-     * glBindTexture
-     */ 
     function glBindTexture(int $target, int $texture) : void {};
- 
-    /**
-     * glIsTexture
-     */ 
+    function glGenTextures(int $n, int &$textures) : void {};
     function glIsTexture(int $texture) : bool {};
- 
-    /**
-     * glCopyTexSubImage3D
-     */ 
     function glCopyTexSubImage3D(int $target, int $level, int $xoffset, int $yoffset, int $zoffset, int $x, int $y, int $width, int $height) : void {};
- 
-    /**
-     * glActiveTexture
-     */ 
     function glActiveTexture(int $texture) : void {};
- 
-    /**
-     * glSampleCoverage
-     */ 
     function glSampleCoverage(float $value, bool $invert) : void {};
- 
-    /**
-     * glBlendFuncSeparate
-     */ 
     function glBlendFuncSeparate(int $sfactorRGB, int $dfactorRGB, int $sfactorAlpha, int $dfactorAlpha) : void {};
- 
-    /**
-     * glPointParameterf
-     */ 
     function glPointParameterf(int $pname, float $param) : void {};
- 
-    /**
-     * glPointParameteri
-     */ 
     function glPointParameteri(int $pname, int $param) : void {};
- 
-    /**
-     * glBlendColor
-     */ 
     function glBlendColor(float $red, float $green, float $blue, float $alpha) : void {};
- 
-    /**
-     * glBlendEquation
-     */ 
     function glBlendEquation(int $mode) : void {};
- 
-    /**
-     * glIsQuery
-     */ 
+    function glGenQueries(int $n, int &$ids) : void {};
     function glIsQuery(int $id) : bool {};
- 
-    /**
-     * glBeginQuery
-     */ 
     function glBeginQuery(int $target, int $id) : void {};
- 
-    /**
-     * glEndQuery
-     */ 
     function glEndQuery(int $target) : void {};
- 
-    /**
-     * glBindBuffer
-     */ 
+    function glGetQueryiv(int $target, int $pname, int &$params) : void {};
+    function glGetQueryObjectiv(int $id, int $pname, int &$params) : void {};
+    function glGetQueryObjectuiv(int $id, int $pname, int &$params) : void {};
     function glBindBuffer(int $target, int $buffer) : void {};
- 
-    /**
-     * glIsBuffer
-     */ 
+    function glGenBuffers(int $n, int &$buffers) : void {};
     function glIsBuffer(int $buffer) : bool {};
- 
-    /**
-     * glUnmapBuffer
-     */ 
     function glUnmapBuffer(int $target) : bool {};
- 
-    /**
-     * glBlendEquationSeparate
-     */ 
+    function glGetBufferParameteriv(int $target, int $pname, int &$params) : void {};
     function glBlendEquationSeparate(int $modeRGB, int $modeAlpha) : void {};
- 
-    /**
-     * glStencilOpSeparate
-     */ 
     function glStencilOpSeparate(int $face, int $sfail, int $dpfail, int $dppass) : void {};
- 
-    /**
-     * glStencilFuncSeparate
-     */ 
     function glStencilFuncSeparate(int $face, int $func, int $ref, int $mask) : void {};
- 
-    /**
-     * glStencilMaskSeparate
-     */ 
     function glStencilMaskSeparate(int $face, int $mask) : void {};
- 
-    /**
-     * glAttachShader
-     */ 
     function glAttachShader(int $program, int $shader) : void {};
- 
-    /**
-     * glBindAttribLocation
-     */ 
     function glBindAttribLocation(int $program, int $index, string $name) : void {};
- 
-    /**
-     * glCompileShader
-     */ 
     function glCompileShader(int $shader) : void {};
- 
-    /**
-     * glCreateProgram
-     */ 
     function glCreateProgram() : int {};
- 
-    /**
-     * glCreateShader
-     */ 
     function glCreateShader(int $type) : int {};
- 
-    /**
-     * glDeleteProgram
-     */ 
     function glDeleteProgram(int $program) : void {};
- 
-    /**
-     * glDeleteShader
-     */ 
     function glDeleteShader(int $shader) : void {};
- 
-    /**
-     * glDetachShader
-     */ 
     function glDetachShader(int $program, int $shader) : void {};
- 
-    /**
-     * glDisableVertexAttribArray
-     */ 
     function glDisableVertexAttribArray(int $index) : void {};
- 
-    /**
-     * glEnableVertexAttribArray
-     */ 
     function glEnableVertexAttribArray(int $index) : void {};
- 
-    /**
-     * glGetAttribLocation
-     */ 
+    function glGetAttachedShaders(int $program, int $maxCount, int &$count, int &$shaders) : void {};
     function glGetAttribLocation(int $program, string $name) : int {};
- 
-    /**
-     * glGetUniformLocation
-     */ 
+    function glGetProgramiv(int $program, int $pname, int &$params) : void {};
+    function glGetShaderiv(int $shader, int $pname, int &$params) : void {};
     function glGetUniformLocation(int $program, string $name) : int {};
- 
-    /**
-     * glIsProgram
-     */ 
+    function glGetUniformfv(int $program, int $location, float &$params) : void {};
+    function glGetUniformiv(int $program, int $location, int &$params) : void {};
+    function glGetVertexAttribdv(int $index, int $pname, float &$params) : void {};
+    function glGetVertexAttribfv(int $index, int $pname, float &$params) : void {};
+    function glGetVertexAttribiv(int $index, int $pname, int &$params) : void {};
     function glIsProgram(int $program) : bool {};
- 
-    /**
-     * glIsShader
-     */ 
     function glIsShader(int $shader) : bool {};
- 
-    /**
-     * glLinkProgram
-     */ 
     function glLinkProgram(int $program) : void {};
- 
-    /**
-     * glUseProgram
-     */ 
     function glUseProgram(int $program) : void {};
- 
-    /**
-     * glUniform1f
-     */ 
     function glUniform1f(int $location, float $v0) : void {};
- 
-    /**
-     * glUniform2f
-     */ 
     function glUniform2f(int $location, float $v0, float $v1) : void {};
- 
-    /**
-     * glUniform3f
-     */ 
     function glUniform3f(int $location, float $v0, float $v1, float $v2) : void {};
- 
-    /**
-     * glUniform4f
-     */ 
     function glUniform4f(int $location, float $v0, float $v1, float $v2, float $v3) : void {};
- 
-    /**
-     * glUniform1i
-     */ 
     function glUniform1i(int $location, int $v0) : void {};
- 
-    /**
-     * glUniform2i
-     */ 
     function glUniform2i(int $location, int $v0, int $v1) : void {};
- 
-    /**
-     * glUniform3i
-     */ 
     function glUniform3i(int $location, int $v0, int $v1, int $v2) : void {};
- 
-    /**
-     * glUniform4i
-     */ 
     function glUniform4i(int $location, int $v0, int $v1, int $v2, int $v3) : void {};
- 
-    /**
-     * glValidateProgram
-     */ 
     function glValidateProgram(int $program) : void {};
- 
-    /**
-     * glVertexAttrib1d
-     */ 
     function glVertexAttrib1d(int $index, float $x) : void {};
- 
-    /**
-     * glVertexAttrib1f
-     */ 
     function glVertexAttrib1f(int $index, float $x) : void {};
- 
-    /**
-     * glVertexAttrib1s
-     */ 
     function glVertexAttrib1s(int $index, int $x) : void {};
- 
-    /**
-     * glVertexAttrib2d
-     */ 
     function glVertexAttrib2d(int $index, float $x, float $y) : void {};
- 
-    /**
-     * glVertexAttrib2f
-     */ 
     function glVertexAttrib2f(int $index, float $x, float $y) : void {};
- 
-    /**
-     * glVertexAttrib2s
-     */ 
     function glVertexAttrib2s(int $index, int $x, int $y) : void {};
- 
-    /**
-     * glVertexAttrib3d
-     */ 
     function glVertexAttrib3d(int $index, float $x, float $y, float $z) : void {};
- 
-    /**
-     * glVertexAttrib3f
-     */ 
     function glVertexAttrib3f(int $index, float $x, float $y, float $z) : void {};
- 
-    /**
-     * glVertexAttrib3s
-     */ 
     function glVertexAttrib3s(int $index, int $x, int $y, int $z) : void {};
- 
-    /**
-     * glVertexAttrib4Nub
-     */ 
     function glVertexAttrib4Nub(int $index, int $x, int $y, int $z, int $w) : void {};
- 
-    /**
-     * glVertexAttrib4d
-     */ 
     function glVertexAttrib4d(int $index, float $x, float $y, float $z, float $w) : void {};
- 
-    /**
-     * glVertexAttrib4f
-     */ 
     function glVertexAttrib4f(int $index, float $x, float $y, float $z, float $w) : void {};
- 
-    /**
-     * glVertexAttrib4s
-     */ 
     function glVertexAttrib4s(int $index, int $x, int $y, int $z, int $w) : void {};
- 
-    /**
-     * glColorMaski
-     */ 
     function glColorMaski(int $index, bool $r, bool $g, bool $b, bool $a) : void {};
- 
-    /**
-     * glEnablei
-     */ 
+    function glGetBooleani_v(int $target, int $index, bool &$data) : void {};
+    function glGetIntegeri_v(int $target, int $index, int &$data) : void {};
     function glEnablei(int $target, int $index) : void {};
- 
-    /**
-     * glDisablei
-     */ 
     function glDisablei(int $target, int $index) : void {};
- 
-    /**
-     * glIsEnabledi
-     */ 
     function glIsEnabledi(int $target, int $index) : bool {};
- 
-    /**
-     * glBeginTransformFeedback
-     */ 
     function glBeginTransformFeedback(int $primitiveMode) : void {};
- 
-    /**
-     * glEndTransformFeedback
-     */ 
     function glEndTransformFeedback() : void {};
- 
-    /**
-     * glBindBufferRange
-     */ 
     function glBindBufferRange(int $target, int $index, int $buffer, int $offset, int $size) : void {};
- 
-    /**
-     * glBindBufferBase
-     */ 
     function glBindBufferBase(int $target, int $index, int $buffer) : void {};
- 
-    /**
-     * glClampColor
-     */ 
     function glClampColor(int $target, int $clamp) : void {};
- 
-    /**
-     * glBeginConditionalRender
-     */ 
     function glBeginConditionalRender(int $id, int $mode) : void {};
- 
-    /**
-     * glEndConditionalRender
-     */ 
     function glEndConditionalRender() : void {};
- 
-    /**
-     * glVertexAttribI1i
-     */ 
+    function glGetVertexAttribIiv(int $index, int $pname, int &$params) : void {};
+    function glGetVertexAttribIuiv(int $index, int $pname, int &$params) : void {};
     function glVertexAttribI1i(int $index, int $x) : void {};
- 
-    /**
-     * glVertexAttribI2i
-     */ 
     function glVertexAttribI2i(int $index, int $x, int $y) : void {};
- 
-    /**
-     * glVertexAttribI3i
-     */ 
     function glVertexAttribI3i(int $index, int $x, int $y, int $z) : void {};
- 
-    /**
-     * glVertexAttribI4i
-     */ 
     function glVertexAttribI4i(int $index, int $x, int $y, int $z, int $w) : void {};
- 
-    /**
-     * glVertexAttribI1ui
-     */ 
     function glVertexAttribI1ui(int $index, int $x) : void {};
- 
-    /**
-     * glVertexAttribI2ui
-     */ 
     function glVertexAttribI2ui(int $index, int $x, int $y) : void {};
- 
-    /**
-     * glVertexAttribI3ui
-     */ 
     function glVertexAttribI3ui(int $index, int $x, int $y, int $z) : void {};
- 
-    /**
-     * glVertexAttribI4ui
-     */ 
     function glVertexAttribI4ui(int $index, int $x, int $y, int $z, int $w) : void {};
- 
-    /**
-     * glBindFragDataLocation
-     */ 
+    function glGetUniformuiv(int $program, int $location, int &$params) : void {};
     function glBindFragDataLocation(int $program, int $color, string $name) : void {};
- 
-    /**
-     * glGetFragDataLocation
-     */ 
     function glGetFragDataLocation(int $program, string $name) : int {};
- 
-    /**
-     * glUniform1ui
-     */ 
     function glUniform1ui(int $location, int $v0) : void {};
- 
-    /**
-     * glUniform2ui
-     */ 
     function glUniform2ui(int $location, int $v0, int $v1) : void {};
- 
-    /**
-     * glUniform3ui
-     */ 
     function glUniform3ui(int $location, int $v0, int $v1, int $v2) : void {};
- 
-    /**
-     * glUniform4ui
-     */ 
     function glUniform4ui(int $location, int $v0, int $v1, int $v2, int $v3) : void {};
- 
-    /**
-     * glClearBufferfi
-     */ 
+    function glGetTexParameterIiv(int $target, int $pname, int &$params) : void {};
+    function glGetTexParameterIuiv(int $target, int $pname, int &$params) : void {};
     function glClearBufferfi(int $buffer, int $drawbuffer, float $depth, int $stencil) : void {};
- 
-    /**
-     * glIsRenderbuffer
-     */ 
     function glIsRenderbuffer(int $renderbuffer) : bool {};
- 
-    /**
-     * glBindRenderbuffer
-     */ 
     function glBindRenderbuffer(int $target, int $renderbuffer) : void {};
- 
-    /**
-     * glRenderbufferStorage
-     */ 
+    function glGenRenderbuffers(int $n, int &$renderbuffers) : void {};
     function glRenderbufferStorage(int $target, int $internalformat, int $width, int $height) : void {};
- 
-    /**
-     * glIsFramebuffer
-     */ 
+    function glGetRenderbufferParameteriv(int $target, int $pname, int &$params) : void {};
     function glIsFramebuffer(int $framebuffer) : bool {};
- 
-    /**
-     * glBindFramebuffer
-     */ 
     function glBindFramebuffer(int $target, int $framebuffer) : void {};
- 
-    /**
-     * glCheckFramebufferStatus
-     */ 
+    function glGenFramebuffers(int $n, int &$framebuffers) : void {};
     function glCheckFramebufferStatus(int $target) : int {};
- 
-    /**
-     * glFramebufferTexture1D
-     */ 
     function glFramebufferTexture1D(int $target, int $attachment, int $textarget, int $texture, int $level) : void {};
- 
-    /**
-     * glFramebufferTexture2D
-     */ 
     function glFramebufferTexture2D(int $target, int $attachment, int $textarget, int $texture, int $level) : void {};
- 
-    /**
-     * glFramebufferTexture3D
-     */ 
     function glFramebufferTexture3D(int $target, int $attachment, int $textarget, int $texture, int $level, int $zoffset) : void {};
- 
-    /**
-     * glFramebufferRenderbuffer
-     */ 
     function glFramebufferRenderbuffer(int $target, int $attachment, int $renderbuffertarget, int $renderbuffer) : void {};
- 
-    /**
-     * glGenerateMipmap
-     */ 
+    function glGetFramebufferAttachmentParameteriv(int $target, int $attachment, int $pname, int &$params) : void {};
     function glGenerateMipmap(int $target) : void {};
- 
-    /**
-     * glBlitFramebuffer
-     */ 
     function glBlitFramebuffer(int $srcX0, int $srcY0, int $srcX1, int $srcY1, int $dstX0, int $dstY0, int $dstX1, int $dstY1, int $mask, int $filter) : void {};
- 
-    /**
-     * glRenderbufferStorageMultisample
-     */ 
     function glRenderbufferStorageMultisample(int $target, int $samples, int $internalformat, int $width, int $height) : void {};
- 
-    /**
-     * glFramebufferTextureLayer
-     */ 
     function glFramebufferTextureLayer(int $target, int $attachment, int $texture, int $level, int $layer) : void {};
- 
-    /**
-     * glFlushMappedBufferRange
-     */ 
     function glFlushMappedBufferRange(int $target, int $offset, int $length) : void {};
- 
-    /**
-     * glBindVertexArray
-     */ 
     function glBindVertexArray(int $array) : void {};
- 
-    /**
-     * glIsVertexArray
-     */ 
+    function glGenVertexArrays(int $n, int &$arrays) : void {};
     function glIsVertexArray(int $array) : bool {};
- 
-    /**
-     * glDrawArraysInstanced
-     */ 
     function glDrawArraysInstanced(int $mode, int $first, int $count, int $instancecount) : void {};
- 
-    /**
-     * glTexBuffer
-     */ 
     function glTexBuffer(int $target, int $internalformat, int $buffer) : void {};
- 
-    /**
-     * glPrimitiveRestartIndex
-     */ 
     function glPrimitiveRestartIndex(int $index) : void {};
- 
-    /**
-     * glCopyBufferSubData
-     */ 
     function glCopyBufferSubData(int $readTarget, int $writeTarget, int $readOffset, int $writeOffset, int $size) : void {};
- 
-    /**
-     * glGetUniformBlockIndex
-     */ 
     function glGetUniformBlockIndex(int $program, string $uniformBlockName) : int {};
- 
-    /**
-     * glUniformBlockBinding
-     */ 
+    function glGetActiveUniformBlockiv(int $program, int $uniformBlockIndex, int $pname, int &$params) : void {};
     function glUniformBlockBinding(int $program, int $uniformBlockIndex, int $uniformBlockBinding) : void {};
- 
-    /**
-     * glProvokingVertex
-     */ 
     function glProvokingVertex(int $mode) : void {};
- 
-    /**
-     * glFenceSync
-     */ 
     function glFenceSync(int $condition, int $flags) : int {};
- 
-    /**
-     * glIsSync
-     */ 
     function glIsSync(int $sync) : bool {};
- 
-    /**
-     * glDeleteSync
-     */ 
     function glDeleteSync(int $sync) : void {};
- 
-    /**
-     * glClientWaitSync
-     */ 
     function glClientWaitSync(int $sync, int $flags, int $timeout) : int {};
- 
-    /**
-     * glWaitSync
-     */ 
     function glWaitSync(int $sync, int $flags, int $timeout) : void {};
- 
-    /**
-     * glFramebufferTexture
-     */ 
+    function glGetInteger64v(int $pname, int &$data) : void {};
+    function glGetSynciv(int $sync, int $pname, int $count, int &$length, int &$values) : void {};
+    function glGetInteger64i_v(int $target, int $index, int &$data) : void {};
+    function glGetBufferParameteri64v(int $target, int $pname, int &$params) : void {};
     function glFramebufferTexture(int $target, int $attachment, int $texture, int $level) : void {};
- 
-    /**
-     * glTexImage2DMultisample
-     */ 
     function glTexImage2DMultisample(int $target, int $samples, int $internalformat, int $width, int $height, bool $fixedsamplelocations) : void {};
- 
-    /**
-     * glTexImage3DMultisample
-     */ 
     function glTexImage3DMultisample(int $target, int $samples, int $internalformat, int $width, int $height, int $depth, bool $fixedsamplelocations) : void {};
- 
-    /**
-     * glSampleMaski
-     */ 
+    function glGetMultisamplefv(int $pname, int $index, float &$val) : void {};
     function glSampleMaski(int $maskNumber, int $mask) : void {};
- 
-    /**
-     * glBindFragDataLocationIndexed
-     */ 
     function glBindFragDataLocationIndexed(int $program, int $colorNumber, int $index, string $name) : void {};
- 
-    /**
-     * glGetFragDataIndex
-     */ 
     function glGetFragDataIndex(int $program, string $name) : int {};
- 
-    /**
-     * glIsSampler
-     */ 
+    function glGenSamplers(int $count, int &$samplers) : void {};
     function glIsSampler(int $sampler) : bool {};
- 
-    /**
-     * glBindSampler
-     */ 
     function glBindSampler(int $unit, int $sampler) : void {};
- 
-    /**
-     * glSamplerParameteri
-     */ 
     function glSamplerParameteri(int $sampler, int $pname, int $param) : void {};
- 
-    /**
-     * glSamplerParameterf
-     */ 
     function glSamplerParameterf(int $sampler, int $pname, float $param) : void {};
- 
-    /**
-     * glQueryCounter
-     */ 
+    function glGetSamplerParameteriv(int $sampler, int $pname, int &$params) : void {};
+    function glGetSamplerParameterIiv(int $sampler, int $pname, int &$params) : void {};
+    function glGetSamplerParameterfv(int $sampler, int $pname, float &$params) : void {};
+    function glGetSamplerParameterIuiv(int $sampler, int $pname, int &$params) : void {};
     function glQueryCounter(int $id, int $target) : void {};
- 
-    /**
-     * glVertexAttribDivisor
-     */ 
+    function glGetQueryObjecti64v(int $id, int $pname, int &$params) : void {};
+    function glGetQueryObjectui64v(int $id, int $pname, int &$params) : void {};
     function glVertexAttribDivisor(int $index, int $divisor) : void {};
- 
-    /**
-     * glVertexAttribP1ui
-     */ 
     function glVertexAttribP1ui(int $index, int $type, bool $normalized, int $value) : void {};
- 
-    /**
-     * glVertexAttribP2ui
-     */ 
     function glVertexAttribP2ui(int $index, int $type, bool $normalized, int $value) : void {};
- 
-    /**
-     * glVertexAttribP3ui
-     */ 
     function glVertexAttribP3ui(int $index, int $type, bool $normalized, int $value) : void {};
- 
-    /**
-     * glVertexAttribP4ui
-     */ 
     function glVertexAttribP4ui(int $index, int $type, bool $normalized, int $value) : void {};
- 
-    /**
-     * glVertexP2ui
-     */ 
     function glVertexP2ui(int $type, int $value) : void {};
- 
-    /**
-     * glVertexP3ui
-     */ 
     function glVertexP3ui(int $type, int $value) : void {};
- 
-    /**
-     * glVertexP4ui
-     */ 
     function glVertexP4ui(int $type, int $value) : void {};
- 
-    /**
-     * glTexCoordP1ui
-     */ 
     function glTexCoordP1ui(int $type, int $coords) : void {};
- 
-    /**
-     * glTexCoordP2ui
-     */ 
     function glTexCoordP2ui(int $type, int $coords) : void {};
- 
-    /**
-     * glTexCoordP3ui
-     */ 
     function glTexCoordP3ui(int $type, int $coords) : void {};
- 
-    /**
-     * glTexCoordP4ui
-     */ 
     function glTexCoordP4ui(int $type, int $coords) : void {};
- 
-    /**
-     * glMultiTexCoordP1ui
-     */ 
     function glMultiTexCoordP1ui(int $texture, int $type, int $coords) : void {};
- 
-    /**
-     * glMultiTexCoordP2ui
-     */ 
     function glMultiTexCoordP2ui(int $texture, int $type, int $coords) : void {};
- 
-    /**
-     * glMultiTexCoordP3ui
-     */ 
     function glMultiTexCoordP3ui(int $texture, int $type, int $coords) : void {};
- 
-    /**
-     * glMultiTexCoordP4ui
-     */ 
     function glMultiTexCoordP4ui(int $texture, int $type, int $coords) : void {};
- 
-    /**
-     * glNormalP3ui
-     */ 
     function glNormalP3ui(int $type, int $coords) : void {};
- 
-    /**
-     * glColorP3ui
-     */ 
     function glColorP3ui(int $type, int $color) : void {};
- 
-    /**
-     * glColorP4ui
-     */ 
     function glColorP4ui(int $type, int $color) : void {};
- 
-    /**
-     * glSecondaryColorP3ui
-     */ 
     function glSecondaryColorP3ui(int $type, int $color) : void {};
- 
-    /**
-     * glMinSampleShading
-     */ 
     function glMinSampleShading(float $value) : void {};
- 
-    /**
-     * glBlendEquationi
-     */ 
     function glBlendEquationi(int $buf, int $mode) : void {};
- 
-    /**
-     * glBlendEquationSeparatei
-     */ 
     function glBlendEquationSeparatei(int $buf, int $modeRGB, int $modeAlpha) : void {};
- 
-    /**
-     * glBlendFunci
-     */ 
     function glBlendFunci(int $buf, int $src, int $dst) : void {};
- 
-    /**
-     * glBlendFuncSeparatei
-     */ 
     function glBlendFuncSeparatei(int $buf, int $srcRGB, int $dstRGB, int $srcAlpha, int $dstAlpha) : void {};
- 
-    /**
-     * glUniform1d
-     */ 
     function glUniform1d(int $location, float $x) : void {};
- 
-    /**
-     * glUniform2d
-     */ 
     function glUniform2d(int $location, float $x, float $y) : void {};
- 
-    /**
-     * glUniform3d
-     */ 
     function glUniform3d(int $location, float $x, float $y, float $z) : void {};
- 
-    /**
-     * glUniform4d
-     */ 
     function glUniform4d(int $location, float $x, float $y, float $z, float $w) : void {};
- 
-    /**
-     * glGetSubroutineUniformLocation
-     */ 
+    function glGetUniformdv(int $program, int $location, float &$params) : void {};
     function glGetSubroutineUniformLocation(int $program, int $shadertype, string $name) : int {};
- 
-    /**
-     * glGetSubroutineIndex
-     */ 
     function glGetSubroutineIndex(int $program, int $shadertype, string $name) : int {};
- 
-    /**
-     * glPatchParameteri
-     */ 
+    function glGetActiveSubroutineUniformiv(int $program, int $shadertype, int $index, int $pname, int &$values) : void {};
+    function glGetUniformSubroutineuiv(int $shadertype, int $location, int &$params) : void {};
+    function glGetProgramStageiv(int $program, int $shadertype, int $pname, int &$values) : void {};
     function glPatchParameteri(int $pname, int $value) : void {};
- 
-    /**
-     * glBindTransformFeedback
-     */ 
     function glBindTransformFeedback(int $target, int $id) : void {};
- 
-    /**
-     * glIsTransformFeedback
-     */ 
+    function glGenTransformFeedbacks(int $n, int &$ids) : void {};
     function glIsTransformFeedback(int $id) : bool {};
- 
-    /**
-     * glPauseTransformFeedback
-     */ 
     function glPauseTransformFeedback() : void {};
- 
-    /**
-     * glResumeTransformFeedback
-     */ 
     function glResumeTransformFeedback() : void {};
- 
-    /**
-     * glDrawTransformFeedback
-     */ 
     function glDrawTransformFeedback(int $mode, int $id) : void {};
- 
-    /**
-     * glDrawTransformFeedbackStream
-     */ 
     function glDrawTransformFeedbackStream(int $mode, int $id, int $stream) : void {};
- 
-    /**
-     * glBeginQueryIndexed
-     */ 
     function glBeginQueryIndexed(int $target, int $index, int $id) : void {};
- 
-    /**
-     * glEndQueryIndexed
-     */ 
     function glEndQueryIndexed(int $target, int $index) : void {};
- 
-    /**
-     * glReleaseShaderCompiler
-     */ 
+    function glGetQueryIndexediv(int $target, int $index, int $pname, int &$params) : void {};
     function glReleaseShaderCompiler() : void {};
- 
-    /**
-     * glDepthRangef
-     */ 
+    function glGetShaderPrecisionFormat(int $shadertype, int $precisiontype, int &$range, int &$precision) : void {};
     function glDepthRangef(float $n, float $f) : void {};
- 
-    /**
-     * glClearDepthf
-     */ 
     function glClearDepthf(float $d) : void {};
- 
-    /**
-     * glProgramParameteri
-     */ 
     function glProgramParameteri(int $program, int $pname, int $value) : void {};
- 
-    /**
-     * glUseProgramStages
-     */ 
     function glUseProgramStages(int $pipeline, int $stages, int $program) : void {};
- 
-    /**
-     * glActiveShaderProgram
-     */ 
     function glActiveShaderProgram(int $pipeline, int $program) : void {};
- 
-    /**
-     * glBindProgramPipeline
-     */ 
     function glBindProgramPipeline(int $pipeline) : void {};
- 
-    /**
-     * glIsProgramPipeline
-     */ 
+    function glGenProgramPipelines(int $n, int &$pipelines) : void {};
     function glIsProgramPipeline(int $pipeline) : bool {};
- 
-    /**
-     * glProgramUniform1i
-     */ 
+    function glGetProgramPipelineiv(int $pipeline, int $pname, int &$params) : void {};
     function glProgramUniform1i(int $program, int $location, int $v0) : void {};
- 
-    /**
-     * glProgramUniform1f
-     */ 
     function glProgramUniform1f(int $program, int $location, float $v0) : void {};
- 
-    /**
-     * glProgramUniform1d
-     */ 
     function glProgramUniform1d(int $program, int $location, float $v0) : void {};
- 
-    /**
-     * glProgramUniform1ui
-     */ 
     function glProgramUniform1ui(int $program, int $location, int $v0) : void {};
- 
-    /**
-     * glProgramUniform2i
-     */ 
     function glProgramUniform2i(int $program, int $location, int $v0, int $v1) : void {};
- 
-    /**
-     * glProgramUniform2f
-     */ 
     function glProgramUniform2f(int $program, int $location, float $v0, float $v1) : void {};
- 
-    /**
-     * glProgramUniform2d
-     */ 
     function glProgramUniform2d(int $program, int $location, float $v0, float $v1) : void {};
- 
-    /**
-     * glProgramUniform2ui
-     */ 
     function glProgramUniform2ui(int $program, int $location, int $v0, int $v1) : void {};
- 
-    /**
-     * glProgramUniform3i
-     */ 
     function glProgramUniform3i(int $program, int $location, int $v0, int $v1, int $v2) : void {};
- 
-    /**
-     * glProgramUniform3f
-     */ 
     function glProgramUniform3f(int $program, int $location, float $v0, float $v1, float $v2) : void {};
- 
-    /**
-     * glProgramUniform3d
-     */ 
     function glProgramUniform3d(int $program, int $location, float $v0, float $v1, float $v2) : void {};
- 
-    /**
-     * glProgramUniform3ui
-     */ 
     function glProgramUniform3ui(int $program, int $location, int $v0, int $v1, int $v2) : void {};
- 
-    /**
-     * glProgramUniform4i
-     */ 
     function glProgramUniform4i(int $program, int $location, int $v0, int $v1, int $v2, int $v3) : void {};
- 
-    /**
-     * glProgramUniform4f
-     */ 
     function glProgramUniform4f(int $program, int $location, float $v0, float $v1, float $v2, float $v3) : void {};
- 
-    /**
-     * glProgramUniform4d
-     */ 
     function glProgramUniform4d(int $program, int $location, float $v0, float $v1, float $v2, float $v3) : void {};
- 
-    /**
-     * glProgramUniform4ui
-     */ 
     function glProgramUniform4ui(int $program, int $location, int $v0, int $v1, int $v2, int $v3) : void {};
- 
-    /**
-     * glValidateProgramPipeline
-     */ 
     function glValidateProgramPipeline(int $pipeline) : void {};
- 
-    /**
-     * glVertexAttribL1d
-     */ 
     function glVertexAttribL1d(int $index, float $x) : void {};
- 
-    /**
-     * glVertexAttribL2d
-     */ 
     function glVertexAttribL2d(int $index, float $x, float $y) : void {};
- 
-    /**
-     * glVertexAttribL3d
-     */ 
     function glVertexAttribL3d(int $index, float $x, float $y, float $z) : void {};
- 
-    /**
-     * glVertexAttribL4d
-     */ 
     function glVertexAttribL4d(int $index, float $x, float $y, float $z, float $w) : void {};
- 
-    /**
-     * glViewportIndexedf
-     */ 
+    function glGetVertexAttribLdv(int $index, int $pname, float &$params) : void {};
     function glViewportIndexedf(int $index, float $x, float $y, float $w, float $h) : void {};
- 
-    /**
-     * glScissorIndexed
-     */ 
     function glScissorIndexed(int $index, int $left, int $bottom, int $width, int $height) : void {};
- 
-    /**
-     * glDepthRangeIndexed
-     */ 
     function glDepthRangeIndexed(int $index, float $n, float $f) : void {};
- 
-    /**
-     * glfwInit
-     */ 
+    function glGetFloati_v(int $target, int $index, float &$data) : void {};
+    function glGetDoublei_v(int $target, int $index, float &$data) : void {};
     function glfwInit() : int {};
- 
-    /**
-     * glfwTerminate
-     */ 
     function glfwTerminate() : void {};
- 
-    /**
-     * glfwInitHint
-     */ 
     function glfwInitHint(int $hint, int $value) : void {};
- 
-    /**
-     * glfwGetVersion
-     */ 
     function glfwGetVersion(int &$major, int &$minor, int &$rev) : void {};
- 
-    /**
-     * glfwGetVersionString
-     */ 
     function glfwGetVersionString() : string {};
- 
-    /**
-     * glfwGetPrimaryMonitor
-     */ 
     function glfwGetPrimaryMonitor() : GLFWmonitor {};
- 
-    /**
-     * glfwGetMonitorPos
-     */ 
     function glfwGetMonitorPos(GLFWmonitor $monitor, int &$xpos, int &$ypos) : void {};
- 
-    /**
-     * glfwGetMonitorWorkarea
-     */ 
     function glfwGetMonitorWorkarea(GLFWmonitor $monitor, int &$xpos, int &$ypos, int &$width, int &$height) : void {};
- 
-    /**
-     * glfwGetMonitorPhysicalSize
-     */ 
     function glfwGetMonitorPhysicalSize(GLFWmonitor $monitor, int &$widthMM, int &$heightMM) : void {};
- 
-    /**
-     * glfwGetMonitorContentScale
-     */ 
     function glfwGetMonitorContentScale(GLFWmonitor $monitor, float &$xscale, float &$yscale) : void {};
- 
-    /**
-     * glfwGetMonitorName
-     */ 
     function glfwGetMonitorName(GLFWmonitor $monitor) : string {};
- 
-    /**
-     * glfwSetGamma
-     */ 
     function glfwSetGamma(GLFWmonitor $monitor, float $gamma) : void {};
- 
-    /**
-     * glfwDefaultWindowHints
-     */ 
     function glfwDefaultWindowHints() : void {};
- 
-    /**
-     * glfwWindowHint
-     */ 
     function glfwWindowHint(int $hint, int $value) : void {};
- 
-    /**
-     * glfwWindowHintString
-     */ 
     function glfwWindowHintString(int $hint, string $value) : void {};
- 
-    /**
-     * glfwCreateWindow
-     */ 
     function glfwCreateWindow(int $width, int $height, string $title, ?GLFWmonitor $monitor = NULL, ?GLFWwindow $share = NULL) : GLFWwindow {};
- 
-    /**
-     * glfwDestroyWindow
-     */ 
     function glfwDestroyWindow(GLFWwindow $window) : void {};
- 
-    /**
-     * glfwWindowShouldClose
-     */ 
     function glfwWindowShouldClose(GLFWwindow $window) : int {};
- 
-    /**
-     * glfwSetWindowShouldClose
-     */ 
     function glfwSetWindowShouldClose(GLFWwindow $window, int $value) : void {};
- 
-    /**
-     * glfwSetWindowTitle
-     */ 
     function glfwSetWindowTitle(GLFWwindow $window, string $title) : void {};
- 
-    /**
-     * glfwGetWindowPos
-     */ 
     function glfwGetWindowPos(GLFWwindow $window, int &$xpos, int &$ypos) : void {};
- 
-    /**
-     * glfwSetWindowPos
-     */ 
     function glfwSetWindowPos(GLFWwindow $window, int $xpos, int $ypos) : void {};
- 
-    /**
-     * glfwGetWindowSize
-     */ 
     function glfwGetWindowSize(GLFWwindow $window, int &$width, int &$height) : void {};
- 
-    /**
-     * glfwSetWindowSizeLimits
-     */ 
     function glfwSetWindowSizeLimits(GLFWwindow $window, int $minwidth, int $minheight, int $maxwidth, int $maxheight) : void {};
- 
-    /**
-     * glfwSetWindowAspectRatio
-     */ 
     function glfwSetWindowAspectRatio(GLFWwindow $window, int $numer, int $denom) : void {};
- 
-    /**
-     * glfwSetWindowSize
-     */ 
     function glfwSetWindowSize(GLFWwindow $window, int $width, int $height) : void {};
- 
-    /**
-     * glfwGetFramebufferSize
-     */ 
     function glfwGetFramebufferSize(GLFWwindow $window, int &$width, int &$height) : void {};
- 
-    /**
-     * glfwGetWindowFrameSize
-     */ 
     function glfwGetWindowFrameSize(GLFWwindow $window, int &$left, int &$top, int &$right, int &$bottom) : void {};
- 
-    /**
-     * glfwGetWindowContentScale
-     */ 
     function glfwGetWindowContentScale(GLFWwindow $window, float &$xscale, float &$yscale) : void {};
- 
-    /**
-     * glfwGetWindowOpacity
-     */ 
     function glfwGetWindowOpacity(GLFWwindow $window) : float {};
- 
-    /**
-     * glfwSetWindowOpacity
-     */ 
     function glfwSetWindowOpacity(GLFWwindow $window, float $opacity) : void {};
- 
-    /**
-     * glfwIconifyWindow
-     */ 
     function glfwIconifyWindow(GLFWwindow $window) : void {};
- 
-    /**
-     * glfwRestoreWindow
-     */ 
     function glfwRestoreWindow(GLFWwindow $window) : void {};
- 
-    /**
-     * glfwMaximizeWindow
-     */ 
     function glfwMaximizeWindow(GLFWwindow $window) : void {};
- 
-    /**
-     * glfwShowWindow
-     */ 
     function glfwShowWindow(GLFWwindow $window) : void {};
- 
-    /**
-     * glfwHideWindow
-     */ 
     function glfwHideWindow(GLFWwindow $window) : void {};
- 
-    /**
-     * glfwFocusWindow
-     */ 
     function glfwFocusWindow(GLFWwindow $window) : void {};
- 
-    /**
-     * glfwRequestWindowAttention
-     */ 
     function glfwRequestWindowAttention(GLFWwindow $window) : void {};
- 
-    /**
-     * glfwGetWindowMonitor
-     */ 
     function glfwGetWindowMonitor(GLFWwindow $window) : GLFWmonitor {};
- 
-    /**
-     * glfwSetWindowMonitor
-     */ 
     function glfwSetWindowMonitor(GLFWwindow $window, GLFWmonitor $monitor, int $xpos, int $ypos, int $width, int $height, int $refreshRate) : void {};
- 
-    /**
-     * glfwGetWindowAttrib
-     */ 
     function glfwGetWindowAttrib(GLFWwindow $window, int $attrib) : int {};
- 
-    /**
-     * glfwSetWindowAttrib
-     */ 
     function glfwSetWindowAttrib(GLFWwindow $window, int $attrib, int $value) : void {};
- 
-    /**
-     * glfwPollEvents
-     */ 
     function glfwPollEvents() : void {};
- 
-    /**
-     * glfwWaitEvents
-     */ 
     function glfwWaitEvents() : void {};
- 
-    /**
-     * glfwWaitEventsTimeout
-     */ 
     function glfwWaitEventsTimeout(float $timeout) : void {};
- 
-    /**
-     * glfwPostEmptyEvent
-     */ 
     function glfwPostEmptyEvent() : void {};
- 
-    /**
-     * glfwGetInputMode
-     */ 
     function glfwGetInputMode(GLFWwindow $window, int $mode) : int {};
- 
-    /**
-     * glfwSetInputMode
-     */ 
     function glfwSetInputMode(GLFWwindow $window, int $mode, int $value) : void {};
- 
-    /**
-     * glfwRawMouseMotionSupported
-     */ 
     function glfwRawMouseMotionSupported() : int {};
- 
-    /**
-     * glfwGetKeyName
-     */ 
     function glfwGetKeyName(int $key, int $scancode) : string {};
- 
-    /**
-     * glfwGetKeyScancode
-     */ 
     function glfwGetKeyScancode(int $key) : int {};
- 
-    /**
-     * glfwGetKey
-     */ 
     function glfwGetKey(GLFWwindow $window, int $key) : int {};
- 
-    /**
-     * glfwGetMouseButton
-     */ 
     function glfwGetMouseButton(GLFWwindow $window, int $button) : int {};
- 
-    /**
-     * glfwGetCursorPos
-     */ 
     function glfwGetCursorPos(GLFWwindow $window, float &$xpos, float &$ypos) : void {};
- 
-    /**
-     * glfwSetCursorPos
-     */ 
     function glfwSetCursorPos(GLFWwindow $window, float $xpos, float $ypos) : void {};
- 
-    /**
-     * glfwCreateStandardCursor
-     */ 
     function glfwCreateStandardCursor(int $shape) : GLFWcursor {};
- 
-    /**
-     * glfwDestroyCursor
-     */ 
     function glfwDestroyCursor(GLFWcursor $cursor) : void {};
- 
-    /**
-     * glfwSetCursor
-     */ 
     function glfwSetCursor(GLFWwindow $window, GLFWcursor $cursor) : void {};
- 
-    /**
-     * glfwJoystickPresent
-     */ 
     function glfwJoystickPresent(int $jid) : int {};
- 
-    /**
-     * glfwGetJoystickName
-     */ 
     function glfwGetJoystickName(int $jid) : string {};
- 
-    /**
-     * glfwGetJoystickGUID
-     */ 
     function glfwGetJoystickGUID(int $jid) : string {};
- 
-    /**
-     * glfwJoystickIsGamepad
-     */ 
     function glfwJoystickIsGamepad(int $jid) : int {};
- 
-    /**
-     * glfwUpdateGamepadMappings
-     */ 
     function glfwUpdateGamepadMappings(string $string) : int {};
- 
-    /**
-     * glfwGetGamepadName
-     */ 
     function glfwGetGamepadName(int $jid) : string {};
- 
-    /**
-     * glfwSetClipboardString
-     */ 
     function glfwSetClipboardString(GLFWwindow $window, string $string) : void {};
- 
-    /**
-     * glfwGetClipboardString
-     */ 
     function glfwGetClipboardString(GLFWwindow $window) : string {};
- 
-    /**
-     * glfwGetTime
-     */ 
     function glfwGetTime() : float {};
- 
-    /**
-     * glfwSetTime
-     */ 
     function glfwSetTime(float $time) : void {};
- 
-    /**
-     * glfwMakeContextCurrent
-     */ 
     function glfwMakeContextCurrent(GLFWwindow $window) : void {};
- 
-    /**
-     * glfwGetCurrentContext
-     */ 
     function glfwGetCurrentContext() : GLFWwindow {};
- 
-    /**
-     * glfwSwapBuffers
-     */ 
     function glfwSwapBuffers(GLFWwindow $window) : void {};
- 
-    /**
-     * glfwSwapInterval
-     */ 
     function glfwSwapInterval(int $interval) : void {};
- 
-    /**
-     * glfwExtensionSupported
-     */ 
     function glfwExtensionSupported(string $extension) : int {};
- 
-    /**
-     * glfwVulkanSupported
-     */ 
     function glfwVulkanSupported() : int {};
- 
-    /**
-     * glShaderSource
-     * Replaces the source code in a shader object.
-     * 
-     * PHP-GLFW: As with PHP I don't see a reason to split up the shader source to
-     * multiple addresses. 
-     * This is why the function in PHP is simplyfied `glShaderSource(int $shader,
-     * string $soruce)`.
-     * 
-     * @param int $shader Specifies the handle of the shader object whose source
-     * code is to be replaced.
-     * @param string $source Specifies a string containing the source code to be
-     * loaded into the shader.
-     */ 
     function glShaderSource(int $shader, string $source) : void {};
- 
  
 }

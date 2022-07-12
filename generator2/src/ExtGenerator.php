@@ -228,6 +228,17 @@ class ExtGenerator
 
                     $phpfunc->arguments[] = $phparg;
                 }
+                // pointer but and not const we assume to be passed by ref in the ext
+                elseif (isset($this->glTypeToExtType[$argument->typeString]) && $argument->isPointer() === true && $argument->isConst() === false) 
+                {
+                    $phparg = ExtArgument::make($argument->name, $this->glTypeToExtType[$argument->typeString]);
+                    $phparg->passedByReference = true;
+                    if ($argument->typeString != $phparg->argumentType) {
+                        $phparg->argumentTypeFrom = $argument->typeString;
+                    }
+
+                    $phpfunc->arguments[] = $phparg;
+                }
                 // we simply assume all "const GLchar pointers" to be strings 
                 elseif ($argument->typeString === 'GLchar' && $argument->isPointer() && $argument->isConst()) 
                 {

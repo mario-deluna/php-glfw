@@ -32,7 +32,6 @@ namespace {
      * ----------------------------------------------------------------------------
      */
 <?php foreach($functions as $func) : ?>
-<?php echo tabulate($func->getFunctionPHPCommentBlock()); ?> 
-    <?php echo $func->getPHPStub(); ?> 
+    <?php echo $func->getPHPStub(); ?>
 <?php endforeach; ?> 
 }

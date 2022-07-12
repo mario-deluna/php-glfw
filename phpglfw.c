@@ -34,6 +34,7 @@
 #include "phpglfw_constants.h"
 #include "phpglfw_functions.h"
 #include "phpglfw_math.h"
+#include "phpglfw_buffer.h"
 
 
 zend_module_entry glfw_module_entry = {
@@ -67,6 +68,9 @@ PHP_MINIT_FUNCTION(glfw)
 
     // math module
     phpglfw_register_math_module(INIT_FUNC_ARGS_PASSTHRU);
+
+    // buffer module
+    phpglfw_register_buffer_module(INIT_FUNC_ARGS_PASSTHRU);
 
     return SUCCESS;
 }

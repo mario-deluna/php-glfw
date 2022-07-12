@@ -22,7 +22,7 @@ class BoolArgument extends ExtArgument
      */
     public function getZValConversionCode(string $zvalVar) : ?string 
     {
-        return 'convert_to_bool(' . $zvalVar . ');';
+        return 'convert_to_boolean(' . $zvalVar . ');';
     }
 
     /**
@@ -31,6 +31,6 @@ class BoolArgument extends ExtArgument
      */
     public function getUsableVariableFromZVal(string $zvalVar) : string 
     {
-        return '&Z_BVAL_P(' . $zvalVar . ')';
+        return '('. $this->argumentTypeFrom .' *) &Z_LVAL_P(' . $zvalVar . ')';
     }
 }

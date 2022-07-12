@@ -671,11 +671,137 @@ PHP_FUNCTION(glReadBuffer)
 } 
 
 /**
+ * glGetBooleanv
+ */ 
+PHP_FUNCTION(glGetBooleanv)
+{
+    zend_long pname;
+    zval *data_zval;
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "lz", &pname, &data_zval) == FAILURE) {
+        return;
+    }
+    ZVAL_DEREF(data_zval);
+    convert_to_boolean(data_zval);
+    glGetBooleanv(pname, (GLboolean *) &Z_LVAL_P(data_zval));
+} 
+
+/**
+ * glGetDoublev
+ */ 
+PHP_FUNCTION(glGetDoublev)
+{
+    zend_long pname;
+    zval *data_zval;
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "lz", &pname, &data_zval) == FAILURE) {
+        return;
+    }
+    ZVAL_DEREF(data_zval);
+    convert_to_double(data_zval);
+    glGetDoublev(pname, &Z_DVAL_P(data_zval));
+} 
+
+/**
  * glGetError
  */ 
 PHP_FUNCTION(glGetError)
 {
     RETURN_LONG(glGetError());
+} 
+
+/**
+ * glGetFloatv
+ */ 
+PHP_FUNCTION(glGetFloatv)
+{
+    zend_long pname;
+    zval *data_zval;
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "lz", &pname, &data_zval) == FAILURE) {
+        return;
+    }
+    ZVAL_DEREF(data_zval);
+    convert_to_double(data_zval);
+    glGetFloatv(pname, &Z_DVAL_P(data_zval));
+} 
+
+/**
+ * glGetIntegerv
+ */ 
+PHP_FUNCTION(glGetIntegerv)
+{
+    zend_long pname;
+    zval *data_zval;
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "lz", &pname, &data_zval) == FAILURE) {
+        return;
+    }
+    ZVAL_DEREF(data_zval);
+    convert_to_long(data_zval);
+    glGetIntegerv(pname, &Z_LVAL_P(data_zval));
+} 
+
+/**
+ * glGetTexParameterfv
+ */ 
+PHP_FUNCTION(glGetTexParameterfv)
+{
+    zend_long target;
+    zend_long pname;
+    zval *params_zval;
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "llz", &target, &pname, &params_zval) == FAILURE) {
+        return;
+    }
+    ZVAL_DEREF(params_zval);
+    convert_to_double(params_zval);
+    glGetTexParameterfv(target, pname, &Z_DVAL_P(params_zval));
+} 
+
+/**
+ * glGetTexParameteriv
+ */ 
+PHP_FUNCTION(glGetTexParameteriv)
+{
+    zend_long target;
+    zend_long pname;
+    zval *params_zval;
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "llz", &target, &pname, &params_zval) == FAILURE) {
+        return;
+    }
+    ZVAL_DEREF(params_zval);
+    convert_to_long(params_zval);
+    glGetTexParameteriv(target, pname, &Z_LVAL_P(params_zval));
+} 
+
+/**
+ * glGetTexLevelParameterfv
+ */ 
+PHP_FUNCTION(glGetTexLevelParameterfv)
+{
+    zend_long target;
+    zend_long level;
+    zend_long pname;
+    zval *params_zval;
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "lllz", &target, &level, &pname, &params_zval) == FAILURE) {
+        return;
+    }
+    ZVAL_DEREF(params_zval);
+    convert_to_double(params_zval);
+    glGetTexLevelParameterfv(target, level, pname, &Z_DVAL_P(params_zval));
+} 
+
+/**
+ * glGetTexLevelParameteriv
+ */ 
+PHP_FUNCTION(glGetTexLevelParameteriv)
+{
+    zend_long target;
+    zend_long level;
+    zend_long pname;
+    zval *params_zval;
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "lllz", &target, &level, &pname, &params_zval) == FAILURE) {
+        return;
+    }
+    ZVAL_DEREF(params_zval);
+    convert_to_long(params_zval);
+    glGetTexLevelParameteriv(target, level, pname, &Z_LVAL_P(params_zval));
 } 
 
 /**
@@ -832,6 +958,21 @@ PHP_FUNCTION(glBindTexture)
 } 
 
 /**
+ * glGenTextures
+ */ 
+PHP_FUNCTION(glGenTextures)
+{
+    zend_long n;
+    zval *textures_zval;
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "lz", &n, &textures_zval) == FAILURE) {
+        return;
+    }
+    ZVAL_DEREF(textures_zval);
+    convert_to_long(textures_zval);
+    glGenTextures(n, &Z_LVAL_P(textures_zval));
+} 
+
+/**
  * glIsTexture
  */ 
 PHP_FUNCTION(glIsTexture)
@@ -957,6 +1098,21 @@ PHP_FUNCTION(glBlendEquation)
 } 
 
 /**
+ * glGenQueries
+ */ 
+PHP_FUNCTION(glGenQueries)
+{
+    zend_long n;
+    zval *ids_zval;
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "lz", &n, &ids_zval) == FAILURE) {
+        return;
+    }
+    ZVAL_DEREF(ids_zval);
+    convert_to_long(ids_zval);
+    glGenQueries(n, &Z_LVAL_P(ids_zval));
+} 
+
+/**
  * glIsQuery
  */ 
 PHP_FUNCTION(glIsQuery)
@@ -994,6 +1150,54 @@ PHP_FUNCTION(glEndQuery)
 } 
 
 /**
+ * glGetQueryiv
+ */ 
+PHP_FUNCTION(glGetQueryiv)
+{
+    zend_long target;
+    zend_long pname;
+    zval *params_zval;
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "llz", &target, &pname, &params_zval) == FAILURE) {
+        return;
+    }
+    ZVAL_DEREF(params_zval);
+    convert_to_long(params_zval);
+    glGetQueryiv(target, pname, &Z_LVAL_P(params_zval));
+} 
+
+/**
+ * glGetQueryObjectiv
+ */ 
+PHP_FUNCTION(glGetQueryObjectiv)
+{
+    zend_long id;
+    zend_long pname;
+    zval *params_zval;
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "llz", &id, &pname, &params_zval) == FAILURE) {
+        return;
+    }
+    ZVAL_DEREF(params_zval);
+    convert_to_long(params_zval);
+    glGetQueryObjectiv(id, pname, &Z_LVAL_P(params_zval));
+} 
+
+/**
+ * glGetQueryObjectuiv
+ */ 
+PHP_FUNCTION(glGetQueryObjectuiv)
+{
+    zend_long id;
+    zend_long pname;
+    zval *params_zval;
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "llz", &id, &pname, &params_zval) == FAILURE) {
+        return;
+    }
+    ZVAL_DEREF(params_zval);
+    convert_to_long(params_zval);
+    glGetQueryObjectuiv(id, pname, &Z_LVAL_P(params_zval));
+} 
+
+/**
  * glBindBuffer
  */ 
 PHP_FUNCTION(glBindBuffer)
@@ -1004,6 +1208,21 @@ PHP_FUNCTION(glBindBuffer)
         return;
     }
     glBindBuffer(target, buffer);
+} 
+
+/**
+ * glGenBuffers
+ */ 
+PHP_FUNCTION(glGenBuffers)
+{
+    zend_long n;
+    zval *buffers_zval;
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "lz", &n, &buffers_zval) == FAILURE) {
+        return;
+    }
+    ZVAL_DEREF(buffers_zval);
+    convert_to_long(buffers_zval);
+    glGenBuffers(n, &Z_LVAL_P(buffers_zval));
 } 
 
 /**
@@ -1028,6 +1247,22 @@ PHP_FUNCTION(glUnmapBuffer)
         return;
     }
     RETURN_BOOL(glUnmapBuffer(target));
+} 
+
+/**
+ * glGetBufferParameteriv
+ */ 
+PHP_FUNCTION(glGetBufferParameteriv)
+{
+    zend_long target;
+    zend_long pname;
+    zval *params_zval;
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "llz", &target, &pname, &params_zval) == FAILURE) {
+        return;
+    }
+    ZVAL_DEREF(params_zval);
+    convert_to_long(params_zval);
+    glGetBufferParameteriv(target, pname, &Z_LVAL_P(params_zval));
 } 
 
 /**
@@ -1208,6 +1443,25 @@ PHP_FUNCTION(glEnableVertexAttribArray)
 } 
 
 /**
+ * glGetAttachedShaders
+ */ 
+PHP_FUNCTION(glGetAttachedShaders)
+{
+    zend_long program;
+    zend_long maxCount;
+    zval *count_zval;
+    zval *shaders_zval;
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "llzz", &program, &maxCount, &count_zval, &shaders_zval) == FAILURE) {
+        return;
+    }
+    ZVAL_DEREF(count_zval);
+    convert_to_long(count_zval);
+    ZVAL_DEREF(shaders_zval);
+    convert_to_long(shaders_zval);
+    glGetAttachedShaders(program, maxCount, &Z_LVAL_P(count_zval), &Z_LVAL_P(shaders_zval));
+} 
+
+/**
  * glGetAttribLocation
  */ 
 PHP_FUNCTION(glGetAttribLocation)
@@ -1222,6 +1476,38 @@ PHP_FUNCTION(glGetAttribLocation)
 } 
 
 /**
+ * glGetProgramiv
+ */ 
+PHP_FUNCTION(glGetProgramiv)
+{
+    zend_long program;
+    zend_long pname;
+    zval *params_zval;
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "llz", &program, &pname, &params_zval) == FAILURE) {
+        return;
+    }
+    ZVAL_DEREF(params_zval);
+    convert_to_long(params_zval);
+    glGetProgramiv(program, pname, &Z_LVAL_P(params_zval));
+} 
+
+/**
+ * glGetShaderiv
+ */ 
+PHP_FUNCTION(glGetShaderiv)
+{
+    zend_long shader;
+    zend_long pname;
+    zval *params_zval;
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "llz", &shader, &pname, &params_zval) == FAILURE) {
+        return;
+    }
+    ZVAL_DEREF(params_zval);
+    convert_to_long(params_zval);
+    glGetShaderiv(shader, pname, &Z_LVAL_P(params_zval));
+} 
+
+/**
  * glGetUniformLocation
  */ 
 PHP_FUNCTION(glGetUniformLocation)
@@ -1233,6 +1519,86 @@ PHP_FUNCTION(glGetUniformLocation)
         return;
     }
     RETURN_LONG(glGetUniformLocation(program, name));
+} 
+
+/**
+ * glGetUniformfv
+ */ 
+PHP_FUNCTION(glGetUniformfv)
+{
+    zend_long program;
+    zend_long location;
+    zval *params_zval;
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "llz", &program, &location, &params_zval) == FAILURE) {
+        return;
+    }
+    ZVAL_DEREF(params_zval);
+    convert_to_double(params_zval);
+    glGetUniformfv(program, location, &Z_DVAL_P(params_zval));
+} 
+
+/**
+ * glGetUniformiv
+ */ 
+PHP_FUNCTION(glGetUniformiv)
+{
+    zend_long program;
+    zend_long location;
+    zval *params_zval;
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "llz", &program, &location, &params_zval) == FAILURE) {
+        return;
+    }
+    ZVAL_DEREF(params_zval);
+    convert_to_long(params_zval);
+    glGetUniformiv(program, location, &Z_LVAL_P(params_zval));
+} 
+
+/**
+ * glGetVertexAttribdv
+ */ 
+PHP_FUNCTION(glGetVertexAttribdv)
+{
+    zend_long index;
+    zend_long pname;
+    zval *params_zval;
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "llz", &index, &pname, &params_zval) == FAILURE) {
+        return;
+    }
+    ZVAL_DEREF(params_zval);
+    convert_to_double(params_zval);
+    glGetVertexAttribdv(index, pname, &Z_DVAL_P(params_zval));
+} 
+
+/**
+ * glGetVertexAttribfv
+ */ 
+PHP_FUNCTION(glGetVertexAttribfv)
+{
+    zend_long index;
+    zend_long pname;
+    zval *params_zval;
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "llz", &index, &pname, &params_zval) == FAILURE) {
+        return;
+    }
+    ZVAL_DEREF(params_zval);
+    convert_to_double(params_zval);
+    glGetVertexAttribfv(index, pname, &Z_DVAL_P(params_zval));
+} 
+
+/**
+ * glGetVertexAttribiv
+ */ 
+PHP_FUNCTION(glGetVertexAttribiv)
+{
+    zend_long index;
+    zend_long pname;
+    zval *params_zval;
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "llz", &index, &pname, &params_zval) == FAILURE) {
+        return;
+    }
+    ZVAL_DEREF(params_zval);
+    convert_to_long(params_zval);
+    glGetVertexAttribiv(index, pname, &Z_LVAL_P(params_zval));
 } 
 
 /**
@@ -1618,6 +1984,38 @@ PHP_FUNCTION(glColorMaski)
 } 
 
 /**
+ * glGetBooleani_v
+ */ 
+PHP_FUNCTION(glGetBooleani_v)
+{
+    zend_long target;
+    zend_long index;
+    zval *data_zval;
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "llz", &target, &index, &data_zval) == FAILURE) {
+        return;
+    }
+    ZVAL_DEREF(data_zval);
+    convert_to_boolean(data_zval);
+    glGetBooleani_v(target, index, (GLboolean *) &Z_LVAL_P(data_zval));
+} 
+
+/**
+ * glGetIntegeri_v
+ */ 
+PHP_FUNCTION(glGetIntegeri_v)
+{
+    zend_long target;
+    zend_long index;
+    zval *data_zval;
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "llz", &target, &index, &data_zval) == FAILURE) {
+        return;
+    }
+    ZVAL_DEREF(data_zval);
+    convert_to_long(data_zval);
+    glGetIntegeri_v(target, index, &Z_LVAL_P(data_zval));
+} 
+
+/**
  * glEnablei
  */ 
 PHP_FUNCTION(glEnablei)
@@ -1741,6 +2139,38 @@ PHP_FUNCTION(glEndConditionalRender)
 } 
 
 /**
+ * glGetVertexAttribIiv
+ */ 
+PHP_FUNCTION(glGetVertexAttribIiv)
+{
+    zend_long index;
+    zend_long pname;
+    zval *params_zval;
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "llz", &index, &pname, &params_zval) == FAILURE) {
+        return;
+    }
+    ZVAL_DEREF(params_zval);
+    convert_to_long(params_zval);
+    glGetVertexAttribIiv(index, pname, &Z_LVAL_P(params_zval));
+} 
+
+/**
+ * glGetVertexAttribIuiv
+ */ 
+PHP_FUNCTION(glGetVertexAttribIuiv)
+{
+    zend_long index;
+    zend_long pname;
+    zval *params_zval;
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "llz", &index, &pname, &params_zval) == FAILURE) {
+        return;
+    }
+    ZVAL_DEREF(params_zval);
+    convert_to_long(params_zval);
+    glGetVertexAttribIuiv(index, pname, &Z_LVAL_P(params_zval));
+} 
+
+/**
  * glVertexAttribI1i
  */ 
 PHP_FUNCTION(glVertexAttribI1i)
@@ -1857,6 +2287,22 @@ PHP_FUNCTION(glVertexAttribI4ui)
 } 
 
 /**
+ * glGetUniformuiv
+ */ 
+PHP_FUNCTION(glGetUniformuiv)
+{
+    zend_long program;
+    zend_long location;
+    zval *params_zval;
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "llz", &program, &location, &params_zval) == FAILURE) {
+        return;
+    }
+    ZVAL_DEREF(params_zval);
+    convert_to_long(params_zval);
+    glGetUniformuiv(program, location, &Z_LVAL_P(params_zval));
+} 
+
+/**
  * glBindFragDataLocation
  */ 
 PHP_FUNCTION(glBindFragDataLocation)
@@ -1944,6 +2390,38 @@ PHP_FUNCTION(glUniform4ui)
 } 
 
 /**
+ * glGetTexParameterIiv
+ */ 
+PHP_FUNCTION(glGetTexParameterIiv)
+{
+    zend_long target;
+    zend_long pname;
+    zval *params_zval;
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "llz", &target, &pname, &params_zval) == FAILURE) {
+        return;
+    }
+    ZVAL_DEREF(params_zval);
+    convert_to_long(params_zval);
+    glGetTexParameterIiv(target, pname, &Z_LVAL_P(params_zval));
+} 
+
+/**
+ * glGetTexParameterIuiv
+ */ 
+PHP_FUNCTION(glGetTexParameterIuiv)
+{
+    zend_long target;
+    zend_long pname;
+    zval *params_zval;
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "llz", &target, &pname, &params_zval) == FAILURE) {
+        return;
+    }
+    ZVAL_DEREF(params_zval);
+    convert_to_long(params_zval);
+    glGetTexParameterIuiv(target, pname, &Z_LVAL_P(params_zval));
+} 
+
+/**
  * glClearBufferfi
  */ 
 PHP_FUNCTION(glClearBufferfi)
@@ -1984,6 +2462,21 @@ PHP_FUNCTION(glBindRenderbuffer)
 } 
 
 /**
+ * glGenRenderbuffers
+ */ 
+PHP_FUNCTION(glGenRenderbuffers)
+{
+    zend_long n;
+    zval *renderbuffers_zval;
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "lz", &n, &renderbuffers_zval) == FAILURE) {
+        return;
+    }
+    ZVAL_DEREF(renderbuffers_zval);
+    convert_to_long(renderbuffers_zval);
+    glGenRenderbuffers(n, &Z_LVAL_P(renderbuffers_zval));
+} 
+
+/**
  * glRenderbufferStorage
  */ 
 PHP_FUNCTION(glRenderbufferStorage)
@@ -1996,6 +2489,22 @@ PHP_FUNCTION(glRenderbufferStorage)
         return;
     }
     glRenderbufferStorage(target, internalformat, width, height);
+} 
+
+/**
+ * glGetRenderbufferParameteriv
+ */ 
+PHP_FUNCTION(glGetRenderbufferParameteriv)
+{
+    zend_long target;
+    zend_long pname;
+    zval *params_zval;
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "llz", &target, &pname, &params_zval) == FAILURE) {
+        return;
+    }
+    ZVAL_DEREF(params_zval);
+    convert_to_long(params_zval);
+    glGetRenderbufferParameteriv(target, pname, &Z_LVAL_P(params_zval));
 } 
 
 /**
@@ -2021,6 +2530,21 @@ PHP_FUNCTION(glBindFramebuffer)
         return;
     }
     glBindFramebuffer(target, framebuffer);
+} 
+
+/**
+ * glGenFramebuffers
+ */ 
+PHP_FUNCTION(glGenFramebuffers)
+{
+    zend_long n;
+    zval *framebuffers_zval;
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "lz", &n, &framebuffers_zval) == FAILURE) {
+        return;
+    }
+    ZVAL_DEREF(framebuffers_zval);
+    convert_to_long(framebuffers_zval);
+    glGenFramebuffers(n, &Z_LVAL_P(framebuffers_zval));
 } 
 
 /**
@@ -2097,6 +2621,23 @@ PHP_FUNCTION(glFramebufferRenderbuffer)
         return;
     }
     glFramebufferRenderbuffer(target, attachment, renderbuffertarget, renderbuffer);
+} 
+
+/**
+ * glGetFramebufferAttachmentParameteriv
+ */ 
+PHP_FUNCTION(glGetFramebufferAttachmentParameteriv)
+{
+    zend_long target;
+    zend_long attachment;
+    zend_long pname;
+    zval *params_zval;
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "lllz", &target, &attachment, &pname, &params_zval) == FAILURE) {
+        return;
+    }
+    ZVAL_DEREF(params_zval);
+    convert_to_long(params_zval);
+    glGetFramebufferAttachmentParameteriv(target, attachment, pname, &Z_LVAL_P(params_zval));
 } 
 
 /**
@@ -2191,6 +2732,21 @@ PHP_FUNCTION(glBindVertexArray)
 } 
 
 /**
+ * glGenVertexArrays
+ */ 
+PHP_FUNCTION(glGenVertexArrays)
+{
+    zend_long n;
+    zval *arrays_zval;
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "lz", &n, &arrays_zval) == FAILURE) {
+        return;
+    }
+    ZVAL_DEREF(arrays_zval);
+    convert_to_long(arrays_zval);
+    glGenVertexArrays(n, &Z_LVAL_P(arrays_zval));
+} 
+
+/**
  * glIsVertexArray
  */ 
 PHP_FUNCTION(glIsVertexArray)
@@ -2271,6 +2827,23 @@ PHP_FUNCTION(glGetUniformBlockIndex)
         return;
     }
     RETURN_LONG(glGetUniformBlockIndex(program, uniformBlockName));
+} 
+
+/**
+ * glGetActiveUniformBlockiv
+ */ 
+PHP_FUNCTION(glGetActiveUniformBlockiv)
+{
+    zend_long program;
+    zend_long uniformBlockIndex;
+    zend_long pname;
+    zval *params_zval;
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "lllz", &program, &uniformBlockIndex, &pname, &params_zval) == FAILURE) {
+        return;
+    }
+    ZVAL_DEREF(params_zval);
+    convert_to_long(params_zval);
+    glGetActiveUniformBlockiv(program, uniformBlockIndex, pname, &Z_LVAL_P(params_zval));
 } 
 
 /**
@@ -2365,6 +2938,73 @@ PHP_FUNCTION(glWaitSync)
 } 
 
 /**
+ * glGetInteger64v
+ */ 
+PHP_FUNCTION(glGetInteger64v)
+{
+    zend_long pname;
+    zval *data_zval;
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "lz", &pname, &data_zval) == FAILURE) {
+        return;
+    }
+    ZVAL_DEREF(data_zval);
+    convert_to_long(data_zval);
+    glGetInteger64v(pname, &Z_LVAL_P(data_zval));
+} 
+
+/**
+ * glGetSynciv
+ */ 
+PHP_FUNCTION(glGetSynciv)
+{
+    zend_long sync;
+    zend_long pname;
+    zend_long count;
+    zval *length_zval;
+    zval *values_zval;
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "lllzz", &sync, &pname, &count, &length_zval, &values_zval) == FAILURE) {
+        return;
+    }
+    ZVAL_DEREF(length_zval);
+    convert_to_long(length_zval);
+    ZVAL_DEREF(values_zval);
+    convert_to_long(values_zval);
+    glGetSynciv(sync, pname, count, &Z_LVAL_P(length_zval), &Z_LVAL_P(values_zval));
+} 
+
+/**
+ * glGetInteger64i_v
+ */ 
+PHP_FUNCTION(glGetInteger64i_v)
+{
+    zend_long target;
+    zend_long index;
+    zval *data_zval;
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "llz", &target, &index, &data_zval) == FAILURE) {
+        return;
+    }
+    ZVAL_DEREF(data_zval);
+    convert_to_long(data_zval);
+    glGetInteger64i_v(target, index, &Z_LVAL_P(data_zval));
+} 
+
+/**
+ * glGetBufferParameteri64v
+ */ 
+PHP_FUNCTION(glGetBufferParameteri64v)
+{
+    zend_long target;
+    zend_long pname;
+    zval *params_zval;
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "llz", &target, &pname, &params_zval) == FAILURE) {
+        return;
+    }
+    ZVAL_DEREF(params_zval);
+    convert_to_long(params_zval);
+    glGetBufferParameteri64v(target, pname, &Z_LVAL_P(params_zval));
+} 
+
+/**
  * glFramebufferTexture
  */ 
 PHP_FUNCTION(glFramebufferTexture)
@@ -2415,6 +3055,22 @@ PHP_FUNCTION(glTexImage3DMultisample)
 } 
 
 /**
+ * glGetMultisamplefv
+ */ 
+PHP_FUNCTION(glGetMultisamplefv)
+{
+    zend_long pname;
+    zend_long index;
+    zval *val_zval;
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "llz", &pname, &index, &val_zval) == FAILURE) {
+        return;
+    }
+    ZVAL_DEREF(val_zval);
+    convert_to_double(val_zval);
+    glGetMultisamplefv(pname, index, &Z_DVAL_P(val_zval));
+} 
+
+/**
  * glSampleMaski
  */ 
 PHP_FUNCTION(glSampleMaski)
@@ -2455,6 +3111,21 @@ PHP_FUNCTION(glGetFragDataIndex)
         return;
     }
     RETURN_LONG(glGetFragDataIndex(program, name));
+} 
+
+/**
+ * glGenSamplers
+ */ 
+PHP_FUNCTION(glGenSamplers)
+{
+    zend_long count;
+    zval *samplers_zval;
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "lz", &count, &samplers_zval) == FAILURE) {
+        return;
+    }
+    ZVAL_DEREF(samplers_zval);
+    convert_to_long(samplers_zval);
+    glGenSamplers(count, &Z_LVAL_P(samplers_zval));
 } 
 
 /**
@@ -2511,6 +3182,70 @@ PHP_FUNCTION(glSamplerParameterf)
 } 
 
 /**
+ * glGetSamplerParameteriv
+ */ 
+PHP_FUNCTION(glGetSamplerParameteriv)
+{
+    zend_long sampler;
+    zend_long pname;
+    zval *params_zval;
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "llz", &sampler, &pname, &params_zval) == FAILURE) {
+        return;
+    }
+    ZVAL_DEREF(params_zval);
+    convert_to_long(params_zval);
+    glGetSamplerParameteriv(sampler, pname, &Z_LVAL_P(params_zval));
+} 
+
+/**
+ * glGetSamplerParameterIiv
+ */ 
+PHP_FUNCTION(glGetSamplerParameterIiv)
+{
+    zend_long sampler;
+    zend_long pname;
+    zval *params_zval;
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "llz", &sampler, &pname, &params_zval) == FAILURE) {
+        return;
+    }
+    ZVAL_DEREF(params_zval);
+    convert_to_long(params_zval);
+    glGetSamplerParameterIiv(sampler, pname, &Z_LVAL_P(params_zval));
+} 
+
+/**
+ * glGetSamplerParameterfv
+ */ 
+PHP_FUNCTION(glGetSamplerParameterfv)
+{
+    zend_long sampler;
+    zend_long pname;
+    zval *params_zval;
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "llz", &sampler, &pname, &params_zval) == FAILURE) {
+        return;
+    }
+    ZVAL_DEREF(params_zval);
+    convert_to_double(params_zval);
+    glGetSamplerParameterfv(sampler, pname, &Z_DVAL_P(params_zval));
+} 
+
+/**
+ * glGetSamplerParameterIuiv
+ */ 
+PHP_FUNCTION(glGetSamplerParameterIuiv)
+{
+    zend_long sampler;
+    zend_long pname;
+    zval *params_zval;
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "llz", &sampler, &pname, &params_zval) == FAILURE) {
+        return;
+    }
+    ZVAL_DEREF(params_zval);
+    convert_to_long(params_zval);
+    glGetSamplerParameterIuiv(sampler, pname, &Z_LVAL_P(params_zval));
+} 
+
+/**
  * glQueryCounter
  */ 
 PHP_FUNCTION(glQueryCounter)
@@ -2521,6 +3256,38 @@ PHP_FUNCTION(glQueryCounter)
         return;
     }
     glQueryCounter(id, target);
+} 
+
+/**
+ * glGetQueryObjecti64v
+ */ 
+PHP_FUNCTION(glGetQueryObjecti64v)
+{
+    zend_long id;
+    zend_long pname;
+    zval *params_zval;
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "llz", &id, &pname, &params_zval) == FAILURE) {
+        return;
+    }
+    ZVAL_DEREF(params_zval);
+    convert_to_long(params_zval);
+    glGetQueryObjecti64v(id, pname, &Z_LVAL_P(params_zval));
+} 
+
+/**
+ * glGetQueryObjectui64v
+ */ 
+PHP_FUNCTION(glGetQueryObjectui64v)
+{
+    zend_long id;
+    zend_long pname;
+    zval *params_zval;
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "llz", &id, &pname, &params_zval) == FAILURE) {
+        return;
+    }
+    ZVAL_DEREF(params_zval);
+    convert_to_long(params_zval);
+    glGetQueryObjectui64v(id, pname, &Z_LVAL_P(params_zval));
 } 
 
 /**
@@ -2923,6 +3690,22 @@ PHP_FUNCTION(glUniform4d)
 } 
 
 /**
+ * glGetUniformdv
+ */ 
+PHP_FUNCTION(glGetUniformdv)
+{
+    zend_long program;
+    zend_long location;
+    zval *params_zval;
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "llz", &program, &location, &params_zval) == FAILURE) {
+        return;
+    }
+    ZVAL_DEREF(params_zval);
+    convert_to_double(params_zval);
+    glGetUniformdv(program, location, &Z_DVAL_P(params_zval));
+} 
+
+/**
  * glGetSubroutineUniformLocation
  */ 
 PHP_FUNCTION(glGetSubroutineUniformLocation)
@@ -2953,6 +3736,57 @@ PHP_FUNCTION(glGetSubroutineIndex)
 } 
 
 /**
+ * glGetActiveSubroutineUniformiv
+ */ 
+PHP_FUNCTION(glGetActiveSubroutineUniformiv)
+{
+    zend_long program;
+    zend_long shadertype;
+    zend_long index;
+    zend_long pname;
+    zval *values_zval;
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "llllz", &program, &shadertype, &index, &pname, &values_zval) == FAILURE) {
+        return;
+    }
+    ZVAL_DEREF(values_zval);
+    convert_to_long(values_zval);
+    glGetActiveSubroutineUniformiv(program, shadertype, index, pname, &Z_LVAL_P(values_zval));
+} 
+
+/**
+ * glGetUniformSubroutineuiv
+ */ 
+PHP_FUNCTION(glGetUniformSubroutineuiv)
+{
+    zend_long shadertype;
+    zend_long location;
+    zval *params_zval;
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "llz", &shadertype, &location, &params_zval) == FAILURE) {
+        return;
+    }
+    ZVAL_DEREF(params_zval);
+    convert_to_long(params_zval);
+    glGetUniformSubroutineuiv(shadertype, location, &Z_LVAL_P(params_zval));
+} 
+
+/**
+ * glGetProgramStageiv
+ */ 
+PHP_FUNCTION(glGetProgramStageiv)
+{
+    zend_long program;
+    zend_long shadertype;
+    zend_long pname;
+    zval *values_zval;
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "lllz", &program, &shadertype, &pname, &values_zval) == FAILURE) {
+        return;
+    }
+    ZVAL_DEREF(values_zval);
+    convert_to_long(values_zval);
+    glGetProgramStageiv(program, shadertype, pname, &Z_LVAL_P(values_zval));
+} 
+
+/**
  * glPatchParameteri
  */ 
 PHP_FUNCTION(glPatchParameteri)
@@ -2976,6 +3810,21 @@ PHP_FUNCTION(glBindTransformFeedback)
         return;
     }
     glBindTransformFeedback(target, id);
+} 
+
+/**
+ * glGenTransformFeedbacks
+ */ 
+PHP_FUNCTION(glGenTransformFeedbacks)
+{
+    zend_long n;
+    zval *ids_zval;
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "lz", &n, &ids_zval) == FAILURE) {
+        return;
+    }
+    ZVAL_DEREF(ids_zval);
+    convert_to_long(ids_zval);
+    glGenTransformFeedbacks(n, &Z_LVAL_P(ids_zval));
 } 
 
 /**
@@ -3061,11 +3910,47 @@ PHP_FUNCTION(glEndQueryIndexed)
 } 
 
 /**
+ * glGetQueryIndexediv
+ */ 
+PHP_FUNCTION(glGetQueryIndexediv)
+{
+    zend_long target;
+    zend_long index;
+    zend_long pname;
+    zval *params_zval;
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "lllz", &target, &index, &pname, &params_zval) == FAILURE) {
+        return;
+    }
+    ZVAL_DEREF(params_zval);
+    convert_to_long(params_zval);
+    glGetQueryIndexediv(target, index, pname, &Z_LVAL_P(params_zval));
+} 
+
+/**
  * glReleaseShaderCompiler
  */ 
 PHP_FUNCTION(glReleaseShaderCompiler)
 {
     glReleaseShaderCompiler();
+} 
+
+/**
+ * glGetShaderPrecisionFormat
+ */ 
+PHP_FUNCTION(glGetShaderPrecisionFormat)
+{
+    zend_long shadertype;
+    zend_long precisiontype;
+    zval *range_zval;
+    zval *precision_zval;
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "llzz", &shadertype, &precisiontype, &range_zval, &precision_zval) == FAILURE) {
+        return;
+    }
+    ZVAL_DEREF(range_zval);
+    convert_to_long(range_zval);
+    ZVAL_DEREF(precision_zval);
+    convert_to_long(precision_zval);
+    glGetShaderPrecisionFormat(shadertype, precisiontype, &Z_LVAL_P(range_zval), &Z_LVAL_P(precision_zval));
 } 
 
 /**
@@ -3147,6 +4032,21 @@ PHP_FUNCTION(glBindProgramPipeline)
 } 
 
 /**
+ * glGenProgramPipelines
+ */ 
+PHP_FUNCTION(glGenProgramPipelines)
+{
+    zend_long n;
+    zval *pipelines_zval;
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "lz", &n, &pipelines_zval) == FAILURE) {
+        return;
+    }
+    ZVAL_DEREF(pipelines_zval);
+    convert_to_long(pipelines_zval);
+    glGenProgramPipelines(n, &Z_LVAL_P(pipelines_zval));
+} 
+
+/**
  * glIsProgramPipeline
  */ 
 PHP_FUNCTION(glIsProgramPipeline)
@@ -3156,6 +4056,22 @@ PHP_FUNCTION(glIsProgramPipeline)
         return;
     }
     RETURN_BOOL(glIsProgramPipeline(pipeline));
+} 
+
+/**
+ * glGetProgramPipelineiv
+ */ 
+PHP_FUNCTION(glGetProgramPipelineiv)
+{
+    zend_long pipeline;
+    zend_long pname;
+    zval *params_zval;
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "llz", &pipeline, &pname, &params_zval) == FAILURE) {
+        return;
+    }
+    ZVAL_DEREF(params_zval);
+    convert_to_long(params_zval);
+    glGetProgramPipelineiv(pipeline, pname, &Z_LVAL_P(params_zval));
 } 
 
 /**
@@ -3477,6 +4393,22 @@ PHP_FUNCTION(glVertexAttribL4d)
 } 
 
 /**
+ * glGetVertexAttribLdv
+ */ 
+PHP_FUNCTION(glGetVertexAttribLdv)
+{
+    zend_long index;
+    zend_long pname;
+    zval *params_zval;
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "llz", &index, &pname, &params_zval) == FAILURE) {
+        return;
+    }
+    ZVAL_DEREF(params_zval);
+    convert_to_double(params_zval);
+    glGetVertexAttribLdv(index, pname, &Z_DVAL_P(params_zval));
+} 
+
+/**
  * glViewportIndexedf
  */ 
 PHP_FUNCTION(glViewportIndexedf)
@@ -3520,6 +4452,38 @@ PHP_FUNCTION(glDepthRangeIndexed)
         return;
     }
     glDepthRangeIndexed(index, n, f);
+} 
+
+/**
+ * glGetFloati_v
+ */ 
+PHP_FUNCTION(glGetFloati_v)
+{
+    zend_long target;
+    zend_long index;
+    zval *data_zval;
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "llz", &target, &index, &data_zval) == FAILURE) {
+        return;
+    }
+    ZVAL_DEREF(data_zval);
+    convert_to_double(data_zval);
+    glGetFloati_v(target, index, &Z_DVAL_P(data_zval));
+} 
+
+/**
+ * glGetDoublei_v
+ */ 
+PHP_FUNCTION(glGetDoublei_v)
+{
+    zend_long target;
+    zend_long index;
+    zval *data_zval;
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "llz", &target, &index, &data_zval) == FAILURE) {
+        return;
+    }
+    ZVAL_DEREF(data_zval);
+    convert_to_double(data_zval);
+    glGetDoublei_v(target, index, &Z_DVAL_P(data_zval));
 } 
 
 /**
