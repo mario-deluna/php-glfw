@@ -149,7 +149,7 @@ class GLSpecReader
                 $arg = $func->makeArg();
                 $arg->name = (string) $argDef->name;
                 $arg->typeString = (string) $argDef->ptype;
-                $arg->fullTypeString = strip_tags((string) $argDef->asXML());
+                $arg->fullTypeString = trim(substr(trim(strip_tags((string) $argDef->asXML())), 0, strlen($arg->name) * -1));
                 $arg->class = $argDef->attributes()->class;
                 $arg->group = $argDef->attributes()->group;
             }

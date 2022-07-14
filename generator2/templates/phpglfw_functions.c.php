@@ -27,6 +27,7 @@
 
 #include "php.h"
 #include "phpglfw.h"
+#include "phpglfw_buffer.h"
 #include <zend_API.h>
     
 /**

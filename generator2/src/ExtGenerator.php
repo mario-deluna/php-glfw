@@ -104,6 +104,34 @@ class ExtGenerator
     }
 
     /**
+     * Returns an array of function which name matches the given regex
+     * 
+     * @return array<ExtFunction>
+     */
+    public function findFunctionsMatching(string $regex) : array
+    {
+        $matches = [];
+
+        foreach($this->methods as $func) {
+            if (preg_match($regex, $func->name)) {
+                $matches[] = $func;
+            }
+        }
+
+        return $matches;
+    }
+
+    /**
+     * Returns an array of function names matching the given regex
+     * 
+     * @return array<string>
+     */
+    public function findFunctionNamesMatching(string $regex) : array
+    {
+        return array_column($this->findFunctionsMatching($regex), 'name');
+    }
+
+    /**
      * Find a extension function instance by name and replace it.
      * If the function does not already exists it will simply be added.
      */
@@ -145,6 +173,25 @@ class ExtGenerator
         $apiVersionConst->constantCompiledType = ExtConstant::TYPE_STRING;
         $apiVersionConst->group = $glfwExtCG;
         $this->addConstant($apiVersionConst);
+
+        foreach([
+            'GLbyte' => 'BYTE',
+            'GLubyte' => 'UNSIGNED_BYTE',
+            'GLshort' => 'SHORT',
+            'GLushort' => 'UNSIGNED_SHORT',
+            'GLint' => 'INT',
+            'GLuint' => 'UNSIGNED_INT',
+            'GLfloat' => 'FLOAT',
+            'GLhalf' => 'HALF_FLOAT',
+            'GLdouble' => 'DOUBLE',
+        ] as $type => $name) {
+            // size of varios data typey
+            $glSizeofType = new ExtConstant("GL_SIZEOF_" . $name, 'sizeof('. $type .')');
+            $glSizeofType->isForwardDefinition = false;
+            $glSizeofType->constantCompiledType = ExtConstant::TYPE_PASSTHROUGH;
+            $glSizeofType->group = $glfwExtCG;
+            $this->addConstant($glSizeofType);
+        }
 
         // group the GL constants
         $groupedConstants = [];
@@ -191,7 +238,7 @@ class ExtGenerator
             }
 
             $phpfunc = new ExtFunction($func->name);
-            $isValid = true;
+            $phpfunc->incomplete = false;
 
             $sig = $func->name . '(' . implode(',', array_column($func->arguments, 'name')) . ')';
 
@@ -209,7 +256,7 @@ class ExtGenerator
             // skip unmapped return types
             if (!isset($this->glTypeToExtType[$func->returnTypeString])) {
                 if (GEN_VERBOSE) printf("Unmapped return type '%s' in function (%s)\n", $func->returnTypeString, $func->name);
-                $isValid = false;
+                $phpfunc->incomplete = true;
             }
 
             // skip pointer return types
@@ -223,7 +270,7 @@ class ExtGenerator
                 {
                     $phparg = ExtArgument::make($argument->name, $this->glTypeToExtType[$argument->typeString]);
                     if ($argument->typeString != $phparg->argumentType) {
-                        $phparg->argumentTypeFrom = $argument->typeString;
+                        $phparg->argumentTypeFrom = $argument->fullTypeString;
                     }
 
                     $phpfunc->arguments[] = $phparg;
@@ -234,10 +281,21 @@ class ExtGenerator
                     $phparg = ExtArgument::make($argument->name, $this->glTypeToExtType[$argument->typeString]);
                     $phparg->passedByReference = true;
                     if ($argument->typeString != $phparg->argumentType) {
-                        $phparg->argumentTypeFrom = $argument->typeString;
+                        $phparg->argumentTypeFrom = $argument->fullTypeString;
                     }
 
                     $phpfunc->arguments[] = $phparg;
+                }
+                // pointer and const..
+                elseif (isset($this->glTypeToExtType[$argument->typeString]) && $argument->isPointer() === true && $argument->isConst() === true) 
+                {
+                    $phparg = ExtArgument::make($argument->name, $this->glTypeToExtType[$argument->typeString]);
+                    if ($argument->typeString != $phparg->argumentType) {
+                        $phparg->argumentTypeFrom = $argument->fullTypeString;
+                    }
+
+                    $phpfunc->arguments[] = $phparg;
+                    $phpfunc->incomplete = true;
                 }
                 // we simply assume all "const GLchar pointers" to be strings 
                 elseif ($argument->typeString === 'GLchar' && $argument->isPointer() && $argument->isConst()) 
@@ -250,18 +308,16 @@ class ExtGenerator
                 // otherwise unmappable
                 else {
                     if (GEN_VERBOSE) printf("Unmapped argument type '%s' (%s), in function (%s)\n", $argument->fullTypeString, $argument->typeString, $func->name);
-                    $isValid = false;
-                    continue 2;
-                }
-
-                
+                    $phpfunc->incomplete = true;
+                    continue 1;
+                }                
             }
 
             //  assign return type
             $phpfunc->returnType = $this->mapGlTypeToExtType($func->returnTypeString);
             $phpfunc->returnTypeFrom = ($phpfunc->returnType != $func->returnTypeString) ? $func->returnTypeString : null;
 
-            if ($isValid) $this->methods[] = $phpfunc;
+            $this->methods[] = $phpfunc;
         }
     }
 
@@ -306,6 +362,18 @@ class ExtGenerator
     {
         $adjustment = new $adjustmentClass;
         $adjustment->handle($this);
+    }
+
+    /**
+     * Returns an array of all functions in this extension that are not marked incomplete
+     * 
+     * @return array<ExtFunction>
+     */
+    public function getCompleteFunctions() : array
+    {
+        return array_filter($this->methods, function($f) {
+            return !$f->incomplete;
+        });
     }
 
     /**
@@ -359,7 +427,7 @@ class ExtGenerator
     private function buildFunctionsHeader() : void
     {
         $buffer = $this->generateTemplate('phpglfw_functions.h', [
-            'functions' => $this->methods,
+            'functions' => $this->getCompleteFunctions(),
             'ipos' => $this->IPOs,
         ]);
     }
@@ -370,7 +438,7 @@ class ExtGenerator
     private function buildFunctionsBody() : void
     {
         $buffer = $this->generateTemplate('phpglfw_functions.c', [
-            'functions' => $this->methods,
+            'functions' => $this->getCompleteFunctions(),
             'ipos' => $this->IPOs,
         ]);
     }
@@ -382,7 +450,7 @@ class ExtGenerator
     {
         $buffer = $this->generateTemplate('phpglfw.stub.php', [
             'constants' => $this->constants,
-            'functions' => $this->methods,
+            'functions' => $this->getCompleteFunctions(),
             '__buffer_prefix' => '<?php ' . PHP_EOL
         ]);
     }

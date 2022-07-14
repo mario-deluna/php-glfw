@@ -29,27 +29,28 @@
 
 #include "php.h"
 #include "Zend/zend_smart_str.h"
-#include "cvector.h"
+#include "zend_interfaces.h"
+
 #include "linmath.h"
 
+zend_class_entry *phpglfw_buffer_interface_ce; 
 zend_class_entry *phpglfw_buffer_float_ce; 
 
+zend_class_entry *phpglfw_get_buffer_interface_ce() {
+    return phpglfw_buffer_interface_ce;
+}
+
+zend_class_entry *phpglfw_get_buffer_float_ce() {
+    return phpglfw_buffer_float_ce;
+}
+
 /**
- * PGL\Math\Vec3
+ * PGL\Buffer\FBuffer
  * 
  * ----------------------------------------------------------------------------
  */
-typedef struct _phpglfw_buffer_float_object {
-    cvector_vector_type(float) vec;
-    zend_object std;
-} phpglfw_buffer_float_object; 
 
 static zend_object_handlers phpglfw_buffer_float_handlers;
-
-static zend_always_inline phpglfw_buffer_float_object* phpglfw_buffer_float_objectptr_from_zobj_p(zend_object* obj)
-{
-    return (phpglfw_buffer_float_object *) ((char *) (obj) - XtOffsetOf(phpglfw_buffer_float_object, std));
-}
 
 static void phpglfw_free_buffer_float_storage_handler(phpglfw_buffer_float_object *intern)
 {
@@ -156,15 +157,25 @@ PHP_METHOD(PGL_Buffer_FBuffer, reserve)
     cvector_reserve(obj_ptr->vec, resvering_size);
 }
 
-
 void phpglfw_register_buffer_module(INIT_FUNC_ARGS)
 {
     zend_class_entry tmp_ce;
+
+    // interface
+    INIT_CLASS_ENTRY(tmp_ce, "PGL\\Buffer\\BufferInterface", class_PGL_Buffer_BufferInterface_methods);
+    phpglfw_buffer_interface_ce = zend_register_internal_interface(&tmp_ce);
+    
+    // float buffer
     INIT_CLASS_ENTRY(tmp_ce, "PGL\\Buffer\\FBuffer", class_PGL_Buffer_FBuffer_methods);
     phpglfw_buffer_float_ce = zend_register_internal_class(&tmp_ce);
     phpglfw_buffer_float_ce->create_object = phpglfw_create_buffer_float_handler;
 
+	zend_class_implements(phpglfw_buffer_float_ce, 1, phpglfw_buffer_interface_ce);
+
     memcpy(&phpglfw_buffer_float_handlers, zend_get_std_object_handlers(), sizeof(phpglfw_buffer_float_handlers));
     phpglfw_buffer_float_handlers.get_debug_info = phpglfw_buffer_float_debug_info_handler;
     phpglfw_buffer_float_handlers.offset = XtOffsetOf(phpglfw_buffer_float_object, std);
+
+
+
 }

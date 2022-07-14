@@ -16,12 +16,14 @@ namespace PGL\Math
 };
 
 namespace PGL\Buffer 
-{
-    class FBuffer {
+{   
+    interface BufferInterface {}
+
+    class FBuffer implements BufferInterface {
         public function __toString() : string {}
         public function push(float $value) : void {}
         public function reserve(int $size) : void {}
-    }    
+    }       
 };
 
 namespace {
@@ -29,6 +31,15 @@ namespace {
      * Constants
      * ----------------------------------------------------------------------------
      */
+    //define('a', 'stable');
+    //define('a', 'stable');
+    //define('a', 'stable');
+    //define('a', 'stable');
+    //define('a', 'stable');
+    //define('a', 'stable');
+    //define('a', 'stable');
+    //define('a', 'stable');
+    //define('a', 'stable');
     //define('a', 'stable');
     //define('a', 'stable');
     // const GL_DEPTH_BUFFER_BIT = 0x00000100;
@@ -1659,7 +1670,7 @@ namespace {
     function glCopyTexSubImage1D(int $target, int $level, int $xoffset, int $x, int $y, int $width) : void {};
     function glCopyTexSubImage2D(int $target, int $level, int $xoffset, int $yoffset, int $x, int $y, int $width, int $height) : void {};
     function glBindTexture(int $target, int $texture) : void {};
-    function glGenTextures(int $n, int &$textures) : void {};
+    function glGenTextures(int $n, ?int &...$textures) : void {};
     function glIsTexture(int $texture) : bool {};
     function glCopyTexSubImage3D(int $target, int $level, int $xoffset, int $yoffset, int $zoffset, int $x, int $y, int $width, int $height) : void {};
     function glActiveTexture(int $texture) : void {};
@@ -1669,7 +1680,7 @@ namespace {
     function glPointParameteri(int $pname, int $param) : void {};
     function glBlendColor(float $red, float $green, float $blue, float $alpha) : void {};
     function glBlendEquation(int $mode) : void {};
-    function glGenQueries(int $n, int &$ids) : void {};
+    function glGenQueries(int $n, ?int &...$ids) : void {};
     function glIsQuery(int $id) : bool {};
     function glBeginQuery(int $target, int $id) : void {};
     function glEndQuery(int $target) : void {};
@@ -1677,7 +1688,7 @@ namespace {
     function glGetQueryObjectiv(int $id, int $pname, int &$params) : void {};
     function glGetQueryObjectuiv(int $id, int $pname, int &$params) : void {};
     function glBindBuffer(int $target, int $buffer) : void {};
-    function glGenBuffers(int $n, int &$buffers) : void {};
+    function glGenBuffers(int $n, ?int &...$buffers) : void {};
     function glIsBuffer(int $buffer) : bool {};
     function glUnmapBuffer(int $target) : bool {};
     function glGetBufferParameteriv(int $target, int $pname, int &$params) : void {};
@@ -1731,6 +1742,7 @@ namespace {
     function glVertexAttrib4d(int $index, float $x, float $y, float $z, float $w) : void {};
     function glVertexAttrib4f(int $index, float $x, float $y, float $z, float $w) : void {};
     function glVertexAttrib4s(int $index, int $x, int $y, int $z, int $w) : void {};
+    function glVertexAttribPointer(int $index, int $size, int $type, bool $normalized, int $stride, int $offset) : void {};
     function glColorMaski(int $index, bool $r, bool $g, bool $b, bool $a) : void {};
     function glGetBooleani_v(int $target, int $index, bool &$data) : void {};
     function glGetIntegeri_v(int $target, int $index, int &$data) : void {};
@@ -1766,12 +1778,12 @@ namespace {
     function glClearBufferfi(int $buffer, int $drawbuffer, float $depth, int $stencil) : void {};
     function glIsRenderbuffer(int $renderbuffer) : bool {};
     function glBindRenderbuffer(int $target, int $renderbuffer) : void {};
-    function glGenRenderbuffers(int $n, int &$renderbuffers) : void {};
+    function glGenRenderbuffers(int $n, ?int &...$renderbuffers) : void {};
     function glRenderbufferStorage(int $target, int $internalformat, int $width, int $height) : void {};
     function glGetRenderbufferParameteriv(int $target, int $pname, int &$params) : void {};
     function glIsFramebuffer(int $framebuffer) : bool {};
     function glBindFramebuffer(int $target, int $framebuffer) : void {};
-    function glGenFramebuffers(int $n, int &$framebuffers) : void {};
+    function glGenFramebuffers(int $n, ?int &...$framebuffers) : void {};
     function glCheckFramebufferStatus(int $target) : int {};
     function glFramebufferTexture1D(int $target, int $attachment, int $textarget, int $texture, int $level) : void {};
     function glFramebufferTexture2D(int $target, int $attachment, int $textarget, int $texture, int $level) : void {};
@@ -1784,7 +1796,7 @@ namespace {
     function glFramebufferTextureLayer(int $target, int $attachment, int $texture, int $level, int $layer) : void {};
     function glFlushMappedBufferRange(int $target, int $offset, int $length) : void {};
     function glBindVertexArray(int $array) : void {};
-    function glGenVertexArrays(int $n, int &$arrays) : void {};
+    function glGenVertexArrays(int $n, ?int &...$arrays) : void {};
     function glIsVertexArray(int $array) : bool {};
     function glDrawArraysInstanced(int $mode, int $first, int $count, int $instancecount) : void {};
     function glTexBuffer(int $target, int $internalformat, int $buffer) : void {};
@@ -1810,7 +1822,7 @@ namespace {
     function glSampleMaski(int $maskNumber, int $mask) : void {};
     function glBindFragDataLocationIndexed(int $program, int $colorNumber, int $index, string $name) : void {};
     function glGetFragDataIndex(int $program, string $name) : int {};
-    function glGenSamplers(int $count, int &$samplers) : void {};
+    function glGenSamplers(int $count, ?int &...$samplers) : void {};
     function glIsSampler(int $sampler) : bool {};
     function glBindSampler(int $unit, int $sampler) : void {};
     function glSamplerParameteri(int $sampler, int $pname, int $param) : void {};
@@ -1859,7 +1871,7 @@ namespace {
     function glGetProgramStageiv(int $program, int $shadertype, int $pname, int &$values) : void {};
     function glPatchParameteri(int $pname, int $value) : void {};
     function glBindTransformFeedback(int $target, int $id) : void {};
-    function glGenTransformFeedbacks(int $n, int &$ids) : void {};
+    function glGenTransformFeedbacks(int $n, ?int &...$ids) : void {};
     function glIsTransformFeedback(int $id) : bool {};
     function glPauseTransformFeedback() : void {};
     function glResumeTransformFeedback() : void {};
@@ -1876,7 +1888,7 @@ namespace {
     function glUseProgramStages(int $pipeline, int $stages, int $program) : void {};
     function glActiveShaderProgram(int $pipeline, int $program) : void {};
     function glBindProgramPipeline(int $pipeline) : void {};
-    function glGenProgramPipelines(int $n, int &$pipelines) : void {};
+    function glGenProgramPipelines(int $n, ?int &...$pipelines) : void {};
     function glIsProgramPipeline(int $pipeline) : bool {};
     function glGetProgramPipelineiv(int $pipeline, int $pname, int &$params) : void {};
     function glProgramUniform1i(int $program, int $location, int $v0) : void {};
@@ -1981,5 +1993,6 @@ namespace {
     function glfwExtensionSupported(string $extension) : int {};
     function glfwVulkanSupported() : int {};
     function glShaderSource(int $shader, string $source) : void {};
+    function glBufferData(int $target, \PGL\Buffer\BufferInterface $buffer, int $usage) : void {};
  
 }

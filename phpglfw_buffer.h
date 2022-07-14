@@ -1,7 +1,7 @@
 /**
  * PHP-glfw 
  * 
- * Extension constants
+ * Extension GL buffers
  *
  * Copyright (c) 2018-2022 Mario Döring
  * 
@@ -27,7 +27,29 @@
 #define PHP_GLFW_BUFFER_H 1
 
 #include "phpglfw_constants.h"
+#include "php.h"
+
+#define cvector_clib_malloc emalloc
+#define cvector_clib_free efree
+#define cvector_clib_calloc ecalloc
+#define cvector_clib_realloc erealloc
+#define CVECTOR_LOGARITHMIC_GROWTH 1
+
+#include "cvector.h"
+
+typedef struct _phpglfw_buffer_float_object {
+    cvector_vector_type(float) vec;
+    zend_object std;
+} phpglfw_buffer_float_object; 
 
 void phpglfw_register_buffer_module(INIT_FUNC_ARGS);
+
+zend_always_inline phpglfw_buffer_float_object* phpglfw_buffer_float_objectptr_from_zobj_p(zend_object* obj)
+{
+    return (phpglfw_buffer_float_object *) ((char *) (obj) - XtOffsetOf(phpglfw_buffer_float_object, std));
+}
+
+zend_class_entry *phpglfw_get_buffer_interface_ce();
+zend_class_entry *phpglfw_get_buffer_float_ce();
 
 #endif

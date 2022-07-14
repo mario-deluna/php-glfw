@@ -14,6 +14,17 @@ namespace PGL\Math
     }    
 };
 
+namespace PGL\Buffer 
+{   
+    interface BufferInterface {}
+
+    class FBuffer implements BufferInterface {
+        public function __toString() : string {}
+        public function push(float $value) : void {}
+        public function reserve(int $size) : void {}
+    }       
+};
+
 namespace {
     /**
      * Constants

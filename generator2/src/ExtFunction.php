@@ -1,11 +1,19 @@
 <?php
 
+use ExtArgument\CEObjectArgument;
+use ExtArgument\VariadicArgument;
+
 class ExtFunction
 {
     /**
      * PHP Exposed function name
      */
     public string $name;
+
+    /**
+     * If true this function is in an incomplete state and should not generate code.
+     */
+    public bool $incomplete = false;
 
     /**
      * Internal name, the actual function to be called / forwarded to
@@ -280,6 +288,7 @@ class ExtFunction
     {
         $args = [];
         foreach($this->arguments as $arg) {
+            // IPO argument
             if ($arg->argumentType === ExtType::T_IPO) {
                 $buffer = ($arg->isOptional() ? '?' : '') . $arg->argInternalPtrObject->getPHPClassName() . ' ' . '$' . $arg->name;
                     
@@ -288,6 +297,20 @@ class ExtFunction
                 }
 
                 $args[] = $buffer;
+            }
+            // class entry argument
+            elseif ($arg->argumentType === ExtType::T_CE && $arg instanceof CEObjectArgument) {
+                $buffer = ($arg->isOptional() ? '?' : '') . $arg->getPHPClassName() . ' ' . '$' . $arg->name;
+                    
+                if ($arg->isOptional()) {
+                    $buffer .= ' = ' . $arg->defaultValue;
+                }
+
+                $args[] = $buffer;
+            } 
+            // variadic argument
+            elseif ($arg instanceof VariadicArgument) {
+                $args[] = '?' . $this->mapTypeToStubType($arg->argumentType) . ' ' . ($arg->passedByReference ? '&' : '') . '...$' . $arg->name;
             } else {
                 $args[] = $this->mapTypeToStubType($arg->argumentType) . ' ' . ($arg->passedByReference ? '&' : '') . '$' . $arg->name;
             }

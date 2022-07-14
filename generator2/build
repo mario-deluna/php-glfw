@@ -20,6 +20,7 @@ $reader->parse($spec, __DIR__ . '/data/gl.xml');
 // import the gl spec into the generator
 $gen->import($spec, 'gl', '4.1', [
     'glShaderSource', // custom implementation
+    'glBufferData', // custom implementation
 ]);
 
 // parse the glfw header
@@ -30,6 +31,9 @@ $glfwparser->process(GEN_PATH_EXT . '/vendor/glfw/include/GLFW/glfw3.h', $gen);
 $gen->adjust(PHPGlfwAdjustments\GLFWOptionalArgsAdjustments::class);
 $gen->adjust(PHPGlfwAdjustments\GLFWGladLoader::class);
 $gen->adjust(PHPGlfwAdjustments\GLShaderSourceAdjustment::class);
+$gen->adjust(PHPGlfwAdjustments\GLBufferDataAdjustment::class);
+$gen->adjust(PHPGlfwAdjustments\GLVertexAttribPointerAdjustment::class);
+$gen->adjust(PHPGlfwAdjustments\GLGenFunctionAdjustments::class);
 
 // build the extension
 $gen->build(GEN_PATH_EXT . '/v2/');

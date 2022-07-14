@@ -12,5 +12,7 @@ class ExtType
     public const T_STRING = 'string';
     public const T_NULL = 'null';
     public const T_IPO = '@ibo'; // internal pointer object (ex. GLFWwindow)
+    public const T_CE = '@ce'; // class entry (object)
+    public const T_VARIADIC = '@variadic'; // variadic argument
     public const T_RESOURCE = '@res';
 }

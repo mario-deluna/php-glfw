@@ -7,6 +7,8 @@ use ExtArgument\{
     StringArgument,
     NullArgument,
     InternalPtrObjectArgument,
+    CEObjectArgument,
+    VariadicArgument,
 };
 
 /**
@@ -34,6 +36,12 @@ abstract class ExtArgument
             break;
             case ExtType::T_IPO:
                 return new InternalPtrObjectArgument($name, $argumentType);
+            break;
+            case ExtType::T_CE:
+                return new CEObjectArgument($name, $argumentType);
+            break;
+            case ExtType::T_VARIADIC:
+                throw new \Exception("Please construct variadic arguments with 'new VariadicArgument'");
             break;
             default: 
                 throw new \Exception("Unsupported argument type {$argumentType}");

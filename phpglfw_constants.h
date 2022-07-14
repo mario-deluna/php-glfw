@@ -40,6 +40,15 @@ void phpglfw_register_constants(INIT_FUNC_ARGS);
  */
 #define PHPGLFW_C_PHPGLFW_COMPILED_API "gl" 
 #define PHPGLFW_C_PHPGLFW_COMPILED_API_VERSION "4.1" 
+#define PHPGLFW_C_GL_SIZEOF_BYTE sizeof(GLbyte) 
+#define PHPGLFW_C_GL_SIZEOF_UNSIGNED_BYTE sizeof(GLubyte) 
+#define PHPGLFW_C_GL_SIZEOF_SHORT sizeof(GLshort) 
+#define PHPGLFW_C_GL_SIZEOF_UNSIGNED_SHORT sizeof(GLushort) 
+#define PHPGLFW_C_GL_SIZEOF_INT sizeof(GLint) 
+#define PHPGLFW_C_GL_SIZEOF_UNSIGNED_INT sizeof(GLuint) 
+#define PHPGLFW_C_GL_SIZEOF_FLOAT sizeof(GLfloat) 
+#define PHPGLFW_C_GL_SIZEOF_HALF_FLOAT sizeof(GLhalf) 
+#define PHPGLFW_C_GL_SIZEOF_DOUBLE sizeof(GLdouble) 
 
 /**
  
