@@ -50,12 +50,6 @@ static zend_always_inline phpglfw_math_vec3_object* phpglfw_math_vec3_objectptr_
     return (phpglfw_math_vec3_object *) ((char *) (obj) - XtOffsetOf(phpglfw_math_vec3_object, std));
 }
 
-static void phpglfw_free_math_vec3_storage_handler(phpglfw_math_vec3_object *intern)
-{
-    zend_object_std_dtor(&intern->std);
-    efree(intern);
-}
-
 zend_object *phpglfw_create_math_vec3_handler(zend_class_entry *class_type)
 {
     size_t block_len = sizeof(phpglfw_math_vec3_object) + zend_object_properties_size(class_type);
@@ -65,19 +59,6 @@ zend_object *phpglfw_create_math_vec3_handler(zend_class_entry *class_type)
     intern->vec[0] = 0.0f;
     intern->vec[1] = 0.0f;
     intern->vec[2] = 0.0f;
-
-    zend_object_std_init(&intern->std, class_type);
-    object_properties_init(&intern->std, class_type);
-    intern->std.handlers = &phpglfw_math_vec3_handlers;
-
-    return &intern->std;
-}
-
-zend_object *phpglfw_tostring_math_vec3_handler(zend_class_entry *class_type)
-{
-    size_t block_len = sizeof(phpglfw_math_vec3_object) + zend_object_properties_size(class_type);
-    phpglfw_math_vec3_object *intern = emalloc(block_len);
-    memset(intern, 0, block_len);
 
     zend_object_std_init(&intern->std, class_type);
     object_properties_init(&intern->std, class_type);

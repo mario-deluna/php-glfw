@@ -36,6 +36,12 @@
 zend_class_entry *phpglfw_buffer_interface_ce; 
 zend_class_entry *phpglfw_buffer_float_ce; 
 
+#define PHPGLFW_DEFINE_BUFFER_CE(class_name, type)                      \
+    INIT_CLASS_ENTRY(tmp_ce, #class_name, array_buffer_view_functions);       \
+    type##_array_ce = zend_register_internal_class(&tmp_ce TSRMLS_CC);        \
+    type##_array_ce->create_object = array_buffer_view_create_object;         \
+    zend_class_implements(type##_array_ce TSRMLS_CC, 1, zend_ce_arrayaccess);
+
 zend_class_entry *phpglfw_get_buffer_interface_ce() {
     return phpglfw_buffer_interface_ce;
 }
@@ -52,11 +58,11 @@ zend_class_entry *phpglfw_get_buffer_float_ce() {
 
 static zend_object_handlers phpglfw_buffer_float_handlers;
 
-static void phpglfw_free_buffer_float_storage_handler(phpglfw_buffer_float_object *intern)
+static void phpglfw_free_buffer_float_storage_handler(zend_object *object)
 {
-    zend_object_std_dtor(&intern->std);
-    cvector_free(intern->vec);
-    efree(intern);
+    phpglfw_buffer_float_object *obj_ptr = phpglfw_buffer_float_objectptr_from_zobj_p(object);
+    cvector_free(obj_ptr->vec);
+    zend_object_std_dtor(&obj_ptr->std);
 }
 
 zend_object *phpglfw_create_buffer_float_handler(zend_class_entry *class_type)
@@ -80,7 +86,7 @@ static HashTable *phpglfw_buffer_float_debug_info_handler(zend_object *object, i
     zval zv;
     HashTable *ht;
 
-    ht = zend_new_array(3);
+    ht = zend_new_array(2);
     *is_temp = 1;
 
     // ZVAL_STRING(&zv, "Aadas");
@@ -110,17 +116,11 @@ PHP_METHOD(PGL_Buffer_FBuffer, __toString)
 
     smart_str my_str = {0};
 
-    smart_str_appends(&my_str, "GL\\Buffer\\FBuffer(");
-    float *it;
-    for (it = cvector_begin(obj_ptr->vec); it != cvector_end(obj_ptr->vec); ++it) {
-        smart_str_append_double(&my_str, *it, 4, true);
-        smart_str_appends(&my_str, ", ");
-    }
-    
-    // smart_str_append_double(&my_str, obj_ptr->vec[1], 4, true);
-    // smart_str_appends(&my_str, ", ");
-    // smart_str_append_double(&my_str, obj_ptr->vec[2], 4, true);
-    // smart_str_appends(&my_str, ")");
+    smart_str_appends(&my_str, "GL\\Buffer\\FloatBuffer(");
+    smart_str_append_long(&my_str, cvector_size(obj_ptr->vec));
+    smart_str_appends(&my_str, " [");
+    smart_str_append_long(&my_str, cvector_capacity(obj_ptr->vec));
+    smart_str_appends(&my_str, "])");
 
     smart_str_0(&my_str);
 
@@ -173,9 +173,7 @@ void phpglfw_register_buffer_module(INIT_FUNC_ARGS)
 	zend_class_implements(phpglfw_buffer_float_ce, 1, phpglfw_buffer_interface_ce);
 
     memcpy(&phpglfw_buffer_float_handlers, zend_get_std_object_handlers(), sizeof(phpglfw_buffer_float_handlers));
+    phpglfw_buffer_float_handlers.free_obj = phpglfw_free_buffer_float_storage_handler;
     phpglfw_buffer_float_handlers.get_debug_info = phpglfw_buffer_float_debug_info_handler;
     phpglfw_buffer_float_handlers.offset = XtOffsetOf(phpglfw_buffer_float_object, std);
-
-
-
 }
