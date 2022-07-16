@@ -97,7 +97,12 @@ static zend_class_entry *phpglfw_glfwwindow_class_register(void)
 
     INIT_CLASS_ENTRY(ce, "GLFWwindow", phpglfw_glfwwindow_class_methods);
     class_entry = zend_register_internal_class_ex(&ce, NULL);
+
+#ifdef ZEND_ACC_NOT_SERIALIZABLE  
     class_entry->ce_flags |= ZEND_ACC_FINAL|ZEND_ACC_NO_DYNAMIC_PROPERTIES|ZEND_ACC_NOT_SERIALIZABLE;
+#else
+    class_entry->ce_flags |= ZEND_ACC_FINAL|ZEND_ACC_NO_DYNAMIC_PROPERTIES;
+#endif
 
     return class_entry;
 }
@@ -174,7 +179,12 @@ static zend_class_entry *phpglfw_glfwmonitor_class_register(void)
 
     INIT_CLASS_ENTRY(ce, "GLFWmonitor", phpglfw_glfwmonitor_class_methods);
     class_entry = zend_register_internal_class_ex(&ce, NULL);
+
+#ifdef ZEND_ACC_NOT_SERIALIZABLE  
     class_entry->ce_flags |= ZEND_ACC_FINAL|ZEND_ACC_NO_DYNAMIC_PROPERTIES|ZEND_ACC_NOT_SERIALIZABLE;
+#else
+    class_entry->ce_flags |= ZEND_ACC_FINAL|ZEND_ACC_NO_DYNAMIC_PROPERTIES;
+#endif
 
     return class_entry;
 }
@@ -251,7 +261,12 @@ static zend_class_entry *phpglfw_glfwcursor_class_register(void)
 
     INIT_CLASS_ENTRY(ce, "GLFWcursor", phpglfw_glfwcursor_class_methods);
     class_entry = zend_register_internal_class_ex(&ce, NULL);
+
+#ifdef ZEND_ACC_NOT_SERIALIZABLE  
     class_entry->ce_flags |= ZEND_ACC_FINAL|ZEND_ACC_NO_DYNAMIC_PROPERTIES|ZEND_ACC_NOT_SERIALIZABLE;
+#else
+    class_entry->ce_flags |= ZEND_ACC_FINAL|ZEND_ACC_NO_DYNAMIC_PROPERTIES;
+#endif
 
     return class_entry;
 }

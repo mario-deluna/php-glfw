@@ -90,7 +90,12 @@ static zend_class_entry *<?php echo $ipo->getClassRegistrationFunctionName(); ?>
 
     INIT_CLASS_ENTRY(ce, "<?php echo $ipo->getPHPClassName(); ?>", <?php echo $ipo->getClassMethodEntriesVar(); ?>);
     class_entry = zend_register_internal_class_ex(&ce, NULL);
+
+#ifdef ZEND_ACC_NOT_SERIALIZABLE  
     class_entry->ce_flags |= ZEND_ACC_FINAL|ZEND_ACC_NO_DYNAMIC_PROPERTIES|ZEND_ACC_NOT_SERIALIZABLE;
+#else
+    class_entry->ce_flags |= ZEND_ACC_FINAL|ZEND_ACC_NO_DYNAMIC_PROPERTIES;
+#endif
 
     return class_entry;
 }
