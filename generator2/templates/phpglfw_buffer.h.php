@@ -40,26 +40,13 @@
 /**
  * buffer object structs
  */
-typedef struct _phpglfw_buffer_glfloat_object {
-    cvector_vector_type(GLfloat) vec;
+<?php foreach($buffers as $buffer) : ?>
+typedef struct _<?php echo $buffer->getObjectName(); ?> {
+    cvector_vector_type(<?php echo $buffer->type; ?>) vec;
     zend_object std;
-} phpglfw_buffer_glfloat_object; 
+} <?php echo $buffer->getObjectName(); ?>; 
 
-typedef struct _phpglfw_buffer_gldouble_object {
-    cvector_vector_type(GLdouble) vec;
-    zend_object std;
-} phpglfw_buffer_gldouble_object; 
-
-typedef struct _phpglfw_buffer_glint_object {
-    cvector_vector_type(GLint) vec;
-    zend_object std;
-} phpglfw_buffer_glint_object; 
-
-typedef struct _phpglfw_buffer_glbyte_object {
-    cvector_vector_type(GLbyte) vec;
-    zend_object std;
-} phpglfw_buffer_glbyte_object; 
-
+<?php endforeach; ?>
 
 /**
  * module init
@@ -69,34 +56,20 @@ void phpglfw_register_buffer_module(INIT_FUNC_ARGS);
 /**
  * Fetch object helper methods
  */
-zend_always_inline phpglfw_buffer_glfloat_object* phpglfw_buffer_glfloat_objectptr_from_zobj_p(zend_object* obj)
+<?php foreach($buffers as $buffer) : ?>
+zend_always_inline <?php echo $buffer->getObjectName(); ?>* <?php echo $buffer->objectFromZObjFunctionName(); ?>(zend_object* obj)
 {
-    return (phpglfw_buffer_glfloat_object *) ((char *) (obj) - XtOffsetOf(phpglfw_buffer_glfloat_object, std));
+    return (<?php echo $buffer->getObjectName(); ?> *) ((char *) (obj) - XtOffsetOf(<?php echo $buffer->getObjectName(); ?>, std));
 }
 
-zend_always_inline phpglfw_buffer_gldouble_object* phpglfw_buffer_gldouble_objectptr_from_zobj_p(zend_object* obj)
-{
-    return (phpglfw_buffer_gldouble_object *) ((char *) (obj) - XtOffsetOf(phpglfw_buffer_gldouble_object, std));
-}
-
-zend_always_inline phpglfw_buffer_glint_object* phpglfw_buffer_glint_objectptr_from_zobj_p(zend_object* obj)
-{
-    return (phpglfw_buffer_glint_object *) ((char *) (obj) - XtOffsetOf(phpglfw_buffer_glint_object, std));
-}
-
-zend_always_inline phpglfw_buffer_glbyte_object* phpglfw_buffer_glbyte_objectptr_from_zobj_p(zend_object* obj)
-{
-    return (phpglfw_buffer_glbyte_object *) ((char *) (obj) - XtOffsetOf(phpglfw_buffer_glbyte_object, std));
-}
-
+<?php endforeach; ?>
 
 /**
  * Class entry getters
  */
 zend_class_entry *phpglfw_get_buffer_interface_ce();
-zend_class_entry *phpglfw_get_buffer_glfloat_ce(); 
-zend_class_entry *phpglfw_get_buffer_gldouble_ce(); 
-zend_class_entry *phpglfw_get_buffer_glint_ce(); 
-zend_class_entry *phpglfw_get_buffer_glbyte_ce(); 
+<?php foreach($buffers as $buffer) : ?>
+zend_class_entry *<?php echo $buffer->getClassEntryNameGetter(); ?>(); 
+<?php endforeach; ?>
 
 #endif

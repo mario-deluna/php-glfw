@@ -22,6 +22,11 @@ class ExtGenerator
     public array $IPOs = [];
 
     /**
+     * Array of PHPGLFW buffers to be generated
+     */
+    public array $phpglfwBuffers = [];
+
+    /**
      * Map of GLTypes to extension type
      *
      * @var array<string, string>
@@ -387,6 +392,7 @@ class ExtGenerator
         $this->buildConstantsBody();
         $this->buildFunctionsHeader();
         $this->buildFunctionsBody();
+        $this->buildGLBufferHeaderAndBody();
         $this->buildStubs();
     }
 
@@ -406,7 +412,7 @@ class ExtGenerator
             $groupedConstants[$gid][1][] = $const;
         }
 
-        $buffer = $this->generateTemplate('phpglfw_constants.h', [
+        $this->generateTemplate('phpglfw_constants.h', [
             'groupedConstants' => $groupedConstants
         ]);
     }
@@ -426,7 +432,7 @@ class ExtGenerator
      */
     private function buildFunctionsHeader() : void
     {
-        $buffer = $this->generateTemplate('phpglfw_functions.h', [
+        $this->generateTemplate('phpglfw_functions.h', [
             'functions' => $this->getCompleteFunctions(),
             'ipos' => $this->IPOs,
         ]);
@@ -437,9 +443,22 @@ class ExtGenerator
      */
     private function buildFunctionsBody() : void
     {
-        $buffer = $this->generateTemplate('phpglfw_functions.c', [
+        $this->generateTemplate('phpglfw_functions.c', [
             'functions' => $this->getCompleteFunctions(),
             'ipos' => $this->IPOs,
+        ]);
+    }
+
+    /**
+     * Builds the "phpglfw_buffer" files
+     */
+    private function buildGLBufferHeaderAndBody() : void
+    {
+        $this->generateTemplate('phpglfw_buffer.h', [
+            'buffers' => $this->phpglfwBuffers,
+        ]);
+        $this->generateTemplate('phpglfw_buffer.c', [
+            'buffers' => $this->phpglfwBuffers,
         ]);
     }
 
@@ -448,7 +467,8 @@ class ExtGenerator
      */
     private function buildStubs() : void
     {
-        $buffer = $this->generateTemplate('phpglfw.stub.php', [
+        $this->generateTemplate('phpglfw.stub.php', [
+            'buffers' => $this->phpglfwBuffers,
             'constants' => $this->constants,
             'functions' => $this->getCompleteFunctions(),
             '__buffer_prefix' => '<?php ' . PHP_EOL

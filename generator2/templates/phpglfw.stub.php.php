@@ -14,15 +14,17 @@ namespace PGL\Math
     }    
 };
 
-namespace PGL\Buffer 
+namespace GL\Buffer 
 {   
     interface BufferInterface {}
+<?php foreach($buffers as $buffer) : ?>
 
-    class FBuffer implements BufferInterface {
+    class <?php echo $buffer->name; ?> implements BufferInterface {
         public function __toString() : string {}
         public function push(float $value) : void {}
         public function reserve(int $size) : void {}
-    }       
+    }
+<?php endforeach; ?>
 };
 
 namespace {

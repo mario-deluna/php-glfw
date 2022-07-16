@@ -959,6 +959,31 @@ PHP_FUNCTION(glBindTexture)
 } 
 
 /**
+ * glDeleteTextures
+ */ 
+PHP_FUNCTION(glDeleteTextures)
+{
+    zend_long n;
+    zval *textures;
+    size_t textures_num = 0;
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "l+", &n, &textures, &textures_num) == FAILURE) {
+        return;
+    }
+    if (n != textures_num) {
+        zend_throw_error(NULL, "The given number of elements needs to match the actual amount of given variadic vars.");
+        return;
+    }
+    GLuint *textures_ids = malloc(n * sizeof(GLuint));
+    zval *data;
+    for (size_t i = 0; i <  textures_num; i++) {
+        data = &textures[i];
+        convert_to_long(data);
+        textures_ids[i] = Z_LVAL_P(data);
+    }
+    glDeleteTextures(n, textures_ids);;
+} 
+
+/**
  * glGenTextures
  */ 
 PHP_FUNCTION(glGenTextures)
@@ -1136,6 +1161,31 @@ PHP_FUNCTION(glGenQueries)
 } 
 
 /**
+ * glDeleteQueries
+ */ 
+PHP_FUNCTION(glDeleteQueries)
+{
+    zend_long n;
+    zval *ids;
+    size_t ids_num = 0;
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "l+", &n, &ids, &ids_num) == FAILURE) {
+        return;
+    }
+    if (n != ids_num) {
+        zend_throw_error(NULL, "The given number of elements needs to match the actual amount of given variadic vars.");
+        return;
+    }
+    GLuint *ids_ids = malloc(n * sizeof(GLuint));
+    zval *data;
+    for (size_t i = 0; i <  ids_num; i++) {
+        data = &ids[i];
+        convert_to_long(data);
+        ids_ids[i] = Z_LVAL_P(data);
+    }
+    glDeleteQueries(n, ids_ids);;
+} 
+
+/**
  * glIsQuery
  */ 
 PHP_FUNCTION(glIsQuery)
@@ -1231,6 +1281,31 @@ PHP_FUNCTION(glBindBuffer)
         return;
     }
     glBindBuffer(target, buffer);
+} 
+
+/**
+ * glDeleteBuffers
+ */ 
+PHP_FUNCTION(glDeleteBuffers)
+{
+    zend_long n;
+    zval *buffers;
+    size_t buffers_num = 0;
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "l+", &n, &buffers, &buffers_num) == FAILURE) {
+        return;
+    }
+    if (n != buffers_num) {
+        zend_throw_error(NULL, "The given number of elements needs to match the actual amount of given variadic vars.");
+        return;
+    }
+    GLuint *buffers_ids = malloc(n * sizeof(GLuint));
+    zval *data;
+    for (size_t i = 0; i <  buffers_num; i++) {
+        data = &buffers[i];
+        convert_to_long(data);
+        buffers_ids[i] = Z_LVAL_P(data);
+    }
+    glDeleteBuffers(n, buffers_ids);;
 } 
 
 /**
@@ -2513,6 +2588,31 @@ PHP_FUNCTION(glBindRenderbuffer)
 } 
 
 /**
+ * glDeleteRenderbuffers
+ */ 
+PHP_FUNCTION(glDeleteRenderbuffers)
+{
+    zend_long n;
+    zval *renderbuffers;
+    size_t renderbuffers_num = 0;
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "l+", &n, &renderbuffers, &renderbuffers_num) == FAILURE) {
+        return;
+    }
+    if (n != renderbuffers_num) {
+        zend_throw_error(NULL, "The given number of elements needs to match the actual amount of given variadic vars.");
+        return;
+    }
+    GLuint *renderbuffers_ids = malloc(n * sizeof(GLuint));
+    zval *data;
+    for (size_t i = 0; i <  renderbuffers_num; i++) {
+        data = &renderbuffers[i];
+        convert_to_long(data);
+        renderbuffers_ids[i] = Z_LVAL_P(data);
+    }
+    glDeleteRenderbuffers(n, renderbuffers_ids);;
+} 
+
+/**
  * glGenRenderbuffers
  */ 
 PHP_FUNCTION(glGenRenderbuffers)
@@ -2592,6 +2692,31 @@ PHP_FUNCTION(glBindFramebuffer)
         return;
     }
     glBindFramebuffer(target, framebuffer);
+} 
+
+/**
+ * glDeleteFramebuffers
+ */ 
+PHP_FUNCTION(glDeleteFramebuffers)
+{
+    zend_long n;
+    zval *framebuffers;
+    size_t framebuffers_num = 0;
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "l+", &n, &framebuffers, &framebuffers_num) == FAILURE) {
+        return;
+    }
+    if (n != framebuffers_num) {
+        zend_throw_error(NULL, "The given number of elements needs to match the actual amount of given variadic vars.");
+        return;
+    }
+    GLuint *framebuffers_ids = malloc(n * sizeof(GLuint));
+    zval *data;
+    for (size_t i = 0; i <  framebuffers_num; i++) {
+        data = &framebuffers[i];
+        convert_to_long(data);
+        framebuffers_ids[i] = Z_LVAL_P(data);
+    }
+    glDeleteFramebuffers(n, framebuffers_ids);;
 } 
 
 /**
@@ -2802,6 +2927,31 @@ PHP_FUNCTION(glBindVertexArray)
         return;
     }
     glBindVertexArray(array);
+} 
+
+/**
+ * glDeleteVertexArrays
+ */ 
+PHP_FUNCTION(glDeleteVertexArrays)
+{
+    zend_long n;
+    zval *arrays;
+    size_t arrays_num = 0;
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "l+", &n, &arrays, &arrays_num) == FAILURE) {
+        return;
+    }
+    if (n != arrays_num) {
+        zend_throw_error(NULL, "The given number of elements needs to match the actual amount of given variadic vars.");
+        return;
+    }
+    GLuint *arrays_ids = malloc(n * sizeof(GLuint));
+    zval *data;
+    for (size_t i = 0; i <  arrays_num; i++) {
+        data = &arrays[i];
+        convert_to_long(data);
+        arrays_ids[i] = Z_LVAL_P(data);
+    }
+    glDeleteVertexArrays(n, arrays_ids);;
 } 
 
 /**
@@ -3221,6 +3371,31 @@ PHP_FUNCTION(glGenSamplers)
         convert_to_long(data);
         Z_LVAL_P(data) = samplers_zval_ids[i];
     };
+} 
+
+/**
+ * glDeleteSamplers
+ */ 
+PHP_FUNCTION(glDeleteSamplers)
+{
+    zend_long count;
+    zval *samplers;
+    size_t samplers_num = 0;
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "l+", &count, &samplers, &samplers_num) == FAILURE) {
+        return;
+    }
+    if (count != samplers_num) {
+        zend_throw_error(NULL, "The given number of elements needs to match the actual amount of given variadic vars.");
+        return;
+    }
+    GLuint *samplers_ids = malloc(count * sizeof(GLuint));
+    zval *data;
+    for (size_t i = 0; i <  samplers_num; i++) {
+        data = &samplers[i];
+        convert_to_long(data);
+        samplers_ids[i] = Z_LVAL_P(data);
+    }
+    glDeleteSamplers(count, samplers_ids);;
 } 
 
 /**
@@ -3908,6 +4083,31 @@ PHP_FUNCTION(glBindTransformFeedback)
 } 
 
 /**
+ * glDeleteTransformFeedbacks
+ */ 
+PHP_FUNCTION(glDeleteTransformFeedbacks)
+{
+    zend_long n;
+    zval *ids;
+    size_t ids_num = 0;
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "l+", &n, &ids, &ids_num) == FAILURE) {
+        return;
+    }
+    if (n != ids_num) {
+        zend_throw_error(NULL, "The given number of elements needs to match the actual amount of given variadic vars.");
+        return;
+    }
+    GLuint *ids_ids = malloc(n * sizeof(GLuint));
+    zval *data;
+    for (size_t i = 0; i <  ids_num; i++) {
+        data = &ids[i];
+        convert_to_long(data);
+        ids_ids[i] = Z_LVAL_P(data);
+    }
+    glDeleteTransformFeedbacks(n, ids_ids);;
+} 
+
+/**
  * glGenTransformFeedbacks
  */ 
 PHP_FUNCTION(glGenTransformFeedbacks)
@@ -4135,6 +4335,31 @@ PHP_FUNCTION(glBindProgramPipeline)
         return;
     }
     glBindProgramPipeline(pipeline);
+} 
+
+/**
+ * glDeleteProgramPipelines
+ */ 
+PHP_FUNCTION(glDeleteProgramPipelines)
+{
+    zend_long n;
+    zval *pipelines;
+    size_t pipelines_num = 0;
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "l+", &n, &pipelines, &pipelines_num) == FAILURE) {
+        return;
+    }
+    if (n != pipelines_num) {
+        zend_throw_error(NULL, "The given number of elements needs to match the actual amount of given variadic vars.");
+        return;
+    }
+    GLuint *pipelines_ids = malloc(n * sizeof(GLuint));
+    zval *data;
+    for (size_t i = 0; i <  pipelines_num; i++) {
+        data = &pipelines[i];
+        convert_to_long(data);
+        pipelines_ids[i] = Z_LVAL_P(data);
+    }
+    glDeleteProgramPipelines(n, pipelines_ids);;
 } 
 
 /**
@@ -5686,9 +5911,9 @@ PHP_FUNCTION(glBufferData)
     if (zend_parse_parameters(ZEND_NUM_ARGS() , "lOl", &target, &buffer_zval, phpglfw_get_buffer_interface_ce(), &usage) == FAILURE) {
         return;
     }
-    if (Z_OBJCE_P(buffer_zval) == phpglfw_get_buffer_float_ce()) {
-        phpglfw_buffer_float_object *obj_ptr = phpglfw_buffer_float_objectptr_from_zobj_p(Z_OBJ_P(buffer_zval));
-        glBufferData(target, sizeof(float) * cvector_size(obj_ptr->vec), obj_ptr->vec, usage);
+    if (Z_OBJCE_P(buffer_zval) == phpglfw_get_buffer_glfloat_ce()) {
+        phpglfw_buffer_glfloat_object *obj_ptr = phpglfw_buffer_glfloat_objectptr_from_zobj_p(Z_OBJ_P(buffer_zval));
+        glBufferData(target, sizeof(GLfloat) * cvector_size(obj_ptr->vec), obj_ptr->vec, usage);
     } else {
         zend_throw_error(NULL, "glBufferData: Invalid or unsupported buffer object given.");
     };

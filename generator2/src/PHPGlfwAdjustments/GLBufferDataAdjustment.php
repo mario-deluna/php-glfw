@@ -26,9 +26,9 @@ class GLBufferDataAdjustment implements AdjustmentInterface
                 $sourceArg = $this->arguments[1];
 
                 $body = <<<EOD
-if (Z_OBJCE_P(buffer_zval) == phpglfw_get_buffer_float_ce()) {
-    phpglfw_buffer_float_object *obj_ptr = phpglfw_buffer_float_objectptr_from_zobj_p(Z_OBJ_P(buffer_zval));
-    glBufferData(target, sizeof(float) * cvector_size(obj_ptr->vec), obj_ptr->vec, usage);
+if (Z_OBJCE_P(buffer_zval) == phpglfw_get_buffer_glfloat_ce()) {
+    phpglfw_buffer_glfloat_object *obj_ptr = phpglfw_buffer_glfloat_objectptr_from_zobj_p(Z_OBJ_P(buffer_zval));
+    glBufferData(target, sizeof(GLfloat) * cvector_size(obj_ptr->vec), obj_ptr->vec, usage);
 } else {
     zend_throw_error(NULL, "glBufferData: Invalid or unsupported buffer object given.");
 }
@@ -59,7 +59,7 @@ EOD;
             }
 
             public function getPHPClassName() : string {
-                return "\\PGL\\Buffer\\BufferInterface";
+                return "\\GL\\Buffer\\BufferInterface";
             }
         };
 
