@@ -1,0 +1,36 @@
+name: PHPglfw
+
+on:
+  push:
+    branches: [ '*' ]
+  pull_request:
+    branches: [ '*' ]
+
+jobs:
+  build:
+
+    runs-on: ${{ matrix.operating-system }}
+    strategy:
+      matrix:
+        operating-system: ['ubuntu-latest']
+        php-versions: ['7.4', '8.0', '8.1']
+        phpunit-versions: ['latest']
+    
+    steps:
+    - uses: actions/checkout@v2
+    
+    - name: Setup PHP
+      uses: shivammathur/setup-php@v2
+      with:
+        php-version: ${{ matrix.php-versions }}
+        extensions: redis
+        coverage: xdebug
+        tools: cs2pr
+    - name: Build PHP-GLFW
+      run: sudo apt-get update && sudo apt-get install -y php-dev && sudo phpize && ./configure --enable-glfw && make && make install && grep -qxF 'extension=glfw.so' /etc/php/${{ matrix.php-versions }}/cli/php.ini || echo 'extension=glfw.so' >> /etc/php/${{ matrix.php-versions }}/cli/php.ini
+    
+    - name: Install PHPUnit
+      run: composer require "phpunit/phpunit"
+      
+    - name: Run PHPUnit 
+      run: php vendor/bin/phpunit
