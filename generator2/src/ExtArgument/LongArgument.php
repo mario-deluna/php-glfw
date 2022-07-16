@@ -33,4 +33,13 @@ class LongArgument extends ExtArgument
     {
         return '&Z_LVAL_P(' . $zvalVar . ')';
     }
+
+    /**
+     * Returns the C macro to assign this type of argument to zval
+     *     MACRO(zval, value)
+     */
+    public function getZvalAssignmentMacro() : string
+    {
+        return 'ZVAL_LONG';
+    }
 }

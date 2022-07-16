@@ -89,4 +89,9 @@ class PHPGLFWBuffer
     {
         return $this->getValueArg()->getCharId();
     }
+
+    public function getValuePHPType() : string
+    {
+        return ExtType::getPHPType($this->phpType);
+    }
 }

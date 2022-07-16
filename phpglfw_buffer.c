@@ -85,6 +85,30 @@ zend_object *phpglfw_buffer_glfloat_create_handler(zend_class_entry *class_type)
     return &intern->std;
 }
 
+zval *phpglfw_buffer_glfloat_array_get_handler(zend_object *object, zval *offset, int type, zval *rv)
+{
+	if(offset == NULL) {
+        zend_throw_error(NULL, "Cannot apply [] to GL\\Buffer\\BufferInterface object");
+	}
+
+    phpglfw_buffer_glfloat_object *obj_ptr = phpglfw_buffer_glfloat_objectptr_from_zobj_p(object);
+
+    if (Z_TYPE_P(offset) == IS_LONG) {
+		size_t index = (size_t)Z_LVAL_P(offset);
+
+        if (index < cvector_size(obj_ptr->vec)) {
+            ZVAL_DOUBLE(rv, obj_ptr->vec[index]);
+        } else {
+            ZVAL_NULL(rv);
+        }
+	} else {
+        zend_throw_error(NULL, "Only a int offset '$buffer[int]' can be used with the GL\\Buffer\\BufferInterface object");
+		ZVAL_NULL(rv);
+	}
+
+	return rv;
+}
+
 static HashTable *phpglfw_buffer_glfloat_debug_info_handler(zend_object *object, int *is_temp)
 {
     phpglfw_buffer_glfloat_object *obj_ptr = phpglfw_buffer_glfloat_objectptr_from_zobj_p(object);
@@ -114,7 +138,7 @@ PHP_METHOD(GL_Buffer_FloatBuffer, __toString)
 
     smart_str my_str = {0};
 
-    smart_str_appends(&my_str, "GL\\Buffer\\FloatBuffer(");
+    smart_str_appends(&my_str, "GL\\Buffer\\FloatBuffer" "(");
     smart_str_append_long(&my_str, cvector_size(obj_ptr->vec));
     smart_str_appends(&my_str, " [");
     smart_str_append_long(&my_str, cvector_capacity(obj_ptr->vec));
@@ -184,6 +208,30 @@ zend_object *phpglfw_buffer_gldouble_create_handler(zend_class_entry *class_type
     return &intern->std;
 }
 
+zval *phpglfw_buffer_gldouble_array_get_handler(zend_object *object, zval *offset, int type, zval *rv)
+{
+	if(offset == NULL) {
+        zend_throw_error(NULL, "Cannot apply [] to GL\\Buffer\\BufferInterface object");
+	}
+
+    phpglfw_buffer_gldouble_object *obj_ptr = phpglfw_buffer_gldouble_objectptr_from_zobj_p(object);
+
+    if (Z_TYPE_P(offset) == IS_LONG) {
+		size_t index = (size_t)Z_LVAL_P(offset);
+
+        if (index < cvector_size(obj_ptr->vec)) {
+            ZVAL_DOUBLE(rv, obj_ptr->vec[index]);
+        } else {
+            ZVAL_NULL(rv);
+        }
+	} else {
+        zend_throw_error(NULL, "Only a int offset '$buffer[int]' can be used with the GL\\Buffer\\BufferInterface object");
+		ZVAL_NULL(rv);
+	}
+
+	return rv;
+}
+
 static HashTable *phpglfw_buffer_gldouble_debug_info_handler(zend_object *object, int *is_temp)
 {
     phpglfw_buffer_gldouble_object *obj_ptr = phpglfw_buffer_gldouble_objectptr_from_zobj_p(object);
@@ -213,7 +261,7 @@ PHP_METHOD(GL_Buffer_DoubleBuffer, __toString)
 
     smart_str my_str = {0};
 
-    smart_str_appends(&my_str, "GL\\Buffer\\FloatBuffer(");
+    smart_str_appends(&my_str, "GL\\Buffer\\DoubleBuffer" "(");
     smart_str_append_long(&my_str, cvector_size(obj_ptr->vec));
     smart_str_appends(&my_str, " [");
     smart_str_append_long(&my_str, cvector_capacity(obj_ptr->vec));
@@ -283,6 +331,30 @@ zend_object *phpglfw_buffer_glint_create_handler(zend_class_entry *class_type)
     return &intern->std;
 }
 
+zval *phpglfw_buffer_glint_array_get_handler(zend_object *object, zval *offset, int type, zval *rv)
+{
+	if(offset == NULL) {
+        zend_throw_error(NULL, "Cannot apply [] to GL\\Buffer\\BufferInterface object");
+	}
+
+    phpglfw_buffer_glint_object *obj_ptr = phpglfw_buffer_glint_objectptr_from_zobj_p(object);
+
+    if (Z_TYPE_P(offset) == IS_LONG) {
+		size_t index = (size_t)Z_LVAL_P(offset);
+
+        if (index < cvector_size(obj_ptr->vec)) {
+            ZVAL_LONG(rv, obj_ptr->vec[index]);
+        } else {
+            ZVAL_NULL(rv);
+        }
+	} else {
+        zend_throw_error(NULL, "Only a int offset '$buffer[int]' can be used with the GL\\Buffer\\BufferInterface object");
+		ZVAL_NULL(rv);
+	}
+
+	return rv;
+}
+
 static HashTable *phpglfw_buffer_glint_debug_info_handler(zend_object *object, int *is_temp)
 {
     phpglfw_buffer_glint_object *obj_ptr = phpglfw_buffer_glint_objectptr_from_zobj_p(object);
@@ -312,7 +384,7 @@ PHP_METHOD(GL_Buffer_IntBuffer, __toString)
 
     smart_str my_str = {0};
 
-    smart_str_appends(&my_str, "GL\\Buffer\\FloatBuffer(");
+    smart_str_appends(&my_str, "GL\\Buffer\\IntBuffer" "(");
     smart_str_append_long(&my_str, cvector_size(obj_ptr->vec));
     smart_str_appends(&my_str, " [");
     smart_str_append_long(&my_str, cvector_capacity(obj_ptr->vec));
@@ -382,6 +454,30 @@ zend_object *phpglfw_buffer_glbyte_create_handler(zend_class_entry *class_type)
     return &intern->std;
 }
 
+zval *phpglfw_buffer_glbyte_array_get_handler(zend_object *object, zval *offset, int type, zval *rv)
+{
+	if(offset == NULL) {
+        zend_throw_error(NULL, "Cannot apply [] to GL\\Buffer\\BufferInterface object");
+	}
+
+    phpglfw_buffer_glbyte_object *obj_ptr = phpglfw_buffer_glbyte_objectptr_from_zobj_p(object);
+
+    if (Z_TYPE_P(offset) == IS_LONG) {
+		size_t index = (size_t)Z_LVAL_P(offset);
+
+        if (index < cvector_size(obj_ptr->vec)) {
+            ZVAL_LONG(rv, obj_ptr->vec[index]);
+        } else {
+            ZVAL_NULL(rv);
+        }
+	} else {
+        zend_throw_error(NULL, "Only a int offset '$buffer[int]' can be used with the GL\\Buffer\\BufferInterface object");
+		ZVAL_NULL(rv);
+	}
+
+	return rv;
+}
+
 static HashTable *phpglfw_buffer_glbyte_debug_info_handler(zend_object *object, int *is_temp)
 {
     phpglfw_buffer_glbyte_object *obj_ptr = phpglfw_buffer_glbyte_objectptr_from_zobj_p(object);
@@ -411,7 +507,7 @@ PHP_METHOD(GL_Buffer_ByteBuffer, __toString)
 
     smart_str my_str = {0};
 
-    smart_str_appends(&my_str, "GL\\Buffer\\FloatBuffer(");
+    smart_str_appends(&my_str, "GL\\Buffer\\ByteBuffer" "(");
     smart_str_append_long(&my_str, cvector_size(obj_ptr->vec));
     smart_str_appends(&my_str, " [");
     smart_str_append_long(&my_str, cvector_capacity(obj_ptr->vec));
@@ -452,25 +548,6 @@ PHP_METHOD(GL_Buffer_ByteBuffer, reserve)
     cvector_reserve(obj_ptr->vec, resvering_size);
 }
 
-zval *phpglfw_buffer_glint_array_get(zend_object *object, zval *offset, int type, zval *rv)
-{
-	if(offset == NULL) {
-		php_error( E_ERROR, "Cannot apply [] to GL\\Buffer\\BufferInterface object" );
-	}
-
-    phpglfw_buffer_glint_object *obj_ptr = phpglfw_buffer_glint_objectptr_from_zobj_p(object);
-
-    if(Z_TYPE_P(offset) == IS_LONG) {
-		size_t index = (size_t)Z_LVAL_P(offset);
-        ZVAL_LONG(rv, obj_ptr->vec[index]);
-	} else {
-		php_error( E_ERROR, "Cannot apply [] to GL\\Buffer\\BufferInterface object" );
-		ZVAL_NULL(rv);
-	}
-
-	return rv;
-}
-
 
 void phpglfw_register_buffer_module(INIT_FUNC_ARGS)
 {
@@ -488,6 +565,7 @@ void phpglfw_register_buffer_module(INIT_FUNC_ARGS)
 	zend_class_implements(phpglfw_buffer_glfloat_ce, 1, phpglfw_buffer_interface_ce);
     memcpy(&phpglfw_buffer_glfloat_handlers, zend_get_std_object_handlers(), sizeof(phpglfw_buffer_glfloat_handlers));
     phpglfw_buffer_glfloat_handlers.free_obj = phpglfw_buffer_glfloat_free_handler;
+    phpglfw_buffer_glfloat_handlers.read_dimension = phpglfw_buffer_glfloat_array_get_handler;
     phpglfw_buffer_glfloat_handlers.get_debug_info = phpglfw_buffer_glfloat_debug_info_handler;
     phpglfw_buffer_glfloat_handlers.offset = XtOffsetOf(phpglfw_buffer_glfloat_object, std);
 
@@ -499,6 +577,7 @@ void phpglfw_register_buffer_module(INIT_FUNC_ARGS)
 	zend_class_implements(phpglfw_buffer_gldouble_ce, 1, phpglfw_buffer_interface_ce);
     memcpy(&phpglfw_buffer_gldouble_handlers, zend_get_std_object_handlers(), sizeof(phpglfw_buffer_gldouble_handlers));
     phpglfw_buffer_gldouble_handlers.free_obj = phpglfw_buffer_gldouble_free_handler;
+    phpglfw_buffer_gldouble_handlers.read_dimension = phpglfw_buffer_gldouble_array_get_handler;
     phpglfw_buffer_gldouble_handlers.get_debug_info = phpglfw_buffer_gldouble_debug_info_handler;
     phpglfw_buffer_gldouble_handlers.offset = XtOffsetOf(phpglfw_buffer_gldouble_object, std);
 
@@ -510,8 +589,8 @@ void phpglfw_register_buffer_module(INIT_FUNC_ARGS)
 	zend_class_implements(phpglfw_buffer_glint_ce, 1, phpglfw_buffer_interface_ce);
     memcpy(&phpglfw_buffer_glint_handlers, zend_get_std_object_handlers(), sizeof(phpglfw_buffer_glint_handlers));
     phpglfw_buffer_glint_handlers.free_obj = phpglfw_buffer_glint_free_handler;
+    phpglfw_buffer_glint_handlers.read_dimension = phpglfw_buffer_glint_array_get_handler;
     phpglfw_buffer_glint_handlers.get_debug_info = phpglfw_buffer_glint_debug_info_handler;
-    phpglfw_buffer_glint_handlers.read_dimension = phpglfw_buffer_glint_array_get;
     phpglfw_buffer_glint_handlers.offset = XtOffsetOf(phpglfw_buffer_glint_object, std);
 
     // float buffer
@@ -522,6 +601,7 @@ void phpglfw_register_buffer_module(INIT_FUNC_ARGS)
 	zend_class_implements(phpglfw_buffer_glbyte_ce, 1, phpglfw_buffer_interface_ce);
     memcpy(&phpglfw_buffer_glbyte_handlers, zend_get_std_object_handlers(), sizeof(phpglfw_buffer_glbyte_handlers));
     phpglfw_buffer_glbyte_handlers.free_obj = phpglfw_buffer_glbyte_free_handler;
+    phpglfw_buffer_glbyte_handlers.read_dimension = phpglfw_buffer_glbyte_array_get_handler;
     phpglfw_buffer_glbyte_handlers.get_debug_info = phpglfw_buffer_glbyte_debug_info_handler;
     phpglfw_buffer_glbyte_handlers.offset = XtOffsetOf(phpglfw_buffer_glbyte_object, std);
 

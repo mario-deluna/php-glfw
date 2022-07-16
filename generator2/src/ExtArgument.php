@@ -253,4 +253,13 @@ abstract class ExtArgument
             '&' . $this->getInternalVariable(),
         ];
     }
+
+    /**
+     * Returns the C macro to assign this type of argument to zval
+     *     MACRO(zval, value)
+     */
+    public function getZvalAssignmentMacro() : string
+    {
+        throw new Exception(sprintf('The argument type "%s" does not support beeing assigned to zval.', get_class($this)));  
+    }
 }

@@ -321,29 +321,6 @@ class ExtFunction
 
     public function mapTypeToStubType(string $type) : string
     {
-        switch($type) {
-            case 'long':
-            case 'int':
-                return 'int';
-            break;
-            case 'double':
-            case 'float':
-                return 'float';
-            break;
-            case 'bool':
-                return 'bool';
-            break;
-            case 'void':
-                return 'void';
-            break;
-            case 'string':
-                return 'string';
-            break;
-            case '@res':
-                return 'resource';
-            break;
-            default: 
-                throw new \Exception("Unmappable type {$type}");
-        }
+        return ExtType::getPHPType($type);
     }
 }

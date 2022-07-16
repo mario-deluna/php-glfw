@@ -1,5 +1,5 @@
 /* This is a generated file, edit the .stub.php file instead.
- * Stub hash: 22fa5d6f5d4fdc7caadfb30e629bec7e050774d7 */
+ * Stub hash: 8b1d095bec85541e88f031b7230e2c95585f64bd */
 
 ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_glCullFace, 0, 1, IS_VOID, 0)
 	ZEND_ARG_TYPE_INFO(0, mode, IS_LONG, 0)
@@ -1747,13 +1747,15 @@ ZEND_END_ARG_INFO()
 
 #define arginfo_class_GL_Buffer_IntBuffer___toString arginfo_glfwGetVersionString
 
-#define arginfo_class_GL_Buffer_IntBuffer_push arginfo_glMinSampleShading
+ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_class_GL_Buffer_IntBuffer_push, 0, 1, IS_VOID, 0)
+	ZEND_ARG_TYPE_INFO(0, value, IS_LONG, 0)
+ZEND_END_ARG_INFO()
 
 #define arginfo_class_GL_Buffer_IntBuffer_reserve arginfo_class_GL_Buffer_FloatBuffer_reserve
 
 #define arginfo_class_GL_Buffer_ByteBuffer___toString arginfo_glfwGetVersionString
 
-#define arginfo_class_GL_Buffer_ByteBuffer_push arginfo_glMinSampleShading
+#define arginfo_class_GL_Buffer_ByteBuffer_push arginfo_class_GL_Buffer_IntBuffer_push
 
 #define arginfo_class_GL_Buffer_ByteBuffer_reserve arginfo_class_GL_Buffer_FloatBuffer_reserve
 

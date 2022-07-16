@@ -2,17 +2,16 @@
 
 namespace GL\Tests\Buffer;
 
-use GL\Buffer\FloatBuffer;
-use GL\Buffer\BufferInterface;
+use GL\Buffer\DoubleBuffer;
 
-class FloatBufferTest extends BufferTestCase
+class DoubleBufferTest extends BufferTestCase
 {
     /**
      * Returns the class name on which the base tests shall be executed on
      */
     protected function getBufferClass() : string
     {
-        return FloatBuffer::class;
+        return DoubleBuffer::class;
     }
 
     /**

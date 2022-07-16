@@ -78,6 +78,30 @@ zend_object *<?php echo $buffer->getHandlerMethodName('create'); ?>(zend_class_e
     return &intern->std;
 }
 
+zval *<?php echo $buffer->getHandlerMethodName('array_get'); ?>(zend_object *object, zval *offset, int type, zval *rv)
+{
+	if(offset == NULL) {
+        zend_throw_error(NULL, "Cannot apply [] to GL\\Buffer\\BufferInterface object");
+	}
+
+    <?php echo $buffer->getObjectName(); ?> *obj_ptr = <?php echo $buffer->objectFromZObjFunctionName(); ?>(object);
+
+    if (Z_TYPE_P(offset) == IS_LONG) {
+		size_t index = (size_t)Z_LVAL_P(offset);
+
+        if (index < cvector_size(obj_ptr->vec)) {
+            <?php echo $buffer->getValueArg()->getZvalAssignmentMacro(); ?>(rv, obj_ptr->vec[index]);
+        } else {
+            ZVAL_NULL(rv);
+        }
+	} else {
+        zend_throw_error(NULL, "Only a int offset '$buffer[int]' can be used with the GL\\Buffer\\BufferInterface object");
+		ZVAL_NULL(rv);
+	}
+
+	return rv;
+}
+
 static HashTable *<?php echo $buffer->getHandlerMethodName('debug_info'); ?>(zend_object *object, int *is_temp)
 {
     <?php echo $buffer->getObjectName(); ?> *obj_ptr = <?php echo $buffer->objectFromZObjFunctionName(); ?>(object);
@@ -107,7 +131,7 @@ PHP_METHOD(<?php echo $buffer->getFullNamespaceConstString(); ?>, __toString)
 
     smart_str my_str = {0};
 
-    smart_str_appends(&my_str, "GL\\Buffer\\FloatBuffer(");
+    smart_str_appends(&my_str, <?php echo $buffer->getFullNamespaceCString(); ?> "(");
     smart_str_append_long(&my_str, cvector_size(obj_ptr->vec));
     smart_str_appends(&my_str, " [");
     smart_str_append_long(&my_str, cvector_capacity(obj_ptr->vec));
@@ -167,6 +191,7 @@ void phpglfw_register_buffer_module(INIT_FUNC_ARGS)
 	zend_class_implements(<?php echo $buffer->getClassEntryName(); ?>, 1, phpglfw_buffer_interface_ce);
     memcpy(&<?php echo $buffer->getHandlersVarName(); ?>, zend_get_std_object_handlers(), sizeof(<?php echo $buffer->getHandlersVarName(); ?>));
     <?php echo $buffer->getHandlersVarName(); ?>.free_obj = <?php echo $buffer->getHandlerMethodName('free'); ?>;
+    <?php echo $buffer->getHandlersVarName(); ?>.read_dimension = <?php echo $buffer->getHandlerMethodName('array_get'); ?>;
     <?php echo $buffer->getHandlersVarName(); ?>.get_debug_info = <?php echo $buffer->getHandlerMethodName('debug_info'); ?>;
     <?php echo $buffer->getHandlersVarName(); ?>.offset = XtOffsetOf(<?php echo $buffer->getObjectName(); ?>, std);
 

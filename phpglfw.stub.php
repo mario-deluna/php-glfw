@@ -33,13 +33,13 @@ namespace GL\Buffer
 
     class IntBuffer implements BufferInterface {
         public function __toString() : string {}
-        public function push(float $value) : void {}
+        public function push(int $value) : void {}
         public function reserve(int $size) : void {}
     }
 
     class ByteBuffer implements BufferInterface {
         public function __toString() : string {}
-        public function push(float $value) : void {}
+        public function push(int $value) : void {}
         public function reserve(int $size) : void {}
     }
 };

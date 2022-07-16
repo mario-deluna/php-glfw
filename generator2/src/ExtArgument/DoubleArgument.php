@@ -33,4 +33,13 @@ class DoubleArgument extends ExtArgument
     {
         return '&Z_DVAL_P(' . $zvalVar . ')';
     }
+
+    /**
+     * Returns the C macro to assign this type of argument to zval
+     *     MACRO(zval, value)
+     */
+    public function getZvalAssignmentMacro() : string
+    {
+        return 'ZVAL_DOUBLE';
+    }
 }

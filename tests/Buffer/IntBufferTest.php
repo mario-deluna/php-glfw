@@ -5,52 +5,24 @@ namespace GL\Tests\Buffer;
 use GL\Buffer\IntBuffer;
 use GL\Buffer\BufferInterface;
 
-class IntBufferTest extends \PHPUnit\Framework\TestCase
+class IntBufferTest extends BufferTestCase
 {
-    public function testConstruct()
+    /**
+     * Returns the class name on which the base tests shall be executed on
+     */
+    protected function getBufferClass() : string
     {
-        $this->assertInstanceOf(IntBuffer::class, new IntBuffer());
-        $this->assertInstanceOf(BufferInterface::class, new IntBuffer());
+        return IntBuffer::class;
     }
 
     /**
-     * Very basic test to check that we do not leak memory...
+     * Returns an array of test data
      */
-    public function testMemoryConsumption() 
+    protected function getTestData() : array
     {
-        $afterMemory = memory_get_usage(true);
-        $finalMemory = memory_get_usage(true);
-        $initalMemory = memory_get_usage(true);
-
-        $buffer = new IntBuffer();
-        $buffer->reserve(100000000);
-
-        $afterMemory = memory_get_usage(true);
-
-        unset($buffer);
-
-        $finalMemory = memory_get_usage(true);
-
-        $this->assertTrue($afterMemory > $initalMemory);
-        $this->assertEquals($initalMemory, $finalMemory);
-    }
-
-    public function testToString() 
-    {
-        $buffer = new IntBuffer();
-        $this->assertEquals('GL\Buffer\FloatBuffer(0 [0])', (string) $buffer);
-
-        $buffer->push(42);
-        $this->assertEquals('GL\Buffer\FloatBuffer(1 [1])', (string) $buffer);
-        $buffer->push(1);
-        $buffer->push(2);
-        $buffer->push(3);
-        $buffer->push(4);
-        $this->assertEquals('GL\Buffer\FloatBuffer(5 [8])', (string) $buffer);
-
-        $buffer->reserve(20);
-
-        $this->assertEquals('GL\Buffer\FloatBuffer(5 [20])', (string) $buffer);
+        return [
+            0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10
+        ];
     }
 
     public function testOverflow() 
