@@ -26,8 +26,15 @@ jobs:
         extensions: redis
         coverage: xdebug
         tools: cs2pr
+        
+    - name: Install dependenies
+      run: sudo apt-get update && sudo apt-get install -y php-dev cmake
+      
+    - name: Build GLFW lib
+      run: cd vendor/glfw && cmake . && make install && cd ../../
+        
     - name: Build PHP-GLFW
-      run: sudo apt-get update && sudo apt-get install -y php-dev && sudo phpize && ./configure --enable-glfw && make && make install && grep -qxF 'extension=glfw.so' /etc/php/${{ matrix.php-versions }}/cli/php.ini || echo 'extension=glfw.so' >> /etc/php/${{ matrix.php-versions }}/cli/php.ini
+      run: sudo phpize && ./configure --enable-glfw && make && make install && grep -qxF 'extension=glfw.so' /etc/php/${{ matrix.php-versions }}/cli/php.ini || echo 'extension=glfw.so' >> /etc/php/${{ matrix.php-versions }}/cli/php.ini
     
     - name: Install PHPUnit
       run: composer require "phpunit/phpunit"
