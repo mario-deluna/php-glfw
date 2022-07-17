@@ -34,7 +34,7 @@ jobs:
       run: cd vendor/glfw && cmake . -DGLFW_BUILD_TESTS=OFF -DGLFW_BUILD_EXAMPLES=OFF -DBUILD_SHARED_LIBS=ON && sudo make install && cd ../../
         
     - name: Build PHP-GLFW
-      run: sudo phpize && ./configure --enable-glfw && make && make install && grep -qxF 'extension=glfw.so' /etc/php/${{ matrix.php-versions }}/cli/php.ini || echo 'extension=glfw.so' >> /etc/php/${{ matrix.php-versions }}/cli/php.ini
+      run: sudo phpize && ./configure --enable-glfw && make && sudo make install && grep -qxF 'extension=glfw.so' /etc/php/${{ matrix.php-versions }}/cli/php.ini || echo 'extension=glfw.so' >> /etc/php/${{ matrix.php-versions }}/cli/php.ini
     
     - name: Install PHPUnit
       run: composer require "phpunit/phpunit"
