@@ -34,7 +34,7 @@ jobs:
       run: cd vendor/glfw && cmake . -DGLFW_BUILD_TESTS=OFF -DGLFW_BUILD_EXAMPLES=OFF -DBUILD_SHARED_LIBS=ON && sudo make install && cd ../../
         
     - name: Build PHP-GLFW
-      run: sudo phpize && ./configure --enable-glfw && sudo make
+      run: sudo phpize && ./configure --enable-glfw --with-php-config=${{ github.workspace }}/php/bin/php-config && sudo make
     
     - name: Install PHP-GLFW
       run: sudo make -j$(nproc) install && grep -qxF 'extension=glfw.so' /etc/php/${{ matrix.php-versions }}/cli/php.ini || echo 'extension=glfw.so' >> /etc/php/${{ matrix.php-versions }}/cli/php.ini
