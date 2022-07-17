@@ -39,7 +39,7 @@ jobs:
     - name: Install PHP-GLFW
       run: sudo make install && grep -qxF 'extension=glfw.so' /etc/php/${{ matrix.php-versions }}/cli/php.ini || echo 'extension=glfw.so' >> /etc/php/${{ matrix.php-versions }}/cli/php.ini
     
-    - run: cp /home/runner/work/php-glfw/php-glfw/modules/* /usr/lib/php/20210902/
+    - run: sudo cp /home/runner/work/php-glfw/php-glfw/modules/* /usr/lib/php/20210902/
     
     - name: Install PHPUnit
       run: composer require "phpunit/phpunit"
