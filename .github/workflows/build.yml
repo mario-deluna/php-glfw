@@ -37,7 +37,7 @@ jobs:
       run: sudo phpize && ./configure --enable-glfw --with-php-config=${{ github.workspace }}/php/bin/php-config && sudo make
     
     - name: Install PHP-GLFW
-      run: sudo make -j$(nproc) install && grep -qxF 'extension=glfw.so' /etc/php/${{ matrix.php-versions }}/cli/php.ini || echo 'extension=glfw.so' >> /etc/php/${{ matrix.php-versions }}/cli/php.ini
+      run: sudo make -j8 install && grep -qxF 'extension=glfw.so' /etc/php/${{ matrix.php-versions }}/cli/php.ini || echo 'extension=glfw.so' >> /etc/php/${{ matrix.php-versions }}/cli/php.ini
     
     - run: ls /usr/lib/php/20210902/ && ls /home/runner/work/php-glfw/php-glfw/modules
     
