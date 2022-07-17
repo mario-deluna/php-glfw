@@ -23,7 +23,7 @@ jobs:
       uses: shivammathur/setup-php@v2
       with:
         php-version: ${{ matrix.php-versions }}
-        extensions: redis
+        extensions: :glfw
         coverage: xdebug
         tools: cs2pr
         
@@ -34,7 +34,7 @@ jobs:
       run: cd vendor/glfw && cmake . -DGLFW_BUILD_TESTS=OFF -DGLFW_BUILD_EXAMPLES=OFF -DBUILD_SHARED_LIBS=ON && sudo make install && cd ../../
         
     - name: Build PHP-GLFW
-      run: sudo phpize && ./configure --enable-glfw && make && sudo make install && grep -qxF 'extension=glfw.so' /etc/php/${{ matrix.php-versions }}/cli/php.ini || echo 'extension=glfw.so' >> /etc/php/${{ matrix.php-versions }}/cli/php.ini
+      run: sudo phpize && ./configure --enable-glfw && make && sudo make -j$(nproc) install && grep -qxF 'extension=glfw.so' /etc/php/${{ matrix.php-versions }}/cli/php.ini || echo 'extension=glfw.so' >> /etc/php/${{ matrix.php-versions }}/cli/php.ini
     
     - run: ls /usr/lib/php/20210902/ && ls /home/runner/work/php-glfw/php-glfw/modules
     
