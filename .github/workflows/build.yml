@@ -28,7 +28,7 @@ jobs:
         tools: cs2pr
         
     - name: Install dependenies
-      run: sudo apt-get update && sudo apt-get install -y php-dev cmake libxrandr-dev libxinerama-dev libxcursor-dev
+      run: sudo apt-get update && sudo apt-get install -y php-dev cmake libxrandr-dev libxinerama-dev libxcursor-dev libxi-dev
       
     - name: Build GLFW lib
       run: cd vendor/glfw && cmake . && make install && cd ../../
