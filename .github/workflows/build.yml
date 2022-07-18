@@ -49,7 +49,7 @@ jobs:
       
     - name: Archive Test Results
       if: always()
-      run: ls -la && gdb php examples/buffer.php
+      run: ls -la /home/runner/work/_temp/ && gdb php examples/buffer.php
   
     
   macos:
