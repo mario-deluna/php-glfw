@@ -18,9 +18,6 @@ jobs:
     
     steps:
     - uses: actions/checkout@v3
-    
-    - name: Setup upterm session
-      uses: lhotari/action-upterm@v1
       
     - name: Setup PHP
       uses: shivammathur/setup-php@v2
@@ -49,7 +46,13 @@ jobs:
       
     - name: Run PHPUnit 
       run: php -dzend_extension=xdebug.so  -dxdebug.auto_trace=ON -dxdebug.trace_output_dir=trace ./vendor/bin/phpunit --debug
-      
+    
+    
+    
+    - name: Setup upterm session
+      if: always()
+      uses: lhotari/action-upterm@v1
+    
     - name: Archive Test Results
       if: always()
       run: ls -la /home/runner/work/_temp/ && gdb php examples/buffer.php
