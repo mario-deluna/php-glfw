@@ -45,7 +45,7 @@ jobs:
       run: composer require "phpunit/phpunit"
       
     - name: Run PHPUnit 
-      run: php -d xdebug.auto_trace=ON -d xdebug.trace_output_dir=trace ./vendor/bin/phpunit
+      run: php -d xdebug.auto_trace=ON -d xdebug.trace_output_dir=trace ./vendor/bin/phpunit --testdox
       
     - name: Archive Test Results
       if: always()
