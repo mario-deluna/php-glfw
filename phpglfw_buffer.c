@@ -1387,7 +1387,7 @@ void phpglfw_register_buffer_module(INIT_FUNC_ARGS)
     INIT_CLASS_ENTRY(tmp_ce, "GL\\Buffer\\FloatBuffer", class_GL_Buffer_FloatBuffer_methods);
     phpglfw_buffer_glfloat_ce = zend_register_internal_class(&tmp_ce);
     phpglfw_buffer_glfloat_ce->create_object = phpglfw_buffer_glfloat_create_handler;
-    phpglfw_buffer_glfloat_ce->get_iterator = phpglfw_buffer_glfloat_get_iterator_handler;
+    //phpglfw_buffer_glfloat_ce->get_iterator = phpglfw_buffer_glfloat_get_iterator_handler;
 
 	zend_class_implements(phpglfw_buffer_glfloat_ce, 1, phpglfw_buffer_interface_ce);
     memcpy(&phpglfw_buffer_glfloat_handlers, zend_get_std_object_handlers(), sizeof(phpglfw_buffer_glfloat_handlers));
@@ -1401,7 +1401,7 @@ void phpglfw_register_buffer_module(INIT_FUNC_ARGS)
     INIT_CLASS_ENTRY(tmp_ce, "GL\\Buffer\\DoubleBuffer", class_GL_Buffer_DoubleBuffer_methods);
     phpglfw_buffer_gldouble_ce = zend_register_internal_class(&tmp_ce);
     phpglfw_buffer_gldouble_ce->create_object = phpglfw_buffer_gldouble_create_handler;
-    phpglfw_buffer_gldouble_ce->get_iterator = phpglfw_buffer_gldouble_get_iterator_handler;
+    //phpglfw_buffer_gldouble_ce->get_iterator = phpglfw_buffer_gldouble_get_iterator_handler;
 
 	zend_class_implements(phpglfw_buffer_gldouble_ce, 1, phpglfw_buffer_interface_ce);
     memcpy(&phpglfw_buffer_gldouble_handlers, zend_get_std_object_handlers(), sizeof(phpglfw_buffer_gldouble_handlers));
@@ -1415,7 +1415,7 @@ void phpglfw_register_buffer_module(INIT_FUNC_ARGS)
     INIT_CLASS_ENTRY(tmp_ce, "GL\\Buffer\\IntBuffer", class_GL_Buffer_IntBuffer_methods);
     phpglfw_buffer_glint_ce = zend_register_internal_class(&tmp_ce);
     phpglfw_buffer_glint_ce->create_object = phpglfw_buffer_glint_create_handler;
-    phpglfw_buffer_glint_ce->get_iterator = phpglfw_buffer_glint_get_iterator_handler;
+    //phpglfw_buffer_glint_ce->get_iterator = phpglfw_buffer_glint_get_iterator_handler;
 
 	zend_class_implements(phpglfw_buffer_glint_ce, 1, phpglfw_buffer_interface_ce);
     memcpy(&phpglfw_buffer_glint_handlers, zend_get_std_object_handlers(), sizeof(phpglfw_buffer_glint_handlers));
@@ -1429,7 +1429,7 @@ void phpglfw_register_buffer_module(INIT_FUNC_ARGS)
     INIT_CLASS_ENTRY(tmp_ce, "GL\\Buffer\\ByteBuffer", class_GL_Buffer_ByteBuffer_methods);
     phpglfw_buffer_glbyte_ce = zend_register_internal_class(&tmp_ce);
     phpglfw_buffer_glbyte_ce->create_object = phpglfw_buffer_glbyte_create_handler;
-    phpglfw_buffer_glbyte_ce->get_iterator = phpglfw_buffer_glbyte_get_iterator_handler;
+    //phpglfw_buffer_glbyte_ce->get_iterator = phpglfw_buffer_glbyte_get_iterator_handler;
 
 	zend_class_implements(phpglfw_buffer_glbyte_ce, 1, phpglfw_buffer_interface_ce);
     memcpy(&phpglfw_buffer_glbyte_handlers, zend_get_std_object_handlers(), sizeof(phpglfw_buffer_glbyte_handlers));
