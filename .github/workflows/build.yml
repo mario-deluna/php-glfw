@@ -52,7 +52,7 @@ jobs:
     runs-on: ${{ matrix.operating-system }}
     strategy:
       matrix:
-        operating-system: ['macos']
+        operating-system: ['macos-latest']
         php-versions: ['8.0', '8.1']
         phpunit-versions: ['latest']
     
