@@ -49,7 +49,7 @@ jobs:
       
     - name: Archive Test Results
       if: always()
-      run: ls trace
+      run: ls -la && ls trace
   
     
   macos:
