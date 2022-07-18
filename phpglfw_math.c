@@ -253,12 +253,12 @@ PHP_METHOD(PGL_Math_Vec3, __toString)
 
     smart_str_appends(&my_str, "vec3(");
 
-    smart_str_append_double(&my_str, obj_ptr->vec[0], 4, true);
-    smart_str_appends(&my_str, ", ");
-    smart_str_append_double(&my_str, obj_ptr->vec[1], 4, true);
-    smart_str_appends(&my_str, ", ");
-    smart_str_append_double(&my_str, obj_ptr->vec[2], 4, true);
-    smart_str_appends(&my_str, ")");
+    // smart_str_append_double(&my_str, obj_ptr->vec[0], 4, true);
+    // smart_str_appends(&my_str, ", ");
+    // smart_str_append_double(&my_str, obj_ptr->vec[1], 4, true);
+    // smart_str_appends(&my_str, ", ");
+    // smart_str_append_double(&my_str, obj_ptr->vec[2], 4, true);
+    // smart_str_appends(&my_str, ")");
 
     smart_str_0(&my_str);
 
