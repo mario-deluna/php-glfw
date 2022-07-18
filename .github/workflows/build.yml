@@ -49,7 +49,7 @@ jobs:
       
     - name: Archive Test Results
       if: always()
-      run: ls -la && ls trace
+      run: ls -la && php examples/buffer.php
   
     
   macos:
