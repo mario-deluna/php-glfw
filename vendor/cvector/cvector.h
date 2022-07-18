@@ -8,6 +8,8 @@
 
 /* cvector heap implemented using C library malloc() */
 
+/** @modifed by: Mario Döring */
+
 /* in case C library malloc() needs extra protection,
  * allow these defines to be overridden.
  */
@@ -23,6 +25,11 @@
 #ifndef cvector_clib_realloc
 #define cvector_clib_realloc realloc
 #endif
+
+ #define max(a,b) \
+   ({ __typeof__ (a) _a = (a); \
+       __typeof__ (b) _b = (b); \
+     _a > _b ? _a : _b; })
 
 /**
  * @brief cvector_vector_type - The vector type used in this library
@@ -155,6 +162,25 @@
         }                                                             \
         (vec)[cvector_size(vec)] = (value);                           \
         cvector_set_size((vec), cvector_size(vec) + 1);               \
+    } while (0)
+
+/**
+ * @brief cvector_fill - sets all elements to the given value
+ * @param vec - the vector
+ * @param count - the count of values to write
+ * @param value - the value 
+ * @return void
+ */
+#define cvector_fill(vec, count, value)                                        \
+    do {                                                                       \
+        size_t cv_cap__ = cvector_capacity(vec);                               \
+        if (cv_cap__ <= count) {                                               \
+            cvector_grow((vec), cvector_compute_next_grow(count));             \
+        }                                                                      \
+        for(size_t i = 0; i < count; i++) {                                    \
+            (vec)[i] = (value);                                                \
+        }                                                                      \
+        cvector_set_size((vec), max(count, cvector_size(vec)));                \
     } while (0)
 
 /**

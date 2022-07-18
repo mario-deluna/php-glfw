@@ -24,6 +24,14 @@ class ByteBufferTest extends BufferTestCase
         ];
     }
 
+    /**
+     * Assertion helper to check if two values are equal
+     */
+    protected function assertEqualBufferValue($expected, $actual)
+    {
+        $this->assertEquals($expected, $actual);
+    }
+
     public function testOverflow() 
     {
         $buffer = new ByteBuffer();

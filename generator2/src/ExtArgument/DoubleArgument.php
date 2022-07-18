@@ -42,4 +42,24 @@ class DoubleArgument extends ExtArgument
     {
         return 'ZVAL_DOUBLE';
     }
+
+    /**
+     * Returns the comparison constant for a zval for this type
+     *     IS_LONG
+     *     IS_DOUBLE
+     */
+    public function getZvalTypeComparisonConst() : string
+    {
+        return 'IS_DOUBLE';
+    }
+
+
+    /**
+     * Returns the comparison constant for a zval for this type
+     *     Z_LVAL_P
+     */
+    public function getValueFromZvalPointerConst() : string
+    {
+        return 'Z_DVAL_P';
+    }
 }

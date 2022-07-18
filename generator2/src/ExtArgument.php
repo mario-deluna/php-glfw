@@ -262,4 +262,33 @@ abstract class ExtArgument
     {
         throw new Exception(sprintf('The argument type "%s" does not support beeing assigned to zval.', get_class($this)));  
     }
+
+    /**
+     * Returns the comparison constant for a zval for this type
+     *     IS_LONG
+     *     IS_DOUBLE
+     */
+    public function getZvalTypeComparisonConst() : string
+    {
+        throw new Exception(sprintf('The argument type "%s" does not support zval comparison.', get_class($this)));  
+    }
+
+
+    /**
+     * Returns the comparison constant for a zval for this type
+     *     Z_LVAL_P
+     */
+    public function getValueFromZvalPointerConst() : string
+    {
+        throw new Exception(sprintf('The argument type "%s" does not support getting a value from.', get_class($this)));  
+    }
+
+    /**
+     * Returns the comparison constant for a zval for this type
+     *     RETURN_LONG
+     */
+    public function getReturnValueAssignment() : string
+    {
+        throw new Exception(sprintf('The argument type "%s" does not support a return value cast', get_class($this)));  
+    }
 }

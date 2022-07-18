@@ -16,12 +16,23 @@ namespace PGL\Math
 
 namespace GL\Buffer 
 {   
-    interface BufferInterface {}
+    interface BufferInterface {
+        public function __construct(?array $initalData = null) {}
+        public function clear() : void {}
+        public function size() : int {}
+        public function capacity() : int {}
+        public function reserve(int $size) : void {}
+    }
 <?php foreach($buffers as $buffer) : ?>
 
     class <?php echo $buffer->name; ?> implements BufferInterface {
+        public function __construct(?array $initalData = null) {}
         public function __toString() : string {}
         public function push(<?php echo $buffer->getValuePHPType(); ?> $value) : void {}
+        public function fill(int $count, <?php echo $buffer->getValuePHPType(); ?> $value) : void {}
+        public function clear() : void {}
+        public function size() : int {}
+        public function capacity() : int {}
         public function reserve(int $size) : void {}
     }
 <?php endforeach; ?>

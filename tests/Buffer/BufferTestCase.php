@@ -16,12 +16,25 @@ abstract class BufferTestCase extends \PHPUnit\Framework\TestCase
      */
     abstract protected function getTestData() : array;
 
+    /**
+     * Assertion helper to check if two values are equal
+     */
+    abstract protected function assertEqualBufferValue($expected, $actual);
+
     public function testConstruct()
     {
         $className = $this->getBufferClass();
 
         $this->assertInstanceOf($className, new $className());
         $this->assertInstanceOf(BufferInterface::class, new $className());
+
+        // test construct with inital data
+        $data = $this->getTestData();
+        $buffer = new $className($data);
+
+        for($i=0; $i<count($data); $i++) {
+            $this->assertEqualBufferValue($data[$i], $buffer[$i]);
+        }
     }
 
     /**
@@ -59,12 +72,25 @@ abstract class BufferTestCase extends \PHPUnit\Framework\TestCase
         }
 
         for($i=0; $i<count($data); $i++) {
-            if (is_float($data[$i])) {
-                // because of type conversions we expect some rounding offset
-                $this->assertEqualsWithDelta($data[$i], $buffer[$i], 0.0001);
-            } else {
-                $this->assertEquals($data[$i], $buffer[$i]);
-            }
+            $this->assertEqualBufferValue($data[$i], $buffer[$i]);
+        }
+    }
+
+    /**
+     * The same as testPushAndRead but using the "$buffer[] = 24" syntax
+     */
+    public function testPushSubscriptAndRead() 
+    {
+        $className = $this->getBufferClass();
+        $buffer = new $className();
+
+        $data = $this->getTestData();
+        foreach($data as $v) {
+            $buffer[] = $v;
+        }
+
+        for($i=0; $i<count($data); $i++) {
+            $this->assertEqualBufferValue($data[$i], $buffer[$i]);
         }
     }
 
@@ -75,7 +101,7 @@ abstract class BufferTestCase extends \PHPUnit\Framework\TestCase
 
         $buffer->push(42);
 
-        $this->assertEquals(42, $buffer[0]);
+        $this->assertEqualBufferValue(42, $buffer[0]);
         $this->assertEquals(null, $buffer[1]);
     }
 
@@ -86,6 +112,79 @@ abstract class BufferTestCase extends \PHPUnit\Framework\TestCase
         $className = $this->getBufferClass();
         $buffer = new $className();
         $buffer['foo'];
+    }
+
+    public function testReadWrite()
+    {
+        $className = $this->getBufferClass();
+        $data = $this->getTestData();
+        $buffer = new $className($data);
+
+        $this->assertEqualBufferValue($buffer[0], $data[0]);
+        $this->assertEqualBufferValue($buffer[1], $data[1]);
+
+        // now swap and check 
+        $buffer[1] = $data[0];
+        $buffer[0] = $data[1];
+
+        $this->assertEqualBufferValue($buffer[0], $data[1]);
+        $this->assertEqualBufferValue($buffer[1], $data[0]);
+    }
+
+    public function testClear()
+    {
+        $className = $this->getBufferClass();
+        $buffer = new $className();
+        
+        $data = $this->getTestData();
+        foreach($data as $v) {
+            $buffer->push($v);
+        }
+
+        $this->assertEquals(count($data), $buffer->size());
+        $this->assertEqualBufferValue($data[0], $buffer[0]);
+
+        $buffer->clear();
+
+        $this->assertEquals(0, $buffer->size());
+        $this->assertEquals(null, $buffer[0]);
+
+        // vector should still work..
+        $buffer->push($data[0]);
+        $this->assertEqualBufferValue($data[0], $buffer[0]);
+    }
+
+    public function testFill()
+    {
+        $className = $this->getBufferClass();
+        $buffer = new $className();
+        $testVal = $this->getTestData()[count($this->getTestData()) - 1];
+        
+        $buffer->fill(5, $testVal);
+        $this->assertEquals(5, $buffer->size());
+        for($i = 0; $i < 5; $i++) {
+            $this->assertEqualBufferValue($testVal, $buffer[$i]);
+        }
+
+        // push another value and ensure the buffer resizes correctly
+        $buffer->push(42.0);
+        $this->assertEquals(6, $buffer->size());
+
+        // fill again and ensure the new value is still the same
+        $buffer->fill(5, $testVal);
+        $this->assertEquals(6, $buffer->size());
+        $this->assertEqualBufferValue(42.0, $buffer[5]);
+    }
+
+    public function testIterator()
+    {
+        $className = $this->getBufferClass();
+        $data = $this->getTestData();
+        $buffer = new $className($data);
+
+        foreach($buffer as $key => $value) {
+            $this->assertEqualBufferValue($data[$key], $value);
+        }
     }
 
     public function testToString() 

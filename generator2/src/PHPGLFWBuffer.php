@@ -60,6 +60,16 @@ class PHPGLFWBuffer
         return sprintf("phpglfw_buffer_%s_object", $this->getInternalNameString());
     }
 
+    public function getIteratorObjectName() : string
+    {
+        return sprintf("phpglfw_buffer_%s_iterator", $this->getInternalNameString());
+    }
+
+    public function getIteratorHandlersVarName() : string
+    {
+        return sprintf("phpglfw_buffer_%s_iterator_handlers", $this->getInternalNameString());
+    }
+
     public function objectFromZObjFunctionName() : string
     {
         return sprintf("phpglfw_buffer_%s_objectptr_from_zobj_p", $this->getInternalNameString());

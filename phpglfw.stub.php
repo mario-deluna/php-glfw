@@ -17,29 +17,55 @@ namespace PGL\Math
 
 namespace GL\Buffer 
 {   
-    interface BufferInterface {}
+    interface BufferInterface {
+        public function __construct(?array $initalData = null) {}
+        public function clear() : void {}
+        public function size() : int {}
+        public function capacity() : int {}
+        public function reserve(int $size) : void {}
+    }
 
     class FloatBuffer implements BufferInterface {
+        public function __construct(?array $initalData = null) {}
         public function __toString() : string {}
         public function push(float $value) : void {}
+        public function fill(int $count, float $value) : void {}
+        public function clear() : void {}
+        public function size() : int {}
+        public function capacity() : int {}
         public function reserve(int $size) : void {}
     }
 
     class DoubleBuffer implements BufferInterface {
+        public function __construct(?array $initalData = null) {}
         public function __toString() : string {}
         public function push(float $value) : void {}
+        public function fill(int $count, float $value) : void {}
+        public function clear() : void {}
+        public function size() : int {}
+        public function capacity() : int {}
         public function reserve(int $size) : void {}
     }
 
     class IntBuffer implements BufferInterface {
+        public function __construct(?array $initalData = null) {}
         public function __toString() : string {}
         public function push(int $value) : void {}
+        public function fill(int $count, int $value) : void {}
+        public function clear() : void {}
+        public function size() : int {}
+        public function capacity() : int {}
         public function reserve(int $size) : void {}
     }
 
     class ByteBuffer implements BufferInterface {
+        public function __construct(?array $initalData = null) {}
         public function __toString() : string {}
         public function push(int $value) : void {}
+        public function fill(int $count, int $value) : void {}
+        public function clear() : void {}
+        public function size() : int {}
+        public function capacity() : int {}
         public function reserve(int $size) : void {}
     }
 };

@@ -24,6 +24,14 @@ class IntBufferTest extends BufferTestCase
             0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10
         ];
     }
+    
+    /**
+     * Assertion helper to check if two values are equal
+     */
+    protected function assertEqualBufferValue($expected, $actual)
+    {
+        $this->assertEquals($expected, $actual);
+    }
 
     public function testOverflow() 
     {

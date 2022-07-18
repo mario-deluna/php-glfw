@@ -24,4 +24,12 @@ class DoubleBufferTest extends BufferTestCase
             6.6, 7.7, 8.8, 9.9, 10.0, 
         ];
     }
+
+    /**
+     * Assertion helper to check if two values are equal
+     */
+    protected function assertEqualBufferValue($expected, $actual)
+    {
+        $this->assertEquals($expected, $actual);
+    }
 }
