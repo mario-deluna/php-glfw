@@ -1,18 +1,18 @@
 <?php 
 
-$buffer = new \PGL\Buffer\FBuffer();
-$buffer->reserve(42000000);
+$buffer = new GL\Buffer\IntBuffer();
 
-$arr = [];
+// $bufer->reserve(5);
+$buffer->fill(10, 42);
+$buffer[1] = 12123123;
+$buffer[6] = 77565756;
 
-var_dump(memory_get_usage(true));
-
-for ($i = 0; $i < 42000000; $i++) {
-    // $buffer->push($i);
-    $arr[] = $i;
+foreach($buffer as $k => $v) {
+    var_dump($k, $v);
 }
 
+echo "---";
 
-var_dump(memory_get_usage(true));
-
-var_dump($buffer, $arr);
+foreach($buffer as $k => $v) {
+    var_dump($k, $v);
+}
