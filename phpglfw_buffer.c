@@ -367,13 +367,13 @@ PHP_METHOD(GL_Buffer_FloatBuffer, capacity)
 
 PHP_METHOD(GL_Buffer_FloatBuffer, __construct)
 {
-    HashTable *initaldata;
+    HashTable *initaldata = NULL;
     zval *data;
     
     if (zend_parse_parameters(ZEND_NUM_ARGS(), "|h", &initaldata) == FAILURE) {
         return;
     }
-    if (initaldata == NULL) {
+    else if (initaldata == NULL) {
         return;
     }
     else if (zend_hash_num_elements(initaldata) == 0) {
@@ -693,13 +693,13 @@ PHP_METHOD(GL_Buffer_DoubleBuffer, capacity)
 
 PHP_METHOD(GL_Buffer_DoubleBuffer, __construct)
 {
-    HashTable *initaldata;
+    HashTable *initaldata = NULL;
     zval *data;
     
     if (zend_parse_parameters(ZEND_NUM_ARGS(), "|h", &initaldata) == FAILURE) {
         return;
     }
-    if (initaldata == NULL) {
+    else if (initaldata == NULL) {
         return;
     }
     else if (zend_hash_num_elements(initaldata) == 0) {
@@ -1019,13 +1019,13 @@ PHP_METHOD(GL_Buffer_IntBuffer, capacity)
 
 PHP_METHOD(GL_Buffer_IntBuffer, __construct)
 {
-    HashTable *initaldata;
+    HashTable *initaldata = NULL;
     zval *data;
     
     if (zend_parse_parameters(ZEND_NUM_ARGS(), "|h", &initaldata) == FAILURE) {
         return;
     }
-    if (initaldata == NULL) {
+    else if (initaldata == NULL) {
         return;
     }
     else if (zend_hash_num_elements(initaldata) == 0) {
@@ -1345,13 +1345,13 @@ PHP_METHOD(GL_Buffer_ByteBuffer, capacity)
 
 PHP_METHOD(GL_Buffer_ByteBuffer, __construct)
 {
-    HashTable *initaldata;
+    HashTable *initaldata = NULL;
     zval *data;
     
     if (zend_parse_parameters(ZEND_NUM_ARGS(), "|h", &initaldata) == FAILURE) {
         return;
     }
-    if (initaldata == NULL) {
+    else if (initaldata == NULL) {
         return;
     }
     else if (zend_hash_num_elements(initaldata) == 0) {

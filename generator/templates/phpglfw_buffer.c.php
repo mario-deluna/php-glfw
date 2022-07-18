@@ -360,16 +360,16 @@ PHP_METHOD(<?php echo $buffer->getFullNamespaceConstString(); ?>, capacity)
 
 PHP_METHOD(<?php echo $buffer->getFullNamespaceConstString(); ?>, __construct)
 {
-    HashTable *initaldata;
+    HashTable *initaldata = NULL;
     zval *data;
     
-    if (zend_parse_parameters(ZEND_NUM_ARGS(), "|h!", &initaldata) == FAILURE) {
+    if (zend_parse_parameters(ZEND_NUM_ARGS(), "|h", &initaldata) == FAILURE) {
         return;
     }
-    if (initaldata == NULL) {
+    else if (initaldata == NULL) {
         return;
     }
-    if (zend_hash_num_elements(initaldata) == 0) {
+    else if (zend_hash_num_elements(initaldata) == 0) {
         return;
     }
 
