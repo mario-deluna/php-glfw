@@ -1,5 +1,5 @@
 /* This is a generated file, edit the .stub.php file instead.
- * Stub hash: 6132636cde0805447055762bb924966e01dad7a4 */
+ * Stub hash: a509f067bdcf75f40afd91d42cec72fc208e566b */
 
 ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_glCullFace, 0, 1, IS_VOID, 0)
 	ZEND_ARG_TYPE_INFO(0, mode, IS_LONG, 0)
@@ -130,37 +130,27 @@ ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_glReadBuffer, 0, 1, IS_VOID, 0)
 	ZEND_ARG_TYPE_INFO(0, src, IS_LONG, 0)
 ZEND_END_ARG_INFO()
 
-ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_glGetBooleanv, 0, 2, IS_VOID, 0)
+ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_glGetBooleanv, 0, 1, IS_VOID, 0)
 	ZEND_ARG_TYPE_INFO(0, pname, IS_LONG, 0)
-	ZEND_ARG_TYPE_INFO(1, data, _IS_BOOL, 0)
+	ZEND_ARG_VARIADIC_TYPE_INFO(1, data, _IS_BOOL, 1)
 ZEND_END_ARG_INFO()
 
-ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_glGetDoublev, 0, 2, IS_VOID, 0)
-	ZEND_ARG_TYPE_INFO(0, pname, IS_LONG, 0)
-	ZEND_ARG_TYPE_INFO(1, data, IS_DOUBLE, 0)
-ZEND_END_ARG_INFO()
+#define arginfo_glGetDoublev arginfo_glGetBooleanv
 
 ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_glGetError, 0, 0, IS_LONG, 0)
 ZEND_END_ARG_INFO()
 
-#define arginfo_glGetFloatv arginfo_glGetDoublev
+#define arginfo_glGetFloatv arginfo_glGetBooleanv
 
-ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_glGetIntegerv, 0, 2, IS_VOID, 0)
-	ZEND_ARG_TYPE_INFO(0, pname, IS_LONG, 0)
-	ZEND_ARG_TYPE_INFO(1, data, IS_LONG, 0)
-ZEND_END_ARG_INFO()
+#define arginfo_glGetIntegerv arginfo_glGetBooleanv
 
-ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_glGetTexParameterfv, 0, 3, IS_VOID, 0)
+ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_glGetTexParameterfv, 0, 2, IS_VOID, 0)
 	ZEND_ARG_TYPE_INFO(0, target, IS_LONG, 0)
 	ZEND_ARG_TYPE_INFO(0, pname, IS_LONG, 0)
-	ZEND_ARG_TYPE_INFO(1, params, IS_DOUBLE, 0)
+	ZEND_ARG_VARIADIC_TYPE_INFO(1, params, _IS_BOOL, 1)
 ZEND_END_ARG_INFO()
 
-ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_glGetTexParameteriv, 0, 3, IS_VOID, 0)
-	ZEND_ARG_TYPE_INFO(0, target, IS_LONG, 0)
-	ZEND_ARG_TYPE_INFO(0, pname, IS_LONG, 0)
-	ZEND_ARG_TYPE_INFO(1, params, IS_LONG, 0)
-ZEND_END_ARG_INFO()
+#define arginfo_glGetTexParameteriv arginfo_glGetTexParameterfv
 
 ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_glGetTexLevelParameterfv, 0, 4, IS_VOID, 0)
 	ZEND_ARG_TYPE_INFO(0, target, IS_LONG, 0)
@@ -317,7 +307,11 @@ ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_glEndQuery, 0, 1, IS_VOID, 0)
 	ZEND_ARG_TYPE_INFO(0, target, IS_LONG, 0)
 ZEND_END_ARG_INFO()
 
-#define arginfo_glGetQueryiv arginfo_glGetTexParameteriv
+ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_glGetQueryiv, 0, 3, IS_VOID, 0)
+	ZEND_ARG_TYPE_INFO(0, target, IS_LONG, 0)
+	ZEND_ARG_TYPE_INFO(0, pname, IS_LONG, 0)
+	ZEND_ARG_TYPE_INFO(1, params, IS_LONG, 0)
+ZEND_END_ARG_INFO()
 
 ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_glGetQueryObjectiv, 0, 3, IS_VOID, 0)
 	ZEND_ARG_TYPE_INFO(0, id, IS_LONG, 0)
@@ -350,7 +344,7 @@ ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_glUnmapBuffer, 0, 1, _IS_BOOL, 0
 	ZEND_ARG_TYPE_INFO(0, target, IS_LONG, 0)
 ZEND_END_ARG_INFO()
 
-#define arginfo_glGetBufferParameteriv arginfo_glGetTexParameteriv
+#define arginfo_glGetBufferParameteriv arginfo_glGetQueryiv
 
 ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_glBlendEquationSeparate, 0, 2, IS_VOID, 0)
 	ZEND_ARG_TYPE_INFO(0, modeRGB, IS_LONG, 0)
@@ -702,9 +696,9 @@ ZEND_END_ARG_INFO()
 
 #define arginfo_glUniform4ui arginfo_glUniform4i
 
-#define arginfo_glGetTexParameterIiv arginfo_glGetTexParameteriv
+#define arginfo_glGetTexParameterIiv arginfo_glGetTexParameterfv
 
-#define arginfo_glGetTexParameterIuiv arginfo_glGetTexParameteriv
+#define arginfo_glGetTexParameterIuiv arginfo_glGetTexParameterfv
 
 ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_glClearBufferfi, 0, 4, IS_VOID, 0)
 	ZEND_ARG_TYPE_INFO(0, buffer, IS_LONG, 0)
@@ -739,7 +733,7 @@ ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_glRenderbufferStorage, 0, 4, IS_
 	ZEND_ARG_TYPE_INFO(0, height, IS_LONG, 0)
 ZEND_END_ARG_INFO()
 
-#define arginfo_glGetRenderbufferParameteriv arginfo_glGetTexParameteriv
+#define arginfo_glGetRenderbufferParameteriv arginfo_glGetQueryiv
 
 ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_glIsFramebuffer, 0, 1, _IS_BOOL, 0)
 	ZEND_ARG_TYPE_INFO(0, framebuffer, IS_LONG, 0)
@@ -920,7 +914,10 @@ ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_glWaitSync, 0, 3, IS_VOID, 0)
 	ZEND_ARG_TYPE_INFO(0, timeout, IS_LONG, 0)
 ZEND_END_ARG_INFO()
 
-#define arginfo_glGetInteger64v arginfo_glGetIntegerv
+ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_glGetInteger64v, 0, 2, IS_VOID, 0)
+	ZEND_ARG_TYPE_INFO(0, pname, IS_LONG, 0)
+	ZEND_ARG_TYPE_INFO(1, data, IS_LONG, 0)
+ZEND_END_ARG_INFO()
 
 ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_glGetSynciv, 0, 5, IS_VOID, 0)
 	ZEND_ARG_TYPE_INFO(0, sync, IS_LONG, 0)
@@ -932,7 +929,7 @@ ZEND_END_ARG_INFO()
 
 #define arginfo_glGetInteger64i_v arginfo_glGetIntegeri_v
 
-#define arginfo_glGetBufferParameteri64v arginfo_glGetTexParameteriv
+#define arginfo_glGetBufferParameteri64v arginfo_glGetQueryiv
 
 ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_glFramebufferTexture, 0, 4, IS_VOID, 0)
 	ZEND_ARG_TYPE_INFO(0, target, IS_LONG, 0)

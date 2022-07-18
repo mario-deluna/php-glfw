@@ -693,12 +693,23 @@ PHP_FUNCTION(glGetBooleanv)
 {
     zend_long pname;
     zval *data_zval;
-    if (zend_parse_parameters(ZEND_NUM_ARGS() , "lz", &pname, &data_zval) == FAILURE) {
+    size_t data_zval_num = 0;
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "l+", &pname, &data_zval, &data_zval_num) == FAILURE) {
         return;
     }
-    ZVAL_DEREF(data_zval);
-    convert_to_boolean(data_zval);
-    glGetBooleanv(pname, (GLboolean * *) &Z_LVAL_P(data_zval));
+    if (data_zval_num < 1) {
+        zend_throw_error(NULL, "You must at least pass one variable to glGetBooleanv(const, var...)");
+        return;
+    }
+    GLboolean *data_zval_tmp = malloc(data_zval_num * sizeof(GLboolean));
+    glGetBooleanv(pname, data_zval_tmp);
+    zval *data;
+    for (size_t i = 0; i <  data_zval_num; i++) {
+        data = &data_zval[i];
+        ZVAL_DEREF(data);
+        convert_to_boolean(data);
+        ZVAL_BOOL(data, data_zval_tmp[i]);
+    };
 } 
 
 /**
@@ -708,12 +719,23 @@ PHP_FUNCTION(glGetDoublev)
 {
     zend_long pname;
     zval *data_zval;
-    if (zend_parse_parameters(ZEND_NUM_ARGS() , "lz", &pname, &data_zval) == FAILURE) {
+    size_t data_zval_num = 0;
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "l+", &pname, &data_zval, &data_zval_num) == FAILURE) {
         return;
     }
-    ZVAL_DEREF(data_zval);
-    convert_to_double(data_zval);
-    glGetDoublev(pname, &Z_DVAL_P(data_zval));
+    if (data_zval_num < 1) {
+        zend_throw_error(NULL, "You must at least pass one variable to glGetDoublev(const, var...)");
+        return;
+    }
+    GLdouble *data_zval_tmp = malloc(data_zval_num * sizeof(GLdouble));
+    glGetDoublev(pname, data_zval_tmp);
+    zval *data;
+    for (size_t i = 0; i <  data_zval_num; i++) {
+        data = &data_zval[i];
+        ZVAL_DEREF(data);
+        convert_to_double(data);
+        ZVAL_DOUBLE(data, data_zval_tmp[i]);
+    };
 } 
 
 /**
@@ -731,12 +753,23 @@ PHP_FUNCTION(glGetFloatv)
 {
     zend_long pname;
     zval *data_zval;
-    if (zend_parse_parameters(ZEND_NUM_ARGS() , "lz", &pname, &data_zval) == FAILURE) {
+    size_t data_zval_num = 0;
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "l+", &pname, &data_zval, &data_zval_num) == FAILURE) {
         return;
     }
-    ZVAL_DEREF(data_zval);
-    convert_to_double(data_zval);
-    glGetFloatv(pname, &Z_DVAL_P(data_zval));
+    if (data_zval_num < 1) {
+        zend_throw_error(NULL, "You must at least pass one variable to glGetFloatv(const, var...)");
+        return;
+    }
+    GLfloat *data_zval_tmp = malloc(data_zval_num * sizeof(GLfloat));
+    glGetFloatv(pname, data_zval_tmp);
+    zval *data;
+    for (size_t i = 0; i <  data_zval_num; i++) {
+        data = &data_zval[i];
+        ZVAL_DEREF(data);
+        convert_to_double(data);
+        ZVAL_DOUBLE(data, data_zval_tmp[i]);
+    };
 } 
 
 /**
@@ -746,12 +779,23 @@ PHP_FUNCTION(glGetIntegerv)
 {
     zend_long pname;
     zval *data_zval;
-    if (zend_parse_parameters(ZEND_NUM_ARGS() , "lz", &pname, &data_zval) == FAILURE) {
+    size_t data_zval_num = 0;
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "l+", &pname, &data_zval, &data_zval_num) == FAILURE) {
         return;
     }
-    ZVAL_DEREF(data_zval);
-    convert_to_long(data_zval);
-    glGetIntegerv(pname, &Z_LVAL_P(data_zval));
+    if (data_zval_num < 1) {
+        zend_throw_error(NULL, "You must at least pass one variable to glGetIntegerv(const, var...)");
+        return;
+    }
+    GLint *data_zval_tmp = malloc(data_zval_num * sizeof(GLint));
+    glGetIntegerv(pname, data_zval_tmp);
+    zval *data;
+    for (size_t i = 0; i <  data_zval_num; i++) {
+        data = &data_zval[i];
+        ZVAL_DEREF(data);
+        convert_to_long(data);
+        ZVAL_LONG(data, data_zval_tmp[i]);
+    };
 } 
 
 /**
@@ -762,12 +806,23 @@ PHP_FUNCTION(glGetTexParameterfv)
     zend_long target;
     zend_long pname;
     zval *params_zval;
-    if (zend_parse_parameters(ZEND_NUM_ARGS() , "llz", &target, &pname, &params_zval) == FAILURE) {
+    size_t params_zval_num = 0;
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "ll+", &target, &pname, &params_zval, &params_zval_num) == FAILURE) {
         return;
     }
-    ZVAL_DEREF(params_zval);
-    convert_to_double(params_zval);
-    glGetTexParameterfv(target, pname, &Z_DVAL_P(params_zval));
+    if (params_zval_num < 1) {
+        zend_throw_error(NULL, "You must at least pass one variable to glGetTexParameterfv(const, var...)");
+        return;
+    }
+    GLfloat *params_zval_tmp = malloc(params_zval_num * sizeof(GLfloat));
+    glGetTexParameterfv(target, pname, params_zval_tmp);
+    zval *data;
+    for (size_t i = 0; i <  params_zval_num; i++) {
+        data = &params_zval[i];
+        ZVAL_DEREF(data);
+        convert_to_double(data);
+        ZVAL_DOUBLE(data, params_zval_tmp[i]);
+    };
 } 
 
 /**
@@ -778,12 +833,23 @@ PHP_FUNCTION(glGetTexParameteriv)
     zend_long target;
     zend_long pname;
     zval *params_zval;
-    if (zend_parse_parameters(ZEND_NUM_ARGS() , "llz", &target, &pname, &params_zval) == FAILURE) {
+    size_t params_zval_num = 0;
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "ll+", &target, &pname, &params_zval, &params_zval_num) == FAILURE) {
         return;
     }
-    ZVAL_DEREF(params_zval);
-    convert_to_long(params_zval);
-    glGetTexParameteriv(target, pname, &Z_LVAL_P(params_zval));
+    if (params_zval_num < 1) {
+        zend_throw_error(NULL, "You must at least pass one variable to glGetTexParameteriv(const, var...)");
+        return;
+    }
+    GLint *params_zval_tmp = malloc(params_zval_num * sizeof(GLint));
+    glGetTexParameteriv(target, pname, params_zval_tmp);
+    zval *data;
+    for (size_t i = 0; i <  params_zval_num; i++) {
+        data = &params_zval[i];
+        ZVAL_DEREF(data);
+        convert_to_long(data);
+        ZVAL_LONG(data, params_zval_tmp[i]);
+    };
 } 
 
 /**
@@ -2538,12 +2604,23 @@ PHP_FUNCTION(glGetTexParameterIiv)
     zend_long target;
     zend_long pname;
     zval *params_zval;
-    if (zend_parse_parameters(ZEND_NUM_ARGS() , "llz", &target, &pname, &params_zval) == FAILURE) {
+    size_t params_zval_num = 0;
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "ll+", &target, &pname, &params_zval, &params_zval_num) == FAILURE) {
         return;
     }
-    ZVAL_DEREF(params_zval);
-    convert_to_long(params_zval);
-    glGetTexParameterIiv(target, pname, &Z_LVAL_P(params_zval));
+    if (params_zval_num < 1) {
+        zend_throw_error(NULL, "You must at least pass one variable to glGetTexParameterIiv(const, var...)");
+        return;
+    }
+    GLint *params_zval_tmp = malloc(params_zval_num * sizeof(GLint));
+    glGetTexParameterIiv(target, pname, params_zval_tmp);
+    zval *data;
+    for (size_t i = 0; i <  params_zval_num; i++) {
+        data = &params_zval[i];
+        ZVAL_DEREF(data);
+        convert_to_long(data);
+        ZVAL_LONG(data, params_zval_tmp[i]);
+    };
 } 
 
 /**
@@ -2554,12 +2631,23 @@ PHP_FUNCTION(glGetTexParameterIuiv)
     zend_long target;
     zend_long pname;
     zval *params_zval;
-    if (zend_parse_parameters(ZEND_NUM_ARGS() , "llz", &target, &pname, &params_zval) == FAILURE) {
+    size_t params_zval_num = 0;
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "ll+", &target, &pname, &params_zval, &params_zval_num) == FAILURE) {
         return;
     }
-    ZVAL_DEREF(params_zval);
-    convert_to_long(params_zval);
-    glGetTexParameterIuiv(target, pname, &Z_LVAL_P(params_zval));
+    if (params_zval_num < 1) {
+        zend_throw_error(NULL, "You must at least pass one variable to glGetTexParameterIuiv(const, var...)");
+        return;
+    }
+    GLuint *params_zval_tmp = malloc(params_zval_num * sizeof(GLuint));
+    glGetTexParameterIuiv(target, pname, params_zval_tmp);
+    zval *data;
+    for (size_t i = 0; i <  params_zval_num; i++) {
+        data = &params_zval[i];
+        ZVAL_DEREF(data);
+        convert_to_long(data);
+        ZVAL_LONG(data, params_zval_tmp[i]);
+    };
 } 
 
 /**
