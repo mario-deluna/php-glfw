@@ -6,10 +6,18 @@ use ExtArgument;
 
 class StringArgument extends ExtArgument
 {
-   /**
-    * The char used for parsing the arguments with the zend engine
-    */
-   public string $charid = 's';
+    /**
+     * The char used for parsing the arguments with the zend engine
+     */
+    public string $charid = 's';
+
+    /**
+     * Returns boolean if the PHP type is of the same size as the internal one
+     */
+    public function typeIsOfSameInternalSize() : bool
+    {
+        return $this->getPureFromType() === 'GLchar' || $this->getPureFromType() === 'char';
+    }
 
     /**
      * Returns a string that contains the declaration of the variable 

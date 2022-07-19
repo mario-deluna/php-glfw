@@ -1,6 +1,7 @@
 <?php
 
 use ExtArgument\CEObjectArgument;
+use ExtArgument\InternalPtrObjectArgument;
 use ExtArgument\VariadicArgument;
 
 class ExtFunction
@@ -191,6 +192,22 @@ class ExtFunction
         $b = "";
         if (!empty($this->arguments)) $b .= $this->getArgumentParseCode() . PHP_EOL . PHP_EOL;
         $b .= $this->getReturnStatement($this->getFunctionCallCode());
+
+        // if ($this->name == 'glShaderSource') {
+        //     var_dump($this, $b); die;
+        // }
+
+        foreach($this->arguments as $arg) {
+            if (
+                $arg->passedByReference &&
+                !$arg->typeIsOfSameInternalSize() && 
+                (!$arg instanceof VariadicArgument) &&
+                (!$arg instanceof InternalPtrObjectArgument) &&
+                (!$arg instanceof CEObjectArgument)
+            ) {
+                $b .= sprintf("\n%s(%s, %s);", $arg->getZvalAssignmentMacro(), $arg->getZValName(), $arg->getTmpVarName());
+            }
+        }
 
         return $b;
     }

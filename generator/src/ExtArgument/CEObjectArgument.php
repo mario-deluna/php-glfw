@@ -36,6 +36,14 @@ class CEObjectArgument extends ExtArgument
     }
 
     /**
+     * Returns boolean if the PHP type is of the same size as the internal one
+     */
+    public function typeIsOfSameInternalSize() : bool
+    {
+        return true;
+    }
+
+    /**
      * The IPO is always the default O, passed by reference does not change the type
      */
     public function getCharId() : string 

@@ -124,6 +124,23 @@ abstract class ExtArgument
     }
 
     /**
+     * Returns the arguments temporary var name, used when types don't match and we
+     * have to pass a pointer
+     */
+    public function getTmpVarName() : string
+    {
+        return $this->name . '_tmp';
+    }
+
+    /**
+     * Returns the internal type without any pointer or const shenanigans
+     */
+    public function getPureFromType() : string
+    {
+        return trim(str_replace('const ', '', $this->argumentTypeFrom ?? ''), ' *');
+    }
+
+    /**
      * Returns a string that contains the declaration of the variable 
      */
     public function getVariableDeclaration() : string
@@ -136,7 +153,14 @@ abstract class ExtArgument
                 $b .= ' = ' . $this->getDefaultValue();
             }
             
-            return $b . ';';
+            $b .= ';' . PHP_EOL;
+
+            // if the size don't match also declare a temp var
+            if (!$this->typeIsOfSameInternalSize()) {
+                $b .= $this->getPureFromType() . ' ' . $this->getTmpVarName() . ';';
+            }
+
+            return $b;
         }
 
         if (!isset($this->variableDeclarationPrefix)) {
@@ -223,6 +247,15 @@ abstract class ExtArgument
         return $this->name;
     }
 
+
+    /**
+     * Returns boolean if the PHP type is of the same size as the internal one
+     */
+    public function typeIsOfSameInternalSize() : bool
+    {
+        return false;
+    }
+
     /**
      * If the argument is passed as a ZVal the actual value is behind a data structre
      * this method should return the C code to the actual value
@@ -238,6 +271,10 @@ abstract class ExtArgument
     public function getUsableVariable() : string
     {
         if ($this->passedByReference) {
+            if (!$this->typeIsOfSameInternalSize()) {
+                return '&' . $this->getTmpVarName();
+            }
+
             return $this->getUsableVariableFromZVal($this->getZValName());
         }
         
