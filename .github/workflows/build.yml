@@ -91,7 +91,7 @@ jobs:
     # If anybody skilled is able to make it run in the "macos-latest" environment
     # I will be deeply grateful. 
     - name: Run PHPUnit 
-      run: php vendor/bin/phpunit phpunit --exclude-group=glfwinit
+      run: php vendor/bin/phpunit --exclude-group=glfwinit
       
     # - name: Setup upterm session
     #   if: always()
