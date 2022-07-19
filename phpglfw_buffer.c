@@ -158,6 +158,7 @@ zend_object_iterator *phpglfw_buffer_glfloat_get_iterator_handler(zend_class_ent
 
 	ZVAL_OBJ_COPY(&iterator->intern.data, Z_OBJ_P(object));
 	iterator->intern.funcs = &phpglfw_buffer_glfloat_iterator_handlers;
+    iterator->current = 0;
 
 	return &iterator->intern;
 }
@@ -484,6 +485,7 @@ zend_object_iterator *phpglfw_buffer_gldouble_get_iterator_handler(zend_class_en
 
 	ZVAL_OBJ_COPY(&iterator->intern.data, Z_OBJ_P(object));
 	iterator->intern.funcs = &phpglfw_buffer_gldouble_iterator_handlers;
+    iterator->current = 0;
 
 	return &iterator->intern;
 }
@@ -810,6 +812,7 @@ zend_object_iterator *phpglfw_buffer_glint_get_iterator_handler(zend_class_entry
 
 	ZVAL_OBJ_COPY(&iterator->intern.data, Z_OBJ_P(object));
 	iterator->intern.funcs = &phpglfw_buffer_glint_iterator_handlers;
+    iterator->current = 0;
 
 	return &iterator->intern;
 }
@@ -1136,6 +1139,7 @@ zend_object_iterator *phpglfw_buffer_glbyte_get_iterator_handler(zend_class_entr
 
 	ZVAL_OBJ_COPY(&iterator->intern.data, Z_OBJ_P(object));
 	iterator->intern.funcs = &phpglfw_buffer_glbyte_iterator_handlers;
+    iterator->current = 0;
 
 	return &iterator->intern;
 }
