@@ -73,7 +73,7 @@ jobs:
       run: php -i | grep php.ini 
       
     - name: Build GLFW lib
-      run: cd vendor/glfw && cmake . -DGLFW_BUILD_TESTS=OFF -DGLFW_BUILD_EXAMPLES=OFF -DBUILD_SHARED_LIBS=ON && sudo make install && cd ../../
+      run: cd vendor/glfw && cmake . -DGLFW_BUILD_TESTS=OFF -DGLFW_BUILD_EXAMPLES=OFF -DBUILD_SHARED_LIBS=ON -DGLFW_USE_OSMESA=ON && sudo make install && cd ../../
         
     - name: Build PHP-GLFW
       run: sudo phpize && ./configure --enable-glfw && make
@@ -93,6 +93,6 @@ jobs:
     - name: Run PHPUnit 
       run: php vendor/bin/phpunit phpunit --exclude-group=glfwinit
       
-    - name: Setup upterm session
-      if: always()
-      uses: lhotari/action-upterm@v1
+    # - name: Setup upterm session
+    #   if: always()
+    #   uses: lhotari/action-upterm@v1
