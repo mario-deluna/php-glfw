@@ -82,27 +82,33 @@ static zend_object_handlers phpglfw_buffer_glfloat_handlers;
  */
 typedef struct _phpglfw_buffer_glfloat_iterator {
 	zend_object_iterator intern;
-	size_t current;
+	size_t index;
+	zval current;
 } phpglfw_buffer_glfloat_iterator;
 
 static void phpglfw_buffer_glfloat_it_dtor_handler(zend_object_iterator *iter)
 {
-	zval_ptr_dtor(&iter->data);
+	phpglfw_buffer_glfloat_iterator *I = (phpglfw_buffer_glfloat_iterator*)iter;
+
+	zval_ptr_dtor(&I->intern.data);
+    if (!Z_ISUNDEF(I->current)) {
+		zval_ptr_dtor(&I->current);
+	}
 }
 
 static void phpglfw_buffer_glfloat_it_rewind_handler(zend_object_iterator *iter)
 {
-	((phpglfw_buffer_glfloat_iterator*)iter)->current = 0;
+	((phpglfw_buffer_glfloat_iterator*)iter)->index = 0;
 }
 
 static void phpglfw_buffer_glfloat_it_current_key_handler(zend_object_iterator *iter, zval *key)
 {
-	ZVAL_LONG(key, ((phpglfw_buffer_glfloat_iterator*)iter)->current);
+	ZVAL_LONG(key, ((phpglfw_buffer_glfloat_iterator*)iter)->index);
 }
 
 static void phpglfw_buffer_glfloat_it_move_forward_handler(zend_object_iterator *iter)
 {
-	((phpglfw_buffer_glfloat_iterator*)iter)->current++;
+	((phpglfw_buffer_glfloat_iterator*)iter)->index++;
 }
 
 static int phpglfw_buffer_glfloat_it_valid_handler(zend_object_iterator *iter)
@@ -110,7 +116,7 @@ static int phpglfw_buffer_glfloat_it_valid_handler(zend_object_iterator *iter)
 	phpglfw_buffer_glfloat_iterator *iterator = (phpglfw_buffer_glfloat_iterator*)iter;
     phpglfw_buffer_glfloat_object *obj_ptr = phpglfw_buffer_glfloat_objectptr_from_zobj_p(Z_OBJ_P(&iter->data));
 
-	if (iterator->current >= 0 && iterator->current < cvector_size(obj_ptr->vec)) {
+	if (iterator->index >= 0 && iterator->index < cvector_size(obj_ptr->vec)) {
 		return SUCCESS;
 	}
 
@@ -119,17 +125,12 @@ static int phpglfw_buffer_glfloat_it_valid_handler(zend_object_iterator *iter)
 
 static zval *phpglfw_buffer_glfloat_it_current_data_handler(zend_object_iterator *iter)
 {
-	zval zindex, *data;
 	phpglfw_buffer_glfloat_iterator *iterator = (phpglfw_buffer_glfloat_iterator*)iter;
     phpglfw_buffer_glfloat_object *obj_ptr = phpglfw_buffer_glfloat_objectptr_from_zobj_p(Z_OBJ_P(&iter->data));
 
-	ZVAL_LONG(&zindex, iterator->current);
-	ZVAL_DOUBLE(data, obj_ptr->vec[iterator->current]);
+	ZVAL_DOUBLE(&iterator->current, obj_ptr->vec[iterator->index]);
 
-	if (data == NULL) {
-		data = &EG(uninitialized_zval);
-	}
-	return data;
+	return &iterator->current;
 }
 
 static const zend_object_iterator_funcs phpglfw_buffer_glfloat_iterator_handlers = {
@@ -158,7 +159,7 @@ zend_object_iterator *phpglfw_buffer_glfloat_get_iterator_handler(zend_class_ent
 
 	ZVAL_OBJ_COPY(&iterator->intern.data, Z_OBJ_P(object));
 	iterator->intern.funcs = &phpglfw_buffer_glfloat_iterator_handlers;
-    iterator->current = 0;
+    iterator->index = 0;
 
 	return &iterator->intern;
 }
@@ -409,27 +410,33 @@ static zend_object_handlers phpglfw_buffer_gldouble_handlers;
  */
 typedef struct _phpglfw_buffer_gldouble_iterator {
 	zend_object_iterator intern;
-	size_t current;
+	size_t index;
+	zval current;
 } phpglfw_buffer_gldouble_iterator;
 
 static void phpglfw_buffer_gldouble_it_dtor_handler(zend_object_iterator *iter)
 {
-	zval_ptr_dtor(&iter->data);
+	phpglfw_buffer_gldouble_iterator *I = (phpglfw_buffer_gldouble_iterator*)iter;
+
+	zval_ptr_dtor(&I->intern.data);
+    if (!Z_ISUNDEF(I->current)) {
+		zval_ptr_dtor(&I->current);
+	}
 }
 
 static void phpglfw_buffer_gldouble_it_rewind_handler(zend_object_iterator *iter)
 {
-	((phpglfw_buffer_gldouble_iterator*)iter)->current = 0;
+	((phpglfw_buffer_gldouble_iterator*)iter)->index = 0;
 }
 
 static void phpglfw_buffer_gldouble_it_current_key_handler(zend_object_iterator *iter, zval *key)
 {
-	ZVAL_LONG(key, ((phpglfw_buffer_gldouble_iterator*)iter)->current);
+	ZVAL_LONG(key, ((phpglfw_buffer_gldouble_iterator*)iter)->index);
 }
 
 static void phpglfw_buffer_gldouble_it_move_forward_handler(zend_object_iterator *iter)
 {
-	((phpglfw_buffer_gldouble_iterator*)iter)->current++;
+	((phpglfw_buffer_gldouble_iterator*)iter)->index++;
 }
 
 static int phpglfw_buffer_gldouble_it_valid_handler(zend_object_iterator *iter)
@@ -437,7 +444,7 @@ static int phpglfw_buffer_gldouble_it_valid_handler(zend_object_iterator *iter)
 	phpglfw_buffer_gldouble_iterator *iterator = (phpglfw_buffer_gldouble_iterator*)iter;
     phpglfw_buffer_gldouble_object *obj_ptr = phpglfw_buffer_gldouble_objectptr_from_zobj_p(Z_OBJ_P(&iter->data));
 
-	if (iterator->current >= 0 && iterator->current < cvector_size(obj_ptr->vec)) {
+	if (iterator->index >= 0 && iterator->index < cvector_size(obj_ptr->vec)) {
 		return SUCCESS;
 	}
 
@@ -446,17 +453,12 @@ static int phpglfw_buffer_gldouble_it_valid_handler(zend_object_iterator *iter)
 
 static zval *phpglfw_buffer_gldouble_it_current_data_handler(zend_object_iterator *iter)
 {
-	zval zindex, *data;
 	phpglfw_buffer_gldouble_iterator *iterator = (phpglfw_buffer_gldouble_iterator*)iter;
     phpglfw_buffer_gldouble_object *obj_ptr = phpglfw_buffer_gldouble_objectptr_from_zobj_p(Z_OBJ_P(&iter->data));
 
-	ZVAL_LONG(&zindex, iterator->current);
-	ZVAL_DOUBLE(data, obj_ptr->vec[iterator->current]);
+	ZVAL_DOUBLE(&iterator->current, obj_ptr->vec[iterator->index]);
 
-	if (data == NULL) {
-		data = &EG(uninitialized_zval);
-	}
-	return data;
+	return &iterator->current;
 }
 
 static const zend_object_iterator_funcs phpglfw_buffer_gldouble_iterator_handlers = {
@@ -485,7 +487,7 @@ zend_object_iterator *phpglfw_buffer_gldouble_get_iterator_handler(zend_class_en
 
 	ZVAL_OBJ_COPY(&iterator->intern.data, Z_OBJ_P(object));
 	iterator->intern.funcs = &phpglfw_buffer_gldouble_iterator_handlers;
-    iterator->current = 0;
+    iterator->index = 0;
 
 	return &iterator->intern;
 }
@@ -736,27 +738,33 @@ static zend_object_handlers phpglfw_buffer_glint_handlers;
  */
 typedef struct _phpglfw_buffer_glint_iterator {
 	zend_object_iterator intern;
-	size_t current;
+	size_t index;
+	zval current;
 } phpglfw_buffer_glint_iterator;
 
 static void phpglfw_buffer_glint_it_dtor_handler(zend_object_iterator *iter)
 {
-	zval_ptr_dtor(&iter->data);
+	phpglfw_buffer_glint_iterator *I = (phpglfw_buffer_glint_iterator*)iter;
+
+	zval_ptr_dtor(&I->intern.data);
+    if (!Z_ISUNDEF(I->current)) {
+		zval_ptr_dtor(&I->current);
+	}
 }
 
 static void phpglfw_buffer_glint_it_rewind_handler(zend_object_iterator *iter)
 {
-	((phpglfw_buffer_glint_iterator*)iter)->current = 0;
+	((phpglfw_buffer_glint_iterator*)iter)->index = 0;
 }
 
 static void phpglfw_buffer_glint_it_current_key_handler(zend_object_iterator *iter, zval *key)
 {
-	ZVAL_LONG(key, ((phpglfw_buffer_glint_iterator*)iter)->current);
+	ZVAL_LONG(key, ((phpglfw_buffer_glint_iterator*)iter)->index);
 }
 
 static void phpglfw_buffer_glint_it_move_forward_handler(zend_object_iterator *iter)
 {
-	((phpglfw_buffer_glint_iterator*)iter)->current++;
+	((phpglfw_buffer_glint_iterator*)iter)->index++;
 }
 
 static int phpglfw_buffer_glint_it_valid_handler(zend_object_iterator *iter)
@@ -764,7 +772,7 @@ static int phpglfw_buffer_glint_it_valid_handler(zend_object_iterator *iter)
 	phpglfw_buffer_glint_iterator *iterator = (phpglfw_buffer_glint_iterator*)iter;
     phpglfw_buffer_glint_object *obj_ptr = phpglfw_buffer_glint_objectptr_from_zobj_p(Z_OBJ_P(&iter->data));
 
-	if (iterator->current >= 0 && iterator->current < cvector_size(obj_ptr->vec)) {
+	if (iterator->index >= 0 && iterator->index < cvector_size(obj_ptr->vec)) {
 		return SUCCESS;
 	}
 
@@ -773,17 +781,12 @@ static int phpglfw_buffer_glint_it_valid_handler(zend_object_iterator *iter)
 
 static zval *phpglfw_buffer_glint_it_current_data_handler(zend_object_iterator *iter)
 {
-	zval zindex, *data;
 	phpglfw_buffer_glint_iterator *iterator = (phpglfw_buffer_glint_iterator*)iter;
     phpglfw_buffer_glint_object *obj_ptr = phpglfw_buffer_glint_objectptr_from_zobj_p(Z_OBJ_P(&iter->data));
 
-	ZVAL_LONG(&zindex, iterator->current);
-	ZVAL_LONG(data, obj_ptr->vec[iterator->current]);
+	ZVAL_LONG(&iterator->current, obj_ptr->vec[iterator->index]);
 
-	if (data == NULL) {
-		data = &EG(uninitialized_zval);
-	}
-	return data;
+	return &iterator->current;
 }
 
 static const zend_object_iterator_funcs phpglfw_buffer_glint_iterator_handlers = {
@@ -812,7 +815,7 @@ zend_object_iterator *phpglfw_buffer_glint_get_iterator_handler(zend_class_entry
 
 	ZVAL_OBJ_COPY(&iterator->intern.data, Z_OBJ_P(object));
 	iterator->intern.funcs = &phpglfw_buffer_glint_iterator_handlers;
-    iterator->current = 0;
+    iterator->index = 0;
 
 	return &iterator->intern;
 }
@@ -1063,27 +1066,33 @@ static zend_object_handlers phpglfw_buffer_glbyte_handlers;
  */
 typedef struct _phpglfw_buffer_glbyte_iterator {
 	zend_object_iterator intern;
-	size_t current;
+	size_t index;
+	zval current;
 } phpglfw_buffer_glbyte_iterator;
 
 static void phpglfw_buffer_glbyte_it_dtor_handler(zend_object_iterator *iter)
 {
-	zval_ptr_dtor(&iter->data);
+	phpglfw_buffer_glbyte_iterator *I = (phpglfw_buffer_glbyte_iterator*)iter;
+
+	zval_ptr_dtor(&I->intern.data);
+    if (!Z_ISUNDEF(I->current)) {
+		zval_ptr_dtor(&I->current);
+	}
 }
 
 static void phpglfw_buffer_glbyte_it_rewind_handler(zend_object_iterator *iter)
 {
-	((phpglfw_buffer_glbyte_iterator*)iter)->current = 0;
+	((phpglfw_buffer_glbyte_iterator*)iter)->index = 0;
 }
 
 static void phpglfw_buffer_glbyte_it_current_key_handler(zend_object_iterator *iter, zval *key)
 {
-	ZVAL_LONG(key, ((phpglfw_buffer_glbyte_iterator*)iter)->current);
+	ZVAL_LONG(key, ((phpglfw_buffer_glbyte_iterator*)iter)->index);
 }
 
 static void phpglfw_buffer_glbyte_it_move_forward_handler(zend_object_iterator *iter)
 {
-	((phpglfw_buffer_glbyte_iterator*)iter)->current++;
+	((phpglfw_buffer_glbyte_iterator*)iter)->index++;
 }
 
 static int phpglfw_buffer_glbyte_it_valid_handler(zend_object_iterator *iter)
@@ -1091,7 +1100,7 @@ static int phpglfw_buffer_glbyte_it_valid_handler(zend_object_iterator *iter)
 	phpglfw_buffer_glbyte_iterator *iterator = (phpglfw_buffer_glbyte_iterator*)iter;
     phpglfw_buffer_glbyte_object *obj_ptr = phpglfw_buffer_glbyte_objectptr_from_zobj_p(Z_OBJ_P(&iter->data));
 
-	if (iterator->current >= 0 && iterator->current < cvector_size(obj_ptr->vec)) {
+	if (iterator->index >= 0 && iterator->index < cvector_size(obj_ptr->vec)) {
 		return SUCCESS;
 	}
 
@@ -1100,17 +1109,12 @@ static int phpglfw_buffer_glbyte_it_valid_handler(zend_object_iterator *iter)
 
 static zval *phpglfw_buffer_glbyte_it_current_data_handler(zend_object_iterator *iter)
 {
-	zval zindex, *data;
 	phpglfw_buffer_glbyte_iterator *iterator = (phpglfw_buffer_glbyte_iterator*)iter;
     phpglfw_buffer_glbyte_object *obj_ptr = phpglfw_buffer_glbyte_objectptr_from_zobj_p(Z_OBJ_P(&iter->data));
 
-	ZVAL_LONG(&zindex, iterator->current);
-	ZVAL_LONG(data, obj_ptr->vec[iterator->current]);
+	ZVAL_LONG(&iterator->current, obj_ptr->vec[iterator->index]);
 
-	if (data == NULL) {
-		data = &EG(uninitialized_zval);
-	}
-	return data;
+	return &iterator->current;
 }
 
 static const zend_object_iterator_funcs phpglfw_buffer_glbyte_iterator_handlers = {
@@ -1139,7 +1143,7 @@ zend_object_iterator *phpglfw_buffer_glbyte_get_iterator_handler(zend_class_entr
 
 	ZVAL_OBJ_COPY(&iterator->intern.data, Z_OBJ_P(object));
 	iterator->intern.funcs = &phpglfw_buffer_glbyte_iterator_handlers;
-    iterator->current = 0;
+    iterator->index = 0;
 
 	return &iterator->intern;
 }
