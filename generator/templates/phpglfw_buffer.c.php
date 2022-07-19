@@ -75,27 +75,33 @@ static zend_object_handlers <?php echo $buffer->getHandlersVarName(); ?>;
  */
 typedef struct _<?php echo $buffer->getIteratorObjectName(); ?> {
 	zend_object_iterator intern;
-	size_t current;
+	size_t index;
+	zval current;
 } <?php echo $buffer->getIteratorObjectName(); ?>;
 
 static void <?php echo $buffer->getHandlerMethodName('it_dtor'); ?>(zend_object_iterator *iter)
 {
-	zval_ptr_dtor(&iter->data);
+	<?php echo $buffer->getIteratorObjectName(); ?> *I = (<?php echo $buffer->getIteratorObjectName(); ?>*)iter;
+
+	zval_ptr_dtor(&I->intern.data);
+    if (!Z_ISUNDEF(I->current)) {
+		zval_ptr_dtor(&I->current);
+	}
 }
 
 static void <?php echo $buffer->getHandlerMethodName('it_rewind'); ?>(zend_object_iterator *iter)
 {
-	((<?php echo $buffer->getIteratorObjectName(); ?>*)iter)->current = 0;
+	((<?php echo $buffer->getIteratorObjectName(); ?>*)iter)->index = 0;
 }
 
 static void <?php echo $buffer->getHandlerMethodName('it_current_key'); ?>(zend_object_iterator *iter, zval *key)
 {
-	ZVAL_LONG(key, ((<?php echo $buffer->getIteratorObjectName(); ?>*)iter)->current);
+	ZVAL_LONG(key, ((<?php echo $buffer->getIteratorObjectName(); ?>*)iter)->index);
 }
 
 static void <?php echo $buffer->getHandlerMethodName('it_move_forward'); ?>(zend_object_iterator *iter)
 {
-	((<?php echo $buffer->getIteratorObjectName(); ?>*)iter)->current++;
+	((<?php echo $buffer->getIteratorObjectName(); ?>*)iter)->index++;
 }
 
 static int <?php echo $buffer->getHandlerMethodName('it_valid'); ?>(zend_object_iterator *iter)
@@ -103,7 +109,7 @@ static int <?php echo $buffer->getHandlerMethodName('it_valid'); ?>(zend_object_
 	<?php echo $buffer->getIteratorObjectName(); ?> *iterator = (<?php echo $buffer->getIteratorObjectName(); ?>*)iter;
     <?php echo $buffer->getObjectName(); ?> *obj_ptr = <?php echo $buffer->objectFromZObjFunctionName(); ?>(Z_OBJ_P(&iter->data));
 
-	if (iterator->current >= 0 && iterator->current < cvector_size(obj_ptr->vec)) {
+	if (iterator->index >= 0 && iterator->index < cvector_size(obj_ptr->vec)) {
 		return SUCCESS;
 	}
 
@@ -112,17 +118,12 @@ static int <?php echo $buffer->getHandlerMethodName('it_valid'); ?>(zend_object_
 
 static zval *<?php echo $buffer->getHandlerMethodName('it_current_data'); ?>(zend_object_iterator *iter)
 {
-	zval zindex, *data;
 	<?php echo $buffer->getIteratorObjectName(); ?> *iterator = (<?php echo $buffer->getIteratorObjectName(); ?>*)iter;
     <?php echo $buffer->getObjectName(); ?> *obj_ptr = <?php echo $buffer->objectFromZObjFunctionName(); ?>(Z_OBJ_P(&iter->data));
 
-	ZVAL_LONG(&zindex, iterator->current);
-	<?php echo $buffer->getValueArg()->getZvalAssignmentMacro(); ?>(data, obj_ptr->vec[iterator->current]);
+	<?php echo $buffer->getValueArg()->getZvalAssignmentMacro(); ?>(&iterator->current, obj_ptr->vec[iterator->index]);
 
-	if (data == NULL) {
-		data = &EG(uninitialized_zval);
-	}
-	return data;
+	return &iterator->current;
 }
 
 static const zend_object_iterator_funcs <?php echo $buffer->getIteratorHandlersVarName(); ?> = {
@@ -144,13 +145,14 @@ zend_object_iterator *<?php echo $buffer->getHandlerMethodName('get_iterator'); 
 		zend_throw_error(NULL, "GL\\Buffer\\BufferInterface object can not be iterated by reference");
 		return NULL;
 	}
-
+    
 	iterator = emalloc(sizeof(<?php echo $buffer->getIteratorObjectName(); ?>));
 
 	zend_iterator_init((zend_object_iterator*)iterator);
 
 	ZVAL_OBJ_COPY(&iterator->intern.data, Z_OBJ_P(object));
 	iterator->intern.funcs = &<?php echo $buffer->getIteratorHandlersVarName(); ?>;
+    iterator->index = 0;
 
 	return &iterator->intern;
 }

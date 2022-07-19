@@ -152,7 +152,7 @@ zend_object_iterator *phpglfw_buffer_glfloat_get_iterator_handler(zend_class_ent
 		zend_throw_error(NULL, "GL\\Buffer\\BufferInterface object can not be iterated by reference");
 		return NULL;
 	}
-
+    
 	iterator = emalloc(sizeof(phpglfw_buffer_glfloat_iterator));
 
 	zend_iterator_init((zend_object_iterator*)iterator);
@@ -480,7 +480,7 @@ zend_object_iterator *phpglfw_buffer_gldouble_get_iterator_handler(zend_class_en
 		zend_throw_error(NULL, "GL\\Buffer\\BufferInterface object can not be iterated by reference");
 		return NULL;
 	}
-
+    
 	iterator = emalloc(sizeof(phpglfw_buffer_gldouble_iterator));
 
 	zend_iterator_init((zend_object_iterator*)iterator);
@@ -808,7 +808,7 @@ zend_object_iterator *phpglfw_buffer_glint_get_iterator_handler(zend_class_entry
 		zend_throw_error(NULL, "GL\\Buffer\\BufferInterface object can not be iterated by reference");
 		return NULL;
 	}
-
+    
 	iterator = emalloc(sizeof(phpglfw_buffer_glint_iterator));
 
 	zend_iterator_init((zend_object_iterator*)iterator);
@@ -1136,7 +1136,7 @@ zend_object_iterator *phpglfw_buffer_glbyte_get_iterator_handler(zend_class_entr
 		zend_throw_error(NULL, "GL\\Buffer\\BufferInterface object can not be iterated by reference");
 		return NULL;
 	}
-
+    
 	iterator = emalloc(sizeof(phpglfw_buffer_glbyte_iterator));
 
 	zend_iterator_init((zend_object_iterator*)iterator);
