@@ -182,6 +182,8 @@ abstract class BufferTestCase extends \PHPUnit\Framework\TestCase
         $data = $this->getTestData();
         $buffer = new $className($data);
 
+        $this->assertEquals(count($data), $buffer->size());
+
         foreach($buffer as $key => $value) {
             $this->assertEqualBufferValue($data[$key], $value);
         }
