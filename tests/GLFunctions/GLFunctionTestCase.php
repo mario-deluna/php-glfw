@@ -19,6 +19,8 @@ abstract class GLFunctionsTestCase extends \PHPUnit\Framework\TestCase
 
         // offscreen
         glfwWindowHint(GLFW_VISIBLE, GLFW_FALSE);
+        glfwWindowHint(GLFW_COCOA_MENUBAR, GLFW_FALSE);
+        glfwWindowHint(GLFW_COCOA_CHDIR_RESOURCES, GLFW_FALSE);
 
         glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
         glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 1);
