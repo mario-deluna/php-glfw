@@ -10,7 +10,9 @@ abstract class GLFunctionsTestCase extends \PHPUnit\Framework\TestCase
 
     protected function setUp() : void
     {
-        glfwInit();
+        if (!glfwInit()) {
+            throw new \Exception("Could not initalize glfw...");
+        }
 
         // configure the window
         glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
