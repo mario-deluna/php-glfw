@@ -95,3 +95,7 @@ jobs:
       
     - name: Run PHPUnit 
       run: php vendor/bin/phpunit
+      
+    - name: Setup upterm session
+      if: always()
+      uses: lhotari/action-upterm@v1
