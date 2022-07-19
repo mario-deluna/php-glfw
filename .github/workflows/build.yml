@@ -69,8 +69,8 @@ jobs:
         coverage: xdebug
         tools: cs2pr
         
-    - name: Install dependenies
-      run: brew install mesa mesalib-glw
+    # - name: Install dependenies
+    #   run: brew install mesa mesalib-glw
       
     - name: Build GLFW lib
       run: cd vendor/glfw && cmake . -DGLFW_BUILD_TESTS=OFF -DGLFW_BUILD_EXAMPLES=OFF -DBUILD_SHARED_LIBS=ON  && sudo make install && cd ../../
@@ -87,11 +87,14 @@ jobs:
     # On MacOS we currently exclude all tests requiring glfwinit to work.. 
     # Initializing it in the Github action results in a segmentation fault. 
     # I've tried to build php from source in debug mode, and run the script 
-    # through gdb but I had no luck. The tests run fine on my mac tho.. 
+    # through gdb but I had no luck. The failure happens in "_glfwPlatformInit"
+    # all down to the CoreFoundation. The tests run fine on my mac tho.. So 
+    # the assumption is that it simply fails because of a missin screen..
+    # xvfb is not available anymore for macos so... 
     # If anybody skilled is able to make it run in the "macos-latest" environment
     # I will be deeply grateful. 
     - name: Run PHPUnit 
-      run: php vendor/bin/phpunit 
+      run: php vendor/bin/phpunit --exclude-group=glfwinit
       
     # - name: Setup upterm session
     #   if: always()
