@@ -4,6 +4,9 @@ namespace GL\Tests\GLFunctions;
 
 use GLFWwindow;
 
+/**
+ * @group glfwinit
+ */
 class GetAndSetParamtersTest extends GLFunctionsTestCase
 {
     public function testGlGetBooleanv()
