@@ -1,7 +1,9 @@
 <?php
 
 // initalize GLFW
-glfwInit();
+if (!glfwInit()) {
+    throw new Exception('GLFW could not be initialized!');
+}
 
 // prints the GLFW version for the examples sake
 echo glfwGetVersionString() . PHP_EOL;
@@ -15,13 +17,14 @@ glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
 glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 1);
 glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
-// fix for macos "el capitan"
+// enable forward compatibitly, @see glfw docs for details
+// but mostly this fixes an issue many expirence on MacOS
 glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
 
 // glfwCreateWindow will initalizes a new window in which you can render,
 // you can have multiple windows of course.
 if (!$window = glfwCreateWindow(800, 800, "PHP GLFW Demo")) {
-    die('Could not create window.');
+    throw new Exception('OS Window could not be initialized!');
 }
 
 // calling this method will make the given window object 
@@ -35,12 +38,12 @@ glfwMakeContextCurrent($window);
 // after glfwSwapBuffers has been called 
 glfwSwapInterval(1);
 
-/**
- * Shader Setup
- */
-// Vertext shader
+// Shader Setup
+// ---------------------------------------------------------------------------- 
+
+// create, upload and compile the vertex shader
 $vertexShader = glCreateShader(GL_VERTEX_SHADER);
-glShaderSource($vertexShader, "
+glShaderSource($vertexShader, <<< 'GLSL'
 #version 330 core
 layout (location = 0) in vec3 position;
 layout (location = 1) in vec3 color;
@@ -52,17 +55,16 @@ void main()
     pcolor = vec4(color, 1.0f);
     gl_Position = vec4(position, 1.0f);
 }
-");
+GLSL);
 glCompileShader($vertexShader);
 glGetShaderiv($vertexShader, GL_COMPILE_STATUS, $success);
-
 if (!$success) {
-    die("Vertex shader could not be compiled.");
+    throw new Exception("Vertex shader could not be compiled.");
 }
 
-// fragment shaders
+// create, upload and compile the fragment shader
 $fragShader = glCreateShader(GL_FRAGMENT_SHADER);
-glShaderSource($fragShader, "
+glShaderSource($fragShader, <<<'GLSL'
 #version 330 core
 out vec4 fragment_color;
 in vec4 pcolor;
@@ -71,62 +73,54 @@ void main()
 {
     fragment_color = pcolor;
 } 
-");
+GLSL);
 glCompileShader($fragShader);
 glGetShaderiv($fragShader, GL_COMPILE_STATUS, $success);
-
 if (!$success) {
-    die("Fragment shader could not be compiled.");
+    throw new Exception("Fragment shader could not be compiled.");
 }
 
-// link the shaders
+// create a shader programm and link our vertex and framgent shader together
 $shaderProgram = glCreateProgram();
 glAttachShader($shaderProgram, $vertexShader);
 glAttachShader($shaderProgram, $fragShader);
 glLinkProgram($shaderProgram);
 
 glGetProgramiv($shaderProgram, GL_LINK_STATUS, $linkSuccess);
-
 if (!$linkSuccess) {
-    die("Shader program could not be linked.");
+    throw new Exception("Shader program could not be linked.");
 }
 
 // free the shders
 glDeleteShader($vertexShader);
 glDeleteShader($fragShader);
 
-/**
- * Vertex creation
- */
-// Buffers
-$VBO; $VAO; 
+// Buffer and data setup
+// ---------------------------------------------------------------------------- 
 
-// verticies
-$verticies = [ 
-     // positions      // colors
-    0.5, -0.5, 0.0,  1.0, 0.0, 0.0,  // bottom right
-   -0.5, -0.5, 0.0,  0.0, 1.0, 0.0,  // bottom let
-    0.0,  0.5, 0.0,  0.0, 0.0, 1.0   // top 
-];
-
-
+// create a vertex array (VertextArrayObject -> VAO)
 glGenVertexArrays(1, $VAO);
-glGenBuffers(2, $VBO, $VBO2);
 
-var_dump($VBO, $VBO2);
+// create a buffer for our vertices (VertextBufferObject -> VBO)
+glGenBuffers(1, $VBO);
 
-die;
-
+// bind the buffer to our VAO 
 glBindVertexArray($VAO);
-
 glBindBuffer(GL_ARRAY_BUFFER, $VBO);
 
-$buffer = new \PGL\Buffer\FBuffer();
-foreach($verticies as $v) {
-    $buffer->push($v);
-}
+// declare vertices for a single triangle and the colors for each vertex
+$buffer = new \GL\Buffer\FloatBuffer([ 
+   // positions     // colors
+   0.5, -0.5, 0.0,  1.0, 0.0, 0.0,  // bottom right
+  -0.5, -0.5, 0.0,  0.0, 1.0, 0.0,  // bottom let
+   0.0,  0.5, 0.0,  0.0, 0.0, 1.0   // top 
+]);
 
+// now we can upload our float buffer to the currently bound VBO
 glBufferData(GL_ARRAY_BUFFER, $buffer, GL_STATIC_DRAW);
+
+// in the next step we have to define the vertex attributes, in simpler
+// words tell openGL how the data we just uploaded should be split and iterated over.
 
 // positions
 glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, GL_SIZEOF_FLOAT * 6, 0);
@@ -140,11 +134,15 @@ glEnableVertexAttribArray(1);
 glBindBuffer(GL_ARRAY_BUFFER, 0); 
 glBindVertexArray(0); 
 
-/**
- * Main loop
- */
+
+// Main Loop
+// ---------------------------------------------------------------------------- 
+// `glfwWindowShouldClose` returns true when the user clicks on the little 
+// close button on the window, there probably are other triggers. But in short
+// we simply loop forever until the window tells us it wants to close.
 while (!glfwWindowShouldClose($window))
 {
+    // setting the clear color to black and clearing the color buffer
     glClearColor(0, 0, 0, 1);
     glClear(GL_COLOR_BUFFER_BIT);
 
@@ -155,7 +153,8 @@ while (!glfwWindowShouldClose($window))
     glBindVertexArray($VAO);
     glDrawArrays(GL_TRIANGLES, 0, 3);
 
-    // swap
+    // swap the windows framebuffer and
+    // poll queued window events.
     glfwSwapBuffers($window);
     glfwPollEvents();
 }

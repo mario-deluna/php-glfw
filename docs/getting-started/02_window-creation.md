@@ -1,0 +1,1 @@
+# Opening a window

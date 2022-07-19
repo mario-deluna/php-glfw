@@ -346,7 +346,7 @@ class ExtGenerator
     /**
      * Same as "renderTemplate" but stores the file directly
      */
-    private function generateTemplate(string $templateName, array $params) : string
+    private function generateTemplate(string $templateName, array $params, bool $writefile = true) : string
     {
         $buffer = $this->renderTemplate($templateName, $params);
 
@@ -354,7 +354,8 @@ class ExtGenerator
             $buffer = $params['__buffer_prefix'] . $buffer;
         }
 
-        file_put_contents(GEN_PATH_EXT . '/' . $templateName, $buffer);
+        if ($writefile) file_put_contents(GEN_PATH_EXT . '/' . $templateName, $buffer);
+
         return $buffer;
     }
 
@@ -394,6 +395,14 @@ class ExtGenerator
         $this->buildFunctionsBody();
         $this->buildGLBufferHeaderAndBody();
         $this->buildStubs();
+
+        // docs 
+        $this->buildDocsBuffer();
+
+        // foreach($this->getCompleteFunctions() as $func) {
+        //     $path = GEN_PATH_EXT . '/docs/API/OpenGL/' . $func->name . '.md';
+        //     file_put_contents($path, '# ' . $func->name);
+        // }
     }
 
     /**
@@ -473,5 +482,22 @@ class ExtGenerator
             'functions' => $this->getCompleteFunctions(),
             '__buffer_prefix' => '<?php ' . PHP_EOL
         ]);
+    }
+
+    /**
+     * Builds the Docs / Buffer
+     */
+    private function buildDocsBuffer() : void
+    {
+        // foreach($this->getCompleteFunctions() as $func) {
+        //     $path = GEN_PATH_EXT . '/docs/API/OpenGL/' . $func->name . '.md';
+        //     file_put_contents($path, '# ' . $func->name);
+        // }
+        
+        foreach($this->phpglfwBuffers as $buffer) {
+            file_put_contents(GEN_PATH_EXT . '/docs/API/Buffer/' . $buffer->name . '.md', $this->generateTemplate('docs/buffer.md', [
+                'buffer' => $buffer,
+            ], false));
+        }
     }
 }

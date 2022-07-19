@@ -2,6 +2,8 @@
 
 A fully-featured OpenGL and GLFW extension for PHP. Batteries included (Math Functions, Texture Loaders, etc..)
 
+[![PHPglfw](https://github.com/mario-deluna/php-glfw/actions/workflows/build.yml/badge.svg)](https://github.com/mario-deluna/php-glfw/actions/workflows/build.yml)
+
 PHP-GLFW allows you to create 2D and 3D desktop applications in PHP. Bringing a whole different set of tools into the PHP world for real-time applications or simple rendering services. 
 
 ## 💡 Things to know when you start
