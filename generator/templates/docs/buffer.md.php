@@ -3,6 +3,8 @@
 The class `<?php echo $buffer->getFullNamespaceString(); ?>` comes with the PHP-GLFW extension to more efficiently 
 handle large arrays of `<?php echo $buffer->type; ?>` values (`<?php echo $buffer->getValuePHPType(); ?>` in php).
 
+**Don't confuse these objects with actual GPU buffers.**
+
 `<?php echo $buffer->name; ?>` stores an array of real `<?php echo $buffer->type; ?>` values internally, which saves a lot of memory
 and makes interaction with the GL API a lot easier. An instance of this object can be used similarly to an array but
 comes with obvious limitations. The internal implementation is similar to c++ std::vector, this means you do not have to 
@@ -64,23 +66,26 @@ $buffer = new <?php echo $buffer->name; ?>([
 
 The `<?php echo $buffer->name; ?>` class exposes the following methods to userland.
 
-### `push` 
 
-pushes a value into the buffer, this is exactly the same as when you would write `$buffer[] = <?php echo $buffer->getValuePHPType() === 'int' ? '123' : '3.14'; ?>`.
+<?php echo $docParser->getAPIRefMarkdown($buffer->getFullNamespaceString() . '::push'); ?> 
 
-```php
-function push(<?php echo $buffer->getValuePHPType(); ?> $value) : void
-```
-
----
-
-### `fill`
+### <span class="badge badge-blue">asd</span> `fill`
 
 Fills the buffer with `$count` amount of values. The second argument is the value that is filled in.
 
 ```php
 function fill(int $count, <?php echo $buffer->getValuePHPType(); ?> $value) : void
 ```
+
+arguments
+
+:   1. `int $count` The number of elements to fill.
+    2. `<?php echo $buffer->getValuePHPType(); ?> $value` That value that will be filled in.
+
+returns 
+
+:   `void`
+
 
 Example:
 
@@ -97,26 +102,6 @@ var_dump($buffer); // [3, 3, 3, 3, 3]
 
 ---
 
-### `clear`
-
-```php
-function clear() : void
-```
-
-### `size`
-
-```php
-function size() : int
-```
-
-### `capacity`
-
-```php
-public function capacity() : int
-```
-
-### `reserve`
-
-```php
-public function reserve(int $size) : void
-```
+<?php foreach(['reserve', 'clear', 'size', 'capacity'] as $funcName) : ?>
+<?php echo $docParser->getAPIRefMarkdown($buffer->getFullNamespaceString() . '::' . $funcName); ?> 
+<?php endforeach; ?>

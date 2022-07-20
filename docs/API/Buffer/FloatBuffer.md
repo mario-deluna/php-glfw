@@ -2,6 +2,8 @@
 The class `GL\Buffer\FloatBuffer` comes with the PHP-GLFW extension to more efficiently 
 handle large arrays of `GLfloat` values (`float` in php).
 
+**Don't confuse these objects with actual GPU buffers.**
+
 `FloatBuffer` stores an array of real `GLfloat` values internally, which saves a lot of memory
 and makes interaction with the GL API a lot easier. An instance of this object can be used similarly to an array but
 comes with obvious limitations. The internal implementation is similar to c++ std::vector, this means you do not have to 
@@ -63,7 +65,8 @@ $buffer = new FloatBuffer([
 
 The `FloatBuffer` class exposes the following methods to userland.
 
-### `push` 
+
+### `push`
 
 pushes a value into the buffer, this is exactly the same as when you would write `$buffer[] = 3.14`.
 
@@ -71,15 +74,34 @@ pushes a value into the buffer, this is exactly the same as when you would write
 function push(float $value) : void
 ```
 
----
+arguments
 
-### `fill`
+:    1. `float` `$value` The value to be pushed into the buffer.
+
+returns
+
+:    `void` 
+
+---
+     
+
+### <span class="badge badge-blue">asd</span> `fill`
 
 Fills the buffer with `$count` amount of values. The second argument is the value that is filled in.
 
 ```php
 function fill(int $count, float $value) : void
 ```
+
+arguments
+
+:   1. `int $count` The number of elements to fill.
+    2. `float $value` That value that will be filled in.
+
+returns 
+
+:   `void`
+
 
 Example:
 
@@ -96,26 +118,66 @@ var_dump($buffer); // [3, 3, 3, 3, 3]
 
 ---
 
+### `reserve`
+
+Reserves the $size amount of space. Values are still undefined.
+
+```php
+function reserve(int $size) : void
+```
+
+arguments
+
+:    1. `int` `$size` The number of elements to reserve space for.
+
+returns
+
+:    `void` 
+
+---
+     
 ### `clear`
+
+Will clear the Buffer, internally this will release all allocated data. Meaning any reserved space will be freed.
 
 ```php
 function clear() : void
 ```
 
+
+returns
+
+:    `void` 
+
+---
+     
 ### `size`
+
+Returns the actual size / number of elements of the buffer.
 
 ```php
 function size() : int
 ```
 
+
+returns
+
+:    `int` buffer size in element count (not bytes)
+
+---
+     
 ### `capacity`
 
-```php
-public function capacity() : int
-```
-
-### `reserve`
+Returns the current reserved space of the buffer.
 
 ```php
-public function reserve(int $size) : void
+function capacity() : int
 ```
+
+
+returns
+
+:    `int` buffer space in element count (not bytes)
+
+---
+     

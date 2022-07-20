@@ -2,6 +2,15 @@
 
 use PHPGlfwAdjustments\AdjustmentInterface;
 
+use PhpParser\Node;
+use PhpParser\Node\Stmt\ClassMethod;
+use PhpParser\NodeTraverser;
+use PhpParser\NodeVisitorAbstract;
+use PhpParser\ParserFactory;
+use PhpParser\Node\Stmt\Function_;
+use PhpParser\NodeVisitor\NameResolver;
+use PhpParser\NodeVisitor\ParentConnectingVisitor;
+
 class ExtGenerator
 {
     /**
@@ -65,6 +74,11 @@ class ExtGenerator
         'GLdouble' => ExtType::T_DOUBLE,
         'GLclampd' => ExtType::T_DOUBLE,
     ];
+
+    /**
+     * Instance of the doc parser 
+     */
+    private ?ExtDocParser $docParser = null;
 
     /**
      * Adds a constant to the extension
@@ -397,6 +411,7 @@ class ExtGenerator
         $this->buildStubs();
 
         // docs 
+        $this->docParser = new ExtDocParser;
         $this->buildDocsBuffer();
 
         // foreach($this->getCompleteFunctions() as $func) {
@@ -475,13 +490,25 @@ class ExtGenerator
      * Builds the PHP Stubs file
      */
     private function buildStubs() : void
-    {
+    {   
+        // build the extension stub file
+        // used for autogenerating the arginfo.h header and class entries
         $this->generateTemplate('phpglfw.stub.php', [
             'buffers' => $this->phpglfwBuffers,
             'constants' => $this->constants,
             'functions' => $this->getCompleteFunctions(),
             '__buffer_prefix' => '<?php ' . PHP_EOL
         ]);
+
+        // build the IDE stubs file
+        // IDE stubs contian comments and meta information for the user
+        // the extension stubs are only used for building the extension
+        file_put_contents(GEN_PATH_EXT . '/stubs/phpglfw.php', $this->generateTemplate('stubs/phpglfw.php', [
+            'buffers' => $this->phpglfwBuffers,
+            'constants' => $this->constants,
+            'functions' => $this->getCompleteFunctions(),
+            '__buffer_prefix' => '<?php ' . PHP_EOL
+        ], false));
     }
 
     /**
@@ -497,6 +524,7 @@ class ExtGenerator
         foreach($this->phpglfwBuffers as $buffer) {
             file_put_contents(GEN_PATH_EXT . '/docs/API/Buffer/' . $buffer->name . '.md', $this->generateTemplate('docs/buffer.md', [
                 'buffer' => $buffer,
+                'docParser' => $this->docParser,
             ], false));
         }
     }
