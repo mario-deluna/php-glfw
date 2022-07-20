@@ -69,7 +69,7 @@ The `<?php echo $buffer->name; ?>` class exposes the following methods to userla
 
 <?php echo $docParser->getAPIRefMarkdown($buffer->getFullNamespaceString() . '::push'); ?> 
 
-### <span class="badge badge-blue">asd</span> `fill`
+### `fill`
 
 Fills the buffer with `$count` amount of values. The second argument is the value that is filled in.
 

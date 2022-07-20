@@ -85,7 +85,7 @@ returns
 ---
      
 
-### <span class="badge badge-blue">asd</span> `fill`
+### `fill`
 
 Fills the buffer with `$count` amount of values. The second argument is the value that is filled in.
 
