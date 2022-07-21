@@ -5,15 +5,25 @@ use GLSpec\GLConstantGroup;
 class GLSpecReader 
 {
     /**
+     * An array continaing additinal GL reference page data
+     * @var array<sting, array>
+     */
+    private array $glrefs = [];
+
+    /**
      * Parse the xml at the given path
      * 
      * @param GLSpec            $spec
      * @param string            $pathToXml
      */
-    public function parse(GLSpec $spec, string $pathToXml)
+    public function parse(GLSpec $spec, string $pathToXml, ?string $pathToRefs = null)
     {
         if (!file_exists($pathToXml)) {
             throw new \Exception("GL Spec file could not be loaded at: " . $pathToXml);
+        }
+
+        if ($pathToRefs) {
+            $this->glrefs = json_decode(file_get_contents($pathToRefs), true);
         }
 
         $xml = simplexml_load_file($pathToXml);
@@ -139,6 +149,11 @@ class GLSpecReader
             $func->class = $proto->attributes()->class;
             $func->group = $proto->attributes()->group;
 
+            // ref comment
+            if (isset($this->glrefs[$func->name])) {
+                $func->commentSummary = $this->glrefs[$func->name]['summary'] ?? '';
+            }
+
             $funcPtype = trim((string) $proto->ptype);
             $func->returnTypeString = $funcPtype ?: trim((string) $proto);
             $func->fullReturnTypeString = substr(strip_tags((string) $proto->asXML()), 0, -strlen($func->name));
@@ -152,6 +167,11 @@ class GLSpecReader
                 $arg->fullTypeString = trim(substr(trim(strip_tags((string) $argDef->asXML())), 0, strlen($arg->name) * -1));
                 $arg->class = $argDef->attributes()->class;
                 $arg->group = $argDef->attributes()->group;
+
+                // ref argument comment
+                if ($this->glrefs[$func->name]['params'][$arg->name]['desc'] ?? null) {
+                    $arg->comment = $this->glrefs[$func->name]['params'][$arg->name]['desc'];
+                }
             }
         }
     }

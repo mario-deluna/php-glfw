@@ -16,6 +16,8 @@ class GLFunction
 
     public array $arguments = [];
 
+    public string $commentSummary = '';
+
     public function isPointerReturn() : bool
     {
         return strpos($this->fullReturnTypeString, '*') !== false;

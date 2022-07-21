@@ -1,0 +1,97 @@
+#!/usr/bin/env php
+<?php
+
+/**
+ * Load dependencies
+ */
+require __DIR__ . '/bootstrap.php';
+
+/**
+ * This script will download a copy of the OpenGL refpages,
+ * and parse the needed information for the binding generator.
+ */
+$tmpDir =  __DIR__ . '/data/glrefs';
+if (!is_dir($tmpDir)) mkdir($tmpDir);
+
+$refsZip =  $tmpDir . '/refs.zip';
+if (!file_exists($refsZip)) {
+    passthru("wget https://github.com/KhronosGroup/OpenGL-Refpages/archive/refs/heads/main.zip -O " . $tmpDir . '/refs.zip');
+}
+
+if (!is_dir($tmpDir . '/OpenGL-Refpages-main')) {
+    passthru('unzip ' . $tmpDir . '/refs.zip -d ' . $tmpDir);
+}
+
+$gl4DocsDir = $tmpDir . '/OpenGL-Refpages-main/gl4';
+$parsedData = [];
+
+/**
+ * Function to extract our needed data from the xml files
+ */
+function parseXmlDocFile(string $filepath, &$data) 
+{
+    // we only care about gl functions for now
+    if (substr(basename($filepath), 0, 2) !== 'gl') return;
+
+    // some transformations of the xml to make it easier readable..
+    $xmlContent = file_get_contents($filepath);
+    $xmlContent = trim(substr($xmlContent, strpos($xmlContent, PHP_EOL)));
+    $xmlContent = str_replace('<link', '<reflink', $xmlContent);
+    $xmlContent = str_replace('</link', '</reflink', $xmlContent);
+    $xmlContent = preg_replace("/(xmlns=\".*\")/", '', $xmlContent);
+    $xmlContent = preg_replace("/xml:(.*)=\"/", 'xml$1="', $xmlContent);
+
+    $dom = new DOMDocument();
+    $dom->recover = true;
+    @$dom->loadXML($xmlContent);
+    $dom->loadXML($dom->saveXML());
+
+    $xpath = new DOMXpath($dom);
+
+    $func = (string) $xpath->evaluate('string(//refmeta/refentrytitle)');
+
+    $docEntry = [
+        'summary' =>  (string) $xpath->evaluate('string(//refnamediv/refpurpose)'),
+        'params' => [],
+    ];
+
+    // extract the arguments 
+    foreach($xpath->query('//refsect1[@xmlid=\'parameters\']/variablelist/varlistentry') as $node) {
+        $argName = $xpath->evaluate('string(.//term)', $node);
+        $desc = $dom->saveXML($xpath->query('.//listitem/para', $node)->item(0));
+        $desc = explode("\n", trim(strip_tags($desc, "<constant>")));
+        $desc = implode(' ', array_map("trim", $desc));
+        
+        $docEntry['params'][$argName] = [
+            'desc' => $desc
+        ];
+    }
+
+    $docEntry['copyright'] = (string) $xpath->evaluate('string(//refsect1[@xmlid=\'Copyright\'])');
+
+    // // extract the copyright
+    // foreach($xml->refsect1 as $node) 
+    // {
+    //     if (((string)$node->title) === 'Copyright') {
+    //         $docEntry['copyright'] = trim((string) $node->para); break;
+    //     }
+    // }
+
+    // if ($func === 'glTexSubImage2D') {
+    //     var_dump($docEntry); die;
+    // }
+    // var_dump($docEntry);
+
+    $data[$func] = $docEntry;
+}
+
+// iterate over all xml files of the gl4 standart
+foreach (new DirectoryIterator($gl4DocsDir) as $file) {
+    error_reporting(E_ALL ^ E_WARNING); 
+    if ($file->isFile() && $file->getExtension() === 'xml') {
+        parseXmlDocFile($file->getFileInfo(), $parsedData);
+    }
+    error_reporting(E_ALL); 
+}
+
+file_put_contents(__DIR__ . '/data/glrefs.json', json_encode($parsedData, JSON_PRETTY_PRINT));

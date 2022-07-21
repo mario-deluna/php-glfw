@@ -54,6 +54,11 @@ abstract class ExtArgument
     public string $name;
 
     /**
+     * A comment describing the argument and its use 
+     */
+    public ?string $comment = null;
+
+    /**
      * The generator internal type of the argument
      */
     public string $argumentType;

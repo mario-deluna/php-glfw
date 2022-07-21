@@ -59,32 +59,45 @@ class ExtDocParser
                 $this->prettyPrinter = new \PhpParser\PrettyPrinter\Standard;
             }
 
-            public function leaveNode(Node $node) {
-                if ($node instanceof ClassMethod) {
+            public function leaveNode(Node $node) 
+            {
+                $symbol = null;
+                $classNamespace = null; 
+
+                if ($node instanceof Function_) {
+                    $method = $node->name->toString();
+                    $symbol = $method;
+                }
+                elseif ($node instanceof ClassMethod) {
                     $classNamespace = $node->getAttribute('parent')->namespacedName->toString();
                     $method = $node->name->toString();
 
                     $symbol = $classNamespace . '::' . $method;
-                    $this->symbolData[$symbol] = [
-                        'namespace' => $classNamespace,
-                        'function' => $method,
-                        'signature' => null,
-                        'comment' => null,
-                        'docblock' => null,
-                    ];
-
-                    // extract the comment
-                    if ($node->getAttribute('comments') && $node->getAttribute('comments')[0]) {
-                        $this->symbolData[$symbol]['comment'] = $node->getAttribute('comments')[0]->getText();
-
-                        // parse the comment
-                        $this->symbolData[$symbol]['docblock'] = $this->docblockFactory->create($this->symbolData[$symbol]['comment']);
-                    }
                     
-                    // extract the signature
-                    $node->setAttribute('comments', []);
-                    $this->symbolData[$symbol]['signature'] = $this->prettyPrinter->prettyPrint([$node]);
                 }
+                else {
+                    return;
+                }
+
+                $this->symbolData[$symbol] = [
+                    'namespace' => $classNamespace ?: null,
+                    'function' => $method,
+                    'signature' => null,
+                    'comment' => null,
+                    'docblock' => null,
+                ];
+
+                // extract the comment
+                if ($node->getAttribute('comments') && $node->getAttribute('comments')[0]) {
+                    $this->symbolData[$symbol]['comment'] = $node->getAttribute('comments')[0]->getText();
+
+                    // parse the comment
+                    $this->symbolData[$symbol]['docblock'] = $this->docblockFactory->create($this->symbolData[$symbol]['comment']);
+                }
+                
+                // extract the signature
+                $node->setAttribute('comments', []);
+                $this->symbolData[$symbol]['signature'] = $this->prettyPrinter->prettyPrint([$node]);
             }
         };
 
@@ -147,7 +160,7 @@ class ExtDocParser
         $b = "arguments\n\n:";
         
         foreach($paramTags as $k => $paramTag) {
-            $b .= '    ' . ($k + 1) . '. `' . $paramTag->getType() . '` `$' . $paramTag->getVariableName() . '` ' .  $paramTag->getDescription() . PHP_EOL;
+            $b .= tabulate(($k + 1) . '. `' . $paramTag->getType() . '` `$' . $paramTag->getVariableName() . '` ' .  $paramTag->getDescription()) . PHP_EOL;
         }
 
         return $b;
@@ -170,7 +183,7 @@ class ExtDocParser
         return $b;
     }
 
-    public function getAPIRefMarkdown(string $symbol) : string
+    public function getAPIRefMarkdown(string $symbol, array $options = []) : string
     {
         $data = $this->getSymbolData($symbol);
 
@@ -180,9 +193,12 @@ class ExtDocParser
         $argsMd = $this->getAPIArgsMarkdown($symbol);
         $returnMd = $this->getAPIReturnMarkdown($symbol);
 
-        $b = <<<MARKDOWN
-### `{$data['function']}`
+        $b = '';
+        if (($options['no-title'] ?? false) !== true) {
+            $b .= "### `{$data['function']}`\n\n";
+        }
 
+        $b .= <<<MARKDOWN
 {$summary}
 
 ```php

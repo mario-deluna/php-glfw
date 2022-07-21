@@ -34,6 +34,7 @@ tests/*.sh
 tmp-php.ini
 examples/vendor/
 generator/vendor/
+generator/data/glrefs
 generator2/vendor/
 .vscode/
 *.cache

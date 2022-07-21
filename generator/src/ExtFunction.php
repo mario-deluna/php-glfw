@@ -223,9 +223,9 @@ class ExtFunction
     /**
      * Generates a comment block for the current function
      */
-    public function getFunctionCommentBlock() : string
+    public function getCFunctionCommentBlock() : string
     {
-        return commentBlock(trim(sprintf("%s\n%s", $this->name, $this->comment)));
+        return commentBlock(trim(sprintf("%s", $this->name)));
     }
 
     /**
@@ -233,7 +233,7 @@ class ExtFunction
      */
     public function getFunctionPHPComment() : string
     {
-        return $this->comment ?? '';
+        return $this->comment ?: $this->name;
     } 
 
     /**
@@ -241,7 +241,15 @@ class ExtFunction
      */
     public function getFunctionPHPCommentBlock() : string
     {
-        return commentBlock(trim(sprintf("%s\n%s", $this->name, $this->getFunctionPHPComment())));
+        $argsBuffer = '';
+        foreach($this->arguments as $arg) {
+            $argsBuffer .= PHP_EOL . '@param ' . $this->getPHPStubArgument($arg, false) . ' ' . $arg->comment; 
+        }
+
+        // add some spaceing if there is content
+        if ($argsBuffer) $argsBuffer = PHP_EOL . $argsBuffer . PHP_EOL;
+
+        return commentBlock(trim(sprintf("%s%s", $this->getFunctionPHPComment(), $argsBuffer)));
     }
 
     /**
@@ -301,36 +309,41 @@ class ExtFunction
         return "function {$this->name}({$this->getPHPStubArguments()}) : {$stubReturnType} {};\n";
     }
 
+    public function getPHPStubArgument(ExtArgument $arg, bool $allowDefaultValue = true) : string
+    {
+        // IPO argument
+        if ($arg->argumentType === ExtType::T_IPO) {
+            $buffer = ($arg->isOptional() ? '?' : '') . $arg->argInternalPtrObject->getPHPClassName() . ' ' . '$' . $arg->name;
+                
+            if ($arg->isOptional() && $allowDefaultValue) {
+                $buffer .= ' = ' . $arg->defaultValue;
+            }
+
+            return $buffer;
+        }
+        // class entry argument
+        elseif ($arg->argumentType === ExtType::T_CE && $arg instanceof CEObjectArgument) {
+            $buffer = ($arg->isOptional() ? '?' : '') . $arg->getPHPClassName() . ' ' . '$' . $arg->name;
+                
+            if ($arg->isOptional() && $allowDefaultValue) {
+                $buffer .= ' = ' . $arg->defaultValue;
+            }
+
+           return $buffer;
+        } 
+        // variadic argument
+        elseif ($arg instanceof VariadicArgument) {
+            return '?' . $this->mapTypeToStubType($arg->argumentType) . ' ' . ($arg->passedByReference ? '&' : '') . '...$' . $arg->name;
+        } else {
+            return $this->mapTypeToStubType($arg->argumentType) . ' ' . ($arg->passedByReference ? '&' : '') . '$' . $arg->name;
+        }
+    }
+
     public function getPHPStubArguments() : string
     {
         $args = [];
         foreach($this->arguments as $arg) {
-            // IPO argument
-            if ($arg->argumentType === ExtType::T_IPO) {
-                $buffer = ($arg->isOptional() ? '?' : '') . $arg->argInternalPtrObject->getPHPClassName() . ' ' . '$' . $arg->name;
-                    
-                if ($arg->isOptional()) {
-                    $buffer .= ' = ' . $arg->defaultValue;
-                }
-
-                $args[] = $buffer;
-            }
-            // class entry argument
-            elseif ($arg->argumentType === ExtType::T_CE && $arg instanceof CEObjectArgument) {
-                $buffer = ($arg->isOptional() ? '?' : '') . $arg->getPHPClassName() . ' ' . '$' . $arg->name;
-                    
-                if ($arg->isOptional()) {
-                    $buffer .= ' = ' . $arg->defaultValue;
-                }
-
-                $args[] = $buffer;
-            } 
-            // variadic argument
-            elseif ($arg instanceof VariadicArgument) {
-                $args[] = '?' . $this->mapTypeToStubType($arg->argumentType) . ' ' . ($arg->passedByReference ? '&' : '') . '...$' . $arg->name;
-            } else {
-                $args[] = $this->mapTypeToStubType($arg->argumentType) . ' ' . ($arg->passedByReference ? '&' : '') . '$' . $arg->name;
-            }
+            $args[] = $this->getPHPStubArgument($arg);
         }
 
         return implode(', ', $args);

@@ -83,3 +83,14 @@ namespace GL\Buffer
     }
 <?php endforeach; ?>
 };
+
+namespace {
+    /**
+     * Functions
+     * ----------------------------------------------------------------------------
+     */
+<?php foreach($functions as $func) : ?>
+<?php echo tabulate($func->getFunctionPHPCommentBlock()); ?> 
+    <?php echo $func->getPHPStub(); ?> 
+<?php endforeach; ?> 
+}

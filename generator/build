@@ -15,7 +15,7 @@ $gen = new ExtGenerator;
 
 
 // parse the GL spec
-$reader->parse($spec, __DIR__ . '/data/gl.xml');
+$reader->parse($spec, __DIR__ . '/data/gl.xml', __DIR__ . '/data/glrefs.json');
 
 // import the gl spec into the generator
 $gen->import($spec, 'gl', '4.1', [

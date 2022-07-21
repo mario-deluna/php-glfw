@@ -14,6 +14,8 @@ class GLFunctionArg
 
     public ?string $group;
 
+    public string $comment = '';
+
     public function isPointer() : bool
     {
         return substr_count($this->fullTypeString, '*') === 1;

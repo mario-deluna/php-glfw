@@ -258,6 +258,7 @@ class ExtGenerator
 
             $phpfunc = new ExtFunction($func->name);
             $phpfunc->incomplete = false;
+            $phpfunc->comment = $func->commentSummary;
 
             $sig = $func->name . '(' . implode(',', array_column($func->arguments, 'name')) . ')';
 
@@ -282,7 +283,9 @@ class ExtGenerator
             if ($func->isPointerReturn()) continue;
 
             // skip functions with unmapped arguments
-            foreach($func->arguments as $argument) {
+            foreach($func->arguments as $argument) 
+            {
+                $phparg = null;
 
                 // direct map
                 if (isset($this->glTypeToExtType[$argument->typeString]) && $argument->isPointer() === false) 
@@ -329,7 +332,10 @@ class ExtGenerator
                     if (GEN_VERBOSE) printf("Unmapped argument type '%s' (%s), in function (%s)\n", $argument->fullTypeString, $argument->typeString, $func->name);
                     $phpfunc->incomplete = true;
                     continue 1;
-                }                
+                }
+                
+                // add reference page comment
+                $phparg->comment = $argument->comment;
             }
 
             //  assign return type
@@ -413,11 +419,7 @@ class ExtGenerator
         // docs 
         $this->docParser = new ExtDocParser;
         $this->buildDocsBuffer();
-
-        // foreach($this->getCompleteFunctions() as $func) {
-        //     $path = GEN_PATH_EXT . '/docs/API/OpenGL/' . $func->name . '.md';
-        //     file_put_contents($path, '# ' . $func->name);
-        // }
+        $this->buildDocsOpenGL();
     }
 
     /**
@@ -516,14 +518,27 @@ class ExtGenerator
      */
     private function buildDocsBuffer() : void
     {
-        // foreach($this->getCompleteFunctions() as $func) {
-        //     $path = GEN_PATH_EXT . '/docs/API/OpenGL/' . $func->name . '.md';
-        //     file_put_contents($path, '# ' . $func->name);
-        // }
-        
         foreach($this->phpglfwBuffers as $buffer) {
             file_put_contents(GEN_PATH_EXT . '/docs/API/Buffer/' . $buffer->name . '.md', $this->generateTemplate('docs/buffer.md', [
                 'buffer' => $buffer,
+                'docParser' => $this->docParser,
+            ], false));
+        }
+    }
+
+    /**
+     * Builds the Docs / Buffer
+     */
+    private function buildDocsOpenGL() : void
+    {
+        foreach($this->getCompleteFunctions() as $func) {
+
+            if (substr($func->name, 0, 2) !== 'gl' || substr($func->name, 0, 4) === 'glfw') continue;
+
+            $path = GEN_PATH_EXT . '/docs/API/OpenGL/' . $func->name . '.md';
+
+            file_put_contents($path, $this->generateTemplate('docs/opengl_func.md', [
+                'func' => $func,
                 'docParser' => $this->docParser,
             ], false));
         }

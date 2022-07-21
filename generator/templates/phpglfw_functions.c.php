@@ -155,7 +155,7 @@ void <?php echo $ipo->getObjectMinitHelperFunctionName(); ?>(void)
  * All the functions wrapped by the extension.
  */
 <?php foreach($functions as $func) : ?>
-<?php echo $func->getFunctionCommentBlock(); ?> 
+<?php echo $func->getCFunctionCommentBlock(); ?> 
 <?php echo $func->getFunctionImplementation(); ?> 
 
 <?php endforeach; ?>
