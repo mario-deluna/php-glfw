@@ -33,19 +33,8 @@
 
 #include "linmath.h"
 
-#define max(a,b)             \
-({                           \
-    __typeof__ (a) _a = (a); \
-    __typeof__ (b) _b = (b); \
-    _a > _b ? _a : _b;       \
-})
-
-#define min(a,b)             \
-({                           \
-    __typeof__ (a) _a = (a); \
-    __typeof__ (b) _b = (b); \
-    _a < _b ? _a : _b;       \
-})
+#define pglmax(a,b) ((a) > (b) ? (a) : (b))
+#define pglmin(a,b) ((a) < (b) ? (a) : (b))
 
 zend_class_entry *phpglfw_buffer_interface_ce; 
 <?php foreach($buffers as $buffer) : ?>
@@ -252,7 +241,7 @@ static HashTable *<?php echo $buffer->getHandlerMethodName('debug_info'); ?>(zen
     ZVAL_LONG(&zv, cvector_size(obj_ptr->vec));
     zend_hash_str_update(ht, "size", sizeof("size") - 1, &zv);
 
-    for(size_t i = 0; i < min(127, cvector_size(obj_ptr->vec)); i++) {
+    for(size_t i = 0; i < pglmin(127, cvector_size(obj_ptr->vec)); i++) {
         <?php echo $buffer->getValueArg()->getZvalAssignmentMacro(); ?>(&zv, obj_ptr->vec[i]);
         zend_hash_index_update(dataht, i, &zv);
     }

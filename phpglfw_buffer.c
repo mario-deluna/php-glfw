@@ -33,19 +33,8 @@
 
 #include "linmath.h"
 
-#define max(a,b)             \
-({                           \
-    __typeof__ (a) _a = (a); \
-    __typeof__ (b) _b = (b); \
-    _a > _b ? _a : _b;       \
-})
-
-#define min(a,b)             \
-({                           \
-    __typeof__ (a) _a = (a); \
-    __typeof__ (b) _b = (b); \
-    _a < _b ? _a : _b;       \
-})
+#define pglmax(a,b) ((a) > (b) ? (a) : (b))
+#define pglmin(a,b) ((a) < (b) ? (a) : (b))
 
 zend_class_entry *phpglfw_buffer_interface_ce; 
 zend_class_entry *phpglfw_buffer_glfloat_ce; 
@@ -259,7 +248,7 @@ static HashTable *phpglfw_buffer_glfloat_debug_info_handler(zend_object *object,
     ZVAL_LONG(&zv, cvector_size(obj_ptr->vec));
     zend_hash_str_update(ht, "size", sizeof("size") - 1, &zv);
 
-    for(size_t i = 0; i < min(127, cvector_size(obj_ptr->vec)); i++) {
+    for(size_t i = 0; i < pglmin(127, cvector_size(obj_ptr->vec)); i++) {
         ZVAL_DOUBLE(&zv, obj_ptr->vec[i]);
         zend_hash_index_update(dataht, i, &zv);
     }
@@ -587,7 +576,7 @@ static HashTable *phpglfw_buffer_gldouble_debug_info_handler(zend_object *object
     ZVAL_LONG(&zv, cvector_size(obj_ptr->vec));
     zend_hash_str_update(ht, "size", sizeof("size") - 1, &zv);
 
-    for(size_t i = 0; i < min(127, cvector_size(obj_ptr->vec)); i++) {
+    for(size_t i = 0; i < pglmin(127, cvector_size(obj_ptr->vec)); i++) {
         ZVAL_DOUBLE(&zv, obj_ptr->vec[i]);
         zend_hash_index_update(dataht, i, &zv);
     }
@@ -915,7 +904,7 @@ static HashTable *phpglfw_buffer_glint_debug_info_handler(zend_object *object, i
     ZVAL_LONG(&zv, cvector_size(obj_ptr->vec));
     zend_hash_str_update(ht, "size", sizeof("size") - 1, &zv);
 
-    for(size_t i = 0; i < min(127, cvector_size(obj_ptr->vec)); i++) {
+    for(size_t i = 0; i < pglmin(127, cvector_size(obj_ptr->vec)); i++) {
         ZVAL_LONG(&zv, obj_ptr->vec[i]);
         zend_hash_index_update(dataht, i, &zv);
     }
@@ -1243,7 +1232,7 @@ static HashTable *phpglfw_buffer_glbyte_debug_info_handler(zend_object *object, 
     ZVAL_LONG(&zv, cvector_size(obj_ptr->vec));
     zend_hash_str_update(ht, "size", sizeof("size") - 1, &zv);
 
-    for(size_t i = 0; i < min(127, cvector_size(obj_ptr->vec)); i++) {
+    for(size_t i = 0; i < pglmin(127, cvector_size(obj_ptr->vec)); i++) {
         ZVAL_LONG(&zv, obj_ptr->vec[i]);
         zend_hash_index_update(dataht, i, &zv);
     }

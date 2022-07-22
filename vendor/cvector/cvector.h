@@ -26,10 +26,8 @@
 #define cvector_clib_realloc realloc
 #endif
 
- #define max(a,b) \
-   ({ __typeof__ (a) _a = (a); \
-       __typeof__ (b) _b = (b); \
-     _a > _b ? _a : _b; })
+#define cvmax(a,b) ((a) > (b) ? (a) : (b))
+#define cvmin(a,b) ((a) < (b) ? (a) : (b))
 
 /**
  * @brief cvector_vector_type - The vector type used in this library
@@ -180,7 +178,7 @@
         for(size_t i = 0; i < count; i++) {                                    \
             (vec)[i] = (value);                                                \
         }                                                                      \
-        cvector_set_size((vec), max(count, cvector_size(vec)));                \
+        cvector_set_size((vec), cvmax(count, cvector_size(vec)));                \
     } while (0)
 
 /**
