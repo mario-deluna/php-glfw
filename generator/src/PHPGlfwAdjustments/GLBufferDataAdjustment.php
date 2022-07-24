@@ -43,13 +43,21 @@ creates and initializes a buffer object's data store
 PHP-GLFW: In the PHP extension this method has different signiture compared to the original. 
 Instead of passing byte size and a pointer to the function, in PHP you pass a `GL\\Buffer\\BufferInterface` instance.
 
-````
-glBufferData(int \$target, GL\\Buffer\\BufferInterface \$buffer, int \$usage)
-```
+Example: 
+```php
+\$buffer = new GL\Buffer\FloatBuffer([
+    // positions     // colors
+    0.5, -0.5, 0.0,  1.0, 0.0, 0.0,  // bottom right
+   -0.5, -0.5, 0.0,  0.0, 1.0, 0.0,  // bottom let
+    0.0,  0.5, 0.0,  0.0, 0.0, 1.0   // top 
+]);
 
-@param int \$target Specifies the target to which the buffer object is bound for glBufferData.
-@param GL\\Buffer\\BufferInterface \$buffer Specifies a buffer object containing the to be uploaded data.
-@param int \$usage Specifies the expected usage pattern of the data store. The symbolic constant must be GL_STREAM_DRAW, GL_STREAM_READ, GL_STREAM_COPY, GL_STATIC_DRAW, GL_STATIC_READ, GL_STATIC_COPY, GL_DYNAMIC_DRAW, GL_DYNAMIC_READ, or GL_DYNAMIC_COPY.
+glGenVertexArrays(1, \$VAO);
+glGenBuffers(1, \$VBO);
+glBindVertexArray(\$VAO);
+glBindBuffer(GL_ARRAY_BUFFER, \$VBO);
+glBufferData(GL_ARRAY_BUFFER, \$buffer, GL_STATIC_DRAW);
+```
 EOD;
         $func->arguments[] = ExtArgument::make('target', ExtType::T_LONG);
 
@@ -64,8 +72,11 @@ EOD;
         };
 
         $func->arguments[] = $bufferArg;
-
         $func->arguments[] = ExtArgument::make('usage', ExtType::T_LONG);
+
+        $func->arguments[0]->comment = 'Specifies the target to which the buffer object is bound for glBufferData.';
+        $func->arguments[1]->comment = 'Specifies a buffer object containing the to be uploaded data.';
+        $func->arguments[2]->comment = 'Specifies the expected usage pattern of the data store. The symbolic constant must be GL_STREAM_DRAW, GL_STREAM_READ, GL_STREAM_COPY, GL_STATIC_DRAW, GL_STATIC_READ, GL_STATIC_COPY, GL_DYNAMIC_DRAW, GL_DYNAMIC_READ, or GL_DYNAMIC_COPY.';
 
         $gen->replaceFunctionByName($func);
     }

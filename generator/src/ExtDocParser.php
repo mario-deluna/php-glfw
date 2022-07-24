@@ -148,6 +148,12 @@ class ExtDocParser
         return $docblock->getSummary();
     }
 
+    public function getDescription(string $symbol) : string
+    {
+        $docblock = $this->getSymbolDocBlock($symbol);   
+        return $docblock->getDescription();
+    }
+
     public function getAPIArgsMarkdown(string $symbol) : string
     {
         $docblock = $this->getSymbolDocBlock($symbol);   
@@ -188,6 +194,7 @@ class ExtDocParser
         $data = $this->getSymbolData($symbol);
 
         $summary = $this->getSummary($symbol);
+        $desc = $this->getDescription($symbol);
         $sig = $this->getFunctionSignatureSimple($symbol);
 
         $argsMd = $this->getAPIArgsMarkdown($symbol);
@@ -204,6 +211,8 @@ class ExtDocParser
 ```php
 {$sig}
 ```
+
+{$desc}
 
 {$argsMd}
 {$returnMd}

@@ -31,13 +31,13 @@ class GLShaderSourceAdjustment implements AdjustmentInterface
 Replaces the source code in a shader object.
 
 PHP-GLFW: As with PHP I don't see a reason to split up the shader source to multiple addresses. 
-This is why the function in PHP is simplyfied `glShaderSource(int \$shader, string \$soruce)`.
-
-@param int \$shader Specifies the handle of the shader object whose source code is to be replaced.
-@param string \$source Specifies a string containing the source code to be loaded into the shader.
+This is why the function in PHP is simplyfied.
 EOD;
         $func->arguments[] = ExtArgument::make('shader', ExtType::T_LONG);
         $func->arguments[] = ExtArgument::make('source', ExtType::T_STRING);
+
+        $func->arguments[0]->comment = 'Specifies the handle of the shader object whose source code is to be replaced.';
+        $func->arguments[1]->comment = 'Specifies a string containing the source code to be loaded into the shader.';
 
         $gen->replaceFunctionByName($func);
     }
