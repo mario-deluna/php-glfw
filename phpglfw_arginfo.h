@@ -1,5 +1,5 @@
 /* This is a generated file, edit the .stub.php file instead.
- * Stub hash: a509f067bdcf75f40afd91d42cec72fc208e566b */
+ * Stub hash: 6c1d83f5a684504a434395f27dcac7e097445c20 */
 
 ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_glCullFace, 0, 1, IS_VOID, 0)
 	ZEND_ARG_TYPE_INFO(0, mode, IS_LONG, 0)
@@ -1719,14 +1719,74 @@ ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_glBufferData, 0, 3, IS_VOID, 0)
 	ZEND_ARG_TYPE_INFO(0, usage, IS_LONG, 0)
 ZEND_END_ARG_INFO()
 
-#define arginfo_class_PGL_Math_Vec3_length arginfo_glfwGetTime
-
-ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(arginfo_class_PGL_Math_Vec3_normalize, 0, 0, PGL\\Math\\Vec3, 0)
+ZEND_BEGIN_ARG_INFO_EX(arginfo_class_GL_Math_Vec2___construct, 0, 0, 0)
+	ZEND_ARG_TYPE_INFO_WITH_DEFAULT_VALUE(0, x, IS_DOUBLE, 1, "null")
+	ZEND_ARG_TYPE_INFO_WITH_DEFAULT_VALUE(0, y, IS_DOUBLE, 1, "null")
 ZEND_END_ARG_INFO()
 
-#define arginfo_class_PGL_Math_Vec3_abs arginfo_class_PGL_Math_Vec3_normalize
+#define arginfo_class_GL_Math_Vec2_length arginfo_glfwGetTime
 
-#define arginfo_class_PGL_Math_Vec3___toString arginfo_glfwGetVersionString
+ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_class_GL_Math_Vec2_dot, 0, 1, IS_DOUBLE, 0)
+	ZEND_ARG_OBJ_INFO(0, right, GL\\Math\\Vec2, 0)
+ZEND_END_ARG_INFO()
+
+#define arginfo_class_GL_Math_Vec2_distance arginfo_class_GL_Math_Vec2_dot
+
+#define arginfo_class_GL_Math_Vec2_distance2 arginfo_class_GL_Math_Vec2_dot
+
+ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(arginfo_class_GL_Math_Vec2_normalize, 0, 0, GL\\Math\\Vec2, 0)
+ZEND_END_ARG_INFO()
+
+#define arginfo_class_GL_Math_Vec2_abs arginfo_class_GL_Math_Vec2_normalize
+
+#define arginfo_class_GL_Math_Vec2___toString arginfo_glfwGetVersionString
+
+ZEND_BEGIN_ARG_INFO_EX(arginfo_class_GL_Math_Vec3___construct, 0, 0, 0)
+	ZEND_ARG_TYPE_INFO_WITH_DEFAULT_VALUE(0, x, IS_DOUBLE, 1, "null")
+	ZEND_ARG_TYPE_INFO_WITH_DEFAULT_VALUE(0, y, IS_DOUBLE, 1, "null")
+	ZEND_ARG_TYPE_INFO_WITH_DEFAULT_VALUE(0, z, IS_DOUBLE, 1, "null")
+ZEND_END_ARG_INFO()
+
+#define arginfo_class_GL_Math_Vec3_length arginfo_glfwGetTime
+
+ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_class_GL_Math_Vec3_dot, 0, 1, IS_DOUBLE, 0)
+	ZEND_ARG_OBJ_INFO(0, right, GL\\Math\\Vec3, 0)
+ZEND_END_ARG_INFO()
+
+#define arginfo_class_GL_Math_Vec3_distance arginfo_class_GL_Math_Vec3_dot
+
+#define arginfo_class_GL_Math_Vec3_distance2 arginfo_class_GL_Math_Vec3_dot
+
+ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(arginfo_class_GL_Math_Vec3_normalize, 0, 0, GL\\Math\\Vec3, 0)
+ZEND_END_ARG_INFO()
+
+#define arginfo_class_GL_Math_Vec3_abs arginfo_class_GL_Math_Vec3_normalize
+
+#define arginfo_class_GL_Math_Vec3___toString arginfo_glfwGetVersionString
+
+ZEND_BEGIN_ARG_INFO_EX(arginfo_class_GL_Math_Vec4___construct, 0, 0, 0)
+	ZEND_ARG_TYPE_INFO_WITH_DEFAULT_VALUE(0, x, IS_DOUBLE, 1, "null")
+	ZEND_ARG_TYPE_INFO_WITH_DEFAULT_VALUE(0, y, IS_DOUBLE, 1, "null")
+	ZEND_ARG_TYPE_INFO_WITH_DEFAULT_VALUE(0, z, IS_DOUBLE, 1, "null")
+	ZEND_ARG_TYPE_INFO_WITH_DEFAULT_VALUE(0, w, IS_DOUBLE, 1, "null")
+ZEND_END_ARG_INFO()
+
+#define arginfo_class_GL_Math_Vec4_length arginfo_glfwGetTime
+
+ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_class_GL_Math_Vec4_dot, 0, 1, IS_DOUBLE, 0)
+	ZEND_ARG_OBJ_INFO(0, right, GL\\Math\\Vec4, 0)
+ZEND_END_ARG_INFO()
+
+#define arginfo_class_GL_Math_Vec4_distance arginfo_class_GL_Math_Vec4_dot
+
+#define arginfo_class_GL_Math_Vec4_distance2 arginfo_class_GL_Math_Vec4_dot
+
+ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(arginfo_class_GL_Math_Vec4_normalize, 0, 0, GL\\Math\\Vec4, 0)
+ZEND_END_ARG_INFO()
+
+#define arginfo_class_GL_Math_Vec4_abs arginfo_class_GL_Math_Vec4_normalize
+
+#define arginfo_class_GL_Math_Vec4___toString arginfo_glfwGetVersionString
 
 ZEND_BEGIN_ARG_INFO_EX(arginfo_class_GL_Buffer_BufferInterface___construct, 0, 0, 0)
 	ZEND_ARG_TYPE_INFO_WITH_DEFAULT_VALUE(0, initalData, IS_ARRAY, 1, "null")
@@ -2196,10 +2256,30 @@ ZEND_FUNCTION(glfwExtensionSupported);
 ZEND_FUNCTION(glfwVulkanSupported);
 ZEND_FUNCTION(glShaderSource);
 ZEND_FUNCTION(glBufferData);
-ZEND_METHOD(PGL_Math_Vec3, length);
-ZEND_METHOD(PGL_Math_Vec3, normalize);
-ZEND_METHOD(PGL_Math_Vec3, abs);
-ZEND_METHOD(PGL_Math_Vec3, __toString);
+ZEND_METHOD(GL_Math_Vec2, __construct);
+ZEND_METHOD(GL_Math_Vec2, length);
+ZEND_METHOD(GL_Math_Vec2, dot);
+ZEND_METHOD(GL_Math_Vec2, distance);
+ZEND_METHOD(GL_Math_Vec2, distance2);
+ZEND_METHOD(GL_Math_Vec2, normalize);
+ZEND_METHOD(GL_Math_Vec2, abs);
+ZEND_METHOD(GL_Math_Vec2, __toString);
+ZEND_METHOD(GL_Math_Vec3, __construct);
+ZEND_METHOD(GL_Math_Vec3, length);
+ZEND_METHOD(GL_Math_Vec3, dot);
+ZEND_METHOD(GL_Math_Vec3, distance);
+ZEND_METHOD(GL_Math_Vec3, distance2);
+ZEND_METHOD(GL_Math_Vec3, normalize);
+ZEND_METHOD(GL_Math_Vec3, abs);
+ZEND_METHOD(GL_Math_Vec3, __toString);
+ZEND_METHOD(GL_Math_Vec4, __construct);
+ZEND_METHOD(GL_Math_Vec4, length);
+ZEND_METHOD(GL_Math_Vec4, dot);
+ZEND_METHOD(GL_Math_Vec4, distance);
+ZEND_METHOD(GL_Math_Vec4, distance2);
+ZEND_METHOD(GL_Math_Vec4, normalize);
+ZEND_METHOD(GL_Math_Vec4, abs);
+ZEND_METHOD(GL_Math_Vec4, __toString);
 ZEND_METHOD(GL_Buffer_FloatBuffer, __construct);
 ZEND_METHOD(GL_Buffer_FloatBuffer, __toString);
 ZEND_METHOD(GL_Buffer_FloatBuffer, push);
@@ -2620,11 +2700,41 @@ static const zend_function_entry ext_functions[] = {
 };
 
 
-static const zend_function_entry class_PGL_Math_Vec3_methods[] = {
-	ZEND_ME(PGL_Math_Vec3, length, arginfo_class_PGL_Math_Vec3_length, ZEND_ACC_PUBLIC)
-	ZEND_ME(PGL_Math_Vec3, normalize, arginfo_class_PGL_Math_Vec3_normalize, ZEND_ACC_PUBLIC)
-	ZEND_ME(PGL_Math_Vec3, abs, arginfo_class_PGL_Math_Vec3_abs, ZEND_ACC_PUBLIC)
-	ZEND_ME(PGL_Math_Vec3, __toString, arginfo_class_PGL_Math_Vec3___toString, ZEND_ACC_PUBLIC)
+static const zend_function_entry class_GL_Math_Vec2_methods[] = {
+	ZEND_ME(GL_Math_Vec2, __construct, arginfo_class_GL_Math_Vec2___construct, ZEND_ACC_PUBLIC)
+	ZEND_ME(GL_Math_Vec2, length, arginfo_class_GL_Math_Vec2_length, ZEND_ACC_PUBLIC)
+	ZEND_ME(GL_Math_Vec2, dot, arginfo_class_GL_Math_Vec2_dot, ZEND_ACC_PUBLIC)
+	ZEND_ME(GL_Math_Vec2, distance, arginfo_class_GL_Math_Vec2_distance, ZEND_ACC_PUBLIC)
+	ZEND_ME(GL_Math_Vec2, distance2, arginfo_class_GL_Math_Vec2_distance2, ZEND_ACC_PUBLIC)
+	ZEND_ME(GL_Math_Vec2, normalize, arginfo_class_GL_Math_Vec2_normalize, ZEND_ACC_PUBLIC)
+	ZEND_ME(GL_Math_Vec2, abs, arginfo_class_GL_Math_Vec2_abs, ZEND_ACC_PUBLIC)
+	ZEND_ME(GL_Math_Vec2, __toString, arginfo_class_GL_Math_Vec2___toString, ZEND_ACC_PUBLIC)
+	ZEND_FE_END
+};
+
+
+static const zend_function_entry class_GL_Math_Vec3_methods[] = {
+	ZEND_ME(GL_Math_Vec3, __construct, arginfo_class_GL_Math_Vec3___construct, ZEND_ACC_PUBLIC)
+	ZEND_ME(GL_Math_Vec3, length, arginfo_class_GL_Math_Vec3_length, ZEND_ACC_PUBLIC)
+	ZEND_ME(GL_Math_Vec3, dot, arginfo_class_GL_Math_Vec3_dot, ZEND_ACC_PUBLIC)
+	ZEND_ME(GL_Math_Vec3, distance, arginfo_class_GL_Math_Vec3_distance, ZEND_ACC_PUBLIC)
+	ZEND_ME(GL_Math_Vec3, distance2, arginfo_class_GL_Math_Vec3_distance2, ZEND_ACC_PUBLIC)
+	ZEND_ME(GL_Math_Vec3, normalize, arginfo_class_GL_Math_Vec3_normalize, ZEND_ACC_PUBLIC)
+	ZEND_ME(GL_Math_Vec3, abs, arginfo_class_GL_Math_Vec3_abs, ZEND_ACC_PUBLIC)
+	ZEND_ME(GL_Math_Vec3, __toString, arginfo_class_GL_Math_Vec3___toString, ZEND_ACC_PUBLIC)
+	ZEND_FE_END
+};
+
+
+static const zend_function_entry class_GL_Math_Vec4_methods[] = {
+	ZEND_ME(GL_Math_Vec4, __construct, arginfo_class_GL_Math_Vec4___construct, ZEND_ACC_PUBLIC)
+	ZEND_ME(GL_Math_Vec4, length, arginfo_class_GL_Math_Vec4_length, ZEND_ACC_PUBLIC)
+	ZEND_ME(GL_Math_Vec4, dot, arginfo_class_GL_Math_Vec4_dot, ZEND_ACC_PUBLIC)
+	ZEND_ME(GL_Math_Vec4, distance, arginfo_class_GL_Math_Vec4_distance, ZEND_ACC_PUBLIC)
+	ZEND_ME(GL_Math_Vec4, distance2, arginfo_class_GL_Math_Vec4_distance2, ZEND_ACC_PUBLIC)
+	ZEND_ME(GL_Math_Vec4, normalize, arginfo_class_GL_Math_Vec4_normalize, ZEND_ACC_PUBLIC)
+	ZEND_ME(GL_Math_Vec4, abs, arginfo_class_GL_Math_Vec4_abs, ZEND_ACC_PUBLIC)
+	ZEND_ME(GL_Math_Vec4, __toString, arginfo_class_GL_Math_Vec4___toString, ZEND_ACC_PUBLIC)
 	ZEND_FE_END
 };
 

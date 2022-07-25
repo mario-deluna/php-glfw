@@ -4,14 +4,20 @@
 /**
  * Classes
  */
-namespace PGL\Math 
+namespace GL\Math 
 {
-    class Vec3 {
+<?php foreach($mathObjects as $obj) : ?> 
+    class <?php echo $obj->name; ?> {
+        public function __construct(<?php echo $obj->getPhpArgs(); ?>) {}
         public function length() : float {}
-        public function normalize() : Vec3 {}
-        public function abs() : Vec3 {}
+        public function dot(<?php echo $obj->name; ?> $right) : float {}
+        public function distance(<?php echo $obj->name; ?> $right) : float {}
+        public function distance2(<?php echo $obj->name; ?> $right) : float {}
+        public function normalize() : <?php echo $obj->name; ?> {}
+        public function abs() : <?php echo $obj->name; ?> {}
         public function __toString() : string {}
-    }    
+    }
+<?php endforeach; ?>
 };
 
 namespace GL\Buffer 

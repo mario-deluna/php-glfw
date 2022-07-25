@@ -96,6 +96,14 @@ static inline void vec##n##_max(vec##n r, vec##n a, vec##n b) \
 	for(i=0; i<n; ++i) \
 		r[i] = a[i]>b[i] ? a[i] : b[i]; \
 } \
+static inline float vec##n##_distance_square(vec##n const a, vec##n const b) \
+{ \
+	float d = 0.; \
+	int i; \
+	for(i=0; i<n; ++i) \
+		d += (a[i] - b[i]) * (a[i] - b[i]); \
+	return d; \
+} \
 static inline void vec##n##_abs(vec##n r, vec##n a) \
 { \
 	int i; \

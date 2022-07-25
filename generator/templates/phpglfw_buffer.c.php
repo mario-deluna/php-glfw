@@ -390,8 +390,7 @@ void phpglfw_register_buffer_module(INIT_FUNC_ARGS)
     INIT_CLASS_ENTRY(tmp_ce, "GL\\Buffer\\BufferInterface", class_GL_Buffer_BufferInterface_methods);
     phpglfw_buffer_interface_ce = zend_register_internal_interface(&tmp_ce);
     
-<?php foreach($buffers as $buffer) : ?>
-    // float buffer
+<?php foreach($buffers as $buffer) : ?> 
     INIT_CLASS_ENTRY(tmp_ce, <?php echo $buffer->getFullNamespaceCString(); ?>, class_<?php echo $buffer->getFullNamespaceConstString(); ?>_methods);
     <?php echo $buffer->getClassEntryName(); ?> = zend_register_internal_class(&tmp_ce);
     <?php echo $buffer->getClassEntryName(); ?>->create_object = <?php echo $buffer->getHandlerMethodName('create'); ?>;

@@ -403,6 +403,21 @@ class ExtGenerator
     }
 
     /**
+     * Returns math objects
+     * 
+     * @return array<PHPGLFWMathObj>
+     */
+    private function getMathObjects() : array
+    {
+        $mobjarr = [];
+        $mobjarr[] = new PHPGLFWMathObj('Vec2', 2);
+        $mobjarr[] = new PHPGLFWMathObj('Vec3', 3);
+        $mobjarr[] = new PHPGLFWMathObj('Vec4', 4);
+
+        return $mobjarr;
+    }
+
+    /**
      * Generates the extension files at the given path
      * 
      * @param string            $path
@@ -414,12 +429,13 @@ class ExtGenerator
         $this->buildFunctionsHeader();
         $this->buildFunctionsBody();
         $this->buildGLBufferHeaderAndBody();
+        $this->buildGLMathHeaderAndBody();
         $this->buildStubs();
 
         // docs 
         $this->docParser = new ExtDocParser;
         $this->buildDocsBuffer();
-        $this->buildDocsOpenGL();
+        // $this->buildDocsOpenGL();
     }
 
     /**
@@ -488,14 +504,33 @@ class ExtGenerator
         ]);
     }
 
+
+    /**
+     * Builds the "phpglfw_math" files
+     */
+    private function buildGLMathHeaderAndBody() : void
+    {
+        $mobjarr = $this->getMathObjects();
+
+        $this->generateTemplate('phpglfw_math.h', [
+            'objects' => $mobjarr,
+        ]);
+        $this->generateTemplate('phpglfw_math.c', [
+            'objects' => $mobjarr,
+        ]);
+    }
+
     /**
      * Builds the PHP Stubs file
      */
     private function buildStubs() : void
     {   
+        $mobjarr = $this->getMathObjects();
+
         // build the extension stub file
         // used for autogenerating the arginfo.h header and class entries
         $this->generateTemplate('phpglfw.stub.php', [
+            'mathObjects' => $mobjarr,
             'buffers' => $this->phpglfwBuffers,
             'constants' => $this->constants,
             'functions' => $this->getCompleteFunctions(),
@@ -506,6 +541,7 @@ class ExtGenerator
         // IDE stubs contian comments and meta information for the user
         // the extension stubs are only used for building the extension
         file_put_contents(GEN_PATH_EXT . '/stubs/phpglfw.php', $this->generateTemplate('stubs/phpglfw.php', [
+            'mathObjects' => $mobjarr,
             'buffers' => $this->phpglfwBuffers,
             'constants' => $this->constants,
             'functions' => $this->getCompleteFunctions(),

@@ -1,15 +1,39 @@
 <?php 
-namespace PGL\Math 
+namespace GL\Math 
 {
-    class Vec3 {
-        /**
-         * FOo
-         */
+ 
+    class Vec2 {
+        public function __construct(?float $x = null, ?float $y = null) {}
         public function length() : float {}
+        public function dot(Vec2 $right) : float {}
+        public function distance(Vec2 $right) : float {}
+        public function distance2(Vec2 $right) : float {}
+        public function normalize() : Vec2 {}
+        public function abs() : Vec2 {}
+        public function __toString() : string {}
+    }
+ 
+    class Vec3 {
+        public function __construct(?float $x = null, ?float $y = null, ?float $z = null) {}
+        public function length() : float {}
+        public function dot(Vec3 $right) : float {}
+        public function distance(Vec3 $right) : float {}
+        public function distance2(Vec3 $right) : float {}
         public function normalize() : Vec3 {}
         public function abs() : Vec3 {}
         public function __toString() : string {}
-    }    
+    }
+ 
+    class Vec4 {
+        public function __construct(?float $x = null, ?float $y = null, ?float $z = null, ?float $w = null) {}
+        public function length() : float {}
+        public function dot(Vec4 $right) : float {}
+        public function distance(Vec4 $right) : float {}
+        public function distance2(Vec4 $right) : float {}
+        public function normalize() : Vec4 {}
+        public function abs() : Vec4 {}
+        public function __toString() : string {}
+    }
 };
 
 namespace GL\Buffer 

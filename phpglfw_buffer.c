@@ -1380,7 +1380,7 @@ void phpglfw_register_buffer_module(INIT_FUNC_ARGS)
     INIT_CLASS_ENTRY(tmp_ce, "GL\\Buffer\\BufferInterface", class_GL_Buffer_BufferInterface_methods);
     phpglfw_buffer_interface_ce = zend_register_internal_interface(&tmp_ce);
     
-    // float buffer
+ 
     INIT_CLASS_ENTRY(tmp_ce, "GL\\Buffer\\FloatBuffer", class_GL_Buffer_FloatBuffer_methods);
     phpglfw_buffer_glfloat_ce = zend_register_internal_class(&tmp_ce);
     phpglfw_buffer_glfloat_ce->create_object = phpglfw_buffer_glfloat_create_handler;
@@ -1394,7 +1394,7 @@ void phpglfw_register_buffer_module(INIT_FUNC_ARGS)
     phpglfw_buffer_glfloat_handlers.get_debug_info = phpglfw_buffer_glfloat_debug_info_handler;
     phpglfw_buffer_glfloat_handlers.offset = XtOffsetOf(phpglfw_buffer_glfloat_object, std);
 
-    // float buffer
+ 
     INIT_CLASS_ENTRY(tmp_ce, "GL\\Buffer\\DoubleBuffer", class_GL_Buffer_DoubleBuffer_methods);
     phpglfw_buffer_gldouble_ce = zend_register_internal_class(&tmp_ce);
     phpglfw_buffer_gldouble_ce->create_object = phpglfw_buffer_gldouble_create_handler;
@@ -1408,7 +1408,7 @@ void phpglfw_register_buffer_module(INIT_FUNC_ARGS)
     phpglfw_buffer_gldouble_handlers.get_debug_info = phpglfw_buffer_gldouble_debug_info_handler;
     phpglfw_buffer_gldouble_handlers.offset = XtOffsetOf(phpglfw_buffer_gldouble_object, std);
 
-    // float buffer
+ 
     INIT_CLASS_ENTRY(tmp_ce, "GL\\Buffer\\IntBuffer", class_GL_Buffer_IntBuffer_methods);
     phpglfw_buffer_glint_ce = zend_register_internal_class(&tmp_ce);
     phpglfw_buffer_glint_ce->create_object = phpglfw_buffer_glint_create_handler;
@@ -1422,7 +1422,7 @@ void phpglfw_register_buffer_module(INIT_FUNC_ARGS)
     phpglfw_buffer_glint_handlers.get_debug_info = phpglfw_buffer_glint_debug_info_handler;
     phpglfw_buffer_glint_handlers.offset = XtOffsetOf(phpglfw_buffer_glint_object, std);
 
-    // float buffer
+ 
     INIT_CLASS_ENTRY(tmp_ce, "GL\\Buffer\\ByteBuffer", class_GL_Buffer_ByteBuffer_methods);
     phpglfw_buffer_glbyte_ce = zend_register_internal_class(&tmp_ce);
     phpglfw_buffer_glbyte_ce->create_object = phpglfw_buffer_glbyte_create_handler;
