@@ -31,6 +31,18 @@
 #include "Zend/zend_smart_str.h"
 #include "linmath.h"
 
+// becase the method is missing in some builds.. ???
+void ZEND_FASTCALL glfw_smart_str_append_double(
+		smart_str *str, double num, int precision, bool zero_fraction) {
+	char buf[ZEND_DOUBLE_MAX_LENGTH];
+	/* Model snprintf precision behavior. */
+	zend_gcvt(num, precision ? precision : 1, '.', 'E', buf);
+	smart_str_appends(str, buf);
+	if (zero_fraction && zend_finite(num) && !strchr(buf, '.')) {
+		smart_str_appendl(str, ".0", 2);
+	}
+}
+
 <?php foreach($objects as $obj) : ?>
 zend_class_entry *<?php echo $obj->getClassEntryName(); ?>; 
 <?php endforeach; ?>
@@ -62,9 +74,13 @@ zend_object *<?php echo $obj->getHandlerMethodName('create'); ?>(zend_class_entr
     <?php echo $obj->getObjectName(); ?> *intern = emalloc(block_len);
     memset(intern, 0, block_len);
 
+<?php if ($obj->isVector()) : ?>
     for(int i=0; i<<?php echo $obj->size; ?>; i++) {
         intern->data[i] = 0.0f;
     }
+<?php elseif ($obj->isMatrix()) : ?>
+    mat4x4_identity(intern->data);
+<?php endif; ?>
 
     zend_object_std_init(&intern->std, class_type);
     object_properties_init(&intern->std, class_type);
@@ -82,14 +98,82 @@ static HashTable *<?php echo $obj->getHandlerMethodName('debug_info'); ?>(zend_o
     ht = zend_new_array(<?php echo $obj->size; ?>);
     *is_temp = 1;
 
+<?php if ($obj->isVector()) : ?>
 <?php foreach($obj->getPropIt() as $i => $name) : ?>
     ZVAL_DOUBLE(&zv, obj_ptr->data[<?php echo $i; ?>]);
     zend_hash_str_update(ht, "<?php echo $name; ?>", sizeof("<?php echo $name; ?>") - 1, &zv);
 <?php endforeach; ?> 
+<?php elseif ($obj->isMatrix()) : ?>
+<?php for($i=0; $i<4; $i++) : ?>
+<?php for($y=0; $y<4; $y++) : ?>
+    ZVAL_DOUBLE(&zv, obj_ptr->data[<?php echo $i; ?>][<?php echo $y; ?>]);
+    zend_hash_index_update(ht, <?php echo ($i * 4) + $y; ?>, &zv);
+<?php endfor; ?>
+<?php endfor; ?>
+<?php endif; ?>
 
     return ht;
 }
 
+zval *<?php echo $obj->getHandlerMethodName('array_get'); ?>(zend_object *object, zval *offset, int type, zval *rv)
+{
+	if(offset == NULL) {
+        zend_throw_error(NULL, "Cannot apply [] to GL\\Math\\<?php echo $obj->name; ?> object");
+	}
+
+    <?php echo $obj->getObjectName(); ?> *obj_ptr = <?php echo $obj->objectFromZObjFunctionName(); ?>(object);
+
+    if (Z_TYPE_P(offset) == IS_LONG) {
+		size_t index = (size_t)Z_LVAL_P(offset);
+
+        if (index < <?php echo $obj->size; ?>) {
+<?php if ($obj->isVector()) : ?>
+            ZVAL_DOUBLE(rv, obj_ptr->data[index]);
+<?php elseif ($obj->isMatrix()) : ?>
+            ZVAL_DOUBLE(rv, obj_ptr->data[index / 4][index % 4]);
+<?php endif; ?>
+        } else {
+            ZVAL_NULL(rv);
+        }
+	} else {
+        zend_throw_error(NULL, "Only a int offset '$vec[int]' can be used with the GL\\Math\\<?php echo $obj->name; ?> object");
+		ZVAL_NULL(rv);
+	}
+
+	return rv;
+}
+
+void <?php echo $obj->getHandlerMethodName('array_set'); ?>(zend_object *object, zval *offset, zval *value)
+{
+    if (Z_TYPE_P(value) != IS_DOUBLE) {
+        zend_throw_error(NULL, "Trying to store non float value in a <?php echo $obj->name; ?>.");
+        return;
+    }
+
+    <?php echo $obj->getObjectName(); ?> *obj_ptr = <?php echo $obj->objectFromZObjFunctionName(); ?>(object);
+
+	if (offset == NULL) {
+        zend_throw_error(NULL, "You cannot append values into a <?php echo $obj->name; ?>.");
+	} 
+    else {
+        if (Z_TYPE_P(offset) == IS_LONG) {
+            size_t index = (size_t)Z_LVAL_P(offset);
+
+            if (index >= <?php echo $obj->size; ?>) {
+                zend_throw_error(NULL, "<?php echo $obj->name; ?> has a fixed space, the given index [%d] is out of bounds...",  (int) index);
+            }
+<?php if ($obj->isVector()) : ?>
+            obj_ptr->data[index] = Z_DVAL_P(value);
+<?php elseif($obj->isMatrix()) : ?>
+            obj_ptr->data[index / 4][index % 4] = Z_DVAL_P(value);
+<?php endif; ?>
+        } else {
+            zend_throw_error(NULL, "Only a int offset '$vec[int]' can be used with the GL\\Math\\<?php echo $obj->name; ?> object");
+        }
+    }
+}
+
+<?php if ($obj->isVector()) : ?>
 static zval *<?php echo $obj->getHandlerMethodName('read_prop'); ?>(zend_object *object, zend_string *member, int type, void **cache_slot, zval *rv) 
 {
     zval *retval;
@@ -173,6 +257,9 @@ static zend_always_inline int <?php echo $obj->getHandlerMethodName('do_op_scala
     }
 }
 
+/**
+ * Vector operation handler
+ */
 static int <?php echo $obj->getHandlerMethodName('do_op'); ?>(zend_uchar opcode, zval *result, zval *op1, zval *op2)
 {
     object_init_ex(result, <?php echo $obj->getClassEntryName(); ?>);
@@ -227,12 +314,54 @@ static int <?php echo $obj->getHandlerMethodName('do_op'); ?>(zend_uchar opcode,
     }
 }
 
+<?php elseif ($obj->isMatrix()) : ?>
+
+/**
+ * Matrix operation handler
+ */
+static int <?php echo $obj->getHandlerMethodName('do_op'); ?>(zend_uchar opcode, zval *result, zval *op1, zval *op2)
+{
+    object_init_ex(result, <?php echo $obj->getClassEntryName(); ?>);
+    <?php echo $obj->getObjectName(); ?> *resobj = <?php echo $obj->objectFromZObjFunctionName(); ?>(Z_OBJ_P(result));
+
+    // if left and right are both mat...
+    if (
+        Z_TYPE_P(op1) == IS_OBJECT && Z_OBJCE_P(op1) == <?php echo $obj->getClassEntryName(); ?> &&
+        Z_TYPE_P(op2) == IS_OBJECT && Z_OBJCE_P(op2) == <?php echo $obj->getClassEntryName(); ?>
+    ) {
+        <?php echo $obj->getObjectName(); ?> *matobj1 = <?php echo $obj->objectFromZObjFunctionName(); ?>(Z_OBJ_P(op1));
+        <?php echo $obj->getObjectName(); ?> *matobj2 = <?php echo $obj->objectFromZObjFunctionName(); ?>(Z_OBJ_P(op2));
+
+        php_printf("(%f %f) * (%f %f)", matobj1->data[0][0], matobj1->data[0][1], matobj2->data[0][0], matobj2->data[0][1]);
+
+        switch (opcode) {
+        case ZEND_ADD:
+            <?php echo $obj->getMatFunction('add'); ?>(resobj->data, matobj1->data, matobj2->data);
+            return SUCCESS;
+        case ZEND_SUB:
+            <?php echo $obj->getMatFunction('sub'); ?>(resobj->data, matobj1->data, matobj2->data);
+            return SUCCESS;
+        case ZEND_MUL:
+            <?php echo $obj->getMatFunction('mul'); ?>(resobj->data, matobj1->data, matobj2->data);
+            return SUCCESS;
+        default:
+            return FAILURE;
+        }
+    }
+    else {
+        return FAILURE;
+    }
+}
+
+<?php endif; ?>
+
 PHP_METHOD(<?php echo $obj->getFullNamespaceConstString(); ?>, __construct)
 {
     zval *obj;
     obj = getThis();
     <?php echo $obj->getObjectName(); ?> *obj_ptr = <?php echo $obj->objectFromZObjFunctionName(); ?>(Z_OBJ_P(obj));
 
+<?php if ($obj->isVector()) : ?>
 <?php echo tabulate($obj->getVectorZendParseParamters()); ?> 
         return;
     }
@@ -252,6 +381,7 @@ PHP_METHOD(<?php echo $obj->getFullNamespaceConstString(); ?>, __construct)
 <?php for($i=0; $i<$obj->size; $i++) : ?>
     obj_ptr->data[<?php echo $i; ?>] = <?php echo $obj->propNameForPos($i); ?>val;
 <?php endfor; ?>
+<?php endif; ?>
 }
 
 PHP_METHOD(<?php echo $obj->getFullNamespaceConstString(); ?>, __toString)
@@ -265,16 +395,30 @@ PHP_METHOD(<?php echo $obj->getFullNamespaceConstString(); ?>, __toString)
     <?php echo $obj->getObjectName(); ?> *obj_ptr = <?php echo $obj->objectFromZObjFunctionName(); ?>(Z_OBJ_P(obj));
 
     smart_str my_str = {0};
+    smart_str_appends(&my_str, "<?php echo strtolower($obj->name); ?>(");
 
-    smart_str_appends(&my_str, "vec3(");
-
-    // smart_str_append_double(&my_str, obj_ptr->vec[0], 4, true);
-    // smart_str_appends(&my_str, ", ");
-    // smart_str_append_double(&my_str, obj_ptr->vec[1], 4, true);
-    // smart_str_appends(&my_str, ", ");
-    // smart_str_append_double(&my_str, obj_ptr->vec[2], 4, true);
-    // smart_str_appends(&my_str, ")");
-
+<?php if ($obj->isVector()) : ?>
+    for (int i = 0; i < <?php echo $obj->size; ?>; i++) {
+        glfw_smart_str_append_double(&my_str, obj_ptr->data[i], 4, true);
+        if (i < <?php echo $obj->size; ?> - 1) {
+            smart_str_appends(&my_str, ", ");
+        }
+    }
+<?php elseif ($obj->isMatrix()) : ?>
+    smart_str_appends(&my_str, "\n");
+    for (int i = 0; i < 4; i++) {
+        smart_str_appends(&my_str, "    ");
+        for(int y = 0; y < 4; y++) {
+            glfw_smart_str_append_double(&my_str, obj_ptr->data[i][y], 4, true);
+            if (y < 3) {
+                smart_str_appends(&my_str, ", ");
+            } else {
+                smart_str_appends(&my_str, "\n");
+            }
+        }
+    }
+<?php endif; ?>
+    smart_str_appends(&my_str, ")");
     smart_str_0(&my_str);
 
     RETURN_STRINGL(ZSTR_VAL(my_str.s), ZSTR_LEN(my_str.s));
@@ -282,6 +426,7 @@ PHP_METHOD(<?php echo $obj->getFullNamespaceConstString(); ?>, __toString)
     smart_str_free(&my_str);
 }
 
+<?php if ($obj->isVector()) : ?>
 PHP_METHOD(<?php echo $obj->getFullNamespaceConstString(); ?>, length)
 {
 	if (zend_parse_parameters_none() == FAILURE) {
@@ -373,6 +518,187 @@ PHP_METHOD(<?php echo $obj->getFullNamespaceConstString(); ?>, abs)
 
     <?php echo $obj->getVecFunction('abs'); ?>(resobj->data, obj_ptr->data);
 }
+<?php elseif($obj->isMatrix()) : ?>
+
+PHP_METHOD(<?php echo $obj->getFullNamespaceConstString(); ?>, row)
+{
+    zend_long row_index;
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "l", &row_index) == FAILURE) {
+        return;
+    }
+
+    zval *obj;
+    obj = getThis();
+    <?php echo $obj->getObjectName(); ?> *obj_ptr = <?php echo $obj->objectFromZObjFunctionName(); ?>(Z_OBJ_P(obj));
+
+    // create new vec
+    object_init_ex(return_value, phpglfw_math_vec4_ce);
+    phpglfw_math_vec4_object *resobj = phpglfw_math_vec4_objectptr_from_zobj_p(Z_OBJ_P(return_value));
+
+    for(int i = 0; i < 4; i++) {
+        resobj->data[i] = obj_ptr->data[row_index][i];
+    }
+}
+
+PHP_METHOD(<?php echo $obj->getFullNamespaceConstString(); ?>, col)
+{
+    zend_long col_index;
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "l", &col_index) == FAILURE) {
+        return;
+    }
+
+    zval *obj;
+    obj = getThis();
+    <?php echo $obj->getObjectName(); ?> *obj_ptr = <?php echo $obj->objectFromZObjFunctionName(); ?>(Z_OBJ_P(obj));
+
+    // create new vec
+    object_init_ex(return_value, phpglfw_math_vec4_ce);
+    phpglfw_math_vec4_object *resobj = phpglfw_math_vec4_objectptr_from_zobj_p(Z_OBJ_P(return_value));
+
+    for(int i = 0; i < 4; i++) {
+        resobj->data[i] = obj_ptr->data[i][col_index];
+    }
+}
+
+PHP_METHOD(<?php echo $obj->getFullNamespaceConstString(); ?>, setRow)
+{
+    zend_long row_index;
+    zval *vec_zval;
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "lO", &row_index, &vec_zval, phpglfw_math_vec4_ce) == FAILURE) {
+        return;
+    }
+
+    zval *obj;
+    obj = getThis();
+    <?php echo $obj->getObjectName(); ?> *obj_ptr = <?php echo $obj->objectFromZObjFunctionName(); ?>(Z_OBJ_P(obj));
+    phpglfw_math_vec4_object *vec_ptr = phpglfw_math_vec4_objectptr_from_zobj_p(Z_OBJ_P(vec_zval));
+
+    for(int i = 0; i < 4; i++) {
+        obj_ptr->data[row_index][i] = vec_ptr->data[i];
+    }
+}
+
+PHP_METHOD(<?php echo $obj->getFullNamespaceConstString(); ?>, setCol)
+{
+    zend_long col_index;
+    zval *vec_zval;
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "lO", &col_index, &vec_zval, phpglfw_math_vec4_ce) == FAILURE) {
+        return;
+    }
+
+    zval *obj;
+    obj = getThis();
+    <?php echo $obj->getObjectName(); ?> *obj_ptr = <?php echo $obj->objectFromZObjFunctionName(); ?>(Z_OBJ_P(obj));
+    phpglfw_math_vec4_object *vec_ptr = phpglfw_math_vec4_objectptr_from_zobj_p(Z_OBJ_P(vec_zval));
+
+    for(int i = 0; i < 4; i++) {
+        obj_ptr->data[i][col_index] = vec_ptr->data[i];
+    }
+}
+
+PHP_METHOD(<?php echo $obj->getFullNamespaceConstString(); ?>, perspective)
+{
+    double fov;
+    double aspect;
+    double near;
+    double far;
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "dddd", &fov, &aspect, &near, &far) == FAILURE) {
+        return;
+    }
+
+    zval *obj;
+    obj = getThis();
+    <?php echo $obj->getObjectName(); ?> *obj_ptr = <?php echo $obj->objectFromZObjFunctionName(); ?>(Z_OBJ_P(obj));
+
+    <?php echo $obj->getMatFunction('perspective'); ?>(obj_ptr->data, fov, aspect, near, far);
+}
+
+
+PHP_METHOD(<?php echo $obj->getFullNamespaceConstString(); ?>, ortho)
+{
+    double left;
+    double right;
+    double bottom;
+    double top;
+    double near;
+    double far;
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "dddddd", &left, &right, &bottom, &top, &near, &far) == FAILURE) {
+        return;
+    }
+
+    zval *obj;
+    obj = getThis();
+    <?php echo $obj->getObjectName(); ?> *obj_ptr = <?php echo $obj->objectFromZObjFunctionName(); ?>(Z_OBJ_P(obj));
+
+    <?php echo $obj->getMatFunction('ortho'); ?>(obj_ptr->data, left, right, bottom, top, near, far);
+}
+
+PHP_METHOD(<?php echo $obj->getFullNamespaceConstString(); ?>, lookAt)
+{
+    zval *eye_zval;
+    zval *center_zval;
+    zval *up_zval;
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "OOO", &eye_zval, phpglfw_math_vec3_ce, &center_zval, phpglfw_math_vec3_ce, &up_zval, phpglfw_math_vec3_ce) == FAILURE) {
+        return;
+    }
+
+    zval *obj;
+    obj = getThis();
+    <?php echo $obj->getObjectName(); ?> *obj_ptr = <?php echo $obj->objectFromZObjFunctionName(); ?>(Z_OBJ_P(obj));
+    phpglfw_math_vec3_object *eye_ptr = phpglfw_math_vec3_objectptr_from_zobj_p(Z_OBJ_P(eye_zval));
+    phpglfw_math_vec3_object *center_ptr = phpglfw_math_vec3_objectptr_from_zobj_p(Z_OBJ_P(center_zval));
+    phpglfw_math_vec3_object *up_ptr = phpglfw_math_vec3_objectptr_from_zobj_p(Z_OBJ_P(up_zval));
+
+    <?php echo $obj->getMatFunction('look_at'); ?>(obj_ptr->data, eye_ptr->data, center_ptr->data, up_ptr->data);
+}
+
+
+PHP_METHOD(<?php echo $obj->getFullNamespaceConstString(); ?>, scale)
+{
+    zval *vec_zval;
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "O", &vec_zval, phpglfw_math_vec3_ce) == FAILURE) {
+        return;
+    }
+
+    zval *obj;
+    obj = getThis();
+    <?php echo $obj->getObjectName(); ?> *obj_ptr = <?php echo $obj->objectFromZObjFunctionName(); ?>(Z_OBJ_P(obj));
+    phpglfw_math_vec3_object *vec_ptr = phpglfw_math_vec3_objectptr_from_zobj_p(Z_OBJ_P(vec_zval));
+
+    <?php echo $obj->getMatFunction('scale_aniso'); ?>(obj_ptr->data, obj_ptr->data, vec_ptr->data[0], vec_ptr->data[1], vec_ptr->data[2]);
+}
+
+PHP_METHOD(<?php echo $obj->getFullNamespaceConstString(); ?>, copy)
+{
+    zval *obj;
+    obj = getThis();
+    <?php echo $obj->getObjectName(); ?> *obj_ptr = <?php echo $obj->objectFromZObjFunctionName(); ?>(Z_OBJ_P(obj));
+    
+    // create new mat4
+    object_init_ex(return_value, <?php echo $obj->getClassEntryName(); ?>);
+    <?php echo $obj->getObjectName(); ?> *res_ptr = <?php echo $obj->objectFromZObjFunctionName(); ?>(Z_OBJ_P(return_value));
+
+    for(int i = 0; i < 4; i++) {
+        for(int j = 0; j < 4; j++) {
+            res_ptr->data[i][j] = obj_ptr->data[i][j];
+        }
+    }
+}
+
+PHP_METHOD(<?php echo $obj->getFullNamespaceConstString(); ?>, determinant)
+{
+    if (zend_parse_parameters_none() == FAILURE) {
+        RETURN_THROWS();
+    }
+
+    zval *obj;
+    obj = getThis();
+    <?php echo $obj->getObjectName(); ?> *obj_ptr = <?php echo $obj->objectFromZObjFunctionName(); ?>(Z_OBJ_P(obj));
+
+    RETURN_DOUBLE(<?php echo $obj->getMatFunction('det'); ?>(obj_ptr->data));
+}
+
+<?php endif; ?>
 
 <?php endforeach; ?>
 
@@ -387,8 +713,13 @@ void phpglfw_register_math_module(INIT_FUNC_ARGS)
 
     memcpy(&<?php echo $obj->getHandlersVarName(); ?>, zend_get_std_object_handlers(), sizeof(<?php echo $obj->getHandlersVarName(); ?>));
     <?php echo $obj->getHandlersVarName(); ?>.get_debug_info = <?php echo $obj->getHandlerMethodName('debug_info'); ?>;
+    <?php echo $obj->getHandlersVarName(); ?>.read_dimension = <?php echo $obj->getHandlerMethodName('array_get'); ?>;
+    <?php echo $obj->getHandlersVarName(); ?>.write_dimension = <?php echo $obj->getHandlerMethodName('array_set'); ?>;
+
+<?php if ($obj->isVector()) : ?>
     <?php echo $obj->getHandlersVarName(); ?>.read_property = <?php echo $obj->getHandlerMethodName('read_prop'); ?>;
     <?php echo $obj->getHandlersVarName(); ?>.write_property = <?php echo $obj->getHandlerMethodName('write_prop'); ?>;
+<?php endif; ?>
     <?php echo $obj->getHandlersVarName(); ?>.do_operation = <?php echo $obj->getHandlerMethodName('do_op'); ?>;
     <?php echo $obj->getHandlersVarName(); ?>.offset = XtOffsetOf(<?php echo $obj->getObjectName(); ?>, std);
 <?php endforeach; ?>

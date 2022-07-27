@@ -414,6 +414,8 @@ class ExtGenerator
         $mobjarr[] = new PHPGLFWMathObj('Vec3', 3);
         $mobjarr[] = new PHPGLFWMathObj('Vec4', 4);
 
+        $mobjarr[] = new PHPGLFWMathObj('Mat4', 16);
+
         return $mobjarr;
     }
 

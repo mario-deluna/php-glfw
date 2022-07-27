@@ -31,9 +31,22 @@
 #include "Zend/zend_smart_str.h"
 #include "linmath.h"
 
+// becase the method is missing in some builds.. ???
+void ZEND_FASTCALL glfw_smart_str_append_double(
+		smart_str *str, double num, int precision, bool zero_fraction) {
+	char buf[ZEND_DOUBLE_MAX_LENGTH];
+	/* Model snprintf precision behavior. */
+	zend_gcvt(num, precision ? precision : 1, '.', 'E', buf);
+	smart_str_appends(str, buf);
+	if (zero_fraction && zend_finite(num) && !strchr(buf, '.')) {
+		smart_str_appendl(str, ".0", 2);
+	}
+}
+
 zend_class_entry *phpglfw_math_vec2_ce; 
 zend_class_entry *phpglfw_math_vec3_ce; 
 zend_class_entry *phpglfw_math_vec4_ce; 
+zend_class_entry *phpglfw_math_mat4_ce; 
 
 /**
  * GL\Math\Vec2 
@@ -88,6 +101,56 @@ static HashTable *phpglfw_math_vec2_debug_info_handler(zend_object *object, int 
  
 
     return ht;
+}
+
+zval *phpglfw_math_vec2_array_get_handler(zend_object *object, zval *offset, int type, zval *rv)
+{
+	if(offset == NULL) {
+        zend_throw_error(NULL, "Cannot apply [] to GL\\Math\\Vec2 object");
+	}
+
+    phpglfw_math_vec2_object *obj_ptr = phpglfw_math_vec2_objectptr_from_zobj_p(object);
+
+    if (Z_TYPE_P(offset) == IS_LONG) {
+		size_t index = (size_t)Z_LVAL_P(offset);
+
+        if (index < 2) {
+            ZVAL_DOUBLE(rv, obj_ptr->data[index]);
+        } else {
+            ZVAL_NULL(rv);
+        }
+	} else {
+        zend_throw_error(NULL, "Only a int offset '$vec[int]' can be used with the GL\\Math\\Vec2 object");
+		ZVAL_NULL(rv);
+	}
+
+	return rv;
+}
+
+void phpglfw_math_vec2_array_set_handler(zend_object *object, zval *offset, zval *value)
+{
+    if (Z_TYPE_P(value) != IS_DOUBLE) {
+        zend_throw_error(NULL, "Trying to store non float value in a Vec2.");
+        return;
+    }
+
+    phpglfw_math_vec2_object *obj_ptr = phpglfw_math_vec2_objectptr_from_zobj_p(object);
+
+	if (offset == NULL) {
+        zend_throw_error(NULL, "You cannot append values into a Vec2.");
+	} 
+    else {
+        if (Z_TYPE_P(offset) == IS_LONG) {
+            size_t index = (size_t)Z_LVAL_P(offset);
+
+            if (index >= 2) {
+                zend_throw_error(NULL, "Vec2 has a fixed space, the given index [%d] is out of bounds...",  (int) index);
+            }
+            obj_ptr->data[index] = Z_DVAL_P(value);
+        } else {
+            zend_throw_error(NULL, "Only a int offset '$vec[int]' can be used with the GL\\Math\\Vec2 object");
+        }
+    }
 }
 
 static zval *phpglfw_math_vec2_read_prop_handler(zend_object *object, zend_string *member, int type, void **cache_slot, zval *rv) 
@@ -177,6 +240,9 @@ static zend_always_inline int phpglfw_math_vec2_do_op_scalar_handler(zend_uchar 
     }
 }
 
+/**
+ * Vector operation handler
+ */
 static int phpglfw_math_vec2_do_op_handler(zend_uchar opcode, zval *result, zval *op1, zval *op2)
 {
     object_init_ex(result, phpglfw_math_vec2_ce);
@@ -230,6 +296,7 @@ static int phpglfw_math_vec2_do_op_handler(zend_uchar opcode, zval *result, zval
     }
 }
 
+
 PHP_METHOD(GL_Math_Vec2, __construct)
 {
     zval *obj;
@@ -268,16 +335,15 @@ PHP_METHOD(GL_Math_Vec2, __toString)
     phpglfw_math_vec2_object *obj_ptr = phpglfw_math_vec2_objectptr_from_zobj_p(Z_OBJ_P(obj));
 
     smart_str my_str = {0};
+    smart_str_appends(&my_str, "vec2(");
 
-    smart_str_appends(&my_str, "vec3(");
-
-    // smart_str_append_double(&my_str, obj_ptr->vec[0], 4, true);
-    // smart_str_appends(&my_str, ", ");
-    // smart_str_append_double(&my_str, obj_ptr->vec[1], 4, true);
-    // smart_str_appends(&my_str, ", ");
-    // smart_str_append_double(&my_str, obj_ptr->vec[2], 4, true);
-    // smart_str_appends(&my_str, ")");
-
+    for (int i = 0; i < 2; i++) {
+        glfw_smart_str_append_double(&my_str, obj_ptr->data[i], 4, true);
+        if (i < 2 - 1) {
+            smart_str_appends(&my_str, ", ");
+        }
+    }
+    smart_str_appends(&my_str, ")");
     smart_str_0(&my_str);
 
     RETURN_STRINGL(ZSTR_VAL(my_str.s), ZSTR_LEN(my_str.s));
@@ -434,6 +500,56 @@ static HashTable *phpglfw_math_vec3_debug_info_handler(zend_object *object, int 
     return ht;
 }
 
+zval *phpglfw_math_vec3_array_get_handler(zend_object *object, zval *offset, int type, zval *rv)
+{
+	if(offset == NULL) {
+        zend_throw_error(NULL, "Cannot apply [] to GL\\Math\\Vec3 object");
+	}
+
+    phpglfw_math_vec3_object *obj_ptr = phpglfw_math_vec3_objectptr_from_zobj_p(object);
+
+    if (Z_TYPE_P(offset) == IS_LONG) {
+		size_t index = (size_t)Z_LVAL_P(offset);
+
+        if (index < 3) {
+            ZVAL_DOUBLE(rv, obj_ptr->data[index]);
+        } else {
+            ZVAL_NULL(rv);
+        }
+	} else {
+        zend_throw_error(NULL, "Only a int offset '$vec[int]' can be used with the GL\\Math\\Vec3 object");
+		ZVAL_NULL(rv);
+	}
+
+	return rv;
+}
+
+void phpglfw_math_vec3_array_set_handler(zend_object *object, zval *offset, zval *value)
+{
+    if (Z_TYPE_P(value) != IS_DOUBLE) {
+        zend_throw_error(NULL, "Trying to store non float value in a Vec3.");
+        return;
+    }
+
+    phpglfw_math_vec3_object *obj_ptr = phpglfw_math_vec3_objectptr_from_zobj_p(object);
+
+	if (offset == NULL) {
+        zend_throw_error(NULL, "You cannot append values into a Vec3.");
+	} 
+    else {
+        if (Z_TYPE_P(offset) == IS_LONG) {
+            size_t index = (size_t)Z_LVAL_P(offset);
+
+            if (index >= 3) {
+                zend_throw_error(NULL, "Vec3 has a fixed space, the given index [%d] is out of bounds...",  (int) index);
+            }
+            obj_ptr->data[index] = Z_DVAL_P(value);
+        } else {
+            zend_throw_error(NULL, "Only a int offset '$vec[int]' can be used with the GL\\Math\\Vec3 object");
+        }
+    }
+}
+
 static zval *phpglfw_math_vec3_read_prop_handler(zend_object *object, zend_string *member, int type, void **cache_slot, zval *rv) 
 {
     zval *retval;
@@ -533,6 +649,9 @@ static zend_always_inline int phpglfw_math_vec3_do_op_scalar_handler(zend_uchar 
     }
 }
 
+/**
+ * Vector operation handler
+ */
 static int phpglfw_math_vec3_do_op_handler(zend_uchar opcode, zval *result, zval *op1, zval *op2)
 {
     object_init_ex(result, phpglfw_math_vec3_ce);
@@ -586,6 +705,7 @@ static int phpglfw_math_vec3_do_op_handler(zend_uchar opcode, zval *result, zval
     }
 }
 
+
 PHP_METHOD(GL_Math_Vec3, __construct)
 {
     zval *obj;
@@ -627,16 +747,15 @@ PHP_METHOD(GL_Math_Vec3, __toString)
     phpglfw_math_vec3_object *obj_ptr = phpglfw_math_vec3_objectptr_from_zobj_p(Z_OBJ_P(obj));
 
     smart_str my_str = {0};
-
     smart_str_appends(&my_str, "vec3(");
 
-    // smart_str_append_double(&my_str, obj_ptr->vec[0], 4, true);
-    // smart_str_appends(&my_str, ", ");
-    // smart_str_append_double(&my_str, obj_ptr->vec[1], 4, true);
-    // smart_str_appends(&my_str, ", ");
-    // smart_str_append_double(&my_str, obj_ptr->vec[2], 4, true);
-    // smart_str_appends(&my_str, ")");
-
+    for (int i = 0; i < 3; i++) {
+        glfw_smart_str_append_double(&my_str, obj_ptr->data[i], 4, true);
+        if (i < 3 - 1) {
+            smart_str_appends(&my_str, ", ");
+        }
+    }
+    smart_str_appends(&my_str, ")");
     smart_str_0(&my_str);
 
     RETURN_STRINGL(ZSTR_VAL(my_str.s), ZSTR_LEN(my_str.s));
@@ -795,6 +914,56 @@ static HashTable *phpglfw_math_vec4_debug_info_handler(zend_object *object, int 
     return ht;
 }
 
+zval *phpglfw_math_vec4_array_get_handler(zend_object *object, zval *offset, int type, zval *rv)
+{
+	if(offset == NULL) {
+        zend_throw_error(NULL, "Cannot apply [] to GL\\Math\\Vec4 object");
+	}
+
+    phpglfw_math_vec4_object *obj_ptr = phpglfw_math_vec4_objectptr_from_zobj_p(object);
+
+    if (Z_TYPE_P(offset) == IS_LONG) {
+		size_t index = (size_t)Z_LVAL_P(offset);
+
+        if (index < 4) {
+            ZVAL_DOUBLE(rv, obj_ptr->data[index]);
+        } else {
+            ZVAL_NULL(rv);
+        }
+	} else {
+        zend_throw_error(NULL, "Only a int offset '$vec[int]' can be used with the GL\\Math\\Vec4 object");
+		ZVAL_NULL(rv);
+	}
+
+	return rv;
+}
+
+void phpglfw_math_vec4_array_set_handler(zend_object *object, zval *offset, zval *value)
+{
+    if (Z_TYPE_P(value) != IS_DOUBLE) {
+        zend_throw_error(NULL, "Trying to store non float value in a Vec4.");
+        return;
+    }
+
+    phpglfw_math_vec4_object *obj_ptr = phpglfw_math_vec4_objectptr_from_zobj_p(object);
+
+	if (offset == NULL) {
+        zend_throw_error(NULL, "You cannot append values into a Vec4.");
+	} 
+    else {
+        if (Z_TYPE_P(offset) == IS_LONG) {
+            size_t index = (size_t)Z_LVAL_P(offset);
+
+            if (index >= 4) {
+                zend_throw_error(NULL, "Vec4 has a fixed space, the given index [%d] is out of bounds...",  (int) index);
+            }
+            obj_ptr->data[index] = Z_DVAL_P(value);
+        } else {
+            zend_throw_error(NULL, "Only a int offset '$vec[int]' can be used with the GL\\Math\\Vec4 object");
+        }
+    }
+}
+
 static zval *phpglfw_math_vec4_read_prop_handler(zend_object *object, zend_string *member, int type, void **cache_slot, zval *rv) 
 {
     zval *retval;
@@ -906,6 +1075,9 @@ static zend_always_inline int phpglfw_math_vec4_do_op_scalar_handler(zend_uchar 
     }
 }
 
+/**
+ * Vector operation handler
+ */
 static int phpglfw_math_vec4_do_op_handler(zend_uchar opcode, zval *result, zval *op1, zval *op2)
 {
     object_init_ex(result, phpglfw_math_vec4_ce);
@@ -959,6 +1131,7 @@ static int phpglfw_math_vec4_do_op_handler(zend_uchar opcode, zval *result, zval
     }
 }
 
+
 PHP_METHOD(GL_Math_Vec4, __construct)
 {
     zval *obj;
@@ -1003,16 +1176,15 @@ PHP_METHOD(GL_Math_Vec4, __toString)
     phpglfw_math_vec4_object *obj_ptr = phpglfw_math_vec4_objectptr_from_zobj_p(Z_OBJ_P(obj));
 
     smart_str my_str = {0};
+    smart_str_appends(&my_str, "vec4(");
 
-    smart_str_appends(&my_str, "vec3(");
-
-    // smart_str_append_double(&my_str, obj_ptr->vec[0], 4, true);
-    // smart_str_appends(&my_str, ", ");
-    // smart_str_append_double(&my_str, obj_ptr->vec[1], 4, true);
-    // smart_str_appends(&my_str, ", ");
-    // smart_str_append_double(&my_str, obj_ptr->vec[2], 4, true);
-    // smart_str_appends(&my_str, ")");
-
+    for (int i = 0; i < 4; i++) {
+        glfw_smart_str_append_double(&my_str, obj_ptr->data[i], 4, true);
+        if (i < 4 - 1) {
+            smart_str_appends(&my_str, ", ");
+        }
+    }
+    smart_str_appends(&my_str, ")");
     smart_str_0(&my_str);
 
     RETURN_STRINGL(ZSTR_VAL(my_str.s), ZSTR_LEN(my_str.s));
@@ -1112,6 +1284,395 @@ PHP_METHOD(GL_Math_Vec4, abs)
     vec4_abs(resobj->data, obj_ptr->data);
 }
 
+/**
+ * GL\Math\Mat4 
+ * 
+ * ----------------------------------------------------------------------------
+ */
+typedef struct _phpglfw_math_mat4_object {
+    mat4x4 data;
+    zend_object std;
+} phpglfw_math_mat4_object; 
+
+static zend_object_handlers phpglfw_math_mat4_handlers;
+
+zend_always_inline phpglfw_math_mat4_object* phpglfw_math_mat4_objectptr_from_zobj_p(zend_object* obj)
+{
+    return (phpglfw_math_mat4_object *) ((char *) (obj) - XtOffsetOf(phpglfw_math_mat4_object, std));
+}
+
+/**
+ * Creation (GL\Math\Mat4)
+ */
+zend_object *phpglfw_math_mat4_create_handler(zend_class_entry *class_type)
+{
+    size_t block_len = sizeof(phpglfw_math_mat4_object) + zend_object_properties_size(class_type);
+    phpglfw_math_mat4_object *intern = emalloc(block_len);
+    memset(intern, 0, block_len);
+
+    mat4x4_identity(intern->data);
+
+    zend_object_std_init(&intern->std, class_type);
+    object_properties_init(&intern->std, class_type);
+    intern->std.handlers = &phpglfw_math_mat4_handlers;
+
+    return &intern->std;
+}
+
+static HashTable *phpglfw_math_mat4_debug_info_handler(zend_object *object, int *is_temp)
+{
+    phpglfw_math_mat4_object *obj_ptr = phpglfw_math_mat4_objectptr_from_zobj_p(object);
+    zval zv;
+    HashTable *ht;
+
+    ht = zend_new_array(16);
+    *is_temp = 1;
+
+    ZVAL_DOUBLE(&zv, obj_ptr->data[0][0]);
+    zend_hash_index_update(ht, 0, &zv);
+    ZVAL_DOUBLE(&zv, obj_ptr->data[0][1]);
+    zend_hash_index_update(ht, 1, &zv);
+    ZVAL_DOUBLE(&zv, obj_ptr->data[0][2]);
+    zend_hash_index_update(ht, 2, &zv);
+    ZVAL_DOUBLE(&zv, obj_ptr->data[0][3]);
+    zend_hash_index_update(ht, 3, &zv);
+    ZVAL_DOUBLE(&zv, obj_ptr->data[1][0]);
+    zend_hash_index_update(ht, 4, &zv);
+    ZVAL_DOUBLE(&zv, obj_ptr->data[1][1]);
+    zend_hash_index_update(ht, 5, &zv);
+    ZVAL_DOUBLE(&zv, obj_ptr->data[1][2]);
+    zend_hash_index_update(ht, 6, &zv);
+    ZVAL_DOUBLE(&zv, obj_ptr->data[1][3]);
+    zend_hash_index_update(ht, 7, &zv);
+    ZVAL_DOUBLE(&zv, obj_ptr->data[2][0]);
+    zend_hash_index_update(ht, 8, &zv);
+    ZVAL_DOUBLE(&zv, obj_ptr->data[2][1]);
+    zend_hash_index_update(ht, 9, &zv);
+    ZVAL_DOUBLE(&zv, obj_ptr->data[2][2]);
+    zend_hash_index_update(ht, 10, &zv);
+    ZVAL_DOUBLE(&zv, obj_ptr->data[2][3]);
+    zend_hash_index_update(ht, 11, &zv);
+    ZVAL_DOUBLE(&zv, obj_ptr->data[3][0]);
+    zend_hash_index_update(ht, 12, &zv);
+    ZVAL_DOUBLE(&zv, obj_ptr->data[3][1]);
+    zend_hash_index_update(ht, 13, &zv);
+    ZVAL_DOUBLE(&zv, obj_ptr->data[3][2]);
+    zend_hash_index_update(ht, 14, &zv);
+    ZVAL_DOUBLE(&zv, obj_ptr->data[3][3]);
+    zend_hash_index_update(ht, 15, &zv);
+
+    return ht;
+}
+
+zval *phpglfw_math_mat4_array_get_handler(zend_object *object, zval *offset, int type, zval *rv)
+{
+	if(offset == NULL) {
+        zend_throw_error(NULL, "Cannot apply [] to GL\\Math\\Mat4 object");
+	}
+
+    phpglfw_math_mat4_object *obj_ptr = phpglfw_math_mat4_objectptr_from_zobj_p(object);
+
+    if (Z_TYPE_P(offset) == IS_LONG) {
+		size_t index = (size_t)Z_LVAL_P(offset);
+
+        if (index < 16) {
+            ZVAL_DOUBLE(rv, obj_ptr->data[index / 4][index % 4]);
+        } else {
+            ZVAL_NULL(rv);
+        }
+	} else {
+        zend_throw_error(NULL, "Only a int offset '$vec[int]' can be used with the GL\\Math\\Mat4 object");
+		ZVAL_NULL(rv);
+	}
+
+	return rv;
+}
+
+void phpglfw_math_mat4_array_set_handler(zend_object *object, zval *offset, zval *value)
+{
+    if (Z_TYPE_P(value) != IS_DOUBLE) {
+        zend_throw_error(NULL, "Trying to store non float value in a Mat4.");
+        return;
+    }
+
+    phpglfw_math_mat4_object *obj_ptr = phpglfw_math_mat4_objectptr_from_zobj_p(object);
+
+	if (offset == NULL) {
+        zend_throw_error(NULL, "You cannot append values into a Mat4.");
+	} 
+    else {
+        if (Z_TYPE_P(offset) == IS_LONG) {
+            size_t index = (size_t)Z_LVAL_P(offset);
+
+            if (index >= 16) {
+                zend_throw_error(NULL, "Mat4 has a fixed space, the given index [%d] is out of bounds...",  (int) index);
+            }
+            obj_ptr->data[index / 4][index % 4] = Z_DVAL_P(value);
+        } else {
+            zend_throw_error(NULL, "Only a int offset '$vec[int]' can be used with the GL\\Math\\Mat4 object");
+        }
+    }
+}
+
+
+/**
+ * Matrix operation handler
+ */
+static int phpglfw_math_mat4_do_op_handler(zend_uchar opcode, zval *result, zval *op1, zval *op2)
+{
+    object_init_ex(result, phpglfw_math_mat4_ce);
+    phpglfw_math_mat4_object *resobj = phpglfw_math_mat4_objectptr_from_zobj_p(Z_OBJ_P(result));
+
+    // if left and right are both mat...
+    if (
+        Z_TYPE_P(op1) == IS_OBJECT && Z_OBJCE_P(op1) == phpglfw_math_mat4_ce &&
+        Z_TYPE_P(op2) == IS_OBJECT && Z_OBJCE_P(op2) == phpglfw_math_mat4_ce    ) {
+        phpglfw_math_mat4_object *matobj1 = phpglfw_math_mat4_objectptr_from_zobj_p(Z_OBJ_P(op1));
+        phpglfw_math_mat4_object *matobj2 = phpglfw_math_mat4_objectptr_from_zobj_p(Z_OBJ_P(op2));
+
+        php_printf("(%f %f) * (%f %f)", matobj1->data[0][0], matobj1->data[0][1], matobj2->data[0][0], matobj2->data[0][1]);
+
+        switch (opcode) {
+        case ZEND_ADD:
+            mat4x4_add(resobj->data, matobj1->data, matobj2->data);
+            return SUCCESS;
+        case ZEND_SUB:
+            mat4x4_sub(resobj->data, matobj1->data, matobj2->data);
+            return SUCCESS;
+        case ZEND_MUL:
+            mat4x4_mul(resobj->data, matobj1->data, matobj2->data);
+            return SUCCESS;
+        default:
+            return FAILURE;
+        }
+    }
+    else {
+        return FAILURE;
+    }
+}
+
+
+PHP_METHOD(GL_Math_Mat4, __construct)
+{
+    zval *obj;
+    obj = getThis();
+    phpglfw_math_mat4_object *obj_ptr = phpglfw_math_mat4_objectptr_from_zobj_p(Z_OBJ_P(obj));
+
+}
+
+PHP_METHOD(GL_Math_Mat4, __toString)
+{
+	if (zend_parse_parameters_none() == FAILURE) {
+		RETURN_THROWS();
+	}
+
+    zval *obj;
+    obj = getThis();
+    phpglfw_math_mat4_object *obj_ptr = phpglfw_math_mat4_objectptr_from_zobj_p(Z_OBJ_P(obj));
+
+    smart_str my_str = {0};
+    smart_str_appends(&my_str, "mat4(");
+
+    smart_str_appends(&my_str, "\n");
+    for (int i = 0; i < 4; i++) {
+        smart_str_appends(&my_str, "    ");
+        for(int y = 0; y < 4; y++) {
+            glfw_smart_str_append_double(&my_str, obj_ptr->data[i][y], 4, true);
+            if (y < 3) {
+                smart_str_appends(&my_str, ", ");
+            } else {
+                smart_str_appends(&my_str, "\n");
+            }
+        }
+    }
+    smart_str_appends(&my_str, ")");
+    smart_str_0(&my_str);
+
+    RETURN_STRINGL(ZSTR_VAL(my_str.s), ZSTR_LEN(my_str.s));
+
+    smart_str_free(&my_str);
+}
+
+
+PHP_METHOD(GL_Math_Mat4, row)
+{
+    zend_long row_index;
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "l", &row_index) == FAILURE) {
+        return;
+    }
+
+    zval *obj;
+    obj = getThis();
+    phpglfw_math_mat4_object *obj_ptr = phpglfw_math_mat4_objectptr_from_zobj_p(Z_OBJ_P(obj));
+
+    // create new vec
+    object_init_ex(return_value, phpglfw_math_vec4_ce);
+    phpglfw_math_vec4_object *resobj = phpglfw_math_vec4_objectptr_from_zobj_p(Z_OBJ_P(return_value));
+
+    for(int i = 0; i < 4; i++) {
+        resobj->data[i] = obj_ptr->data[row_index][i];
+    }
+}
+
+PHP_METHOD(GL_Math_Mat4, col)
+{
+    zend_long col_index;
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "l", &col_index) == FAILURE) {
+        return;
+    }
+
+    zval *obj;
+    obj = getThis();
+    phpglfw_math_mat4_object *obj_ptr = phpglfw_math_mat4_objectptr_from_zobj_p(Z_OBJ_P(obj));
+
+    // create new vec
+    object_init_ex(return_value, phpglfw_math_vec4_ce);
+    phpglfw_math_vec4_object *resobj = phpglfw_math_vec4_objectptr_from_zobj_p(Z_OBJ_P(return_value));
+
+    for(int i = 0; i < 4; i++) {
+        resobj->data[i] = obj_ptr->data[i][col_index];
+    }
+}
+
+PHP_METHOD(GL_Math_Mat4, setRow)
+{
+    zend_long row_index;
+    zval *vec_zval;
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "lO", &row_index, &vec_zval, phpglfw_math_vec4_ce) == FAILURE) {
+        return;
+    }
+
+    zval *obj;
+    obj = getThis();
+    phpglfw_math_mat4_object *obj_ptr = phpglfw_math_mat4_objectptr_from_zobj_p(Z_OBJ_P(obj));
+    phpglfw_math_vec4_object *vec_ptr = phpglfw_math_vec4_objectptr_from_zobj_p(Z_OBJ_P(vec_zval));
+
+    for(int i = 0; i < 4; i++) {
+        obj_ptr->data[row_index][i] = vec_ptr->data[i];
+    }
+}
+
+PHP_METHOD(GL_Math_Mat4, setCol)
+{
+    zend_long col_index;
+    zval *vec_zval;
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "lO", &col_index, &vec_zval, phpglfw_math_vec4_ce) == FAILURE) {
+        return;
+    }
+
+    zval *obj;
+    obj = getThis();
+    phpglfw_math_mat4_object *obj_ptr = phpglfw_math_mat4_objectptr_from_zobj_p(Z_OBJ_P(obj));
+    phpglfw_math_vec4_object *vec_ptr = phpglfw_math_vec4_objectptr_from_zobj_p(Z_OBJ_P(vec_zval));
+
+    for(int i = 0; i < 4; i++) {
+        obj_ptr->data[i][col_index] = vec_ptr->data[i];
+    }
+}
+
+PHP_METHOD(GL_Math_Mat4, perspective)
+{
+    double fov;
+    double aspect;
+    double near;
+    double far;
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "dddd", &fov, &aspect, &near, &far) == FAILURE) {
+        return;
+    }
+
+    zval *obj;
+    obj = getThis();
+    phpglfw_math_mat4_object *obj_ptr = phpglfw_math_mat4_objectptr_from_zobj_p(Z_OBJ_P(obj));
+
+    mat4x4_perspective(obj_ptr->data, fov, aspect, near, far);
+}
+
+
+PHP_METHOD(GL_Math_Mat4, ortho)
+{
+    double left;
+    double right;
+    double bottom;
+    double top;
+    double near;
+    double far;
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "dddddd", &left, &right, &bottom, &top, &near, &far) == FAILURE) {
+        return;
+    }
+
+    zval *obj;
+    obj = getThis();
+    phpglfw_math_mat4_object *obj_ptr = phpglfw_math_mat4_objectptr_from_zobj_p(Z_OBJ_P(obj));
+
+    mat4x4_ortho(obj_ptr->data, left, right, bottom, top, near, far);
+}
+
+PHP_METHOD(GL_Math_Mat4, lookAt)
+{
+    zval *eye_zval;
+    zval *center_zval;
+    zval *up_zval;
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "OOO", &eye_zval, phpglfw_math_vec3_ce, &center_zval, phpglfw_math_vec3_ce, &up_zval, phpglfw_math_vec3_ce) == FAILURE) {
+        return;
+    }
+
+    zval *obj;
+    obj = getThis();
+    phpglfw_math_mat4_object *obj_ptr = phpglfw_math_mat4_objectptr_from_zobj_p(Z_OBJ_P(obj));
+    phpglfw_math_vec3_object *eye_ptr = phpglfw_math_vec3_objectptr_from_zobj_p(Z_OBJ_P(eye_zval));
+    phpglfw_math_vec3_object *center_ptr = phpglfw_math_vec3_objectptr_from_zobj_p(Z_OBJ_P(center_zval));
+    phpglfw_math_vec3_object *up_ptr = phpglfw_math_vec3_objectptr_from_zobj_p(Z_OBJ_P(up_zval));
+
+    mat4x4_look_at(obj_ptr->data, eye_ptr->data, center_ptr->data, up_ptr->data);
+}
+
+
+PHP_METHOD(GL_Math_Mat4, scale)
+{
+    zval *vec_zval;
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "O", &vec_zval, phpglfw_math_vec3_ce) == FAILURE) {
+        return;
+    }
+
+    zval *obj;
+    obj = getThis();
+    phpglfw_math_mat4_object *obj_ptr = phpglfw_math_mat4_objectptr_from_zobj_p(Z_OBJ_P(obj));
+    phpglfw_math_vec3_object *vec_ptr = phpglfw_math_vec3_objectptr_from_zobj_p(Z_OBJ_P(vec_zval));
+
+    mat4x4_scale_aniso(obj_ptr->data, obj_ptr->data, vec_ptr->data[0], vec_ptr->data[1], vec_ptr->data[2]);
+}
+
+PHP_METHOD(GL_Math_Mat4, copy)
+{
+    zval *obj;
+    obj = getThis();
+    phpglfw_math_mat4_object *obj_ptr = phpglfw_math_mat4_objectptr_from_zobj_p(Z_OBJ_P(obj));
+    
+    // create new mat4
+    object_init_ex(return_value, phpglfw_math_mat4_ce);
+    phpglfw_math_mat4_object *res_ptr = phpglfw_math_mat4_objectptr_from_zobj_p(Z_OBJ_P(return_value));
+
+    for(int i = 0; i < 4; i++) {
+        for(int j = 0; j < 4; j++) {
+            res_ptr->data[i][j] = obj_ptr->data[i][j];
+        }
+    }
+}
+
+PHP_METHOD(GL_Math_Mat4, determinant)
+{
+    if (zend_parse_parameters_none() == FAILURE) {
+        RETURN_THROWS();
+    }
+
+    zval *obj;
+    obj = getThis();
+    phpglfw_math_mat4_object *obj_ptr = phpglfw_math_mat4_objectptr_from_zobj_p(Z_OBJ_P(obj));
+
+    RETURN_DOUBLE(mat4x4_det(obj_ptr->data));
+}
+
+
 
 void phpglfw_register_math_module(INIT_FUNC_ARGS)
 {
@@ -1124,6 +1685,9 @@ void phpglfw_register_math_module(INIT_FUNC_ARGS)
 
     memcpy(&phpglfw_math_vec2_handlers, zend_get_std_object_handlers(), sizeof(phpglfw_math_vec2_handlers));
     phpglfw_math_vec2_handlers.get_debug_info = phpglfw_math_vec2_debug_info_handler;
+    phpglfw_math_vec2_handlers.read_dimension = phpglfw_math_vec2_array_get_handler;
+    phpglfw_math_vec2_handlers.write_dimension = phpglfw_math_vec2_array_set_handler;
+
     phpglfw_math_vec2_handlers.read_property = phpglfw_math_vec2_read_prop_handler;
     phpglfw_math_vec2_handlers.write_property = phpglfw_math_vec2_write_prop_handler;
     phpglfw_math_vec2_handlers.do_operation = phpglfw_math_vec2_do_op_handler;
@@ -1135,6 +1699,9 @@ void phpglfw_register_math_module(INIT_FUNC_ARGS)
 
     memcpy(&phpglfw_math_vec3_handlers, zend_get_std_object_handlers(), sizeof(phpglfw_math_vec3_handlers));
     phpglfw_math_vec3_handlers.get_debug_info = phpglfw_math_vec3_debug_info_handler;
+    phpglfw_math_vec3_handlers.read_dimension = phpglfw_math_vec3_array_get_handler;
+    phpglfw_math_vec3_handlers.write_dimension = phpglfw_math_vec3_array_set_handler;
+
     phpglfw_math_vec3_handlers.read_property = phpglfw_math_vec3_read_prop_handler;
     phpglfw_math_vec3_handlers.write_property = phpglfw_math_vec3_write_prop_handler;
     phpglfw_math_vec3_handlers.do_operation = phpglfw_math_vec3_do_op_handler;
@@ -1146,8 +1713,23 @@ void phpglfw_register_math_module(INIT_FUNC_ARGS)
 
     memcpy(&phpglfw_math_vec4_handlers, zend_get_std_object_handlers(), sizeof(phpglfw_math_vec4_handlers));
     phpglfw_math_vec4_handlers.get_debug_info = phpglfw_math_vec4_debug_info_handler;
+    phpglfw_math_vec4_handlers.read_dimension = phpglfw_math_vec4_array_get_handler;
+    phpglfw_math_vec4_handlers.write_dimension = phpglfw_math_vec4_array_set_handler;
+
     phpglfw_math_vec4_handlers.read_property = phpglfw_math_vec4_read_prop_handler;
     phpglfw_math_vec4_handlers.write_property = phpglfw_math_vec4_write_prop_handler;
     phpglfw_math_vec4_handlers.do_operation = phpglfw_math_vec4_do_op_handler;
     phpglfw_math_vec4_handlers.offset = XtOffsetOf(phpglfw_math_vec4_object, std);
+ 
+    INIT_CLASS_ENTRY(tmp_ce, "GL\\Math\\Mat4", class_GL_Math_Mat4_methods);
+    phpglfw_math_mat4_ce = zend_register_internal_class(&tmp_ce);
+    phpglfw_math_mat4_ce->create_object = phpglfw_math_mat4_create_handler;
+
+    memcpy(&phpglfw_math_mat4_handlers, zend_get_std_object_handlers(), sizeof(phpglfw_math_mat4_handlers));
+    phpglfw_math_mat4_handlers.get_debug_info = phpglfw_math_mat4_debug_info_handler;
+    phpglfw_math_mat4_handlers.read_dimension = phpglfw_math_mat4_array_get_handler;
+    phpglfw_math_mat4_handlers.write_dimension = phpglfw_math_mat4_array_set_handler;
+
+    phpglfw_math_mat4_handlers.do_operation = phpglfw_math_mat4_do_op_handler;
+    phpglfw_math_mat4_handlers.offset = XtOffsetOf(phpglfw_math_mat4_object, std);
 }

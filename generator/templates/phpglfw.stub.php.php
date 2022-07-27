@@ -9,12 +9,25 @@ namespace GL\Math
 <?php foreach($mathObjects as $obj) : ?> 
     class <?php echo $obj->name; ?> {
         public function __construct(<?php echo $obj->getPhpArgs(); ?>) {}
+<?php if ($obj->isVector()) : ?>
         public function length() : float {}
         public function dot(<?php echo $obj->name; ?> $right) : float {}
         public function distance(<?php echo $obj->name; ?> $right) : float {}
         public function distance2(<?php echo $obj->name; ?> $right) : float {}
         public function normalize() : <?php echo $obj->name; ?> {}
         public function abs() : <?php echo $obj->name; ?> {}
+<?php elseif($obj->isMatrix()) : ?>
+        public function copy() : <?php echo $obj->name; ?> {}
+        public function row(int $index) : Vec4 {}
+        public function setRow(int $index, Vec4 $row) : void {}
+        public function col(int $index) : Vec4 {}
+        public function setCol(int $index, Vec4 $col) : void {}
+        public function lookAt(Vec3 $eye, Vec3 $center, Vec3 $up) : void {}
+        public function perspective(float $fov, float $aspect, float $near, float $far) : void {}
+        public function ortho(float $left, float $right, float $bottom, float $top, float $near, float $far) : void {}
+        public function scale(Vec3 $scale) : void {}
+        public function determinant() : float {}
+<?php endif; ?>
         public function __toString() : string {}
     }
 <?php endforeach; ?>

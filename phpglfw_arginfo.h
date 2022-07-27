@@ -1,5 +1,5 @@
 /* This is a generated file, edit the .stub.php file instead.
- * Stub hash: 6c1d83f5a684504a434395f27dcac7e097445c20 */
+ * Stub hash: 9293e735bdede0de6df3d6be13148411c53b2a47 */
 
 ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_glCullFace, 0, 1, IS_VOID, 0)
 	ZEND_ARG_TYPE_INFO(0, mode, IS_LONG, 0)
@@ -1788,6 +1788,58 @@ ZEND_END_ARG_INFO()
 
 #define arginfo_class_GL_Math_Vec4___toString arginfo_glfwGetVersionString
 
+ZEND_BEGIN_ARG_INFO_EX(arginfo_class_GL_Math_Mat4___construct, 0, 0, 0)
+ZEND_END_ARG_INFO()
+
+ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(arginfo_class_GL_Math_Mat4_copy, 0, 0, GL\\Math\\Mat4, 0)
+ZEND_END_ARG_INFO()
+
+ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(arginfo_class_GL_Math_Mat4_row, 0, 1, GL\\Math\\Vec4, 0)
+	ZEND_ARG_TYPE_INFO(0, index, IS_LONG, 0)
+ZEND_END_ARG_INFO()
+
+ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_class_GL_Math_Mat4_setRow, 0, 2, IS_VOID, 0)
+	ZEND_ARG_TYPE_INFO(0, index, IS_LONG, 0)
+	ZEND_ARG_OBJ_INFO(0, row, GL\\Math\\Vec4, 0)
+ZEND_END_ARG_INFO()
+
+#define arginfo_class_GL_Math_Mat4_col arginfo_class_GL_Math_Mat4_row
+
+ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_class_GL_Math_Mat4_setCol, 0, 2, IS_VOID, 0)
+	ZEND_ARG_TYPE_INFO(0, index, IS_LONG, 0)
+	ZEND_ARG_OBJ_INFO(0, col, GL\\Math\\Vec4, 0)
+ZEND_END_ARG_INFO()
+
+ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_class_GL_Math_Mat4_lookAt, 0, 3, IS_VOID, 0)
+	ZEND_ARG_OBJ_INFO(0, eye, GL\\Math\\Vec3, 0)
+	ZEND_ARG_OBJ_INFO(0, center, GL\\Math\\Vec3, 0)
+	ZEND_ARG_OBJ_INFO(0, up, GL\\Math\\Vec3, 0)
+ZEND_END_ARG_INFO()
+
+ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_class_GL_Math_Mat4_perspective, 0, 4, IS_VOID, 0)
+	ZEND_ARG_TYPE_INFO(0, fov, IS_DOUBLE, 0)
+	ZEND_ARG_TYPE_INFO(0, aspect, IS_DOUBLE, 0)
+	ZEND_ARG_TYPE_INFO(0, near, IS_DOUBLE, 0)
+	ZEND_ARG_TYPE_INFO(0, far, IS_DOUBLE, 0)
+ZEND_END_ARG_INFO()
+
+ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_class_GL_Math_Mat4_ortho, 0, 6, IS_VOID, 0)
+	ZEND_ARG_TYPE_INFO(0, left, IS_DOUBLE, 0)
+	ZEND_ARG_TYPE_INFO(0, right, IS_DOUBLE, 0)
+	ZEND_ARG_TYPE_INFO(0, bottom, IS_DOUBLE, 0)
+	ZEND_ARG_TYPE_INFO(0, top, IS_DOUBLE, 0)
+	ZEND_ARG_TYPE_INFO(0, near, IS_DOUBLE, 0)
+	ZEND_ARG_TYPE_INFO(0, far, IS_DOUBLE, 0)
+ZEND_END_ARG_INFO()
+
+ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_class_GL_Math_Mat4_scale, 0, 1, IS_VOID, 0)
+	ZEND_ARG_OBJ_INFO(0, scale, GL\\Math\\Vec3, 0)
+ZEND_END_ARG_INFO()
+
+#define arginfo_class_GL_Math_Mat4_determinant arginfo_glfwGetTime
+
+#define arginfo_class_GL_Math_Mat4___toString arginfo_glfwGetVersionString
+
 ZEND_BEGIN_ARG_INFO_EX(arginfo_class_GL_Buffer_BufferInterface___construct, 0, 0, 0)
 	ZEND_ARG_TYPE_INFO_WITH_DEFAULT_VALUE(0, initalData, IS_ARRAY, 1, "null")
 ZEND_END_ARG_INFO()
@@ -2280,6 +2332,18 @@ ZEND_METHOD(GL_Math_Vec4, distance2);
 ZEND_METHOD(GL_Math_Vec4, normalize);
 ZEND_METHOD(GL_Math_Vec4, abs);
 ZEND_METHOD(GL_Math_Vec4, __toString);
+ZEND_METHOD(GL_Math_Mat4, __construct);
+ZEND_METHOD(GL_Math_Mat4, copy);
+ZEND_METHOD(GL_Math_Mat4, row);
+ZEND_METHOD(GL_Math_Mat4, setRow);
+ZEND_METHOD(GL_Math_Mat4, col);
+ZEND_METHOD(GL_Math_Mat4, setCol);
+ZEND_METHOD(GL_Math_Mat4, lookAt);
+ZEND_METHOD(GL_Math_Mat4, perspective);
+ZEND_METHOD(GL_Math_Mat4, ortho);
+ZEND_METHOD(GL_Math_Mat4, scale);
+ZEND_METHOD(GL_Math_Mat4, determinant);
+ZEND_METHOD(GL_Math_Mat4, __toString);
 ZEND_METHOD(GL_Buffer_FloatBuffer, __construct);
 ZEND_METHOD(GL_Buffer_FloatBuffer, __toString);
 ZEND_METHOD(GL_Buffer_FloatBuffer, push);
@@ -2735,6 +2799,23 @@ static const zend_function_entry class_GL_Math_Vec4_methods[] = {
 	ZEND_ME(GL_Math_Vec4, normalize, arginfo_class_GL_Math_Vec4_normalize, ZEND_ACC_PUBLIC)
 	ZEND_ME(GL_Math_Vec4, abs, arginfo_class_GL_Math_Vec4_abs, ZEND_ACC_PUBLIC)
 	ZEND_ME(GL_Math_Vec4, __toString, arginfo_class_GL_Math_Vec4___toString, ZEND_ACC_PUBLIC)
+	ZEND_FE_END
+};
+
+
+static const zend_function_entry class_GL_Math_Mat4_methods[] = {
+	ZEND_ME(GL_Math_Mat4, __construct, arginfo_class_GL_Math_Mat4___construct, ZEND_ACC_PUBLIC)
+	ZEND_ME(GL_Math_Mat4, copy, arginfo_class_GL_Math_Mat4_copy, ZEND_ACC_PUBLIC)
+	ZEND_ME(GL_Math_Mat4, row, arginfo_class_GL_Math_Mat4_row, ZEND_ACC_PUBLIC)
+	ZEND_ME(GL_Math_Mat4, setRow, arginfo_class_GL_Math_Mat4_setRow, ZEND_ACC_PUBLIC)
+	ZEND_ME(GL_Math_Mat4, col, arginfo_class_GL_Math_Mat4_col, ZEND_ACC_PUBLIC)
+	ZEND_ME(GL_Math_Mat4, setCol, arginfo_class_GL_Math_Mat4_setCol, ZEND_ACC_PUBLIC)
+	ZEND_ME(GL_Math_Mat4, lookAt, arginfo_class_GL_Math_Mat4_lookAt, ZEND_ACC_PUBLIC)
+	ZEND_ME(GL_Math_Mat4, perspective, arginfo_class_GL_Math_Mat4_perspective, ZEND_ACC_PUBLIC)
+	ZEND_ME(GL_Math_Mat4, ortho, arginfo_class_GL_Math_Mat4_ortho, ZEND_ACC_PUBLIC)
+	ZEND_ME(GL_Math_Mat4, scale, arginfo_class_GL_Math_Mat4_scale, ZEND_ACC_PUBLIC)
+	ZEND_ME(GL_Math_Mat4, determinant, arginfo_class_GL_Math_Mat4_determinant, ZEND_ACC_PUBLIC)
+	ZEND_ME(GL_Math_Mat4, __toString, arginfo_class_GL_Math_Mat4___toString, ZEND_ACC_PUBLIC)
 	ZEND_FE_END
 };
 

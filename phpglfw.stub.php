@@ -40,6 +40,21 @@ namespace GL\Math
         public function abs() : Vec4 {}
         public function __toString() : string {}
     }
+ 
+    class Mat4 {
+        public function __construct() {}
+        public function copy() : Mat4 {}
+        public function row(int $index) : Vec4 {}
+        public function setRow(int $index, Vec4 $row) : void {}
+        public function col(int $index) : Vec4 {}
+        public function setCol(int $index, Vec4 $col) : void {}
+        public function lookAt(Vec3 $eye, Vec3 $center, Vec3 $up) : void {}
+        public function perspective(float $fov, float $aspect, float $near, float $far) : void {}
+        public function ortho(float $left, float $right, float $bottom, float $top, float $near, float $far) : void {}
+        public function scale(Vec3 $scale) : void {}
+        public function determinant() : float {}
+        public function __toString() : string {}
+    }
 };
 
 namespace GL\Buffer 

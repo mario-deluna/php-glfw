@@ -24,6 +24,13 @@ class PHPGLFWMathObj
     private array $propNames = ['x', 'y', 'z', 'w'];
     private array $altPropNames = ['r', 'g', 'b', 'a'];
 
+    public function isVector() : bool {
+        return substr($this->name, 0, 3) === 'Vec';
+    }
+    public function isMatrix() : bool {
+        return substr($this->name, 0, 3) === 'Mat';
+    }
+
     public function propNameForPos(int $p) : string {
         return $this->propNames[$p];
     }
@@ -59,6 +66,10 @@ class PHPGLFWMathObj
      */
     public function getInternalDataType() : string 
     {
+        if ($this->isMatrix()) {
+            return 'mat4x4';
+        }
+
         return strtolower($this->name);
     }
     
@@ -70,6 +81,11 @@ class PHPGLFWMathObj
     public function getVecFunction(string $func) : string
     {
         return sprintf("vec%d_%s", $this->size, $func);
+    }
+
+    public function getMatFunction(string $func) : string
+    {
+        return sprintf("mat4x4_%s", $func);
     }
 
     public function getFullNamespaceString() : string
@@ -109,6 +125,10 @@ class PHPGLFWMathObj
 
     public function getPhpArgs() : string
     {
+        if ($this->isMatrix()) {
+            return '';
+        }
+
         $args = [];
 
         for($i=0; $i<$this->size; $i++) {

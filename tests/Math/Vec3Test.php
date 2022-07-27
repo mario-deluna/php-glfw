@@ -64,6 +64,19 @@ class Vec3Test extends \PHPUnit\Framework\TestCase
         $this->assertEquals(3.0, $vec->r);
         $this->assertEquals(2.0, $vec->g);
         $this->assertEquals(1.0, $vec->b);
+
+        // ensure subscript access works
+        $this->assertEquals(3.0, $vec[0]);
+        $this->assertEquals(2.0, $vec[1]);
+        $this->assertEquals(1.0, $vec[2]);
+
+        $vec[0] = 1.0;
+        $vec[1] = 2.0;
+        $vec[2] = 3.0;
+
+        $this->assertEquals(1.0, $vec[0]);
+        $this->assertEquals(2.0, $vec[1]);
+        $this->assertEquals(3.0, $vec[2]);
     }
 
     public function testOperations() : void
@@ -168,5 +181,11 @@ class Vec3Test extends \PHPUnit\Framework\TestCase
         $vec2 = new Vec3(0.5, 2.0, 0.75);
         
         $this->assertEqualsWithDelta(176.062, $vec1->distance2($vec2), 0.05);
+    }
+
+    public function testToString() : void
+    {
+        $vec = new Vec3(5.0, 12.5, 7.5);
+        $this->assertEquals('vec3(5.0, 12.5, 7.5)', (string) $vec);
     }
 }

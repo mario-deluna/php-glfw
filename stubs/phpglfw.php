@@ -34,6 +34,17 @@ namespace GL\Math
         public function abs() : Vec4 {}
         public function __toString() : string {}
     }
+ 
+    class Mat4 {
+        public function __construct() {}
+        public function length() : float {}
+        public function dot(Mat4 $right) : float {}
+        public function distance(Mat4 $right) : float {}
+        public function distance2(Mat4 $right) : float {}
+        public function normalize() : Mat4 {}
+        public function abs() : Mat4 {}
+        public function __toString() : string {}
+    }
 };
 
 namespace GL\Buffer 
