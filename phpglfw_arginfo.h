@@ -1,5 +1,5 @@
 /* This is a generated file, edit the .stub.php file instead.
- * Stub hash: 9293e735bdede0de6df3d6be13148411c53b2a47 */
+ * Stub hash: 998dd91b6b32a8ab9775bdf299bb9f02b7c16ccd */
 
 ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_glCullFace, 0, 1, IS_VOID, 0)
 	ZEND_ARG_TYPE_INFO(0, mode, IS_LONG, 0)
@@ -1719,6 +1719,24 @@ ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_glBufferData, 0, 3, IS_VOID, 0)
 	ZEND_ARG_TYPE_INFO(0, usage, IS_LONG, 0)
 ZEND_END_ARG_INFO()
 
+ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_class_GLM_radians, 0, 1, IS_DOUBLE, 0)
+	ZEND_ARG_TYPE_INFO(0, degrees, IS_DOUBLE, 0)
+ZEND_END_ARG_INFO()
+
+ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_class_GLM_angle, 0, 1, IS_DOUBLE, 0)
+	ZEND_ARG_TYPE_INFO(0, radians, IS_DOUBLE, 0)
+ZEND_END_ARG_INFO()
+
+ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(arginfo_class_GLM_triangleNormal, 0, 3, GL\\Math\\Vec3, 0)
+	ZEND_ARG_OBJ_INFO(0, p1, GL\\Math\\Vec3, 0)
+	ZEND_ARG_OBJ_INFO(0, p2, GL\\Math\\Vec3, 0)
+	ZEND_ARG_OBJ_INFO(0, p3, GL\\Math\\Vec3, 0)
+ZEND_END_ARG_INFO()
+
+ZEND_BEGIN_ARG_WITH_RETURN_OBJ_TYPE_MASK_EX(arginfo_class_GLM_normalize, 0, 1, Vec2|Vec3|Vec4, 0)
+	ZEND_ARG_OBJ_TYPE_MASK(0, vec, Vec2|Vec3|Vec4, 0, NULL)
+ZEND_END_ARG_INFO()
+
 ZEND_BEGIN_ARG_INFO_EX(arginfo_class_GL_Math_Vec2___construct, 0, 0, 0)
 	ZEND_ARG_TYPE_INFO_WITH_DEFAULT_VALUE(0, x, IS_DOUBLE, 1, "null")
 	ZEND_ARG_TYPE_INFO_WITH_DEFAULT_VALUE(0, y, IS_DOUBLE, 1, "null")
@@ -1832,8 +1850,19 @@ ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_class_GL_Math_Mat4_ortho, 0, 6, 
 	ZEND_ARG_TYPE_INFO(0, far, IS_DOUBLE, 0)
 ZEND_END_ARG_INFO()
 
+#define arginfo_class_GL_Math_Mat4_transpose arginfo_glFinish
+
+#define arginfo_class_GL_Math_Mat4_inverse arginfo_glFinish
+
 ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_class_GL_Math_Mat4_scale, 0, 1, IS_VOID, 0)
 	ZEND_ARG_OBJ_INFO(0, scale, GL\\Math\\Vec3, 0)
+ZEND_END_ARG_INFO()
+
+#define arginfo_class_GL_Math_Mat4_translate arginfo_class_GL_Math_Mat4_scale
+
+ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_class_GL_Math_Mat4_rotate, 0, 2, IS_VOID, 0)
+	ZEND_ARG_TYPE_INFO(0, angle, IS_DOUBLE, 0)
+	ZEND_ARG_OBJ_INFO(0, axis, GL\\Math\\Vec3, 0)
 ZEND_END_ARG_INFO()
 
 #define arginfo_class_GL_Math_Mat4_determinant arginfo_glfwGetTime
@@ -2308,6 +2337,10 @@ ZEND_FUNCTION(glfwExtensionSupported);
 ZEND_FUNCTION(glfwVulkanSupported);
 ZEND_FUNCTION(glShaderSource);
 ZEND_FUNCTION(glBufferData);
+ZEND_METHOD(GLM, radians);
+ZEND_METHOD(GLM, angle);
+ZEND_METHOD(GLM, triangleNormal);
+ZEND_METHOD(GLM, normalize);
 ZEND_METHOD(GL_Math_Vec2, __construct);
 ZEND_METHOD(GL_Math_Vec2, length);
 ZEND_METHOD(GL_Math_Vec2, dot);
@@ -2341,7 +2374,11 @@ ZEND_METHOD(GL_Math_Mat4, setCol);
 ZEND_METHOD(GL_Math_Mat4, lookAt);
 ZEND_METHOD(GL_Math_Mat4, perspective);
 ZEND_METHOD(GL_Math_Mat4, ortho);
+ZEND_METHOD(GL_Math_Mat4, transpose);
+ZEND_METHOD(GL_Math_Mat4, inverse);
 ZEND_METHOD(GL_Math_Mat4, scale);
+ZEND_METHOD(GL_Math_Mat4, translate);
+ZEND_METHOD(GL_Math_Mat4, rotate);
 ZEND_METHOD(GL_Math_Mat4, determinant);
 ZEND_METHOD(GL_Math_Mat4, __toString);
 ZEND_METHOD(GL_Buffer_FloatBuffer, __construct);
@@ -2764,6 +2801,15 @@ static const zend_function_entry ext_functions[] = {
 };
 
 
+static const zend_function_entry class_GLM_methods[] = {
+	ZEND_ME(GLM, radians, arginfo_class_GLM_radians, ZEND_ACC_PUBLIC|ZEND_ACC_STATIC)
+	ZEND_ME(GLM, angle, arginfo_class_GLM_angle, ZEND_ACC_PUBLIC|ZEND_ACC_STATIC)
+	ZEND_ME(GLM, triangleNormal, arginfo_class_GLM_triangleNormal, ZEND_ACC_PUBLIC|ZEND_ACC_STATIC)
+	ZEND_ME(GLM, normalize, arginfo_class_GLM_normalize, ZEND_ACC_PUBLIC|ZEND_ACC_STATIC)
+	ZEND_FE_END
+};
+
+
 static const zend_function_entry class_GL_Math_Vec2_methods[] = {
 	ZEND_ME(GL_Math_Vec2, __construct, arginfo_class_GL_Math_Vec2___construct, ZEND_ACC_PUBLIC)
 	ZEND_ME(GL_Math_Vec2, length, arginfo_class_GL_Math_Vec2_length, ZEND_ACC_PUBLIC)
@@ -2813,7 +2859,11 @@ static const zend_function_entry class_GL_Math_Mat4_methods[] = {
 	ZEND_ME(GL_Math_Mat4, lookAt, arginfo_class_GL_Math_Mat4_lookAt, ZEND_ACC_PUBLIC)
 	ZEND_ME(GL_Math_Mat4, perspective, arginfo_class_GL_Math_Mat4_perspective, ZEND_ACC_PUBLIC)
 	ZEND_ME(GL_Math_Mat4, ortho, arginfo_class_GL_Math_Mat4_ortho, ZEND_ACC_PUBLIC)
+	ZEND_ME(GL_Math_Mat4, transpose, arginfo_class_GL_Math_Mat4_transpose, ZEND_ACC_PUBLIC)
+	ZEND_ME(GL_Math_Mat4, inverse, arginfo_class_GL_Math_Mat4_inverse, ZEND_ACC_PUBLIC)
 	ZEND_ME(GL_Math_Mat4, scale, arginfo_class_GL_Math_Mat4_scale, ZEND_ACC_PUBLIC)
+	ZEND_ME(GL_Math_Mat4, translate, arginfo_class_GL_Math_Mat4_translate, ZEND_ACC_PUBLIC)
+	ZEND_ME(GL_Math_Mat4, rotate, arginfo_class_GL_Math_Mat4_rotate, ZEND_ACC_PUBLIC)
 	ZEND_ME(GL_Math_Mat4, determinant, arginfo_class_GL_Math_Mat4_determinant, ZEND_ACC_PUBLIC)
 	ZEND_ME(GL_Math_Mat4, __toString, arginfo_class_GL_Math_Mat4___toString, ZEND_ACC_PUBLIC)
 	ZEND_FE_END

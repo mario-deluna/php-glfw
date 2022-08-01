@@ -3,8 +3,18 @@
 /** @generate-function-entries */
 /** @generate-class-entries */
 /**
- * Classes
+ * GLM class to access math functions conviniently.
  */
+namespace {
+
+    class GLM {
+        public static function radians(float $degrees) : float {}
+        public static function angle(float $radians) : float {}
+        public static function triangleNormal(GL\Math\Vec3 $p1, GL\Math\Vec3 $p2, GL\Math\Vec3 $p3) : GL\Math\Vec3 {}
+        public static function normalize(Vec2|Vec3|Vec4 $vec) : Vec2|Vec3|Vec4 {}
+    }
+}
+
 namespace GL\Math 
 {
  
@@ -51,7 +61,11 @@ namespace GL\Math
         public function lookAt(Vec3 $eye, Vec3 $center, Vec3 $up) : void {}
         public function perspective(float $fov, float $aspect, float $near, float $far) : void {}
         public function ortho(float $left, float $right, float $bottom, float $top, float $near, float $far) : void {}
+        public function transpose() : void {}
+        public function inverse() : void {}
         public function scale(Vec3 $scale) : void {}
+        public function translate(Vec3 $scale) : void {}
+        public function rotate(float $angle, Vec3 $axis) : void {}
         public function determinant() : float {}
         public function __toString() : string {}
     }

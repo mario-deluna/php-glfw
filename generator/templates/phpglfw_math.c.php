@@ -43,6 +43,7 @@ void ZEND_FASTCALL glfw_smart_str_append_double(
 	}
 }
 
+zend_class_entry *phpglfw_glm_ce; 
 <?php foreach($objects as $obj) : ?>
 zend_class_entry *<?php echo $obj->getClassEntryName(); ?>; 
 <?php endforeach; ?>
@@ -319,7 +320,8 @@ static int <?php echo $obj->getHandlerMethodName('do_op'); ?>(zend_uchar opcode,
 /**
  * Matrix operation handler
  */
-static int <?php echo $obj->getHandlerMethodName('do_op'); ?>(zend_uchar opcode, zval *result, zval *op1, zval *op2)
+
+static int <?php echo $obj->getHandlerMethodName('do_op_ex'); ?>(zend_uchar opcode, zval *result, zval *op1, zval *op2)
 {
     object_init_ex(result, <?php echo $obj->getClassEntryName(); ?>);
     <?php echo $obj->getObjectName(); ?> *resobj = <?php echo $obj->objectFromZObjFunctionName(); ?>(Z_OBJ_P(result));
@@ -332,7 +334,10 @@ static int <?php echo $obj->getHandlerMethodName('do_op'); ?>(zend_uchar opcode,
         <?php echo $obj->getObjectName(); ?> *matobj1 = <?php echo $obj->objectFromZObjFunctionName(); ?>(Z_OBJ_P(op1));
         <?php echo $obj->getObjectName(); ?> *matobj2 = <?php echo $obj->objectFromZObjFunctionName(); ?>(Z_OBJ_P(op2));
 
-        php_printf("(%f %f) * (%f %f)", matobj1->data[0][0], matobj1->data[0][1], matobj2->data[0][0], matobj2->data[0][1]);
+        //php_printf("[%p](%f %f [%p] [%i]) * (%f %f [%p] [%i])\n", 
+        //    result, matobj1->data[0][0], matobj1->data[0][1], op1, op1->u2.constant_flags,
+        //    matobj2->data[0][0], matobj2->data[0][1], op2, op2->u2.constant_flags
+        //);
 
         switch (opcode) {
         case ZEND_ADD:
@@ -351,6 +356,24 @@ static int <?php echo $obj->getHandlerMethodName('do_op'); ?>(zend_uchar opcode,
     else {
         return FAILURE;
     }
+}
+static int <?php echo $obj->getHandlerMethodName('do_op'); ?>(zend_uchar opcode, zval *result, zval *op1, zval *op2)
+{
+    zval op1_copy;
+    int retval;
+
+    if (result == op1) {
+        ZVAL_COPY_VALUE(&op1_copy, op1);
+        op1 = &op1_copy;
+    }
+
+    retval = <?php echo $obj->getHandlerMethodName('do_op_ex'); ?>(opcode, result, op1, op2);
+
+    if (retval == SUCCESS && op1 == &op1_copy) {
+        zval_ptr_dtor(op1);
+    }
+
+    return retval;
 }
 
 <?php endif; ?>
@@ -652,6 +675,40 @@ PHP_METHOD(<?php echo $obj->getFullNamespaceConstString(); ?>, lookAt)
     <?php echo $obj->getMatFunction('look_at'); ?>(obj_ptr->data, eye_ptr->data, center_ptr->data, up_ptr->data);
 }
 
+PHP_METHOD(<?php echo $obj->getFullNamespaceConstString(); ?>, transpose)
+{
+    zval *obj;
+    obj = getThis();
+    <?php echo $obj->getObjectName(); ?> *obj_ptr = <?php echo $obj->objectFromZObjFunctionName(); ?>(Z_OBJ_P(obj));
+
+    mat4x4 T;
+    <?php echo $obj->getMatFunction('transpose'); ?>(T, obj_ptr->data);
+    mat4x4_dup(obj_ptr->data, T);
+}
+
+PHP_METHOD(<?php echo $obj->getFullNamespaceConstString(); ?>, inverse)
+{
+    zval *obj;
+    obj = getThis();
+    <?php echo $obj->getObjectName(); ?> *obj_ptr = <?php echo $obj->objectFromZObjFunctionName(); ?>(Z_OBJ_P(obj));
+
+    mat4x4 T;
+    <?php echo $obj->getMatFunction('invert'); ?>(T, obj_ptr->data);
+    mat4x4_dup(obj_ptr->data, T);
+}
+
+
+PHP_METHOD(<?php echo $obj->getFullNamespaceConstString(); ?>, translate) {
+    zval *obj;
+    obj = getThis();
+    <?php echo $obj->getObjectName(); ?> *obj_ptr = <?php echo $obj->objectFromZObjFunctionName(); ?>(Z_OBJ_P(obj));
+    zval *vec_zval;
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "O", &vec_zval, phpglfw_math_vec3_ce) == FAILURE) {
+        return;
+    }
+    phpglfw_math_vec3_object *vec_ptr = phpglfw_math_vec3_objectptr_from_zobj_p(Z_OBJ_P(vec_zval));
+    <?php echo $obj->getMatFunction('translate_in_place'); ?>(obj_ptr->data, vec_ptr->data[0], vec_ptr->data[1], vec_ptr->data[2]);
+}
 
 PHP_METHOD(<?php echo $obj->getFullNamespaceConstString(); ?>, scale)
 {
@@ -666,6 +723,23 @@ PHP_METHOD(<?php echo $obj->getFullNamespaceConstString(); ?>, scale)
     phpglfw_math_vec3_object *vec_ptr = phpglfw_math_vec3_objectptr_from_zobj_p(Z_OBJ_P(vec_zval));
 
     <?php echo $obj->getMatFunction('scale_aniso'); ?>(obj_ptr->data, obj_ptr->data, vec_ptr->data[0], vec_ptr->data[1], vec_ptr->data[2]);
+}
+
+
+PHP_METHOD(<?php echo $obj->getFullNamespaceConstString(); ?>, rotate)
+{
+    double radians;
+    zval *axis_zval;
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "dO", &radians, &axis_zval, phpglfw_math_vec3_ce) == FAILURE) {
+        return;
+    }
+
+    zval *obj;
+    obj = getThis();
+    <?php echo $obj->getObjectName(); ?> *obj_ptr = <?php echo $obj->objectFromZObjFunctionName(); ?>(Z_OBJ_P(obj));
+
+    phpglfw_math_vec3_object *axis_ptr = phpglfw_math_vec3_objectptr_from_zobj_p(Z_OBJ_P(axis_zval));
+    <?php echo $obj->getMatFunction('rotate'); ?>(obj_ptr->data, obj_ptr->data, axis_ptr->data[0], axis_ptr->data[1], axis_ptr->data[2], radians);
 }
 
 PHP_METHOD(<?php echo $obj->getFullNamespaceConstString(); ?>, copy)
@@ -702,9 +776,72 @@ PHP_METHOD(<?php echo $obj->getFullNamespaceConstString(); ?>, determinant)
 
 <?php endforeach; ?>
 
+/**
+ * GLM static functions 
+ * This class holds a collection of common funtions, constructors and
+ * alternative copy based math functions.
+ */
+
+PHP_METHOD(GLM, radians)
+{
+    double angle;
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "d", &angle) == FAILURE) {
+        RETURN_THROWS();
+    }
+    RETURN_DOUBLE(angle * M_PI / 180.0);
+}
+
+PHP_METHOD(GLM, angle)
+{
+    double radians;
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "d", &radians) == FAILURE) {
+        RETURN_THROWS();
+    }
+    RETURN_DOUBLE(radians * 180.0 / M_PI);
+}
+
+PHP_METHOD(GLM, triangleNormal)
+{
+    zval *v0_zval, *v1_zval, *v2_zval;
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "OOO", &v0_zval, phpglfw_math_vec3_ce, &v1_zval, phpglfw_math_vec3_ce, &v2_zval, phpglfw_math_vec3_ce) == FAILURE) {
+        RETURN_THROWS();
+    }
+    phpglfw_math_vec3_object *v0_ptr = phpglfw_math_vec3_objectptr_from_zobj_p(Z_OBJ_P(v0_zval));
+    phpglfw_math_vec3_object *v1_ptr = phpglfw_math_vec3_objectptr_from_zobj_p(Z_OBJ_P(v1_zval));
+    phpglfw_math_vec3_object *v2_ptr = phpglfw_math_vec3_objectptr_from_zobj_p(Z_OBJ_P(v2_zval));
+
+    // calc normal from v0, v1, v2
+    vec3 dir, t1, t2;
+    vec3_sub(t1, v1_ptr->data, v0_ptr->data);
+    vec3_sub(t2, v2_ptr->data, v0_ptr->data);
+    vec3_mul_cross(dir, t1, t2);
+    vec3_s_div(dir, dir, vec3_len(dir));
+    vec3_norm(dir, dir);
+
+    // create new vec3
+    object_init_ex(return_value, phpglfw_math_vec3_ce);
+    phpglfw_math_vec3_object *res_ptr = phpglfw_math_vec3_objectptr_from_zobj_p(Z_OBJ_P(return_value));
+    res_ptr->data[0] = dir[0];
+    res_ptr->data[1] = dir[1];
+    res_ptr->data[2] = dir[2];
+}
+
+PHP_METHOD(GLM, normalize)
+{
+    double angle;
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "d", &angle) == FAILURE) {
+        RETURN_THROWS();
+    }
+    RETURN_DOUBLE(angle * M_PI / 180.0);
+}
+
+
 void phpglfw_register_math_module(INIT_FUNC_ARGS)
 {
     zend_class_entry tmp_ce;
+
+    INIT_CLASS_ENTRY(tmp_ce, "GLM", class_GLM_methods);
+    phpglfw_glm_ce = zend_register_internal_class(&tmp_ce);
 
 <?php foreach($objects as $obj) : ?> 
     INIT_CLASS_ENTRY(tmp_ce, <?php echo $obj->getFullNamespaceCString(); ?>, class_<?php echo $obj->getFullNamespaceConstString(); ?>_methods);
