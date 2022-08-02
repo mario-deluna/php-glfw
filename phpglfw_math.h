@@ -27,7 +27,64 @@
 #define PHP_GLFW_MATH_H 1
 
 #include "phpglfw_constants.h"
+#include "linmath.h"
+
+/**
+ * object structs
+ */
+typedef struct _phpglfw_math_vec2_object {
+    vec2 data;
+    zend_object std;
+} phpglfw_math_vec2_object; 
+
+typedef struct _phpglfw_math_vec3_object {
+    vec3 data;
+    zend_object std;
+} phpglfw_math_vec3_object; 
+
+typedef struct _phpglfw_math_vec4_object {
+    vec4 data;
+    zend_object std;
+} phpglfw_math_vec4_object; 
+
+typedef struct _phpglfw_math_mat4_object {
+    mat4x4 data;
+    zend_object std;
+} phpglfw_math_mat4_object; 
+
 
 void phpglfw_register_math_module(INIT_FUNC_ARGS);
+
+/**
+ * Fetch object helper methods
+ */
+zend_always_inline phpglfw_math_vec2_object* phpglfw_math_vec2_objectptr_from_zobj_p(zend_object* obj)
+{
+    return (phpglfw_math_vec2_object *) ((char *) (obj) - XtOffsetOf(phpglfw_math_vec2_object, std));
+}
+
+zend_always_inline phpglfw_math_vec3_object* phpglfw_math_vec3_objectptr_from_zobj_p(zend_object* obj)
+{
+    return (phpglfw_math_vec3_object *) ((char *) (obj) - XtOffsetOf(phpglfw_math_vec3_object, std));
+}
+
+zend_always_inline phpglfw_math_vec4_object* phpglfw_math_vec4_objectptr_from_zobj_p(zend_object* obj)
+{
+    return (phpglfw_math_vec4_object *) ((char *) (obj) - XtOffsetOf(phpglfw_math_vec4_object, std));
+}
+
+zend_always_inline phpglfw_math_mat4_object* phpglfw_math_mat4_objectptr_from_zobj_p(zend_object* obj)
+{
+    return (phpglfw_math_mat4_object *) ((char *) (obj) - XtOffsetOf(phpglfw_math_mat4_object, std));
+}
+
+
+/**
+ * Class entry getters
+ */
+zend_class_entry *phpglfw_get_math_vec2_ce(); 
+zend_class_entry *phpglfw_get_math_vec3_ce(); 
+zend_class_entry *phpglfw_get_math_vec4_ce(); 
+zend_class_entry *phpglfw_get_math_mat4_ce(); 
 
 #endif

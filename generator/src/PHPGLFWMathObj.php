@@ -87,6 +87,11 @@ class PHPGLFWMathObj
     {
         return sprintf("mat4x4_%s", $func);
     }
+    
+    public function getClassEntryNameGetter() : string
+    {
+        return sprintf("phpglfw_get_math_%s_ce", $this->getInternalNameString());
+    }
 
     public function getFullNamespaceString() : string
     {

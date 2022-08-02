@@ -1,5 +1,5 @@
 /* This is a generated file, edit the .stub.php file instead.
- * Stub hash: 998dd91b6b32a8ab9775bdf299bb9f02b7c16ccd */
+ * Stub hash: 567efc484b618e11472ade05ebb56b57c6339ef5 */
 
 ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_glCullFace, 0, 1, IS_VOID, 0)
 	ZEND_ARG_TYPE_INFO(0, mode, IS_LONG, 0)
@@ -519,6 +519,13 @@ ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_glUniform4i, 0, 5, IS_VOID, 0)
 	ZEND_ARG_TYPE_INFO(0, v1, IS_LONG, 0)
 	ZEND_ARG_TYPE_INFO(0, v2, IS_LONG, 0)
 	ZEND_ARG_TYPE_INFO(0, v3, IS_LONG, 0)
+ZEND_END_ARG_INFO()
+
+ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_glUniformMatrix4fv, 0, 4, IS_VOID, 0)
+	ZEND_ARG_TYPE_INFO(0, location, IS_LONG, 0)
+	ZEND_ARG_TYPE_INFO(0, count, IS_LONG, 0)
+	ZEND_ARG_TYPE_INFO(0, transpose, _IS_BOOL, 0)
+	ZEND_ARG_OBJ_INFO(0, buffer, GL\\Buffer\\BufferInterface, 0)
 ZEND_END_ARG_INFO()
 
 #define arginfo_glValidateProgram arginfo_glDeleteProgram
@@ -1719,6 +1726,12 @@ ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_glBufferData, 0, 3, IS_VOID, 0)
 	ZEND_ARG_TYPE_INFO(0, usage, IS_LONG, 0)
 ZEND_END_ARG_INFO()
 
+ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_glUniformMatrix4f, 0, 3, IS_VOID, 0)
+	ZEND_ARG_TYPE_INFO(0, location, IS_LONG, 0)
+	ZEND_ARG_TYPE_INFO(0, transpose, _IS_BOOL, 0)
+	ZEND_ARG_OBJ_INFO(0, matrix, GL\\Math\\Mat4, 0)
+ZEND_END_ARG_INFO()
+
 ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_class_GLM_radians, 0, 1, IS_DOUBLE, 0)
 	ZEND_ARG_TYPE_INFO(0, degrees, IS_DOUBLE, 0)
 ZEND_END_ARG_INFO()
@@ -2065,6 +2078,7 @@ ZEND_FUNCTION(glUniform1i);
 ZEND_FUNCTION(glUniform2i);
 ZEND_FUNCTION(glUniform3i);
 ZEND_FUNCTION(glUniform4i);
+ZEND_FUNCTION(glUniformMatrix4fv);
 ZEND_FUNCTION(glValidateProgram);
 ZEND_FUNCTION(glVertexAttrib1d);
 ZEND_FUNCTION(glVertexAttrib1f);
@@ -2337,6 +2351,7 @@ ZEND_FUNCTION(glfwExtensionSupported);
 ZEND_FUNCTION(glfwVulkanSupported);
 ZEND_FUNCTION(glShaderSource);
 ZEND_FUNCTION(glBufferData);
+ZEND_FUNCTION(glUniformMatrix4f);
 ZEND_METHOD(GLM, radians);
 ZEND_METHOD(GLM, angle);
 ZEND_METHOD(GLM, triangleNormal);
@@ -2525,6 +2540,7 @@ static const zend_function_entry ext_functions[] = {
 	ZEND_FE(glUniform2i, arginfo_glUniform2i)
 	ZEND_FE(glUniform3i, arginfo_glUniform3i)
 	ZEND_FE(glUniform4i, arginfo_glUniform4i)
+	ZEND_FE(glUniformMatrix4fv, arginfo_glUniformMatrix4fv)
 	ZEND_FE(glValidateProgram, arginfo_glValidateProgram)
 	ZEND_FE(glVertexAttrib1d, arginfo_glVertexAttrib1d)
 	ZEND_FE(glVertexAttrib1f, arginfo_glVertexAttrib1f)
@@ -2797,6 +2813,7 @@ static const zend_function_entry ext_functions[] = {
 	ZEND_FE(glfwVulkanSupported, arginfo_glfwVulkanSupported)
 	ZEND_FE(glShaderSource, arginfo_glShaderSource)
 	ZEND_FE(glBufferData, arginfo_glBufferData)
+	ZEND_FE(glUniformMatrix4f, arginfo_glUniformMatrix4f)
 	ZEND_FE_END
 };
 

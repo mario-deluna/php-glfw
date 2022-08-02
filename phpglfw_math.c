@@ -29,7 +29,6 @@
 
 #include "php.h"
 #include "Zend/zend_smart_str.h"
-#include "linmath.h"
 
 #if defined(DBL_MANT_DIG) && defined(DBL_MIN_EXP) && !defined(ZEND_DOUBLE_MAX_LENGTH)
 #define ZEND_DOUBLE_MAX_LENGTH (3 + DBL_MANT_DIG - DBL_MIN_EXP)
@@ -59,22 +58,25 @@ zend_class_entry *phpglfw_math_vec3_ce;
 zend_class_entry *phpglfw_math_vec4_ce; 
 zend_class_entry *phpglfw_math_mat4_ce; 
 
+zend_class_entry *phpglfw_get_math_vec2_ce() {
+    return phpglfw_math_vec2_ce;
+}
+zend_class_entry *phpglfw_get_math_vec3_ce() {
+    return phpglfw_math_vec3_ce;
+}
+zend_class_entry *phpglfw_get_math_vec4_ce() {
+    return phpglfw_math_vec4_ce;
+}
+zend_class_entry *phpglfw_get_math_mat4_ce() {
+    return phpglfw_math_mat4_ce;
+}
+
 /**
  * GL\Math\Vec2 
  * 
  * ----------------------------------------------------------------------------
  */
-typedef struct _phpglfw_math_vec2_object {
-    vec2 data;
-    zend_object std;
-} phpglfw_math_vec2_object; 
-
 static zend_object_handlers phpglfw_math_vec2_handlers;
-
-zend_always_inline phpglfw_math_vec2_object* phpglfw_math_vec2_objectptr_from_zobj_p(zend_object* obj)
-{
-    return (phpglfw_math_vec2_object *) ((char *) (obj) - XtOffsetOf(phpglfw_math_vec2_object, std));
-}
 
 /**
  * Creation (GL\Math\Vec2)
@@ -458,17 +460,7 @@ PHP_METHOD(GL_Math_Vec2, abs)
  * 
  * ----------------------------------------------------------------------------
  */
-typedef struct _phpglfw_math_vec3_object {
-    vec3 data;
-    zend_object std;
-} phpglfw_math_vec3_object; 
-
 static zend_object_handlers phpglfw_math_vec3_handlers;
-
-zend_always_inline phpglfw_math_vec3_object* phpglfw_math_vec3_objectptr_from_zobj_p(zend_object* obj)
-{
-    return (phpglfw_math_vec3_object *) ((char *) (obj) - XtOffsetOf(phpglfw_math_vec3_object, std));
-}
 
 /**
  * Creation (GL\Math\Vec3)
@@ -869,17 +861,7 @@ PHP_METHOD(GL_Math_Vec3, abs)
  * 
  * ----------------------------------------------------------------------------
  */
-typedef struct _phpglfw_math_vec4_object {
-    vec4 data;
-    zend_object std;
-} phpglfw_math_vec4_object; 
-
 static zend_object_handlers phpglfw_math_vec4_handlers;
-
-zend_always_inline phpglfw_math_vec4_object* phpglfw_math_vec4_objectptr_from_zobj_p(zend_object* obj)
-{
-    return (phpglfw_math_vec4_object *) ((char *) (obj) - XtOffsetOf(phpglfw_math_vec4_object, std));
-}
 
 /**
  * Creation (GL\Math\Vec4)
@@ -1297,17 +1279,7 @@ PHP_METHOD(GL_Math_Vec4, abs)
  * 
  * ----------------------------------------------------------------------------
  */
-typedef struct _phpglfw_math_mat4_object {
-    mat4x4 data;
-    zend_object std;
-} phpglfw_math_mat4_object; 
-
 static zend_object_handlers phpglfw_math_mat4_handlers;
-
-zend_always_inline phpglfw_math_mat4_object* phpglfw_math_mat4_objectptr_from_zobj_p(zend_object* obj)
-{
-    return (phpglfw_math_mat4_object *) ((char *) (obj) - XtOffsetOf(phpglfw_math_mat4_object, std));
-}
 
 /**
  * Creation (GL\Math\Mat4)

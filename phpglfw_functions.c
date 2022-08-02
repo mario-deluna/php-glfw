@@ -28,6 +28,7 @@
 #include "php.h"
 #include "phpglfw.h"
 #include "phpglfw_buffer.h"
+#include "phpglfw_math.h"
 #include <zend_API.h>
     
 /**
@@ -1983,6 +1984,26 @@ PHP_FUNCTION(glUniform4i)
         return;
     }
     glUniform4i(location, v0, v1, v2, v3);
+} 
+
+/**
+ * glUniformMatrix4fv
+ */ 
+PHP_FUNCTION(glUniformMatrix4fv)
+{
+    zend_long location;
+    zend_long count;
+    bool transpose;
+    zval *buffer_zval;
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "llbO", &location, &count, &transpose, &buffer_zval, phpglfw_get_buffer_interface_ce()) == FAILURE) {
+        return;
+    }
+    if (Z_OBJCE_P(buffer_zval) == phpglfw_get_buffer_glfloat_ce()) {
+        phpglfw_buffer_glfloat_object *obj_ptr = phpglfw_buffer_glfloat_objectptr_from_zobj_p(Z_OBJ_P(buffer_zval));
+        glUniformMatrix4fv(location, count, transpose, obj_ptr->vec);
+    } else {
+        zend_throw_error(NULL, "glUniformMatrix4fv: Invalid or unsupported buffer object given.");
+    };
 } 
 
 /**
@@ -6136,5 +6157,21 @@ PHP_FUNCTION(glBufferData)
     } else {
         zend_throw_error(NULL, "glBufferData: Invalid or unsupported buffer object given.");
     };
+} 
+
+/**
+ * glUniformMatrix4f
+ */ 
+PHP_FUNCTION(glUniformMatrix4f)
+{
+    zend_long location;
+    bool transpose;
+    zval *matrix_zval;
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "lbO", &location, &transpose, &matrix_zval, phpglfw_get_math_mat4_ce()) == FAILURE) {
+        return;
+    }
+    phpglfw_math_mat4_object *obj_ptr = phpglfw_math_mat4_objectptr_from_zobj_p(Z_OBJ_P(matrix_zval));
+    glUniformMatrix4fv(location, 1, transpose, obj_ptr->data);
+    ;
 } 
 

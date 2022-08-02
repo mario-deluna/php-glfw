@@ -1831,6 +1831,7 @@ namespace {
     function glUniform2i(int $location, int $v0, int $v1) : void {};
     function glUniform3i(int $location, int $v0, int $v1, int $v2) : void {};
     function glUniform4i(int $location, int $v0, int $v1, int $v2, int $v3) : void {};
+    function glUniformMatrix4fv(int $location, int $count, bool $transpose, \GL\Buffer\BufferInterface $buffer) : void {};
     function glValidateProgram(int $program) : void {};
     function glVertexAttrib1d(int $index, float $x) : void {};
     function glVertexAttrib1f(int $index, float $x) : void {};
@@ -2103,5 +2104,6 @@ namespace {
     function glfwVulkanSupported() : int {};
     function glShaderSource(int $shader, string $source) : void {};
     function glBufferData(int $target, \GL\Buffer\BufferInterface $buffer, int $usage) : void {};
+    function glUniformMatrix4f(int $location, bool $transpose, \GL\Math\Mat4 $matrix) : void {};
  
 }

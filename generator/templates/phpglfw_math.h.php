@@ -27,7 +27,37 @@
 #define PHP_GLFW_MATH_H 1
 
 #include "phpglfw_constants.h"
+#include "linmath.h"
+
+/**
+ * object structs
+ */
+<?php foreach($objects as $obj) : ?>
+typedef struct _<?php echo $obj->getObjectName(); ?> {
+    <?php echo $obj->getInternalDataType(); ?> data;
+    zend_object std;
+} <?php echo $obj->getObjectName(); ?>; 
+
+<?php endforeach; ?>
 
 void phpglfw_register_math_module(INIT_FUNC_ARGS);
+
+/**
+ * Fetch object helper methods
+ */
+<?php foreach($objects as $obj) : ?>
+zend_always_inline <?php echo $obj->getObjectName(); ?>* <?php echo $obj->objectFromZObjFunctionName(); ?>(zend_object* obj)
+{
+    return (<?php echo $obj->getObjectName(); ?> *) ((char *) (obj) - XtOffsetOf(<?php echo $obj->getObjectName(); ?>, std));
+}
+
+<?php endforeach; ?>
+
+/**
+ * Class entry getters
+ */
+<?php foreach($objects as $obj) : ?>
+zend_class_entry *<?php echo $obj->getClassEntryNameGetter(); ?>(); 
+<?php endforeach; ?>
 
 #endif

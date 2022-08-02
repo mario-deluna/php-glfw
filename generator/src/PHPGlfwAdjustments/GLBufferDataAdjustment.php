@@ -22,9 +22,6 @@ class GLBufferDataAdjustment implements AdjustmentInterface
         {    
             public function getFunctionCallCode() : string
             {
-                $shaderArg = $this->arguments[0];
-                $sourceArg = $this->arguments[1];
-
                 $body = <<<EOD
 if (Z_OBJCE_P(buffer_zval) == phpglfw_get_buffer_glfloat_ce()) {
     phpglfw_buffer_glfloat_object *obj_ptr = phpglfw_buffer_glfloat_objectptr_from_zobj_p(Z_OBJ_P(buffer_zval));

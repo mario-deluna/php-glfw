@@ -1489,6 +1489,16 @@ namespace {
     function glUniform4i(int $location, int $v0, int $v1, int $v2, int $v3) : void {};
  
     /**
+     * glUniformMatrix4fv
+     * 
+     * @param int $location 
+     * @param int $count 
+     * @param bool $transpose 
+     * @param \GL\Buffer\BufferInterface $buffer
+     */ 
+    function glUniformMatrix4fv(int $location, int $count, bool $transpose, \GL\Buffer\BufferInterface $buffer) : void {};
+ 
+    /**
      * Validates a program object
      * 
      * @param int $program Specifies the handle of the program object to be
@@ -4085,6 +4095,15 @@ namespace {
      * GL_DYNAMIC_READ, or GL_DYNAMIC_COPY.
      */ 
     function glBufferData(int $target, \GL\Buffer\BufferInterface $buffer, int $usage) : void {};
+ 
+    /**
+     * glUniformMatrix4f
+     * 
+     * @param int $location 
+     * @param bool $transpose 
+     * @param \GL\Math\Mat4 $matrix
+     */ 
+    function glUniformMatrix4f(int $location, bool $transpose, \GL\Math\Mat4 $matrix) : void {};
  
  
 }

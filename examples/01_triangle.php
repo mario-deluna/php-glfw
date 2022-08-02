@@ -1,4 +1,10 @@
 <?php
+/**
+ * This is the most basic example of how to use the GLFW library.
+ * You can think of it as a ""Hello World"" example.
+ * 
+ * This example does not utilize our helper class to keep it a basic as possible.
+ */
 
 // initalize GLFW
 if (!glfwInit()) {
@@ -146,10 +152,11 @@ while (!glfwWindowShouldClose($window))
     glClearColor(0, 0, 0, 1);
     glClear(GL_COLOR_BUFFER_BIT);
 
-    // use the shader
+    // use the shader, will active the given shader program
+    // for the coming draw calls.
     glUseProgram($shaderProgram);
 
-    // draw our vertex array
+    // bind & draw the vertex array
     glBindVertexArray($VAO);
     glDrawArrays(GL_TRIANGLES, 0, 3);
 

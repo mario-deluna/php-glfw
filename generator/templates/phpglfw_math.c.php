@@ -29,7 +29,6 @@
 
 #include "php.h"
 #include "Zend/zend_smart_str.h"
-#include "linmath.h"
 
 #if defined(DBL_MANT_DIG) && defined(DBL_MIN_EXP) && !defined(ZEND_DOUBLE_MAX_LENGTH)
 #define ZEND_DOUBLE_MAX_LENGTH (3 + DBL_MANT_DIG - DBL_MIN_EXP)
@@ -59,22 +58,18 @@ zend_class_entry *<?php echo $obj->getClassEntryName(); ?>;
 <?php endforeach; ?>
 
 <?php foreach($objects as $obj) : ?>
+zend_class_entry *<?php echo $obj->getClassEntryNameGetter(); ?>() {
+    return <?php echo $obj->getClassEntryName(); ?>;
+}
+<?php endforeach; ?>
+
+<?php foreach($objects as $obj) : ?>
 /**
  * <?php echo $obj->getFullNamespaceString(); ?> 
  * 
  * ----------------------------------------------------------------------------
  */
-typedef struct _<?php echo $obj->getObjectName(); ?> {
-    <?php echo $obj->getInternalDataType(); ?> data;
-    zend_object std;
-} <?php echo $obj->getObjectName(); ?>; 
-
 static zend_object_handlers <?php echo $obj->getHandlersVarName(); ?>;
-
-zend_always_inline <?php echo $obj->getObjectName(); ?>* <?php echo $obj->objectFromZObjFunctionName(); ?>(zend_object* obj)
-{
-    return (<?php echo $obj->getObjectName(); ?> *) ((char *) (obj) - XtOffsetOf(<?php echo $obj->getObjectName(); ?>, std));
-}
 
 /**
  * Creation (<?php echo $obj->getFullNamespaceString(); ?>)
