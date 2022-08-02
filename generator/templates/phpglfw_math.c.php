@@ -187,30 +187,29 @@ void <?php echo $obj->getHandlerMethodName('array_set'); ?>(zend_object *object,
 <?php if ($obj->isVector()) : ?>
 static zval *<?php echo $obj->getHandlerMethodName('read_prop'); ?>(zend_object *object, zend_string *member, int type, void **cache_slot, zval *rv) 
 {
-    zval *retval;
     <?php echo $obj->getObjectName(); ?> *obj_ptr = <?php echo $obj->objectFromZObjFunctionName(); ?>(object);
 
 	if ((type != BP_VAR_R && type != BP_VAR_IS)) {
 		zend_throw_error(NULL, <?php echo $obj->getFullNamespaceCString(); ?>  " properties are virtual and cannot be referenced.");
-		retval = &EG( uninitialized_zval );
+		rv = &EG( uninitialized_zval );
 	} else {
 
 <?php foreach($obj->getPropIt() as $i => $name) : ?>
         <?php echo ($i !== 0 ? 'else ' : '') ?>if (zend_string_equals_literal(member, "<?php echo $name; ?>")) {
-		    ZVAL_DOUBLE(retval, obj_ptr->data[<?php echo $i; ?>]);
+		    ZVAL_DOUBLE(rv, obj_ptr->data[<?php echo $i; ?>]);
         }
 <?php endforeach; ?>
 <?php foreach($obj->getAltPropIt() as $i => $name) : ?>
         else if (zend_string_equals_literal(member, "<?php echo $name; ?>")) {
-		    ZVAL_DOUBLE(retval, obj_ptr->data[<?php echo $i; ?>]);
+		    ZVAL_DOUBLE(rv, obj_ptr->data[<?php echo $i; ?>]);
         }
 <?php endforeach; ?>
         else {
-            ZVAL_NULL(retval);
+            ZVAL_NULL(rv);
         }
 	}
 
-	return retval;
+	return rv;
 }
 
 static zval *<?php echo $obj->getHandlerMethodName('write_prop'); ?>(zend_object *object, zend_string *member, zval *value, void **cache_slot) 

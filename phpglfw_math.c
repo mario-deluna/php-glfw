@@ -41,10 +41,10 @@
 void ZEND_FASTCALL glfw_smart_str_append_double(
 		smart_str *str, double num, int precision, bool zero_fraction) {
 	char buf[ZEND_DOUBLE_MAX_LENGTH];
-	/* Model snprintf precision behavior. */
 #if PHP_API_VERSION <= 20200930
     sprintf(buf, "%.4f", num);
 #else
+	/* Model snprintf precision behavior. */
 	zend_gcvt(num, precision ? precision : 1, '.', 'E', buf);
 #endif
 	smart_str_appends(str, buf);
@@ -166,32 +166,31 @@ void phpglfw_math_vec2_array_set_handler(zend_object *object, zval *offset, zval
 
 static zval *phpglfw_math_vec2_read_prop_handler(zend_object *object, zend_string *member, int type, void **cache_slot, zval *rv) 
 {
-    zval *retval;
     phpglfw_math_vec2_object *obj_ptr = phpglfw_math_vec2_objectptr_from_zobj_p(object);
 
 	if ((type != BP_VAR_R && type != BP_VAR_IS)) {
 		zend_throw_error(NULL, "GL\\Math\\Vec2"  " properties are virtual and cannot be referenced.");
-		retval = &EG( uninitialized_zval );
+		rv = &EG( uninitialized_zval );
 	} else {
 
         if (zend_string_equals_literal(member, "x")) {
-		    ZVAL_DOUBLE(retval, obj_ptr->data[0]);
+		    ZVAL_DOUBLE(rv, obj_ptr->data[0]);
         }
         else if (zend_string_equals_literal(member, "y")) {
-		    ZVAL_DOUBLE(retval, obj_ptr->data[1]);
+		    ZVAL_DOUBLE(rv, obj_ptr->data[1]);
         }
         else if (zend_string_equals_literal(member, "r")) {
-		    ZVAL_DOUBLE(retval, obj_ptr->data[0]);
+		    ZVAL_DOUBLE(rv, obj_ptr->data[0]);
         }
         else if (zend_string_equals_literal(member, "g")) {
-		    ZVAL_DOUBLE(retval, obj_ptr->data[1]);
+		    ZVAL_DOUBLE(rv, obj_ptr->data[1]);
         }
         else {
-            ZVAL_NULL(retval);
+            ZVAL_NULL(rv);
         }
 	}
 
-	return retval;
+	return rv;
 }
 
 static zval *phpglfw_math_vec2_write_prop_handler(zend_object *object, zend_string *member, zval *value, void **cache_slot) 
@@ -563,38 +562,37 @@ void phpglfw_math_vec3_array_set_handler(zend_object *object, zval *offset, zval
 
 static zval *phpglfw_math_vec3_read_prop_handler(zend_object *object, zend_string *member, int type, void **cache_slot, zval *rv) 
 {
-    zval *retval;
     phpglfw_math_vec3_object *obj_ptr = phpglfw_math_vec3_objectptr_from_zobj_p(object);
 
 	if ((type != BP_VAR_R && type != BP_VAR_IS)) {
 		zend_throw_error(NULL, "GL\\Math\\Vec3"  " properties are virtual and cannot be referenced.");
-		retval = &EG( uninitialized_zval );
+		rv = &EG( uninitialized_zval );
 	} else {
 
         if (zend_string_equals_literal(member, "x")) {
-		    ZVAL_DOUBLE(retval, obj_ptr->data[0]);
+		    ZVAL_DOUBLE(rv, obj_ptr->data[0]);
         }
         else if (zend_string_equals_literal(member, "y")) {
-		    ZVAL_DOUBLE(retval, obj_ptr->data[1]);
+		    ZVAL_DOUBLE(rv, obj_ptr->data[1]);
         }
         else if (zend_string_equals_literal(member, "z")) {
-		    ZVAL_DOUBLE(retval, obj_ptr->data[2]);
+		    ZVAL_DOUBLE(rv, obj_ptr->data[2]);
         }
         else if (zend_string_equals_literal(member, "r")) {
-		    ZVAL_DOUBLE(retval, obj_ptr->data[0]);
+		    ZVAL_DOUBLE(rv, obj_ptr->data[0]);
         }
         else if (zend_string_equals_literal(member, "g")) {
-		    ZVAL_DOUBLE(retval, obj_ptr->data[1]);
+		    ZVAL_DOUBLE(rv, obj_ptr->data[1]);
         }
         else if (zend_string_equals_literal(member, "b")) {
-		    ZVAL_DOUBLE(retval, obj_ptr->data[2]);
+		    ZVAL_DOUBLE(rv, obj_ptr->data[2]);
         }
         else {
-            ZVAL_NULL(retval);
+            ZVAL_NULL(rv);
         }
 	}
 
-	return retval;
+	return rv;
 }
 
 static zval *phpglfw_math_vec3_write_prop_handler(zend_object *object, zend_string *member, zval *value, void **cache_slot) 
@@ -977,44 +975,43 @@ void phpglfw_math_vec4_array_set_handler(zend_object *object, zval *offset, zval
 
 static zval *phpglfw_math_vec4_read_prop_handler(zend_object *object, zend_string *member, int type, void **cache_slot, zval *rv) 
 {
-    zval *retval;
     phpglfw_math_vec4_object *obj_ptr = phpglfw_math_vec4_objectptr_from_zobj_p(object);
 
 	if ((type != BP_VAR_R && type != BP_VAR_IS)) {
 		zend_throw_error(NULL, "GL\\Math\\Vec4"  " properties are virtual and cannot be referenced.");
-		retval = &EG( uninitialized_zval );
+		rv = &EG( uninitialized_zval );
 	} else {
 
         if (zend_string_equals_literal(member, "x")) {
-		    ZVAL_DOUBLE(retval, obj_ptr->data[0]);
+		    ZVAL_DOUBLE(rv, obj_ptr->data[0]);
         }
         else if (zend_string_equals_literal(member, "y")) {
-		    ZVAL_DOUBLE(retval, obj_ptr->data[1]);
+		    ZVAL_DOUBLE(rv, obj_ptr->data[1]);
         }
         else if (zend_string_equals_literal(member, "z")) {
-		    ZVAL_DOUBLE(retval, obj_ptr->data[2]);
+		    ZVAL_DOUBLE(rv, obj_ptr->data[2]);
         }
         else if (zend_string_equals_literal(member, "w")) {
-		    ZVAL_DOUBLE(retval, obj_ptr->data[3]);
+		    ZVAL_DOUBLE(rv, obj_ptr->data[3]);
         }
         else if (zend_string_equals_literal(member, "r")) {
-		    ZVAL_DOUBLE(retval, obj_ptr->data[0]);
+		    ZVAL_DOUBLE(rv, obj_ptr->data[0]);
         }
         else if (zend_string_equals_literal(member, "g")) {
-		    ZVAL_DOUBLE(retval, obj_ptr->data[1]);
+		    ZVAL_DOUBLE(rv, obj_ptr->data[1]);
         }
         else if (zend_string_equals_literal(member, "b")) {
-		    ZVAL_DOUBLE(retval, obj_ptr->data[2]);
+		    ZVAL_DOUBLE(rv, obj_ptr->data[2]);
         }
         else if (zend_string_equals_literal(member, "a")) {
-		    ZVAL_DOUBLE(retval, obj_ptr->data[3]);
+		    ZVAL_DOUBLE(rv, obj_ptr->data[3]);
         }
         else {
-            ZVAL_NULL(retval);
+            ZVAL_NULL(rv);
         }
 	}
 
-	return retval;
+	return rv;
 }
 
 static zval *phpglfw_math_vec4_write_prop_handler(zend_object *object, zend_string *member, zval *value, void **cache_slot) 

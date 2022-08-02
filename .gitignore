@@ -38,3 +38,5 @@ generator/data/glrefs
 generator2/vendor/
 .vscode/
 *.cache
+Vagrantfile
+.vagrant
