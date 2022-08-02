@@ -42,7 +42,11 @@ void ZEND_FASTCALL glfw_smart_str_append_double(
 		smart_str *str, double num, int precision, bool zero_fraction) {
 	char buf[ZEND_DOUBLE_MAX_LENGTH];
 	/* Model snprintf precision behavior. */
+#if PHP_API_VERSION <= 20200930
+    sprintf(buf, "%.4f", num);
+#else
 	zend_gcvt(num, precision ? precision : 1, '.', 'E', buf);
+#endif
 	smart_str_appends(str, buf);
 	if (zero_fraction && zend_finite(num) && !strchr(buf, '.')) {
 		smart_str_appendl(str, ".0", 2);
