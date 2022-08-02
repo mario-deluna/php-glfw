@@ -19,14 +19,14 @@ class GLMTest extends \PHPUnit\Framework\TestCase
         $this->assertEqualsWithDelta(180.0, GLM::angle(M_PI), 0.005);
     }
 
-    public function testTriangleNormal() : void
-    {
-        $p1 = new Vec3(0.0, 0.0, 0.0);
-        $p2 = new Vec3(1.0, 0.0, 0.0);
-        $p3 = new Vec3(0.0, 1.0, 0.0);
-        $normal = GLM::triangleNormal($p1, $p2, $p3);
-        $this->assertEqualsWithDelta(0.0, $normal->x, 0.005);
-        $this->assertEqualsWithDelta(0.0, $normal->y, 0.005);
-        $this->assertEqualsWithDelta(1.0, $normal->z, 0.005);
-    }
+    // public function testTriangleNormal() : void
+    // {
+    //     $p1 = new Vec3(0.0, 0.0, 0.0);
+    //     $p2 = new Vec3(1.0, 0.0, 0.0);
+    //     $p3 = new Vec3(0.0, 1.0, 0.0);
+    //     $normal = GLM::triangleNormal($p1, $p2, $p3);
+    //     $this->assertEqualsWithDelta(0.0, $normal->x, 0.005);
+    //     $this->assertEqualsWithDelta(0.0, $normal->y, 0.005);
+    //     $this->assertEqualsWithDelta(1.0, $normal->z, 0.005);
+    // }
 }
