@@ -1,5 +1,5 @@
 /* This is a generated file, edit the .stub.php file instead.
- * Stub hash: 9984ce3d75f50350ae42b5b9d1d2c8ca794b99b2 */
+ * Stub hash: eb51b5bef80bec9bad68f3fac6d30ba93f35d276 */
 
 ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_glCullFace, 0, 1, IS_VOID, 0)
 	ZEND_ARG_TYPE_INFO(0, mode, IS_LONG, 0)
@@ -1988,6 +1988,22 @@ ZEND_END_ARG_INFO()
 
 #define arginfo_class_GL_Buffer_ByteBuffer_reserve arginfo_class_GL_Buffer_BufferInterface_reserve
 
+#define arginfo_class_GL_Buffer_UByteBuffer___construct arginfo_class_GL_Buffer_BufferInterface___construct
+
+#define arginfo_class_GL_Buffer_UByteBuffer___toString arginfo_glfwGetVersionString
+
+#define arginfo_class_GL_Buffer_UByteBuffer_push arginfo_class_GL_Buffer_IntBuffer_push
+
+#define arginfo_class_GL_Buffer_UByteBuffer_fill arginfo_class_GL_Buffer_IntBuffer_fill
+
+#define arginfo_class_GL_Buffer_UByteBuffer_clear arginfo_glFinish
+
+#define arginfo_class_GL_Buffer_UByteBuffer_size arginfo_glGetError
+
+#define arginfo_class_GL_Buffer_UByteBuffer_capacity arginfo_glGetError
+
+#define arginfo_class_GL_Buffer_UByteBuffer_reserve arginfo_class_GL_Buffer_BufferInterface_reserve
+
 
 ZEND_FUNCTION(glCullFace);
 ZEND_FUNCTION(glFrontFace);
@@ -2453,6 +2469,14 @@ ZEND_METHOD(GL_Buffer_ByteBuffer, clear);
 ZEND_METHOD(GL_Buffer_ByteBuffer, size);
 ZEND_METHOD(GL_Buffer_ByteBuffer, capacity);
 ZEND_METHOD(GL_Buffer_ByteBuffer, reserve);
+ZEND_METHOD(GL_Buffer_UByteBuffer, __construct);
+ZEND_METHOD(GL_Buffer_UByteBuffer, __toString);
+ZEND_METHOD(GL_Buffer_UByteBuffer, push);
+ZEND_METHOD(GL_Buffer_UByteBuffer, fill);
+ZEND_METHOD(GL_Buffer_UByteBuffer, clear);
+ZEND_METHOD(GL_Buffer_UByteBuffer, size);
+ZEND_METHOD(GL_Buffer_UByteBuffer, capacity);
+ZEND_METHOD(GL_Buffer_UByteBuffer, reserve);
 
 
 static const zend_function_entry ext_functions[] = {
@@ -2975,5 +2999,18 @@ static const zend_function_entry class_GL_Buffer_ByteBuffer_methods[] = {
 	ZEND_ME(GL_Buffer_ByteBuffer, size, arginfo_class_GL_Buffer_ByteBuffer_size, ZEND_ACC_PUBLIC)
 	ZEND_ME(GL_Buffer_ByteBuffer, capacity, arginfo_class_GL_Buffer_ByteBuffer_capacity, ZEND_ACC_PUBLIC)
 	ZEND_ME(GL_Buffer_ByteBuffer, reserve, arginfo_class_GL_Buffer_ByteBuffer_reserve, ZEND_ACC_PUBLIC)
+	ZEND_FE_END
+};
+
+
+static const zend_function_entry class_GL_Buffer_UByteBuffer_methods[] = {
+	ZEND_ME(GL_Buffer_UByteBuffer, __construct, arginfo_class_GL_Buffer_UByteBuffer___construct, ZEND_ACC_PUBLIC)
+	ZEND_ME(GL_Buffer_UByteBuffer, __toString, arginfo_class_GL_Buffer_UByteBuffer___toString, ZEND_ACC_PUBLIC)
+	ZEND_ME(GL_Buffer_UByteBuffer, push, arginfo_class_GL_Buffer_UByteBuffer_push, ZEND_ACC_PUBLIC)
+	ZEND_ME(GL_Buffer_UByteBuffer, fill, arginfo_class_GL_Buffer_UByteBuffer_fill, ZEND_ACC_PUBLIC)
+	ZEND_ME(GL_Buffer_UByteBuffer, clear, arginfo_class_GL_Buffer_UByteBuffer_clear, ZEND_ACC_PUBLIC)
+	ZEND_ME(GL_Buffer_UByteBuffer, size, arginfo_class_GL_Buffer_UByteBuffer_size, ZEND_ACC_PUBLIC)
+	ZEND_ME(GL_Buffer_UByteBuffer, capacity, arginfo_class_GL_Buffer_UByteBuffer_capacity, ZEND_ACC_PUBLIC)
+	ZEND_ME(GL_Buffer_UByteBuffer, reserve, arginfo_class_GL_Buffer_UByteBuffer_reserve, ZEND_ACC_PUBLIC)
 	ZEND_FE_END
 };

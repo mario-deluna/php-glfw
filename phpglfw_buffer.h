@@ -60,6 +60,11 @@ typedef struct _phpglfw_buffer_glbyte_object {
     zend_object std;
 } phpglfw_buffer_glbyte_object; 
 
+typedef struct _phpglfw_buffer_glubyte_object {
+    cvector_vector_type(GLubyte) vec;
+    zend_object std;
+} phpglfw_buffer_glubyte_object; 
+
 
 /**
  * module init
@@ -89,6 +94,11 @@ zend_always_inline phpglfw_buffer_glbyte_object* phpglfw_buffer_glbyte_objectptr
     return (phpglfw_buffer_glbyte_object *) ((char *) (obj) - XtOffsetOf(phpglfw_buffer_glbyte_object, std));
 }
 
+zend_always_inline phpglfw_buffer_glubyte_object* phpglfw_buffer_glubyte_objectptr_from_zobj_p(zend_object* obj)
+{
+    return (phpglfw_buffer_glubyte_object *) ((char *) (obj) - XtOffsetOf(phpglfw_buffer_glubyte_object, std));
+}
+
 
 /**
  * Class entry getters
@@ -98,5 +108,6 @@ zend_class_entry *phpglfw_get_buffer_glfloat_ce();
 zend_class_entry *phpglfw_get_buffer_gldouble_ce(); 
 zend_class_entry *phpglfw_get_buffer_glint_ce(); 
 zend_class_entry *phpglfw_get_buffer_glbyte_ce(); 
+zend_class_entry *phpglfw_get_buffer_glubyte_ce(); 
 
 #endif

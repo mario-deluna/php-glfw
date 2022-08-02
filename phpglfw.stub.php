@@ -129,6 +129,17 @@ namespace GL\Buffer
         public function capacity() : int {}
         public function reserve(int $size) : void {}
     }
+
+    class UByteBuffer implements BufferInterface {
+        public function __construct(?array $initalData = null) {}
+        public function __toString() : string {}
+        public function push(int $value) : void {}
+        public function fill(int $count, int $value) : void {}
+        public function clear() : void {}
+        public function size() : int {}
+        public function capacity() : int {}
+        public function reserve(int $size) : void {}
+    }
 };
 
 namespace {

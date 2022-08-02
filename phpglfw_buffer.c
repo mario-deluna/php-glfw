@@ -42,6 +42,7 @@ zend_class_entry *phpglfw_buffer_glfloat_ce;
 zend_class_entry *phpglfw_buffer_gldouble_ce; 
 zend_class_entry *phpglfw_buffer_glint_ce; 
 zend_class_entry *phpglfw_buffer_glbyte_ce; 
+zend_class_entry *phpglfw_buffer_glubyte_ce; 
 
 zend_class_entry *phpglfw_get_buffer_interface_ce() {
     return phpglfw_buffer_interface_ce;
@@ -58,6 +59,9 @@ zend_class_entry *phpglfw_get_buffer_glint_ce() {
 }
 zend_class_entry *phpglfw_get_buffer_glbyte_ce() {
     return phpglfw_buffer_glbyte_ce;
+}
+zend_class_entry *phpglfw_get_buffer_glubyte_ce() {
+    return phpglfw_buffer_glubyte_ce;
 }
 
 /**
@@ -1454,6 +1458,336 @@ PHP_METHOD(GL_Buffer_ByteBuffer, __construct)
     ZEND_HASH_FOREACH_END();
 }
 
+/**
+ * GL\Buffer\UByteBuffer 
+ * 
+ * ----------------------------------------------------------------------------
+ */
+static zend_object_handlers phpglfw_buffer_glubyte_handlers;
+
+/**
+ * Iterator (GL\Buffer\UByteBuffer )
+ */
+typedef struct _phpglfw_buffer_glubyte_iterator {
+	zend_object_iterator intern;
+	size_t index;
+	zval current;
+} phpglfw_buffer_glubyte_iterator;
+
+static void phpglfw_buffer_glubyte_it_dtor_handler(zend_object_iterator *iter)
+{
+	phpglfw_buffer_glubyte_iterator *I = (phpglfw_buffer_glubyte_iterator*)iter;
+
+	zval_ptr_dtor(&I->intern.data);
+    if (!Z_ISUNDEF(I->current)) {
+		zval_ptr_dtor(&I->current);
+	}
+}
+
+static void phpglfw_buffer_glubyte_it_rewind_handler(zend_object_iterator *iter)
+{
+	((phpglfw_buffer_glubyte_iterator*)iter)->index = 0;
+}
+
+static void phpglfw_buffer_glubyte_it_current_key_handler(zend_object_iterator *iter, zval *key)
+{
+	ZVAL_LONG(key, ((phpglfw_buffer_glubyte_iterator*)iter)->index);
+}
+
+static void phpglfw_buffer_glubyte_it_move_forward_handler(zend_object_iterator *iter)
+{
+	((phpglfw_buffer_glubyte_iterator*)iter)->index++;
+}
+
+static int phpglfw_buffer_glubyte_it_valid_handler(zend_object_iterator *iter)
+{
+	phpglfw_buffer_glubyte_iterator *iterator = (phpglfw_buffer_glubyte_iterator*)iter;
+    phpglfw_buffer_glubyte_object *obj_ptr = phpglfw_buffer_glubyte_objectptr_from_zobj_p(Z_OBJ_P(&iter->data));
+
+	if (iterator->index >= 0 && iterator->index < cvector_size(obj_ptr->vec)) {
+		return SUCCESS;
+	}
+
+	return FAILURE;
+}
+
+static zval *phpglfw_buffer_glubyte_it_current_data_handler(zend_object_iterator *iter)
+{
+	phpglfw_buffer_glubyte_iterator *iterator = (phpglfw_buffer_glubyte_iterator*)iter;
+    phpglfw_buffer_glubyte_object *obj_ptr = phpglfw_buffer_glubyte_objectptr_from_zobj_p(Z_OBJ_P(&iter->data));
+
+	ZVAL_LONG(&iterator->current, obj_ptr->vec[iterator->index]);
+
+	return &iterator->current;
+}
+
+static const zend_object_iterator_funcs phpglfw_buffer_glubyte_iterator_handlers = {
+	phpglfw_buffer_glubyte_it_dtor_handler,
+	phpglfw_buffer_glubyte_it_valid_handler,
+	phpglfw_buffer_glubyte_it_current_data_handler,
+	phpglfw_buffer_glubyte_it_current_key_handler,
+	phpglfw_buffer_glubyte_it_move_forward_handler,
+	phpglfw_buffer_glubyte_it_rewind_handler,
+	NULL,
+	NULL,
+};
+
+zend_object_iterator *phpglfw_buffer_glubyte_get_iterator_handler(zend_class_entry *ce, zval *object, int by_ref)
+{
+	phpglfw_buffer_glubyte_iterator *iterator;
+
+	if (by_ref != 0) {
+		zend_throw_error(NULL, "GL\\Buffer\\BufferInterface object can not be iterated by reference");
+		return NULL;
+	}
+    
+	iterator = emalloc(sizeof(phpglfw_buffer_glubyte_iterator));
+
+	zend_iterator_init((zend_object_iterator*)iterator);
+
+	ZVAL_OBJ_COPY(&iterator->intern.data, Z_OBJ_P(object));
+	iterator->intern.funcs = &phpglfw_buffer_glubyte_iterator_handlers;
+    iterator->index = 0;
+
+	return &iterator->intern;
+}
+
+/**
+ * Free (GL\Buffer\UByteBuffer )
+ */
+static void phpglfw_buffer_glubyte_free_handler(zend_object *object)
+{
+    phpglfw_buffer_glubyte_object *obj_ptr = phpglfw_buffer_glubyte_objectptr_from_zobj_p(object);
+    cvector_free(obj_ptr->vec);
+    zend_object_std_dtor(&obj_ptr->std);
+}
+
+/**
+ * Creation (GL\Buffer\UByteBuffer )
+ */
+zend_object *phpglfw_buffer_glubyte_create_handler(zend_class_entry *class_type)
+{
+    size_t block_len = sizeof(phpglfw_buffer_glubyte_object) + zend_object_properties_size(class_type);
+    phpglfw_buffer_glubyte_object *intern = emalloc(block_len);
+    memset(intern, 0, block_len);
+
+    intern->vec = NULL;
+
+    zend_object_std_init(&intern->std, class_type);
+    object_properties_init(&intern->std, class_type);
+    intern->std.handlers = &phpglfw_buffer_glubyte_handlers;
+
+    return &intern->std;
+}
+
+zval *phpglfw_buffer_glubyte_array_get_handler(zend_object *object, zval *offset, int type, zval *rv)
+{
+	if(offset == NULL) {
+        zend_throw_error(NULL, "Cannot apply [] to GL\\Buffer\\BufferInterface object");
+	}
+
+    phpglfw_buffer_glubyte_object *obj_ptr = phpglfw_buffer_glubyte_objectptr_from_zobj_p(object);
+
+    if (Z_TYPE_P(offset) == IS_LONG) {
+		size_t index = (size_t)Z_LVAL_P(offset);
+
+        if (index < cvector_size(obj_ptr->vec)) {
+            ZVAL_LONG(rv, obj_ptr->vec[index]);
+        } else {
+            ZVAL_NULL(rv);
+        }
+	} else {
+        zend_throw_error(NULL, "Only a int offset '$buffer[int]' can be used with the GL\\Buffer\\BufferInterface object");
+		ZVAL_NULL(rv);
+	}
+
+	return rv;
+}
+
+void phpglfw_buffer_glubyte_array_set_handler(zend_object *object, zval *offset, zval *value)
+{
+    if (Z_TYPE_P(value) != IS_LONG) {
+        zend_throw_error(NULL, "Trying to store non int value in a int type buffer.");
+        return;
+    }
+
+    phpglfw_buffer_glubyte_object *obj_ptr = phpglfw_buffer_glubyte_objectptr_from_zobj_p(object);
+
+    // if offset is not given ($buff[] = 3.14)  
+	if (offset == NULL) {
+        cvector_push_back(obj_ptr->vec, Z_LVAL_P(value));
+	} 
+    else {
+        if (Z_TYPE_P(offset) == IS_LONG) {
+            size_t index = (size_t)Z_LVAL_P(offset);
+
+            if (index >= cvector_size(obj_ptr->vec)) {
+                zend_throw_error(NULL, "Cannot modify unallocated buffer space, the element at index [%d] does not exist. Use `push` or `fill` to allocate the requested spaces.",  (int) index);
+            }
+
+            obj_ptr->vec[index] = Z_LVAL_P(value);
+        } else {
+            zend_throw_error(NULL, "Only a int offset '$buffer[int]' can be used with the GL\\Buffer\\BufferInterface object");
+        }
+    }
+}
+
+static HashTable *phpglfw_buffer_glubyte_debug_info_handler(zend_object *object, int *is_temp)
+{
+    phpglfw_buffer_glubyte_object *obj_ptr = phpglfw_buffer_glubyte_objectptr_from_zobj_p(object);
+    zval zv;
+    HashTable *ht, *dataht;
+
+    ht = zend_new_array(2);
+    dataht = zend_new_array(127);
+    *is_temp = 1;
+
+    ZVAL_LONG(&zv, cvector_capacity(obj_ptr->vec));
+    zend_hash_str_update(ht, "capacity", sizeof("capacity") - 1, &zv);
+    ZVAL_LONG(&zv, cvector_size(obj_ptr->vec));
+    zend_hash_str_update(ht, "size", sizeof("size") - 1, &zv);
+
+    for(size_t i = 0; i < pglmin(127, cvector_size(obj_ptr->vec)); i++) {
+        ZVAL_LONG(&zv, obj_ptr->vec[i]);
+        zend_hash_index_update(dataht, i, &zv);
+    }
+
+
+    ZVAL_ARR(&zv, dataht);
+    zend_hash_str_update(ht, "data", sizeof("data") - 1, &zv);
+
+    return ht;
+}
+
+PHP_METHOD(GL_Buffer_UByteBuffer, __toString)
+{
+	if (zend_parse_parameters_none() == FAILURE) {
+		RETURN_THROWS();
+	}
+
+    zval *obj;
+    obj = getThis();
+    phpglfw_buffer_glubyte_object *obj_ptr = phpglfw_buffer_glubyte_objectptr_from_zobj_p(Z_OBJ_P(obj));
+
+    smart_str my_str = {0};
+
+    smart_str_appends(&my_str, "GL\\Buffer\\UByteBuffer" "(");
+    smart_str_append_long(&my_str, cvector_size(obj_ptr->vec));
+    smart_str_appends(&my_str, " [");
+    smart_str_append_long(&my_str, cvector_capacity(obj_ptr->vec));
+    smart_str_appends(&my_str, "])");
+
+    smart_str_0(&my_str);
+
+    RETURN_STRINGL(ZSTR_VAL(my_str.s), ZSTR_LEN(my_str.s));
+
+    smart_str_free(&my_str);
+}
+
+PHP_METHOD(GL_Buffer_UByteBuffer, push)
+{
+    zend_long value;
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "l", &value) == FAILURE) {
+        return;
+    }
+
+    zval *obj;
+    obj = getThis();
+    phpglfw_buffer_glubyte_object *obj_ptr = phpglfw_buffer_glubyte_objectptr_from_zobj_p(Z_OBJ_P(obj));
+
+    cvector_push_back(obj_ptr->vec, value);
+}
+
+
+
+PHP_METHOD(GL_Buffer_UByteBuffer, reserve)
+{
+    zend_long resvering_size;
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "l", &resvering_size) == FAILURE) {
+        return;
+    }
+
+    zval *obj;
+    obj = getThis();
+    phpglfw_buffer_glubyte_object *obj_ptr = phpglfw_buffer_glubyte_objectptr_from_zobj_p(Z_OBJ_P(obj));
+
+    cvector_reserve(obj_ptr->vec, resvering_size);
+}
+
+PHP_METHOD(GL_Buffer_UByteBuffer, clear)
+{
+    zval *obj;
+    obj = getThis();
+    phpglfw_buffer_glubyte_object *obj_ptr = phpglfw_buffer_glubyte_objectptr_from_zobj_p(Z_OBJ_P(obj));
+    
+    cvector_free(obj_ptr->vec);
+    obj_ptr->vec = NULL;
+}
+
+PHP_METHOD(GL_Buffer_UByteBuffer, fill)
+{
+    zend_long value;
+    zend_long fill_size;
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "ll", &fill_size, &value) == FAILURE) {
+        return;
+    }
+
+    zval *obj;
+    obj = getThis();
+    phpglfw_buffer_glubyte_object *obj_ptr = phpglfw_buffer_glubyte_objectptr_from_zobj_p(Z_OBJ_P(obj));
+    
+    cvector_fill(obj_ptr->vec, fill_size, value);
+}
+
+PHP_METHOD(GL_Buffer_UByteBuffer, size)
+{
+    zval *obj;
+    obj = getThis();
+    phpglfw_buffer_glubyte_object *obj_ptr = phpglfw_buffer_glubyte_objectptr_from_zobj_p(Z_OBJ_P(obj));
+
+    RETURN_LONG(cvector_size(obj_ptr->vec));
+}
+
+PHP_METHOD(GL_Buffer_UByteBuffer, capacity)
+{
+    zval *obj;
+    obj = getThis();
+    phpglfw_buffer_glubyte_object *obj_ptr = phpglfw_buffer_glubyte_objectptr_from_zobj_p(Z_OBJ_P(obj));
+
+    RETURN_LONG(cvector_capacity(obj_ptr->vec));
+}
+
+PHP_METHOD(GL_Buffer_UByteBuffer, __construct)
+{
+    HashTable *initaldata = NULL;
+    zval *data;
+    
+    if (zend_parse_parameters(ZEND_NUM_ARGS(), "|h", &initaldata) == FAILURE) {
+        return;
+    }
+    else if (initaldata == NULL) {
+        return;
+    }
+    else if (zend_hash_num_elements(initaldata) == 0) {
+        return;
+    }
+
+    zval *obj;
+    obj = getThis();
+    phpglfw_buffer_glubyte_object *obj_ptr = phpglfw_buffer_glubyte_objectptr_from_zobj_p(Z_OBJ_P(obj));
+
+    // reserve the space
+    cvector_reserve(obj_ptr->vec, zend_hash_num_elements(initaldata));
+
+    ZEND_HASH_FOREACH_VAL(initaldata, data)
+        if (Z_TYPE_P(data) == IS_LONG) {
+            cvector_push_back(obj_ptr->vec, Z_LVAL_P(data));
+        } else {
+            zend_throw_error(NULL, "All elements of the inital data array has to be of type: int");
+        }
+    ZEND_HASH_FOREACH_END();
+}
+
 
 void phpglfw_register_buffer_module(INIT_FUNC_ARGS)
 {
@@ -1518,5 +1852,19 @@ void phpglfw_register_buffer_module(INIT_FUNC_ARGS)
     phpglfw_buffer_glbyte_handlers.write_dimension = phpglfw_buffer_glbyte_array_set_handler;
     phpglfw_buffer_glbyte_handlers.get_debug_info = phpglfw_buffer_glbyte_debug_info_handler;
     phpglfw_buffer_glbyte_handlers.offset = XtOffsetOf(phpglfw_buffer_glbyte_object, std);
+
+ 
+    INIT_CLASS_ENTRY(tmp_ce, "GL\\Buffer\\UByteBuffer", class_GL_Buffer_UByteBuffer_methods);
+    phpglfw_buffer_glubyte_ce = zend_register_internal_class(&tmp_ce);
+    phpglfw_buffer_glubyte_ce->create_object = phpglfw_buffer_glubyte_create_handler;
+    phpglfw_buffer_glubyte_ce->get_iterator = phpglfw_buffer_glubyte_get_iterator_handler;
+
+	zend_class_implements(phpglfw_buffer_glubyte_ce, 1, phpglfw_buffer_interface_ce);
+    memcpy(&phpglfw_buffer_glubyte_handlers, zend_get_std_object_handlers(), sizeof(phpglfw_buffer_glubyte_handlers));
+    phpglfw_buffer_glubyte_handlers.free_obj = phpglfw_buffer_glubyte_free_handler;
+    phpglfw_buffer_glubyte_handlers.read_dimension = phpglfw_buffer_glubyte_array_get_handler;
+    phpglfw_buffer_glubyte_handlers.write_dimension = phpglfw_buffer_glubyte_array_set_handler;
+    phpglfw_buffer_glubyte_handlers.get_debug_info = phpglfw_buffer_glubyte_debug_info_handler;
+    phpglfw_buffer_glubyte_handlers.offset = XtOffsetOf(phpglfw_buffer_glubyte_object, std);
 
 }
