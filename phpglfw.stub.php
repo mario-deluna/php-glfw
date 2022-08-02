@@ -53,6 +53,7 @@ namespace GL\Math
  
     class Mat4 {
         public function __construct() {}
+        public static function fromArray(array $values) : Mat4 {}
         public function copy() : Mat4 {}
         public function row(int $index) : Vec4 {}
         public function setRow(int $index, Vec4 $row) : void {}
@@ -85,6 +86,10 @@ namespace GL\Buffer
         public function __construct(?array $initalData = null) {}
         public function __toString() : string {}
         public function push(float $value) : void {}
+        public function pushVec2(GL\Math\Vec2 $vec) : void {}
+        public function pushVec3(GL\Math\Vec3 $vec) : void {}
+        public function pushVec4(GL\Math\Vec4 $vec) : void {}
+        public function pushMat4(GL\Math\Mat4 $matrix) : void {}
         public function fill(int $count, float $value) : void {}
         public function clear() : void {}
         public function size() : int {}

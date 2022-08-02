@@ -1,5 +1,5 @@
 /* This is a generated file, edit the .stub.php file instead.
- * Stub hash: 567efc484b618e11472ade05ebb56b57c6339ef5 */
+ * Stub hash: 9984ce3d75f50350ae42b5b9d1d2c8ca794b99b2 */
 
 ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_glCullFace, 0, 1, IS_VOID, 0)
 	ZEND_ARG_TYPE_INFO(0, mode, IS_LONG, 0)
@@ -1822,6 +1822,10 @@ ZEND_END_ARG_INFO()
 ZEND_BEGIN_ARG_INFO_EX(arginfo_class_GL_Math_Mat4___construct, 0, 0, 0)
 ZEND_END_ARG_INFO()
 
+ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(arginfo_class_GL_Math_Mat4_fromArray, 0, 1, GL\\Math\\Mat4, 0)
+	ZEND_ARG_TYPE_INFO(0, values, IS_ARRAY, 0)
+ZEND_END_ARG_INFO()
+
 ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(arginfo_class_GL_Math_Mat4_copy, 0, 0, GL\\Math\\Mat4, 0)
 ZEND_END_ARG_INFO()
 
@@ -1901,6 +1905,22 @@ ZEND_END_ARG_INFO()
 #define arginfo_class_GL_Buffer_FloatBuffer___toString arginfo_glfwGetVersionString
 
 #define arginfo_class_GL_Buffer_FloatBuffer_push arginfo_glMinSampleShading
+
+ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_class_GL_Buffer_FloatBuffer_pushVec2, 0, 1, IS_VOID, 0)
+	ZEND_ARG_OBJ_INFO(0, vec, GL\\Buffer\\GL\\Math\\Vec2, 0)
+ZEND_END_ARG_INFO()
+
+ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_class_GL_Buffer_FloatBuffer_pushVec3, 0, 1, IS_VOID, 0)
+	ZEND_ARG_OBJ_INFO(0, vec, GL\\Buffer\\GL\\Math\\Vec3, 0)
+ZEND_END_ARG_INFO()
+
+ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_class_GL_Buffer_FloatBuffer_pushVec4, 0, 1, IS_VOID, 0)
+	ZEND_ARG_OBJ_INFO(0, vec, GL\\Buffer\\GL\\Math\\Vec4, 0)
+ZEND_END_ARG_INFO()
+
+ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_class_GL_Buffer_FloatBuffer_pushMat4, 0, 1, IS_VOID, 0)
+	ZEND_ARG_OBJ_INFO(0, matrix, GL\\Buffer\\GL\\Math\\Mat4, 0)
+ZEND_END_ARG_INFO()
 
 ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_class_GL_Buffer_FloatBuffer_fill, 0, 2, IS_VOID, 0)
 	ZEND_ARG_TYPE_INFO(0, count, IS_LONG, 0)
@@ -2381,6 +2401,7 @@ ZEND_METHOD(GL_Math_Vec4, normalize);
 ZEND_METHOD(GL_Math_Vec4, abs);
 ZEND_METHOD(GL_Math_Vec4, __toString);
 ZEND_METHOD(GL_Math_Mat4, __construct);
+ZEND_METHOD(GL_Math_Mat4, fromArray);
 ZEND_METHOD(GL_Math_Mat4, copy);
 ZEND_METHOD(GL_Math_Mat4, row);
 ZEND_METHOD(GL_Math_Mat4, setRow);
@@ -2399,6 +2420,10 @@ ZEND_METHOD(GL_Math_Mat4, __toString);
 ZEND_METHOD(GL_Buffer_FloatBuffer, __construct);
 ZEND_METHOD(GL_Buffer_FloatBuffer, __toString);
 ZEND_METHOD(GL_Buffer_FloatBuffer, push);
+ZEND_METHOD(GL_Buffer_FloatBuffer, pushVec2);
+ZEND_METHOD(GL_Buffer_FloatBuffer, pushVec3);
+ZEND_METHOD(GL_Buffer_FloatBuffer, pushVec4);
+ZEND_METHOD(GL_Buffer_FloatBuffer, pushMat4);
 ZEND_METHOD(GL_Buffer_FloatBuffer, fill);
 ZEND_METHOD(GL_Buffer_FloatBuffer, clear);
 ZEND_METHOD(GL_Buffer_FloatBuffer, size);
@@ -2868,6 +2893,7 @@ static const zend_function_entry class_GL_Math_Vec4_methods[] = {
 
 static const zend_function_entry class_GL_Math_Mat4_methods[] = {
 	ZEND_ME(GL_Math_Mat4, __construct, arginfo_class_GL_Math_Mat4___construct, ZEND_ACC_PUBLIC)
+	ZEND_ME(GL_Math_Mat4, fromArray, arginfo_class_GL_Math_Mat4_fromArray, ZEND_ACC_PUBLIC|ZEND_ACC_STATIC)
 	ZEND_ME(GL_Math_Mat4, copy, arginfo_class_GL_Math_Mat4_copy, ZEND_ACC_PUBLIC)
 	ZEND_ME(GL_Math_Mat4, row, arginfo_class_GL_Math_Mat4_row, ZEND_ACC_PUBLIC)
 	ZEND_ME(GL_Math_Mat4, setRow, arginfo_class_GL_Math_Mat4_setRow, ZEND_ACC_PUBLIC)
@@ -2901,6 +2927,10 @@ static const zend_function_entry class_GL_Buffer_FloatBuffer_methods[] = {
 	ZEND_ME(GL_Buffer_FloatBuffer, __construct, arginfo_class_GL_Buffer_FloatBuffer___construct, ZEND_ACC_PUBLIC)
 	ZEND_ME(GL_Buffer_FloatBuffer, __toString, arginfo_class_GL_Buffer_FloatBuffer___toString, ZEND_ACC_PUBLIC)
 	ZEND_ME(GL_Buffer_FloatBuffer, push, arginfo_class_GL_Buffer_FloatBuffer_push, ZEND_ACC_PUBLIC)
+	ZEND_ME(GL_Buffer_FloatBuffer, pushVec2, arginfo_class_GL_Buffer_FloatBuffer_pushVec2, ZEND_ACC_PUBLIC)
+	ZEND_ME(GL_Buffer_FloatBuffer, pushVec3, arginfo_class_GL_Buffer_FloatBuffer_pushVec3, ZEND_ACC_PUBLIC)
+	ZEND_ME(GL_Buffer_FloatBuffer, pushVec4, arginfo_class_GL_Buffer_FloatBuffer_pushVec4, ZEND_ACC_PUBLIC)
+	ZEND_ME(GL_Buffer_FloatBuffer, pushMat4, arginfo_class_GL_Buffer_FloatBuffer_pushMat4, ZEND_ACC_PUBLIC)
 	ZEND_ME(GL_Buffer_FloatBuffer, fill, arginfo_class_GL_Buffer_FloatBuffer_fill, ZEND_ACC_PUBLIC)
 	ZEND_ME(GL_Buffer_FloatBuffer, clear, arginfo_class_GL_Buffer_FloatBuffer_clear, ZEND_ACC_PUBLIC)
 	ZEND_ME(GL_Buffer_FloatBuffer, size, arginfo_class_GL_Buffer_FloatBuffer_size, ZEND_ACC_PUBLIC)

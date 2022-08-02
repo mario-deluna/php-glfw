@@ -27,6 +27,7 @@ namespace GL\Math
         public function normalize() : <?php echo $obj->name; ?> {}
         public function abs() : <?php echo $obj->name; ?> {}
 <?php elseif($obj->isMatrix()) : ?>
+        public static function fromArray(array $values) : <?php echo $obj->name; ?> {}
         public function copy() : <?php echo $obj->name; ?> {}
         public function row(int $index) : Vec4 {}
         public function setRow(int $index, Vec4 $row) : void {}
@@ -62,6 +63,12 @@ namespace GL\Buffer
         public function __construct(?array $initalData = null) {}
         public function __toString() : string {}
         public function push(<?php echo $buffer->getValuePHPType(); ?> $value) : void {}
+<?php if ($buffer->name == 'FloatBuffer') : ?>
+        public function pushVec2(GL\Math\Vec2 $vec) : void {}
+        public function pushVec3(GL\Math\Vec3 $vec) : void {}
+        public function pushVec4(GL\Math\Vec4 $vec) : void {}
+        public function pushMat4(GL\Math\Mat4 $matrix) : void {}
+<?php endif; ?>
         public function fill(int $count, <?php echo $buffer->getValuePHPType(); ?> $value) : void {}
         public function clear() : void {}
         public function size() : int {}

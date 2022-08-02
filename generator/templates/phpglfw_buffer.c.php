@@ -26,6 +26,7 @@
 #include "phpglfw_buffer.h"
 
 #include "phpglfw_arginfo.h"
+#include "phpglfw_math.h"
 
 #include "php.h"
 #include "Zend/zend_smart_str.h"
@@ -291,6 +292,84 @@ PHP_METHOD(<?php echo $buffer->getFullNamespaceConstString(); ?>, push)
 
     cvector_push_back(obj_ptr->vec, value);
 }
+
+<?php if ($buffer->name == 'FloatBuffer') : ?>
+PHP_METHOD(<?php echo $buffer->getFullNamespaceConstString(); ?>, pushVec2)
+{
+    zval *vec2;
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "O", &vec2, phpglfw_get_math_vec2_ce()) == FAILURE) {
+        return;
+    }
+
+    phpglfw_math_vec2_object *vec2_ptr = phpglfw_math_vec2_objectptr_from_zobj_p(Z_OBJ_P(vec2));
+
+    zval *obj;
+    obj = getThis();
+    <?php echo $buffer->getObjectName(); ?> *obj_ptr = <?php echo $buffer->objectFromZObjFunctionName(); ?>(Z_OBJ_P(obj));
+
+    for(size_t i = 0; i < 2; i++) {
+        cvector_push_back(obj_ptr->vec, vec2_ptr->data[i]);
+    }
+}
+
+PHP_METHOD(<?php echo $buffer->getFullNamespaceConstString(); ?>, pushVec3)
+{
+    zval *vec3;
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "O", &vec3, phpglfw_get_math_vec3_ce()) == FAILURE) {
+        return;
+    }
+
+    phpglfw_math_vec3_object *vec3_ptr = phpglfw_math_vec3_objectptr_from_zobj_p(Z_OBJ_P(vec3));
+
+    zval *obj;
+    obj = getThis();
+    <?php echo $buffer->getObjectName(); ?> *obj_ptr = <?php echo $buffer->objectFromZObjFunctionName(); ?>(Z_OBJ_P(obj));
+
+    for(size_t i = 0; i < 3; i++) {
+        cvector_push_back(obj_ptr->vec, vec3_ptr->data[i]);
+    }
+}
+
+PHP_METHOD(<?php echo $buffer->getFullNamespaceConstString(); ?>, pushVec4)
+{
+    zval *vec4;
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "O", &vec4, phpglfw_get_math_vec4_ce()) == FAILURE) {
+        return;
+    }
+
+    phpglfw_math_vec4_object *vec4_ptr = phpglfw_math_vec4_objectptr_from_zobj_p(Z_OBJ_P(vec4));
+
+    zval *obj;
+    obj = getThis();
+    <?php echo $buffer->getObjectName(); ?> *obj_ptr = <?php echo $buffer->objectFromZObjFunctionName(); ?>(Z_OBJ_P(obj));
+
+    for(size_t i = 0; i < 4; i++) {
+        cvector_push_back(obj_ptr->vec, vec4_ptr->data[i]);
+    }
+}
+
+PHP_METHOD(<?php echo $buffer->getFullNamespaceConstString(); ?>, pushMat4)
+{
+    zval *mat4;
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "O", &mat4, phpglfw_get_math_mat4_ce()) == FAILURE) {
+        return;
+    }
+
+    phpglfw_math_mat4_object *mat4_ptr = phpglfw_math_mat4_objectptr_from_zobj_p(Z_OBJ_P(mat4));
+
+    zval *obj;
+    obj = getThis();
+    <?php echo $buffer->getObjectName(); ?> *obj_ptr = <?php echo $buffer->objectFromZObjFunctionName(); ?>(Z_OBJ_P(obj));
+
+    for(size_t i = 0; i < 4; i++) {
+        for(size_t j = 0; j < 4; j++) {
+            cvector_push_back(obj_ptr->vec, mat4_ptr->data[i][j]);
+        }
+    }
+}
+
+<?php endif; ?>
+
 
 PHP_METHOD(<?php echo $buffer->getFullNamespaceConstString(); ?>, reserve)
 {

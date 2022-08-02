@@ -1496,6 +1496,40 @@ PHP_METHOD(GL_Math_Mat4, __toString)
 }
 
 
+PHP_METHOD(GL_Math_Mat4, fromArray)
+{
+    HashTable *initaldata = NULL;
+    zval *data;
+	zend_ulong num_key;
+	zend_string *str_key;
+    
+    if (zend_parse_parameters(ZEND_NUM_ARGS(), "h", &initaldata) == FAILURE) {
+        return;
+    }
+    else if (zend_hash_num_elements(initaldata) != 16) {
+        zend_throw_error(NULL, "When constructing a matrix from an array, the array must have 16 elements");
+        return;
+    }
+
+    object_init_ex(return_value, phpglfw_math_mat4_ce);
+    phpglfw_math_mat4_object *resobj = phpglfw_math_mat4_objectptr_from_zobj_p(Z_OBJ_P(return_value));
+
+    ZEND_HASH_FOREACH_KEY_VAL(initaldata, num_key, str_key, data)
+    {
+        if (num_key < 0 || num_key > 15) {
+            zend_throw_error(NULL, "When constructing a matrix from an array, the array keys must be integers between 0 and 15");
+            return;
+        }
+
+        if (Z_TYPE_P(data) == IS_DOUBLE) {
+            resobj->data[num_key / 4][num_key % 4] = Z_DVAL_P(data);
+        }  else {
+            zend_throw_error(NULL, "When constructing a matrix from an array, the array must contain only doubles");
+            return;
+        }
+    } ZEND_HASH_FOREACH_END();
+}
+
 PHP_METHOD(GL_Math_Mat4, row)
 {
     zend_long row_index;
