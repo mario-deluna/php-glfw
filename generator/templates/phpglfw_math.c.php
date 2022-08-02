@@ -33,7 +33,7 @@
 
 #if defined(DBL_MANT_DIG) && defined(DBL_MIN_EXP) && !defined(ZEND_DOUBLE_MAX_LENGTH)
 #define ZEND_DOUBLE_MAX_LENGTH (3 + DBL_MANT_DIG - DBL_MIN_EXP)
-#elseif !defined(ZEND_DOUBLE_MAX_LENGTH)
+#elif !defined(ZEND_DOUBLE_MAX_LENGTH)
 #define ZEND_DOUBLE_MAX_LENGTH 1080
 #endif
 
