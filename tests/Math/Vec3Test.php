@@ -186,6 +186,6 @@ class Vec3Test extends \PHPUnit\Framework\TestCase
     public function testToString() : void
     {
         $vec = new Vec3(5.0, 12.5, 7.5);
-        $this->assertEquals('vec3(5.0, 12.5, 7.5)', (string) $vec);
+        $this->assertMatchesRegularExpression("/vec3\(5.0+, 12.5([0]+)?, 7.5([0]+)?\)/", (string) $vec);
     }
 }
