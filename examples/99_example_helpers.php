@@ -1,4 +1,7 @@
 <?php
+
+use GL\Buffer\FloatBuffer;
+
 /**
  * To reduce the amount of boilerplate for each example this file contains
  * a collection of helpers / common code that is used by the examples.
@@ -101,5 +104,79 @@ class ExampleHelper
         glDeleteShader($fragShader);
 
         return $shaderProgram;
+    }
+
+    /**
+     * Creates a cube vertex buffer
+     * Returns the VBO and VAO
+     */
+    public static function createCubeVBO()
+    {
+        $verticies = new FloatBuffer([ 
+            -0.5, -0.5, -0.5,  0.0, 0.0,
+             0.5, -0.5, -0.5,  1.0, 0.0,
+             0.5,  0.5, -0.5,  1.0, 1.0,
+             0.5,  0.5, -0.5,  1.0, 1.0,
+            -0.5,  0.5, -0.5,  0.0, 1.0,
+            -0.5, -0.5, -0.5,  0.0, 0.0,
+        
+            -0.5, -0.5,  0.5,  0.0, 0.0,
+             0.5, -0.5,  0.5,  1.0, 0.0,
+             0.5,  0.5,  0.5,  1.0, 1.0,
+             0.5,  0.5,  0.5,  1.0, 1.0,
+            -0.5,  0.5,  0.5,  0.0, 1.0,
+            -0.5, -0.5,  0.5,  0.0, 0.0,
+        
+            -0.5,  0.5,  0.5,  1.0, 0.0,
+            -0.5,  0.5, -0.5,  1.0, 1.0,
+            -0.5, -0.5, -0.5,  0.0, 1.0,
+            -0.5, -0.5, -0.5,  0.0, 1.0,
+            -0.5, -0.5,  0.5,  0.0, 0.0,
+            -0.5,  0.5,  0.5,  1.0, 0.0,
+        
+             0.5,  0.5,  0.5,  1.0, 0.0,
+             0.5,  0.5, -0.5,  1.0, 1.0,
+             0.5, -0.5, -0.5,  0.0, 1.0,
+             0.5, -0.5, -0.5,  0.0, 1.0,
+             0.5, -0.5,  0.5,  0.0, 0.0,
+             0.5,  0.5,  0.5,  1.0, 0.0,
+        
+            -0.5, -0.5, -0.5,  0.0, 1.0,
+             0.5, -0.5, -0.5,  1.0, 1.0,
+             0.5, -0.5,  0.5,  1.0, 0.0,
+             0.5, -0.5,  0.5,  1.0, 0.0,
+            -0.5, -0.5,  0.5,  0.0, 0.0,
+            -0.5, -0.5, -0.5,  0.0, 1.0,
+        
+            -0.5,  0.5, -0.5,  0.0, 1.0,
+             0.5,  0.5, -0.5,  1.0, 1.0,
+             0.5,  0.5,  0.5,  1.0, 0.0,
+             0.5,  0.5,  0.5,  1.0, 0.0,
+            -0.5,  0.5,  0.5,  0.0, 0.0,
+            -0.5,  0.5, -0.5,  0.0, 1.0
+        ]);
+        
+        // create a vertex array object and upload the vertices
+        glGenVertexArrays(1, $VAO);
+        glGenBuffers(1, $VBO);
+        
+        glBindVertexArray($VAO);
+        glBindBuffer(GL_ARRAY_BUFFER, $VBO);
+        glBufferData(GL_ARRAY_BUFFER, $verticies, GL_STATIC_DRAW);
+        
+        // declare the vertex attributes
+        // positions
+        glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, GL_SIZEOF_FLOAT * 5, 0);
+        glEnableVertexAttribArray(0);
+        
+        // uv
+        glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, GL_SIZEOF_FLOAT * 5, GL_SIZEOF_FLOAT * 3);
+        glEnableVertexAttribArray(1);
+        
+        // unbind
+        glBindBuffer(GL_ARRAY_BUFFER, 0); 
+        glBindVertexArray(0); 
+
+        return [$VAO, $VBO];
     }
 }

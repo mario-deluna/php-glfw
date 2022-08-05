@@ -35,6 +35,7 @@
 #include "phpglfw_functions.h"
 #include "phpglfw_math.h"
 #include "phpglfw_buffer.h"
+#include "phpglfw_texture.h"
 
 
 zend_module_entry glfw_module_entry = {
@@ -71,6 +72,9 @@ PHP_MINIT_FUNCTION(glfw)
 
     // buffer module
     phpglfw_register_buffer_module(INIT_FUNC_ARGS_PASSTHRU);
+
+    // texture module
+    phpglfw_register_texture_module(INIT_FUNC_ARGS_PASSTHRU);
 
     return SUCCESS;
 }

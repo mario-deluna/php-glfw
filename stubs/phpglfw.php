@@ -117,6 +117,66 @@ namespace GL\Buffer
         public function capacity() : int {}
     }
 
+    class HFloatBuffer implements BufferInterface {
+
+        /**
+         * Constructs a new HFloatBuffer, internally (GLhalf)
+         * 
+         * @param null|array<float> $intialData Inital data to be pushed into the buffer.
+         */
+        public function __construct(?array $initalData = null) {}
+        public function __toString() : string {}
+
+        /**
+         * pushes a value into the buffer, this is exactly the same as when you would write `$buffer[] = 3.14`.
+         *
+         * @param float $value The value to be pushed into the buffer.
+         *
+         * @return void 
+         */
+        public function push(float $value) : void {}
+
+        /**
+         * Fills the buffer with $count amount of values. The second argument is the value that is filled in.
+         *
+         * @param int $count The number of elements to fill.
+         * @param float $value The value that will be filled in.
+         *
+         * @return void 
+         */
+        public function fill(int $count, float $value) : void {}
+        
+        /**
+         * Reserves the $size amount of space. Values are still undefined.
+         *
+         * @param int $size The number of elements to reserve space for.
+         *
+         * @return void 
+         */
+        public function reserve(int $size) : void {}
+
+        /**
+         * Will clear the Buffer, internally this will release all allocated data. Meaning any reserved space will be freed.
+         *
+         * @return void 
+         */
+        public function clear() : void {}
+
+        /**
+         * Returns the actual size / number of elements of the buffer.
+         *
+         * @return int buffer size in element count (not bytes)
+         */
+        public function size() : int {}
+
+        /**
+         * Returns the current reserved space of the buffer.
+         *
+         * @return int buffer space in element count (not bytes)
+         */
+        public function capacity() : int {}
+    }
+
     class DoubleBuffer implements BufferInterface {
 
         /**
@@ -181,6 +241,186 @@ namespace GL\Buffer
 
         /**
          * Constructs a new IntBuffer, internally (GLint)
+         * 
+         * @param null|array<int> $intialData Inital data to be pushed into the buffer.
+         */
+        public function __construct(?array $initalData = null) {}
+        public function __toString() : string {}
+
+        /**
+         * pushes a value into the buffer, this is exactly the same as when you would write `$buffer[] = 123`.
+         *
+         * @param int $value The value to be pushed into the buffer.
+         *
+         * @return void 
+         */
+        public function push(int $value) : void {}
+
+        /**
+         * Fills the buffer with $count amount of values. The second argument is the value that is filled in.
+         *
+         * @param int $count The number of elements to fill.
+         * @param int $value The value that will be filled in.
+         *
+         * @return void 
+         */
+        public function fill(int $count, int $value) : void {}
+        
+        /**
+         * Reserves the $size amount of space. Values are still undefined.
+         *
+         * @param int $size The number of elements to reserve space for.
+         *
+         * @return void 
+         */
+        public function reserve(int $size) : void {}
+
+        /**
+         * Will clear the Buffer, internally this will release all allocated data. Meaning any reserved space will be freed.
+         *
+         * @return void 
+         */
+        public function clear() : void {}
+
+        /**
+         * Returns the actual size / number of elements of the buffer.
+         *
+         * @return int buffer size in element count (not bytes)
+         */
+        public function size() : int {}
+
+        /**
+         * Returns the current reserved space of the buffer.
+         *
+         * @return int buffer space in element count (not bytes)
+         */
+        public function capacity() : int {}
+    }
+
+    class UIntBuffer implements BufferInterface {
+
+        /**
+         * Constructs a new UIntBuffer, internally (GLuint)
+         * 
+         * @param null|array<int> $intialData Inital data to be pushed into the buffer.
+         */
+        public function __construct(?array $initalData = null) {}
+        public function __toString() : string {}
+
+        /**
+         * pushes a value into the buffer, this is exactly the same as when you would write `$buffer[] = 123`.
+         *
+         * @param int $value The value to be pushed into the buffer.
+         *
+         * @return void 
+         */
+        public function push(int $value) : void {}
+
+        /**
+         * Fills the buffer with $count amount of values. The second argument is the value that is filled in.
+         *
+         * @param int $count The number of elements to fill.
+         * @param int $value The value that will be filled in.
+         *
+         * @return void 
+         */
+        public function fill(int $count, int $value) : void {}
+        
+        /**
+         * Reserves the $size amount of space. Values are still undefined.
+         *
+         * @param int $size The number of elements to reserve space for.
+         *
+         * @return void 
+         */
+        public function reserve(int $size) : void {}
+
+        /**
+         * Will clear the Buffer, internally this will release all allocated data. Meaning any reserved space will be freed.
+         *
+         * @return void 
+         */
+        public function clear() : void {}
+
+        /**
+         * Returns the actual size / number of elements of the buffer.
+         *
+         * @return int buffer size in element count (not bytes)
+         */
+        public function size() : int {}
+
+        /**
+         * Returns the current reserved space of the buffer.
+         *
+         * @return int buffer space in element count (not bytes)
+         */
+        public function capacity() : int {}
+    }
+
+    class ShortBuffer implements BufferInterface {
+
+        /**
+         * Constructs a new ShortBuffer, internally (GLshort)
+         * 
+         * @param null|array<int> $intialData Inital data to be pushed into the buffer.
+         */
+        public function __construct(?array $initalData = null) {}
+        public function __toString() : string {}
+
+        /**
+         * pushes a value into the buffer, this is exactly the same as when you would write `$buffer[] = 123`.
+         *
+         * @param int $value The value to be pushed into the buffer.
+         *
+         * @return void 
+         */
+        public function push(int $value) : void {}
+
+        /**
+         * Fills the buffer with $count amount of values. The second argument is the value that is filled in.
+         *
+         * @param int $count The number of elements to fill.
+         * @param int $value The value that will be filled in.
+         *
+         * @return void 
+         */
+        public function fill(int $count, int $value) : void {}
+        
+        /**
+         * Reserves the $size amount of space. Values are still undefined.
+         *
+         * @param int $size The number of elements to reserve space for.
+         *
+         * @return void 
+         */
+        public function reserve(int $size) : void {}
+
+        /**
+         * Will clear the Buffer, internally this will release all allocated data. Meaning any reserved space will be freed.
+         *
+         * @return void 
+         */
+        public function clear() : void {}
+
+        /**
+         * Returns the actual size / number of elements of the buffer.
+         *
+         * @return int buffer size in element count (not bytes)
+         */
+        public function size() : int {}
+
+        /**
+         * Returns the current reserved space of the buffer.
+         *
+         * @return int buffer space in element count (not bytes)
+         */
+        public function capacity() : int {}
+    }
+
+    class UShortBuffer implements BufferInterface {
+
+        /**
+         * Constructs a new UShortBuffer, internally (GLushort)
          * 
          * @param null|array<int> $intialData Inital data to be pushed into the buffer.
          */
@@ -454,6 +694,70 @@ namespace {
      * @param int $param
      */ 
     function glTexParameteri(int $target, int $pname, int $param) : void {};
+ 
+    /**
+     * specify a two-dimensional texture image
+     * 
+     * @param int $target Specifies the target texture. Must be
+     * <constant>GL_TEXTURE_2D</constant>, <constant>GL_PROXY_TEXTURE_2D</constant>,
+     * <constant>GL_TEXTURE_1D_ARRAY</constant>,
+     * <constant>GL_PROXY_TEXTURE_1D_ARRAY</constant>,
+     * <constant>GL_TEXTURE_RECTANGLE</constant>,
+     * <constant>GL_PROXY_TEXTURE_RECTANGLE</constant>,
+     * <constant>GL_TEXTURE_CUBE_MAP_POSITIVE_X</constant>,
+     * <constant>GL_TEXTURE_CUBE_MAP_NEGATIVE_X</constant>,
+     * <constant>GL_TEXTURE_CUBE_MAP_POSITIVE_Y</constant>,
+     * <constant>GL_TEXTURE_CUBE_MAP_NEGATIVE_Y</constant>,
+     * <constant>GL_TEXTURE_CUBE_MAP_POSITIVE_Z</constant>,
+     * <constant>GL_TEXTURE_CUBE_MAP_NEGATIVE_Z</constant>, or
+     * <constant>GL_PROXY_TEXTURE_CUBE_MAP</constant>.
+     * @param int $level Specifies the level-of-detail number. Level 0 is the base
+     * image level. Level n is the nth mipmap reduction image. If target is
+     * <constant>GL_TEXTURE_RECTANGLE</constant> or
+     * <constant>GL_PROXY_TEXTURE_RECTANGLE</constant>, level must be 0.
+     * @param int $internalformat Specifies the number of color components in the
+     * texture. Must be one of base internal formats given in Table 1, one of the
+     * sized internal formats given in Table 2, or one of the compressed internal
+     * formats given in Table 3, below.
+     * @param int $width Specifies the width of the texture image. All
+     * implementations support texture images that are at least 1024 texels wide.
+     * @param int $height Specifies the height of the texture image, or the number
+     * of layers in a texture array, in the case of the
+     * <constant>GL_TEXTURE_1D_ARRAY</constant> and
+     * <constant>GL_PROXY_TEXTURE_1D_ARRAY</constant> targets. All implementations
+     * support 2D texture images that are at least 1024 texels high, and texture
+     * arrays that are at least 256 layers deep.
+     * @param int $border This value must be 0.
+     * @param int $format Specifies the format of the pixel data. The following
+     * symbolic values are accepted: <constant>GL_RED</constant>,
+     * <constant>GL_RG</constant>, <constant>GL_RGB</constant>,
+     * <constant>GL_BGR</constant>, <constant>GL_RGBA</constant>,
+     * <constant>GL_BGRA</constant>, <constant>GL_RED_INTEGER</constant>,
+     * <constant>GL_RG_INTEGER</constant>, <constant>GL_RGB_INTEGER</constant>,
+     * <constant>GL_BGR_INTEGER</constant>, <constant>GL_RGBA_INTEGER</constant>,
+     * <constant>GL_BGRA_INTEGER</constant>, <constant>GL_STENCIL_INDEX</constant>,
+     * <constant>GL_DEPTH_COMPONENT</constant>,
+     * <constant>GL_DEPTH_STENCIL</constant>.
+     * @param int $type Specifies the data type of the pixel data. The following
+     * symbolic values are accepted: <constant>GL_UNSIGNED_BYTE</constant>,
+     * <constant>GL_BYTE</constant>, <constant>GL_UNSIGNED_SHORT</constant>,
+     * <constant>GL_SHORT</constant>, <constant>GL_UNSIGNED_INT</constant>,
+     * <constant>GL_INT</constant>, <constant>GL_HALF_FLOAT</constant>,
+     * <constant>GL_FLOAT</constant>, <constant>GL_UNSIGNED_BYTE_3_3_2</constant>,
+     * <constant>GL_UNSIGNED_BYTE_2_3_3_REV</constant>,
+     * <constant>GL_UNSIGNED_SHORT_5_6_5</constant>,
+     * <constant>GL_UNSIGNED_SHORT_5_6_5_REV</constant>,
+     * <constant>GL_UNSIGNED_SHORT_4_4_4_4</constant>,
+     * <constant>GL_UNSIGNED_SHORT_4_4_4_4_REV</constant>,
+     * <constant>GL_UNSIGNED_SHORT_5_5_5_1</constant>,
+     * <constant>GL_UNSIGNED_SHORT_1_5_5_5_REV</constant>,
+     * <constant>GL_UNSIGNED_INT_8_8_8_8</constant>,
+     * <constant>GL_UNSIGNED_INT_8_8_8_8_REV</constant>,
+     * <constant>GL_UNSIGNED_INT_10_10_10_2</constant>, and
+     * <constant>GL_UNSIGNED_INT_2_10_10_10_REV</constant>.
+     * @param \GL\Buffer\BufferInterface $data
+     */ 
+    function glTexImage2D(int $target, int $level, int $internalformat, int $width, int $height, int $border, int $format, int $type, \GL\Buffer\BufferInterface $data) : void {};
  
     /**
      * specify which color buffers are to be drawn into

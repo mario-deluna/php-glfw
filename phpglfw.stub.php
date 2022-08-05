@@ -10,8 +10,21 @@ namespace {
     class GLM {
         public static function radians(float $degrees) : float {}
         public static function angle(float $radians) : float {}
-        public static function triangleNormal(GL\Math\Vec3 $p1, GL\Math\Vec3 $p2, GL\Math\Vec3 $p3) : GL\Math\Vec3 {}
+        public static function triangleNormal(GL\Math\Vec3 $p1, \GL\Math\Vec3 $p2, \GL\Math\Vec3 $p3) : \GL\Math\Vec3 {}
         public static function normalize(Vec2|Vec3|Vec4 $vec) : Vec2|Vec3|Vec4 {}
+    }
+}
+
+
+namespace GL\Texture
+{
+    class Texture2D {
+        public static function fromDisk(string $path) : Texture2D {}
+        public function buffer() : \GL\Buffer\UByteBuffer {}
+        public function width() : int {}
+        public function height() : int {}
+        public function channels() : int {}
+        public function writeJPG(string $path, int $quality = 100) : void {}
     }
 }
 
@@ -97,6 +110,17 @@ namespace GL\Buffer
         public function reserve(int $size) : void {}
     }
 
+    class HFloatBuffer implements BufferInterface {
+        public function __construct(?array $initalData = null) {}
+        public function __toString() : string {}
+        public function push(float $value) : void {}
+        public function fill(int $count, float $value) : void {}
+        public function clear() : void {}
+        public function size() : int {}
+        public function capacity() : int {}
+        public function reserve(int $size) : void {}
+    }
+
     class DoubleBuffer implements BufferInterface {
         public function __construct(?array $initalData = null) {}
         public function __toString() : string {}
@@ -109,6 +133,39 @@ namespace GL\Buffer
     }
 
     class IntBuffer implements BufferInterface {
+        public function __construct(?array $initalData = null) {}
+        public function __toString() : string {}
+        public function push(int $value) : void {}
+        public function fill(int $count, int $value) : void {}
+        public function clear() : void {}
+        public function size() : int {}
+        public function capacity() : int {}
+        public function reserve(int $size) : void {}
+    }
+
+    class UIntBuffer implements BufferInterface {
+        public function __construct(?array $initalData = null) {}
+        public function __toString() : string {}
+        public function push(int $value) : void {}
+        public function fill(int $count, int $value) : void {}
+        public function clear() : void {}
+        public function size() : int {}
+        public function capacity() : int {}
+        public function reserve(int $size) : void {}
+    }
+
+    class ShortBuffer implements BufferInterface {
+        public function __construct(?array $initalData = null) {}
+        public function __toString() : string {}
+        public function push(int $value) : void {}
+        public function fill(int $count, int $value) : void {}
+        public function clear() : void {}
+        public function size() : int {}
+        public function capacity() : int {}
+        public function reserve(int $size) : void {}
+    }
+
+    class UShortBuffer implements BufferInterface {
         public function __construct(?array $initalData = null) {}
         public function __toString() : string {}
         public function push(int $value) : void {}
@@ -1747,6 +1804,7 @@ namespace {
     function glScissor(int $x, int $y, int $width, int $height) : void {};
     function glTexParameterf(int $target, int $pname, float $param) : void {};
     function glTexParameteri(int $target, int $pname, int $param) : void {};
+    function glTexImage2D(int $target, int $level, int $internalformat, int $width, int $height, int $border, int $format, int $type, \GL\Buffer\BufferInterface $data) : void {};
     function glDrawBuffer(int $buf) : void {};
     function glClear(int $mask) : void {};
     function glClearColor(float $red, float $green, float $blue, float $alpha) : void {};

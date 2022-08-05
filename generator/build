@@ -38,9 +38,14 @@ $glfwparser->process(GEN_PATH_EXT . '/vendor/glfw/include/GLFW/glfw3.h', $gen);
 // 'GLhalf' => 'HALF_FLOAT',
 // 'GLdouble' => 'DOUBLE',
 $gen->phpglfwBuffers[] = new PHPGLFWBuffer('FloatBuffer', 'GLfloat', ExtType::T_DOUBLE);
+$gen->phpglfwBuffers[] = new PHPGLFWBuffer('HFloatBuffer', 'GLhalf', ExtType::T_DOUBLE);
 $gen->phpglfwBuffers[] = new PHPGLFWBuffer('DoubleBuffer', 'GLdouble', ExtType::T_DOUBLE);
 $gen->phpglfwBuffers[] = new PHPGLFWBuffer('IntBuffer', 'GLint', ExtType::T_LONG);
+$gen->phpglfwBuffers[] = new PHPGLFWBuffer('UIntBuffer', 'GLuint', ExtType::T_LONG);
+$gen->phpglfwBuffers[] = new PHPGLFWBuffer('ShortBuffer', 'GLshort', ExtType::T_LONG);
+$gen->phpglfwBuffers[] = new PHPGLFWBuffer('UShortBuffer', 'GLushort', ExtType::T_LONG);
 $gen->phpglfwBuffers[] = new PHPGLFWBuffer('ByteBuffer', 'GLbyte', ExtType::T_LONG);
+$gen->phpglfwBuffers[] = new PHPGLFWBuffer('UByteBuffer', 'GLubyte', ExtType::T_LONG);
 
 // handle adjustments
 $gen->adjust(PHPGlfwAdjustments\GLFWOptionalArgsAdjustments::class);
@@ -51,7 +56,8 @@ $gen->adjust(PHPGlfwAdjustments\GLVertexAttribPointerAdjustment::class);
 $gen->adjust(PHPGlfwAdjustments\GLGenFunctionAdjustments::class);
 $gen->adjust(PHPGlfwAdjustments\GLDestroyFunctionAdjustments::class);
 $gen->adjust(PHPGlfwAdjustments\GLGetFunctionAdjustments::class);
-$gen->adjust(PHPGlfwAdjustments\GlUniformMatrixAdjustment::class);;
+$gen->adjust(PHPGlfwAdjustments\GlUniformMatrixAdjustment::class);
+$gen->adjust(PHPGlfwAdjustments\GLTexImage2DAdjustment::class);
 
 // build the extension
 $gen->build(GEN_PATH_EXT . '/v2/');

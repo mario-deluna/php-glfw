@@ -9,8 +9,21 @@ namespace {
     class GLM {
         public static function radians(float $degrees) : float {}
         public static function angle(float $radians) : float {}
-        public static function triangleNormal(GL\Math\Vec3 $p1, GL\Math\Vec3 $p2, GL\Math\Vec3 $p3) : GL\Math\Vec3 {}
+        public static function triangleNormal(GL\Math\Vec3 $p1, \GL\Math\Vec3 $p2, \GL\Math\Vec3 $p3) : \GL\Math\Vec3 {}
         public static function normalize(Vec2|Vec3|Vec4 $vec) : Vec2|Vec3|Vec4 {}
+    }
+}
+
+
+namespace GL\Texture
+{
+    class Texture2D {
+        public static function fromDisk(string $path) : Texture2D {}
+        public function buffer() : \GL\Buffer\UByteBuffer {}
+        public function width() : int {}
+        public function height() : int {}
+        public function channels() : int {}
+        public function writeJPG(string $path, int $quality = 100) : void {}
     }
 }
 
