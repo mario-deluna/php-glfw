@@ -15,22 +15,22 @@ PHP-GLFW allows you to create _2D_ and _3D_ real-time applications in _PHP_. Bri
 Instead of porting function by function manually, PHP-GLFW parses the OpenGL specs to generate most of this C extension. Adjustments are made manually where necessary.
 
  * Full native support of **OpenGL** (3.3+ core).
- * GPU accelerated rendering in PHP.
- * Targeting OpenGL 4.1, but it can technically be built for newer versions as well.
- * Support for OpenGL extensions (limited).
+    * GPU accelerated rendering in PHP.
+    * Targeting OpenGL 4.1, but it can technically be built for newer versions as well.
+    * Support for OpenGL extensions (limited).
  * Multiplatform Window and real-time input handling using the **[GLFW](https://www.glfw.org)** library. GLFW comes with great features, to name a few:
- * Support for multiple windows and monitors.
- * **Keyboard and Mouse** event handling. 
- * **Joystick** input support.
+    * Support for multiple windows and monitors.
+    * **Keyboard and Mouse** event handling. 
+    * **Joystick** input support.
  * Typed Buffer classes to handle large arrays of data.
- * Low memory footprint and very fast. 
- * Data is stored internally to be directly uploadable to the GPU.
+    * Low memory footprint and very fast. 
+    * Data is stored internally to be directly uploadable to the GPU.
  * built-in **GL math** library with overloaded operators.
- * Allows you to write things like `Vec2(15, -5) * Vec2(42, 7)`
- * Supports the common structures `Vec2`, `Vec3`, `Vec4`, `Mat4` and `Quat`.
- * A bunch of helpers.
+    * Allows you to write things like `Vec2(15, -5) * Vec2(42, 7)`
+    * Supports the common structures `Vec2`, `Vec3`, `Vec4`, `Mat4` and `Quat`.
+    * A bunch of helpers.
  * **Image / Texture** loading and writing.
- * can load common image formats as `jpg`, `png`, `tga`, `bmp`, `gif`. _(gd or Imagick is not required)_
+    * can load common image formats as `jpg`, `png`, `tga`, `bmp`, `gif`. _(gd or Imagick is not required)_
  
 ## Documentation / Gettings Started / Examples 📚
 
