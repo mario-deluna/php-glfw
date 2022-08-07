@@ -4,11 +4,20 @@
 
 # PHP-GLFW
 
+**[Website](https://example.com) • [User Guide](https://example.com) • [API Docs](https://example.com)**
+
 A fully-featured OpenGL and GLFW extension for PHP. Batteries included _(Math Functions, Texture Loaders...)_
 
 [![PHPglfw](https://github.com/mario-deluna/php-glfw/actions/workflows/build.yml/badge.svg)](https://github.com/mario-deluna/php-glfw/actions/workflows/build.yml)
 
 PHP-GLFW allows you to create _2D_ and _3D_ real-time applications in _PHP_. Bringing a whole different set of tools into the PHP world to develop graphical applications like _games, scientific simulations, user interfaces_ and co. 
+
+  * [What is this extension? Features 🚀](#what-is-this-extension-features-)
+  * [Documentation / Gettings Started / Examples 📚](#documentation--gettings-started--examples-)
+  * [Installation](#installation)
+  * [Things to know when you start 💡](#things-to-know-when-you-start-)
+  * [Credits](#credits)
+  * [License](#license)
 
 ## What is this extension? Features 🚀
 
@@ -18,6 +27,7 @@ Instead of porting function by function manually, PHP-GLFW parses the OpenGL spe
     * GPU accelerated rendering in PHP.
     * Targeting OpenGL 4.1, but it can technically be built for newer versions as well.
     * Support for OpenGL extensions (limited).
+    * Mostly mirroring the C API, some adjustments where required.
  * Multiplatform Window and real-time input handling using the **[GLFW](https://www.glfw.org)** library. GLFW comes with great features, to name a few:
     * Support for multiple windows and monitors.
     * **Keyboard and Mouse** event handling. 
