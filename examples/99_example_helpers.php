@@ -1,6 +1,7 @@
 <?php
 
 use GL\Buffer\FloatBuffer;
+use GL\Texture\Texture2D;
 
 /**
  * To reduce the amount of boilerplate for each example this file contains
@@ -178,5 +179,33 @@ class ExampleHelper
         glBindVertexArray(0); 
 
         return [$VAO, $VBO];
+    }
+
+    public static function loadTexture(string $path) : int
+    {
+        // generate a texture, load it from a file and bind it
+        glGenTextures(1, $texture);
+        glActiveTexture(GL_TEXTURE0);
+        glBindTexture(GL_TEXTURE_2D, $texture); // all upcoming GL_TEXTURE_2D operations now have effect on this texture object
+
+        // set the texture wrapping parameters
+        // here we basically tell opengl to repeat the texture, so when sampling out of bounds
+        // it will still give you a result
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+
+        // set texture filtering parameters
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+        // PHP-GLFW comes with an image loader based on stb_image
+        // with it you can easly create a pixel buffer object to upload to opengl
+        $textureData = Texture2D::fromDisk($path);
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, $textureData->width(), $textureData->height(), 0, GL_RGB, GL_UNSIGNED_BYTE, $textureData->buffer());
+
+        // this call generates the mipmaps for the texture
+        glGenerateMipmap(GL_TEXTURE_2D);
+
+        return $texture;
     }
 }
