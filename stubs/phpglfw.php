@@ -1011,6 +1011,17 @@ namespace {
     function glGetIntegerv(int $pname, ?bool &...$data) : void {};
  
     /**
+     * return a string describing the current GL connection
+     * 
+     * @param int $name Specifies a symbolic constant, one of
+     * <constant>GL_VENDOR</constant>, <constant>GL_RENDERER</constant>,
+     * <constant>GL_VERSION</constant>, or
+     * <constant>GL_SHADING_LANGUAGE_VERSION</constant>. Additionally, glGetStringi
+     * accepts the <constant>GL_EXTENSIONS</constant> token.
+     */ 
+    function glGetString(int $name) : string {};
+ 
+    /**
      * glGetTexParameterfv
      * 
      * @param int $target 
@@ -2342,6 +2353,14 @@ namespace {
      * @param int $stencil
      */ 
     function glClearBufferfi(int $buffer, int $drawbuffer, float $depth, int $stencil) : void {};
+ 
+    /**
+     * glGetStringi
+     * 
+     * @param int $name 
+     * @param int $index
+     */ 
+    function glGetStringi(int $name, int $index) : string {};
  
     /**
      * determine if a name corresponds to a renderbuffer object

@@ -280,7 +280,10 @@ class ExtGenerator
             }
 
             // skip pointer return types
-            if ($func->isPointerReturn()) continue;
+            if ($func->isPointerReturn()) {
+                if (GEN_VERBOSE) printf("Pointer return type in function (%s)\n", $func->name);
+                $phpfunc->incomplete = true;
+            }
 
             // skip functions with unmapped arguments
             foreach($func->arguments as $argument) 
@@ -339,7 +342,9 @@ class ExtGenerator
             }
 
             //  assign return type
-            $phpfunc->returnType = $this->mapGlTypeToExtType($func->returnTypeString);
+            if ($this->glTypeToExtType[$func->returnTypeString]) {
+                $phpfunc->returnType = $this->mapGlTypeToExtType($func->returnTypeString);
+            }
             $phpfunc->returnTypeFrom = ($phpfunc->returnType != $func->returnTypeString) ? $func->returnTypeString : null;
 
             $this->methods[] = $phpfunc;

@@ -1830,6 +1830,7 @@ namespace {
     function glGetError() : int {};
     function glGetFloatv(int $pname, ?bool &...$data) : void {};
     function glGetIntegerv(int $pname, ?bool &...$data) : void {};
+    function glGetString(int $name) : string {};
     function glGetTexParameterfv(int $target, int $pname, ?bool &...$params) : void {};
     function glGetTexParameteriv(int $target, int $pname, ?bool &...$params) : void {};
     function glGetTexLevelParameterfv(int $target, int $level, int $pname, float &$params) : void {};
@@ -1954,6 +1955,7 @@ namespace {
     function glGetTexParameterIiv(int $target, int $pname, ?bool &...$params) : void {};
     function glGetTexParameterIuiv(int $target, int $pname, ?bool &...$params) : void {};
     function glClearBufferfi(int $buffer, int $drawbuffer, float $depth, int $stencil) : void {};
+    function glGetStringi(int $name, int $index) : string {};
     function glIsRenderbuffer(int $renderbuffer) : bool {};
     function glBindRenderbuffer(int $target, int $renderbuffer) : void {};
     function glDeleteRenderbuffers(int $n, ?int ...$renderbuffers) : void {};

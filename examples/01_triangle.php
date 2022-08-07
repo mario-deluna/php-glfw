@@ -38,6 +38,7 @@ if (!$window = glfwCreateWindow(800, 800, "PHP GLFW Demo")) {
 // all GL commands will be executed in the context of this window
 // Special in PHP-GLFW is that this will also initialize glad.
 glfwMakeContextCurrent($window);
+var_dump(glGetString(GL_VERSION));
 
 // setting the swap interval to "1" basically enabled vsync. 
 // more correctly it defines how many screen updates to wait for 

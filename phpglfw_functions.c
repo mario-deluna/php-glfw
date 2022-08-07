@@ -978,6 +978,18 @@ PHP_FUNCTION(glGetIntegerv)
 } 
 
 /**
+ * glGetString
+ */ 
+PHP_FUNCTION(glGetString)
+{
+    zend_long name;
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "l", &name) == FAILURE) {
+        return;
+    }
+    RETURN_STRING(glGetString(name));
+} 
+
+/**
  * glGetTexParameterfv
  */ 
 PHP_FUNCTION(glGetTexParameterfv)
@@ -2902,6 +2914,19 @@ PHP_FUNCTION(glClearBufferfi)
         return;
     }
     glClearBufferfi(buffer, drawbuffer, depth, stencil);
+} 
+
+/**
+ * glGetStringi
+ */ 
+PHP_FUNCTION(glGetStringi)
+{
+    zend_long name;
+    zend_long index;
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "ll", &name, &index) == FAILURE) {
+        return;
+    }
+    RETURN_STRING(glGetStringi(name, index));
 } 
 
 /**

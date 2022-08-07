@@ -58,6 +58,8 @@ $gen->adjust(PHPGlfwAdjustments\GLDestroyFunctionAdjustments::class);
 $gen->adjust(PHPGlfwAdjustments\GLGetFunctionAdjustments::class);
 $gen->adjust(PHPGlfwAdjustments\GlUniformMatrixAdjustment::class);
 $gen->adjust(PHPGlfwAdjustments\GLTexImage2DAdjustment::class);
+$gen->adjust(PHPGlfwAdjustments\GLGetStringAdjustment::class);
+$gen->adjust(PHPGlfwAdjustments\GLVectorSetterFunctionAdjustment::class);
 
 // build the extension
 $gen->build(GEN_PATH_EXT . '/v2/');

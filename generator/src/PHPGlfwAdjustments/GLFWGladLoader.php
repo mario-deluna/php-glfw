@@ -32,7 +32,7 @@ class GLFWGladLoader implements AdjustmentInterface
                 return $b;
             }
         };
-
+        
         // copy base function into our new one and replace it in the extension
         $baseFunc = $gen->getFunctionByName('glfwMakeContextCurrent');
         $func->copyFrom($baseFunc);

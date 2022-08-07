@@ -1,5 +1,5 @@
 /* This is a generated file, edit the .stub.php file instead.
- * Stub hash: cd75248a1279885031274870604281a0463b2863 */
+ * Stub hash: 18bbb8c139451d9d0a9f67ddc1c0a514152248ab */
 
 ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_glCullFace, 0, 1, IS_VOID, 0)
 	ZEND_ARG_TYPE_INFO(0, mode, IS_LONG, 0)
@@ -155,6 +155,10 @@ ZEND_END_ARG_INFO()
 #define arginfo_glGetFloatv arginfo_glGetBooleanv
 
 #define arginfo_glGetIntegerv arginfo_glGetBooleanv
+
+ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_glGetString, 0, 1, IS_STRING, 0)
+	ZEND_ARG_TYPE_INFO(0, name, IS_LONG, 0)
+ZEND_END_ARG_INFO()
 
 ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_glGetTexParameterfv, 0, 2, IS_VOID, 0)
 	ZEND_ARG_TYPE_INFO(0, target, IS_LONG, 0)
@@ -2134,6 +2138,7 @@ ZEND_FUNCTION(glGetDoublev);
 ZEND_FUNCTION(glGetError);
 ZEND_FUNCTION(glGetFloatv);
 ZEND_FUNCTION(glGetIntegerv);
+ZEND_FUNCTION(glGetString);
 ZEND_FUNCTION(glGetTexParameterfv);
 ZEND_FUNCTION(glGetTexParameteriv);
 ZEND_FUNCTION(glGetTexLevelParameterfv);
@@ -2648,6 +2653,7 @@ static const zend_function_entry ext_functions[] = {
 	ZEND_FE(glGetError, arginfo_glGetError)
 	ZEND_FE(glGetFloatv, arginfo_glGetFloatv)
 	ZEND_FE(glGetIntegerv, arginfo_glGetIntegerv)
+	ZEND_FE(glGetString, arginfo_glGetString)
 	ZEND_FE(glGetTexParameterfv, arginfo_glGetTexParameterfv)
 	ZEND_FE(glGetTexParameteriv, arginfo_glGetTexParameteriv)
 	ZEND_FE(glGetTexLevelParameterfv, arginfo_glGetTexLevelParameterfv)
