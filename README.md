@@ -49,7 +49,7 @@ Instead of porting function by function manually, PHP-GLFW parses the OpenGL spe
 > 3. [User Guide](https://example.com) 
 > 4. [API Docs](https://example.com) 
 
-If you want to check out the code straight away, check out the [examples](./examples) directory.
+If you want to check out the code straight away, check out the [examples](./examples#examples) directory.
 
 ## Installation 
 
