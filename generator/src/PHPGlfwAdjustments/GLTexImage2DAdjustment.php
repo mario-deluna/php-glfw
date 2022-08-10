@@ -21,6 +21,7 @@ class GLTexImage2DAdjustment implements AdjustmentInterface
         {   
             public function getFunctionCallCode() : string
             {
+                // yes i could have written this method less copy pasty but i decided i dont care.
                 $body = <<<EOD
 // im still not 100% sure if we should do the validation here, 
 // it will avoid some segfaults but I don't know if it's the best way to do it.

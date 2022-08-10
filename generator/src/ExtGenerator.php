@@ -256,6 +256,10 @@ class ExtGenerator
                 continue;
             }
 
+            // if ($func->name === 'glGetString') {
+            //     var_dump($func); die;
+            // }
+
             $phpfunc = new ExtFunction($func->name);
             $phpfunc->incomplete = false;
             $phpfunc->comment = $func->commentSummary;
@@ -443,6 +447,12 @@ class ExtGenerator
         $this->docParser = new ExtDocParser;
         $this->buildDocsBuffer();
         // $this->buildDocsOpenGL();
+
+        foreach($this->methods as $func) {
+            if ($func->incomplete) {
+                echo "Icomplete function: " . $func->name . "\n";
+            }
+        }
     }
 
     /**
