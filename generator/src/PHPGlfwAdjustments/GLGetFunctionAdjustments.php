@@ -36,7 +36,7 @@ if ({$variadicVarNumName} < 1) {
     return;
 }
 
-{$internalType} *{$variadicVarNameTmpParams} = malloc({$variadicVarNumName} * sizeof({$internalType}));
+{$internalType} *{$variadicVarNameTmpParams} = emalloc({$variadicVarNumName} * sizeof({$internalType}));
 {$this->name}({$pnameVarName}, {$variadicVarNameTmpParams});
 
 zval *data;
@@ -46,6 +46,8 @@ for (size_t i = 0; i <  {$variadicVarNumName}; i++) {
     {$convertFunc}(data);
     {$assignMacro}(data, {$variadicVarNameTmpParams}[i]);
 }
+
+efree({$variadicVarNameTmpParams});
 EOD;
                 return $buffer;
             }
@@ -91,7 +93,7 @@ if ({$variadicVarNumName} < 1) {
     return;
 }
 
-{$internalType} *{$variadicVarNameTmpParams} = malloc({$variadicVarNumName} * sizeof({$internalType}));
+{$internalType} *{$variadicVarNameTmpParams} = emalloc({$variadicVarNumName} * sizeof({$internalType}));
 {$this->name}({$targetVarName}, {$pnameVarName}, {$variadicVarNameTmpParams});
 
 zval *data;
@@ -101,6 +103,7 @@ for (size_t i = 0; i <  {$variadicVarNumName}; i++) {
     {$convertFunc}(data);
     {$assignMacro}(data, {$variadicVarNameTmpParams}[i]);
 }
+efree({$variadicVarNameTmpParams});
 EOD;
                 return $buffer;
             }
