@@ -1,0 +1,23 @@
+:root > * {
+    /* --md-code-bg-color:hsla(232,15%,15%,1);
+    --md-code-fg-color: hsla(232,18%,86%,1);
+    --md-code-hl-color: rgba(66,135,255,0.15);
+    --md-code-hl-number-color: #e6695b;
+    --md-code-hl-special-color: #f06090;
+    --md-code-hl-function-color: #c973d9;
+    --md-code-hl-constant-color: #9383e2;
+    --md-code-hl-keyword-color: #6791e0;
+    --md-code-hl-string-color: #2fb170;
+    --md-code-hl-name-color:hsla(232,18%,86%,1);
+    --md-code-hl-operator-color:hsla(232,75%,90%,0.62);
+    --md-code-hl-punctuation-color:hsla(232,75%,90%,0.62);
+    --md-code-hl-comment-color:hsla(232,75%,90%,0.62);
+    --md-code-hl-generic-color: hsla(232,75%,90%,0.62);
+    --md-code-hl-variable-color: hsla(232,75%,90%,0.62); */
+}
+
+.md-typeset h3 code, .md-typeset h2 code {
+    background-color: rgb(62, 97, 230);
+    color: #fff;
+    padding: 4px 10px;
+}

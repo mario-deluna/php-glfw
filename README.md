@@ -1,260 +1,139 @@
-# PHP-GLFW
-
-Write fun **3D / 2D** games or other **graphical** applications with PHP! This is a C extension that adds **GLFW & OpenGL** support to **PHP**. 
-
-## ❓❓❓
-
 <p align="center">
- <img src="https://media.giphy.com/media/lzQHOFIV9Cj5whBcOF/giphy.gif"/>
+ <img width="100px" src="https://raw.githubusercontent.com/mario-deluna/php-glfw/v2/docs/logo_phpglfw_s.png">
 </p>
 
-> Keep in mind this is a **gif** in reality this runs smoothly at 60fps.
+# PHP-GLFW
 
-## Notes / Disclaimer
+**[Website](https://phpgl.net) • [Getting Started](https://phpgl.net/getting-started/01_installation.html) • [User Guide](https://phpgl.net/user-guide/index.html) • [API Docs](https://phpgl.net/API/Buffer/ByteBuffer.html)**
 
-Nobody asked for a library like this, and still, I delivered. Please don't spend a tremendous amount of time writing a "real game" in PHP with this. Just because its possible does not mean it is a good idea. I have no idea how you would ship/distribute such a game. Therefore this library hopefully serves an educational purpose for people who want to get into graphics programming and mainly work with PHP.
+**A fully-featured OpenGL and GLFW extension for PHP. Batteries included 🔋!**
 
-I am very far from being an expert with the Zend engine and the PHP internals. So there are pieces in this code that will make you want to pull out your hair from your head. My focus was to make this thing work at any cost, bugs, performance and memory leaks or even safe type conversions can be fixed later. (Or maybe never because again this is not supposed to create production applications with.) Many methods introduce a hell lot of overhead when it comes to copying or type conversations (I would love to buy you a beer here in Zürich if you can help me make this somehow efficient.).
+[![PHPglfw](https://github.com/mario-deluna/php-glfw/actions/workflows/build.yml/badge.svg)](https://github.com/mario-deluna/php-glfw/actions/workflows/build.yml)
 
-Also, keep in mind I did not spend time making this failsafe in any way. When you pass unexpected types / values, you might end up with a segmentation fault.
+PHP-GLFW allows you to create _2D_ and _3D_ real-time applications in _PHP_. Bringing a whole different set of tools into the PHP world to develop graphical applications like _games, scientific simulations, user interfaces_ and co. 
 
-I can't point this out enough this library is far from stable, and should **only** be used in _"just for fun"_ or _"because I can"_ and general _experimental_ type of projects. At least in its current state, who knows what the future brings.
- 
+  * [What is this extension? Features 🚀](#what-is-this-extension-features-)
+    + [OpenGL](#opengl)
+    + [GLFW](#glfw)
+    + [PHPGL - Math](#phpgl---math)
+    + [PHPGL - Buffers](#phpgl---buffers)
+    + [PHPGL - Textures](#phpgl---textures)
+    + [How are the bindings achieved?](#how-are-the-bindings-achieved)
+  * [Documentation 📚](#documentation-)
+    + [Examples](#examples)
+  * [Installation](#installation)
+    + [MacOS](#macos)
+    + [Stubs (IDE Support)](#stubs-ide-support)
+  * [Things to know when you start 💡](#things-to-know-when-you-start-)
+  * [Credits](#credits)
+  * [License](#license)
 
-## Installation
+## What is this extension? Features 🚀
 
-> Note: I only tested this extension on MacOS.
+PHP-GLFW aims to be one extension containing all basics you need to start building graphical applications in PHP. That means that PHP-GLFW **does NOT just
+provide GLFW library bindings**. Instead it also **includes OpenGL bindings** and a bunch of classes and helpers pretty much required for building these types of applications.
 
-Make sure to install glfw3. 
+### OpenGL 
 
-```
-$ brew install glfw3 
-```
-
-Clone the repository.
-
-```
-$ git clone https://github.com/mario-deluna/php-glfw/ && cd php-glfw
-```
-
-Now you should be able to build the extension:
-
-```
-$ phpize
-$ ./configure --enable-glfw
-$ make && make install
-```
-
-Don't forget to link the extension, by appending the following lines to your `php.ini`.
-
-```
-[glfw]
-extension=glfw.so
-```
-
-## Example (Triangle)
-
-Drawing the classic colored triangle. You can run this example: `php ./examples/triangle.php`
-
-<img width="912" alt="screen shot 2018-05-09 at 20 32 01" src="https://user-images.githubusercontent.com/956212/39832883-c78e1606-53c8-11e8-9dcd-6f3015ca11d3.png">
-
-**Code:**
-
-```php
-<?php
-
-// initalize GLFW
-glfwInit();
-echo glfwGetVersionString() . PHP_EOL;
-
-// configure the window
-glfwWindowHint(GLFW_RESIZABLE, GL_TRUE);
-glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
-glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
-glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-
-// fix for "el capitan"
-glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
-
-// create the window
-if (!$window = glfwCreateWindow(800, 800, "PHP GLFW Demo")) {
-    die('Could not create window.');
-}
-
-// setup the window
-glfwMakeContextCurrent($window);
-glfwSwapInterval(1);
-
-/**
- * Shader Setup
- */
-// Vertext shader
-$vertexShader = glCreateShader(GL_VERTEX_SHADER);
-glShaderSource($vertexShader, 1, "
-#version 330 core
-layout (location = 0) in vec3 position;
-layout (location = 1) in vec3 color;
-
-out vec4 pcolor;
-
-void main()
-{
-    pcolor = vec4(color, 1.0f);
-    gl_Position = vec4(position, 1.0f);
-}
-");
-glCompileShader($vertexShader);
-glGetShaderiv($vertexShader, GL_COMPILE_STATUS, $success);
-
-if (!$success) {
-    die("Vertex shader could not be compiled.");
-}
-
-// fragment shaders
-$fragShader = glCreateShader(GL_FRAGMENT_SHADER);
-glShaderSource($fragShader, 1, "
-#version 330 core
-out vec4 fragment_color;
-in vec4 pcolor;
-
-void main()
-{
-    fragment_color = pcolor;
-} 
-");
-glCompileShader($fragShader);
-glGetShaderiv($fragShader, GL_COMPILE_STATUS, $success);
-
-if (!$success) {
-    die("Fragment shader could not be compiled.");
-}
-
-// link the shaders
-$shaderProgram = glCreateProgram();
-glAttachShader($shaderProgram, $vertexShader);
-glAttachShader($shaderProgram, $fragShader);
-glLinkProgram($shaderProgram);
-
-glGetProgramiv($shaderProgram, GL_LINK_STATUS, $linkSuccess);
-
-if (!$linkSuccess) {
-    die("Shader program could not be linked.");
-}
-
-// free the shders
-glDeleteShader($vertexShader);
-glDeleteShader($fragShader);
-
-/**
- * Vertex creation
- */
-// Buffers
-$VBO; $VAO; 
-
-// verticies
-$verticies = [ 
-     // positions      // colors
-    0.5, -0.5, 0.0,  1.0, 0.0, 0.0,  // bottom right
-   -0.5, -0.5, 0.0,  0.0, 1.0, 0.0,  // bottom let
-    0.0,  0.5, 0.0,  0.0, 0.0, 1.0   // top 
-];
-
-glGenVertexArrays(1, $VAO);
-glGenBuffers(1, $VBO);
-
-glBindVertexArray($VAO);
-
-glBindBuffer(GL_ARRAY_BUFFER, $VBO);
-glBufferDataFloat(GL_ARRAY_BUFFER, $verticies, GL_STATIC_DRAW);
-
-// positions
-glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6, 0);
-glEnableVertexAttribArray(0);
-
-// colors
-glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6, 3);
-glEnableVertexAttribArray(1);
-
-// unbind
-glBindBuffer(GL_ARRAY_BUFFER, 0); 
-glBindVertexArray(0); 
-
-/**
- * Main loop
- */
-while (!glfwWindowShouldClose($window))
-{
-    glClearColor(0, 0, 0, 1);
-    glClear(GL_COLOR_BUFFER_BIT);
-
-    // use the shader
-    glUseProgram($shaderProgram);
-
-    // draw our vertex array
-    glBindVertexArray($VAO);
-    glDrawArrays(GL_TRIANGLES, 0, 3);
-
-    // swap
-    glfwSwapBuffers($window);
-    glfwPollEvents();
-}
-
-// stop & cleanup
-glDeleteVertexArrays(1, $VAO);
-glDeleteBuffers(1, $VBO);
-
-glfwDestroyWindow($window);
-
-glfwTerminate();
-```
-
-## Whats inside?
-
-This extension does not only deliver glfw and OpenGL bindings, but it also comes with `stb_image` to make getting started easy.
-
-## API Differences
-
-I have tried to keep the API as similar as possible to the original C API of glfw and OpenGL, but I had to change some things to make this work quickly with PHP. 
+* Full native support of **OpenGL** (4.1+ core), GPU accelerated rednering in PHP.
+* Targeting OpenGL 4.1, but it can be built for newer versions as well.
+* Support for OpenGL extensions (limited).
+* Mostly mirroring the C API, adjustments were made where required or otherwise nonsenical.
+* We currently support about ~90% of the full standard, check [GLSUPPORT.md](./GLSUPPORT.md)
 
 ### GLFW 
 
-#### glfwMakeContextCurrent
+This extenion comes obviosly with bindings for the amazing **[GLFW](https://www.glfw.org)** library.  GLFW comes with great features, to name a few:
 
-This method will automatically load the **glad** function pointers.
+* Multiplatform Window creation and handling. (MacOS / Window / Linux)
+* Support for multiple windows and monitors.
+* Real-time user input handling.
+  * **Keyboard and Mouse** event handling. 
+  * **Joystick** input support.
 
-### OpenGL
+### PHPGL - Math
 
-#### glShaderSource
+PHPGL is what I call the extras in this extenion aka classes and helpers additionally provided that are pretty much a requirement for these kinds of applications. PHP-GLFW comes with a mathematics library written in C covering the most common operations required for graphical applications. 
 
-The last argument the `length` has been removed from the `glShaderSource` function. When you want to add multiple, simply use null termination, or just call the method multiple times.
+ * Supported structs: `Vec2`, `Vec3`, `Vec4`, `Mat4` and `Quat`.
+ * Includes most common matrix operations for the use case like: `lookAt`, `perspective`, `inverse`, `rotate` etc..
 
-#### glBufferData
+Having this integrated into the extension comes with a bunch of advantages:
 
-The `glBufferData` method has been disabled and is replaced with multiple type specific buffer methods:
- 
- * glBufferDataFloat
- * glBufferDataDouble
- * glBufferDataInt
- * glBufferDataLong
+ * Its fast. 
+ * low memory footprint.
+ * The math structures have overloaded operators so you can write things like:
+   ```php
+   $v3 = Vec2(15, -5) + Vec2(42, 7); // returns Vec2(54, 2)
+   ```
+ * Some OpenGL functions can directly accept the math structs as arguments. 
 
-Also, you do not need to pass in the size of your data this is solved by the type-specific methods itself.
+### PHPGL - Buffers
 
-```php
-glBufferDataFloat(GL_ARRAY_BUFFER, [1.0, 0.5, 0.0], GL_STATIC_DRAW);
-``` 
+This extension also comes with a collection of buffer objects that internally hold data in native types. 
 
-#### glVertexAttribPointer
+ * Can handle large arrays of data.
+ * Low memory footprint and very fast. 
+ * Data is stored internally to be directly uploadable to the GPU.
 
-In phpglfw, the `stride` (byte offset) and `pointer` offset of the vertex attributes is a pure number representing the count and not the size of the data. The size is then determined by the given type.
+### PHPGL - Textures
 
-So this attribute pointer in C:
+PHP-GLFW support the loading of images / textures into buffers without requiring an additional extenion:
 
-```c
-glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)(3 * sizeof(float)));
+   * can load common image formats as `jpg`, `png`, `tga`, `bmp`, `gif`. _(gd or Imagick is not required)_
+   * can write images / textures back to disk.
+   * writes data into a `BufferInterface` object giving full access to the bitmap from userland.
+
+### How are the bindings achieved?
+
+Instead of porting function by function manually, PHP-GLFW parses the OpenGL specs to generate most of this C extension. Adjustments are made manually where necessary.
+
+## Documentation 📚
+
+> 1. [Full Documentation](https://phpgl.net) 
+> 2. [Getting Started Guide](https://phpgl.net/getting-started/01_installation.html) 
+> 3. [User Guide](https://phpgl.net/user-guide/index.html) 
+> 4. [API Docs](https://phpgl.net/API/Buffer/ByteBuffer.html) 
+
+### Examples
+
+If you want to check out the code straight away, check out the [examples](./examples#examples) directory.
+
+## Installation 
+
+**Please see the complete detailed installation guide here: [Installation](https://phpgl.net)**
+
+### MacOS 
+
+
+
+
+### Stubs (IDE Support)
+
+As this is a PHP extension, your editor / IDE does not support autocompletation and doc lookups without some help.
+We created a composer package you can include as a dev dependency to have full support:
+
+```
+composer require --dev phpgl/ide-stubs
 ```
 
-Would be written in php be:
+## Things to know when you start 💡 
 
-```php
-glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 5, 3);
-```
+PHP-GLFW tries to keep the core OpenGL / GLFW API as close to the original as possible and only do modifications to the API when necessary. This results in some functions being quite wired from a PHP point of view. Naming scheme:
+
+| prefix | module | desc |
+|--------|----------|-------------------------------------------------------------------------------------------------------------------------|
+| `gl` | OpenGL | Core OpenGL functions.<br> Examples: glClearColor, glEnable, glActiveTexture etc. |
+| `glfw` | GLFW | GLFW library functions, everything to interact with the OS window, input.<br> Examples: glfwCreateWindow, glfwGetCursorPos, glfwSwapBuffers |
+| `GL\` | PHP-GLFW | Classes and functions in this namespace are custom to the extension, and are not default to OpenGL.<br> Examples: `GL\Buffer\FloatBuffer`, `GL\Math\Vec3` etc.. |
+
+
+## Credits
+
+- [Mario Döring](https://github.com/mario-deluna)
+- [All Contributors](https://github.com/mario-deluna/php-glfw/contributors)
+
+## License
+
+Please see [License File](https://github.com/mario-deluna/php-glfw/blob/master/LICENSE) for more information.
+

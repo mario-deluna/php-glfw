@@ -7,7 +7,7 @@ on:
     branches: [ '*' ]
 
 jobs:
-  build:
+  ubuntu:
 
     runs-on: ${{ matrix.operating-system }}
     strategy:
@@ -15,22 +15,88 @@ jobs:
         operating-system: ['ubuntu-latest']
         php-versions: ['8.0', '8.1']
         phpunit-versions: ['latest']
+        preinstalled-glfw: ['libglfw3-dev', '']
     
     steps:
-    - uses: actions/checkout@v2
-    
+    - uses: actions/checkout@v3
+      
     - name: Setup PHP
       uses: shivammathur/setup-php@v2
       with:
         php-version: ${{ matrix.php-versions }}
-        extensions: redis
+        extensions: :glfw
         coverage: xdebug
         tools: cs2pr
+        
+    - name: Install dependenies
+      run: sudo apt-get update && sudo apt-get install -y php-dev build-essential cmake ${{ matrix.preinstalled-glfw }} xvfb libxrandr-dev libxinerama-dev libxcursor-dev libxi-dev gdb
+      
+    # - name: Build GLFW lib
+    #   run: cd vendor/glfw && cmake . -DGLFW_BUILD_TESTS=OFF -DGLFW_BUILD_EXAMPLES=OFF -DBUILD_SHARED_LIBS=ON && sudo make install && sudo ldconfig && cd ../../
+        
     - name: Build PHP-GLFW
-      run: sudo apt-get update && sudo apt-get install -y php-dev && sudo phpize && ./configure --enable-glfw && make && make install && grep -qxF 'extension=glfw.so' /etc/php/${{ matrix.php-versions }}/cli/php.ini || echo 'extension=glfw.so' >> /etc/php/${{ matrix.php-versions }}/cli/php.ini
+      run: sudo phpize && ./configure --enable-glfw && make -j$(nproc)
+    
+    - name: Install PHP-GLFW
+      run: sudo make install && grep -qxF 'extension=glfw.so' /etc/php/${{ matrix.php-versions }}/cli/php.ini || echo 'extension=glfw.so' >> /etc/php/${{ matrix.php-versions }}/cli/php.ini
     
     - name: Install PHPUnit
       run: composer require "phpunit/phpunit"
       
     - name: Run PHPUnit 
-      run: php vendor/bin/phpunit
+      run: xvfb-run --auto-servernum php -dzend_extension=xdebug.so  -dxdebug.auto_trace=ON -dxdebug.trace_output_dir=trace ./vendor/bin/phpunit
+    
+    #- name: Setup upterm session
+    #  if: always()
+    #  uses: lhotari/action-upterm@v1
+  
+    
+  macos:
+    runs-on: ${{ matrix.operating-system }}
+    strategy:
+      matrix:
+        operating-system: ['macos-latest']
+        php-versions: ['8.0', '8.1']
+        phpunit-versions: ['latest']
+    
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Setup PHP
+      uses: shivammathur/setup-php@v2
+      with:
+        php-version: ${{ matrix.php-versions }}
+        extensions: :glfw
+        coverage: xdebug
+        tools: cs2pr
+        
+    # - name: Install dependenies
+    #   run: brew install mesa mesalib-glw
+      
+    # - name: Build GLFW lib
+    #   run: cd vendor/glfw && cmake . -DGLFW_BUILD_TESTS=OFF -DGLFW_BUILD_EXAMPLES=OFF -DBUILD_SHARED_LIBS=ON  && sudo make install && cd ../../
+        
+    - name: Build PHP-GLFW
+      run: sudo phpize && ./configure --enable-glfw && make
+    
+    - name: Install PHP-GLFW
+      run: sudo make install && grep -qxF 'extension=glfw.so' /usr/local/etc/php/${{ matrix.php-versions }}/php.ini || echo 'extension=glfw.so' >> /usr/local/etc/php/${{ matrix.php-versions }}/php.ini
+    
+    - name: Install PHPUnit
+      run: composer require "phpunit/phpunit"
+    
+    # On MacOS we currently exclude all tests requiring glfwinit to work.. 
+    # Initializing it in the Github action results in a segmentation fault. 
+    # I've tried to build php from source in debug mode, and run the script 
+    # through gdb but I had no luck. The failure happens in "_glfwPlatformInit"
+    # all down to the CoreFoundation. The tests run fine on my mac tho.. So 
+    # the assumption is that it simply fails because of a missin screen..
+    # xvfb is not available anymore for macos so... 
+    # If anybody skilled is able to make it run in the "macos-latest" environment
+    # I will be deeply grateful. 
+    - name: Run PHPUnit 
+      run: php vendor/bin/phpunit --exclude-group=glfwinit
+      
+    # - name: Setup upterm session
+    #   if: always()
+    #   uses: lhotari/action-upterm@v1

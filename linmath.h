@@ -1,6 +1,14 @@
 #ifndef LINMATH_H
 #define LINMATH_H
 
+/**
+ * Linmath 
+ * Copyright (C) 2013 Wolfgang 'datenwolf' Draxinger <code@datenwolf.net>
+ * Released under WTFPL license
+ * 
+ * Modified by Mario Döring
+ */
+
 #include <math.h>
 
 #define LINMATH_H_DEFINE_VEC(n) \
@@ -17,11 +25,47 @@ static inline void vec##n##_sub(vec##n r, vec##n const a, vec##n const b) \
 	for(i=0; i<n; ++i) \
 		r[i] = a[i] - b[i]; \
 } \
+static inline void vec##n##_mul(vec##n r, vec##n const a, vec##n const b) \
+{ \
+	int i; \
+	for(i=0; i<n; ++i) \
+		r[i] = a[i] * b[i]; \
+} \
+static inline void vec##n##_div(vec##n r, vec##n const a, vec##n const b) \
+{ \
+	int i; \
+	for(i=0; i<n; ++i) \
+		r[i] = a[i] / b[i]; \
+} \
 static inline void vec##n##_scale(vec##n r, vec##n const v, float const s) \
 { \
 	int i; \
 	for(i=0; i<n; ++i) \
 		r[i] = v[i] * s; \
+} \
+static inline void vec##n##_s_add(vec##n r, vec##n const v, float const s) \
+{ \
+	int i; \
+	for(i=0; i<n; ++i) \
+		r[i] = v[i] + s; \
+} \
+static inline void vec##n##_s_sub(vec##n r, vec##n const v, float const s) \
+{ \
+	int i; \
+	for(i=0; i<n; ++i) \
+		r[i] = v[i] - s; \
+} \
+static inline void vec##n##_s_mul(vec##n r, vec##n const v, float const s) \
+{ \
+	int i; \
+	for(i=0; i<n; ++i) \
+		r[i] = v[i] * s; \
+} \
+static inline void vec##n##_s_div(vec##n r, vec##n const v, float const s) \
+{ \
+	int i; \
+	for(i=0; i<n; ++i) \
+		r[i] = v[i] / s; \
 } \
 static inline float vec##n##_mul_inner(vec##n const a, vec##n const b) \
 { \
@@ -51,7 +95,22 @@ static inline void vec##n##_max(vec##n r, vec##n a, vec##n b) \
 	int i; \
 	for(i=0; i<n; ++i) \
 		r[i] = a[i]>b[i] ? a[i] : b[i]; \
+} \
+static inline float vec##n##_distance_square(vec##n const a, vec##n const b) \
+{ \
+	float d = 0.; \
+	int i; \
+	for(i=0; i<n; ++i) \
+		d += (a[i] - b[i]) * (a[i] - b[i]); \
+	return d; \
+} \
+static inline void vec##n##_abs(vec##n r, vec##n a) \
+{ \
+	int i; \
+	for(i=0; i<n; ++i) \
+		r[i] = fabs(a[i]); \
 }
+
 
 LINMATH_H_DEFINE_VEC(2)
 LINMATH_H_DEFINE_VEC(3)
@@ -426,6 +485,24 @@ static inline void mat4x4_look_at(mat4x4 m, vec3 eye, vec3 center, vec3 up)
 	m[3][3] =  1.f;
 
 	mat4x4_translate_in_place(m, -eye[0], -eye[1], -eye[2]);
+}
+
+static inline float mat4x4_det(mat4x4 M)
+{
+	float a = M[0][0]*M[1][1] - M[0][1]*M[1][0];
+	float b = M[0][0]*M[1][2] - M[0][2]*M[1][0];
+	float c = M[0][0]*M[1][3] - M[0][3]*M[1][0];
+	float d = M[0][1]*M[1][2] - M[0][2]*M[1][1];
+	float e = M[0][1]*M[1][3] - M[0][3]*M[1][1];
+	float f = M[0][2]*M[1][3] - M[0][3]*M[1][2];
+	float g = M[2][0]*M[3][1] - M[2][1]*M[3][0];
+	float h = M[2][0]*M[3][2] - M[2][2]*M[3][0];
+	float i = M[2][0]*M[3][3] - M[2][3]*M[3][0];
+	float j = M[2][1]*M[3][2] - M[2][2]*M[3][1];
+	float k = M[2][1]*M[3][3] - M[2][3]*M[3][1];
+	float l = M[2][2]*M[3][3] - M[2][3]*M[3][2];
+	
+	return a*l - b*k + c*j + d*i - e*h + f*g;
 }
 
 typedef float quat[4];

@@ -1,0 +1,41 @@
+site_name: PHP-GLFW
+repo_url: https://github.com/mario-deluna/php-glfw
+use_directory_urls: false
+# nav:
+#   - 'index.md'
+#   - 'getting-started.md'
+#   - 'user-guide/index.md'
+#   - 'API/index.md'
+plugins:
+  - search
+  # - tags
+theme:
+  name: material
+  logo: ./logo_phpglfw_s.png
+  font:
+    text: Source Sans Pro
+  palette:
+    scheme: default
+    primary: black
+  features:
+    - navigation.tabs
+extra_css:
+  - stylesheets/extra.css
+copyright: Copyright &copy; 2018 - 2022 Mario Döring / @see <a target="_blank" href="https://github.com/mario-deluna/php-glfw/blob/master/LICENSE">LICENSE</a>
+extra:
+  generator: false
+markdown_extensions:
+  - admonition
+  - footnotes
+  - pymdownx.highlight
+  - pymdownx.extra
+  - pymdownx.superfences
+  - pymdownx.tabbed
+  - pymdownx.highlight:
+      extend_pygments_lang:
+        - name: php
+          lang: php
+          options:
+            startinline: true
+  - toc:
+      permalink: true
