@@ -23,6 +23,7 @@ PHP-GLFW allows you to create _2D_ and _3D_ real-time applications in _PHP_. Bri
     + [Examples](#examples)
   * [Installation](#installation)
     + [MacOS](#macos)
+    + [Linux](#linux)
     + [Stubs (IDE Support)](#stubs-ide-support)
   * [Things to know when you start 💡](#things-to-know-when-you-start-)
   * [Credits](#credits)
