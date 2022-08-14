@@ -42,7 +42,7 @@ class ShderCompilationTest extends GLFunctionsTestCase
         $log = glGetShaderInfoLog($vertexShader, $maxLength);
 
         // check for the expected error
-        $this->assertStringContainsString("Incompatible types (vec4 and float)", $log);
+        $this->assertStringContainsString("0:4", $log);
 
         glDeleteShader($vertexShader);
     }
@@ -79,7 +79,7 @@ class ShderCompilationTest extends GLFunctionsTestCase
         glGetProgramiv($shaderProgram, GL_LINK_STATUS, $linkSuccess)
         ;
         $this->assertEquals(1, $linkSuccess);
-        
+
         glDeleteProgram($shaderProgram);
         glDeleteShader($vertexShader);
         glDeleteShader($fragmentShader);

@@ -42,6 +42,9 @@ EOD;
             }
         };
 
+        $func->comment = 'Sets a matrix (mat4x4) uniform value to the current shader program.';
+        $func->comment .= PHP_EOL . PHP_EOL . '@PHP-GLFW: This method is specifc to the php extension and not part of the original OpenGL API.';
+
         $func->incomplete = false;
         $gen->replaceFunctionByName($func);
     }
