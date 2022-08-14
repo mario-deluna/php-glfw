@@ -54,7 +54,11 @@ if test "$PHP_GLFW" != "no"; then
     cd vendor/glfw
     # cmake . -DGLFW_BUILD_TESTS=OFF -DGLFW_BUILD_EXAMPLES=OFF -DCMAKE_INSTALL_PREFIX=./ && make install
     cmake . -DGLFW_BUILD_TESTS=OFF -DGLFW_BUILD_EXAMPLES=OFF -DBUILD_SHARED_LIBS=ON && sudo make install
+    if test "$build_linux" = "yes"; then
+      sudo ldconfig 
+    fi
     cd ./../../
+
 
     for i in /usr/local /usr /opt /opt/local; do
       if test -r "$i/include/GLFW/glfw3.h"; then
@@ -105,26 +109,26 @@ if test "$PHP_GLFW" != "no"; then
   else 
     AC_DEFINE(_GLFW_X11, 1, [X11 support])
     GLFWPLATTFORMARGS="-D_GLFW_X11"
-    GLFWLIB_SRC_FILES="vendor/glfw/src/context.c \
-      vendor/glfw/src/init.c \
-      vendor/glfw/src/input.c \
-      vendor/glfw/src/monitor.c \
-      vendor/glfw/src/vulkan.c \
-      vendor/glfw/src/window.c"
+    # GLFWLIB_SRC_FILES="vendor/glfw/src/context.c \
+    #   vendor/glfw/src/init.c \
+    #   vendor/glfw/src/input.c \
+    #   vendor/glfw/src/monitor.c \
+    #   vendor/glfw/src/vulkan.c \
+    #   vendor/glfw/src/window.c"
 
-    GLFWLIB_SRC_FILES="$GLFWLIB_SRC_FILES \
-      vendor/glfw/src/x11_init.c \
-      vendor/glfw/src/x11_monitor.c \
-      vendor/glfw/src/x11_window.c \x
-      vendor/glfw/src/xkb_unicode.c \
-      vendor/glfw/src/posix_time.c \
-      vendor/glfw/src/posix_thread.c \
-      vendor/glfw/src/glx_context.c \
-      vendor/glfw/src/egl_context.c \
-      vendor/glfw/src/osmesa_context.c \
-      vendor/glfw/src/null_joystick.c"
+    # GLFWLIB_SRC_FILES="$GLFWLIB_SRC_FILES \
+    #   vendor/glfw/src/x11_init.c \
+    #   vendor/glfw/src/x11_monitor.c \
+    #   vendor/glfw/src/x11_window.c \x
+    #   vendor/glfw/src/xkb_unicode.c \
+    #   vendor/glfw/src/posix_time.c \
+    #   vendor/glfw/src/posix_thread.c \
+    #   vendor/glfw/src/glx_context.c \
+    #   vendor/glfw/src/egl_context.c \
+    #   vendor/glfw/src/osmesa_context.c \
+    #   vendor/glfw/src/null_joystick.c"
     
-    PHP_ADD_BUILD_DIR($ext_builddir/vendro/glfw/src)
+    # PHP_ADD_BUILD_DIR($ext_builddir/vendro/glfw/src)
   fi
 
   PHPGLFW_SRC_FILES="phpglfw.c \
