@@ -15,7 +15,7 @@ jobs:
         operating-system: ['ubuntu-latest']
         php-versions: ['8.0', '8.1']
         phpunit-versions: ['latest']
-        preinstalled-glfw: ['glfw', '']
+        preinstalled-glfw: ['libglfw3-dev', '']
     
     steps:
     - uses: actions/checkout@v3
