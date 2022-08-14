@@ -72,8 +72,8 @@ jobs:
     # - name: Install dependenies
     #   run: brew install mesa mesalib-glw
       
-    - name: Build GLFW lib
-      run: cd vendor/glfw && cmake . -DGLFW_BUILD_TESTS=OFF -DGLFW_BUILD_EXAMPLES=OFF -DBUILD_SHARED_LIBS=ON  && sudo make install && cd ../../
+    # - name: Build GLFW lib
+    #   run: cd vendor/glfw && cmake . -DGLFW_BUILD_TESTS=OFF -DGLFW_BUILD_EXAMPLES=OFF -DBUILD_SHARED_LIBS=ON  && sudo make install && cd ../../
         
     - name: Build PHP-GLFW
       run: sudo phpize && ./configure --enable-glfw && make

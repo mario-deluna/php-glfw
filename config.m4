@@ -90,8 +90,6 @@ if test "$PHP_GLFW" != "no"; then
   GLFWPLATTFORMARGS=""
 
   if test "$build_mac" = "yes"; then
-     
-  
     AC_DEFINE(_GLFW_COCOA, 1, [Cocoa support])
     GLFWPLATTFORMARGS="-D_GLFW_COCOA"
     # GLFWLIB_SRC_FILES="$GLFWLIB_SRC_FILES \
