@@ -36,4 +36,10 @@ void phpglfw_glfwwindow_object_minit_helper(void);
 void phpglfw_glfwmonitor_object_minit_helper(void); 
 void phpglfw_glfwcursor_object_minit_helper(void); 
 
+/**
+ * Global callback handling
+ */
+void phpglfw_init_callbacks(void);
+void phpglfw_shutdown_callbacks(void);
+
 #endif

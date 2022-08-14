@@ -51,6 +51,7 @@ $gen->phpglfwBuffers[] = new PHPGLFWBuffer('UByteBuffer', 'GLubyte', ExtType::T_
 $gen->adjust(PHPGlfwAdjustments\GLFWOptionalArgsAdjustments::class);
 $gen->adjust(PHPGlfwAdjustments\GLFWDestroyFunctionAdjustment::class);
 $gen->adjust(PHPGlfwAdjustments\GLFWGladLoader::class);
+$gen->adjust(PHPGlfwAdjustments\GLFWCallbacksAdjustment::class);
 $gen->adjust(PHPGlfwAdjustments\GLShaderSourceAdjustment::class);
 $gen->adjust(PHPGlfwAdjustments\GLBufferDataAdjustment::class);
 $gen->adjust(PHPGlfwAdjustments\GLVertexAttribPointerAdjustment::class);

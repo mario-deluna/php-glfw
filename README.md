@@ -55,6 +55,15 @@ If you want to check out the code straight away, check out the [examples](./exam
 
 Please see the complete detailed installation guide here: [Installation](https://example.com)
 
+### Stubs (IDE Support)
+
+As this is a PHP extension, your editor / IDE does not support autocompletation and doc lookups without some help.
+We created a composer package you can include as a dev dependency to have full support:
+
+```
+composer require --dev phpgl/ide-stubs
+```
+
 ## Things to know when you start 💡 
 
 PHP-GLFW tries to keep the core OpenGL / GLFW API as close to the original as possible and only do modifications to the API when necessary. This results in some functions being quite wired from a PHP point of view. Naming scheme:

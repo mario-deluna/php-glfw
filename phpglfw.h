@@ -31,5 +31,6 @@ extern zend_module_entry glfw_module_entry;
 
 PHP_MINIT_FUNCTION(glfw);
 PHP_MINFO_FUNCTION(glfw);
+PHP_MSHUTDOWN_FUNCTION(glfw);
 
 #endif

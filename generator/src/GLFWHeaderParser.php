@@ -173,10 +173,8 @@ class GLFWHeaderParser
             // }
 
             // add the function if still valid
-            if ($isValid) $extGen->methods[] = $phpfunc;
-            else {
-                if (GEN_VERBOSE) printf("Skipping function '%s', not wrappable.\n", $funcName);
-            }
+            $phpfunc->incomplete = $isValid === false;
+            $extGen->methods[] = $phpfunc;
         }
         // var_dump($funcmatches); die;
     }

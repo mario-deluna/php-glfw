@@ -1,5 +1,5 @@
 /* This is a generated file, edit the .stub.php file instead.
- * Stub hash: b88d326289eec9b545010d1ba4c817483c4ffce8 */
+ * Stub hash: e1d3f3f7e0a334e3ef073d512f8b145984ce8f3f */
 
 ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_glCullFace, 0, 1, IS_VOID, 0)
 	ZEND_ARG_TYPE_INFO(0, mode, IS_LONG, 0)
@@ -2137,6 +2137,11 @@ ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_glfwSetCursor, 0, 2, IS_VOID, 0)
 	ZEND_ARG_OBJ_INFO(0, cursor, GLFWcursor, 0)
 ZEND_END_ARG_INFO()
 
+ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_glfwSetKeyCallback, 0, 2, IS_VOID, 0)
+	ZEND_ARG_OBJ_INFO(0, window, GLFWwindow, 0)
+	ZEND_ARG_TYPE_INFO(0, callback, IS_CALLABLE, 0)
+ZEND_END_ARG_INFO()
+
 ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_glfwJoystickPresent, 0, 1, IS_LONG, 0)
 	ZEND_ARG_TYPE_INFO(0, jid, IS_LONG, 0)
 ZEND_END_ARG_INFO()
@@ -3073,6 +3078,7 @@ ZEND_FUNCTION(glfwSetCursorPos);
 ZEND_FUNCTION(glfwCreateStandardCursor);
 ZEND_FUNCTION(glfwDestroyCursor);
 ZEND_FUNCTION(glfwSetCursor);
+ZEND_FUNCTION(glfwSetKeyCallback);
 ZEND_FUNCTION(glfwJoystickPresent);
 ZEND_FUNCTION(glfwGetJoystickName);
 ZEND_FUNCTION(glfwGetJoystickGUID);
@@ -3735,6 +3741,7 @@ static const zend_function_entry ext_functions[] = {
 	ZEND_FE(glfwCreateStandardCursor, arginfo_glfwCreateStandardCursor)
 	ZEND_FE(glfwDestroyCursor, arginfo_glfwDestroyCursor)
 	ZEND_FE(glfwSetCursor, arginfo_glfwSetCursor)
+	ZEND_FE(glfwSetKeyCallback, arginfo_glfwSetKeyCallback)
 	ZEND_FE(glfwJoystickPresent, arginfo_glfwJoystickPresent)
 	ZEND_FE(glfwGetJoystickName, arginfo_glfwGetJoystickName)
 	ZEND_FE(glfwGetJoystickGUID, arginfo_glfwGetJoystickGUID)

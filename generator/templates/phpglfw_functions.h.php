@@ -36,4 +36,10 @@ void phpglfw_register_ipos(void);
 void <?php echo $ipo->getObjectMinitHelperFunctionName(); ?>(void); 
 <?php endforeach; ?>
 
+/**
+ * Global callback handling
+ */
+void phpglfw_init_callbacks(void);
+void phpglfw_shutdown_callbacks(void);
+
 #endif

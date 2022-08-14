@@ -43,7 +43,7 @@ zend_module_entry glfw_module_entry = {
     PHP_GLFW_EXTNAME,
     ext_functions,
     PHP_MINIT(glfw),
-    NULL, // PHP_MSHUTDOWN(glfw),
+    PHP_MSHUTDOWN(glfw),
     NULL,
     NULL,
     PHP_MINFO(glfw),
@@ -64,6 +64,9 @@ PHP_MINIT_FUNCTION(glfw)
     // register constants
     phpglfw_register_constants(INIT_FUNC_ARGS_PASSTHRU);
 
+    // callbacks
+    phpglfw_init_callbacks();
+
     // register IPOs
     phpglfw_register_ipos();
 
@@ -75,6 +78,18 @@ PHP_MINIT_FUNCTION(glfw)
 
     // texture module
     phpglfw_register_texture_module(INIT_FUNC_ARGS_PASSTHRU);
+
+    return SUCCESS;
+}
+
+/**
+ * MSHUTDOWN
+ * --------------------------------
+ */
+PHP_MSHUTDOWN_FUNCTION(glfw)
+{   
+    // destruct registered callbacks
+    phpglfw_shutdown_callbacks();
 
     return SUCCESS;
 }

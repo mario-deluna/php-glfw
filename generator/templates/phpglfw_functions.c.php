@@ -33,6 +33,48 @@
     
 /**
  * ----------------------------------------------------------------------------
+ * PHPGlfw Global callbacks
+ * ----------------------------------------------------------------------------
+ * Global callbacks like GLFWkeyfun etc..
+ */
+static zval _phpglfw_callback_keycallback;
+
+void phpglfw_init_callbacks(void)
+{
+    ZVAL_UNDEF(&_phpglfw_callback_keycallback);
+}
+
+void phpglfw_shutdown_callbacks(void)
+{
+    if (Z_TYPE(_phpglfw_callback_keycallback) != IS_UNDEF) {
+		zval_ptr_dtor(&_phpglfw_callback_keycallback);
+		ZVAL_UNDEF(&_phpglfw_callback_keycallback);
+	}
+}
+
+static void phpglfw_callback_keycallback_handler(GLFWwindow* window, int key, int scancode, int action, int mods)
+{
+	zval params[4];
+	zval dummy;
+
+	ZVAL_NULL(&dummy);
+
+    ZVAL_LONG(&params[0], key);
+    ZVAL_LONG(&params[1], scancode);
+    ZVAL_LONG(&params[2], action);
+    ZVAL_LONG(&params[3], mods);
+    
+	call_user_function(NULL, NULL, &_phpglfw_callback_keycallback, &dummy, 4, params);
+
+	zval_ptr_dtor(&params[0]);
+	zval_ptr_dtor(&params[1]);
+	zval_ptr_dtor(&params[2]);
+	zval_ptr_dtor(&params[3]);
+	zval_ptr_dtor(&dummy);
+}
+
+/**
+ * ----------------------------------------------------------------------------
  * PHPGlfw IPOs 
  * ----------------------------------------------------------------------------
  * IPOs (internal pointer object) is a simple PHP object which is attached to 

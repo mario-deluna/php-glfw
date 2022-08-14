@@ -14,6 +14,7 @@ class ExtType
     public const T_IPO = '@ibo'; // internal pointer object (ex. GLFWwindow)
     public const T_CE = '@ce'; // class entry (object)
     public const T_VARIADIC = '@variadic'; // variadic argument
+    public const T_FUNC = '@func';
     public const T_RESOURCE = '@res';
 
     /**
@@ -38,6 +39,9 @@ class ExtType
             break;
             case 'string':
                 return 'string';
+            break;
+            case '@func':
+                return 'callable';
             break;
             case '@res':
                 return 'resource';
