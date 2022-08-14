@@ -22,7 +22,7 @@ class GlUniformMatrixAdjustment implements AdjustmentInterface
 
                 $body = <<<EOD
 phpglfw_math_mat4_object *obj_ptr = phpglfw_math_mat4_objectptr_from_zobj_p(Z_OBJ_P({$matargZval}));
-glUniformMatrix4fv(location, 1, transpose, obj_ptr->data);
+glUniformMatrix4fv(location, 1, transpose, &obj_ptr->data[0][0]);
 
 EOD;
                 return $body;

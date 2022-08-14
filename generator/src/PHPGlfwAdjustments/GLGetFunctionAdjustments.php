@@ -135,6 +135,12 @@ EOD;
         $this->patchGetArrayFunc($gen, 'glGetFloatv', 'GLfloat', 'convert_to_double', 'ZVAL_DOUBLE');
         $this->patchGetArrayFunc($gen, 'glGetIntegerv', 'GLint', 'convert_to_long', 'ZVAL_LONG');
 
+        // base with index offset
+        $this->patchTargetGetArrayFunc($gen, 'glGetBooleani_v', 'GLboolean', 'convert_to_boolean', 'ZVAL_BOOL');
+        $this->patchTargetGetArrayFunc($gen, 'glGetDoublei_v', 'GLdouble', 'convert_to_double', 'ZVAL_DOUBLE');
+        $this->patchTargetGetArrayFunc($gen, 'glGetFloati_v', 'GLfloat', 'convert_to_double', 'ZVAL_DOUBLE');
+        $this->patchTargetGetArrayFunc($gen, 'glGetIntegeri_v', 'GLint', 'convert_to_long', 'ZVAL_LONG');
+
         // texture 
         $this->patchTargetGetArrayFunc($gen, 'glGetTexParameterfv', 'GLfloat', 'convert_to_double', 'ZVAL_DOUBLE');
         $this->patchTargetGetArrayFunc($gen, 'glGetTexParameteriv', 'GLint', 'convert_to_long', 'ZVAL_LONG');

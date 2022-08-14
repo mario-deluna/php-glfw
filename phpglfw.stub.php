@@ -1966,8 +1966,8 @@ namespace {
     function glUniformMatrix3x4fv(int $location, int $count, bool $transpose, \GL\Buffer\FloatBuffer|array $value) : void {};
     function glUniformMatrix4x3fv(int $location, int $count, bool $transpose, \GL\Buffer\FloatBuffer|array $value) : void {};
     function glColorMaski(int $index, bool $r, bool $g, bool $b, bool $a) : void {};
-    function glGetBooleani_v(int $target, int $index, bool &$data) : void {};
-    function glGetIntegeri_v(int $target, int $index, int &$data) : void {};
+    function glGetBooleani_v(int $target, int $index, ?bool &...$data) : void {};
+    function glGetIntegeri_v(int $target, int $index, ?bool &...$data) : void {};
     function glEnablei(int $target, int $index) : void {};
     function glDisablei(int $target, int $index) : void {};
     function glIsEnabledi(int $target, int $index) : bool {};
@@ -2247,8 +2247,8 @@ namespace {
     function glScissorIndexedv(int $index, \GL\Buffer\IntBuffer|array $v) : void {};
     function glDepthRangeArrayv(int $first, int $count, \GL\Buffer\DoubleBuffer|array $v) : void {};
     function glDepthRangeIndexed(int $index, float $n, float $f) : void {};
-    function glGetFloati_v(int $target, int $index, float &$data) : void {};
-    function glGetDoublei_v(int $target, int $index, float &$data) : void {};
+    function glGetFloati_v(int $target, int $index, ?bool &...$data) : void {};
+    function glGetDoublei_v(int $target, int $index, ?bool &...$data) : void {};
     function glfwInit() : int {};
     function glfwTerminate() : void {};
     function glfwInitHint(int $hint, int $value) : void {};

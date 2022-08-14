@@ -2425,18 +2425,18 @@ namespace {
      * 
      * @param int $target 
      * @param int $index 
-     * @param bool &$data
+     * @param ?bool &...$data
      */ 
-    function glGetBooleani_v(int $target, int $index, bool &$data) : void {};
+    function glGetBooleani_v(int $target, int $index, ?bool &...$data) : void {};
  
     /**
      * glGetIntegeri_v
      * 
      * @param int $target 
      * @param int $index 
-     * @param int &$data
+     * @param ?bool &...$data
      */ 
-    function glGetIntegeri_v(int $target, int $index, int &$data) : void {};
+    function glGetIntegeri_v(int $target, int $index, ?bool &...$data) : void {};
  
     /**
      * glEnablei
@@ -5180,18 +5180,18 @@ namespace {
      * 
      * @param int $target 
      * @param int $index 
-     * @param float &$data
+     * @param ?bool &...$data
      */ 
-    function glGetFloati_v(int $target, int $index, float &$data) : void {};
+    function glGetFloati_v(int $target, int $index, ?bool &...$data) : void {};
  
     /**
      * glGetDoublei_v
      * 
      * @param int $target 
      * @param int $index 
-     * @param float &$data
+     * @param ?bool &...$data
      */ 
-    function glGetDoublei_v(int $target, int $index, float &$data) : void {};
+    function glGetDoublei_v(int $target, int $index, ?bool &...$data) : void {};
  
     /**
      * glfwInit

@@ -3675,14 +3675,24 @@ PHP_FUNCTION(glGetBooleani_v)
     zend_long target;
     zend_long index;
     zval *data_zval;
-    GLboolean data_tmp;
-    if (zend_parse_parameters(ZEND_NUM_ARGS() , "llz", &target, &index, &data_zval) == FAILURE) {
+    size_t data_zval_num = 0;
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "ll+", &target, &index, &data_zval, &data_zval_num) == FAILURE) {
         return;
     }
-    ZVAL_DEREF(data_zval);
-    convert_to_boolean(data_zval);
-    glGetBooleani_v(target, index, &data_tmp);
-    ZVAL_BOOL(data_zval, data_tmp);
+    if (data_zval_num < 1) {
+        zend_throw_error(NULL, "You must at least pass one variable to glGetBooleani_v(const, var...)");
+        return;
+    }
+    GLboolean *data_zval_tmp = emalloc(data_zval_num * sizeof(GLboolean));
+    glGetBooleani_v(target, index, data_zval_tmp);
+    zval *data;
+    for (size_t i = 0; i <  data_zval_num; i++) {
+        data = &data_zval[i];
+        ZVAL_DEREF(data);
+        convert_to_boolean(data);
+        ZVAL_BOOL(data, data_zval_tmp[i]);
+    }
+    efree(data_zval_tmp);;
 } 
 
 /**
@@ -3693,14 +3703,24 @@ PHP_FUNCTION(glGetIntegeri_v)
     zend_long target;
     zend_long index;
     zval *data_zval;
-    GLint data_tmp;
-    if (zend_parse_parameters(ZEND_NUM_ARGS() , "llz", &target, &index, &data_zval) == FAILURE) {
+    size_t data_zval_num = 0;
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "ll+", &target, &index, &data_zval, &data_zval_num) == FAILURE) {
         return;
     }
-    ZVAL_DEREF(data_zval);
-    convert_to_long(data_zval);
-    glGetIntegeri_v(target, index, &data_tmp);
-    ZVAL_LONG(data_zval, data_tmp);
+    if (data_zval_num < 1) {
+        zend_throw_error(NULL, "You must at least pass one variable to glGetIntegeri_v(const, var...)");
+        return;
+    }
+    GLint *data_zval_tmp = emalloc(data_zval_num * sizeof(GLint));
+    glGetIntegeri_v(target, index, data_zval_tmp);
+    zval *data;
+    for (size_t i = 0; i <  data_zval_num; i++) {
+        data = &data_zval[i];
+        ZVAL_DEREF(data);
+        convert_to_long(data);
+        ZVAL_LONG(data, data_zval_tmp[i]);
+    }
+    efree(data_zval_tmp);;
 } 
 
 /**
@@ -9450,14 +9470,24 @@ PHP_FUNCTION(glGetFloati_v)
     zend_long target;
     zend_long index;
     zval *data_zval;
-    GLfloat data_tmp;
-    if (zend_parse_parameters(ZEND_NUM_ARGS() , "llz", &target, &index, &data_zval) == FAILURE) {
+    size_t data_zval_num = 0;
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "ll+", &target, &index, &data_zval, &data_zval_num) == FAILURE) {
         return;
     }
-    ZVAL_DEREF(data_zval);
-    convert_to_double(data_zval);
-    glGetFloati_v(target, index, &data_tmp);
-    ZVAL_DOUBLE(data_zval, data_tmp);
+    if (data_zval_num < 1) {
+        zend_throw_error(NULL, "You must at least pass one variable to glGetFloati_v(const, var...)");
+        return;
+    }
+    GLfloat *data_zval_tmp = emalloc(data_zval_num * sizeof(GLfloat));
+    glGetFloati_v(target, index, data_zval_tmp);
+    zval *data;
+    for (size_t i = 0; i <  data_zval_num; i++) {
+        data = &data_zval[i];
+        ZVAL_DEREF(data);
+        convert_to_double(data);
+        ZVAL_DOUBLE(data, data_zval_tmp[i]);
+    }
+    efree(data_zval_tmp);;
 } 
 
 /**
@@ -9468,14 +9498,24 @@ PHP_FUNCTION(glGetDoublei_v)
     zend_long target;
     zend_long index;
     zval *data_zval;
-    GLdouble data_tmp;
-    if (zend_parse_parameters(ZEND_NUM_ARGS() , "llz", &target, &index, &data_zval) == FAILURE) {
+    size_t data_zval_num = 0;
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "ll+", &target, &index, &data_zval, &data_zval_num) == FAILURE) {
         return;
     }
-    ZVAL_DEREF(data_zval);
-    convert_to_double(data_zval);
-    glGetDoublei_v(target, index, &data_tmp);
-    ZVAL_DOUBLE(data_zval, data_tmp);
+    if (data_zval_num < 1) {
+        zend_throw_error(NULL, "You must at least pass one variable to glGetDoublei_v(const, var...)");
+        return;
+    }
+    GLdouble *data_zval_tmp = emalloc(data_zval_num * sizeof(GLdouble));
+    glGetDoublei_v(target, index, data_zval_tmp);
+    zval *data;
+    for (size_t i = 0; i <  data_zval_num; i++) {
+        data = &data_zval[i];
+        ZVAL_DEREF(data);
+        convert_to_double(data);
+        ZVAL_DOUBLE(data, data_zval_tmp[i]);
+    }
+    efree(data_zval_tmp);;
 } 
 
 /**
@@ -9750,7 +9790,11 @@ PHP_FUNCTION(glfwDestroyWindow)
         return;
     }
     GLFWwindow* window = phpglfw_glfwwindowptr_from_zval_ptr(window_zval);
-    glfwDestroyWindow(window);
+    phpglfw_glfwwindow_object *obj_ptr = phpglfw_glfwwindow_objectptr_from_zobj_p(Z_OBJ_P(window_zval));
+    glfwDestroyWindow(obj_ptr->glfwwindow);
+    obj_ptr->glfwwindow = NULL;
+    ZVAL_DEREF(window_zval);
+    ZVAL_NULL(window_zval);;
 } 
 
 /**
@@ -10350,7 +10394,11 @@ PHP_FUNCTION(glfwDestroyCursor)
         return;
     }
     GLFWcursor* cursor = phpglfw_glfwcursorptr_from_zval_ptr(cursor_zval);
-    glfwDestroyCursor(cursor);
+    phpglfw_glfwcursor_object *obj_ptr = phpglfw_glfwcursor_objectptr_from_zobj_p(Z_OBJ_P(cursor_zval));
+    glfwDestroyCursor(obj_ptr->glfwcursor);
+    obj_ptr->glfwcursor = NULL;
+    ZVAL_DEREF(cursor_zval);
+    ZVAL_NULL(cursor_zval);;
 } 
 
 /**
@@ -10605,7 +10653,7 @@ PHP_FUNCTION(glUniformMatrix4f)
         return;
     }
     phpglfw_math_mat4_object *obj_ptr = phpglfw_math_mat4_objectptr_from_zobj_p(Z_OBJ_P(matrix_zval));
-    glUniformMatrix4fv(location, 1, transpose, obj_ptr->data);
+    glUniformMatrix4fv(location, 1, transpose, &obj_ptr->data[0][0]);
     ;
 } 
 

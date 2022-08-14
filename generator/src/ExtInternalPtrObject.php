@@ -139,6 +139,6 @@ class ExtInternalPtrObject
      */
     public function getDestructionCall(string $var) : string 
     {
-        return "free(" . $var . '); ' . $var . ' = NULL;' . PHP_EOL;
+        return "efree(" . $var . '); ' . $var . ' = NULL;' . PHP_EOL;
     }
 }

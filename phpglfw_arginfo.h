@@ -1,5 +1,5 @@
 /* This is a generated file, edit the .stub.php file instead.
- * Stub hash: 90eef75edc24f874ec9b64f338d82ee986a5095a */
+ * Stub hash: acd47618586ffacca0df9f4ff5380e63e05f38a3 */
 
 ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_glCullFace, 0, 1, IS_VOID, 0)
 	ZEND_ARG_TYPE_INFO(0, mode, IS_LONG, 0)
@@ -762,17 +762,13 @@ ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_glColorMaski, 0, 5, IS_VOID, 0)
 	ZEND_ARG_TYPE_INFO(0, a, _IS_BOOL, 0)
 ZEND_END_ARG_INFO()
 
-ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_glGetBooleani_v, 0, 3, IS_VOID, 0)
+ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_glGetBooleani_v, 0, 2, IS_VOID, 0)
 	ZEND_ARG_TYPE_INFO(0, target, IS_LONG, 0)
 	ZEND_ARG_TYPE_INFO(0, index, IS_LONG, 0)
-	ZEND_ARG_TYPE_INFO(1, data, _IS_BOOL, 0)
+	ZEND_ARG_VARIADIC_TYPE_INFO(1, data, _IS_BOOL, 1)
 ZEND_END_ARG_INFO()
 
-ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_glGetIntegeri_v, 0, 3, IS_VOID, 0)
-	ZEND_ARG_TYPE_INFO(0, target, IS_LONG, 0)
-	ZEND_ARG_TYPE_INFO(0, index, IS_LONG, 0)
-	ZEND_ARG_TYPE_INFO(1, data, IS_LONG, 0)
-ZEND_END_ARG_INFO()
+#define arginfo_glGetIntegeri_v arginfo_glGetBooleani_v
 
 ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_glEnablei, 0, 2, IS_VOID, 0)
 	ZEND_ARG_TYPE_INFO(0, target, IS_LONG, 0)
@@ -1154,7 +1150,11 @@ ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_glGetSynciv, 0, 5, IS_VOID, 0)
 	ZEND_ARG_TYPE_INFO(1, values, IS_LONG, 0)
 ZEND_END_ARG_INFO()
 
-#define arginfo_glGetInteger64i_v arginfo_glGetIntegeri_v
+ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_glGetInteger64i_v, 0, 3, IS_VOID, 0)
+	ZEND_ARG_TYPE_INFO(0, target, IS_LONG, 0)
+	ZEND_ARG_TYPE_INFO(0, index, IS_LONG, 0)
+	ZEND_ARG_TYPE_INFO(1, data, IS_LONG, 0)
+ZEND_END_ARG_INFO()
 
 #define arginfo_glGetBufferParameteri64v arginfo_glGetQueryiv
 
@@ -1868,13 +1868,9 @@ ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_glDepthRangeIndexed, 0, 3, IS_VO
 	ZEND_ARG_TYPE_INFO(0, f, IS_DOUBLE, 0)
 ZEND_END_ARG_INFO()
 
-ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_glGetFloati_v, 0, 3, IS_VOID, 0)
-	ZEND_ARG_TYPE_INFO(0, target, IS_LONG, 0)
-	ZEND_ARG_TYPE_INFO(0, index, IS_LONG, 0)
-	ZEND_ARG_TYPE_INFO(1, data, IS_DOUBLE, 0)
-ZEND_END_ARG_INFO()
+#define arginfo_glGetFloati_v arginfo_glGetBooleani_v
 
-#define arginfo_glGetDoublei_v arginfo_glGetFloati_v
+#define arginfo_glGetDoublei_v arginfo_glGetBooleani_v
 
 #define arginfo_glfwInit arginfo_glGetError
 
