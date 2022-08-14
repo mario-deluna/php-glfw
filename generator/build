@@ -61,6 +61,7 @@ $gen->adjust(PHPGlfwAdjustments\GlUniformMatrixAdjustment::class);
 $gen->adjust(PHPGlfwAdjustments\GLTexImage2DAdjustment::class);
 $gen->adjust(PHPGlfwAdjustments\GLGetStringAdjustment::class);
 $gen->adjust(PHPGlfwAdjustments\GLVectorSetterFunctionAdjustment::class);
+$gen->adjust(PHPGlfwAdjustments\GLGetShaderInfoLogAdjustment::class);
 
 // build the extension
 $gen->build(GEN_PATH_EXT . '/v2/');

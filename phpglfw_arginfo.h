@@ -1,5 +1,5 @@
 /* This is a generated file, edit the .stub.php file instead.
- * Stub hash: acd47618586ffacca0df9f4ff5380e63e05f38a3 */
+ * Stub hash: b88d326289eec9b545010d1ba4c817483c4ffce8 */
 
 ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_glCullFace, 0, 1, IS_VOID, 0)
 	ZEND_ARG_TYPE_INFO(0, mode, IS_LONG, 0)
@@ -465,6 +465,11 @@ ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_glGetShaderiv, 0, 3, IS_VOID, 0)
 	ZEND_ARG_TYPE_INFO(0, shader, IS_LONG, 0)
 	ZEND_ARG_TYPE_INFO(0, pname, IS_LONG, 0)
 	ZEND_ARG_TYPE_INFO(1, params, IS_LONG, 0)
+ZEND_END_ARG_INFO()
+
+ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_glGetShaderInfoLog, 0, 2, IS_STRING, 0)
+	ZEND_ARG_TYPE_INFO(0, shader, IS_LONG, 0)
+	ZEND_ARG_TYPE_INFO(0, bufSize, IS_LONG, 0)
 ZEND_END_ARG_INFO()
 
 #define arginfo_glGetUniformLocation arginfo_glGetAttribLocation
@@ -2652,6 +2657,7 @@ ZEND_FUNCTION(glGetAttachedShaders);
 ZEND_FUNCTION(glGetAttribLocation);
 ZEND_FUNCTION(glGetProgramiv);
 ZEND_FUNCTION(glGetShaderiv);
+ZEND_FUNCTION(glGetShaderInfoLog);
 ZEND_FUNCTION(glGetUniformLocation);
 ZEND_FUNCTION(glGetUniformfv);
 ZEND_FUNCTION(glGetUniformiv);
@@ -3313,6 +3319,7 @@ static const zend_function_entry ext_functions[] = {
 	ZEND_FE(glGetAttribLocation, arginfo_glGetAttribLocation)
 	ZEND_FE(glGetProgramiv, arginfo_glGetProgramiv)
 	ZEND_FE(glGetShaderiv, arginfo_glGetShaderiv)
+	ZEND_FE(glGetShaderInfoLog, arginfo_glGetShaderInfoLog)
 	ZEND_FE(glGetUniformLocation, arginfo_glGetUniformLocation)
 	ZEND_FE(glGetUniformfv, arginfo_glGetUniformfv)
 	ZEND_FE(glGetUniformiv, arginfo_glGetUniformiv)

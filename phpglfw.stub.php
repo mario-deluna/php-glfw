@@ -1892,6 +1892,7 @@ namespace {
     function glGetAttribLocation(int $program, string $name) : int {};
     function glGetProgramiv(int $program, int $pname, int &$params) : void {};
     function glGetShaderiv(int $shader, int $pname, int &$params) : void {};
+    function glGetShaderInfoLog(int $shader, int $bufSize) : string {};
     function glGetUniformLocation(int $program, string $name) : int {};
     function glGetUniformfv(int $program, int $location, float &$params) : void {};
     function glGetUniformiv(int $program, int $location, int &$params) : void {};

@@ -58,4 +58,13 @@ class StringArgument extends ExtArgument
             '&' . $this->getInternalVariable() . '_size',
         ];
     }
+    
+    /**
+     * Returns the C macro to assign this type of argument to zval
+     *     MACRO(zval, value)
+     */
+    public function getZvalAssignmentMacro() : string
+    {
+        return 'ZVAL_STRING';
+    }
 }

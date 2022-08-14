@@ -2029,6 +2029,24 @@ PHP_FUNCTION(glGetShaderiv)
 } 
 
 /**
+ * glGetShaderInfoLog
+ */ 
+PHP_FUNCTION(glGetShaderInfoLog)
+{
+    zend_long shader;
+    zend_long bufSize;
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "ll", &shader, &bufSize) == FAILURE) {
+        return;
+    }
+    GLint maxlen = 0;
+    char *buffer;
+    buffer = emalloc(sizeof(char) * bufSize);
+    glGetShaderInfoLog(shader, bufSize, &maxlen, buffer);
+    RETURN_STRINGL(buffer, maxlen);
+    efree(buffer);
+} 
+
+/**
  * glGetUniformLocation
  */ 
 PHP_FUNCTION(glGetUniformLocation)

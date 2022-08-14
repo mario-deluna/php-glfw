@@ -1739,6 +1739,19 @@ namespace {
     function glGetShaderiv(int $shader, int $pname, int &$params) : void {};
  
     /**
+     * Returns the information log for a shader object
+     * 
+     * @PHP-GLFW: In the PHP extension this function directly returns the error
+     * string instead of being passed by reference as an argument.
+     * 
+     * @param int $shader Specifies the shader object whose information log is to be
+     * queried.
+     * @param int $bufSize Specifies the size of the character buffer for storing
+     * the returned information log.
+     */ 
+    function glGetShaderInfoLog(int $shader, int $bufSize) : string {};
+ 
+    /**
      * Returns the location of a uniform variable
      * 
      * @param int $program Specifies the program object to be queried.

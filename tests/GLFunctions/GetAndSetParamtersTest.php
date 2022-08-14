@@ -135,4 +135,10 @@ class GetAndSetParamtersTest extends GLFunctionsTestCase
         $this->assertEquals(100, $width);
         $this->assertEquals(100, $height);
     }
+
+    public function testGlGetString()
+    {
+        $version = glGetString(GL_VERSION);
+        $this->assertGreaterThan(1, strlen($version));
+    }
 }
