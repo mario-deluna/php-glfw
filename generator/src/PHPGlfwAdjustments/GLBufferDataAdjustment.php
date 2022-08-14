@@ -37,7 +37,7 @@ EOD;
         $func->comment = <<<EOD
 creates and initializes a buffer object's data store
 
-PHP-GLFW: In the PHP extension this method has different signiture compared to the original. 
+@PHP-GLFW: In the PHP extension this method has different signiture compared to the original. 
 Instead of passing byte size and a pointer to the function, in PHP you pass a `GL\\Buffer\\BufferInterface` instance.
 
 Example: 
