@@ -72,7 +72,7 @@ class GLVectorSetterFunctionAdjustment implements AdjustmentInterface
                 $b .= <<<EOD
     
     zval *data;
-    cvector_vector_type({$this->initalDataArg->getPureFromType()}) tmpvec;
+    cvector_vector_type({$this->initalDataArg->getPureFromType()}) tmpvec = NULL;
     ZEND_HASH_FOREACH_VAL({$htvar}, data)
         if (Z_TYPE_P(data) == {$this->initalDataArg->getZvalTypeComparisonConst()}) {
             cvector_push_back(tmpvec, {$this->initalDataArg->getValueFromZvalPointerConst()}(data));

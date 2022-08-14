@@ -485,7 +485,7 @@ PHP_FUNCTION(glTexParameterfv)
         }
         
         zval *data;
-        cvector_vector_type(GLfloat) tmpvec;
+        cvector_vector_type(GLfloat) tmpvec = NULL;
         ZEND_HASH_FOREACH_VAL(params_ht, data)
             if (Z_TYPE_P(data) == IS_DOUBLE) {
                 cvector_push_back(tmpvec, Z_DVAL_P(data));
@@ -528,7 +528,7 @@ PHP_FUNCTION(glTexParameteriv)
         }
         
         zval *data;
-        cvector_vector_type(GLint) tmpvec;
+        cvector_vector_type(GLint) tmpvec = NULL;
         ZEND_HASH_FOREACH_VAL(params_ht, data)
             if (Z_TYPE_P(data) == IS_LONG) {
                 cvector_push_back(tmpvec, Z_LVAL_P(data));
@@ -1490,7 +1490,7 @@ PHP_FUNCTION(glPointParameterfv)
         }
         
         zval *data;
-        cvector_vector_type(GLfloat) tmpvec;
+        cvector_vector_type(GLfloat) tmpvec = NULL;
         ZEND_HASH_FOREACH_VAL(params_ht, data)
             if (Z_TYPE_P(data) == IS_DOUBLE) {
                 cvector_push_back(tmpvec, Z_DVAL_P(data));
@@ -1531,7 +1531,7 @@ PHP_FUNCTION(glPointParameteriv)
         }
         
         zval *data;
-        cvector_vector_type(GLint) tmpvec;
+        cvector_vector_type(GLint) tmpvec = NULL;
         ZEND_HASH_FOREACH_VAL(params_ht, data)
             if (Z_TYPE_P(data) == IS_LONG) {
                 cvector_push_back(tmpvec, Z_LVAL_P(data));
@@ -2371,7 +2371,7 @@ PHP_FUNCTION(glUniform1fv)
         }
         
         zval *data;
-        cvector_vector_type(GLfloat) tmpvec;
+        cvector_vector_type(GLfloat) tmpvec = NULL;
         ZEND_HASH_FOREACH_VAL(value_ht, data)
             if (Z_TYPE_P(data) == IS_DOUBLE) {
                 cvector_push_back(tmpvec, Z_DVAL_P(data));
@@ -2400,7 +2400,7 @@ PHP_FUNCTION(glUniform2fv)
         }
         
         zval *data;
-        cvector_vector_type(GLfloat) tmpvec;
+        cvector_vector_type(GLfloat) tmpvec = NULL;
         ZEND_HASH_FOREACH_VAL(value_ht, data)
             if (Z_TYPE_P(data) == IS_DOUBLE) {
                 cvector_push_back(tmpvec, Z_DVAL_P(data));
@@ -2429,7 +2429,7 @@ PHP_FUNCTION(glUniform3fv)
         }
         
         zval *data;
-        cvector_vector_type(GLfloat) tmpvec;
+        cvector_vector_type(GLfloat) tmpvec = NULL;
         ZEND_HASH_FOREACH_VAL(value_ht, data)
             if (Z_TYPE_P(data) == IS_DOUBLE) {
                 cvector_push_back(tmpvec, Z_DVAL_P(data));
@@ -2458,7 +2458,7 @@ PHP_FUNCTION(glUniform4fv)
         }
         
         zval *data;
-        cvector_vector_type(GLfloat) tmpvec;
+        cvector_vector_type(GLfloat) tmpvec = NULL;
         ZEND_HASH_FOREACH_VAL(value_ht, data)
             if (Z_TYPE_P(data) == IS_DOUBLE) {
                 cvector_push_back(tmpvec, Z_DVAL_P(data));
@@ -2487,7 +2487,7 @@ PHP_FUNCTION(glUniform1iv)
         }
         
         zval *data;
-        cvector_vector_type(GLint) tmpvec;
+        cvector_vector_type(GLint) tmpvec = NULL;
         ZEND_HASH_FOREACH_VAL(value_ht, data)
             if (Z_TYPE_P(data) == IS_LONG) {
                 cvector_push_back(tmpvec, Z_LVAL_P(data));
@@ -2516,7 +2516,7 @@ PHP_FUNCTION(glUniform2iv)
         }
         
         zval *data;
-        cvector_vector_type(GLint) tmpvec;
+        cvector_vector_type(GLint) tmpvec = NULL;
         ZEND_HASH_FOREACH_VAL(value_ht, data)
             if (Z_TYPE_P(data) == IS_LONG) {
                 cvector_push_back(tmpvec, Z_LVAL_P(data));
@@ -2545,7 +2545,7 @@ PHP_FUNCTION(glUniform3iv)
         }
         
         zval *data;
-        cvector_vector_type(GLint) tmpvec;
+        cvector_vector_type(GLint) tmpvec = NULL;
         ZEND_HASH_FOREACH_VAL(value_ht, data)
             if (Z_TYPE_P(data) == IS_LONG) {
                 cvector_push_back(tmpvec, Z_LVAL_P(data));
@@ -2574,7 +2574,7 @@ PHP_FUNCTION(glUniform4iv)
         }
         
         zval *data;
-        cvector_vector_type(GLint) tmpvec;
+        cvector_vector_type(GLint) tmpvec = NULL;
         ZEND_HASH_FOREACH_VAL(value_ht, data)
             if (Z_TYPE_P(data) == IS_LONG) {
                 cvector_push_back(tmpvec, Z_LVAL_P(data));
@@ -2604,7 +2604,7 @@ PHP_FUNCTION(glUniformMatrix2fv)
         }
         
         zval *data;
-        cvector_vector_type(GLfloat) tmpvec;
+        cvector_vector_type(GLfloat) tmpvec = NULL;
         ZEND_HASH_FOREACH_VAL(value_ht, data)
             if (Z_TYPE_P(data) == IS_DOUBLE) {
                 cvector_push_back(tmpvec, Z_DVAL_P(data));
@@ -2634,7 +2634,7 @@ PHP_FUNCTION(glUniformMatrix3fv)
         }
         
         zval *data;
-        cvector_vector_type(GLfloat) tmpvec;
+        cvector_vector_type(GLfloat) tmpvec = NULL;
         ZEND_HASH_FOREACH_VAL(value_ht, data)
             if (Z_TYPE_P(data) == IS_DOUBLE) {
                 cvector_push_back(tmpvec, Z_DVAL_P(data));
@@ -2707,7 +2707,7 @@ PHP_FUNCTION(glVertexAttrib1dv)
         }
         
         zval *data;
-        cvector_vector_type(GLdouble) tmpvec;
+        cvector_vector_type(GLdouble) tmpvec = NULL;
         ZEND_HASH_FOREACH_VAL(v_ht, data)
             if (Z_TYPE_P(data) == IS_DOUBLE) {
                 cvector_push_back(tmpvec, Z_DVAL_P(data));
@@ -2748,7 +2748,7 @@ PHP_FUNCTION(glVertexAttrib1fv)
         }
         
         zval *data;
-        cvector_vector_type(GLfloat) tmpvec;
+        cvector_vector_type(GLfloat) tmpvec = NULL;
         ZEND_HASH_FOREACH_VAL(v_ht, data)
             if (Z_TYPE_P(data) == IS_DOUBLE) {
                 cvector_push_back(tmpvec, Z_DVAL_P(data));
@@ -2789,7 +2789,7 @@ PHP_FUNCTION(glVertexAttrib1sv)
         }
         
         zval *data;
-        cvector_vector_type(GLshort) tmpvec;
+        cvector_vector_type(GLshort) tmpvec = NULL;
         ZEND_HASH_FOREACH_VAL(v_ht, data)
             if (Z_TYPE_P(data) == IS_LONG) {
                 cvector_push_back(tmpvec, Z_LVAL_P(data));
@@ -2831,7 +2831,7 @@ PHP_FUNCTION(glVertexAttrib2dv)
         }
         
         zval *data;
-        cvector_vector_type(GLdouble) tmpvec;
+        cvector_vector_type(GLdouble) tmpvec = NULL;
         ZEND_HASH_FOREACH_VAL(v_ht, data)
             if (Z_TYPE_P(data) == IS_DOUBLE) {
                 cvector_push_back(tmpvec, Z_DVAL_P(data));
@@ -2873,7 +2873,7 @@ PHP_FUNCTION(glVertexAttrib2fv)
         }
         
         zval *data;
-        cvector_vector_type(GLfloat) tmpvec;
+        cvector_vector_type(GLfloat) tmpvec = NULL;
         ZEND_HASH_FOREACH_VAL(v_ht, data)
             if (Z_TYPE_P(data) == IS_DOUBLE) {
                 cvector_push_back(tmpvec, Z_DVAL_P(data));
@@ -2915,7 +2915,7 @@ PHP_FUNCTION(glVertexAttrib2sv)
         }
         
         zval *data;
-        cvector_vector_type(GLshort) tmpvec;
+        cvector_vector_type(GLshort) tmpvec = NULL;
         ZEND_HASH_FOREACH_VAL(v_ht, data)
             if (Z_TYPE_P(data) == IS_LONG) {
                 cvector_push_back(tmpvec, Z_LVAL_P(data));
@@ -2958,7 +2958,7 @@ PHP_FUNCTION(glVertexAttrib3dv)
         }
         
         zval *data;
-        cvector_vector_type(GLdouble) tmpvec;
+        cvector_vector_type(GLdouble) tmpvec = NULL;
         ZEND_HASH_FOREACH_VAL(v_ht, data)
             if (Z_TYPE_P(data) == IS_DOUBLE) {
                 cvector_push_back(tmpvec, Z_DVAL_P(data));
@@ -3001,7 +3001,7 @@ PHP_FUNCTION(glVertexAttrib3fv)
         }
         
         zval *data;
-        cvector_vector_type(GLfloat) tmpvec;
+        cvector_vector_type(GLfloat) tmpvec = NULL;
         ZEND_HASH_FOREACH_VAL(v_ht, data)
             if (Z_TYPE_P(data) == IS_DOUBLE) {
                 cvector_push_back(tmpvec, Z_DVAL_P(data));
@@ -3044,7 +3044,7 @@ PHP_FUNCTION(glVertexAttrib3sv)
         }
         
         zval *data;
-        cvector_vector_type(GLshort) tmpvec;
+        cvector_vector_type(GLshort) tmpvec = NULL;
         ZEND_HASH_FOREACH_VAL(v_ht, data)
             if (Z_TYPE_P(data) == IS_LONG) {
                 cvector_push_back(tmpvec, Z_LVAL_P(data));
@@ -3072,7 +3072,7 @@ PHP_FUNCTION(glVertexAttrib4Nbv)
         }
         
         zval *data;
-        cvector_vector_type(GLbyte) tmpvec;
+        cvector_vector_type(GLbyte) tmpvec = NULL;
         ZEND_HASH_FOREACH_VAL(v_ht, data)
             if (Z_TYPE_P(data) == IS_LONG) {
                 cvector_push_back(tmpvec, Z_LVAL_P(data));
@@ -3100,7 +3100,7 @@ PHP_FUNCTION(glVertexAttrib4Niv)
         }
         
         zval *data;
-        cvector_vector_type(GLint) tmpvec;
+        cvector_vector_type(GLint) tmpvec = NULL;
         ZEND_HASH_FOREACH_VAL(v_ht, data)
             if (Z_TYPE_P(data) == IS_LONG) {
                 cvector_push_back(tmpvec, Z_LVAL_P(data));
@@ -3128,7 +3128,7 @@ PHP_FUNCTION(glVertexAttrib4Nsv)
         }
         
         zval *data;
-        cvector_vector_type(GLshort) tmpvec;
+        cvector_vector_type(GLshort) tmpvec = NULL;
         ZEND_HASH_FOREACH_VAL(v_ht, data)
             if (Z_TYPE_P(data) == IS_LONG) {
                 cvector_push_back(tmpvec, Z_LVAL_P(data));
@@ -3172,7 +3172,7 @@ PHP_FUNCTION(glVertexAttrib4Nubv)
         }
         
         zval *data;
-        cvector_vector_type(GLubyte) tmpvec;
+        cvector_vector_type(GLubyte) tmpvec = NULL;
         ZEND_HASH_FOREACH_VAL(v_ht, data)
             if (Z_TYPE_P(data) == IS_LONG) {
                 cvector_push_back(tmpvec, Z_LVAL_P(data));
@@ -3200,7 +3200,7 @@ PHP_FUNCTION(glVertexAttrib4Nuiv)
         }
         
         zval *data;
-        cvector_vector_type(GLuint) tmpvec;
+        cvector_vector_type(GLuint) tmpvec = NULL;
         ZEND_HASH_FOREACH_VAL(v_ht, data)
             if (Z_TYPE_P(data) == IS_LONG) {
                 cvector_push_back(tmpvec, Z_LVAL_P(data));
@@ -3228,7 +3228,7 @@ PHP_FUNCTION(glVertexAttrib4Nusv)
         }
         
         zval *data;
-        cvector_vector_type(GLushort) tmpvec;
+        cvector_vector_type(GLushort) tmpvec = NULL;
         ZEND_HASH_FOREACH_VAL(v_ht, data)
             if (Z_TYPE_P(data) == IS_LONG) {
                 cvector_push_back(tmpvec, Z_LVAL_P(data));
@@ -3256,7 +3256,7 @@ PHP_FUNCTION(glVertexAttrib4bv)
         }
         
         zval *data;
-        cvector_vector_type(GLbyte) tmpvec;
+        cvector_vector_type(GLbyte) tmpvec = NULL;
         ZEND_HASH_FOREACH_VAL(v_ht, data)
             if (Z_TYPE_P(data) == IS_LONG) {
                 cvector_push_back(tmpvec, Z_LVAL_P(data));
@@ -3300,7 +3300,7 @@ PHP_FUNCTION(glVertexAttrib4dv)
         }
         
         zval *data;
-        cvector_vector_type(GLdouble) tmpvec;
+        cvector_vector_type(GLdouble) tmpvec = NULL;
         ZEND_HASH_FOREACH_VAL(v_ht, data)
             if (Z_TYPE_P(data) == IS_DOUBLE) {
                 cvector_push_back(tmpvec, Z_DVAL_P(data));
@@ -3344,7 +3344,7 @@ PHP_FUNCTION(glVertexAttrib4fv)
         }
         
         zval *data;
-        cvector_vector_type(GLfloat) tmpvec;
+        cvector_vector_type(GLfloat) tmpvec = NULL;
         ZEND_HASH_FOREACH_VAL(v_ht, data)
             if (Z_TYPE_P(data) == IS_DOUBLE) {
                 cvector_push_back(tmpvec, Z_DVAL_P(data));
@@ -3372,7 +3372,7 @@ PHP_FUNCTION(glVertexAttrib4iv)
         }
         
         zval *data;
-        cvector_vector_type(GLint) tmpvec;
+        cvector_vector_type(GLint) tmpvec = NULL;
         ZEND_HASH_FOREACH_VAL(v_ht, data)
             if (Z_TYPE_P(data) == IS_LONG) {
                 cvector_push_back(tmpvec, Z_LVAL_P(data));
@@ -3416,7 +3416,7 @@ PHP_FUNCTION(glVertexAttrib4sv)
         }
         
         zval *data;
-        cvector_vector_type(GLshort) tmpvec;
+        cvector_vector_type(GLshort) tmpvec = NULL;
         ZEND_HASH_FOREACH_VAL(v_ht, data)
             if (Z_TYPE_P(data) == IS_LONG) {
                 cvector_push_back(tmpvec, Z_LVAL_P(data));
@@ -3444,7 +3444,7 @@ PHP_FUNCTION(glVertexAttrib4ubv)
         }
         
         zval *data;
-        cvector_vector_type(GLubyte) tmpvec;
+        cvector_vector_type(GLubyte) tmpvec = NULL;
         ZEND_HASH_FOREACH_VAL(v_ht, data)
             if (Z_TYPE_P(data) == IS_LONG) {
                 cvector_push_back(tmpvec, Z_LVAL_P(data));
@@ -3472,7 +3472,7 @@ PHP_FUNCTION(glVertexAttrib4uiv)
         }
         
         zval *data;
-        cvector_vector_type(GLuint) tmpvec;
+        cvector_vector_type(GLuint) tmpvec = NULL;
         ZEND_HASH_FOREACH_VAL(v_ht, data)
             if (Z_TYPE_P(data) == IS_LONG) {
                 cvector_push_back(tmpvec, Z_LVAL_P(data));
@@ -3500,7 +3500,7 @@ PHP_FUNCTION(glVertexAttrib4usv)
         }
         
         zval *data;
-        cvector_vector_type(GLushort) tmpvec;
+        cvector_vector_type(GLushort) tmpvec = NULL;
         ZEND_HASH_FOREACH_VAL(v_ht, data)
             if (Z_TYPE_P(data) == IS_LONG) {
                 cvector_push_back(tmpvec, Z_LVAL_P(data));
@@ -3547,7 +3547,7 @@ PHP_FUNCTION(glUniformMatrix2x3fv)
         }
         
         zval *data;
-        cvector_vector_type(GLfloat) tmpvec;
+        cvector_vector_type(GLfloat) tmpvec = NULL;
         ZEND_HASH_FOREACH_VAL(value_ht, data)
             if (Z_TYPE_P(data) == IS_DOUBLE) {
                 cvector_push_back(tmpvec, Z_DVAL_P(data));
@@ -3577,7 +3577,7 @@ PHP_FUNCTION(glUniformMatrix3x2fv)
         }
         
         zval *data;
-        cvector_vector_type(GLfloat) tmpvec;
+        cvector_vector_type(GLfloat) tmpvec = NULL;
         ZEND_HASH_FOREACH_VAL(value_ht, data)
             if (Z_TYPE_P(data) == IS_DOUBLE) {
                 cvector_push_back(tmpvec, Z_DVAL_P(data));
@@ -3607,7 +3607,7 @@ PHP_FUNCTION(glUniformMatrix2x4fv)
         }
         
         zval *data;
-        cvector_vector_type(GLfloat) tmpvec;
+        cvector_vector_type(GLfloat) tmpvec = NULL;
         ZEND_HASH_FOREACH_VAL(value_ht, data)
             if (Z_TYPE_P(data) == IS_DOUBLE) {
                 cvector_push_back(tmpvec, Z_DVAL_P(data));
@@ -3637,7 +3637,7 @@ PHP_FUNCTION(glUniformMatrix4x2fv)
         }
         
         zval *data;
-        cvector_vector_type(GLfloat) tmpvec;
+        cvector_vector_type(GLfloat) tmpvec = NULL;
         ZEND_HASH_FOREACH_VAL(value_ht, data)
             if (Z_TYPE_P(data) == IS_DOUBLE) {
                 cvector_push_back(tmpvec, Z_DVAL_P(data));
@@ -3667,7 +3667,7 @@ PHP_FUNCTION(glUniformMatrix3x4fv)
         }
         
         zval *data;
-        cvector_vector_type(GLfloat) tmpvec;
+        cvector_vector_type(GLfloat) tmpvec = NULL;
         ZEND_HASH_FOREACH_VAL(value_ht, data)
             if (Z_TYPE_P(data) == IS_DOUBLE) {
                 cvector_push_back(tmpvec, Z_DVAL_P(data));
@@ -3697,7 +3697,7 @@ PHP_FUNCTION(glUniformMatrix4x3fv)
         }
         
         zval *data;
-        cvector_vector_type(GLfloat) tmpvec;
+        cvector_vector_type(GLfloat) tmpvec = NULL;
         ZEND_HASH_FOREACH_VAL(value_ht, data)
             if (Z_TYPE_P(data) == IS_DOUBLE) {
                 cvector_push_back(tmpvec, Z_DVAL_P(data));
@@ -4072,7 +4072,7 @@ PHP_FUNCTION(glVertexAttribI1iv)
         }
         
         zval *data;
-        cvector_vector_type(GLint) tmpvec;
+        cvector_vector_type(GLint) tmpvec = NULL;
         ZEND_HASH_FOREACH_VAL(v_ht, data)
             if (Z_TYPE_P(data) == IS_LONG) {
                 cvector_push_back(tmpvec, Z_LVAL_P(data));
@@ -4100,7 +4100,7 @@ PHP_FUNCTION(glVertexAttribI2iv)
         }
         
         zval *data;
-        cvector_vector_type(GLint) tmpvec;
+        cvector_vector_type(GLint) tmpvec = NULL;
         ZEND_HASH_FOREACH_VAL(v_ht, data)
             if (Z_TYPE_P(data) == IS_LONG) {
                 cvector_push_back(tmpvec, Z_LVAL_P(data));
@@ -4128,7 +4128,7 @@ PHP_FUNCTION(glVertexAttribI3iv)
         }
         
         zval *data;
-        cvector_vector_type(GLint) tmpvec;
+        cvector_vector_type(GLint) tmpvec = NULL;
         ZEND_HASH_FOREACH_VAL(v_ht, data)
             if (Z_TYPE_P(data) == IS_LONG) {
                 cvector_push_back(tmpvec, Z_LVAL_P(data));
@@ -4156,7 +4156,7 @@ PHP_FUNCTION(glVertexAttribI4iv)
         }
         
         zval *data;
-        cvector_vector_type(GLint) tmpvec;
+        cvector_vector_type(GLint) tmpvec = NULL;
         ZEND_HASH_FOREACH_VAL(v_ht, data)
             if (Z_TYPE_P(data) == IS_LONG) {
                 cvector_push_back(tmpvec, Z_LVAL_P(data));
@@ -4184,7 +4184,7 @@ PHP_FUNCTION(glVertexAttribI1uiv)
         }
         
         zval *data;
-        cvector_vector_type(GLuint) tmpvec;
+        cvector_vector_type(GLuint) tmpvec = NULL;
         ZEND_HASH_FOREACH_VAL(v_ht, data)
             if (Z_TYPE_P(data) == IS_LONG) {
                 cvector_push_back(tmpvec, Z_LVAL_P(data));
@@ -4212,7 +4212,7 @@ PHP_FUNCTION(glVertexAttribI2uiv)
         }
         
         zval *data;
-        cvector_vector_type(GLuint) tmpvec;
+        cvector_vector_type(GLuint) tmpvec = NULL;
         ZEND_HASH_FOREACH_VAL(v_ht, data)
             if (Z_TYPE_P(data) == IS_LONG) {
                 cvector_push_back(tmpvec, Z_LVAL_P(data));
@@ -4240,7 +4240,7 @@ PHP_FUNCTION(glVertexAttribI3uiv)
         }
         
         zval *data;
-        cvector_vector_type(GLuint) tmpvec;
+        cvector_vector_type(GLuint) tmpvec = NULL;
         ZEND_HASH_FOREACH_VAL(v_ht, data)
             if (Z_TYPE_P(data) == IS_LONG) {
                 cvector_push_back(tmpvec, Z_LVAL_P(data));
@@ -4268,7 +4268,7 @@ PHP_FUNCTION(glVertexAttribI4uiv)
         }
         
         zval *data;
-        cvector_vector_type(GLuint) tmpvec;
+        cvector_vector_type(GLuint) tmpvec = NULL;
         ZEND_HASH_FOREACH_VAL(v_ht, data)
             if (Z_TYPE_P(data) == IS_LONG) {
                 cvector_push_back(tmpvec, Z_LVAL_P(data));
@@ -4296,7 +4296,7 @@ PHP_FUNCTION(glVertexAttribI4bv)
         }
         
         zval *data;
-        cvector_vector_type(GLbyte) tmpvec;
+        cvector_vector_type(GLbyte) tmpvec = NULL;
         ZEND_HASH_FOREACH_VAL(v_ht, data)
             if (Z_TYPE_P(data) == IS_LONG) {
                 cvector_push_back(tmpvec, Z_LVAL_P(data));
@@ -4324,7 +4324,7 @@ PHP_FUNCTION(glVertexAttribI4sv)
         }
         
         zval *data;
-        cvector_vector_type(GLshort) tmpvec;
+        cvector_vector_type(GLshort) tmpvec = NULL;
         ZEND_HASH_FOREACH_VAL(v_ht, data)
             if (Z_TYPE_P(data) == IS_LONG) {
                 cvector_push_back(tmpvec, Z_LVAL_P(data));
@@ -4352,7 +4352,7 @@ PHP_FUNCTION(glVertexAttribI4ubv)
         }
         
         zval *data;
-        cvector_vector_type(GLubyte) tmpvec;
+        cvector_vector_type(GLubyte) tmpvec = NULL;
         ZEND_HASH_FOREACH_VAL(v_ht, data)
             if (Z_TYPE_P(data) == IS_LONG) {
                 cvector_push_back(tmpvec, Z_LVAL_P(data));
@@ -4380,7 +4380,7 @@ PHP_FUNCTION(glVertexAttribI4usv)
         }
         
         zval *data;
-        cvector_vector_type(GLushort) tmpvec;
+        cvector_vector_type(GLushort) tmpvec = NULL;
         ZEND_HASH_FOREACH_VAL(v_ht, data)
             if (Z_TYPE_P(data) == IS_LONG) {
                 cvector_push_back(tmpvec, Z_LVAL_P(data));
@@ -4514,7 +4514,7 @@ PHP_FUNCTION(glUniform1uiv)
         }
         
         zval *data;
-        cvector_vector_type(GLuint) tmpvec;
+        cvector_vector_type(GLuint) tmpvec = NULL;
         ZEND_HASH_FOREACH_VAL(value_ht, data)
             if (Z_TYPE_P(data) == IS_LONG) {
                 cvector_push_back(tmpvec, Z_LVAL_P(data));
@@ -4543,7 +4543,7 @@ PHP_FUNCTION(glUniform2uiv)
         }
         
         zval *data;
-        cvector_vector_type(GLuint) tmpvec;
+        cvector_vector_type(GLuint) tmpvec = NULL;
         ZEND_HASH_FOREACH_VAL(value_ht, data)
             if (Z_TYPE_P(data) == IS_LONG) {
                 cvector_push_back(tmpvec, Z_LVAL_P(data));
@@ -4572,7 +4572,7 @@ PHP_FUNCTION(glUniform3uiv)
         }
         
         zval *data;
-        cvector_vector_type(GLuint) tmpvec;
+        cvector_vector_type(GLuint) tmpvec = NULL;
         ZEND_HASH_FOREACH_VAL(value_ht, data)
             if (Z_TYPE_P(data) == IS_LONG) {
                 cvector_push_back(tmpvec, Z_LVAL_P(data));
@@ -4601,7 +4601,7 @@ PHP_FUNCTION(glUniform4uiv)
         }
         
         zval *data;
-        cvector_vector_type(GLuint) tmpvec;
+        cvector_vector_type(GLuint) tmpvec = NULL;
         ZEND_HASH_FOREACH_VAL(value_ht, data)
             if (Z_TYPE_P(data) == IS_LONG) {
                 cvector_push_back(tmpvec, Z_LVAL_P(data));
@@ -4630,7 +4630,7 @@ PHP_FUNCTION(glTexParameterIiv)
         }
         
         zval *data;
-        cvector_vector_type(GLint) tmpvec;
+        cvector_vector_type(GLint) tmpvec = NULL;
         ZEND_HASH_FOREACH_VAL(params_ht, data)
             if (Z_TYPE_P(data) == IS_LONG) {
                 cvector_push_back(tmpvec, Z_LVAL_P(data));
@@ -4659,7 +4659,7 @@ PHP_FUNCTION(glTexParameterIuiv)
         }
         
         zval *data;
-        cvector_vector_type(GLuint) tmpvec;
+        cvector_vector_type(GLuint) tmpvec = NULL;
         ZEND_HASH_FOREACH_VAL(params_ht, data)
             if (Z_TYPE_P(data) == IS_LONG) {
                 cvector_push_back(tmpvec, Z_LVAL_P(data));
@@ -4744,7 +4744,7 @@ PHP_FUNCTION(glClearBufferiv)
         }
         
         zval *data;
-        cvector_vector_type(GLint) tmpvec;
+        cvector_vector_type(GLint) tmpvec = NULL;
         ZEND_HASH_FOREACH_VAL(value_ht, data)
             if (Z_TYPE_P(data) == IS_LONG) {
                 cvector_push_back(tmpvec, Z_LVAL_P(data));
@@ -4773,7 +4773,7 @@ PHP_FUNCTION(glClearBufferuiv)
         }
         
         zval *data;
-        cvector_vector_type(GLuint) tmpvec;
+        cvector_vector_type(GLuint) tmpvec = NULL;
         ZEND_HASH_FOREACH_VAL(value_ht, data)
             if (Z_TYPE_P(data) == IS_LONG) {
                 cvector_push_back(tmpvec, Z_LVAL_P(data));
@@ -4802,7 +4802,7 @@ PHP_FUNCTION(glClearBufferfv)
         }
         
         zval *data;
-        cvector_vector_type(GLfloat) tmpvec;
+        cvector_vector_type(GLfloat) tmpvec = NULL;
         ZEND_HASH_FOREACH_VAL(value_ht, data)
             if (Z_TYPE_P(data) == IS_DOUBLE) {
                 cvector_push_back(tmpvec, Z_DVAL_P(data));
@@ -5752,7 +5752,7 @@ PHP_FUNCTION(glSamplerParameteriv)
         }
         
         zval *data;
-        cvector_vector_type(GLint) tmpvec;
+        cvector_vector_type(GLint) tmpvec = NULL;
         ZEND_HASH_FOREACH_VAL(param_ht, data)
             if (Z_TYPE_P(data) == IS_LONG) {
                 cvector_push_back(tmpvec, Z_LVAL_P(data));
@@ -5795,7 +5795,7 @@ PHP_FUNCTION(glSamplerParameterfv)
         }
         
         zval *data;
-        cvector_vector_type(GLfloat) tmpvec;
+        cvector_vector_type(GLfloat) tmpvec = NULL;
         ZEND_HASH_FOREACH_VAL(param_ht, data)
             if (Z_TYPE_P(data) == IS_DOUBLE) {
                 cvector_push_back(tmpvec, Z_DVAL_P(data));
@@ -5824,7 +5824,7 @@ PHP_FUNCTION(glSamplerParameterIiv)
         }
         
         zval *data;
-        cvector_vector_type(GLint) tmpvec;
+        cvector_vector_type(GLint) tmpvec = NULL;
         ZEND_HASH_FOREACH_VAL(param_ht, data)
             if (Z_TYPE_P(data) == IS_LONG) {
                 cvector_push_back(tmpvec, Z_LVAL_P(data));
@@ -5853,7 +5853,7 @@ PHP_FUNCTION(glSamplerParameterIuiv)
         }
         
         zval *data;
-        cvector_vector_type(GLuint) tmpvec;
+        cvector_vector_type(GLuint) tmpvec = NULL;
         ZEND_HASH_FOREACH_VAL(param_ht, data)
             if (Z_TYPE_P(data) == IS_LONG) {
                 cvector_push_back(tmpvec, Z_LVAL_P(data));
@@ -6032,7 +6032,7 @@ PHP_FUNCTION(glVertexAttribP1uiv)
         }
         
         zval *data;
-        cvector_vector_type(GLuint) tmpvec;
+        cvector_vector_type(GLuint) tmpvec = NULL;
         ZEND_HASH_FOREACH_VAL(value_ht, data)
             if (Z_TYPE_P(data) == IS_LONG) {
                 cvector_push_back(tmpvec, Z_LVAL_P(data));
@@ -6077,7 +6077,7 @@ PHP_FUNCTION(glVertexAttribP2uiv)
         }
         
         zval *data;
-        cvector_vector_type(GLuint) tmpvec;
+        cvector_vector_type(GLuint) tmpvec = NULL;
         ZEND_HASH_FOREACH_VAL(value_ht, data)
             if (Z_TYPE_P(data) == IS_LONG) {
                 cvector_push_back(tmpvec, Z_LVAL_P(data));
@@ -6122,7 +6122,7 @@ PHP_FUNCTION(glVertexAttribP3uiv)
         }
         
         zval *data;
-        cvector_vector_type(GLuint) tmpvec;
+        cvector_vector_type(GLuint) tmpvec = NULL;
         ZEND_HASH_FOREACH_VAL(value_ht, data)
             if (Z_TYPE_P(data) == IS_LONG) {
                 cvector_push_back(tmpvec, Z_LVAL_P(data));
@@ -6167,7 +6167,7 @@ PHP_FUNCTION(glVertexAttribP4uiv)
         }
         
         zval *data;
-        cvector_vector_type(GLuint) tmpvec;
+        cvector_vector_type(GLuint) tmpvec = NULL;
         ZEND_HASH_FOREACH_VAL(value_ht, data)
             if (Z_TYPE_P(data) == IS_LONG) {
                 cvector_push_back(tmpvec, Z_LVAL_P(data));
@@ -6208,7 +6208,7 @@ PHP_FUNCTION(glVertexP2uiv)
         }
         
         zval *data;
-        cvector_vector_type(GLuint) tmpvec;
+        cvector_vector_type(GLuint) tmpvec = NULL;
         ZEND_HASH_FOREACH_VAL(value_ht, data)
             if (Z_TYPE_P(data) == IS_LONG) {
                 cvector_push_back(tmpvec, Z_LVAL_P(data));
@@ -6249,7 +6249,7 @@ PHP_FUNCTION(glVertexP3uiv)
         }
         
         zval *data;
-        cvector_vector_type(GLuint) tmpvec;
+        cvector_vector_type(GLuint) tmpvec = NULL;
         ZEND_HASH_FOREACH_VAL(value_ht, data)
             if (Z_TYPE_P(data) == IS_LONG) {
                 cvector_push_back(tmpvec, Z_LVAL_P(data));
@@ -6290,7 +6290,7 @@ PHP_FUNCTION(glVertexP4uiv)
         }
         
         zval *data;
-        cvector_vector_type(GLuint) tmpvec;
+        cvector_vector_type(GLuint) tmpvec = NULL;
         ZEND_HASH_FOREACH_VAL(value_ht, data)
             if (Z_TYPE_P(data) == IS_LONG) {
                 cvector_push_back(tmpvec, Z_LVAL_P(data));
@@ -6331,7 +6331,7 @@ PHP_FUNCTION(glTexCoordP1uiv)
         }
         
         zval *data;
-        cvector_vector_type(GLuint) tmpvec;
+        cvector_vector_type(GLuint) tmpvec = NULL;
         ZEND_HASH_FOREACH_VAL(coords_ht, data)
             if (Z_TYPE_P(data) == IS_LONG) {
                 cvector_push_back(tmpvec, Z_LVAL_P(data));
@@ -6372,7 +6372,7 @@ PHP_FUNCTION(glTexCoordP2uiv)
         }
         
         zval *data;
-        cvector_vector_type(GLuint) tmpvec;
+        cvector_vector_type(GLuint) tmpvec = NULL;
         ZEND_HASH_FOREACH_VAL(coords_ht, data)
             if (Z_TYPE_P(data) == IS_LONG) {
                 cvector_push_back(tmpvec, Z_LVAL_P(data));
@@ -6413,7 +6413,7 @@ PHP_FUNCTION(glTexCoordP3uiv)
         }
         
         zval *data;
-        cvector_vector_type(GLuint) tmpvec;
+        cvector_vector_type(GLuint) tmpvec = NULL;
         ZEND_HASH_FOREACH_VAL(coords_ht, data)
             if (Z_TYPE_P(data) == IS_LONG) {
                 cvector_push_back(tmpvec, Z_LVAL_P(data));
@@ -6454,7 +6454,7 @@ PHP_FUNCTION(glTexCoordP4uiv)
         }
         
         zval *data;
-        cvector_vector_type(GLuint) tmpvec;
+        cvector_vector_type(GLuint) tmpvec = NULL;
         ZEND_HASH_FOREACH_VAL(coords_ht, data)
             if (Z_TYPE_P(data) == IS_LONG) {
                 cvector_push_back(tmpvec, Z_LVAL_P(data));
@@ -6497,7 +6497,7 @@ PHP_FUNCTION(glMultiTexCoordP1uiv)
         }
         
         zval *data;
-        cvector_vector_type(GLuint) tmpvec;
+        cvector_vector_type(GLuint) tmpvec = NULL;
         ZEND_HASH_FOREACH_VAL(coords_ht, data)
             if (Z_TYPE_P(data) == IS_LONG) {
                 cvector_push_back(tmpvec, Z_LVAL_P(data));
@@ -6540,7 +6540,7 @@ PHP_FUNCTION(glMultiTexCoordP2uiv)
         }
         
         zval *data;
-        cvector_vector_type(GLuint) tmpvec;
+        cvector_vector_type(GLuint) tmpvec = NULL;
         ZEND_HASH_FOREACH_VAL(coords_ht, data)
             if (Z_TYPE_P(data) == IS_LONG) {
                 cvector_push_back(tmpvec, Z_LVAL_P(data));
@@ -6583,7 +6583,7 @@ PHP_FUNCTION(glMultiTexCoordP3uiv)
         }
         
         zval *data;
-        cvector_vector_type(GLuint) tmpvec;
+        cvector_vector_type(GLuint) tmpvec = NULL;
         ZEND_HASH_FOREACH_VAL(coords_ht, data)
             if (Z_TYPE_P(data) == IS_LONG) {
                 cvector_push_back(tmpvec, Z_LVAL_P(data));
@@ -6626,7 +6626,7 @@ PHP_FUNCTION(glMultiTexCoordP4uiv)
         }
         
         zval *data;
-        cvector_vector_type(GLuint) tmpvec;
+        cvector_vector_type(GLuint) tmpvec = NULL;
         ZEND_HASH_FOREACH_VAL(coords_ht, data)
             if (Z_TYPE_P(data) == IS_LONG) {
                 cvector_push_back(tmpvec, Z_LVAL_P(data));
@@ -6667,7 +6667,7 @@ PHP_FUNCTION(glNormalP3uiv)
         }
         
         zval *data;
-        cvector_vector_type(GLuint) tmpvec;
+        cvector_vector_type(GLuint) tmpvec = NULL;
         ZEND_HASH_FOREACH_VAL(coords_ht, data)
             if (Z_TYPE_P(data) == IS_LONG) {
                 cvector_push_back(tmpvec, Z_LVAL_P(data));
@@ -6708,7 +6708,7 @@ PHP_FUNCTION(glColorP3uiv)
         }
         
         zval *data;
-        cvector_vector_type(GLuint) tmpvec;
+        cvector_vector_type(GLuint) tmpvec = NULL;
         ZEND_HASH_FOREACH_VAL(color_ht, data)
             if (Z_TYPE_P(data) == IS_LONG) {
                 cvector_push_back(tmpvec, Z_LVAL_P(data));
@@ -6749,7 +6749,7 @@ PHP_FUNCTION(glColorP4uiv)
         }
         
         zval *data;
-        cvector_vector_type(GLuint) tmpvec;
+        cvector_vector_type(GLuint) tmpvec = NULL;
         ZEND_HASH_FOREACH_VAL(color_ht, data)
             if (Z_TYPE_P(data) == IS_LONG) {
                 cvector_push_back(tmpvec, Z_LVAL_P(data));
@@ -6790,7 +6790,7 @@ PHP_FUNCTION(glSecondaryColorP3uiv)
         }
         
         zval *data;
-        cvector_vector_type(GLuint) tmpvec;
+        cvector_vector_type(GLuint) tmpvec = NULL;
         ZEND_HASH_FOREACH_VAL(color_ht, data)
             if (Z_TYPE_P(data) == IS_LONG) {
                 cvector_push_back(tmpvec, Z_LVAL_P(data));
@@ -6946,7 +6946,7 @@ PHP_FUNCTION(glUniform1dv)
         }
         
         zval *data;
-        cvector_vector_type(GLdouble) tmpvec;
+        cvector_vector_type(GLdouble) tmpvec = NULL;
         ZEND_HASH_FOREACH_VAL(value_ht, data)
             if (Z_TYPE_P(data) == IS_DOUBLE) {
                 cvector_push_back(tmpvec, Z_DVAL_P(data));
@@ -6975,7 +6975,7 @@ PHP_FUNCTION(glUniform2dv)
         }
         
         zval *data;
-        cvector_vector_type(GLdouble) tmpvec;
+        cvector_vector_type(GLdouble) tmpvec = NULL;
         ZEND_HASH_FOREACH_VAL(value_ht, data)
             if (Z_TYPE_P(data) == IS_DOUBLE) {
                 cvector_push_back(tmpvec, Z_DVAL_P(data));
@@ -7004,7 +7004,7 @@ PHP_FUNCTION(glUniform3dv)
         }
         
         zval *data;
-        cvector_vector_type(GLdouble) tmpvec;
+        cvector_vector_type(GLdouble) tmpvec = NULL;
         ZEND_HASH_FOREACH_VAL(value_ht, data)
             if (Z_TYPE_P(data) == IS_DOUBLE) {
                 cvector_push_back(tmpvec, Z_DVAL_P(data));
@@ -7033,7 +7033,7 @@ PHP_FUNCTION(glUniform4dv)
         }
         
         zval *data;
-        cvector_vector_type(GLdouble) tmpvec;
+        cvector_vector_type(GLdouble) tmpvec = NULL;
         ZEND_HASH_FOREACH_VAL(value_ht, data)
             if (Z_TYPE_P(data) == IS_DOUBLE) {
                 cvector_push_back(tmpvec, Z_DVAL_P(data));
@@ -7063,7 +7063,7 @@ PHP_FUNCTION(glUniformMatrix2dv)
         }
         
         zval *data;
-        cvector_vector_type(GLdouble) tmpvec;
+        cvector_vector_type(GLdouble) tmpvec = NULL;
         ZEND_HASH_FOREACH_VAL(value_ht, data)
             if (Z_TYPE_P(data) == IS_DOUBLE) {
                 cvector_push_back(tmpvec, Z_DVAL_P(data));
@@ -7093,7 +7093,7 @@ PHP_FUNCTION(glUniformMatrix3dv)
         }
         
         zval *data;
-        cvector_vector_type(GLdouble) tmpvec;
+        cvector_vector_type(GLdouble) tmpvec = NULL;
         ZEND_HASH_FOREACH_VAL(value_ht, data)
             if (Z_TYPE_P(data) == IS_DOUBLE) {
                 cvector_push_back(tmpvec, Z_DVAL_P(data));
@@ -7123,7 +7123,7 @@ PHP_FUNCTION(glUniformMatrix4dv)
         }
         
         zval *data;
-        cvector_vector_type(GLdouble) tmpvec;
+        cvector_vector_type(GLdouble) tmpvec = NULL;
         ZEND_HASH_FOREACH_VAL(value_ht, data)
             if (Z_TYPE_P(data) == IS_DOUBLE) {
                 cvector_push_back(tmpvec, Z_DVAL_P(data));
@@ -7153,7 +7153,7 @@ PHP_FUNCTION(glUniformMatrix2x3dv)
         }
         
         zval *data;
-        cvector_vector_type(GLdouble) tmpvec;
+        cvector_vector_type(GLdouble) tmpvec = NULL;
         ZEND_HASH_FOREACH_VAL(value_ht, data)
             if (Z_TYPE_P(data) == IS_DOUBLE) {
                 cvector_push_back(tmpvec, Z_DVAL_P(data));
@@ -7183,7 +7183,7 @@ PHP_FUNCTION(glUniformMatrix2x4dv)
         }
         
         zval *data;
-        cvector_vector_type(GLdouble) tmpvec;
+        cvector_vector_type(GLdouble) tmpvec = NULL;
         ZEND_HASH_FOREACH_VAL(value_ht, data)
             if (Z_TYPE_P(data) == IS_DOUBLE) {
                 cvector_push_back(tmpvec, Z_DVAL_P(data));
@@ -7213,7 +7213,7 @@ PHP_FUNCTION(glUniformMatrix3x2dv)
         }
         
         zval *data;
-        cvector_vector_type(GLdouble) tmpvec;
+        cvector_vector_type(GLdouble) tmpvec = NULL;
         ZEND_HASH_FOREACH_VAL(value_ht, data)
             if (Z_TYPE_P(data) == IS_DOUBLE) {
                 cvector_push_back(tmpvec, Z_DVAL_P(data));
@@ -7243,7 +7243,7 @@ PHP_FUNCTION(glUniformMatrix3x4dv)
         }
         
         zval *data;
-        cvector_vector_type(GLdouble) tmpvec;
+        cvector_vector_type(GLdouble) tmpvec = NULL;
         ZEND_HASH_FOREACH_VAL(value_ht, data)
             if (Z_TYPE_P(data) == IS_DOUBLE) {
                 cvector_push_back(tmpvec, Z_DVAL_P(data));
@@ -7273,7 +7273,7 @@ PHP_FUNCTION(glUniformMatrix4x2dv)
         }
         
         zval *data;
-        cvector_vector_type(GLdouble) tmpvec;
+        cvector_vector_type(GLdouble) tmpvec = NULL;
         ZEND_HASH_FOREACH_VAL(value_ht, data)
             if (Z_TYPE_P(data) == IS_DOUBLE) {
                 cvector_push_back(tmpvec, Z_DVAL_P(data));
@@ -7303,7 +7303,7 @@ PHP_FUNCTION(glUniformMatrix4x3dv)
         }
         
         zval *data;
-        cvector_vector_type(GLdouble) tmpvec;
+        cvector_vector_type(GLdouble) tmpvec = NULL;
         ZEND_HASH_FOREACH_VAL(value_ht, data)
             if (Z_TYPE_P(data) == IS_DOUBLE) {
                 cvector_push_back(tmpvec, Z_DVAL_P(data));
@@ -7400,7 +7400,7 @@ PHP_FUNCTION(glUniformSubroutinesuiv)
         }
         
         zval *data;
-        cvector_vector_type(GLuint) tmpvec;
+        cvector_vector_type(GLuint) tmpvec = NULL;
         ZEND_HASH_FOREACH_VAL(indices_ht, data)
             if (Z_TYPE_P(data) == IS_LONG) {
                 cvector_push_back(tmpvec, Z_LVAL_P(data));
@@ -7478,7 +7478,7 @@ PHP_FUNCTION(glPatchParameterfv)
         }
         
         zval *data;
-        cvector_vector_type(GLfloat) tmpvec;
+        cvector_vector_type(GLfloat) tmpvec = NULL;
         ZEND_HASH_FOREACH_VAL(values_ht, data)
             if (Z_TYPE_P(data) == IS_DOUBLE) {
                 cvector_push_back(tmpvec, Z_DVAL_P(data));
@@ -7877,7 +7877,7 @@ PHP_FUNCTION(glProgramUniform1iv)
         }
         
         zval *data;
-        cvector_vector_type(GLint) tmpvec;
+        cvector_vector_type(GLint) tmpvec = NULL;
         ZEND_HASH_FOREACH_VAL(value_ht, data)
             if (Z_TYPE_P(data) == IS_LONG) {
                 cvector_push_back(tmpvec, Z_LVAL_P(data));
@@ -7921,7 +7921,7 @@ PHP_FUNCTION(glProgramUniform1fv)
         }
         
         zval *data;
-        cvector_vector_type(GLfloat) tmpvec;
+        cvector_vector_type(GLfloat) tmpvec = NULL;
         ZEND_HASH_FOREACH_VAL(value_ht, data)
             if (Z_TYPE_P(data) == IS_DOUBLE) {
                 cvector_push_back(tmpvec, Z_DVAL_P(data));
@@ -7965,7 +7965,7 @@ PHP_FUNCTION(glProgramUniform1dv)
         }
         
         zval *data;
-        cvector_vector_type(GLdouble) tmpvec;
+        cvector_vector_type(GLdouble) tmpvec = NULL;
         ZEND_HASH_FOREACH_VAL(value_ht, data)
             if (Z_TYPE_P(data) == IS_DOUBLE) {
                 cvector_push_back(tmpvec, Z_DVAL_P(data));
@@ -8009,7 +8009,7 @@ PHP_FUNCTION(glProgramUniform1uiv)
         }
         
         zval *data;
-        cvector_vector_type(GLuint) tmpvec;
+        cvector_vector_type(GLuint) tmpvec = NULL;
         ZEND_HASH_FOREACH_VAL(value_ht, data)
             if (Z_TYPE_P(data) == IS_LONG) {
                 cvector_push_back(tmpvec, Z_LVAL_P(data));
@@ -8054,7 +8054,7 @@ PHP_FUNCTION(glProgramUniform2iv)
         }
         
         zval *data;
-        cvector_vector_type(GLint) tmpvec;
+        cvector_vector_type(GLint) tmpvec = NULL;
         ZEND_HASH_FOREACH_VAL(value_ht, data)
             if (Z_TYPE_P(data) == IS_LONG) {
                 cvector_push_back(tmpvec, Z_LVAL_P(data));
@@ -8099,7 +8099,7 @@ PHP_FUNCTION(glProgramUniform2fv)
         }
         
         zval *data;
-        cvector_vector_type(GLfloat) tmpvec;
+        cvector_vector_type(GLfloat) tmpvec = NULL;
         ZEND_HASH_FOREACH_VAL(value_ht, data)
             if (Z_TYPE_P(data) == IS_DOUBLE) {
                 cvector_push_back(tmpvec, Z_DVAL_P(data));
@@ -8144,7 +8144,7 @@ PHP_FUNCTION(glProgramUniform2dv)
         }
         
         zval *data;
-        cvector_vector_type(GLdouble) tmpvec;
+        cvector_vector_type(GLdouble) tmpvec = NULL;
         ZEND_HASH_FOREACH_VAL(value_ht, data)
             if (Z_TYPE_P(data) == IS_DOUBLE) {
                 cvector_push_back(tmpvec, Z_DVAL_P(data));
@@ -8189,7 +8189,7 @@ PHP_FUNCTION(glProgramUniform2uiv)
         }
         
         zval *data;
-        cvector_vector_type(GLuint) tmpvec;
+        cvector_vector_type(GLuint) tmpvec = NULL;
         ZEND_HASH_FOREACH_VAL(value_ht, data)
             if (Z_TYPE_P(data) == IS_LONG) {
                 cvector_push_back(tmpvec, Z_LVAL_P(data));
@@ -8235,7 +8235,7 @@ PHP_FUNCTION(glProgramUniform3iv)
         }
         
         zval *data;
-        cvector_vector_type(GLint) tmpvec;
+        cvector_vector_type(GLint) tmpvec = NULL;
         ZEND_HASH_FOREACH_VAL(value_ht, data)
             if (Z_TYPE_P(data) == IS_LONG) {
                 cvector_push_back(tmpvec, Z_LVAL_P(data));
@@ -8281,7 +8281,7 @@ PHP_FUNCTION(glProgramUniform3fv)
         }
         
         zval *data;
-        cvector_vector_type(GLfloat) tmpvec;
+        cvector_vector_type(GLfloat) tmpvec = NULL;
         ZEND_HASH_FOREACH_VAL(value_ht, data)
             if (Z_TYPE_P(data) == IS_DOUBLE) {
                 cvector_push_back(tmpvec, Z_DVAL_P(data));
@@ -8327,7 +8327,7 @@ PHP_FUNCTION(glProgramUniform3dv)
         }
         
         zval *data;
-        cvector_vector_type(GLdouble) tmpvec;
+        cvector_vector_type(GLdouble) tmpvec = NULL;
         ZEND_HASH_FOREACH_VAL(value_ht, data)
             if (Z_TYPE_P(data) == IS_DOUBLE) {
                 cvector_push_back(tmpvec, Z_DVAL_P(data));
@@ -8373,7 +8373,7 @@ PHP_FUNCTION(glProgramUniform3uiv)
         }
         
         zval *data;
-        cvector_vector_type(GLuint) tmpvec;
+        cvector_vector_type(GLuint) tmpvec = NULL;
         ZEND_HASH_FOREACH_VAL(value_ht, data)
             if (Z_TYPE_P(data) == IS_LONG) {
                 cvector_push_back(tmpvec, Z_LVAL_P(data));
@@ -8420,7 +8420,7 @@ PHP_FUNCTION(glProgramUniform4iv)
         }
         
         zval *data;
-        cvector_vector_type(GLint) tmpvec;
+        cvector_vector_type(GLint) tmpvec = NULL;
         ZEND_HASH_FOREACH_VAL(value_ht, data)
             if (Z_TYPE_P(data) == IS_LONG) {
                 cvector_push_back(tmpvec, Z_LVAL_P(data));
@@ -8467,7 +8467,7 @@ PHP_FUNCTION(glProgramUniform4fv)
         }
         
         zval *data;
-        cvector_vector_type(GLfloat) tmpvec;
+        cvector_vector_type(GLfloat) tmpvec = NULL;
         ZEND_HASH_FOREACH_VAL(value_ht, data)
             if (Z_TYPE_P(data) == IS_DOUBLE) {
                 cvector_push_back(tmpvec, Z_DVAL_P(data));
@@ -8514,7 +8514,7 @@ PHP_FUNCTION(glProgramUniform4dv)
         }
         
         zval *data;
-        cvector_vector_type(GLdouble) tmpvec;
+        cvector_vector_type(GLdouble) tmpvec = NULL;
         ZEND_HASH_FOREACH_VAL(value_ht, data)
             if (Z_TYPE_P(data) == IS_DOUBLE) {
                 cvector_push_back(tmpvec, Z_DVAL_P(data));
@@ -8561,7 +8561,7 @@ PHP_FUNCTION(glProgramUniform4uiv)
         }
         
         zval *data;
-        cvector_vector_type(GLuint) tmpvec;
+        cvector_vector_type(GLuint) tmpvec = NULL;
         ZEND_HASH_FOREACH_VAL(value_ht, data)
             if (Z_TYPE_P(data) == IS_LONG) {
                 cvector_push_back(tmpvec, Z_LVAL_P(data));
@@ -8592,7 +8592,7 @@ PHP_FUNCTION(glProgramUniformMatrix2fv)
         }
         
         zval *data;
-        cvector_vector_type(GLfloat) tmpvec;
+        cvector_vector_type(GLfloat) tmpvec = NULL;
         ZEND_HASH_FOREACH_VAL(value_ht, data)
             if (Z_TYPE_P(data) == IS_DOUBLE) {
                 cvector_push_back(tmpvec, Z_DVAL_P(data));
@@ -8623,7 +8623,7 @@ PHP_FUNCTION(glProgramUniformMatrix3fv)
         }
         
         zval *data;
-        cvector_vector_type(GLfloat) tmpvec;
+        cvector_vector_type(GLfloat) tmpvec = NULL;
         ZEND_HASH_FOREACH_VAL(value_ht, data)
             if (Z_TYPE_P(data) == IS_DOUBLE) {
                 cvector_push_back(tmpvec, Z_DVAL_P(data));
@@ -8654,7 +8654,7 @@ PHP_FUNCTION(glProgramUniformMatrix4fv)
         }
         
         zval *data;
-        cvector_vector_type(GLfloat) tmpvec;
+        cvector_vector_type(GLfloat) tmpvec = NULL;
         ZEND_HASH_FOREACH_VAL(value_ht, data)
             if (Z_TYPE_P(data) == IS_DOUBLE) {
                 cvector_push_back(tmpvec, Z_DVAL_P(data));
@@ -8685,7 +8685,7 @@ PHP_FUNCTION(glProgramUniformMatrix2dv)
         }
         
         zval *data;
-        cvector_vector_type(GLdouble) tmpvec;
+        cvector_vector_type(GLdouble) tmpvec = NULL;
         ZEND_HASH_FOREACH_VAL(value_ht, data)
             if (Z_TYPE_P(data) == IS_DOUBLE) {
                 cvector_push_back(tmpvec, Z_DVAL_P(data));
@@ -8716,7 +8716,7 @@ PHP_FUNCTION(glProgramUniformMatrix3dv)
         }
         
         zval *data;
-        cvector_vector_type(GLdouble) tmpvec;
+        cvector_vector_type(GLdouble) tmpvec = NULL;
         ZEND_HASH_FOREACH_VAL(value_ht, data)
             if (Z_TYPE_P(data) == IS_DOUBLE) {
                 cvector_push_back(tmpvec, Z_DVAL_P(data));
@@ -8747,7 +8747,7 @@ PHP_FUNCTION(glProgramUniformMatrix4dv)
         }
         
         zval *data;
-        cvector_vector_type(GLdouble) tmpvec;
+        cvector_vector_type(GLdouble) tmpvec = NULL;
         ZEND_HASH_FOREACH_VAL(value_ht, data)
             if (Z_TYPE_P(data) == IS_DOUBLE) {
                 cvector_push_back(tmpvec, Z_DVAL_P(data));
@@ -8778,7 +8778,7 @@ PHP_FUNCTION(glProgramUniformMatrix2x3fv)
         }
         
         zval *data;
-        cvector_vector_type(GLfloat) tmpvec;
+        cvector_vector_type(GLfloat) tmpvec = NULL;
         ZEND_HASH_FOREACH_VAL(value_ht, data)
             if (Z_TYPE_P(data) == IS_DOUBLE) {
                 cvector_push_back(tmpvec, Z_DVAL_P(data));
@@ -8809,7 +8809,7 @@ PHP_FUNCTION(glProgramUniformMatrix3x2fv)
         }
         
         zval *data;
-        cvector_vector_type(GLfloat) tmpvec;
+        cvector_vector_type(GLfloat) tmpvec = NULL;
         ZEND_HASH_FOREACH_VAL(value_ht, data)
             if (Z_TYPE_P(data) == IS_DOUBLE) {
                 cvector_push_back(tmpvec, Z_DVAL_P(data));
@@ -8840,7 +8840,7 @@ PHP_FUNCTION(glProgramUniformMatrix2x4fv)
         }
         
         zval *data;
-        cvector_vector_type(GLfloat) tmpvec;
+        cvector_vector_type(GLfloat) tmpvec = NULL;
         ZEND_HASH_FOREACH_VAL(value_ht, data)
             if (Z_TYPE_P(data) == IS_DOUBLE) {
                 cvector_push_back(tmpvec, Z_DVAL_P(data));
@@ -8871,7 +8871,7 @@ PHP_FUNCTION(glProgramUniformMatrix4x2fv)
         }
         
         zval *data;
-        cvector_vector_type(GLfloat) tmpvec;
+        cvector_vector_type(GLfloat) tmpvec = NULL;
         ZEND_HASH_FOREACH_VAL(value_ht, data)
             if (Z_TYPE_P(data) == IS_DOUBLE) {
                 cvector_push_back(tmpvec, Z_DVAL_P(data));
@@ -8902,7 +8902,7 @@ PHP_FUNCTION(glProgramUniformMatrix3x4fv)
         }
         
         zval *data;
-        cvector_vector_type(GLfloat) tmpvec;
+        cvector_vector_type(GLfloat) tmpvec = NULL;
         ZEND_HASH_FOREACH_VAL(value_ht, data)
             if (Z_TYPE_P(data) == IS_DOUBLE) {
                 cvector_push_back(tmpvec, Z_DVAL_P(data));
@@ -8933,7 +8933,7 @@ PHP_FUNCTION(glProgramUniformMatrix4x3fv)
         }
         
         zval *data;
-        cvector_vector_type(GLfloat) tmpvec;
+        cvector_vector_type(GLfloat) tmpvec = NULL;
         ZEND_HASH_FOREACH_VAL(value_ht, data)
             if (Z_TYPE_P(data) == IS_DOUBLE) {
                 cvector_push_back(tmpvec, Z_DVAL_P(data));
@@ -8964,7 +8964,7 @@ PHP_FUNCTION(glProgramUniformMatrix2x3dv)
         }
         
         zval *data;
-        cvector_vector_type(GLdouble) tmpvec;
+        cvector_vector_type(GLdouble) tmpvec = NULL;
         ZEND_HASH_FOREACH_VAL(value_ht, data)
             if (Z_TYPE_P(data) == IS_DOUBLE) {
                 cvector_push_back(tmpvec, Z_DVAL_P(data));
@@ -8995,7 +8995,7 @@ PHP_FUNCTION(glProgramUniformMatrix3x2dv)
         }
         
         zval *data;
-        cvector_vector_type(GLdouble) tmpvec;
+        cvector_vector_type(GLdouble) tmpvec = NULL;
         ZEND_HASH_FOREACH_VAL(value_ht, data)
             if (Z_TYPE_P(data) == IS_DOUBLE) {
                 cvector_push_back(tmpvec, Z_DVAL_P(data));
@@ -9026,7 +9026,7 @@ PHP_FUNCTION(glProgramUniformMatrix2x4dv)
         }
         
         zval *data;
-        cvector_vector_type(GLdouble) tmpvec;
+        cvector_vector_type(GLdouble) tmpvec = NULL;
         ZEND_HASH_FOREACH_VAL(value_ht, data)
             if (Z_TYPE_P(data) == IS_DOUBLE) {
                 cvector_push_back(tmpvec, Z_DVAL_P(data));
@@ -9057,7 +9057,7 @@ PHP_FUNCTION(glProgramUniformMatrix4x2dv)
         }
         
         zval *data;
-        cvector_vector_type(GLdouble) tmpvec;
+        cvector_vector_type(GLdouble) tmpvec = NULL;
         ZEND_HASH_FOREACH_VAL(value_ht, data)
             if (Z_TYPE_P(data) == IS_DOUBLE) {
                 cvector_push_back(tmpvec, Z_DVAL_P(data));
@@ -9088,7 +9088,7 @@ PHP_FUNCTION(glProgramUniformMatrix3x4dv)
         }
         
         zval *data;
-        cvector_vector_type(GLdouble) tmpvec;
+        cvector_vector_type(GLdouble) tmpvec = NULL;
         ZEND_HASH_FOREACH_VAL(value_ht, data)
             if (Z_TYPE_P(data) == IS_DOUBLE) {
                 cvector_push_back(tmpvec, Z_DVAL_P(data));
@@ -9119,7 +9119,7 @@ PHP_FUNCTION(glProgramUniformMatrix4x3dv)
         }
         
         zval *data;
-        cvector_vector_type(GLdouble) tmpvec;
+        cvector_vector_type(GLdouble) tmpvec = NULL;
         ZEND_HASH_FOREACH_VAL(value_ht, data)
             if (Z_TYPE_P(data) == IS_DOUBLE) {
                 cvector_push_back(tmpvec, Z_DVAL_P(data));
@@ -9217,7 +9217,7 @@ PHP_FUNCTION(glVertexAttribL1dv)
         }
         
         zval *data;
-        cvector_vector_type(GLdouble) tmpvec;
+        cvector_vector_type(GLdouble) tmpvec = NULL;
         ZEND_HASH_FOREACH_VAL(v_ht, data)
             if (Z_TYPE_P(data) == IS_DOUBLE) {
                 cvector_push_back(tmpvec, Z_DVAL_P(data));
@@ -9245,7 +9245,7 @@ PHP_FUNCTION(glVertexAttribL2dv)
         }
         
         zval *data;
-        cvector_vector_type(GLdouble) tmpvec;
+        cvector_vector_type(GLdouble) tmpvec = NULL;
         ZEND_HASH_FOREACH_VAL(v_ht, data)
             if (Z_TYPE_P(data) == IS_DOUBLE) {
                 cvector_push_back(tmpvec, Z_DVAL_P(data));
@@ -9273,7 +9273,7 @@ PHP_FUNCTION(glVertexAttribL3dv)
         }
         
         zval *data;
-        cvector_vector_type(GLdouble) tmpvec;
+        cvector_vector_type(GLdouble) tmpvec = NULL;
         ZEND_HASH_FOREACH_VAL(v_ht, data)
             if (Z_TYPE_P(data) == IS_DOUBLE) {
                 cvector_push_back(tmpvec, Z_DVAL_P(data));
@@ -9301,7 +9301,7 @@ PHP_FUNCTION(glVertexAttribL4dv)
         }
         
         zval *data;
-        cvector_vector_type(GLdouble) tmpvec;
+        cvector_vector_type(GLdouble) tmpvec = NULL;
         ZEND_HASH_FOREACH_VAL(v_ht, data)
             if (Z_TYPE_P(data) == IS_DOUBLE) {
                 cvector_push_back(tmpvec, Z_DVAL_P(data));
@@ -9348,7 +9348,7 @@ PHP_FUNCTION(glViewportArrayv)
         }
         
         zval *data;
-        cvector_vector_type(GLfloat) tmpvec;
+        cvector_vector_type(GLfloat) tmpvec = NULL;
         ZEND_HASH_FOREACH_VAL(v_ht, data)
             if (Z_TYPE_P(data) == IS_DOUBLE) {
                 cvector_push_back(tmpvec, Z_DVAL_P(data));
@@ -9392,7 +9392,7 @@ PHP_FUNCTION(glViewportIndexedfv)
         }
         
         zval *data;
-        cvector_vector_type(GLfloat) tmpvec;
+        cvector_vector_type(GLfloat) tmpvec = NULL;
         ZEND_HASH_FOREACH_VAL(v_ht, data)
             if (Z_TYPE_P(data) == IS_DOUBLE) {
                 cvector_push_back(tmpvec, Z_DVAL_P(data));
@@ -9421,7 +9421,7 @@ PHP_FUNCTION(glScissorArrayv)
         }
         
         zval *data;
-        cvector_vector_type(GLint) tmpvec;
+        cvector_vector_type(GLint) tmpvec = NULL;
         ZEND_HASH_FOREACH_VAL(v_ht, data)
             if (Z_TYPE_P(data) == IS_LONG) {
                 cvector_push_back(tmpvec, Z_LVAL_P(data));
@@ -9465,7 +9465,7 @@ PHP_FUNCTION(glScissorIndexedv)
         }
         
         zval *data;
-        cvector_vector_type(GLint) tmpvec;
+        cvector_vector_type(GLint) tmpvec = NULL;
         ZEND_HASH_FOREACH_VAL(v_ht, data)
             if (Z_TYPE_P(data) == IS_LONG) {
                 cvector_push_back(tmpvec, Z_LVAL_P(data));
@@ -9494,7 +9494,7 @@ PHP_FUNCTION(glDepthRangeArrayv)
         }
         
         zval *data;
-        cvector_vector_type(GLdouble) tmpvec;
+        cvector_vector_type(GLdouble) tmpvec = NULL;
         ZEND_HASH_FOREACH_VAL(v_ht, data)
             if (Z_TYPE_P(data) == IS_DOUBLE) {
                 cvector_push_back(tmpvec, Z_DVAL_P(data));
