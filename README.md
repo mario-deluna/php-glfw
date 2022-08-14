@@ -105,8 +105,41 @@ If you want to check out the code straight away, check out the [examples](./exam
 
 ### MacOS 
 
+Make sure you have the `php-dev`, `git` package and `cmake` installed. **They are required!**
 
+Manual installation:
 
+```bash
+git clone https://github.com/mario-deluna/php-glfw
+cd php-glfw
+sudo phpize && ./configure --enable-glfw
+sudo make install
+```
+
+make sure to add `glfw.so` in the `php.ini` file:
+
+```ini
+extension="glfw.so"
+```
+
+### Linux 
+
+`cmake` is required for the installation you can skip the first step if its already installed. 
+Also make sure that you install the `php-dev` package for example `php8.1-dev`.
+
+```
+sudo apt install -y cmake git 
+git clone https://github.com/mario-deluna/php-glfw
+cd php-glfw
+sudo phpize && ./configure --enable-glfw
+sudo make install
+```
+
+make sure to add `glfw.so` in the `php.ini` file:
+
+```ini
+extension="glfw.so"
+```
 
 ### Stubs (IDE Support)
 
