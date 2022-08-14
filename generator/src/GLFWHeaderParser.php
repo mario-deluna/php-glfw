@@ -2,6 +2,19 @@
 
 class GLFWHeaderParser 
 {
+    /**
+     * An array of function names to be always excluded 
+     * 
+     * @var array<string>
+     */
+    private array $excludedFunctions = 
+    [
+        'glfwCreateWindowSurface', // we do not support vulkan..'
+        'glfwGetPhysicalDevicePresentationSupport',
+        'glfwGetInstanceProcAddress',
+        'glfwGetRequiredInstanceExtensions',
+    ];
+
     private array $glfwTypeToExt = 
     [
         'void' => ExtType::T_VOID,
@@ -75,6 +88,11 @@ class GLFWHeaderParser
             $funcReturnValue = $funcmatches[1][$k];
             $funcName = $funcmatches[2][$k];
             $funcArgs = $funcmatches[3][$k];
+
+            // skip ignored functions
+            if (in_array($funcName, $this->excludedFunctions)) {
+                continue;
+            }
 
             // flag that turns falls when we could not parse 
             // or convert the function properly
