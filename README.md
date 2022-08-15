@@ -32,19 +32,19 @@ PHP-GLFW allows you to create _2D_ and _3D_ real-time applications in _PHP_. Bri
 ## What is this extension? Features 🚀
 
 PHP-GLFW aims to be one extension containing all basics you need to start building graphical applications in PHP. That means that PHP-GLFW **does NOT just
-provide GLFW library bindings**. Instead it also **includes OpenGL bindings** and a bunch of classes and helpers pretty much required for building these types of applications.
+provide GLFW library bindings**. Instead, it also **includes OpenGL bindings** and a bunch of classes and helpers pretty much required for building these types of applications.
 
 ### OpenGL 
 
-* Full native support of **OpenGL** (4.1+ core), GPU accelerated rednering in PHP.
-* Targeting OpenGL 4.1, but it can be built for newer versions as well.
+* Full native support of **OpenGL** (4.1+ core), GPU accelerated rendering in PHP.
+* Targeting OpenGL 4.1, but it can also be built for newer versions.
 * Support for OpenGL extensions (limited).
-* Mostly mirroring the C API, adjustments were made where required or otherwise nonsenical.
+* Mostly mirroring the C API, adjustments were made where required or otherwise nonsensical.
 * We currently support about ~90% of the full standard, check [GLSUPPORT.md](./GLSUPPORT.md)
 
 ### GLFW 
 
-This extenion comes obviosly with bindings for the amazing **[GLFW](https://www.glfw.org)** library.  GLFW comes with great features, to name a few:
+This extension comes obviously with bindings for the amazing **[GLFW](https://www.glfw.org)** library. GLFW comes with great features, to name a few:
 
 * Multiplatform Window creation and handling. (MacOS / Window / Linux)
 * Support for multiple windows and monitors.
@@ -54,16 +54,16 @@ This extenion comes obviosly with bindings for the amazing **[GLFW](https://www.
 
 ### PHPGL - Math
 
-PHPGL is what I call the extras in this extenion aka classes and helpers additionally provided that are pretty much a requirement for these kinds of applications. PHP-GLFW comes with a mathematics library written in C covering the most common operations required for graphical applications. 
+PHPGL is what I call the extras in this extension, aka classes and helpers additionally provided that are pretty much a requirement for these kinds of applications. PHP-GLFW comes with a mathematics library written in C, covering the most common operations required for graphical applications. 
 
  * Supported structs: `Vec2`, `Vec3`, `Vec4`, `Mat4` and `Quat`.
  * Includes most common matrix operations for the use case like: `lookAt`, `perspective`, `inverse`, `rotate` etc..
 
 Having this integrated into the extension comes with a bunch of advantages:
 
- * Its fast. 
+ * It's fast. 
  * low memory footprint.
- * The math structures have overloaded operators so you can write things like:
+ * The math structures have overloaded operators, so you can write things like:
    ```php
    $v3 = Vec2(15, -5) + Vec2(42, 7); // returns Vec2(54, 2)
    ```
@@ -71,7 +71,7 @@ Having this integrated into the extension comes with a bunch of advantages:
 
 ### PHPGL - Buffers
 
-This extension also comes with a collection of buffer objects that internally hold data in native types. 
+This extension also contains a collection of buffer objects that internally hold data in native types. 
 
  * Can handle large arrays of data.
  * Low memory footprint and very fast. 
@@ -79,10 +79,10 @@ This extension also comes with a collection of buffer objects that internally ho
 
 ### PHPGL - Textures
 
-PHP-GLFW support the loading of images / textures into buffers without requiring an additional extenion:
+PHP-GLFW supports the loading of images/textures into buffers without requiring an additional extension:
 
    * can load common image formats as `jpg`, `png`, `tga`, `bmp`, `gif`. _(gd or Imagick is not required)_
-   * can write images / textures back to disk.
+   * can write images/textures back to disk.
    * writes data into a `BufferInterface` object giving full access to the bitmap from userland.
 
 ### How are the bindings achieved?
@@ -116,7 +116,7 @@ php -r "copy('https://raw.githubusercontent.com/mario-deluna/php-glfw/master/ins
 
 #### Manual installation
 
-If you prefer a manual approach make sure you have the `php-dev`, `git` package and `cmake` installed. **They are required!**
+If you prefer a manual approach, ensure you have installed the `php-dev`, `git` and `cmake` packages. **They are required!**
 
 ```bash
 git clone https://github.com/mario-deluna/php-glfw
@@ -133,8 +133,8 @@ extension="glfw.so"
 
 ### Linux 
 
-`cmake` is required for the installation you can skip the first step if its already installed. 
-Also make sure that you install the `php-dev` package for example `php8.1-dev`.
+`cmake` is required for the installation. You can skip the first step if it's already installed. 
+Also, make sure that you install the `php-dev` package for example, `php8.1-dev`.
 
 ```
 sudo apt install -y cmake git 
@@ -152,7 +152,7 @@ extension="glfw.so"
 
 ### Stubs (IDE Support)
 
-As this is a PHP extension, your editor / IDE does not support autocompletation and doc lookups without some help.
+As this is a PHP extension, your editor / IDE does not support auto-completion and doc lookups without some help.
 We created a composer package you can include as a dev dependency to have full support:
 
 ```
@@ -161,13 +161,13 @@ composer require --dev phpgl/ide-stubs
 
 ## Things to know when you start 💡 
 
-PHP-GLFW tries to keep the core OpenGL / GLFW API as close to the original as possible and only do modifications to the API when necessary. This results in some functions being quite wired from a PHP point of view. Naming scheme:
+PHP-GLFW tries to keep the core OpenGL / GLFW API as close to the original as possible and only modifies the API when necessary. This results in some functions being quite wired from a PHP point of view. Naming scheme:
 
 | prefix | module | desc |
 |--------|----------|-------------------------------------------------------------------------------------------------------------------------|
 | `gl` | OpenGL | Core OpenGL functions.<br> Examples: glClearColor, glEnable, glActiveTexture etc. |
 | `glfw` | GLFW | GLFW library functions, everything to interact with the OS window, input.<br> Examples: glfwCreateWindow, glfwGetCursorPos, glfwSwapBuffers |
-| `GL\` | PHP-GLFW | Classes and functions in this namespace are custom to the extension, and are not default to OpenGL.<br> Examples: `GL\Buffer\FloatBuffer`, `GL\Math\Vec3` etc.. |
+| `GL\` | PHP-GLFW | Classes and functions in this namespace are custom to the extension and are not default to OpenGL.<br> Examples: `GL\Buffer\FloatBuffer`, `GL\Math\Vec3` etc.. |
 
 
 ## Credits
