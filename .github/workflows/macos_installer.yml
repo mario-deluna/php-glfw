@@ -1,0 +1,34 @@
+name: Test MacOS Installer
+
+on:
+  workflow_run:
+    workflows: ["PHPglfw"]
+    types:
+      - completed
+
+jobs:
+  macos:
+    runs-on: ${{ matrix.operating-system }}
+    strategy:
+      matrix:
+        operating-system: ['macos-latest']
+        php-versions: ['8.0', '8.1']
+    
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Setup PHP
+      uses: shivammathur/setup-php@v2
+      with:
+        php-version: ${{ matrix.php-versions }}
+        coverage: xdebug
+        tools: cs2pr
+        
+    - name: Run the installer
+      run: php -r "copy('https://raw.githubusercontent.com/mario-deluna/php-glfw/master/install/macos-installer.php', 'phpglfw-installer.php');" && sudo php phpglfw-installer.php
+
+    - name: Install PHPUnit
+      run: composer require "phpunit/phpunit"
+    
+    - name: Run PHPUnit 
+      run: php vendor/bin/phpunit --exclude-group=glfwinit
