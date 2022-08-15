@@ -446,7 +446,8 @@ class ExtGenerator
         // docs 
         $this->docParser = new ExtDocParser;
         $this->buildDocsBuffer();
-        // $this->buildDocsOpenGL();
+        $this->buildDocsOpenGL();
+        $this->buildDocsGLFW();
 
         foreach($this->methods as $func) {
             if ($func->incomplete) {
@@ -591,6 +592,23 @@ class ExtGenerator
             $path = GEN_PATH_EXT . '/docs/API/OpenGL/' . $func->name . '.md';
 
             file_put_contents($path, $this->generateTemplate('docs/opengl_func.md', [
+                'func' => $func,
+                'docParser' => $this->docParser,
+            ], false));
+        }
+    }
+    /**
+     * Builds the Docs / Buffer
+     */
+    private function buildDocsGLFW() : void
+    {
+        foreach($this->getCompleteFunctions() as $func) {
+
+            if (substr($func->name, 0, 4) !== 'glfw') continue;
+
+            $path = GEN_PATH_EXT . '/docs/API/GLFW/' . $func->name . '.md';
+
+            file_put_contents($path, $this->generateTemplate('docs/glfw_func.md', [
                 'func' => $func,
                 'docParser' => $this->docParser,
             ], false));

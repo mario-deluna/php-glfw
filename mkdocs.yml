@@ -1,16 +1,26 @@
-site_name: PHP-GLFW | A fully-featured OpenGL and GLFW extension for PHP
+site_name: PHP-GLFW
 repo_url: https://github.com/mario-deluna/php-glfw
 use_directory_urls: false
-# nav:
-#   - 'index.md'
-#   - 'getting-started.md'
-#   - 'user-guide/index.md'
-#   - 'API/index.md'
+nav:
+  - 'index.md'
+  - Gettings Started:
+    - Installation:
+      - Linux: getting-started/installation/install-linux.md
+      - MacOS: getting-started/installation/install-macos.md
+      - Windows: getting-started/installation/install-windows.md
+      - IDE Setup: getting-started/installation/ide-setup.md
+    - Creating a Window: getting-started/window-creation.md
+    - Drawing a Triangle: getting-started/drawing_a_triangle.md
+  - 'user-guide/index.md'
+  - API: 'API/'
 plugins:
   - search
+  - include_dir_to_nav
+  
   # - tags
 theme:
   name: material
+  custom_dir: docs/overrides
   logo: ./logo_phpglfw_s.png
   font:
     text: Source Sans Pro
@@ -25,13 +35,22 @@ copyright: Copyright &copy; 2018 - 2022 Mario Döring / @see <a target="_blank" 
 extra:
   generator: false
 markdown_extensions:
+  - attr_list
+  - md_in_html
   - admonition
   - footnotes
-  - pymdownx.highlight
+  - pymdownx.inlinehilite
+  - pymdownx.snippets
   - pymdownx.extra
-  - pymdownx.superfences
   - pymdownx.tabbed
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_format
+
   - pymdownx.highlight:
+      anchor_linenums: true
       extend_pygments_lang:
         - name: php
           lang: php

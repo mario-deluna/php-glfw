@@ -141,7 +141,7 @@ foreach(['cmake', 'git'] as $name) {
         printColor("Do you want to install it now? [y/n]\n", 'yellow');
         $answer = trim(fgets(STDIN));
         if($answer === 'y') {
-            passthru('brew install ' . $name);
+            passthru('sudo brew install ' . $name);
         } else {
             printColor("Please install \"{$name}\" and try again!\n", 'red');
             exit(1);
