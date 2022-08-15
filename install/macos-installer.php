@@ -15,7 +15,7 @@ function printColor(string $text, string $color) : void {
     echo $colors[$color] . $text . $colors['reset'];
 }
 
-$collen = exec('tput cols');
+$collen = exec('tput cols') ?: 80;
 
 function printSeperator(string $char = '-') : void {
     echo str_repeat($char, $GLOBALS['collen']) . "\n";
