@@ -1,4 +1,4 @@
-site_name: PHP-GLFW
+site_name: PHP-GLFW | A fully-featured OpenGL and GLFW extension for PHP
 repo_url: https://github.com/mario-deluna/php-glfw
 use_directory_urls: false
 # nav:
