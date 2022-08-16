@@ -1,5 +1,6 @@
 site_name: PHP-GLFW
 repo_url: https://github.com/mario-deluna/php-glfw
+site_url: https://phpgl.net
 use_directory_urls: false
 nav:
   - 'index.md'

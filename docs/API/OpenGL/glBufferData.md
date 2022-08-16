@@ -5,7 +5,21 @@ creates and initializes a buffer object's data store
 function glBufferData(int $target, \GL\Buffer\BufferInterface $buffer, int $usage) : void
 ```
 
+Example:
+```php
+$buffer = new GL\Buffer\FloatBuffer([
+    // positions     // colors
+    0.5, -0.5, 0.0,  1.0, 0.0, 0.0,  // bottom right
+   -0.5, -0.5, 0.0,  0.0, 1.0, 0.0,  // bottom let
+    0.0,  0.5, 0.0,  0.0, 0.0, 1.0   // top
+]);
 
+glGenVertexArrays(1, $VAO);
+glGenBuffers(1, $VBO);
+glBindVertexArray($VAO);
+glBindBuffer(GL_ARRAY_BUFFER, $VBO);
+glBufferData(GL_ARRAY_BUFFER, $buffer, GL_STATIC_DRAW);
+```
 
 arguments
 

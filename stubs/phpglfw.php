@@ -5820,11 +5820,6 @@ namespace {
     /**
      * creates and initializes a buffer object's data store
      * 
-     * @PHP-GLFW: In the PHP extension this method has different signiture compared
-     * to the original. 
-     * Instead of passing byte size and a pointer to the function, in PHP you pass a
-     * `GL\Buffer\BufferInterface` instance.
-     * 
      * Example: 
      * ```php
      * $buffer = new GL\Buffer\FloatBuffer([
@@ -5840,6 +5835,11 @@ namespace {
      * glBindBuffer(GL_ARRAY_BUFFER, $VBO);
      * glBufferData(GL_ARRAY_BUFFER, $buffer, GL_STATIC_DRAW);
      * ```
+     * 
+     * @PHP-GLFW: In the PHP extension this method has different signiture compared
+     * to the original. 
+     * Instead of passing byte size and a pointer to the function, in PHP you pass a
+     * `GL\Buffer\BufferInterface` instance.
      * 
      * @param int $target Specifies the target to which the buffer object is bound
      * for glBufferData.
