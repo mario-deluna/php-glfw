@@ -1730,6 +1730,19 @@ namespace {
     function glGetProgramiv(int $program, int $pname, int &$params) : void {};
  
     /**
+     * Returns the information log for a program object
+     * 
+     * @PHP-GLFW: In the PHP extension this function directly returns the error
+     * string instead of being passed by reference as an argument.
+     * 
+     * @param int $program Specifies the program object whose information log is to
+     * be queried.
+     * @param int $bufSize Specifies the size of the character buffer for storing
+     * the returned information log.
+     */ 
+    function glGetProgramInfoLog(int $program, int $bufSize) : string {};
+ 
+    /**
      * glGetShaderiv
      * 
      * @param int $shader 

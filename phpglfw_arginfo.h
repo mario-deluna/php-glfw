@@ -1,5 +1,5 @@
 /* This is a generated file, edit the .stub.php file instead.
- * Stub hash: e1d3f3f7e0a334e3ef073d512f8b145984ce8f3f */
+ * Stub hash: f41f02fca09e8a806a3979feb6da6e3915a66e78 */
 
 ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_glCullFace, 0, 1, IS_VOID, 0)
 	ZEND_ARG_TYPE_INFO(0, mode, IS_LONG, 0)
@@ -459,6 +459,11 @@ ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_glGetProgramiv, 0, 3, IS_VOID, 0
 	ZEND_ARG_TYPE_INFO(0, program, IS_LONG, 0)
 	ZEND_ARG_TYPE_INFO(0, pname, IS_LONG, 0)
 	ZEND_ARG_TYPE_INFO(1, params, IS_LONG, 0)
+ZEND_END_ARG_INFO()
+
+ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_glGetProgramInfoLog, 0, 2, IS_STRING, 0)
+	ZEND_ARG_TYPE_INFO(0, program, IS_LONG, 0)
+	ZEND_ARG_TYPE_INFO(0, bufSize, IS_LONG, 0)
 ZEND_END_ARG_INFO()
 
 ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_glGetShaderiv, 0, 3, IS_VOID, 0)
@@ -2661,6 +2666,7 @@ ZEND_FUNCTION(glEnableVertexAttribArray);
 ZEND_FUNCTION(glGetAttachedShaders);
 ZEND_FUNCTION(glGetAttribLocation);
 ZEND_FUNCTION(glGetProgramiv);
+ZEND_FUNCTION(glGetProgramInfoLog);
 ZEND_FUNCTION(glGetShaderiv);
 ZEND_FUNCTION(glGetShaderInfoLog);
 ZEND_FUNCTION(glGetUniformLocation);
@@ -3324,6 +3330,7 @@ static const zend_function_entry ext_functions[] = {
 	ZEND_FE(glGetAttachedShaders, arginfo_glGetAttachedShaders)
 	ZEND_FE(glGetAttribLocation, arginfo_glGetAttribLocation)
 	ZEND_FE(glGetProgramiv, arginfo_glGetProgramiv)
+	ZEND_FE(glGetProgramInfoLog, arginfo_glGetProgramInfoLog)
 	ZEND_FE(glGetShaderiv, arginfo_glGetShaderiv)
 	ZEND_FE(glGetShaderInfoLog, arginfo_glGetShaderInfoLog)
 	ZEND_FE(glGetUniformLocation, arginfo_glGetUniformLocation)

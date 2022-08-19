@@ -111,7 +111,7 @@ If you want to check out the code straight away, check out the [examples](./exam
 There is a simple installer script you can use to install php-gflw:
 
 ```
-php -r "copy('https://raw.githubusercontent.com/mario-deluna/php-glfw/master/install/macos-installer.php', 'phpglfw-installer.php');" && sudo php phpglfw-installer.php
+php -r "copy('https://raw.githubusercontent.com/mario-deluna/php-glfw/master/install/macos-installer.php', 'phpglfw-installer.php');" && php phpglfw-installer.php
 ```
 
 Thats it, if you see the text "Installation finished!" you should be ready to go!

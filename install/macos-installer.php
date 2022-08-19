@@ -141,7 +141,7 @@ foreach(['cmake', 'git'] as $name) {
         printColor("Do you want to install it now? [y/n]\n", 'yellow');
         $answer = trim(fgets(STDIN));
         if($answer === 'y') {
-            passthru('sudo brew install ' . $name);
+            passthru('brew install ' . $name);
         } else {
             printColor("Please install \"{$name}\" and try again!\n", 'red');
             exit(1);
@@ -159,7 +159,7 @@ printSeperator('*');
 
 printColor("Building PHP-GLFW...\n", 'bold');
 
-passthru("cd php-glfw && sudo phpize && ./configure --enable-glfw && make && sudo make install");
+passthru("cd php-glfw && sudo phpize && sudo ./configure --enable-glfw && sudo make && sudo make install");
 
 printSeperator('*');
 

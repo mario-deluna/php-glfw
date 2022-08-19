@@ -1891,6 +1891,7 @@ namespace {
     function glGetAttachedShaders(int $program, int $maxCount, int &$count, int &$shaders) : void {};
     function glGetAttribLocation(int $program, string $name) : int {};
     function glGetProgramiv(int $program, int $pname, int &$params) : void {};
+    function glGetProgramInfoLog(int $program, int $bufSize) : string {};
     function glGetShaderiv(int $shader, int $pname, int &$params) : void {};
     function glGetShaderInfoLog(int $shader, int $bufSize) : string {};
     function glGetUniformLocation(int $program, string $name) : int {};

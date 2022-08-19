@@ -16,41 +16,44 @@ class GLGetShaderInfoLogAdjustment implements AdjustmentInterface
      */
     public function handle(ExtGenerator $gen) : void
     {   
-        // instead of hassling with a passed by reference string
-        // we simply return the string as in php the string is already a reference
-        $func = new class('glGetShaderInfoLog') extends ExtFunction 
-        {   
-            public function getFunctionCallCode() : string
-            {
-                $targetVarName = $this->arguments[0]->getInternalVariable();
-                $sizeVarName = $this->arguments[1]->getInternalVariable();
+        foreach(['glGetShaderInfoLog', 'glGetProgramInfoLog'] as $functionName) 
+        {
+            // instead of hassling with a passed by reference string
+            // we simply return the string as in php the string is already a reference
+            $func = new class($functionName) extends ExtFunction 
+            {   
+                public function getFunctionCallCode() : string
+                {
+                    $targetVarName = $this->arguments[0]->getInternalVariable();
+                    $sizeVarName = $this->arguments[1]->getInternalVariable();
 
-                // i do a probably unessecary copy of the string here 
-                // you can probably directly write into a zval..
-                $b = 'GLint maxlen = 0;' . PHP_EOL;
-                $b .= 'char *buffer;' . PHP_EOL;
-                $b .= sprintf('buffer = emalloc(sizeof(char) * %s);', $sizeVarName) . PHP_EOL;
-                $b .= sprintf('%s(%s, %s, &maxlen, buffer);', $this->name, $targetVarName, $sizeVarName) . PHP_EOL;
-                $b .= sprintf('RETURN_STRINGL(buffer, maxlen);') . PHP_EOL;
-                $b .= 'efree(buffer);' . PHP_EOL;
+                    // i do a probably unessecary copy of the string here 
+                    // you can probably directly write into a zval..
+                    $b = 'GLint maxlen = 0;' . PHP_EOL;
+                    $b .= 'char *buffer;' . PHP_EOL;
+                    $b .= sprintf('buffer = emalloc(sizeof(char) * %s);', $sizeVarName) . PHP_EOL;
+                    $b .= sprintf('%s(%s, %s, &maxlen, buffer);', $this->name, $targetVarName, $sizeVarName) . PHP_EOL;
+                    $b .= sprintf('RETURN_STRINGL(buffer, maxlen);') . PHP_EOL;
+                    $b .= 'efree(buffer);' . PHP_EOL;
 
-                return $b;
-            }
+                    return $b;
+                }
 
-            public function getReturnStatement(string $c) : string {
-                return $c;
-            }
-        };
+                public function getReturnStatement(string $c) : string {
+                    return $c;
+                }
+            };
 
-        $func->copyFrom($gen->getFunctionByName('glGetShaderInfoLog'));
+            $func->copyFrom($gen->getFunctionByName($functionName));
 
-        $func->arguments[1]->comment = "Specifies the size of the character buffer for storing the returned information log.";
+            $func->arguments[1]->comment = "Specifies the size of the character buffer for storing the returned information log.";
 
-        $func->arguments = array_slice($func->arguments, 0, 2);
-        $func->returnType = ExtType::T_STRING;
-        $func->comment .= PHP_EOL . PHP_EOL . '@PHP-GLFW: In the PHP extension this function directly returns the error string instead of being passed by reference as an argument.';
-        
-        $func->incomplete = false;
-        $gen->replaceFunctionByName($func);
+            $func->arguments = array_slice($func->arguments, 0, 2);
+            $func->returnType = ExtType::T_STRING;
+            $func->comment .= PHP_EOL . PHP_EOL . '@PHP-GLFW: In the PHP extension this function directly returns the error string instead of being passed by reference as an argument.';
+            
+            $func->incomplete = false;
+            $gen->replaceFunctionByName($func);
+        }
     }
 }

@@ -2053,6 +2053,24 @@ PHP_FUNCTION(glGetProgramiv)
 } 
 
 /**
+ * glGetProgramInfoLog
+ */ 
+PHP_FUNCTION(glGetProgramInfoLog)
+{
+    zend_long program;
+    zend_long bufSize;
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "ll", &program, &bufSize) == FAILURE) {
+        return;
+    }
+    GLint maxlen = 0;
+    char *buffer;
+    buffer = emalloc(sizeof(char) * bufSize);
+    glGetProgramInfoLog(program, bufSize, &maxlen, buffer);
+    RETURN_STRINGL(buffer, maxlen);
+    efree(buffer);
+} 
+
+/**
  * glGetShaderiv
  */ 
 PHP_FUNCTION(glGetShaderiv)
