@@ -2,7 +2,7 @@
 glUniform3iv
 
 ```php
-function glUniform3iv(int $location, int $count, \GL\Buffer\IntBuffer|array $value) : void
+function glUniform3iv(int $location, \GL\Buffer\IntBuffer|array $value) : void
 ```
 
 
@@ -10,8 +10,7 @@ function glUniform3iv(int $location, int $count, \GL\Buffer\IntBuffer|array $val
 arguments
 
 :    1. `int` `$location` 
-    2. `int` `$count` 
-    3. `\GL\Buffer\IntBuffer|array` `$value` 
+    2. `\GL\Buffer\IntBuffer|array` `$value` 
 
 
 

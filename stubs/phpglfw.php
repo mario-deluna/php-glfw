@@ -1927,93 +1927,83 @@ namespace {
      * glUniform1fv
      * 
      * @param int $location 
-     * @param int $count 
      * @param \GL\Buffer\FloatBuffer|array $value
      */ 
-    function glUniform1fv(int $location, int $count, \GL\Buffer\FloatBuffer|array $value) : void {};
+    function glUniform1fv(int $location, \GL\Buffer\FloatBuffer|array $value) : void {};
  
     /**
      * glUniform2fv
      * 
      * @param int $location 
-     * @param int $count 
      * @param \GL\Buffer\FloatBuffer|array $value
      */ 
-    function glUniform2fv(int $location, int $count, \GL\Buffer\FloatBuffer|array $value) : void {};
+    function glUniform2fv(int $location, \GL\Buffer\FloatBuffer|array $value) : void {};
  
     /**
      * glUniform3fv
      * 
      * @param int $location 
-     * @param int $count 
      * @param \GL\Buffer\FloatBuffer|array $value
      */ 
-    function glUniform3fv(int $location, int $count, \GL\Buffer\FloatBuffer|array $value) : void {};
+    function glUniform3fv(int $location, \GL\Buffer\FloatBuffer|array $value) : void {};
  
     /**
      * glUniform4fv
      * 
      * @param int $location 
-     * @param int $count 
      * @param \GL\Buffer\FloatBuffer|array $value
      */ 
-    function glUniform4fv(int $location, int $count, \GL\Buffer\FloatBuffer|array $value) : void {};
+    function glUniform4fv(int $location, \GL\Buffer\FloatBuffer|array $value) : void {};
  
     /**
      * glUniform1iv
      * 
      * @param int $location 
-     * @param int $count 
      * @param \GL\Buffer\IntBuffer|array $value
      */ 
-    function glUniform1iv(int $location, int $count, \GL\Buffer\IntBuffer|array $value) : void {};
+    function glUniform1iv(int $location, \GL\Buffer\IntBuffer|array $value) : void {};
  
     /**
      * glUniform2iv
      * 
      * @param int $location 
-     * @param int $count 
      * @param \GL\Buffer\IntBuffer|array $value
      */ 
-    function glUniform2iv(int $location, int $count, \GL\Buffer\IntBuffer|array $value) : void {};
+    function glUniform2iv(int $location, \GL\Buffer\IntBuffer|array $value) : void {};
  
     /**
      * glUniform3iv
      * 
      * @param int $location 
-     * @param int $count 
      * @param \GL\Buffer\IntBuffer|array $value
      */ 
-    function glUniform3iv(int $location, int $count, \GL\Buffer\IntBuffer|array $value) : void {};
+    function glUniform3iv(int $location, \GL\Buffer\IntBuffer|array $value) : void {};
  
     /**
      * glUniform4iv
      * 
      * @param int $location 
-     * @param int $count 
      * @param \GL\Buffer\IntBuffer|array $value
      */ 
-    function glUniform4iv(int $location, int $count, \GL\Buffer\IntBuffer|array $value) : void {};
+    function glUniform4iv(int $location, \GL\Buffer\IntBuffer|array $value) : void {};
  
     /**
      * glUniformMatrix2fv
      * 
      * @param int $location 
-     * @param int $count 
      * @param bool $transpose 
      * @param \GL\Buffer\FloatBuffer|array $value
      */ 
-    function glUniformMatrix2fv(int $location, int $count, bool $transpose, \GL\Buffer\FloatBuffer|array $value) : void {};
+    function glUniformMatrix2fv(int $location, bool $transpose, \GL\Buffer\FloatBuffer|array $value) : void {};
  
     /**
      * glUniformMatrix3fv
      * 
      * @param int $location 
-     * @param int $count 
      * @param bool $transpose 
      * @param \GL\Buffer\FloatBuffer|array $value
      */ 
-    function glUniformMatrix3fv(int $location, int $count, bool $transpose, \GL\Buffer\FloatBuffer|array $value) : void {};
+    function glUniformMatrix3fv(int $location, bool $transpose, \GL\Buffer\FloatBuffer|array $value) : void {};
  
     /**
      * glUniformMatrix4fv
@@ -2379,61 +2369,55 @@ namespace {
      * glUniformMatrix2x3fv
      * 
      * @param int $location 
-     * @param int $count 
      * @param bool $transpose 
      * @param \GL\Buffer\FloatBuffer|array $value
      */ 
-    function glUniformMatrix2x3fv(int $location, int $count, bool $transpose, \GL\Buffer\FloatBuffer|array $value) : void {};
+    function glUniformMatrix2x3fv(int $location, bool $transpose, \GL\Buffer\FloatBuffer|array $value) : void {};
  
     /**
      * glUniformMatrix3x2fv
      * 
      * @param int $location 
-     * @param int $count 
      * @param bool $transpose 
      * @param \GL\Buffer\FloatBuffer|array $value
      */ 
-    function glUniformMatrix3x2fv(int $location, int $count, bool $transpose, \GL\Buffer\FloatBuffer|array $value) : void {};
+    function glUniformMatrix3x2fv(int $location, bool $transpose, \GL\Buffer\FloatBuffer|array $value) : void {};
  
     /**
      * glUniformMatrix2x4fv
      * 
      * @param int $location 
-     * @param int $count 
      * @param bool $transpose 
      * @param \GL\Buffer\FloatBuffer|array $value
      */ 
-    function glUniformMatrix2x4fv(int $location, int $count, bool $transpose, \GL\Buffer\FloatBuffer|array $value) : void {};
+    function glUniformMatrix2x4fv(int $location, bool $transpose, \GL\Buffer\FloatBuffer|array $value) : void {};
  
     /**
      * glUniformMatrix4x2fv
      * 
      * @param int $location 
-     * @param int $count 
      * @param bool $transpose 
      * @param \GL\Buffer\FloatBuffer|array $value
      */ 
-    function glUniformMatrix4x2fv(int $location, int $count, bool $transpose, \GL\Buffer\FloatBuffer|array $value) : void {};
+    function glUniformMatrix4x2fv(int $location, bool $transpose, \GL\Buffer\FloatBuffer|array $value) : void {};
  
     /**
      * glUniformMatrix3x4fv
      * 
      * @param int $location 
-     * @param int $count 
      * @param bool $transpose 
      * @param \GL\Buffer\FloatBuffer|array $value
      */ 
-    function glUniformMatrix3x4fv(int $location, int $count, bool $transpose, \GL\Buffer\FloatBuffer|array $value) : void {};
+    function glUniformMatrix3x4fv(int $location, bool $transpose, \GL\Buffer\FloatBuffer|array $value) : void {};
  
     /**
      * glUniformMatrix4x3fv
      * 
      * @param int $location 
-     * @param int $count 
      * @param bool $transpose 
      * @param \GL\Buffer\FloatBuffer|array $value
      */ 
-    function glUniformMatrix4x3fv(int $location, int $count, bool $transpose, \GL\Buffer\FloatBuffer|array $value) : void {};
+    function glUniformMatrix4x3fv(int $location, bool $transpose, \GL\Buffer\FloatBuffer|array $value) : void {};
  
     /**
      * glColorMaski
@@ -2822,37 +2806,33 @@ namespace {
      * glUniform1uiv
      * 
      * @param int $location 
-     * @param int $count 
      * @param \GL\Buffer\UIntBuffer|array $value
      */ 
-    function glUniform1uiv(int $location, int $count, \GL\Buffer\UIntBuffer|array $value) : void {};
+    function glUniform1uiv(int $location, \GL\Buffer\UIntBuffer|array $value) : void {};
  
     /**
      * glUniform2uiv
      * 
      * @param int $location 
-     * @param int $count 
      * @param \GL\Buffer\UIntBuffer|array $value
      */ 
-    function glUniform2uiv(int $location, int $count, \GL\Buffer\UIntBuffer|array $value) : void {};
+    function glUniform2uiv(int $location, \GL\Buffer\UIntBuffer|array $value) : void {};
  
     /**
      * glUniform3uiv
      * 
      * @param int $location 
-     * @param int $count 
      * @param \GL\Buffer\UIntBuffer|array $value
      */ 
-    function glUniform3uiv(int $location, int $count, \GL\Buffer\UIntBuffer|array $value) : void {};
+    function glUniform3uiv(int $location, \GL\Buffer\UIntBuffer|array $value) : void {};
  
     /**
      * glUniform4uiv
      * 
      * @param int $location 
-     * @param int $count 
      * @param \GL\Buffer\UIntBuffer|array $value
      */ 
-    function glUniform4uiv(int $location, int $count, \GL\Buffer\UIntBuffer|array $value) : void {};
+    function glUniform4uiv(int $location, \GL\Buffer\UIntBuffer|array $value) : void {};
  
     /**
      * glTexParameterIiv
@@ -4062,127 +4042,114 @@ namespace {
      * glUniform1dv
      * 
      * @param int $location 
-     * @param int $count 
      * @param \GL\Buffer\DoubleBuffer|array $value
      */ 
-    function glUniform1dv(int $location, int $count, \GL\Buffer\DoubleBuffer|array $value) : void {};
+    function glUniform1dv(int $location, \GL\Buffer\DoubleBuffer|array $value) : void {};
  
     /**
      * glUniform2dv
      * 
      * @param int $location 
-     * @param int $count 
      * @param \GL\Buffer\DoubleBuffer|array $value
      */ 
-    function glUniform2dv(int $location, int $count, \GL\Buffer\DoubleBuffer|array $value) : void {};
+    function glUniform2dv(int $location, \GL\Buffer\DoubleBuffer|array $value) : void {};
  
     /**
      * glUniform3dv
      * 
      * @param int $location 
-     * @param int $count 
      * @param \GL\Buffer\DoubleBuffer|array $value
      */ 
-    function glUniform3dv(int $location, int $count, \GL\Buffer\DoubleBuffer|array $value) : void {};
+    function glUniform3dv(int $location, \GL\Buffer\DoubleBuffer|array $value) : void {};
  
     /**
      * glUniform4dv
      * 
      * @param int $location 
-     * @param int $count 
      * @param \GL\Buffer\DoubleBuffer|array $value
      */ 
-    function glUniform4dv(int $location, int $count, \GL\Buffer\DoubleBuffer|array $value) : void {};
+    function glUniform4dv(int $location, \GL\Buffer\DoubleBuffer|array $value) : void {};
  
     /**
      * glUniformMatrix2dv
      * 
      * @param int $location 
-     * @param int $count 
      * @param bool $transpose 
      * @param \GL\Buffer\DoubleBuffer|array $value
      */ 
-    function glUniformMatrix2dv(int $location, int $count, bool $transpose, \GL\Buffer\DoubleBuffer|array $value) : void {};
+    function glUniformMatrix2dv(int $location, bool $transpose, \GL\Buffer\DoubleBuffer|array $value) : void {};
  
     /**
      * glUniformMatrix3dv
      * 
      * @param int $location 
-     * @param int $count 
      * @param bool $transpose 
      * @param \GL\Buffer\DoubleBuffer|array $value
      */ 
-    function glUniformMatrix3dv(int $location, int $count, bool $transpose, \GL\Buffer\DoubleBuffer|array $value) : void {};
+    function glUniformMatrix3dv(int $location, bool $transpose, \GL\Buffer\DoubleBuffer|array $value) : void {};
  
     /**
      * glUniformMatrix4dv
      * 
      * @param int $location 
-     * @param int $count 
      * @param bool $transpose 
      * @param \GL\Buffer\DoubleBuffer|array $value
      */ 
-    function glUniformMatrix4dv(int $location, int $count, bool $transpose, \GL\Buffer\DoubleBuffer|array $value) : void {};
+    function glUniformMatrix4dv(int $location, bool $transpose, \GL\Buffer\DoubleBuffer|array $value) : void {};
  
     /**
      * glUniformMatrix2x3dv
      * 
      * @param int $location 
-     * @param int $count 
      * @param bool $transpose 
      * @param \GL\Buffer\DoubleBuffer|array $value
      */ 
-    function glUniformMatrix2x3dv(int $location, int $count, bool $transpose, \GL\Buffer\DoubleBuffer|array $value) : void {};
+    function glUniformMatrix2x3dv(int $location, bool $transpose, \GL\Buffer\DoubleBuffer|array $value) : void {};
  
     /**
      * glUniformMatrix2x4dv
      * 
      * @param int $location 
-     * @param int $count 
      * @param bool $transpose 
      * @param \GL\Buffer\DoubleBuffer|array $value
      */ 
-    function glUniformMatrix2x4dv(int $location, int $count, bool $transpose, \GL\Buffer\DoubleBuffer|array $value) : void {};
+    function glUniformMatrix2x4dv(int $location, bool $transpose, \GL\Buffer\DoubleBuffer|array $value) : void {};
  
     /**
      * glUniformMatrix3x2dv
      * 
      * @param int $location 
-     * @param int $count 
      * @param bool $transpose 
      * @param \GL\Buffer\DoubleBuffer|array $value
      */ 
-    function glUniformMatrix3x2dv(int $location, int $count, bool $transpose, \GL\Buffer\DoubleBuffer|array $value) : void {};
+    function glUniformMatrix3x2dv(int $location, bool $transpose, \GL\Buffer\DoubleBuffer|array $value) : void {};
  
     /**
      * glUniformMatrix3x4dv
      * 
      * @param int $location 
-     * @param int $count 
      * @param bool $transpose 
      * @param \GL\Buffer\DoubleBuffer|array $value
      */ 
-    function glUniformMatrix3x4dv(int $location, int $count, bool $transpose, \GL\Buffer\DoubleBuffer|array $value) : void {};
+    function glUniformMatrix3x4dv(int $location, bool $transpose, \GL\Buffer\DoubleBuffer|array $value) : void {};
  
     /**
      * glUniformMatrix4x2dv
      * 
      * @param int $location 
-     * @param int $count 
      * @param bool $transpose 
      * @param \GL\Buffer\DoubleBuffer|array $value
      */ 
-    function glUniformMatrix4x2dv(int $location, int $count, bool $transpose, \GL\Buffer\DoubleBuffer|array $value) : void {};
+    function glUniformMatrix4x2dv(int $location, bool $transpose, \GL\Buffer\DoubleBuffer|array $value) : void {};
  
     /**
      * glUniformMatrix4x3dv
      * 
      * @param int $location 
-     * @param int $count 
      * @param bool $transpose 
      * @param \GL\Buffer\DoubleBuffer|array $value
      */ 
-    function glUniformMatrix4x3dv(int $location, int $count, bool $transpose, \GL\Buffer\DoubleBuffer|array $value) : void {};
+    function glUniformMatrix4x3dv(int $location, bool $transpose, \GL\Buffer\DoubleBuffer|array $value) : void {};
  
     /**
      * glGetUniformdv
@@ -4244,10 +4211,9 @@ namespace {
      * glUniformSubroutinesuiv
      * 
      * @param int $shadertype 
-     * @param int $count 
      * @param \GL\Buffer\UIntBuffer|array $indices
      */ 
-    function glUniformSubroutinesuiv(int $shadertype, int $count, \GL\Buffer\UIntBuffer|array $indices) : void {};
+    function glUniformSubroutinesuiv(int $shadertype, \GL\Buffer\UIntBuffer|array $indices) : void {};
  
     /**
      * glGetUniformSubroutineuiv
@@ -4524,10 +4490,9 @@ namespace {
      * 
      * @param int $program 
      * @param int $location 
-     * @param int $count 
      * @param \GL\Buffer\IntBuffer|array $value
      */ 
-    function glProgramUniform1iv(int $program, int $location, int $count, \GL\Buffer\IntBuffer|array $value) : void {};
+    function glProgramUniform1iv(int $program, int $location, \GL\Buffer\IntBuffer|array $value) : void {};
  
     /**
      * glProgramUniform1f
@@ -4543,10 +4508,9 @@ namespace {
      * 
      * @param int $program 
      * @param int $location 
-     * @param int $count 
      * @param \GL\Buffer\FloatBuffer|array $value
      */ 
-    function glProgramUniform1fv(int $program, int $location, int $count, \GL\Buffer\FloatBuffer|array $value) : void {};
+    function glProgramUniform1fv(int $program, int $location, \GL\Buffer\FloatBuffer|array $value) : void {};
  
     /**
      * glProgramUniform1d
@@ -4562,10 +4526,9 @@ namespace {
      * 
      * @param int $program 
      * @param int $location 
-     * @param int $count 
      * @param \GL\Buffer\DoubleBuffer|array $value
      */ 
-    function glProgramUniform1dv(int $program, int $location, int $count, \GL\Buffer\DoubleBuffer|array $value) : void {};
+    function glProgramUniform1dv(int $program, int $location, \GL\Buffer\DoubleBuffer|array $value) : void {};
  
     /**
      * glProgramUniform1ui
@@ -4581,10 +4544,9 @@ namespace {
      * 
      * @param int $program 
      * @param int $location 
-     * @param int $count 
      * @param \GL\Buffer\UIntBuffer|array $value
      */ 
-    function glProgramUniform1uiv(int $program, int $location, int $count, \GL\Buffer\UIntBuffer|array $value) : void {};
+    function glProgramUniform1uiv(int $program, int $location, \GL\Buffer\UIntBuffer|array $value) : void {};
  
     /**
      * glProgramUniform2i
@@ -4601,10 +4563,9 @@ namespace {
      * 
      * @param int $program 
      * @param int $location 
-     * @param int $count 
      * @param \GL\Buffer\IntBuffer|array $value
      */ 
-    function glProgramUniform2iv(int $program, int $location, int $count, \GL\Buffer\IntBuffer|array $value) : void {};
+    function glProgramUniform2iv(int $program, int $location, \GL\Buffer\IntBuffer|array $value) : void {};
  
     /**
      * glProgramUniform2f
@@ -4621,10 +4582,9 @@ namespace {
      * 
      * @param int $program 
      * @param int $location 
-     * @param int $count 
      * @param \GL\Buffer\FloatBuffer|array $value
      */ 
-    function glProgramUniform2fv(int $program, int $location, int $count, \GL\Buffer\FloatBuffer|array $value) : void {};
+    function glProgramUniform2fv(int $program, int $location, \GL\Buffer\FloatBuffer|array $value) : void {};
  
     /**
      * glProgramUniform2d
@@ -4641,10 +4601,9 @@ namespace {
      * 
      * @param int $program 
      * @param int $location 
-     * @param int $count 
      * @param \GL\Buffer\DoubleBuffer|array $value
      */ 
-    function glProgramUniform2dv(int $program, int $location, int $count, \GL\Buffer\DoubleBuffer|array $value) : void {};
+    function glProgramUniform2dv(int $program, int $location, \GL\Buffer\DoubleBuffer|array $value) : void {};
  
     /**
      * glProgramUniform2ui
@@ -4661,10 +4620,9 @@ namespace {
      * 
      * @param int $program 
      * @param int $location 
-     * @param int $count 
      * @param \GL\Buffer\UIntBuffer|array $value
      */ 
-    function glProgramUniform2uiv(int $program, int $location, int $count, \GL\Buffer\UIntBuffer|array $value) : void {};
+    function glProgramUniform2uiv(int $program, int $location, \GL\Buffer\UIntBuffer|array $value) : void {};
  
     /**
      * glProgramUniform3i
@@ -4682,10 +4640,9 @@ namespace {
      * 
      * @param int $program 
      * @param int $location 
-     * @param int $count 
      * @param \GL\Buffer\IntBuffer|array $value
      */ 
-    function glProgramUniform3iv(int $program, int $location, int $count, \GL\Buffer\IntBuffer|array $value) : void {};
+    function glProgramUniform3iv(int $program, int $location, \GL\Buffer\IntBuffer|array $value) : void {};
  
     /**
      * glProgramUniform3f
@@ -4703,10 +4660,9 @@ namespace {
      * 
      * @param int $program 
      * @param int $location 
-     * @param int $count 
      * @param \GL\Buffer\FloatBuffer|array $value
      */ 
-    function glProgramUniform3fv(int $program, int $location, int $count, \GL\Buffer\FloatBuffer|array $value) : void {};
+    function glProgramUniform3fv(int $program, int $location, \GL\Buffer\FloatBuffer|array $value) : void {};
  
     /**
      * glProgramUniform3d
@@ -4724,10 +4680,9 @@ namespace {
      * 
      * @param int $program 
      * @param int $location 
-     * @param int $count 
      * @param \GL\Buffer\DoubleBuffer|array $value
      */ 
-    function glProgramUniform3dv(int $program, int $location, int $count, \GL\Buffer\DoubleBuffer|array $value) : void {};
+    function glProgramUniform3dv(int $program, int $location, \GL\Buffer\DoubleBuffer|array $value) : void {};
  
     /**
      * glProgramUniform3ui
@@ -4745,10 +4700,9 @@ namespace {
      * 
      * @param int $program 
      * @param int $location 
-     * @param int $count 
      * @param \GL\Buffer\UIntBuffer|array $value
      */ 
-    function glProgramUniform3uiv(int $program, int $location, int $count, \GL\Buffer\UIntBuffer|array $value) : void {};
+    function glProgramUniform3uiv(int $program, int $location, \GL\Buffer\UIntBuffer|array $value) : void {};
  
     /**
      * glProgramUniform4i
@@ -4767,10 +4721,9 @@ namespace {
      * 
      * @param int $program 
      * @param int $location 
-     * @param int $count 
      * @param \GL\Buffer\IntBuffer|array $value
      */ 
-    function glProgramUniform4iv(int $program, int $location, int $count, \GL\Buffer\IntBuffer|array $value) : void {};
+    function glProgramUniform4iv(int $program, int $location, \GL\Buffer\IntBuffer|array $value) : void {};
  
     /**
      * glProgramUniform4f
@@ -4789,10 +4742,9 @@ namespace {
      * 
      * @param int $program 
      * @param int $location 
-     * @param int $count 
      * @param \GL\Buffer\FloatBuffer|array $value
      */ 
-    function glProgramUniform4fv(int $program, int $location, int $count, \GL\Buffer\FloatBuffer|array $value) : void {};
+    function glProgramUniform4fv(int $program, int $location, \GL\Buffer\FloatBuffer|array $value) : void {};
  
     /**
      * glProgramUniform4d
@@ -4811,10 +4763,9 @@ namespace {
      * 
      * @param int $program 
      * @param int $location 
-     * @param int $count 
      * @param \GL\Buffer\DoubleBuffer|array $value
      */ 
-    function glProgramUniform4dv(int $program, int $location, int $count, \GL\Buffer\DoubleBuffer|array $value) : void {};
+    function glProgramUniform4dv(int $program, int $location, \GL\Buffer\DoubleBuffer|array $value) : void {};
  
     /**
      * glProgramUniform4ui
@@ -4833,208 +4784,189 @@ namespace {
      * 
      * @param int $program 
      * @param int $location 
-     * @param int $count 
      * @param \GL\Buffer\UIntBuffer|array $value
      */ 
-    function glProgramUniform4uiv(int $program, int $location, int $count, \GL\Buffer\UIntBuffer|array $value) : void {};
+    function glProgramUniform4uiv(int $program, int $location, \GL\Buffer\UIntBuffer|array $value) : void {};
  
     /**
      * glProgramUniformMatrix2fv
      * 
      * @param int $program 
      * @param int $location 
-     * @param int $count 
      * @param bool $transpose 
      * @param \GL\Buffer\FloatBuffer|array $value
      */ 
-    function glProgramUniformMatrix2fv(int $program, int $location, int $count, bool $transpose, \GL\Buffer\FloatBuffer|array $value) : void {};
+    function glProgramUniformMatrix2fv(int $program, int $location, bool $transpose, \GL\Buffer\FloatBuffer|array $value) : void {};
  
     /**
      * glProgramUniformMatrix3fv
      * 
      * @param int $program 
      * @param int $location 
-     * @param int $count 
      * @param bool $transpose 
      * @param \GL\Buffer\FloatBuffer|array $value
      */ 
-    function glProgramUniformMatrix3fv(int $program, int $location, int $count, bool $transpose, \GL\Buffer\FloatBuffer|array $value) : void {};
+    function glProgramUniformMatrix3fv(int $program, int $location, bool $transpose, \GL\Buffer\FloatBuffer|array $value) : void {};
  
     /**
      * glProgramUniformMatrix4fv
      * 
      * @param int $program 
      * @param int $location 
-     * @param int $count 
      * @param bool $transpose 
      * @param \GL\Buffer\FloatBuffer|array $value
      */ 
-    function glProgramUniformMatrix4fv(int $program, int $location, int $count, bool $transpose, \GL\Buffer\FloatBuffer|array $value) : void {};
+    function glProgramUniformMatrix4fv(int $program, int $location, bool $transpose, \GL\Buffer\FloatBuffer|array $value) : void {};
  
     /**
      * glProgramUniformMatrix2dv
      * 
      * @param int $program 
      * @param int $location 
-     * @param int $count 
      * @param bool $transpose 
      * @param \GL\Buffer\DoubleBuffer|array $value
      */ 
-    function glProgramUniformMatrix2dv(int $program, int $location, int $count, bool $transpose, \GL\Buffer\DoubleBuffer|array $value) : void {};
+    function glProgramUniformMatrix2dv(int $program, int $location, bool $transpose, \GL\Buffer\DoubleBuffer|array $value) : void {};
  
     /**
      * glProgramUniformMatrix3dv
      * 
      * @param int $program 
      * @param int $location 
-     * @param int $count 
      * @param bool $transpose 
      * @param \GL\Buffer\DoubleBuffer|array $value
      */ 
-    function glProgramUniformMatrix3dv(int $program, int $location, int $count, bool $transpose, \GL\Buffer\DoubleBuffer|array $value) : void {};
+    function glProgramUniformMatrix3dv(int $program, int $location, bool $transpose, \GL\Buffer\DoubleBuffer|array $value) : void {};
  
     /**
      * glProgramUniformMatrix4dv
      * 
      * @param int $program 
      * @param int $location 
-     * @param int $count 
      * @param bool $transpose 
      * @param \GL\Buffer\DoubleBuffer|array $value
      */ 
-    function glProgramUniformMatrix4dv(int $program, int $location, int $count, bool $transpose, \GL\Buffer\DoubleBuffer|array $value) : void {};
+    function glProgramUniformMatrix4dv(int $program, int $location, bool $transpose, \GL\Buffer\DoubleBuffer|array $value) : void {};
  
     /**
      * glProgramUniformMatrix2x3fv
      * 
      * @param int $program 
      * @param int $location 
-     * @param int $count 
      * @param bool $transpose 
      * @param \GL\Buffer\FloatBuffer|array $value
      */ 
-    function glProgramUniformMatrix2x3fv(int $program, int $location, int $count, bool $transpose, \GL\Buffer\FloatBuffer|array $value) : void {};
+    function glProgramUniformMatrix2x3fv(int $program, int $location, bool $transpose, \GL\Buffer\FloatBuffer|array $value) : void {};
  
     /**
      * glProgramUniformMatrix3x2fv
      * 
      * @param int $program 
      * @param int $location 
-     * @param int $count 
      * @param bool $transpose 
      * @param \GL\Buffer\FloatBuffer|array $value
      */ 
-    function glProgramUniformMatrix3x2fv(int $program, int $location, int $count, bool $transpose, \GL\Buffer\FloatBuffer|array $value) : void {};
+    function glProgramUniformMatrix3x2fv(int $program, int $location, bool $transpose, \GL\Buffer\FloatBuffer|array $value) : void {};
  
     /**
      * glProgramUniformMatrix2x4fv
      * 
      * @param int $program 
      * @param int $location 
-     * @param int $count 
      * @param bool $transpose 
      * @param \GL\Buffer\FloatBuffer|array $value
      */ 
-    function glProgramUniformMatrix2x4fv(int $program, int $location, int $count, bool $transpose, \GL\Buffer\FloatBuffer|array $value) : void {};
+    function glProgramUniformMatrix2x4fv(int $program, int $location, bool $transpose, \GL\Buffer\FloatBuffer|array $value) : void {};
  
     /**
      * glProgramUniformMatrix4x2fv
      * 
      * @param int $program 
      * @param int $location 
-     * @param int $count 
      * @param bool $transpose 
      * @param \GL\Buffer\FloatBuffer|array $value
      */ 
-    function glProgramUniformMatrix4x2fv(int $program, int $location, int $count, bool $transpose, \GL\Buffer\FloatBuffer|array $value) : void {};
+    function glProgramUniformMatrix4x2fv(int $program, int $location, bool $transpose, \GL\Buffer\FloatBuffer|array $value) : void {};
  
     /**
      * glProgramUniformMatrix3x4fv
      * 
      * @param int $program 
      * @param int $location 
-     * @param int $count 
      * @param bool $transpose 
      * @param \GL\Buffer\FloatBuffer|array $value
      */ 
-    function glProgramUniformMatrix3x4fv(int $program, int $location, int $count, bool $transpose, \GL\Buffer\FloatBuffer|array $value) : void {};
+    function glProgramUniformMatrix3x4fv(int $program, int $location, bool $transpose, \GL\Buffer\FloatBuffer|array $value) : void {};
  
     /**
      * glProgramUniformMatrix4x3fv
      * 
      * @param int $program 
      * @param int $location 
-     * @param int $count 
      * @param bool $transpose 
      * @param \GL\Buffer\FloatBuffer|array $value
      */ 
-    function glProgramUniformMatrix4x3fv(int $program, int $location, int $count, bool $transpose, \GL\Buffer\FloatBuffer|array $value) : void {};
+    function glProgramUniformMatrix4x3fv(int $program, int $location, bool $transpose, \GL\Buffer\FloatBuffer|array $value) : void {};
  
     /**
      * glProgramUniformMatrix2x3dv
      * 
      * @param int $program 
      * @param int $location 
-     * @param int $count 
      * @param bool $transpose 
      * @param \GL\Buffer\DoubleBuffer|array $value
      */ 
-    function glProgramUniformMatrix2x3dv(int $program, int $location, int $count, bool $transpose, \GL\Buffer\DoubleBuffer|array $value) : void {};
+    function glProgramUniformMatrix2x3dv(int $program, int $location, bool $transpose, \GL\Buffer\DoubleBuffer|array $value) : void {};
  
     /**
      * glProgramUniformMatrix3x2dv
      * 
      * @param int $program 
      * @param int $location 
-     * @param int $count 
      * @param bool $transpose 
      * @param \GL\Buffer\DoubleBuffer|array $value
      */ 
-    function glProgramUniformMatrix3x2dv(int $program, int $location, int $count, bool $transpose, \GL\Buffer\DoubleBuffer|array $value) : void {};
+    function glProgramUniformMatrix3x2dv(int $program, int $location, bool $transpose, \GL\Buffer\DoubleBuffer|array $value) : void {};
  
     /**
      * glProgramUniformMatrix2x4dv
      * 
      * @param int $program 
      * @param int $location 
-     * @param int $count 
      * @param bool $transpose 
      * @param \GL\Buffer\DoubleBuffer|array $value
      */ 
-    function glProgramUniformMatrix2x4dv(int $program, int $location, int $count, bool $transpose, \GL\Buffer\DoubleBuffer|array $value) : void {};
+    function glProgramUniformMatrix2x4dv(int $program, int $location, bool $transpose, \GL\Buffer\DoubleBuffer|array $value) : void {};
  
     /**
      * glProgramUniformMatrix4x2dv
      * 
      * @param int $program 
      * @param int $location 
-     * @param int $count 
      * @param bool $transpose 
      * @param \GL\Buffer\DoubleBuffer|array $value
      */ 
-    function glProgramUniformMatrix4x2dv(int $program, int $location, int $count, bool $transpose, \GL\Buffer\DoubleBuffer|array $value) : void {};
+    function glProgramUniformMatrix4x2dv(int $program, int $location, bool $transpose, \GL\Buffer\DoubleBuffer|array $value) : void {};
  
     /**
      * glProgramUniformMatrix3x4dv
      * 
      * @param int $program 
      * @param int $location 
-     * @param int $count 
      * @param bool $transpose 
      * @param \GL\Buffer\DoubleBuffer|array $value
      */ 
-    function glProgramUniformMatrix3x4dv(int $program, int $location, int $count, bool $transpose, \GL\Buffer\DoubleBuffer|array $value) : void {};
+    function glProgramUniformMatrix3x4dv(int $program, int $location, bool $transpose, \GL\Buffer\DoubleBuffer|array $value) : void {};
  
     /**
      * glProgramUniformMatrix4x3dv
      * 
      * @param int $program 
      * @param int $location 
-     * @param int $count 
      * @param bool $transpose 
      * @param \GL\Buffer\DoubleBuffer|array $value
      */ 
-    function glProgramUniformMatrix4x3dv(int $program, int $location, int $count, bool $transpose, \GL\Buffer\DoubleBuffer|array $value) : void {};
+    function glProgramUniformMatrix4x3dv(int $program, int $location, bool $transpose, \GL\Buffer\DoubleBuffer|array $value) : void {};
  
     /**
      * validate a program pipeline object against current GL state
@@ -5127,10 +5059,9 @@ namespace {
      * glViewportArrayv
      * 
      * @param int $first 
-     * @param int $count 
      * @param \GL\Buffer\FloatBuffer|array $v
      */ 
-    function glViewportArrayv(int $first, int $count, \GL\Buffer\FloatBuffer|array $v) : void {};
+    function glViewportArrayv(int $first, \GL\Buffer\FloatBuffer|array $v) : void {};
  
     /**
      * glViewportIndexedf
@@ -5155,10 +5086,9 @@ namespace {
      * glScissorArrayv
      * 
      * @param int $first 
-     * @param int $count 
      * @param \GL\Buffer\IntBuffer|array $v
      */ 
-    function glScissorArrayv(int $first, int $count, \GL\Buffer\IntBuffer|array $v) : void {};
+    function glScissorArrayv(int $first, \GL\Buffer\IntBuffer|array $v) : void {};
  
     /**
      * define the scissor box for a specific viewport
@@ -5185,10 +5115,9 @@ namespace {
      * glDepthRangeArrayv
      * 
      * @param int $first 
-     * @param int $count 
      * @param \GL\Buffer\DoubleBuffer|array $v
      */ 
-    function glDepthRangeArrayv(int $first, int $count, \GL\Buffer\DoubleBuffer|array $v) : void {};
+    function glDepthRangeArrayv(int $first, \GL\Buffer\DoubleBuffer|array $v) : void {};
  
     /**
      * specify mapping of depth values from normalized device coordinates to window

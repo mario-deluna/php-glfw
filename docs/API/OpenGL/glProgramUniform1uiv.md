@@ -2,7 +2,7 @@
 glProgramUniform1uiv
 
 ```php
-function glProgramUniform1uiv(int $program, int $location, int $count, \GL\Buffer\UIntBuffer|array $value) : void
+function glProgramUniform1uiv(int $program, int $location, \GL\Buffer\UIntBuffer|array $value) : void
 ```
 
 
@@ -11,8 +11,7 @@ arguments
 
 :    1. `int` `$program` 
     2. `int` `$location` 
-    3. `int` `$count` 
-    4. `\GL\Buffer\UIntBuffer|array` `$value` 
+    3. `\GL\Buffer\UIntBuffer|array` `$value` 
 
 
 

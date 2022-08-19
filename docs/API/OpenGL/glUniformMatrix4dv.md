@@ -2,7 +2,7 @@
 glUniformMatrix4dv
 
 ```php
-function glUniformMatrix4dv(int $location, int $count, bool $transpose, \GL\Buffer\DoubleBuffer|array $value) : void
+function glUniformMatrix4dv(int $location, bool $transpose, \GL\Buffer\DoubleBuffer|array $value) : void
 ```
 
 
@@ -10,9 +10,8 @@ function glUniformMatrix4dv(int $location, int $count, bool $transpose, \GL\Buff
 arguments
 
 :    1. `int` `$location` 
-    2. `int` `$count` 
-    3. `bool` `$transpose` 
-    4. `\GL\Buffer\DoubleBuffer|array` `$value` 
+    2. `bool` `$transpose` 
+    3. `\GL\Buffer\DoubleBuffer|array` `$value` 
 
 
 

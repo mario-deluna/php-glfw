@@ -2,7 +2,7 @@
 glUniformMatrix2x3fv
 
 ```php
-function glUniformMatrix2x3fv(int $location, int $count, bool $transpose, \GL\Buffer\FloatBuffer|array $value) : void
+function glUniformMatrix2x3fv(int $location, bool $transpose, \GL\Buffer\FloatBuffer|array $value) : void
 ```
 
 
@@ -10,9 +10,8 @@ function glUniformMatrix2x3fv(int $location, int $count, bool $transpose, \GL\Bu
 arguments
 
 :    1. `int` `$location` 
-    2. `int` `$count` 
-    3. `bool` `$transpose` 
-    4. `\GL\Buffer\FloatBuffer|array` `$value` 
+    2. `bool` `$transpose` 
+    3. `\GL\Buffer\FloatBuffer|array` `$value` 
 
 
 

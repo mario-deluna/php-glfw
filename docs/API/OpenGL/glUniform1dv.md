@@ -2,7 +2,7 @@
 glUniform1dv
 
 ```php
-function glUniform1dv(int $location, int $count, \GL\Buffer\DoubleBuffer|array $value) : void
+function glUniform1dv(int $location, \GL\Buffer\DoubleBuffer|array $value) : void
 ```
 
 
@@ -10,8 +10,7 @@ function glUniform1dv(int $location, int $count, \GL\Buffer\DoubleBuffer|array $
 arguments
 
 :    1. `int` `$location` 
-    2. `int` `$count` 
-    3. `\GL\Buffer\DoubleBuffer|array` `$value` 
+    2. `\GL\Buffer\DoubleBuffer|array` `$value` 
 
 
 

@@ -2,7 +2,7 @@
 glUniform4fv
 
 ```php
-function glUniform4fv(int $location, int $count, \GL\Buffer\FloatBuffer|array $value) : void
+function glUniform4fv(int $location, \GL\Buffer\FloatBuffer|array $value) : void
 ```
 
 
@@ -10,8 +10,7 @@ function glUniform4fv(int $location, int $count, \GL\Buffer\FloatBuffer|array $v
 arguments
 
 :    1. `int` `$location` 
-    2. `int` `$count` 
-    3. `\GL\Buffer\FloatBuffer|array` `$value` 
+    2. `\GL\Buffer\FloatBuffer|array` `$value` 
 
 
 

@@ -2,7 +2,7 @@
 glViewportArrayv
 
 ```php
-function glViewportArrayv(int $first, int $count, \GL\Buffer\FloatBuffer|array $v) : void
+function glViewportArrayv(int $first, \GL\Buffer\FloatBuffer|array $v) : void
 ```
 
 
@@ -10,8 +10,7 @@ function glViewportArrayv(int $first, int $count, \GL\Buffer\FloatBuffer|array $
 arguments
 
 :    1. `int` `$first` 
-    2. `int` `$count` 
-    3. `\GL\Buffer\FloatBuffer|array` `$v` 
+    2. `\GL\Buffer\FloatBuffer|array` `$v` 
 
 
 

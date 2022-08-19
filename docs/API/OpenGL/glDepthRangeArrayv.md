@@ -2,7 +2,7 @@
 glDepthRangeArrayv
 
 ```php
-function glDepthRangeArrayv(int $first, int $count, \GL\Buffer\DoubleBuffer|array $v) : void
+function glDepthRangeArrayv(int $first, \GL\Buffer\DoubleBuffer|array $v) : void
 ```
 
 
@@ -10,8 +10,7 @@ function glDepthRangeArrayv(int $first, int $count, \GL\Buffer\DoubleBuffer|arra
 arguments
 
 :    1. `int` `$first` 
-    2. `int` `$count` 
-    3. `\GL\Buffer\DoubleBuffer|array` `$v` 
+    2. `\GL\Buffer\DoubleBuffer|array` `$v` 
 
 
 

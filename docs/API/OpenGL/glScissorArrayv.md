@@ -2,7 +2,7 @@
 glScissorArrayv
 
 ```php
-function glScissorArrayv(int $first, int $count, \GL\Buffer\IntBuffer|array $v) : void
+function glScissorArrayv(int $first, \GL\Buffer\IntBuffer|array $v) : void
 ```
 
 
@@ -10,8 +10,7 @@ function glScissorArrayv(int $first, int $count, \GL\Buffer\IntBuffer|array $v) 
 arguments
 
 :    1. `int` `$first` 
-    2. `int` `$count` 
-    3. `\GL\Buffer\IntBuffer|array` `$v` 
+    2. `\GL\Buffer\IntBuffer|array` `$v` 
 
 
 

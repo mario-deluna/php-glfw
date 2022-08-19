@@ -16,6 +16,7 @@ class GLVectorSetterFunctionAdjustment implements AdjustmentInterface
         $func = new class($functionName) extends ExtFunction 
         {
             public ExtArgument $initalDataArg;
+            public int $countArgIndex = -1;
             
             public function getFunctionImplementationBody() : string
             {
@@ -63,6 +64,10 @@ class GLVectorSetterFunctionAdjustment implements AdjustmentInterface
                 array_pop($callArgs);
                 $callArgs[] = 'tmpvec';
 
+                if ($this->countArgIndex !== -1) {
+                    array_splice($callArgs, $this->countArgIndex, 0, 'cvector_size(tmpvec)'); 
+                }
+
                 // generate the code to iterate of the hash table
                 // add all values to a vector and call the internal function
                 // using a pointer to that vector
@@ -90,7 +95,22 @@ EOD;
 
                 // now we generate the code that handles the case where the 
                 // argument is a buffer object.
+                $callArgs = [];
+                foreach($this->arguments as $arg) {
+                    $callArgs[] = $arg->getUsableVariable();
+                }
 
+                // replace the last arg
+                array_pop($callArgs);
+                $callArgs[] = 'bufferobj->vec';
+
+                // also inject the count argument if needed
+                if ($this->countArgIndex !== -1) {
+                    array_splice($callArgs, $this->countArgIndex, 0, 'cvector_size(bufferobj->vec)'); 
+                }
+                
+                $b .= PHP_EOL . $lastArg->getObjectFetchCode($lastArg->getZValName());
+                $b .= PHP_EOL . $this->internalCallFunc . '('. implode(', ', $callArgs) .');';
 
                 return $b;
             }
@@ -100,6 +120,22 @@ EOD;
         $baseFunc = $gen->getFunctionByName($functionName);
         $func->copyFrom($baseFunc);
 
+        // find the value count argument index
+        $countArgIndex = -1;
+        foreach($func->arguments as $i => $arg) {
+            if ($arg->name == 'count') {
+                $countArgIndex = $i;
+                break;
+            }
+        }
+
+        // remove the count argument from the function
+        $func->arguments = array_values(array_filter($func->arguments, function($arg) {
+            return $arg->name != 'count';
+        }));
+
+        // get the last argument with the assumption 
+        // that it is the buffer object / array
         $lastArg = $func->arguments[count($func->arguments) - 1];
 
         $func->arguments[count($func->arguments) - 1] = new class($lastArg->name, ExtType::T_CE) extends CEObjectArgument {
@@ -148,10 +184,20 @@ EOD;
 
                 return "\\GL\\Buffer\\BufferInterface|array";
             }
+
+            public function getObjectFetchCode(string $dataZval) : string {
+                $pt = strtolower($this->initalDataArg->getPureFromType());
+                return sprintf('phpglfw_buffer_%s_object *bufferobj = phpglfw_buffer_%s_objectptr_from_zobj_p(Z_OBJ_P(%s));',
+                    $pt,
+                    $pt,
+                    $dataZval
+                );
+            }
         };
 
         // inject the original argument into the argument and func decl
         $func->initalDataArg = $lastArg;
+        $func->countArgIndex = $countArgIndex;
         $func->arguments[count($func->arguments) - 1]->initalDataArg = $lastArg;
         
         // replace

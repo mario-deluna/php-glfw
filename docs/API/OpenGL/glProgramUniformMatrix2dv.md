@@ -2,7 +2,7 @@
 glProgramUniformMatrix2dv
 
 ```php
-function glProgramUniformMatrix2dv(int $program, int $location, int $count, bool $transpose, \GL\Buffer\DoubleBuffer|array $value) : void
+function glProgramUniformMatrix2dv(int $program, int $location, bool $transpose, \GL\Buffer\DoubleBuffer|array $value) : void
 ```
 
 
@@ -11,9 +11,8 @@ arguments
 
 :    1. `int` `$program` 
     2. `int` `$location` 
-    3. `int` `$count` 
-    4. `bool` `$transpose` 
-    5. `\GL\Buffer\DoubleBuffer|array` `$value` 
+    3. `bool` `$transpose` 
+    4. `\GL\Buffer\DoubleBuffer|array` `$value` 
 
 
 

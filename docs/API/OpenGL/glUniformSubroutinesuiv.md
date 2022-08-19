@@ -2,7 +2,7 @@
 glUniformSubroutinesuiv
 
 ```php
-function glUniformSubroutinesuiv(int $shadertype, int $count, \GL\Buffer\UIntBuffer|array $indices) : void
+function glUniformSubroutinesuiv(int $shadertype, \GL\Buffer\UIntBuffer|array $indices) : void
 ```
 
 
@@ -10,8 +10,7 @@ function glUniformSubroutinesuiv(int $shadertype, int $count, \GL\Buffer\UIntBuf
 arguments
 
 :    1. `int` `$shadertype` 
-    2. `int` `$count` 
-    3. `\GL\Buffer\UIntBuffer|array` `$indices` 
+    2. `\GL\Buffer\UIntBuffer|array` `$indices` 
 
 
 

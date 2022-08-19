@@ -2,7 +2,7 @@
 glProgramUniform3dv
 
 ```php
-function glProgramUniform3dv(int $program, int $location, int $count, \GL\Buffer\DoubleBuffer|array $value) : void
+function glProgramUniform3dv(int $program, int $location, \GL\Buffer\DoubleBuffer|array $value) : void
 ```
 
 
@@ -11,8 +11,7 @@ arguments
 
 :    1. `int` `$program` 
     2. `int` `$location` 
-    3. `int` `$count` 
-    4. `\GL\Buffer\DoubleBuffer|array` `$value` 
+    3. `\GL\Buffer\DoubleBuffer|array` `$value` 
 
 
 

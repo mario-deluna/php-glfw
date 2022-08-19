@@ -1,5 +1,5 @@
 /* This is a generated file, edit the .stub.php file instead.
- * Stub hash: f41f02fca09e8a806a3979feb6da6e3915a66e78 */
+ * Stub hash: 443fc164cdda432ac89c03d68e2179226f9bcf17 */
 
 ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_glCullFace, 0, 1, IS_VOID, 0)
 	ZEND_ARG_TYPE_INFO(0, mode, IS_LONG, 0)
@@ -569,9 +569,8 @@ ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_glUniform4i, 0, 5, IS_VOID, 0)
 	ZEND_ARG_TYPE_INFO(0, v3, IS_LONG, 0)
 ZEND_END_ARG_INFO()
 
-ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_glUniform1fv, 0, 3, IS_VOID, 0)
+ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_glUniform1fv, 0, 2, IS_VOID, 0)
 	ZEND_ARG_TYPE_INFO(0, location, IS_LONG, 0)
-	ZEND_ARG_TYPE_INFO(0, count, IS_LONG, 0)
 	ZEND_ARG_OBJ_TYPE_MASK(0, value, GL\\Buffer\\FloatBuffer, MAY_BE_ARRAY, NULL)
 ZEND_END_ARG_INFO()
 
@@ -581,9 +580,8 @@ ZEND_END_ARG_INFO()
 
 #define arginfo_glUniform4fv arginfo_glUniform1fv
 
-ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_glUniform1iv, 0, 3, IS_VOID, 0)
+ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_glUniform1iv, 0, 2, IS_VOID, 0)
 	ZEND_ARG_TYPE_INFO(0, location, IS_LONG, 0)
-	ZEND_ARG_TYPE_INFO(0, count, IS_LONG, 0)
 	ZEND_ARG_OBJ_TYPE_MASK(0, value, GL\\Buffer\\IntBuffer, MAY_BE_ARRAY, NULL)
 ZEND_END_ARG_INFO()
 
@@ -593,9 +591,8 @@ ZEND_END_ARG_INFO()
 
 #define arginfo_glUniform4iv arginfo_glUniform1iv
 
-ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_glUniformMatrix2fv, 0, 4, IS_VOID, 0)
+ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_glUniformMatrix2fv, 0, 3, IS_VOID, 0)
 	ZEND_ARG_TYPE_INFO(0, location, IS_LONG, 0)
-	ZEND_ARG_TYPE_INFO(0, count, IS_LONG, 0)
 	ZEND_ARG_TYPE_INFO(0, transpose, _IS_BOOL, 0)
 	ZEND_ARG_OBJ_TYPE_MASK(0, value, GL\\Buffer\\FloatBuffer, MAY_BE_ARRAY, NULL)
 ZEND_END_ARG_INFO()
@@ -886,9 +883,8 @@ ZEND_END_ARG_INFO()
 
 #define arginfo_glUniform4ui arginfo_glUniform4i
 
-ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_glUniform1uiv, 0, 3, IS_VOID, 0)
+ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_glUniform1uiv, 0, 2, IS_VOID, 0)
 	ZEND_ARG_TYPE_INFO(0, location, IS_LONG, 0)
-	ZEND_ARG_TYPE_INFO(0, count, IS_LONG, 0)
 	ZEND_ARG_OBJ_TYPE_MASK(0, value, GL\\Buffer\\UIntBuffer, MAY_BE_ARRAY, NULL)
 ZEND_END_ARG_INFO()
 
@@ -1462,9 +1458,8 @@ ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_glUniform4d, 0, 5, IS_VOID, 0)
 	ZEND_ARG_TYPE_INFO(0, w, IS_DOUBLE, 0)
 ZEND_END_ARG_INFO()
 
-ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_glUniform1dv, 0, 3, IS_VOID, 0)
+ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_glUniform1dv, 0, 2, IS_VOID, 0)
 	ZEND_ARG_TYPE_INFO(0, location, IS_LONG, 0)
-	ZEND_ARG_TYPE_INFO(0, count, IS_LONG, 0)
 	ZEND_ARG_OBJ_TYPE_MASK(0, value, GL\\Buffer\\DoubleBuffer, MAY_BE_ARRAY, NULL)
 ZEND_END_ARG_INFO()
 
@@ -1474,9 +1469,8 @@ ZEND_END_ARG_INFO()
 
 #define arginfo_glUniform4dv arginfo_glUniform1dv
 
-ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_glUniformMatrix2dv, 0, 4, IS_VOID, 0)
+ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_glUniformMatrix2dv, 0, 3, IS_VOID, 0)
 	ZEND_ARG_TYPE_INFO(0, location, IS_LONG, 0)
-	ZEND_ARG_TYPE_INFO(0, count, IS_LONG, 0)
 	ZEND_ARG_TYPE_INFO(0, transpose, _IS_BOOL, 0)
 	ZEND_ARG_OBJ_TYPE_MASK(0, value, GL\\Buffer\\DoubleBuffer, MAY_BE_ARRAY, NULL)
 ZEND_END_ARG_INFO()
@@ -1515,9 +1509,8 @@ ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_glGetActiveSubroutineUniformiv, 
 	ZEND_ARG_TYPE_INFO(1, values, IS_LONG, 0)
 ZEND_END_ARG_INFO()
 
-ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_glUniformSubroutinesuiv, 0, 3, IS_VOID, 0)
+ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_glUniformSubroutinesuiv, 0, 2, IS_VOID, 0)
 	ZEND_ARG_TYPE_INFO(0, shadertype, IS_LONG, 0)
-	ZEND_ARG_TYPE_INFO(0, count, IS_LONG, 0)
 	ZEND_ARG_OBJ_TYPE_MASK(0, indices, GL\\Buffer\\UIntBuffer, MAY_BE_ARRAY, NULL)
 ZEND_END_ARG_INFO()
 
@@ -1644,10 +1637,9 @@ ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_glProgramUniform1i, 0, 3, IS_VOI
 	ZEND_ARG_TYPE_INFO(0, v0, IS_LONG, 0)
 ZEND_END_ARG_INFO()
 
-ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_glProgramUniform1iv, 0, 4, IS_VOID, 0)
+ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_glProgramUniform1iv, 0, 3, IS_VOID, 0)
 	ZEND_ARG_TYPE_INFO(0, program, IS_LONG, 0)
 	ZEND_ARG_TYPE_INFO(0, location, IS_LONG, 0)
-	ZEND_ARG_TYPE_INFO(0, count, IS_LONG, 0)
 	ZEND_ARG_OBJ_TYPE_MASK(0, value, GL\\Buffer\\IntBuffer, MAY_BE_ARRAY, NULL)
 ZEND_END_ARG_INFO()
 
@@ -1657,28 +1649,25 @@ ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_glProgramUniform1f, 0, 3, IS_VOI
 	ZEND_ARG_TYPE_INFO(0, v0, IS_DOUBLE, 0)
 ZEND_END_ARG_INFO()
 
-ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_glProgramUniform1fv, 0, 4, IS_VOID, 0)
+ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_glProgramUniform1fv, 0, 3, IS_VOID, 0)
 	ZEND_ARG_TYPE_INFO(0, program, IS_LONG, 0)
 	ZEND_ARG_TYPE_INFO(0, location, IS_LONG, 0)
-	ZEND_ARG_TYPE_INFO(0, count, IS_LONG, 0)
 	ZEND_ARG_OBJ_TYPE_MASK(0, value, GL\\Buffer\\FloatBuffer, MAY_BE_ARRAY, NULL)
 ZEND_END_ARG_INFO()
 
 #define arginfo_glProgramUniform1d arginfo_glProgramUniform1f
 
-ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_glProgramUniform1dv, 0, 4, IS_VOID, 0)
+ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_glProgramUniform1dv, 0, 3, IS_VOID, 0)
 	ZEND_ARG_TYPE_INFO(0, program, IS_LONG, 0)
 	ZEND_ARG_TYPE_INFO(0, location, IS_LONG, 0)
-	ZEND_ARG_TYPE_INFO(0, count, IS_LONG, 0)
 	ZEND_ARG_OBJ_TYPE_MASK(0, value, GL\\Buffer\\DoubleBuffer, MAY_BE_ARRAY, NULL)
 ZEND_END_ARG_INFO()
 
 #define arginfo_glProgramUniform1ui arginfo_glProgramUniform1i
 
-ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_glProgramUniform1uiv, 0, 4, IS_VOID, 0)
+ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_glProgramUniform1uiv, 0, 3, IS_VOID, 0)
 	ZEND_ARG_TYPE_INFO(0, program, IS_LONG, 0)
 	ZEND_ARG_TYPE_INFO(0, location, IS_LONG, 0)
-	ZEND_ARG_TYPE_INFO(0, count, IS_LONG, 0)
 	ZEND_ARG_OBJ_TYPE_MASK(0, value, GL\\Buffer\\UIntBuffer, MAY_BE_ARRAY, NULL)
 ZEND_END_ARG_INFO()
 
@@ -1766,10 +1755,9 @@ ZEND_END_ARG_INFO()
 
 #define arginfo_glProgramUniform4uiv arginfo_glProgramUniform1uiv
 
-ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_glProgramUniformMatrix2fv, 0, 5, IS_VOID, 0)
+ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_glProgramUniformMatrix2fv, 0, 4, IS_VOID, 0)
 	ZEND_ARG_TYPE_INFO(0, program, IS_LONG, 0)
 	ZEND_ARG_TYPE_INFO(0, location, IS_LONG, 0)
-	ZEND_ARG_TYPE_INFO(0, count, IS_LONG, 0)
 	ZEND_ARG_TYPE_INFO(0, transpose, _IS_BOOL, 0)
 	ZEND_ARG_OBJ_TYPE_MASK(0, value, GL\\Buffer\\FloatBuffer, MAY_BE_ARRAY, NULL)
 ZEND_END_ARG_INFO()
@@ -1778,10 +1766,9 @@ ZEND_END_ARG_INFO()
 
 #define arginfo_glProgramUniformMatrix4fv arginfo_glProgramUniformMatrix2fv
 
-ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_glProgramUniformMatrix2dv, 0, 5, IS_VOID, 0)
+ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_glProgramUniformMatrix2dv, 0, 4, IS_VOID, 0)
 	ZEND_ARG_TYPE_INFO(0, program, IS_LONG, 0)
 	ZEND_ARG_TYPE_INFO(0, location, IS_LONG, 0)
-	ZEND_ARG_TYPE_INFO(0, count, IS_LONG, 0)
 	ZEND_ARG_TYPE_INFO(0, transpose, _IS_BOOL, 0)
 	ZEND_ARG_OBJ_TYPE_MASK(0, value, GL\\Buffer\\DoubleBuffer, MAY_BE_ARRAY, NULL)
 ZEND_END_ARG_INFO()
@@ -1834,9 +1821,8 @@ ZEND_END_ARG_INFO()
 
 #define arginfo_glGetVertexAttribLdv arginfo_glGetVertexAttribdv
 
-ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_glViewportArrayv, 0, 3, IS_VOID, 0)
+ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_glViewportArrayv, 0, 2, IS_VOID, 0)
 	ZEND_ARG_TYPE_INFO(0, first, IS_LONG, 0)
-	ZEND_ARG_TYPE_INFO(0, count, IS_LONG, 0)
 	ZEND_ARG_OBJ_TYPE_MASK(0, v, GL\\Buffer\\FloatBuffer, MAY_BE_ARRAY, NULL)
 ZEND_END_ARG_INFO()
 
@@ -1850,9 +1836,8 @@ ZEND_END_ARG_INFO()
 
 #define arginfo_glViewportIndexedfv arginfo_glVertexAttrib1fv
 
-ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_glScissorArrayv, 0, 3, IS_VOID, 0)
+ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_glScissorArrayv, 0, 2, IS_VOID, 0)
 	ZEND_ARG_TYPE_INFO(0, first, IS_LONG, 0)
-	ZEND_ARG_TYPE_INFO(0, count, IS_LONG, 0)
 	ZEND_ARG_OBJ_TYPE_MASK(0, v, GL\\Buffer\\IntBuffer, MAY_BE_ARRAY, NULL)
 ZEND_END_ARG_INFO()
 
@@ -1866,9 +1851,8 @@ ZEND_END_ARG_INFO()
 
 #define arginfo_glScissorIndexedv arginfo_glVertexAttrib4Niv
 
-ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_glDepthRangeArrayv, 0, 3, IS_VOID, 0)
+ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_glDepthRangeArrayv, 0, 2, IS_VOID, 0)
 	ZEND_ARG_TYPE_INFO(0, first, IS_LONG, 0)
-	ZEND_ARG_TYPE_INFO(0, count, IS_LONG, 0)
 	ZEND_ARG_OBJ_TYPE_MASK(0, v, GL\\Buffer\\DoubleBuffer, MAY_BE_ARRAY, NULL)
 ZEND_END_ARG_INFO()
 

@@ -497,6 +497,8 @@ PHP_FUNCTION(glTexParameterfv)
         cvector_free(tmpvec);
         return;
     }
+    phpglfw_buffer_glfloat_object *bufferobj = phpglfw_buffer_glfloat_objectptr_from_zobj_p(Z_OBJ_P(params_zval));
+    glTexParameterfv(target, pname, bufferobj->vec);
 } 
 
 /**
@@ -540,6 +542,8 @@ PHP_FUNCTION(glTexParameteriv)
         cvector_free(tmpvec);
         return;
     }
+    phpglfw_buffer_glint_object *bufferobj = phpglfw_buffer_glint_objectptr_from_zobj_p(Z_OBJ_P(params_zval));
+    glTexParameteriv(target, pname, bufferobj->vec);
 } 
 
 /**
@@ -1502,6 +1506,8 @@ PHP_FUNCTION(glPointParameterfv)
         cvector_free(tmpvec);
         return;
     }
+    phpglfw_buffer_glfloat_object *bufferobj = phpglfw_buffer_glfloat_objectptr_from_zobj_p(Z_OBJ_P(params_zval));
+    glPointParameterfv(pname, bufferobj->vec);
 } 
 
 /**
@@ -1543,6 +1549,8 @@ PHP_FUNCTION(glPointParameteriv)
         cvector_free(tmpvec);
         return;
     }
+    phpglfw_buffer_glint_object *bufferobj = phpglfw_buffer_glint_objectptr_from_zobj_p(Z_OBJ_P(params_zval));
+    glPointParameteriv(pname, bufferobj->vec);
 } 
 
 /**
@@ -2380,11 +2388,10 @@ PHP_FUNCTION(glUniform4i)
 PHP_FUNCTION(glUniform1fv)
 {
     zend_long location;
-    zend_long count;
     zval *value_zval;
     HashTable *value_ht = NULL;
-    if (zend_parse_parameters(ZEND_NUM_ARGS() , "llO", &location, &count, &value_zval, phpglfw_get_buffer_glfloat_ce()) == FAILURE) {
-        if (zend_parse_parameters(ZEND_NUM_ARGS() , "llh", &location, &count, &value_ht) == FAILURE) {
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "lO", &location, &value_zval, phpglfw_get_buffer_glfloat_ce()) == FAILURE) {
+        if (zend_parse_parameters(ZEND_NUM_ARGS() , "lh", &location, &value_ht) == FAILURE) {
             return;
         }
         
@@ -2397,10 +2404,12 @@ PHP_FUNCTION(glUniform1fv)
                 zend_throw_error(NULL, "All elements of the given array have to be of type: float");
             }
         ZEND_HASH_FOREACH_END();
-        glUniform1fv(location, count, tmpvec);
+        glUniform1fv(location, cvector_size(tmpvec), tmpvec);
         cvector_free(tmpvec);
         return;
     }
+    phpglfw_buffer_glfloat_object *bufferobj = phpglfw_buffer_glfloat_objectptr_from_zobj_p(Z_OBJ_P(value_zval));
+    glUniform1fv(location, cvector_size(bufferobj->vec), bufferobj->vec);
 } 
 
 /**
@@ -2409,11 +2418,10 @@ PHP_FUNCTION(glUniform1fv)
 PHP_FUNCTION(glUniform2fv)
 {
     zend_long location;
-    zend_long count;
     zval *value_zval;
     HashTable *value_ht = NULL;
-    if (zend_parse_parameters(ZEND_NUM_ARGS() , "llO", &location, &count, &value_zval, phpglfw_get_buffer_glfloat_ce()) == FAILURE) {
-        if (zend_parse_parameters(ZEND_NUM_ARGS() , "llh", &location, &count, &value_ht) == FAILURE) {
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "lO", &location, &value_zval, phpglfw_get_buffer_glfloat_ce()) == FAILURE) {
+        if (zend_parse_parameters(ZEND_NUM_ARGS() , "lh", &location, &value_ht) == FAILURE) {
             return;
         }
         
@@ -2426,10 +2434,12 @@ PHP_FUNCTION(glUniform2fv)
                 zend_throw_error(NULL, "All elements of the given array have to be of type: float");
             }
         ZEND_HASH_FOREACH_END();
-        glUniform2fv(location, count, tmpvec);
+        glUniform2fv(location, cvector_size(tmpvec), tmpvec);
         cvector_free(tmpvec);
         return;
     }
+    phpglfw_buffer_glfloat_object *bufferobj = phpglfw_buffer_glfloat_objectptr_from_zobj_p(Z_OBJ_P(value_zval));
+    glUniform2fv(location, cvector_size(bufferobj->vec), bufferobj->vec);
 } 
 
 /**
@@ -2438,11 +2448,10 @@ PHP_FUNCTION(glUniform2fv)
 PHP_FUNCTION(glUniform3fv)
 {
     zend_long location;
-    zend_long count;
     zval *value_zval;
     HashTable *value_ht = NULL;
-    if (zend_parse_parameters(ZEND_NUM_ARGS() , "llO", &location, &count, &value_zval, phpglfw_get_buffer_glfloat_ce()) == FAILURE) {
-        if (zend_parse_parameters(ZEND_NUM_ARGS() , "llh", &location, &count, &value_ht) == FAILURE) {
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "lO", &location, &value_zval, phpglfw_get_buffer_glfloat_ce()) == FAILURE) {
+        if (zend_parse_parameters(ZEND_NUM_ARGS() , "lh", &location, &value_ht) == FAILURE) {
             return;
         }
         
@@ -2455,10 +2464,12 @@ PHP_FUNCTION(glUniform3fv)
                 zend_throw_error(NULL, "All elements of the given array have to be of type: float");
             }
         ZEND_HASH_FOREACH_END();
-        glUniform3fv(location, count, tmpvec);
+        glUniform3fv(location, cvector_size(tmpvec), tmpvec);
         cvector_free(tmpvec);
         return;
     }
+    phpglfw_buffer_glfloat_object *bufferobj = phpglfw_buffer_glfloat_objectptr_from_zobj_p(Z_OBJ_P(value_zval));
+    glUniform3fv(location, cvector_size(bufferobj->vec), bufferobj->vec);
 } 
 
 /**
@@ -2467,11 +2478,10 @@ PHP_FUNCTION(glUniform3fv)
 PHP_FUNCTION(glUniform4fv)
 {
     zend_long location;
-    zend_long count;
     zval *value_zval;
     HashTable *value_ht = NULL;
-    if (zend_parse_parameters(ZEND_NUM_ARGS() , "llO", &location, &count, &value_zval, phpglfw_get_buffer_glfloat_ce()) == FAILURE) {
-        if (zend_parse_parameters(ZEND_NUM_ARGS() , "llh", &location, &count, &value_ht) == FAILURE) {
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "lO", &location, &value_zval, phpglfw_get_buffer_glfloat_ce()) == FAILURE) {
+        if (zend_parse_parameters(ZEND_NUM_ARGS() , "lh", &location, &value_ht) == FAILURE) {
             return;
         }
         
@@ -2484,10 +2494,12 @@ PHP_FUNCTION(glUniform4fv)
                 zend_throw_error(NULL, "All elements of the given array have to be of type: float");
             }
         ZEND_HASH_FOREACH_END();
-        glUniform4fv(location, count, tmpvec);
+        glUniform4fv(location, cvector_size(tmpvec), tmpvec);
         cvector_free(tmpvec);
         return;
     }
+    phpglfw_buffer_glfloat_object *bufferobj = phpglfw_buffer_glfloat_objectptr_from_zobj_p(Z_OBJ_P(value_zval));
+    glUniform4fv(location, cvector_size(bufferobj->vec), bufferobj->vec);
 } 
 
 /**
@@ -2496,11 +2508,10 @@ PHP_FUNCTION(glUniform4fv)
 PHP_FUNCTION(glUniform1iv)
 {
     zend_long location;
-    zend_long count;
     zval *value_zval;
     HashTable *value_ht = NULL;
-    if (zend_parse_parameters(ZEND_NUM_ARGS() , "llO", &location, &count, &value_zval, phpglfw_get_buffer_glint_ce()) == FAILURE) {
-        if (zend_parse_parameters(ZEND_NUM_ARGS() , "llh", &location, &count, &value_ht) == FAILURE) {
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "lO", &location, &value_zval, phpglfw_get_buffer_glint_ce()) == FAILURE) {
+        if (zend_parse_parameters(ZEND_NUM_ARGS() , "lh", &location, &value_ht) == FAILURE) {
             return;
         }
         
@@ -2513,10 +2524,12 @@ PHP_FUNCTION(glUniform1iv)
                 zend_throw_error(NULL, "All elements of the given array have to be of type: int");
             }
         ZEND_HASH_FOREACH_END();
-        glUniform1iv(location, count, tmpvec);
+        glUniform1iv(location, cvector_size(tmpvec), tmpvec);
         cvector_free(tmpvec);
         return;
     }
+    phpglfw_buffer_glint_object *bufferobj = phpglfw_buffer_glint_objectptr_from_zobj_p(Z_OBJ_P(value_zval));
+    glUniform1iv(location, cvector_size(bufferobj->vec), bufferobj->vec);
 } 
 
 /**
@@ -2525,11 +2538,10 @@ PHP_FUNCTION(glUniform1iv)
 PHP_FUNCTION(glUniform2iv)
 {
     zend_long location;
-    zend_long count;
     zval *value_zval;
     HashTable *value_ht = NULL;
-    if (zend_parse_parameters(ZEND_NUM_ARGS() , "llO", &location, &count, &value_zval, phpglfw_get_buffer_glint_ce()) == FAILURE) {
-        if (zend_parse_parameters(ZEND_NUM_ARGS() , "llh", &location, &count, &value_ht) == FAILURE) {
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "lO", &location, &value_zval, phpglfw_get_buffer_glint_ce()) == FAILURE) {
+        if (zend_parse_parameters(ZEND_NUM_ARGS() , "lh", &location, &value_ht) == FAILURE) {
             return;
         }
         
@@ -2542,10 +2554,12 @@ PHP_FUNCTION(glUniform2iv)
                 zend_throw_error(NULL, "All elements of the given array have to be of type: int");
             }
         ZEND_HASH_FOREACH_END();
-        glUniform2iv(location, count, tmpvec);
+        glUniform2iv(location, cvector_size(tmpvec), tmpvec);
         cvector_free(tmpvec);
         return;
     }
+    phpglfw_buffer_glint_object *bufferobj = phpglfw_buffer_glint_objectptr_from_zobj_p(Z_OBJ_P(value_zval));
+    glUniform2iv(location, cvector_size(bufferobj->vec), bufferobj->vec);
 } 
 
 /**
@@ -2554,11 +2568,10 @@ PHP_FUNCTION(glUniform2iv)
 PHP_FUNCTION(glUniform3iv)
 {
     zend_long location;
-    zend_long count;
     zval *value_zval;
     HashTable *value_ht = NULL;
-    if (zend_parse_parameters(ZEND_NUM_ARGS() , "llO", &location, &count, &value_zval, phpglfw_get_buffer_glint_ce()) == FAILURE) {
-        if (zend_parse_parameters(ZEND_NUM_ARGS() , "llh", &location, &count, &value_ht) == FAILURE) {
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "lO", &location, &value_zval, phpglfw_get_buffer_glint_ce()) == FAILURE) {
+        if (zend_parse_parameters(ZEND_NUM_ARGS() , "lh", &location, &value_ht) == FAILURE) {
             return;
         }
         
@@ -2571,10 +2584,12 @@ PHP_FUNCTION(glUniform3iv)
                 zend_throw_error(NULL, "All elements of the given array have to be of type: int");
             }
         ZEND_HASH_FOREACH_END();
-        glUniform3iv(location, count, tmpvec);
+        glUniform3iv(location, cvector_size(tmpvec), tmpvec);
         cvector_free(tmpvec);
         return;
     }
+    phpglfw_buffer_glint_object *bufferobj = phpglfw_buffer_glint_objectptr_from_zobj_p(Z_OBJ_P(value_zval));
+    glUniform3iv(location, cvector_size(bufferobj->vec), bufferobj->vec);
 } 
 
 /**
@@ -2583,11 +2598,10 @@ PHP_FUNCTION(glUniform3iv)
 PHP_FUNCTION(glUniform4iv)
 {
     zend_long location;
-    zend_long count;
     zval *value_zval;
     HashTable *value_ht = NULL;
-    if (zend_parse_parameters(ZEND_NUM_ARGS() , "llO", &location, &count, &value_zval, phpglfw_get_buffer_glint_ce()) == FAILURE) {
-        if (zend_parse_parameters(ZEND_NUM_ARGS() , "llh", &location, &count, &value_ht) == FAILURE) {
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "lO", &location, &value_zval, phpglfw_get_buffer_glint_ce()) == FAILURE) {
+        if (zend_parse_parameters(ZEND_NUM_ARGS() , "lh", &location, &value_ht) == FAILURE) {
             return;
         }
         
@@ -2600,10 +2614,12 @@ PHP_FUNCTION(glUniform4iv)
                 zend_throw_error(NULL, "All elements of the given array have to be of type: int");
             }
         ZEND_HASH_FOREACH_END();
-        glUniform4iv(location, count, tmpvec);
+        glUniform4iv(location, cvector_size(tmpvec), tmpvec);
         cvector_free(tmpvec);
         return;
     }
+    phpglfw_buffer_glint_object *bufferobj = phpglfw_buffer_glint_objectptr_from_zobj_p(Z_OBJ_P(value_zval));
+    glUniform4iv(location, cvector_size(bufferobj->vec), bufferobj->vec);
 } 
 
 /**
@@ -2612,12 +2628,11 @@ PHP_FUNCTION(glUniform4iv)
 PHP_FUNCTION(glUniformMatrix2fv)
 {
     zend_long location;
-    zend_long count;
     bool transpose;
     zval *value_zval;
     HashTable *value_ht = NULL;
-    if (zend_parse_parameters(ZEND_NUM_ARGS() , "llbO", &location, &count, &transpose, &value_zval, phpglfw_get_buffer_glfloat_ce()) == FAILURE) {
-        if (zend_parse_parameters(ZEND_NUM_ARGS() , "llbh", &location, &count, &transpose, &value_ht) == FAILURE) {
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "lbO", &location, &transpose, &value_zval, phpglfw_get_buffer_glfloat_ce()) == FAILURE) {
+        if (zend_parse_parameters(ZEND_NUM_ARGS() , "lbh", &location, &transpose, &value_ht) == FAILURE) {
             return;
         }
         
@@ -2630,10 +2645,12 @@ PHP_FUNCTION(glUniformMatrix2fv)
                 zend_throw_error(NULL, "All elements of the given array have to be of type: float");
             }
         ZEND_HASH_FOREACH_END();
-        glUniformMatrix2fv(location, count, transpose, tmpvec);
+        glUniformMatrix2fv(location, cvector_size(tmpvec), transpose, tmpvec);
         cvector_free(tmpvec);
         return;
     }
+    phpglfw_buffer_glfloat_object *bufferobj = phpglfw_buffer_glfloat_objectptr_from_zobj_p(Z_OBJ_P(value_zval));
+    glUniformMatrix2fv(location, cvector_size(bufferobj->vec), transpose, bufferobj->vec);
 } 
 
 /**
@@ -2642,12 +2659,11 @@ PHP_FUNCTION(glUniformMatrix2fv)
 PHP_FUNCTION(glUniformMatrix3fv)
 {
     zend_long location;
-    zend_long count;
     bool transpose;
     zval *value_zval;
     HashTable *value_ht = NULL;
-    if (zend_parse_parameters(ZEND_NUM_ARGS() , "llbO", &location, &count, &transpose, &value_zval, phpglfw_get_buffer_glfloat_ce()) == FAILURE) {
-        if (zend_parse_parameters(ZEND_NUM_ARGS() , "llbh", &location, &count, &transpose, &value_ht) == FAILURE) {
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "lbO", &location, &transpose, &value_zval, phpglfw_get_buffer_glfloat_ce()) == FAILURE) {
+        if (zend_parse_parameters(ZEND_NUM_ARGS() , "lbh", &location, &transpose, &value_ht) == FAILURE) {
             return;
         }
         
@@ -2660,10 +2676,12 @@ PHP_FUNCTION(glUniformMatrix3fv)
                 zend_throw_error(NULL, "All elements of the given array have to be of type: float");
             }
         ZEND_HASH_FOREACH_END();
-        glUniformMatrix3fv(location, count, transpose, tmpvec);
+        glUniformMatrix3fv(location, cvector_size(tmpvec), transpose, tmpvec);
         cvector_free(tmpvec);
         return;
     }
+    phpglfw_buffer_glfloat_object *bufferobj = phpglfw_buffer_glfloat_objectptr_from_zobj_p(Z_OBJ_P(value_zval));
+    glUniformMatrix3fv(location, cvector_size(bufferobj->vec), transpose, bufferobj->vec);
 } 
 
 /**
@@ -2737,6 +2755,8 @@ PHP_FUNCTION(glVertexAttrib1dv)
         cvector_free(tmpvec);
         return;
     }
+    phpglfw_buffer_gldouble_object *bufferobj = phpglfw_buffer_gldouble_objectptr_from_zobj_p(Z_OBJ_P(v_zval));
+    glVertexAttrib1dv(index, bufferobj->vec);
 } 
 
 /**
@@ -2778,6 +2798,8 @@ PHP_FUNCTION(glVertexAttrib1fv)
         cvector_free(tmpvec);
         return;
     }
+    phpglfw_buffer_glfloat_object *bufferobj = phpglfw_buffer_glfloat_objectptr_from_zobj_p(Z_OBJ_P(v_zval));
+    glVertexAttrib1fv(index, bufferobj->vec);
 } 
 
 /**
@@ -2819,6 +2841,8 @@ PHP_FUNCTION(glVertexAttrib1sv)
         cvector_free(tmpvec);
         return;
     }
+    phpglfw_buffer_glshort_object *bufferobj = phpglfw_buffer_glshort_objectptr_from_zobj_p(Z_OBJ_P(v_zval));
+    glVertexAttrib1sv(index, bufferobj->vec);
 } 
 
 /**
@@ -2861,6 +2885,8 @@ PHP_FUNCTION(glVertexAttrib2dv)
         cvector_free(tmpvec);
         return;
     }
+    phpglfw_buffer_gldouble_object *bufferobj = phpglfw_buffer_gldouble_objectptr_from_zobj_p(Z_OBJ_P(v_zval));
+    glVertexAttrib2dv(index, bufferobj->vec);
 } 
 
 /**
@@ -2903,6 +2929,8 @@ PHP_FUNCTION(glVertexAttrib2fv)
         cvector_free(tmpvec);
         return;
     }
+    phpglfw_buffer_glfloat_object *bufferobj = phpglfw_buffer_glfloat_objectptr_from_zobj_p(Z_OBJ_P(v_zval));
+    glVertexAttrib2fv(index, bufferobj->vec);
 } 
 
 /**
@@ -2945,6 +2973,8 @@ PHP_FUNCTION(glVertexAttrib2sv)
         cvector_free(tmpvec);
         return;
     }
+    phpglfw_buffer_glshort_object *bufferobj = phpglfw_buffer_glshort_objectptr_from_zobj_p(Z_OBJ_P(v_zval));
+    glVertexAttrib2sv(index, bufferobj->vec);
 } 
 
 /**
@@ -2988,6 +3018,8 @@ PHP_FUNCTION(glVertexAttrib3dv)
         cvector_free(tmpvec);
         return;
     }
+    phpglfw_buffer_gldouble_object *bufferobj = phpglfw_buffer_gldouble_objectptr_from_zobj_p(Z_OBJ_P(v_zval));
+    glVertexAttrib3dv(index, bufferobj->vec);
 } 
 
 /**
@@ -3031,6 +3063,8 @@ PHP_FUNCTION(glVertexAttrib3fv)
         cvector_free(tmpvec);
         return;
     }
+    phpglfw_buffer_glfloat_object *bufferobj = phpglfw_buffer_glfloat_objectptr_from_zobj_p(Z_OBJ_P(v_zval));
+    glVertexAttrib3fv(index, bufferobj->vec);
 } 
 
 /**
@@ -3074,6 +3108,8 @@ PHP_FUNCTION(glVertexAttrib3sv)
         cvector_free(tmpvec);
         return;
     }
+    phpglfw_buffer_glshort_object *bufferobj = phpglfw_buffer_glshort_objectptr_from_zobj_p(Z_OBJ_P(v_zval));
+    glVertexAttrib3sv(index, bufferobj->vec);
 } 
 
 /**
@@ -3102,6 +3138,8 @@ PHP_FUNCTION(glVertexAttrib4Nbv)
         cvector_free(tmpvec);
         return;
     }
+    phpglfw_buffer_glbyte_object *bufferobj = phpglfw_buffer_glbyte_objectptr_from_zobj_p(Z_OBJ_P(v_zval));
+    glVertexAttrib4Nbv(index, bufferobj->vec);
 } 
 
 /**
@@ -3130,6 +3168,8 @@ PHP_FUNCTION(glVertexAttrib4Niv)
         cvector_free(tmpvec);
         return;
     }
+    phpglfw_buffer_glint_object *bufferobj = phpglfw_buffer_glint_objectptr_from_zobj_p(Z_OBJ_P(v_zval));
+    glVertexAttrib4Niv(index, bufferobj->vec);
 } 
 
 /**
@@ -3158,6 +3198,8 @@ PHP_FUNCTION(glVertexAttrib4Nsv)
         cvector_free(tmpvec);
         return;
     }
+    phpglfw_buffer_glshort_object *bufferobj = phpglfw_buffer_glshort_objectptr_from_zobj_p(Z_OBJ_P(v_zval));
+    glVertexAttrib4Nsv(index, bufferobj->vec);
 } 
 
 /**
@@ -3202,6 +3244,8 @@ PHP_FUNCTION(glVertexAttrib4Nubv)
         cvector_free(tmpvec);
         return;
     }
+    phpglfw_buffer_glubyte_object *bufferobj = phpglfw_buffer_glubyte_objectptr_from_zobj_p(Z_OBJ_P(v_zval));
+    glVertexAttrib4Nubv(index, bufferobj->vec);
 } 
 
 /**
@@ -3230,6 +3274,8 @@ PHP_FUNCTION(glVertexAttrib4Nuiv)
         cvector_free(tmpvec);
         return;
     }
+    phpglfw_buffer_gluint_object *bufferobj = phpglfw_buffer_gluint_objectptr_from_zobj_p(Z_OBJ_P(v_zval));
+    glVertexAttrib4Nuiv(index, bufferobj->vec);
 } 
 
 /**
@@ -3258,6 +3304,8 @@ PHP_FUNCTION(glVertexAttrib4Nusv)
         cvector_free(tmpvec);
         return;
     }
+    phpglfw_buffer_glushort_object *bufferobj = phpglfw_buffer_glushort_objectptr_from_zobj_p(Z_OBJ_P(v_zval));
+    glVertexAttrib4Nusv(index, bufferobj->vec);
 } 
 
 /**
@@ -3286,6 +3334,8 @@ PHP_FUNCTION(glVertexAttrib4bv)
         cvector_free(tmpvec);
         return;
     }
+    phpglfw_buffer_glbyte_object *bufferobj = phpglfw_buffer_glbyte_objectptr_from_zobj_p(Z_OBJ_P(v_zval));
+    glVertexAttrib4bv(index, bufferobj->vec);
 } 
 
 /**
@@ -3330,6 +3380,8 @@ PHP_FUNCTION(glVertexAttrib4dv)
         cvector_free(tmpvec);
         return;
     }
+    phpglfw_buffer_gldouble_object *bufferobj = phpglfw_buffer_gldouble_objectptr_from_zobj_p(Z_OBJ_P(v_zval));
+    glVertexAttrib4dv(index, bufferobj->vec);
 } 
 
 /**
@@ -3374,6 +3426,8 @@ PHP_FUNCTION(glVertexAttrib4fv)
         cvector_free(tmpvec);
         return;
     }
+    phpglfw_buffer_glfloat_object *bufferobj = phpglfw_buffer_glfloat_objectptr_from_zobj_p(Z_OBJ_P(v_zval));
+    glVertexAttrib4fv(index, bufferobj->vec);
 } 
 
 /**
@@ -3402,6 +3456,8 @@ PHP_FUNCTION(glVertexAttrib4iv)
         cvector_free(tmpvec);
         return;
     }
+    phpglfw_buffer_glint_object *bufferobj = phpglfw_buffer_glint_objectptr_from_zobj_p(Z_OBJ_P(v_zval));
+    glVertexAttrib4iv(index, bufferobj->vec);
 } 
 
 /**
@@ -3446,6 +3502,8 @@ PHP_FUNCTION(glVertexAttrib4sv)
         cvector_free(tmpvec);
         return;
     }
+    phpglfw_buffer_glshort_object *bufferobj = phpglfw_buffer_glshort_objectptr_from_zobj_p(Z_OBJ_P(v_zval));
+    glVertexAttrib4sv(index, bufferobj->vec);
 } 
 
 /**
@@ -3474,6 +3532,8 @@ PHP_FUNCTION(glVertexAttrib4ubv)
         cvector_free(tmpvec);
         return;
     }
+    phpglfw_buffer_glubyte_object *bufferobj = phpglfw_buffer_glubyte_objectptr_from_zobj_p(Z_OBJ_P(v_zval));
+    glVertexAttrib4ubv(index, bufferobj->vec);
 } 
 
 /**
@@ -3502,6 +3562,8 @@ PHP_FUNCTION(glVertexAttrib4uiv)
         cvector_free(tmpvec);
         return;
     }
+    phpglfw_buffer_gluint_object *bufferobj = phpglfw_buffer_gluint_objectptr_from_zobj_p(Z_OBJ_P(v_zval));
+    glVertexAttrib4uiv(index, bufferobj->vec);
 } 
 
 /**
@@ -3530,6 +3592,8 @@ PHP_FUNCTION(glVertexAttrib4usv)
         cvector_free(tmpvec);
         return;
     }
+    phpglfw_buffer_glushort_object *bufferobj = phpglfw_buffer_glushort_objectptr_from_zobj_p(Z_OBJ_P(v_zval));
+    glVertexAttrib4usv(index, bufferobj->vec);
 } 
 
 /**
@@ -3555,12 +3619,11 @@ PHP_FUNCTION(glVertexAttribPointer)
 PHP_FUNCTION(glUniformMatrix2x3fv)
 {
     zend_long location;
-    zend_long count;
     bool transpose;
     zval *value_zval;
     HashTable *value_ht = NULL;
-    if (zend_parse_parameters(ZEND_NUM_ARGS() , "llbO", &location, &count, &transpose, &value_zval, phpglfw_get_buffer_glfloat_ce()) == FAILURE) {
-        if (zend_parse_parameters(ZEND_NUM_ARGS() , "llbh", &location, &count, &transpose, &value_ht) == FAILURE) {
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "lbO", &location, &transpose, &value_zval, phpglfw_get_buffer_glfloat_ce()) == FAILURE) {
+        if (zend_parse_parameters(ZEND_NUM_ARGS() , "lbh", &location, &transpose, &value_ht) == FAILURE) {
             return;
         }
         
@@ -3573,10 +3636,12 @@ PHP_FUNCTION(glUniformMatrix2x3fv)
                 zend_throw_error(NULL, "All elements of the given array have to be of type: float");
             }
         ZEND_HASH_FOREACH_END();
-        glUniformMatrix2x3fv(location, count, transpose, tmpvec);
+        glUniformMatrix2x3fv(location, cvector_size(tmpvec), transpose, tmpvec);
         cvector_free(tmpvec);
         return;
     }
+    phpglfw_buffer_glfloat_object *bufferobj = phpglfw_buffer_glfloat_objectptr_from_zobj_p(Z_OBJ_P(value_zval));
+    glUniformMatrix2x3fv(location, cvector_size(bufferobj->vec), transpose, bufferobj->vec);
 } 
 
 /**
@@ -3585,12 +3650,11 @@ PHP_FUNCTION(glUniformMatrix2x3fv)
 PHP_FUNCTION(glUniformMatrix3x2fv)
 {
     zend_long location;
-    zend_long count;
     bool transpose;
     zval *value_zval;
     HashTable *value_ht = NULL;
-    if (zend_parse_parameters(ZEND_NUM_ARGS() , "llbO", &location, &count, &transpose, &value_zval, phpglfw_get_buffer_glfloat_ce()) == FAILURE) {
-        if (zend_parse_parameters(ZEND_NUM_ARGS() , "llbh", &location, &count, &transpose, &value_ht) == FAILURE) {
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "lbO", &location, &transpose, &value_zval, phpglfw_get_buffer_glfloat_ce()) == FAILURE) {
+        if (zend_parse_parameters(ZEND_NUM_ARGS() , "lbh", &location, &transpose, &value_ht) == FAILURE) {
             return;
         }
         
@@ -3603,10 +3667,12 @@ PHP_FUNCTION(glUniformMatrix3x2fv)
                 zend_throw_error(NULL, "All elements of the given array have to be of type: float");
             }
         ZEND_HASH_FOREACH_END();
-        glUniformMatrix3x2fv(location, count, transpose, tmpvec);
+        glUniformMatrix3x2fv(location, cvector_size(tmpvec), transpose, tmpvec);
         cvector_free(tmpvec);
         return;
     }
+    phpglfw_buffer_glfloat_object *bufferobj = phpglfw_buffer_glfloat_objectptr_from_zobj_p(Z_OBJ_P(value_zval));
+    glUniformMatrix3x2fv(location, cvector_size(bufferobj->vec), transpose, bufferobj->vec);
 } 
 
 /**
@@ -3615,12 +3681,11 @@ PHP_FUNCTION(glUniformMatrix3x2fv)
 PHP_FUNCTION(glUniformMatrix2x4fv)
 {
     zend_long location;
-    zend_long count;
     bool transpose;
     zval *value_zval;
     HashTable *value_ht = NULL;
-    if (zend_parse_parameters(ZEND_NUM_ARGS() , "llbO", &location, &count, &transpose, &value_zval, phpglfw_get_buffer_glfloat_ce()) == FAILURE) {
-        if (zend_parse_parameters(ZEND_NUM_ARGS() , "llbh", &location, &count, &transpose, &value_ht) == FAILURE) {
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "lbO", &location, &transpose, &value_zval, phpglfw_get_buffer_glfloat_ce()) == FAILURE) {
+        if (zend_parse_parameters(ZEND_NUM_ARGS() , "lbh", &location, &transpose, &value_ht) == FAILURE) {
             return;
         }
         
@@ -3633,10 +3698,12 @@ PHP_FUNCTION(glUniformMatrix2x4fv)
                 zend_throw_error(NULL, "All elements of the given array have to be of type: float");
             }
         ZEND_HASH_FOREACH_END();
-        glUniformMatrix2x4fv(location, count, transpose, tmpvec);
+        glUniformMatrix2x4fv(location, cvector_size(tmpvec), transpose, tmpvec);
         cvector_free(tmpvec);
         return;
     }
+    phpglfw_buffer_glfloat_object *bufferobj = phpglfw_buffer_glfloat_objectptr_from_zobj_p(Z_OBJ_P(value_zval));
+    glUniformMatrix2x4fv(location, cvector_size(bufferobj->vec), transpose, bufferobj->vec);
 } 
 
 /**
@@ -3645,12 +3712,11 @@ PHP_FUNCTION(glUniformMatrix2x4fv)
 PHP_FUNCTION(glUniformMatrix4x2fv)
 {
     zend_long location;
-    zend_long count;
     bool transpose;
     zval *value_zval;
     HashTable *value_ht = NULL;
-    if (zend_parse_parameters(ZEND_NUM_ARGS() , "llbO", &location, &count, &transpose, &value_zval, phpglfw_get_buffer_glfloat_ce()) == FAILURE) {
-        if (zend_parse_parameters(ZEND_NUM_ARGS() , "llbh", &location, &count, &transpose, &value_ht) == FAILURE) {
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "lbO", &location, &transpose, &value_zval, phpglfw_get_buffer_glfloat_ce()) == FAILURE) {
+        if (zend_parse_parameters(ZEND_NUM_ARGS() , "lbh", &location, &transpose, &value_ht) == FAILURE) {
             return;
         }
         
@@ -3663,10 +3729,12 @@ PHP_FUNCTION(glUniformMatrix4x2fv)
                 zend_throw_error(NULL, "All elements of the given array have to be of type: float");
             }
         ZEND_HASH_FOREACH_END();
-        glUniformMatrix4x2fv(location, count, transpose, tmpvec);
+        glUniformMatrix4x2fv(location, cvector_size(tmpvec), transpose, tmpvec);
         cvector_free(tmpvec);
         return;
     }
+    phpglfw_buffer_glfloat_object *bufferobj = phpglfw_buffer_glfloat_objectptr_from_zobj_p(Z_OBJ_P(value_zval));
+    glUniformMatrix4x2fv(location, cvector_size(bufferobj->vec), transpose, bufferobj->vec);
 } 
 
 /**
@@ -3675,12 +3743,11 @@ PHP_FUNCTION(glUniformMatrix4x2fv)
 PHP_FUNCTION(glUniformMatrix3x4fv)
 {
     zend_long location;
-    zend_long count;
     bool transpose;
     zval *value_zval;
     HashTable *value_ht = NULL;
-    if (zend_parse_parameters(ZEND_NUM_ARGS() , "llbO", &location, &count, &transpose, &value_zval, phpglfw_get_buffer_glfloat_ce()) == FAILURE) {
-        if (zend_parse_parameters(ZEND_NUM_ARGS() , "llbh", &location, &count, &transpose, &value_ht) == FAILURE) {
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "lbO", &location, &transpose, &value_zval, phpglfw_get_buffer_glfloat_ce()) == FAILURE) {
+        if (zend_parse_parameters(ZEND_NUM_ARGS() , "lbh", &location, &transpose, &value_ht) == FAILURE) {
             return;
         }
         
@@ -3693,10 +3760,12 @@ PHP_FUNCTION(glUniformMatrix3x4fv)
                 zend_throw_error(NULL, "All elements of the given array have to be of type: float");
             }
         ZEND_HASH_FOREACH_END();
-        glUniformMatrix3x4fv(location, count, transpose, tmpvec);
+        glUniformMatrix3x4fv(location, cvector_size(tmpvec), transpose, tmpvec);
         cvector_free(tmpvec);
         return;
     }
+    phpglfw_buffer_glfloat_object *bufferobj = phpglfw_buffer_glfloat_objectptr_from_zobj_p(Z_OBJ_P(value_zval));
+    glUniformMatrix3x4fv(location, cvector_size(bufferobj->vec), transpose, bufferobj->vec);
 } 
 
 /**
@@ -3705,12 +3774,11 @@ PHP_FUNCTION(glUniformMatrix3x4fv)
 PHP_FUNCTION(glUniformMatrix4x3fv)
 {
     zend_long location;
-    zend_long count;
     bool transpose;
     zval *value_zval;
     HashTable *value_ht = NULL;
-    if (zend_parse_parameters(ZEND_NUM_ARGS() , "llbO", &location, &count, &transpose, &value_zval, phpglfw_get_buffer_glfloat_ce()) == FAILURE) {
-        if (zend_parse_parameters(ZEND_NUM_ARGS() , "llbh", &location, &count, &transpose, &value_ht) == FAILURE) {
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "lbO", &location, &transpose, &value_zval, phpglfw_get_buffer_glfloat_ce()) == FAILURE) {
+        if (zend_parse_parameters(ZEND_NUM_ARGS() , "lbh", &location, &transpose, &value_ht) == FAILURE) {
             return;
         }
         
@@ -3723,10 +3791,12 @@ PHP_FUNCTION(glUniformMatrix4x3fv)
                 zend_throw_error(NULL, "All elements of the given array have to be of type: float");
             }
         ZEND_HASH_FOREACH_END();
-        glUniformMatrix4x3fv(location, count, transpose, tmpvec);
+        glUniformMatrix4x3fv(location, cvector_size(tmpvec), transpose, tmpvec);
         cvector_free(tmpvec);
         return;
     }
+    phpglfw_buffer_glfloat_object *bufferobj = phpglfw_buffer_glfloat_objectptr_from_zobj_p(Z_OBJ_P(value_zval));
+    glUniformMatrix4x3fv(location, cvector_size(bufferobj->vec), transpose, bufferobj->vec);
 } 
 
 /**
@@ -4102,6 +4172,8 @@ PHP_FUNCTION(glVertexAttribI1iv)
         cvector_free(tmpvec);
         return;
     }
+    phpglfw_buffer_glint_object *bufferobj = phpglfw_buffer_glint_objectptr_from_zobj_p(Z_OBJ_P(v_zval));
+    glVertexAttribI1iv(index, bufferobj->vec);
 } 
 
 /**
@@ -4130,6 +4202,8 @@ PHP_FUNCTION(glVertexAttribI2iv)
         cvector_free(tmpvec);
         return;
     }
+    phpglfw_buffer_glint_object *bufferobj = phpglfw_buffer_glint_objectptr_from_zobj_p(Z_OBJ_P(v_zval));
+    glVertexAttribI2iv(index, bufferobj->vec);
 } 
 
 /**
@@ -4158,6 +4232,8 @@ PHP_FUNCTION(glVertexAttribI3iv)
         cvector_free(tmpvec);
         return;
     }
+    phpglfw_buffer_glint_object *bufferobj = phpglfw_buffer_glint_objectptr_from_zobj_p(Z_OBJ_P(v_zval));
+    glVertexAttribI3iv(index, bufferobj->vec);
 } 
 
 /**
@@ -4186,6 +4262,8 @@ PHP_FUNCTION(glVertexAttribI4iv)
         cvector_free(tmpvec);
         return;
     }
+    phpglfw_buffer_glint_object *bufferobj = phpglfw_buffer_glint_objectptr_from_zobj_p(Z_OBJ_P(v_zval));
+    glVertexAttribI4iv(index, bufferobj->vec);
 } 
 
 /**
@@ -4214,6 +4292,8 @@ PHP_FUNCTION(glVertexAttribI1uiv)
         cvector_free(tmpvec);
         return;
     }
+    phpglfw_buffer_gluint_object *bufferobj = phpglfw_buffer_gluint_objectptr_from_zobj_p(Z_OBJ_P(v_zval));
+    glVertexAttribI1uiv(index, bufferobj->vec);
 } 
 
 /**
@@ -4242,6 +4322,8 @@ PHP_FUNCTION(glVertexAttribI2uiv)
         cvector_free(tmpvec);
         return;
     }
+    phpglfw_buffer_gluint_object *bufferobj = phpglfw_buffer_gluint_objectptr_from_zobj_p(Z_OBJ_P(v_zval));
+    glVertexAttribI2uiv(index, bufferobj->vec);
 } 
 
 /**
@@ -4270,6 +4352,8 @@ PHP_FUNCTION(glVertexAttribI3uiv)
         cvector_free(tmpvec);
         return;
     }
+    phpglfw_buffer_gluint_object *bufferobj = phpglfw_buffer_gluint_objectptr_from_zobj_p(Z_OBJ_P(v_zval));
+    glVertexAttribI3uiv(index, bufferobj->vec);
 } 
 
 /**
@@ -4298,6 +4382,8 @@ PHP_FUNCTION(glVertexAttribI4uiv)
         cvector_free(tmpvec);
         return;
     }
+    phpglfw_buffer_gluint_object *bufferobj = phpglfw_buffer_gluint_objectptr_from_zobj_p(Z_OBJ_P(v_zval));
+    glVertexAttribI4uiv(index, bufferobj->vec);
 } 
 
 /**
@@ -4326,6 +4412,8 @@ PHP_FUNCTION(glVertexAttribI4bv)
         cvector_free(tmpvec);
         return;
     }
+    phpglfw_buffer_glbyte_object *bufferobj = phpglfw_buffer_glbyte_objectptr_from_zobj_p(Z_OBJ_P(v_zval));
+    glVertexAttribI4bv(index, bufferobj->vec);
 } 
 
 /**
@@ -4354,6 +4442,8 @@ PHP_FUNCTION(glVertexAttribI4sv)
         cvector_free(tmpvec);
         return;
     }
+    phpglfw_buffer_glshort_object *bufferobj = phpglfw_buffer_glshort_objectptr_from_zobj_p(Z_OBJ_P(v_zval));
+    glVertexAttribI4sv(index, bufferobj->vec);
 } 
 
 /**
@@ -4382,6 +4472,8 @@ PHP_FUNCTION(glVertexAttribI4ubv)
         cvector_free(tmpvec);
         return;
     }
+    phpglfw_buffer_glubyte_object *bufferobj = phpglfw_buffer_glubyte_objectptr_from_zobj_p(Z_OBJ_P(v_zval));
+    glVertexAttribI4ubv(index, bufferobj->vec);
 } 
 
 /**
@@ -4410,6 +4502,8 @@ PHP_FUNCTION(glVertexAttribI4usv)
         cvector_free(tmpvec);
         return;
     }
+    phpglfw_buffer_glushort_object *bufferobj = phpglfw_buffer_glushort_objectptr_from_zobj_p(Z_OBJ_P(v_zval));
+    glVertexAttribI4usv(index, bufferobj->vec);
 } 
 
 /**
@@ -4523,11 +4617,10 @@ PHP_FUNCTION(glUniform4ui)
 PHP_FUNCTION(glUniform1uiv)
 {
     zend_long location;
-    zend_long count;
     zval *value_zval;
     HashTable *value_ht = NULL;
-    if (zend_parse_parameters(ZEND_NUM_ARGS() , "llO", &location, &count, &value_zval, phpglfw_get_buffer_gluint_ce()) == FAILURE) {
-        if (zend_parse_parameters(ZEND_NUM_ARGS() , "llh", &location, &count, &value_ht) == FAILURE) {
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "lO", &location, &value_zval, phpglfw_get_buffer_gluint_ce()) == FAILURE) {
+        if (zend_parse_parameters(ZEND_NUM_ARGS() , "lh", &location, &value_ht) == FAILURE) {
             return;
         }
         
@@ -4540,10 +4633,12 @@ PHP_FUNCTION(glUniform1uiv)
                 zend_throw_error(NULL, "All elements of the given array have to be of type: int");
             }
         ZEND_HASH_FOREACH_END();
-        glUniform1uiv(location, count, tmpvec);
+        glUniform1uiv(location, cvector_size(tmpvec), tmpvec);
         cvector_free(tmpvec);
         return;
     }
+    phpglfw_buffer_gluint_object *bufferobj = phpglfw_buffer_gluint_objectptr_from_zobj_p(Z_OBJ_P(value_zval));
+    glUniform1uiv(location, cvector_size(bufferobj->vec), bufferobj->vec);
 } 
 
 /**
@@ -4552,11 +4647,10 @@ PHP_FUNCTION(glUniform1uiv)
 PHP_FUNCTION(glUniform2uiv)
 {
     zend_long location;
-    zend_long count;
     zval *value_zval;
     HashTable *value_ht = NULL;
-    if (zend_parse_parameters(ZEND_NUM_ARGS() , "llO", &location, &count, &value_zval, phpglfw_get_buffer_gluint_ce()) == FAILURE) {
-        if (zend_parse_parameters(ZEND_NUM_ARGS() , "llh", &location, &count, &value_ht) == FAILURE) {
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "lO", &location, &value_zval, phpglfw_get_buffer_gluint_ce()) == FAILURE) {
+        if (zend_parse_parameters(ZEND_NUM_ARGS() , "lh", &location, &value_ht) == FAILURE) {
             return;
         }
         
@@ -4569,10 +4663,12 @@ PHP_FUNCTION(glUniform2uiv)
                 zend_throw_error(NULL, "All elements of the given array have to be of type: int");
             }
         ZEND_HASH_FOREACH_END();
-        glUniform2uiv(location, count, tmpvec);
+        glUniform2uiv(location, cvector_size(tmpvec), tmpvec);
         cvector_free(tmpvec);
         return;
     }
+    phpglfw_buffer_gluint_object *bufferobj = phpglfw_buffer_gluint_objectptr_from_zobj_p(Z_OBJ_P(value_zval));
+    glUniform2uiv(location, cvector_size(bufferobj->vec), bufferobj->vec);
 } 
 
 /**
@@ -4581,11 +4677,10 @@ PHP_FUNCTION(glUniform2uiv)
 PHP_FUNCTION(glUniform3uiv)
 {
     zend_long location;
-    zend_long count;
     zval *value_zval;
     HashTable *value_ht = NULL;
-    if (zend_parse_parameters(ZEND_NUM_ARGS() , "llO", &location, &count, &value_zval, phpglfw_get_buffer_gluint_ce()) == FAILURE) {
-        if (zend_parse_parameters(ZEND_NUM_ARGS() , "llh", &location, &count, &value_ht) == FAILURE) {
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "lO", &location, &value_zval, phpglfw_get_buffer_gluint_ce()) == FAILURE) {
+        if (zend_parse_parameters(ZEND_NUM_ARGS() , "lh", &location, &value_ht) == FAILURE) {
             return;
         }
         
@@ -4598,10 +4693,12 @@ PHP_FUNCTION(glUniform3uiv)
                 zend_throw_error(NULL, "All elements of the given array have to be of type: int");
             }
         ZEND_HASH_FOREACH_END();
-        glUniform3uiv(location, count, tmpvec);
+        glUniform3uiv(location, cvector_size(tmpvec), tmpvec);
         cvector_free(tmpvec);
         return;
     }
+    phpglfw_buffer_gluint_object *bufferobj = phpglfw_buffer_gluint_objectptr_from_zobj_p(Z_OBJ_P(value_zval));
+    glUniform3uiv(location, cvector_size(bufferobj->vec), bufferobj->vec);
 } 
 
 /**
@@ -4610,11 +4707,10 @@ PHP_FUNCTION(glUniform3uiv)
 PHP_FUNCTION(glUniform4uiv)
 {
     zend_long location;
-    zend_long count;
     zval *value_zval;
     HashTable *value_ht = NULL;
-    if (zend_parse_parameters(ZEND_NUM_ARGS() , "llO", &location, &count, &value_zval, phpglfw_get_buffer_gluint_ce()) == FAILURE) {
-        if (zend_parse_parameters(ZEND_NUM_ARGS() , "llh", &location, &count, &value_ht) == FAILURE) {
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "lO", &location, &value_zval, phpglfw_get_buffer_gluint_ce()) == FAILURE) {
+        if (zend_parse_parameters(ZEND_NUM_ARGS() , "lh", &location, &value_ht) == FAILURE) {
             return;
         }
         
@@ -4627,10 +4723,12 @@ PHP_FUNCTION(glUniform4uiv)
                 zend_throw_error(NULL, "All elements of the given array have to be of type: int");
             }
         ZEND_HASH_FOREACH_END();
-        glUniform4uiv(location, count, tmpvec);
+        glUniform4uiv(location, cvector_size(tmpvec), tmpvec);
         cvector_free(tmpvec);
         return;
     }
+    phpglfw_buffer_gluint_object *bufferobj = phpglfw_buffer_gluint_objectptr_from_zobj_p(Z_OBJ_P(value_zval));
+    glUniform4uiv(location, cvector_size(bufferobj->vec), bufferobj->vec);
 } 
 
 /**
@@ -4660,6 +4758,8 @@ PHP_FUNCTION(glTexParameterIiv)
         cvector_free(tmpvec);
         return;
     }
+    phpglfw_buffer_glint_object *bufferobj = phpglfw_buffer_glint_objectptr_from_zobj_p(Z_OBJ_P(params_zval));
+    glTexParameterIiv(target, pname, bufferobj->vec);
 } 
 
 /**
@@ -4689,6 +4789,8 @@ PHP_FUNCTION(glTexParameterIuiv)
         cvector_free(tmpvec);
         return;
     }
+    phpglfw_buffer_gluint_object *bufferobj = phpglfw_buffer_gluint_objectptr_from_zobj_p(Z_OBJ_P(params_zval));
+    glTexParameterIuiv(target, pname, bufferobj->vec);
 } 
 
 /**
@@ -4774,6 +4876,8 @@ PHP_FUNCTION(glClearBufferiv)
         cvector_free(tmpvec);
         return;
     }
+    phpglfw_buffer_glint_object *bufferobj = phpglfw_buffer_glint_objectptr_from_zobj_p(Z_OBJ_P(value_zval));
+    glClearBufferiv(buffer, drawbuffer, bufferobj->vec);
 } 
 
 /**
@@ -4803,6 +4907,8 @@ PHP_FUNCTION(glClearBufferuiv)
         cvector_free(tmpvec);
         return;
     }
+    phpglfw_buffer_gluint_object *bufferobj = phpglfw_buffer_gluint_objectptr_from_zobj_p(Z_OBJ_P(value_zval));
+    glClearBufferuiv(buffer, drawbuffer, bufferobj->vec);
 } 
 
 /**
@@ -4832,6 +4938,8 @@ PHP_FUNCTION(glClearBufferfv)
         cvector_free(tmpvec);
         return;
     }
+    phpglfw_buffer_glfloat_object *bufferobj = phpglfw_buffer_glfloat_objectptr_from_zobj_p(Z_OBJ_P(value_zval));
+    glClearBufferfv(buffer, drawbuffer, bufferobj->vec);
 } 
 
 /**
@@ -5782,6 +5890,8 @@ PHP_FUNCTION(glSamplerParameteriv)
         cvector_free(tmpvec);
         return;
     }
+    phpglfw_buffer_glint_object *bufferobj = phpglfw_buffer_glint_objectptr_from_zobj_p(Z_OBJ_P(param_zval));
+    glSamplerParameteriv(sampler, pname, bufferobj->vec);
 } 
 
 /**
@@ -5825,6 +5935,8 @@ PHP_FUNCTION(glSamplerParameterfv)
         cvector_free(tmpvec);
         return;
     }
+    phpglfw_buffer_glfloat_object *bufferobj = phpglfw_buffer_glfloat_objectptr_from_zobj_p(Z_OBJ_P(param_zval));
+    glSamplerParameterfv(sampler, pname, bufferobj->vec);
 } 
 
 /**
@@ -5854,6 +5966,8 @@ PHP_FUNCTION(glSamplerParameterIiv)
         cvector_free(tmpvec);
         return;
     }
+    phpglfw_buffer_glint_object *bufferobj = phpglfw_buffer_glint_objectptr_from_zobj_p(Z_OBJ_P(param_zval));
+    glSamplerParameterIiv(sampler, pname, bufferobj->vec);
 } 
 
 /**
@@ -5883,6 +5997,8 @@ PHP_FUNCTION(glSamplerParameterIuiv)
         cvector_free(tmpvec);
         return;
     }
+    phpglfw_buffer_gluint_object *bufferobj = phpglfw_buffer_gluint_objectptr_from_zobj_p(Z_OBJ_P(param_zval));
+    glSamplerParameterIuiv(sampler, pname, bufferobj->vec);
 } 
 
 /**
@@ -6062,6 +6178,8 @@ PHP_FUNCTION(glVertexAttribP1uiv)
         cvector_free(tmpvec);
         return;
     }
+    phpglfw_buffer_gluint_object *bufferobj = phpglfw_buffer_gluint_objectptr_from_zobj_p(Z_OBJ_P(value_zval));
+    glVertexAttribP1uiv(index, type, normalized, bufferobj->vec);
 } 
 
 /**
@@ -6107,6 +6225,8 @@ PHP_FUNCTION(glVertexAttribP2uiv)
         cvector_free(tmpvec);
         return;
     }
+    phpglfw_buffer_gluint_object *bufferobj = phpglfw_buffer_gluint_objectptr_from_zobj_p(Z_OBJ_P(value_zval));
+    glVertexAttribP2uiv(index, type, normalized, bufferobj->vec);
 } 
 
 /**
@@ -6152,6 +6272,8 @@ PHP_FUNCTION(glVertexAttribP3uiv)
         cvector_free(tmpvec);
         return;
     }
+    phpglfw_buffer_gluint_object *bufferobj = phpglfw_buffer_gluint_objectptr_from_zobj_p(Z_OBJ_P(value_zval));
+    glVertexAttribP3uiv(index, type, normalized, bufferobj->vec);
 } 
 
 /**
@@ -6197,6 +6319,8 @@ PHP_FUNCTION(glVertexAttribP4uiv)
         cvector_free(tmpvec);
         return;
     }
+    phpglfw_buffer_gluint_object *bufferobj = phpglfw_buffer_gluint_objectptr_from_zobj_p(Z_OBJ_P(value_zval));
+    glVertexAttribP4uiv(index, type, normalized, bufferobj->vec);
 } 
 
 /**
@@ -6238,6 +6362,8 @@ PHP_FUNCTION(glVertexP2uiv)
         cvector_free(tmpvec);
         return;
     }
+    phpglfw_buffer_gluint_object *bufferobj = phpglfw_buffer_gluint_objectptr_from_zobj_p(Z_OBJ_P(value_zval));
+    glVertexP2uiv(type, bufferobj->vec);
 } 
 
 /**
@@ -6279,6 +6405,8 @@ PHP_FUNCTION(glVertexP3uiv)
         cvector_free(tmpvec);
         return;
     }
+    phpglfw_buffer_gluint_object *bufferobj = phpglfw_buffer_gluint_objectptr_from_zobj_p(Z_OBJ_P(value_zval));
+    glVertexP3uiv(type, bufferobj->vec);
 } 
 
 /**
@@ -6320,6 +6448,8 @@ PHP_FUNCTION(glVertexP4uiv)
         cvector_free(tmpvec);
         return;
     }
+    phpglfw_buffer_gluint_object *bufferobj = phpglfw_buffer_gluint_objectptr_from_zobj_p(Z_OBJ_P(value_zval));
+    glVertexP4uiv(type, bufferobj->vec);
 } 
 
 /**
@@ -6361,6 +6491,8 @@ PHP_FUNCTION(glTexCoordP1uiv)
         cvector_free(tmpvec);
         return;
     }
+    phpglfw_buffer_gluint_object *bufferobj = phpglfw_buffer_gluint_objectptr_from_zobj_p(Z_OBJ_P(coords_zval));
+    glTexCoordP1uiv(type, bufferobj->vec);
 } 
 
 /**
@@ -6402,6 +6534,8 @@ PHP_FUNCTION(glTexCoordP2uiv)
         cvector_free(tmpvec);
         return;
     }
+    phpglfw_buffer_gluint_object *bufferobj = phpglfw_buffer_gluint_objectptr_from_zobj_p(Z_OBJ_P(coords_zval));
+    glTexCoordP2uiv(type, bufferobj->vec);
 } 
 
 /**
@@ -6443,6 +6577,8 @@ PHP_FUNCTION(glTexCoordP3uiv)
         cvector_free(tmpvec);
         return;
     }
+    phpglfw_buffer_gluint_object *bufferobj = phpglfw_buffer_gluint_objectptr_from_zobj_p(Z_OBJ_P(coords_zval));
+    glTexCoordP3uiv(type, bufferobj->vec);
 } 
 
 /**
@@ -6484,6 +6620,8 @@ PHP_FUNCTION(glTexCoordP4uiv)
         cvector_free(tmpvec);
         return;
     }
+    phpglfw_buffer_gluint_object *bufferobj = phpglfw_buffer_gluint_objectptr_from_zobj_p(Z_OBJ_P(coords_zval));
+    glTexCoordP4uiv(type, bufferobj->vec);
 } 
 
 /**
@@ -6527,6 +6665,8 @@ PHP_FUNCTION(glMultiTexCoordP1uiv)
         cvector_free(tmpvec);
         return;
     }
+    phpglfw_buffer_gluint_object *bufferobj = phpglfw_buffer_gluint_objectptr_from_zobj_p(Z_OBJ_P(coords_zval));
+    glMultiTexCoordP1uiv(texture, type, bufferobj->vec);
 } 
 
 /**
@@ -6570,6 +6710,8 @@ PHP_FUNCTION(glMultiTexCoordP2uiv)
         cvector_free(tmpvec);
         return;
     }
+    phpglfw_buffer_gluint_object *bufferobj = phpglfw_buffer_gluint_objectptr_from_zobj_p(Z_OBJ_P(coords_zval));
+    glMultiTexCoordP2uiv(texture, type, bufferobj->vec);
 } 
 
 /**
@@ -6613,6 +6755,8 @@ PHP_FUNCTION(glMultiTexCoordP3uiv)
         cvector_free(tmpvec);
         return;
     }
+    phpglfw_buffer_gluint_object *bufferobj = phpglfw_buffer_gluint_objectptr_from_zobj_p(Z_OBJ_P(coords_zval));
+    glMultiTexCoordP3uiv(texture, type, bufferobj->vec);
 } 
 
 /**
@@ -6656,6 +6800,8 @@ PHP_FUNCTION(glMultiTexCoordP4uiv)
         cvector_free(tmpvec);
         return;
     }
+    phpglfw_buffer_gluint_object *bufferobj = phpglfw_buffer_gluint_objectptr_from_zobj_p(Z_OBJ_P(coords_zval));
+    glMultiTexCoordP4uiv(texture, type, bufferobj->vec);
 } 
 
 /**
@@ -6697,6 +6843,8 @@ PHP_FUNCTION(glNormalP3uiv)
         cvector_free(tmpvec);
         return;
     }
+    phpglfw_buffer_gluint_object *bufferobj = phpglfw_buffer_gluint_objectptr_from_zobj_p(Z_OBJ_P(coords_zval));
+    glNormalP3uiv(type, bufferobj->vec);
 } 
 
 /**
@@ -6738,6 +6886,8 @@ PHP_FUNCTION(glColorP3uiv)
         cvector_free(tmpvec);
         return;
     }
+    phpglfw_buffer_gluint_object *bufferobj = phpglfw_buffer_gluint_objectptr_from_zobj_p(Z_OBJ_P(color_zval));
+    glColorP3uiv(type, bufferobj->vec);
 } 
 
 /**
@@ -6779,6 +6929,8 @@ PHP_FUNCTION(glColorP4uiv)
         cvector_free(tmpvec);
         return;
     }
+    phpglfw_buffer_gluint_object *bufferobj = phpglfw_buffer_gluint_objectptr_from_zobj_p(Z_OBJ_P(color_zval));
+    glColorP4uiv(type, bufferobj->vec);
 } 
 
 /**
@@ -6820,6 +6972,8 @@ PHP_FUNCTION(glSecondaryColorP3uiv)
         cvector_free(tmpvec);
         return;
     }
+    phpglfw_buffer_gluint_object *bufferobj = phpglfw_buffer_gluint_objectptr_from_zobj_p(Z_OBJ_P(color_zval));
+    glSecondaryColorP3uiv(type, bufferobj->vec);
 } 
 
 /**
@@ -6955,11 +7109,10 @@ PHP_FUNCTION(glUniform4d)
 PHP_FUNCTION(glUniform1dv)
 {
     zend_long location;
-    zend_long count;
     zval *value_zval;
     HashTable *value_ht = NULL;
-    if (zend_parse_parameters(ZEND_NUM_ARGS() , "llO", &location, &count, &value_zval, phpglfw_get_buffer_gldouble_ce()) == FAILURE) {
-        if (zend_parse_parameters(ZEND_NUM_ARGS() , "llh", &location, &count, &value_ht) == FAILURE) {
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "lO", &location, &value_zval, phpglfw_get_buffer_gldouble_ce()) == FAILURE) {
+        if (zend_parse_parameters(ZEND_NUM_ARGS() , "lh", &location, &value_ht) == FAILURE) {
             return;
         }
         
@@ -6972,10 +7125,12 @@ PHP_FUNCTION(glUniform1dv)
                 zend_throw_error(NULL, "All elements of the given array have to be of type: float");
             }
         ZEND_HASH_FOREACH_END();
-        glUniform1dv(location, count, tmpvec);
+        glUniform1dv(location, cvector_size(tmpvec), tmpvec);
         cvector_free(tmpvec);
         return;
     }
+    phpglfw_buffer_gldouble_object *bufferobj = phpglfw_buffer_gldouble_objectptr_from_zobj_p(Z_OBJ_P(value_zval));
+    glUniform1dv(location, cvector_size(bufferobj->vec), bufferobj->vec);
 } 
 
 /**
@@ -6984,11 +7139,10 @@ PHP_FUNCTION(glUniform1dv)
 PHP_FUNCTION(glUniform2dv)
 {
     zend_long location;
-    zend_long count;
     zval *value_zval;
     HashTable *value_ht = NULL;
-    if (zend_parse_parameters(ZEND_NUM_ARGS() , "llO", &location, &count, &value_zval, phpglfw_get_buffer_gldouble_ce()) == FAILURE) {
-        if (zend_parse_parameters(ZEND_NUM_ARGS() , "llh", &location, &count, &value_ht) == FAILURE) {
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "lO", &location, &value_zval, phpglfw_get_buffer_gldouble_ce()) == FAILURE) {
+        if (zend_parse_parameters(ZEND_NUM_ARGS() , "lh", &location, &value_ht) == FAILURE) {
             return;
         }
         
@@ -7001,10 +7155,12 @@ PHP_FUNCTION(glUniform2dv)
                 zend_throw_error(NULL, "All elements of the given array have to be of type: float");
             }
         ZEND_HASH_FOREACH_END();
-        glUniform2dv(location, count, tmpvec);
+        glUniform2dv(location, cvector_size(tmpvec), tmpvec);
         cvector_free(tmpvec);
         return;
     }
+    phpglfw_buffer_gldouble_object *bufferobj = phpglfw_buffer_gldouble_objectptr_from_zobj_p(Z_OBJ_P(value_zval));
+    glUniform2dv(location, cvector_size(bufferobj->vec), bufferobj->vec);
 } 
 
 /**
@@ -7013,11 +7169,10 @@ PHP_FUNCTION(glUniform2dv)
 PHP_FUNCTION(glUniform3dv)
 {
     zend_long location;
-    zend_long count;
     zval *value_zval;
     HashTable *value_ht = NULL;
-    if (zend_parse_parameters(ZEND_NUM_ARGS() , "llO", &location, &count, &value_zval, phpglfw_get_buffer_gldouble_ce()) == FAILURE) {
-        if (zend_parse_parameters(ZEND_NUM_ARGS() , "llh", &location, &count, &value_ht) == FAILURE) {
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "lO", &location, &value_zval, phpglfw_get_buffer_gldouble_ce()) == FAILURE) {
+        if (zend_parse_parameters(ZEND_NUM_ARGS() , "lh", &location, &value_ht) == FAILURE) {
             return;
         }
         
@@ -7030,10 +7185,12 @@ PHP_FUNCTION(glUniform3dv)
                 zend_throw_error(NULL, "All elements of the given array have to be of type: float");
             }
         ZEND_HASH_FOREACH_END();
-        glUniform3dv(location, count, tmpvec);
+        glUniform3dv(location, cvector_size(tmpvec), tmpvec);
         cvector_free(tmpvec);
         return;
     }
+    phpglfw_buffer_gldouble_object *bufferobj = phpglfw_buffer_gldouble_objectptr_from_zobj_p(Z_OBJ_P(value_zval));
+    glUniform3dv(location, cvector_size(bufferobj->vec), bufferobj->vec);
 } 
 
 /**
@@ -7042,11 +7199,10 @@ PHP_FUNCTION(glUniform3dv)
 PHP_FUNCTION(glUniform4dv)
 {
     zend_long location;
-    zend_long count;
     zval *value_zval;
     HashTable *value_ht = NULL;
-    if (zend_parse_parameters(ZEND_NUM_ARGS() , "llO", &location, &count, &value_zval, phpglfw_get_buffer_gldouble_ce()) == FAILURE) {
-        if (zend_parse_parameters(ZEND_NUM_ARGS() , "llh", &location, &count, &value_ht) == FAILURE) {
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "lO", &location, &value_zval, phpglfw_get_buffer_gldouble_ce()) == FAILURE) {
+        if (zend_parse_parameters(ZEND_NUM_ARGS() , "lh", &location, &value_ht) == FAILURE) {
             return;
         }
         
@@ -7059,10 +7215,12 @@ PHP_FUNCTION(glUniform4dv)
                 zend_throw_error(NULL, "All elements of the given array have to be of type: float");
             }
         ZEND_HASH_FOREACH_END();
-        glUniform4dv(location, count, tmpvec);
+        glUniform4dv(location, cvector_size(tmpvec), tmpvec);
         cvector_free(tmpvec);
         return;
     }
+    phpglfw_buffer_gldouble_object *bufferobj = phpglfw_buffer_gldouble_objectptr_from_zobj_p(Z_OBJ_P(value_zval));
+    glUniform4dv(location, cvector_size(bufferobj->vec), bufferobj->vec);
 } 
 
 /**
@@ -7071,12 +7229,11 @@ PHP_FUNCTION(glUniform4dv)
 PHP_FUNCTION(glUniformMatrix2dv)
 {
     zend_long location;
-    zend_long count;
     bool transpose;
     zval *value_zval;
     HashTable *value_ht = NULL;
-    if (zend_parse_parameters(ZEND_NUM_ARGS() , "llbO", &location, &count, &transpose, &value_zval, phpglfw_get_buffer_gldouble_ce()) == FAILURE) {
-        if (zend_parse_parameters(ZEND_NUM_ARGS() , "llbh", &location, &count, &transpose, &value_ht) == FAILURE) {
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "lbO", &location, &transpose, &value_zval, phpglfw_get_buffer_gldouble_ce()) == FAILURE) {
+        if (zend_parse_parameters(ZEND_NUM_ARGS() , "lbh", &location, &transpose, &value_ht) == FAILURE) {
             return;
         }
         
@@ -7089,10 +7246,12 @@ PHP_FUNCTION(glUniformMatrix2dv)
                 zend_throw_error(NULL, "All elements of the given array have to be of type: float");
             }
         ZEND_HASH_FOREACH_END();
-        glUniformMatrix2dv(location, count, transpose, tmpvec);
+        glUniformMatrix2dv(location, cvector_size(tmpvec), transpose, tmpvec);
         cvector_free(tmpvec);
         return;
     }
+    phpglfw_buffer_gldouble_object *bufferobj = phpglfw_buffer_gldouble_objectptr_from_zobj_p(Z_OBJ_P(value_zval));
+    glUniformMatrix2dv(location, cvector_size(bufferobj->vec), transpose, bufferobj->vec);
 } 
 
 /**
@@ -7101,12 +7260,11 @@ PHP_FUNCTION(glUniformMatrix2dv)
 PHP_FUNCTION(glUniformMatrix3dv)
 {
     zend_long location;
-    zend_long count;
     bool transpose;
     zval *value_zval;
     HashTable *value_ht = NULL;
-    if (zend_parse_parameters(ZEND_NUM_ARGS() , "llbO", &location, &count, &transpose, &value_zval, phpglfw_get_buffer_gldouble_ce()) == FAILURE) {
-        if (zend_parse_parameters(ZEND_NUM_ARGS() , "llbh", &location, &count, &transpose, &value_ht) == FAILURE) {
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "lbO", &location, &transpose, &value_zval, phpglfw_get_buffer_gldouble_ce()) == FAILURE) {
+        if (zend_parse_parameters(ZEND_NUM_ARGS() , "lbh", &location, &transpose, &value_ht) == FAILURE) {
             return;
         }
         
@@ -7119,10 +7277,12 @@ PHP_FUNCTION(glUniformMatrix3dv)
                 zend_throw_error(NULL, "All elements of the given array have to be of type: float");
             }
         ZEND_HASH_FOREACH_END();
-        glUniformMatrix3dv(location, count, transpose, tmpvec);
+        glUniformMatrix3dv(location, cvector_size(tmpvec), transpose, tmpvec);
         cvector_free(tmpvec);
         return;
     }
+    phpglfw_buffer_gldouble_object *bufferobj = phpglfw_buffer_gldouble_objectptr_from_zobj_p(Z_OBJ_P(value_zval));
+    glUniformMatrix3dv(location, cvector_size(bufferobj->vec), transpose, bufferobj->vec);
 } 
 
 /**
@@ -7131,12 +7291,11 @@ PHP_FUNCTION(glUniformMatrix3dv)
 PHP_FUNCTION(glUniformMatrix4dv)
 {
     zend_long location;
-    zend_long count;
     bool transpose;
     zval *value_zval;
     HashTable *value_ht = NULL;
-    if (zend_parse_parameters(ZEND_NUM_ARGS() , "llbO", &location, &count, &transpose, &value_zval, phpglfw_get_buffer_gldouble_ce()) == FAILURE) {
-        if (zend_parse_parameters(ZEND_NUM_ARGS() , "llbh", &location, &count, &transpose, &value_ht) == FAILURE) {
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "lbO", &location, &transpose, &value_zval, phpglfw_get_buffer_gldouble_ce()) == FAILURE) {
+        if (zend_parse_parameters(ZEND_NUM_ARGS() , "lbh", &location, &transpose, &value_ht) == FAILURE) {
             return;
         }
         
@@ -7149,10 +7308,12 @@ PHP_FUNCTION(glUniformMatrix4dv)
                 zend_throw_error(NULL, "All elements of the given array have to be of type: float");
             }
         ZEND_HASH_FOREACH_END();
-        glUniformMatrix4dv(location, count, transpose, tmpvec);
+        glUniformMatrix4dv(location, cvector_size(tmpvec), transpose, tmpvec);
         cvector_free(tmpvec);
         return;
     }
+    phpglfw_buffer_gldouble_object *bufferobj = phpglfw_buffer_gldouble_objectptr_from_zobj_p(Z_OBJ_P(value_zval));
+    glUniformMatrix4dv(location, cvector_size(bufferobj->vec), transpose, bufferobj->vec);
 } 
 
 /**
@@ -7161,12 +7322,11 @@ PHP_FUNCTION(glUniformMatrix4dv)
 PHP_FUNCTION(glUniformMatrix2x3dv)
 {
     zend_long location;
-    zend_long count;
     bool transpose;
     zval *value_zval;
     HashTable *value_ht = NULL;
-    if (zend_parse_parameters(ZEND_NUM_ARGS() , "llbO", &location, &count, &transpose, &value_zval, phpglfw_get_buffer_gldouble_ce()) == FAILURE) {
-        if (zend_parse_parameters(ZEND_NUM_ARGS() , "llbh", &location, &count, &transpose, &value_ht) == FAILURE) {
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "lbO", &location, &transpose, &value_zval, phpglfw_get_buffer_gldouble_ce()) == FAILURE) {
+        if (zend_parse_parameters(ZEND_NUM_ARGS() , "lbh", &location, &transpose, &value_ht) == FAILURE) {
             return;
         }
         
@@ -7179,10 +7339,12 @@ PHP_FUNCTION(glUniformMatrix2x3dv)
                 zend_throw_error(NULL, "All elements of the given array have to be of type: float");
             }
         ZEND_HASH_FOREACH_END();
-        glUniformMatrix2x3dv(location, count, transpose, tmpvec);
+        glUniformMatrix2x3dv(location, cvector_size(tmpvec), transpose, tmpvec);
         cvector_free(tmpvec);
         return;
     }
+    phpglfw_buffer_gldouble_object *bufferobj = phpglfw_buffer_gldouble_objectptr_from_zobj_p(Z_OBJ_P(value_zval));
+    glUniformMatrix2x3dv(location, cvector_size(bufferobj->vec), transpose, bufferobj->vec);
 } 
 
 /**
@@ -7191,12 +7353,11 @@ PHP_FUNCTION(glUniformMatrix2x3dv)
 PHP_FUNCTION(glUniformMatrix2x4dv)
 {
     zend_long location;
-    zend_long count;
     bool transpose;
     zval *value_zval;
     HashTable *value_ht = NULL;
-    if (zend_parse_parameters(ZEND_NUM_ARGS() , "llbO", &location, &count, &transpose, &value_zval, phpglfw_get_buffer_gldouble_ce()) == FAILURE) {
-        if (zend_parse_parameters(ZEND_NUM_ARGS() , "llbh", &location, &count, &transpose, &value_ht) == FAILURE) {
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "lbO", &location, &transpose, &value_zval, phpglfw_get_buffer_gldouble_ce()) == FAILURE) {
+        if (zend_parse_parameters(ZEND_NUM_ARGS() , "lbh", &location, &transpose, &value_ht) == FAILURE) {
             return;
         }
         
@@ -7209,10 +7370,12 @@ PHP_FUNCTION(glUniformMatrix2x4dv)
                 zend_throw_error(NULL, "All elements of the given array have to be of type: float");
             }
         ZEND_HASH_FOREACH_END();
-        glUniformMatrix2x4dv(location, count, transpose, tmpvec);
+        glUniformMatrix2x4dv(location, cvector_size(tmpvec), transpose, tmpvec);
         cvector_free(tmpvec);
         return;
     }
+    phpglfw_buffer_gldouble_object *bufferobj = phpglfw_buffer_gldouble_objectptr_from_zobj_p(Z_OBJ_P(value_zval));
+    glUniformMatrix2x4dv(location, cvector_size(bufferobj->vec), transpose, bufferobj->vec);
 } 
 
 /**
@@ -7221,12 +7384,11 @@ PHP_FUNCTION(glUniformMatrix2x4dv)
 PHP_FUNCTION(glUniformMatrix3x2dv)
 {
     zend_long location;
-    zend_long count;
     bool transpose;
     zval *value_zval;
     HashTable *value_ht = NULL;
-    if (zend_parse_parameters(ZEND_NUM_ARGS() , "llbO", &location, &count, &transpose, &value_zval, phpglfw_get_buffer_gldouble_ce()) == FAILURE) {
-        if (zend_parse_parameters(ZEND_NUM_ARGS() , "llbh", &location, &count, &transpose, &value_ht) == FAILURE) {
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "lbO", &location, &transpose, &value_zval, phpglfw_get_buffer_gldouble_ce()) == FAILURE) {
+        if (zend_parse_parameters(ZEND_NUM_ARGS() , "lbh", &location, &transpose, &value_ht) == FAILURE) {
             return;
         }
         
@@ -7239,10 +7401,12 @@ PHP_FUNCTION(glUniformMatrix3x2dv)
                 zend_throw_error(NULL, "All elements of the given array have to be of type: float");
             }
         ZEND_HASH_FOREACH_END();
-        glUniformMatrix3x2dv(location, count, transpose, tmpvec);
+        glUniformMatrix3x2dv(location, cvector_size(tmpvec), transpose, tmpvec);
         cvector_free(tmpvec);
         return;
     }
+    phpglfw_buffer_gldouble_object *bufferobj = phpglfw_buffer_gldouble_objectptr_from_zobj_p(Z_OBJ_P(value_zval));
+    glUniformMatrix3x2dv(location, cvector_size(bufferobj->vec), transpose, bufferobj->vec);
 } 
 
 /**
@@ -7251,12 +7415,11 @@ PHP_FUNCTION(glUniformMatrix3x2dv)
 PHP_FUNCTION(glUniformMatrix3x4dv)
 {
     zend_long location;
-    zend_long count;
     bool transpose;
     zval *value_zval;
     HashTable *value_ht = NULL;
-    if (zend_parse_parameters(ZEND_NUM_ARGS() , "llbO", &location, &count, &transpose, &value_zval, phpglfw_get_buffer_gldouble_ce()) == FAILURE) {
-        if (zend_parse_parameters(ZEND_NUM_ARGS() , "llbh", &location, &count, &transpose, &value_ht) == FAILURE) {
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "lbO", &location, &transpose, &value_zval, phpglfw_get_buffer_gldouble_ce()) == FAILURE) {
+        if (zend_parse_parameters(ZEND_NUM_ARGS() , "lbh", &location, &transpose, &value_ht) == FAILURE) {
             return;
         }
         
@@ -7269,10 +7432,12 @@ PHP_FUNCTION(glUniformMatrix3x4dv)
                 zend_throw_error(NULL, "All elements of the given array have to be of type: float");
             }
         ZEND_HASH_FOREACH_END();
-        glUniformMatrix3x4dv(location, count, transpose, tmpvec);
+        glUniformMatrix3x4dv(location, cvector_size(tmpvec), transpose, tmpvec);
         cvector_free(tmpvec);
         return;
     }
+    phpglfw_buffer_gldouble_object *bufferobj = phpglfw_buffer_gldouble_objectptr_from_zobj_p(Z_OBJ_P(value_zval));
+    glUniformMatrix3x4dv(location, cvector_size(bufferobj->vec), transpose, bufferobj->vec);
 } 
 
 /**
@@ -7281,12 +7446,11 @@ PHP_FUNCTION(glUniformMatrix3x4dv)
 PHP_FUNCTION(glUniformMatrix4x2dv)
 {
     zend_long location;
-    zend_long count;
     bool transpose;
     zval *value_zval;
     HashTable *value_ht = NULL;
-    if (zend_parse_parameters(ZEND_NUM_ARGS() , "llbO", &location, &count, &transpose, &value_zval, phpglfw_get_buffer_gldouble_ce()) == FAILURE) {
-        if (zend_parse_parameters(ZEND_NUM_ARGS() , "llbh", &location, &count, &transpose, &value_ht) == FAILURE) {
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "lbO", &location, &transpose, &value_zval, phpglfw_get_buffer_gldouble_ce()) == FAILURE) {
+        if (zend_parse_parameters(ZEND_NUM_ARGS() , "lbh", &location, &transpose, &value_ht) == FAILURE) {
             return;
         }
         
@@ -7299,10 +7463,12 @@ PHP_FUNCTION(glUniformMatrix4x2dv)
                 zend_throw_error(NULL, "All elements of the given array have to be of type: float");
             }
         ZEND_HASH_FOREACH_END();
-        glUniformMatrix4x2dv(location, count, transpose, tmpvec);
+        glUniformMatrix4x2dv(location, cvector_size(tmpvec), transpose, tmpvec);
         cvector_free(tmpvec);
         return;
     }
+    phpglfw_buffer_gldouble_object *bufferobj = phpglfw_buffer_gldouble_objectptr_from_zobj_p(Z_OBJ_P(value_zval));
+    glUniformMatrix4x2dv(location, cvector_size(bufferobj->vec), transpose, bufferobj->vec);
 } 
 
 /**
@@ -7311,12 +7477,11 @@ PHP_FUNCTION(glUniformMatrix4x2dv)
 PHP_FUNCTION(glUniformMatrix4x3dv)
 {
     zend_long location;
-    zend_long count;
     bool transpose;
     zval *value_zval;
     HashTable *value_ht = NULL;
-    if (zend_parse_parameters(ZEND_NUM_ARGS() , "llbO", &location, &count, &transpose, &value_zval, phpglfw_get_buffer_gldouble_ce()) == FAILURE) {
-        if (zend_parse_parameters(ZEND_NUM_ARGS() , "llbh", &location, &count, &transpose, &value_ht) == FAILURE) {
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "lbO", &location, &transpose, &value_zval, phpglfw_get_buffer_gldouble_ce()) == FAILURE) {
+        if (zend_parse_parameters(ZEND_NUM_ARGS() , "lbh", &location, &transpose, &value_ht) == FAILURE) {
             return;
         }
         
@@ -7329,10 +7494,12 @@ PHP_FUNCTION(glUniformMatrix4x3dv)
                 zend_throw_error(NULL, "All elements of the given array have to be of type: float");
             }
         ZEND_HASH_FOREACH_END();
-        glUniformMatrix4x3dv(location, count, transpose, tmpvec);
+        glUniformMatrix4x3dv(location, cvector_size(tmpvec), transpose, tmpvec);
         cvector_free(tmpvec);
         return;
     }
+    phpglfw_buffer_gldouble_object *bufferobj = phpglfw_buffer_gldouble_objectptr_from_zobj_p(Z_OBJ_P(value_zval));
+    glUniformMatrix4x3dv(location, cvector_size(bufferobj->vec), transpose, bufferobj->vec);
 } 
 
 /**
@@ -7409,11 +7576,10 @@ PHP_FUNCTION(glGetActiveSubroutineUniformiv)
 PHP_FUNCTION(glUniformSubroutinesuiv)
 {
     zend_long shadertype;
-    zend_long count;
     zval *indices_zval;
     HashTable *indices_ht = NULL;
-    if (zend_parse_parameters(ZEND_NUM_ARGS() , "llO", &shadertype, &count, &indices_zval, phpglfw_get_buffer_gluint_ce()) == FAILURE) {
-        if (zend_parse_parameters(ZEND_NUM_ARGS() , "llh", &shadertype, &count, &indices_ht) == FAILURE) {
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "lO", &shadertype, &indices_zval, phpglfw_get_buffer_gluint_ce()) == FAILURE) {
+        if (zend_parse_parameters(ZEND_NUM_ARGS() , "lh", &shadertype, &indices_ht) == FAILURE) {
             return;
         }
         
@@ -7426,10 +7592,12 @@ PHP_FUNCTION(glUniformSubroutinesuiv)
                 zend_throw_error(NULL, "All elements of the given array have to be of type: int");
             }
         ZEND_HASH_FOREACH_END();
-        glUniformSubroutinesuiv(shadertype, count, tmpvec);
+        glUniformSubroutinesuiv(shadertype, cvector_size(tmpvec), tmpvec);
         cvector_free(tmpvec);
         return;
     }
+    phpglfw_buffer_gluint_object *bufferobj = phpglfw_buffer_gluint_objectptr_from_zobj_p(Z_OBJ_P(indices_zval));
+    glUniformSubroutinesuiv(shadertype, cvector_size(bufferobj->vec), bufferobj->vec);
 } 
 
 /**
@@ -7508,6 +7676,8 @@ PHP_FUNCTION(glPatchParameterfv)
         cvector_free(tmpvec);
         return;
     }
+    phpglfw_buffer_glfloat_object *bufferobj = phpglfw_buffer_glfloat_objectptr_from_zobj_p(Z_OBJ_P(values_zval));
+    glPatchParameterfv(pname, bufferobj->vec);
 } 
 
 /**
@@ -7886,11 +8056,10 @@ PHP_FUNCTION(glProgramUniform1iv)
 {
     zend_long program;
     zend_long location;
-    zend_long count;
     zval *value_zval;
     HashTable *value_ht = NULL;
-    if (zend_parse_parameters(ZEND_NUM_ARGS() , "lllO", &program, &location, &count, &value_zval, phpglfw_get_buffer_glint_ce()) == FAILURE) {
-        if (zend_parse_parameters(ZEND_NUM_ARGS() , "lllh", &program, &location, &count, &value_ht) == FAILURE) {
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "llO", &program, &location, &value_zval, phpglfw_get_buffer_glint_ce()) == FAILURE) {
+        if (zend_parse_parameters(ZEND_NUM_ARGS() , "llh", &program, &location, &value_ht) == FAILURE) {
             return;
         }
         
@@ -7903,10 +8072,12 @@ PHP_FUNCTION(glProgramUniform1iv)
                 zend_throw_error(NULL, "All elements of the given array have to be of type: int");
             }
         ZEND_HASH_FOREACH_END();
-        glProgramUniform1iv(program, location, count, tmpvec);
+        glProgramUniform1iv(program, location, cvector_size(tmpvec), tmpvec);
         cvector_free(tmpvec);
         return;
     }
+    phpglfw_buffer_glint_object *bufferobj = phpglfw_buffer_glint_objectptr_from_zobj_p(Z_OBJ_P(value_zval));
+    glProgramUniform1iv(program, location, cvector_size(bufferobj->vec), bufferobj->vec);
 } 
 
 /**
@@ -7930,11 +8101,10 @@ PHP_FUNCTION(glProgramUniform1fv)
 {
     zend_long program;
     zend_long location;
-    zend_long count;
     zval *value_zval;
     HashTable *value_ht = NULL;
-    if (zend_parse_parameters(ZEND_NUM_ARGS() , "lllO", &program, &location, &count, &value_zval, phpglfw_get_buffer_glfloat_ce()) == FAILURE) {
-        if (zend_parse_parameters(ZEND_NUM_ARGS() , "lllh", &program, &location, &count, &value_ht) == FAILURE) {
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "llO", &program, &location, &value_zval, phpglfw_get_buffer_glfloat_ce()) == FAILURE) {
+        if (zend_parse_parameters(ZEND_NUM_ARGS() , "llh", &program, &location, &value_ht) == FAILURE) {
             return;
         }
         
@@ -7947,10 +8117,12 @@ PHP_FUNCTION(glProgramUniform1fv)
                 zend_throw_error(NULL, "All elements of the given array have to be of type: float");
             }
         ZEND_HASH_FOREACH_END();
-        glProgramUniform1fv(program, location, count, tmpvec);
+        glProgramUniform1fv(program, location, cvector_size(tmpvec), tmpvec);
         cvector_free(tmpvec);
         return;
     }
+    phpglfw_buffer_glfloat_object *bufferobj = phpglfw_buffer_glfloat_objectptr_from_zobj_p(Z_OBJ_P(value_zval));
+    glProgramUniform1fv(program, location, cvector_size(bufferobj->vec), bufferobj->vec);
 } 
 
 /**
@@ -7974,11 +8146,10 @@ PHP_FUNCTION(glProgramUniform1dv)
 {
     zend_long program;
     zend_long location;
-    zend_long count;
     zval *value_zval;
     HashTable *value_ht = NULL;
-    if (zend_parse_parameters(ZEND_NUM_ARGS() , "lllO", &program, &location, &count, &value_zval, phpglfw_get_buffer_gldouble_ce()) == FAILURE) {
-        if (zend_parse_parameters(ZEND_NUM_ARGS() , "lllh", &program, &location, &count, &value_ht) == FAILURE) {
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "llO", &program, &location, &value_zval, phpglfw_get_buffer_gldouble_ce()) == FAILURE) {
+        if (zend_parse_parameters(ZEND_NUM_ARGS() , "llh", &program, &location, &value_ht) == FAILURE) {
             return;
         }
         
@@ -7991,10 +8162,12 @@ PHP_FUNCTION(glProgramUniform1dv)
                 zend_throw_error(NULL, "All elements of the given array have to be of type: float");
             }
         ZEND_HASH_FOREACH_END();
-        glProgramUniform1dv(program, location, count, tmpvec);
+        glProgramUniform1dv(program, location, cvector_size(tmpvec), tmpvec);
         cvector_free(tmpvec);
         return;
     }
+    phpglfw_buffer_gldouble_object *bufferobj = phpglfw_buffer_gldouble_objectptr_from_zobj_p(Z_OBJ_P(value_zval));
+    glProgramUniform1dv(program, location, cvector_size(bufferobj->vec), bufferobj->vec);
 } 
 
 /**
@@ -8018,11 +8191,10 @@ PHP_FUNCTION(glProgramUniform1uiv)
 {
     zend_long program;
     zend_long location;
-    zend_long count;
     zval *value_zval;
     HashTable *value_ht = NULL;
-    if (zend_parse_parameters(ZEND_NUM_ARGS() , "lllO", &program, &location, &count, &value_zval, phpglfw_get_buffer_gluint_ce()) == FAILURE) {
-        if (zend_parse_parameters(ZEND_NUM_ARGS() , "lllh", &program, &location, &count, &value_ht) == FAILURE) {
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "llO", &program, &location, &value_zval, phpglfw_get_buffer_gluint_ce()) == FAILURE) {
+        if (zend_parse_parameters(ZEND_NUM_ARGS() , "llh", &program, &location, &value_ht) == FAILURE) {
             return;
         }
         
@@ -8035,10 +8207,12 @@ PHP_FUNCTION(glProgramUniform1uiv)
                 zend_throw_error(NULL, "All elements of the given array have to be of type: int");
             }
         ZEND_HASH_FOREACH_END();
-        glProgramUniform1uiv(program, location, count, tmpvec);
+        glProgramUniform1uiv(program, location, cvector_size(tmpvec), tmpvec);
         cvector_free(tmpvec);
         return;
     }
+    phpglfw_buffer_gluint_object *bufferobj = phpglfw_buffer_gluint_objectptr_from_zobj_p(Z_OBJ_P(value_zval));
+    glProgramUniform1uiv(program, location, cvector_size(bufferobj->vec), bufferobj->vec);
 } 
 
 /**
@@ -8063,11 +8237,10 @@ PHP_FUNCTION(glProgramUniform2iv)
 {
     zend_long program;
     zend_long location;
-    zend_long count;
     zval *value_zval;
     HashTable *value_ht = NULL;
-    if (zend_parse_parameters(ZEND_NUM_ARGS() , "lllO", &program, &location, &count, &value_zval, phpglfw_get_buffer_glint_ce()) == FAILURE) {
-        if (zend_parse_parameters(ZEND_NUM_ARGS() , "lllh", &program, &location, &count, &value_ht) == FAILURE) {
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "llO", &program, &location, &value_zval, phpglfw_get_buffer_glint_ce()) == FAILURE) {
+        if (zend_parse_parameters(ZEND_NUM_ARGS() , "llh", &program, &location, &value_ht) == FAILURE) {
             return;
         }
         
@@ -8080,10 +8253,12 @@ PHP_FUNCTION(glProgramUniform2iv)
                 zend_throw_error(NULL, "All elements of the given array have to be of type: int");
             }
         ZEND_HASH_FOREACH_END();
-        glProgramUniform2iv(program, location, count, tmpvec);
+        glProgramUniform2iv(program, location, cvector_size(tmpvec), tmpvec);
         cvector_free(tmpvec);
         return;
     }
+    phpglfw_buffer_glint_object *bufferobj = phpglfw_buffer_glint_objectptr_from_zobj_p(Z_OBJ_P(value_zval));
+    glProgramUniform2iv(program, location, cvector_size(bufferobj->vec), bufferobj->vec);
 } 
 
 /**
@@ -8108,11 +8283,10 @@ PHP_FUNCTION(glProgramUniform2fv)
 {
     zend_long program;
     zend_long location;
-    zend_long count;
     zval *value_zval;
     HashTable *value_ht = NULL;
-    if (zend_parse_parameters(ZEND_NUM_ARGS() , "lllO", &program, &location, &count, &value_zval, phpglfw_get_buffer_glfloat_ce()) == FAILURE) {
-        if (zend_parse_parameters(ZEND_NUM_ARGS() , "lllh", &program, &location, &count, &value_ht) == FAILURE) {
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "llO", &program, &location, &value_zval, phpglfw_get_buffer_glfloat_ce()) == FAILURE) {
+        if (zend_parse_parameters(ZEND_NUM_ARGS() , "llh", &program, &location, &value_ht) == FAILURE) {
             return;
         }
         
@@ -8125,10 +8299,12 @@ PHP_FUNCTION(glProgramUniform2fv)
                 zend_throw_error(NULL, "All elements of the given array have to be of type: float");
             }
         ZEND_HASH_FOREACH_END();
-        glProgramUniform2fv(program, location, count, tmpvec);
+        glProgramUniform2fv(program, location, cvector_size(tmpvec), tmpvec);
         cvector_free(tmpvec);
         return;
     }
+    phpglfw_buffer_glfloat_object *bufferobj = phpglfw_buffer_glfloat_objectptr_from_zobj_p(Z_OBJ_P(value_zval));
+    glProgramUniform2fv(program, location, cvector_size(bufferobj->vec), bufferobj->vec);
 } 
 
 /**
@@ -8153,11 +8329,10 @@ PHP_FUNCTION(glProgramUniform2dv)
 {
     zend_long program;
     zend_long location;
-    zend_long count;
     zval *value_zval;
     HashTable *value_ht = NULL;
-    if (zend_parse_parameters(ZEND_NUM_ARGS() , "lllO", &program, &location, &count, &value_zval, phpglfw_get_buffer_gldouble_ce()) == FAILURE) {
-        if (zend_parse_parameters(ZEND_NUM_ARGS() , "lllh", &program, &location, &count, &value_ht) == FAILURE) {
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "llO", &program, &location, &value_zval, phpglfw_get_buffer_gldouble_ce()) == FAILURE) {
+        if (zend_parse_parameters(ZEND_NUM_ARGS() , "llh", &program, &location, &value_ht) == FAILURE) {
             return;
         }
         
@@ -8170,10 +8345,12 @@ PHP_FUNCTION(glProgramUniform2dv)
                 zend_throw_error(NULL, "All elements of the given array have to be of type: float");
             }
         ZEND_HASH_FOREACH_END();
-        glProgramUniform2dv(program, location, count, tmpvec);
+        glProgramUniform2dv(program, location, cvector_size(tmpvec), tmpvec);
         cvector_free(tmpvec);
         return;
     }
+    phpglfw_buffer_gldouble_object *bufferobj = phpglfw_buffer_gldouble_objectptr_from_zobj_p(Z_OBJ_P(value_zval));
+    glProgramUniform2dv(program, location, cvector_size(bufferobj->vec), bufferobj->vec);
 } 
 
 /**
@@ -8198,11 +8375,10 @@ PHP_FUNCTION(glProgramUniform2uiv)
 {
     zend_long program;
     zend_long location;
-    zend_long count;
     zval *value_zval;
     HashTable *value_ht = NULL;
-    if (zend_parse_parameters(ZEND_NUM_ARGS() , "lllO", &program, &location, &count, &value_zval, phpglfw_get_buffer_gluint_ce()) == FAILURE) {
-        if (zend_parse_parameters(ZEND_NUM_ARGS() , "lllh", &program, &location, &count, &value_ht) == FAILURE) {
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "llO", &program, &location, &value_zval, phpglfw_get_buffer_gluint_ce()) == FAILURE) {
+        if (zend_parse_parameters(ZEND_NUM_ARGS() , "llh", &program, &location, &value_ht) == FAILURE) {
             return;
         }
         
@@ -8215,10 +8391,12 @@ PHP_FUNCTION(glProgramUniform2uiv)
                 zend_throw_error(NULL, "All elements of the given array have to be of type: int");
             }
         ZEND_HASH_FOREACH_END();
-        glProgramUniform2uiv(program, location, count, tmpvec);
+        glProgramUniform2uiv(program, location, cvector_size(tmpvec), tmpvec);
         cvector_free(tmpvec);
         return;
     }
+    phpglfw_buffer_gluint_object *bufferobj = phpglfw_buffer_gluint_objectptr_from_zobj_p(Z_OBJ_P(value_zval));
+    glProgramUniform2uiv(program, location, cvector_size(bufferobj->vec), bufferobj->vec);
 } 
 
 /**
@@ -8244,11 +8422,10 @@ PHP_FUNCTION(glProgramUniform3iv)
 {
     zend_long program;
     zend_long location;
-    zend_long count;
     zval *value_zval;
     HashTable *value_ht = NULL;
-    if (zend_parse_parameters(ZEND_NUM_ARGS() , "lllO", &program, &location, &count, &value_zval, phpglfw_get_buffer_glint_ce()) == FAILURE) {
-        if (zend_parse_parameters(ZEND_NUM_ARGS() , "lllh", &program, &location, &count, &value_ht) == FAILURE) {
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "llO", &program, &location, &value_zval, phpglfw_get_buffer_glint_ce()) == FAILURE) {
+        if (zend_parse_parameters(ZEND_NUM_ARGS() , "llh", &program, &location, &value_ht) == FAILURE) {
             return;
         }
         
@@ -8261,10 +8438,12 @@ PHP_FUNCTION(glProgramUniform3iv)
                 zend_throw_error(NULL, "All elements of the given array have to be of type: int");
             }
         ZEND_HASH_FOREACH_END();
-        glProgramUniform3iv(program, location, count, tmpvec);
+        glProgramUniform3iv(program, location, cvector_size(tmpvec), tmpvec);
         cvector_free(tmpvec);
         return;
     }
+    phpglfw_buffer_glint_object *bufferobj = phpglfw_buffer_glint_objectptr_from_zobj_p(Z_OBJ_P(value_zval));
+    glProgramUniform3iv(program, location, cvector_size(bufferobj->vec), bufferobj->vec);
 } 
 
 /**
@@ -8290,11 +8469,10 @@ PHP_FUNCTION(glProgramUniform3fv)
 {
     zend_long program;
     zend_long location;
-    zend_long count;
     zval *value_zval;
     HashTable *value_ht = NULL;
-    if (zend_parse_parameters(ZEND_NUM_ARGS() , "lllO", &program, &location, &count, &value_zval, phpglfw_get_buffer_glfloat_ce()) == FAILURE) {
-        if (zend_parse_parameters(ZEND_NUM_ARGS() , "lllh", &program, &location, &count, &value_ht) == FAILURE) {
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "llO", &program, &location, &value_zval, phpglfw_get_buffer_glfloat_ce()) == FAILURE) {
+        if (zend_parse_parameters(ZEND_NUM_ARGS() , "llh", &program, &location, &value_ht) == FAILURE) {
             return;
         }
         
@@ -8307,10 +8485,12 @@ PHP_FUNCTION(glProgramUniform3fv)
                 zend_throw_error(NULL, "All elements of the given array have to be of type: float");
             }
         ZEND_HASH_FOREACH_END();
-        glProgramUniform3fv(program, location, count, tmpvec);
+        glProgramUniform3fv(program, location, cvector_size(tmpvec), tmpvec);
         cvector_free(tmpvec);
         return;
     }
+    phpglfw_buffer_glfloat_object *bufferobj = phpglfw_buffer_glfloat_objectptr_from_zobj_p(Z_OBJ_P(value_zval));
+    glProgramUniform3fv(program, location, cvector_size(bufferobj->vec), bufferobj->vec);
 } 
 
 /**
@@ -8336,11 +8516,10 @@ PHP_FUNCTION(glProgramUniform3dv)
 {
     zend_long program;
     zend_long location;
-    zend_long count;
     zval *value_zval;
     HashTable *value_ht = NULL;
-    if (zend_parse_parameters(ZEND_NUM_ARGS() , "lllO", &program, &location, &count, &value_zval, phpglfw_get_buffer_gldouble_ce()) == FAILURE) {
-        if (zend_parse_parameters(ZEND_NUM_ARGS() , "lllh", &program, &location, &count, &value_ht) == FAILURE) {
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "llO", &program, &location, &value_zval, phpglfw_get_buffer_gldouble_ce()) == FAILURE) {
+        if (zend_parse_parameters(ZEND_NUM_ARGS() , "llh", &program, &location, &value_ht) == FAILURE) {
             return;
         }
         
@@ -8353,10 +8532,12 @@ PHP_FUNCTION(glProgramUniform3dv)
                 zend_throw_error(NULL, "All elements of the given array have to be of type: float");
             }
         ZEND_HASH_FOREACH_END();
-        glProgramUniform3dv(program, location, count, tmpvec);
+        glProgramUniform3dv(program, location, cvector_size(tmpvec), tmpvec);
         cvector_free(tmpvec);
         return;
     }
+    phpglfw_buffer_gldouble_object *bufferobj = phpglfw_buffer_gldouble_objectptr_from_zobj_p(Z_OBJ_P(value_zval));
+    glProgramUniform3dv(program, location, cvector_size(bufferobj->vec), bufferobj->vec);
 } 
 
 /**
@@ -8382,11 +8563,10 @@ PHP_FUNCTION(glProgramUniform3uiv)
 {
     zend_long program;
     zend_long location;
-    zend_long count;
     zval *value_zval;
     HashTable *value_ht = NULL;
-    if (zend_parse_parameters(ZEND_NUM_ARGS() , "lllO", &program, &location, &count, &value_zval, phpglfw_get_buffer_gluint_ce()) == FAILURE) {
-        if (zend_parse_parameters(ZEND_NUM_ARGS() , "lllh", &program, &location, &count, &value_ht) == FAILURE) {
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "llO", &program, &location, &value_zval, phpglfw_get_buffer_gluint_ce()) == FAILURE) {
+        if (zend_parse_parameters(ZEND_NUM_ARGS() , "llh", &program, &location, &value_ht) == FAILURE) {
             return;
         }
         
@@ -8399,10 +8579,12 @@ PHP_FUNCTION(glProgramUniform3uiv)
                 zend_throw_error(NULL, "All elements of the given array have to be of type: int");
             }
         ZEND_HASH_FOREACH_END();
-        glProgramUniform3uiv(program, location, count, tmpvec);
+        glProgramUniform3uiv(program, location, cvector_size(tmpvec), tmpvec);
         cvector_free(tmpvec);
         return;
     }
+    phpglfw_buffer_gluint_object *bufferobj = phpglfw_buffer_gluint_objectptr_from_zobj_p(Z_OBJ_P(value_zval));
+    glProgramUniform3uiv(program, location, cvector_size(bufferobj->vec), bufferobj->vec);
 } 
 
 /**
@@ -8429,11 +8611,10 @@ PHP_FUNCTION(glProgramUniform4iv)
 {
     zend_long program;
     zend_long location;
-    zend_long count;
     zval *value_zval;
     HashTable *value_ht = NULL;
-    if (zend_parse_parameters(ZEND_NUM_ARGS() , "lllO", &program, &location, &count, &value_zval, phpglfw_get_buffer_glint_ce()) == FAILURE) {
-        if (zend_parse_parameters(ZEND_NUM_ARGS() , "lllh", &program, &location, &count, &value_ht) == FAILURE) {
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "llO", &program, &location, &value_zval, phpglfw_get_buffer_glint_ce()) == FAILURE) {
+        if (zend_parse_parameters(ZEND_NUM_ARGS() , "llh", &program, &location, &value_ht) == FAILURE) {
             return;
         }
         
@@ -8446,10 +8627,12 @@ PHP_FUNCTION(glProgramUniform4iv)
                 zend_throw_error(NULL, "All elements of the given array have to be of type: int");
             }
         ZEND_HASH_FOREACH_END();
-        glProgramUniform4iv(program, location, count, tmpvec);
+        glProgramUniform4iv(program, location, cvector_size(tmpvec), tmpvec);
         cvector_free(tmpvec);
         return;
     }
+    phpglfw_buffer_glint_object *bufferobj = phpglfw_buffer_glint_objectptr_from_zobj_p(Z_OBJ_P(value_zval));
+    glProgramUniform4iv(program, location, cvector_size(bufferobj->vec), bufferobj->vec);
 } 
 
 /**
@@ -8476,11 +8659,10 @@ PHP_FUNCTION(glProgramUniform4fv)
 {
     zend_long program;
     zend_long location;
-    zend_long count;
     zval *value_zval;
     HashTable *value_ht = NULL;
-    if (zend_parse_parameters(ZEND_NUM_ARGS() , "lllO", &program, &location, &count, &value_zval, phpglfw_get_buffer_glfloat_ce()) == FAILURE) {
-        if (zend_parse_parameters(ZEND_NUM_ARGS() , "lllh", &program, &location, &count, &value_ht) == FAILURE) {
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "llO", &program, &location, &value_zval, phpglfw_get_buffer_glfloat_ce()) == FAILURE) {
+        if (zend_parse_parameters(ZEND_NUM_ARGS() , "llh", &program, &location, &value_ht) == FAILURE) {
             return;
         }
         
@@ -8493,10 +8675,12 @@ PHP_FUNCTION(glProgramUniform4fv)
                 zend_throw_error(NULL, "All elements of the given array have to be of type: float");
             }
         ZEND_HASH_FOREACH_END();
-        glProgramUniform4fv(program, location, count, tmpvec);
+        glProgramUniform4fv(program, location, cvector_size(tmpvec), tmpvec);
         cvector_free(tmpvec);
         return;
     }
+    phpglfw_buffer_glfloat_object *bufferobj = phpglfw_buffer_glfloat_objectptr_from_zobj_p(Z_OBJ_P(value_zval));
+    glProgramUniform4fv(program, location, cvector_size(bufferobj->vec), bufferobj->vec);
 } 
 
 /**
@@ -8523,11 +8707,10 @@ PHP_FUNCTION(glProgramUniform4dv)
 {
     zend_long program;
     zend_long location;
-    zend_long count;
     zval *value_zval;
     HashTable *value_ht = NULL;
-    if (zend_parse_parameters(ZEND_NUM_ARGS() , "lllO", &program, &location, &count, &value_zval, phpglfw_get_buffer_gldouble_ce()) == FAILURE) {
-        if (zend_parse_parameters(ZEND_NUM_ARGS() , "lllh", &program, &location, &count, &value_ht) == FAILURE) {
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "llO", &program, &location, &value_zval, phpglfw_get_buffer_gldouble_ce()) == FAILURE) {
+        if (zend_parse_parameters(ZEND_NUM_ARGS() , "llh", &program, &location, &value_ht) == FAILURE) {
             return;
         }
         
@@ -8540,10 +8723,12 @@ PHP_FUNCTION(glProgramUniform4dv)
                 zend_throw_error(NULL, "All elements of the given array have to be of type: float");
             }
         ZEND_HASH_FOREACH_END();
-        glProgramUniform4dv(program, location, count, tmpvec);
+        glProgramUniform4dv(program, location, cvector_size(tmpvec), tmpvec);
         cvector_free(tmpvec);
         return;
     }
+    phpglfw_buffer_gldouble_object *bufferobj = phpglfw_buffer_gldouble_objectptr_from_zobj_p(Z_OBJ_P(value_zval));
+    glProgramUniform4dv(program, location, cvector_size(bufferobj->vec), bufferobj->vec);
 } 
 
 /**
@@ -8570,11 +8755,10 @@ PHP_FUNCTION(glProgramUniform4uiv)
 {
     zend_long program;
     zend_long location;
-    zend_long count;
     zval *value_zval;
     HashTable *value_ht = NULL;
-    if (zend_parse_parameters(ZEND_NUM_ARGS() , "lllO", &program, &location, &count, &value_zval, phpglfw_get_buffer_gluint_ce()) == FAILURE) {
-        if (zend_parse_parameters(ZEND_NUM_ARGS() , "lllh", &program, &location, &count, &value_ht) == FAILURE) {
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "llO", &program, &location, &value_zval, phpglfw_get_buffer_gluint_ce()) == FAILURE) {
+        if (zend_parse_parameters(ZEND_NUM_ARGS() , "llh", &program, &location, &value_ht) == FAILURE) {
             return;
         }
         
@@ -8587,10 +8771,12 @@ PHP_FUNCTION(glProgramUniform4uiv)
                 zend_throw_error(NULL, "All elements of the given array have to be of type: int");
             }
         ZEND_HASH_FOREACH_END();
-        glProgramUniform4uiv(program, location, count, tmpvec);
+        glProgramUniform4uiv(program, location, cvector_size(tmpvec), tmpvec);
         cvector_free(tmpvec);
         return;
     }
+    phpglfw_buffer_gluint_object *bufferobj = phpglfw_buffer_gluint_objectptr_from_zobj_p(Z_OBJ_P(value_zval));
+    glProgramUniform4uiv(program, location, cvector_size(bufferobj->vec), bufferobj->vec);
 } 
 
 /**
@@ -8600,12 +8786,11 @@ PHP_FUNCTION(glProgramUniformMatrix2fv)
 {
     zend_long program;
     zend_long location;
-    zend_long count;
     bool transpose;
     zval *value_zval;
     HashTable *value_ht = NULL;
-    if (zend_parse_parameters(ZEND_NUM_ARGS() , "lllbO", &program, &location, &count, &transpose, &value_zval, phpglfw_get_buffer_glfloat_ce()) == FAILURE) {
-        if (zend_parse_parameters(ZEND_NUM_ARGS() , "lllbh", &program, &location, &count, &transpose, &value_ht) == FAILURE) {
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "llbO", &program, &location, &transpose, &value_zval, phpglfw_get_buffer_glfloat_ce()) == FAILURE) {
+        if (zend_parse_parameters(ZEND_NUM_ARGS() , "llbh", &program, &location, &transpose, &value_ht) == FAILURE) {
             return;
         }
         
@@ -8618,10 +8803,12 @@ PHP_FUNCTION(glProgramUniformMatrix2fv)
                 zend_throw_error(NULL, "All elements of the given array have to be of type: float");
             }
         ZEND_HASH_FOREACH_END();
-        glProgramUniformMatrix2fv(program, location, count, transpose, tmpvec);
+        glProgramUniformMatrix2fv(program, location, cvector_size(tmpvec), transpose, tmpvec);
         cvector_free(tmpvec);
         return;
     }
+    phpglfw_buffer_glfloat_object *bufferobj = phpglfw_buffer_glfloat_objectptr_from_zobj_p(Z_OBJ_P(value_zval));
+    glProgramUniformMatrix2fv(program, location, cvector_size(bufferobj->vec), transpose, bufferobj->vec);
 } 
 
 /**
@@ -8631,12 +8818,11 @@ PHP_FUNCTION(glProgramUniformMatrix3fv)
 {
     zend_long program;
     zend_long location;
-    zend_long count;
     bool transpose;
     zval *value_zval;
     HashTable *value_ht = NULL;
-    if (zend_parse_parameters(ZEND_NUM_ARGS() , "lllbO", &program, &location, &count, &transpose, &value_zval, phpglfw_get_buffer_glfloat_ce()) == FAILURE) {
-        if (zend_parse_parameters(ZEND_NUM_ARGS() , "lllbh", &program, &location, &count, &transpose, &value_ht) == FAILURE) {
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "llbO", &program, &location, &transpose, &value_zval, phpglfw_get_buffer_glfloat_ce()) == FAILURE) {
+        if (zend_parse_parameters(ZEND_NUM_ARGS() , "llbh", &program, &location, &transpose, &value_ht) == FAILURE) {
             return;
         }
         
@@ -8649,10 +8835,12 @@ PHP_FUNCTION(glProgramUniformMatrix3fv)
                 zend_throw_error(NULL, "All elements of the given array have to be of type: float");
             }
         ZEND_HASH_FOREACH_END();
-        glProgramUniformMatrix3fv(program, location, count, transpose, tmpvec);
+        glProgramUniformMatrix3fv(program, location, cvector_size(tmpvec), transpose, tmpvec);
         cvector_free(tmpvec);
         return;
     }
+    phpglfw_buffer_glfloat_object *bufferobj = phpglfw_buffer_glfloat_objectptr_from_zobj_p(Z_OBJ_P(value_zval));
+    glProgramUniformMatrix3fv(program, location, cvector_size(bufferobj->vec), transpose, bufferobj->vec);
 } 
 
 /**
@@ -8662,12 +8850,11 @@ PHP_FUNCTION(glProgramUniformMatrix4fv)
 {
     zend_long program;
     zend_long location;
-    zend_long count;
     bool transpose;
     zval *value_zval;
     HashTable *value_ht = NULL;
-    if (zend_parse_parameters(ZEND_NUM_ARGS() , "lllbO", &program, &location, &count, &transpose, &value_zval, phpglfw_get_buffer_glfloat_ce()) == FAILURE) {
-        if (zend_parse_parameters(ZEND_NUM_ARGS() , "lllbh", &program, &location, &count, &transpose, &value_ht) == FAILURE) {
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "llbO", &program, &location, &transpose, &value_zval, phpglfw_get_buffer_glfloat_ce()) == FAILURE) {
+        if (zend_parse_parameters(ZEND_NUM_ARGS() , "llbh", &program, &location, &transpose, &value_ht) == FAILURE) {
             return;
         }
         
@@ -8680,10 +8867,12 @@ PHP_FUNCTION(glProgramUniformMatrix4fv)
                 zend_throw_error(NULL, "All elements of the given array have to be of type: float");
             }
         ZEND_HASH_FOREACH_END();
-        glProgramUniformMatrix4fv(program, location, count, transpose, tmpvec);
+        glProgramUniformMatrix4fv(program, location, cvector_size(tmpvec), transpose, tmpvec);
         cvector_free(tmpvec);
         return;
     }
+    phpglfw_buffer_glfloat_object *bufferobj = phpglfw_buffer_glfloat_objectptr_from_zobj_p(Z_OBJ_P(value_zval));
+    glProgramUniformMatrix4fv(program, location, cvector_size(bufferobj->vec), transpose, bufferobj->vec);
 } 
 
 /**
@@ -8693,12 +8882,11 @@ PHP_FUNCTION(glProgramUniformMatrix2dv)
 {
     zend_long program;
     zend_long location;
-    zend_long count;
     bool transpose;
     zval *value_zval;
     HashTable *value_ht = NULL;
-    if (zend_parse_parameters(ZEND_NUM_ARGS() , "lllbO", &program, &location, &count, &transpose, &value_zval, phpglfw_get_buffer_gldouble_ce()) == FAILURE) {
-        if (zend_parse_parameters(ZEND_NUM_ARGS() , "lllbh", &program, &location, &count, &transpose, &value_ht) == FAILURE) {
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "llbO", &program, &location, &transpose, &value_zval, phpglfw_get_buffer_gldouble_ce()) == FAILURE) {
+        if (zend_parse_parameters(ZEND_NUM_ARGS() , "llbh", &program, &location, &transpose, &value_ht) == FAILURE) {
             return;
         }
         
@@ -8711,10 +8899,12 @@ PHP_FUNCTION(glProgramUniformMatrix2dv)
                 zend_throw_error(NULL, "All elements of the given array have to be of type: float");
             }
         ZEND_HASH_FOREACH_END();
-        glProgramUniformMatrix2dv(program, location, count, transpose, tmpvec);
+        glProgramUniformMatrix2dv(program, location, cvector_size(tmpvec), transpose, tmpvec);
         cvector_free(tmpvec);
         return;
     }
+    phpglfw_buffer_gldouble_object *bufferobj = phpglfw_buffer_gldouble_objectptr_from_zobj_p(Z_OBJ_P(value_zval));
+    glProgramUniformMatrix2dv(program, location, cvector_size(bufferobj->vec), transpose, bufferobj->vec);
 } 
 
 /**
@@ -8724,12 +8914,11 @@ PHP_FUNCTION(glProgramUniformMatrix3dv)
 {
     zend_long program;
     zend_long location;
-    zend_long count;
     bool transpose;
     zval *value_zval;
     HashTable *value_ht = NULL;
-    if (zend_parse_parameters(ZEND_NUM_ARGS() , "lllbO", &program, &location, &count, &transpose, &value_zval, phpglfw_get_buffer_gldouble_ce()) == FAILURE) {
-        if (zend_parse_parameters(ZEND_NUM_ARGS() , "lllbh", &program, &location, &count, &transpose, &value_ht) == FAILURE) {
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "llbO", &program, &location, &transpose, &value_zval, phpglfw_get_buffer_gldouble_ce()) == FAILURE) {
+        if (zend_parse_parameters(ZEND_NUM_ARGS() , "llbh", &program, &location, &transpose, &value_ht) == FAILURE) {
             return;
         }
         
@@ -8742,10 +8931,12 @@ PHP_FUNCTION(glProgramUniformMatrix3dv)
                 zend_throw_error(NULL, "All elements of the given array have to be of type: float");
             }
         ZEND_HASH_FOREACH_END();
-        glProgramUniformMatrix3dv(program, location, count, transpose, tmpvec);
+        glProgramUniformMatrix3dv(program, location, cvector_size(tmpvec), transpose, tmpvec);
         cvector_free(tmpvec);
         return;
     }
+    phpglfw_buffer_gldouble_object *bufferobj = phpglfw_buffer_gldouble_objectptr_from_zobj_p(Z_OBJ_P(value_zval));
+    glProgramUniformMatrix3dv(program, location, cvector_size(bufferobj->vec), transpose, bufferobj->vec);
 } 
 
 /**
@@ -8755,12 +8946,11 @@ PHP_FUNCTION(glProgramUniformMatrix4dv)
 {
     zend_long program;
     zend_long location;
-    zend_long count;
     bool transpose;
     zval *value_zval;
     HashTable *value_ht = NULL;
-    if (zend_parse_parameters(ZEND_NUM_ARGS() , "lllbO", &program, &location, &count, &transpose, &value_zval, phpglfw_get_buffer_gldouble_ce()) == FAILURE) {
-        if (zend_parse_parameters(ZEND_NUM_ARGS() , "lllbh", &program, &location, &count, &transpose, &value_ht) == FAILURE) {
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "llbO", &program, &location, &transpose, &value_zval, phpglfw_get_buffer_gldouble_ce()) == FAILURE) {
+        if (zend_parse_parameters(ZEND_NUM_ARGS() , "llbh", &program, &location, &transpose, &value_ht) == FAILURE) {
             return;
         }
         
@@ -8773,10 +8963,12 @@ PHP_FUNCTION(glProgramUniformMatrix4dv)
                 zend_throw_error(NULL, "All elements of the given array have to be of type: float");
             }
         ZEND_HASH_FOREACH_END();
-        glProgramUniformMatrix4dv(program, location, count, transpose, tmpvec);
+        glProgramUniformMatrix4dv(program, location, cvector_size(tmpvec), transpose, tmpvec);
         cvector_free(tmpvec);
         return;
     }
+    phpglfw_buffer_gldouble_object *bufferobj = phpglfw_buffer_gldouble_objectptr_from_zobj_p(Z_OBJ_P(value_zval));
+    glProgramUniformMatrix4dv(program, location, cvector_size(bufferobj->vec), transpose, bufferobj->vec);
 } 
 
 /**
@@ -8786,12 +8978,11 @@ PHP_FUNCTION(glProgramUniformMatrix2x3fv)
 {
     zend_long program;
     zend_long location;
-    zend_long count;
     bool transpose;
     zval *value_zval;
     HashTable *value_ht = NULL;
-    if (zend_parse_parameters(ZEND_NUM_ARGS() , "lllbO", &program, &location, &count, &transpose, &value_zval, phpglfw_get_buffer_glfloat_ce()) == FAILURE) {
-        if (zend_parse_parameters(ZEND_NUM_ARGS() , "lllbh", &program, &location, &count, &transpose, &value_ht) == FAILURE) {
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "llbO", &program, &location, &transpose, &value_zval, phpglfw_get_buffer_glfloat_ce()) == FAILURE) {
+        if (zend_parse_parameters(ZEND_NUM_ARGS() , "llbh", &program, &location, &transpose, &value_ht) == FAILURE) {
             return;
         }
         
@@ -8804,10 +8995,12 @@ PHP_FUNCTION(glProgramUniformMatrix2x3fv)
                 zend_throw_error(NULL, "All elements of the given array have to be of type: float");
             }
         ZEND_HASH_FOREACH_END();
-        glProgramUniformMatrix2x3fv(program, location, count, transpose, tmpvec);
+        glProgramUniformMatrix2x3fv(program, location, cvector_size(tmpvec), transpose, tmpvec);
         cvector_free(tmpvec);
         return;
     }
+    phpglfw_buffer_glfloat_object *bufferobj = phpglfw_buffer_glfloat_objectptr_from_zobj_p(Z_OBJ_P(value_zval));
+    glProgramUniformMatrix2x3fv(program, location, cvector_size(bufferobj->vec), transpose, bufferobj->vec);
 } 
 
 /**
@@ -8817,12 +9010,11 @@ PHP_FUNCTION(glProgramUniformMatrix3x2fv)
 {
     zend_long program;
     zend_long location;
-    zend_long count;
     bool transpose;
     zval *value_zval;
     HashTable *value_ht = NULL;
-    if (zend_parse_parameters(ZEND_NUM_ARGS() , "lllbO", &program, &location, &count, &transpose, &value_zval, phpglfw_get_buffer_glfloat_ce()) == FAILURE) {
-        if (zend_parse_parameters(ZEND_NUM_ARGS() , "lllbh", &program, &location, &count, &transpose, &value_ht) == FAILURE) {
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "llbO", &program, &location, &transpose, &value_zval, phpglfw_get_buffer_glfloat_ce()) == FAILURE) {
+        if (zend_parse_parameters(ZEND_NUM_ARGS() , "llbh", &program, &location, &transpose, &value_ht) == FAILURE) {
             return;
         }
         
@@ -8835,10 +9027,12 @@ PHP_FUNCTION(glProgramUniformMatrix3x2fv)
                 zend_throw_error(NULL, "All elements of the given array have to be of type: float");
             }
         ZEND_HASH_FOREACH_END();
-        glProgramUniformMatrix3x2fv(program, location, count, transpose, tmpvec);
+        glProgramUniformMatrix3x2fv(program, location, cvector_size(tmpvec), transpose, tmpvec);
         cvector_free(tmpvec);
         return;
     }
+    phpglfw_buffer_glfloat_object *bufferobj = phpglfw_buffer_glfloat_objectptr_from_zobj_p(Z_OBJ_P(value_zval));
+    glProgramUniformMatrix3x2fv(program, location, cvector_size(bufferobj->vec), transpose, bufferobj->vec);
 } 
 
 /**
@@ -8848,12 +9042,11 @@ PHP_FUNCTION(glProgramUniformMatrix2x4fv)
 {
     zend_long program;
     zend_long location;
-    zend_long count;
     bool transpose;
     zval *value_zval;
     HashTable *value_ht = NULL;
-    if (zend_parse_parameters(ZEND_NUM_ARGS() , "lllbO", &program, &location, &count, &transpose, &value_zval, phpglfw_get_buffer_glfloat_ce()) == FAILURE) {
-        if (zend_parse_parameters(ZEND_NUM_ARGS() , "lllbh", &program, &location, &count, &transpose, &value_ht) == FAILURE) {
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "llbO", &program, &location, &transpose, &value_zval, phpglfw_get_buffer_glfloat_ce()) == FAILURE) {
+        if (zend_parse_parameters(ZEND_NUM_ARGS() , "llbh", &program, &location, &transpose, &value_ht) == FAILURE) {
             return;
         }
         
@@ -8866,10 +9059,12 @@ PHP_FUNCTION(glProgramUniformMatrix2x4fv)
                 zend_throw_error(NULL, "All elements of the given array have to be of type: float");
             }
         ZEND_HASH_FOREACH_END();
-        glProgramUniformMatrix2x4fv(program, location, count, transpose, tmpvec);
+        glProgramUniformMatrix2x4fv(program, location, cvector_size(tmpvec), transpose, tmpvec);
         cvector_free(tmpvec);
         return;
     }
+    phpglfw_buffer_glfloat_object *bufferobj = phpglfw_buffer_glfloat_objectptr_from_zobj_p(Z_OBJ_P(value_zval));
+    glProgramUniformMatrix2x4fv(program, location, cvector_size(bufferobj->vec), transpose, bufferobj->vec);
 } 
 
 /**
@@ -8879,12 +9074,11 @@ PHP_FUNCTION(glProgramUniformMatrix4x2fv)
 {
     zend_long program;
     zend_long location;
-    zend_long count;
     bool transpose;
     zval *value_zval;
     HashTable *value_ht = NULL;
-    if (zend_parse_parameters(ZEND_NUM_ARGS() , "lllbO", &program, &location, &count, &transpose, &value_zval, phpglfw_get_buffer_glfloat_ce()) == FAILURE) {
-        if (zend_parse_parameters(ZEND_NUM_ARGS() , "lllbh", &program, &location, &count, &transpose, &value_ht) == FAILURE) {
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "llbO", &program, &location, &transpose, &value_zval, phpglfw_get_buffer_glfloat_ce()) == FAILURE) {
+        if (zend_parse_parameters(ZEND_NUM_ARGS() , "llbh", &program, &location, &transpose, &value_ht) == FAILURE) {
             return;
         }
         
@@ -8897,10 +9091,12 @@ PHP_FUNCTION(glProgramUniformMatrix4x2fv)
                 zend_throw_error(NULL, "All elements of the given array have to be of type: float");
             }
         ZEND_HASH_FOREACH_END();
-        glProgramUniformMatrix4x2fv(program, location, count, transpose, tmpvec);
+        glProgramUniformMatrix4x2fv(program, location, cvector_size(tmpvec), transpose, tmpvec);
         cvector_free(tmpvec);
         return;
     }
+    phpglfw_buffer_glfloat_object *bufferobj = phpglfw_buffer_glfloat_objectptr_from_zobj_p(Z_OBJ_P(value_zval));
+    glProgramUniformMatrix4x2fv(program, location, cvector_size(bufferobj->vec), transpose, bufferobj->vec);
 } 
 
 /**
@@ -8910,12 +9106,11 @@ PHP_FUNCTION(glProgramUniformMatrix3x4fv)
 {
     zend_long program;
     zend_long location;
-    zend_long count;
     bool transpose;
     zval *value_zval;
     HashTable *value_ht = NULL;
-    if (zend_parse_parameters(ZEND_NUM_ARGS() , "lllbO", &program, &location, &count, &transpose, &value_zval, phpglfw_get_buffer_glfloat_ce()) == FAILURE) {
-        if (zend_parse_parameters(ZEND_NUM_ARGS() , "lllbh", &program, &location, &count, &transpose, &value_ht) == FAILURE) {
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "llbO", &program, &location, &transpose, &value_zval, phpglfw_get_buffer_glfloat_ce()) == FAILURE) {
+        if (zend_parse_parameters(ZEND_NUM_ARGS() , "llbh", &program, &location, &transpose, &value_ht) == FAILURE) {
             return;
         }
         
@@ -8928,10 +9123,12 @@ PHP_FUNCTION(glProgramUniformMatrix3x4fv)
                 zend_throw_error(NULL, "All elements of the given array have to be of type: float");
             }
         ZEND_HASH_FOREACH_END();
-        glProgramUniformMatrix3x4fv(program, location, count, transpose, tmpvec);
+        glProgramUniformMatrix3x4fv(program, location, cvector_size(tmpvec), transpose, tmpvec);
         cvector_free(tmpvec);
         return;
     }
+    phpglfw_buffer_glfloat_object *bufferobj = phpglfw_buffer_glfloat_objectptr_from_zobj_p(Z_OBJ_P(value_zval));
+    glProgramUniformMatrix3x4fv(program, location, cvector_size(bufferobj->vec), transpose, bufferobj->vec);
 } 
 
 /**
@@ -8941,12 +9138,11 @@ PHP_FUNCTION(glProgramUniformMatrix4x3fv)
 {
     zend_long program;
     zend_long location;
-    zend_long count;
     bool transpose;
     zval *value_zval;
     HashTable *value_ht = NULL;
-    if (zend_parse_parameters(ZEND_NUM_ARGS() , "lllbO", &program, &location, &count, &transpose, &value_zval, phpglfw_get_buffer_glfloat_ce()) == FAILURE) {
-        if (zend_parse_parameters(ZEND_NUM_ARGS() , "lllbh", &program, &location, &count, &transpose, &value_ht) == FAILURE) {
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "llbO", &program, &location, &transpose, &value_zval, phpglfw_get_buffer_glfloat_ce()) == FAILURE) {
+        if (zend_parse_parameters(ZEND_NUM_ARGS() , "llbh", &program, &location, &transpose, &value_ht) == FAILURE) {
             return;
         }
         
@@ -8959,10 +9155,12 @@ PHP_FUNCTION(glProgramUniformMatrix4x3fv)
                 zend_throw_error(NULL, "All elements of the given array have to be of type: float");
             }
         ZEND_HASH_FOREACH_END();
-        glProgramUniformMatrix4x3fv(program, location, count, transpose, tmpvec);
+        glProgramUniformMatrix4x3fv(program, location, cvector_size(tmpvec), transpose, tmpvec);
         cvector_free(tmpvec);
         return;
     }
+    phpglfw_buffer_glfloat_object *bufferobj = phpglfw_buffer_glfloat_objectptr_from_zobj_p(Z_OBJ_P(value_zval));
+    glProgramUniformMatrix4x3fv(program, location, cvector_size(bufferobj->vec), transpose, bufferobj->vec);
 } 
 
 /**
@@ -8972,12 +9170,11 @@ PHP_FUNCTION(glProgramUniformMatrix2x3dv)
 {
     zend_long program;
     zend_long location;
-    zend_long count;
     bool transpose;
     zval *value_zval;
     HashTable *value_ht = NULL;
-    if (zend_parse_parameters(ZEND_NUM_ARGS() , "lllbO", &program, &location, &count, &transpose, &value_zval, phpglfw_get_buffer_gldouble_ce()) == FAILURE) {
-        if (zend_parse_parameters(ZEND_NUM_ARGS() , "lllbh", &program, &location, &count, &transpose, &value_ht) == FAILURE) {
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "llbO", &program, &location, &transpose, &value_zval, phpglfw_get_buffer_gldouble_ce()) == FAILURE) {
+        if (zend_parse_parameters(ZEND_NUM_ARGS() , "llbh", &program, &location, &transpose, &value_ht) == FAILURE) {
             return;
         }
         
@@ -8990,10 +9187,12 @@ PHP_FUNCTION(glProgramUniformMatrix2x3dv)
                 zend_throw_error(NULL, "All elements of the given array have to be of type: float");
             }
         ZEND_HASH_FOREACH_END();
-        glProgramUniformMatrix2x3dv(program, location, count, transpose, tmpvec);
+        glProgramUniformMatrix2x3dv(program, location, cvector_size(tmpvec), transpose, tmpvec);
         cvector_free(tmpvec);
         return;
     }
+    phpglfw_buffer_gldouble_object *bufferobj = phpglfw_buffer_gldouble_objectptr_from_zobj_p(Z_OBJ_P(value_zval));
+    glProgramUniformMatrix2x3dv(program, location, cvector_size(bufferobj->vec), transpose, bufferobj->vec);
 } 
 
 /**
@@ -9003,12 +9202,11 @@ PHP_FUNCTION(glProgramUniformMatrix3x2dv)
 {
     zend_long program;
     zend_long location;
-    zend_long count;
     bool transpose;
     zval *value_zval;
     HashTable *value_ht = NULL;
-    if (zend_parse_parameters(ZEND_NUM_ARGS() , "lllbO", &program, &location, &count, &transpose, &value_zval, phpglfw_get_buffer_gldouble_ce()) == FAILURE) {
-        if (zend_parse_parameters(ZEND_NUM_ARGS() , "lllbh", &program, &location, &count, &transpose, &value_ht) == FAILURE) {
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "llbO", &program, &location, &transpose, &value_zval, phpglfw_get_buffer_gldouble_ce()) == FAILURE) {
+        if (zend_parse_parameters(ZEND_NUM_ARGS() , "llbh", &program, &location, &transpose, &value_ht) == FAILURE) {
             return;
         }
         
@@ -9021,10 +9219,12 @@ PHP_FUNCTION(glProgramUniformMatrix3x2dv)
                 zend_throw_error(NULL, "All elements of the given array have to be of type: float");
             }
         ZEND_HASH_FOREACH_END();
-        glProgramUniformMatrix3x2dv(program, location, count, transpose, tmpvec);
+        glProgramUniformMatrix3x2dv(program, location, cvector_size(tmpvec), transpose, tmpvec);
         cvector_free(tmpvec);
         return;
     }
+    phpglfw_buffer_gldouble_object *bufferobj = phpglfw_buffer_gldouble_objectptr_from_zobj_p(Z_OBJ_P(value_zval));
+    glProgramUniformMatrix3x2dv(program, location, cvector_size(bufferobj->vec), transpose, bufferobj->vec);
 } 
 
 /**
@@ -9034,12 +9234,11 @@ PHP_FUNCTION(glProgramUniformMatrix2x4dv)
 {
     zend_long program;
     zend_long location;
-    zend_long count;
     bool transpose;
     zval *value_zval;
     HashTable *value_ht = NULL;
-    if (zend_parse_parameters(ZEND_NUM_ARGS() , "lllbO", &program, &location, &count, &transpose, &value_zval, phpglfw_get_buffer_gldouble_ce()) == FAILURE) {
-        if (zend_parse_parameters(ZEND_NUM_ARGS() , "lllbh", &program, &location, &count, &transpose, &value_ht) == FAILURE) {
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "llbO", &program, &location, &transpose, &value_zval, phpglfw_get_buffer_gldouble_ce()) == FAILURE) {
+        if (zend_parse_parameters(ZEND_NUM_ARGS() , "llbh", &program, &location, &transpose, &value_ht) == FAILURE) {
             return;
         }
         
@@ -9052,10 +9251,12 @@ PHP_FUNCTION(glProgramUniformMatrix2x4dv)
                 zend_throw_error(NULL, "All elements of the given array have to be of type: float");
             }
         ZEND_HASH_FOREACH_END();
-        glProgramUniformMatrix2x4dv(program, location, count, transpose, tmpvec);
+        glProgramUniformMatrix2x4dv(program, location, cvector_size(tmpvec), transpose, tmpvec);
         cvector_free(tmpvec);
         return;
     }
+    phpglfw_buffer_gldouble_object *bufferobj = phpglfw_buffer_gldouble_objectptr_from_zobj_p(Z_OBJ_P(value_zval));
+    glProgramUniformMatrix2x4dv(program, location, cvector_size(bufferobj->vec), transpose, bufferobj->vec);
 } 
 
 /**
@@ -9065,12 +9266,11 @@ PHP_FUNCTION(glProgramUniformMatrix4x2dv)
 {
     zend_long program;
     zend_long location;
-    zend_long count;
     bool transpose;
     zval *value_zval;
     HashTable *value_ht = NULL;
-    if (zend_parse_parameters(ZEND_NUM_ARGS() , "lllbO", &program, &location, &count, &transpose, &value_zval, phpglfw_get_buffer_gldouble_ce()) == FAILURE) {
-        if (zend_parse_parameters(ZEND_NUM_ARGS() , "lllbh", &program, &location, &count, &transpose, &value_ht) == FAILURE) {
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "llbO", &program, &location, &transpose, &value_zval, phpglfw_get_buffer_gldouble_ce()) == FAILURE) {
+        if (zend_parse_parameters(ZEND_NUM_ARGS() , "llbh", &program, &location, &transpose, &value_ht) == FAILURE) {
             return;
         }
         
@@ -9083,10 +9283,12 @@ PHP_FUNCTION(glProgramUniformMatrix4x2dv)
                 zend_throw_error(NULL, "All elements of the given array have to be of type: float");
             }
         ZEND_HASH_FOREACH_END();
-        glProgramUniformMatrix4x2dv(program, location, count, transpose, tmpvec);
+        glProgramUniformMatrix4x2dv(program, location, cvector_size(tmpvec), transpose, tmpvec);
         cvector_free(tmpvec);
         return;
     }
+    phpglfw_buffer_gldouble_object *bufferobj = phpglfw_buffer_gldouble_objectptr_from_zobj_p(Z_OBJ_P(value_zval));
+    glProgramUniformMatrix4x2dv(program, location, cvector_size(bufferobj->vec), transpose, bufferobj->vec);
 } 
 
 /**
@@ -9096,12 +9298,11 @@ PHP_FUNCTION(glProgramUniformMatrix3x4dv)
 {
     zend_long program;
     zend_long location;
-    zend_long count;
     bool transpose;
     zval *value_zval;
     HashTable *value_ht = NULL;
-    if (zend_parse_parameters(ZEND_NUM_ARGS() , "lllbO", &program, &location, &count, &transpose, &value_zval, phpglfw_get_buffer_gldouble_ce()) == FAILURE) {
-        if (zend_parse_parameters(ZEND_NUM_ARGS() , "lllbh", &program, &location, &count, &transpose, &value_ht) == FAILURE) {
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "llbO", &program, &location, &transpose, &value_zval, phpglfw_get_buffer_gldouble_ce()) == FAILURE) {
+        if (zend_parse_parameters(ZEND_NUM_ARGS() , "llbh", &program, &location, &transpose, &value_ht) == FAILURE) {
             return;
         }
         
@@ -9114,10 +9315,12 @@ PHP_FUNCTION(glProgramUniformMatrix3x4dv)
                 zend_throw_error(NULL, "All elements of the given array have to be of type: float");
             }
         ZEND_HASH_FOREACH_END();
-        glProgramUniformMatrix3x4dv(program, location, count, transpose, tmpvec);
+        glProgramUniformMatrix3x4dv(program, location, cvector_size(tmpvec), transpose, tmpvec);
         cvector_free(tmpvec);
         return;
     }
+    phpglfw_buffer_gldouble_object *bufferobj = phpglfw_buffer_gldouble_objectptr_from_zobj_p(Z_OBJ_P(value_zval));
+    glProgramUniformMatrix3x4dv(program, location, cvector_size(bufferobj->vec), transpose, bufferobj->vec);
 } 
 
 /**
@@ -9127,12 +9330,11 @@ PHP_FUNCTION(glProgramUniformMatrix4x3dv)
 {
     zend_long program;
     zend_long location;
-    zend_long count;
     bool transpose;
     zval *value_zval;
     HashTable *value_ht = NULL;
-    if (zend_parse_parameters(ZEND_NUM_ARGS() , "lllbO", &program, &location, &count, &transpose, &value_zval, phpglfw_get_buffer_gldouble_ce()) == FAILURE) {
-        if (zend_parse_parameters(ZEND_NUM_ARGS() , "lllbh", &program, &location, &count, &transpose, &value_ht) == FAILURE) {
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "llbO", &program, &location, &transpose, &value_zval, phpglfw_get_buffer_gldouble_ce()) == FAILURE) {
+        if (zend_parse_parameters(ZEND_NUM_ARGS() , "llbh", &program, &location, &transpose, &value_ht) == FAILURE) {
             return;
         }
         
@@ -9145,10 +9347,12 @@ PHP_FUNCTION(glProgramUniformMatrix4x3dv)
                 zend_throw_error(NULL, "All elements of the given array have to be of type: float");
             }
         ZEND_HASH_FOREACH_END();
-        glProgramUniformMatrix4x3dv(program, location, count, transpose, tmpvec);
+        glProgramUniformMatrix4x3dv(program, location, cvector_size(tmpvec), transpose, tmpvec);
         cvector_free(tmpvec);
         return;
     }
+    phpglfw_buffer_gldouble_object *bufferobj = phpglfw_buffer_gldouble_objectptr_from_zobj_p(Z_OBJ_P(value_zval));
+    glProgramUniformMatrix4x3dv(program, location, cvector_size(bufferobj->vec), transpose, bufferobj->vec);
 } 
 
 /**
@@ -9247,6 +9451,8 @@ PHP_FUNCTION(glVertexAttribL1dv)
         cvector_free(tmpvec);
         return;
     }
+    phpglfw_buffer_gldouble_object *bufferobj = phpglfw_buffer_gldouble_objectptr_from_zobj_p(Z_OBJ_P(v_zval));
+    glVertexAttribL1dv(index, bufferobj->vec);
 } 
 
 /**
@@ -9275,6 +9481,8 @@ PHP_FUNCTION(glVertexAttribL2dv)
         cvector_free(tmpvec);
         return;
     }
+    phpglfw_buffer_gldouble_object *bufferobj = phpglfw_buffer_gldouble_objectptr_from_zobj_p(Z_OBJ_P(v_zval));
+    glVertexAttribL2dv(index, bufferobj->vec);
 } 
 
 /**
@@ -9303,6 +9511,8 @@ PHP_FUNCTION(glVertexAttribL3dv)
         cvector_free(tmpvec);
         return;
     }
+    phpglfw_buffer_gldouble_object *bufferobj = phpglfw_buffer_gldouble_objectptr_from_zobj_p(Z_OBJ_P(v_zval));
+    glVertexAttribL3dv(index, bufferobj->vec);
 } 
 
 /**
@@ -9331,6 +9541,8 @@ PHP_FUNCTION(glVertexAttribL4dv)
         cvector_free(tmpvec);
         return;
     }
+    phpglfw_buffer_gldouble_object *bufferobj = phpglfw_buffer_gldouble_objectptr_from_zobj_p(Z_OBJ_P(v_zval));
+    glVertexAttribL4dv(index, bufferobj->vec);
 } 
 
 /**
@@ -9357,11 +9569,10 @@ PHP_FUNCTION(glGetVertexAttribLdv)
 PHP_FUNCTION(glViewportArrayv)
 {
     zend_long first;
-    zend_long count;
     zval *v_zval;
     HashTable *v_ht = NULL;
-    if (zend_parse_parameters(ZEND_NUM_ARGS() , "llO", &first, &count, &v_zval, phpglfw_get_buffer_glfloat_ce()) == FAILURE) {
-        if (zend_parse_parameters(ZEND_NUM_ARGS() , "llh", &first, &count, &v_ht) == FAILURE) {
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "lO", &first, &v_zval, phpglfw_get_buffer_glfloat_ce()) == FAILURE) {
+        if (zend_parse_parameters(ZEND_NUM_ARGS() , "lh", &first, &v_ht) == FAILURE) {
             return;
         }
         
@@ -9374,10 +9585,12 @@ PHP_FUNCTION(glViewportArrayv)
                 zend_throw_error(NULL, "All elements of the given array have to be of type: float");
             }
         ZEND_HASH_FOREACH_END();
-        glViewportArrayv(first, count, tmpvec);
+        glViewportArrayv(first, cvector_size(tmpvec), tmpvec);
         cvector_free(tmpvec);
         return;
     }
+    phpglfw_buffer_glfloat_object *bufferobj = phpglfw_buffer_glfloat_objectptr_from_zobj_p(Z_OBJ_P(v_zval));
+    glViewportArrayv(first, cvector_size(bufferobj->vec), bufferobj->vec);
 } 
 
 /**
@@ -9422,6 +9635,8 @@ PHP_FUNCTION(glViewportIndexedfv)
         cvector_free(tmpvec);
         return;
     }
+    phpglfw_buffer_glfloat_object *bufferobj = phpglfw_buffer_glfloat_objectptr_from_zobj_p(Z_OBJ_P(v_zval));
+    glViewportIndexedfv(index, bufferobj->vec);
 } 
 
 /**
@@ -9430,11 +9645,10 @@ PHP_FUNCTION(glViewportIndexedfv)
 PHP_FUNCTION(glScissorArrayv)
 {
     zend_long first;
-    zend_long count;
     zval *v_zval;
     HashTable *v_ht = NULL;
-    if (zend_parse_parameters(ZEND_NUM_ARGS() , "llO", &first, &count, &v_zval, phpglfw_get_buffer_glint_ce()) == FAILURE) {
-        if (zend_parse_parameters(ZEND_NUM_ARGS() , "llh", &first, &count, &v_ht) == FAILURE) {
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "lO", &first, &v_zval, phpglfw_get_buffer_glint_ce()) == FAILURE) {
+        if (zend_parse_parameters(ZEND_NUM_ARGS() , "lh", &first, &v_ht) == FAILURE) {
             return;
         }
         
@@ -9447,10 +9661,12 @@ PHP_FUNCTION(glScissorArrayv)
                 zend_throw_error(NULL, "All elements of the given array have to be of type: int");
             }
         ZEND_HASH_FOREACH_END();
-        glScissorArrayv(first, count, tmpvec);
+        glScissorArrayv(first, cvector_size(tmpvec), tmpvec);
         cvector_free(tmpvec);
         return;
     }
+    phpglfw_buffer_glint_object *bufferobj = phpglfw_buffer_glint_objectptr_from_zobj_p(Z_OBJ_P(v_zval));
+    glScissorArrayv(first, cvector_size(bufferobj->vec), bufferobj->vec);
 } 
 
 /**
@@ -9495,6 +9711,8 @@ PHP_FUNCTION(glScissorIndexedv)
         cvector_free(tmpvec);
         return;
     }
+    phpglfw_buffer_glint_object *bufferobj = phpglfw_buffer_glint_objectptr_from_zobj_p(Z_OBJ_P(v_zval));
+    glScissorIndexedv(index, bufferobj->vec);
 } 
 
 /**
@@ -9503,11 +9721,10 @@ PHP_FUNCTION(glScissorIndexedv)
 PHP_FUNCTION(glDepthRangeArrayv)
 {
     zend_long first;
-    zend_long count;
     zval *v_zval;
     HashTable *v_ht = NULL;
-    if (zend_parse_parameters(ZEND_NUM_ARGS() , "llO", &first, &count, &v_zval, phpglfw_get_buffer_gldouble_ce()) == FAILURE) {
-        if (zend_parse_parameters(ZEND_NUM_ARGS() , "llh", &first, &count, &v_ht) == FAILURE) {
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "lO", &first, &v_zval, phpglfw_get_buffer_gldouble_ce()) == FAILURE) {
+        if (zend_parse_parameters(ZEND_NUM_ARGS() , "lh", &first, &v_ht) == FAILURE) {
             return;
         }
         
@@ -9520,10 +9737,12 @@ PHP_FUNCTION(glDepthRangeArrayv)
                 zend_throw_error(NULL, "All elements of the given array have to be of type: float");
             }
         ZEND_HASH_FOREACH_END();
-        glDepthRangeArrayv(first, count, tmpvec);
+        glDepthRangeArrayv(first, cvector_size(tmpvec), tmpvec);
         cvector_free(tmpvec);
         return;
     }
+    phpglfw_buffer_gldouble_object *bufferobj = phpglfw_buffer_gldouble_objectptr_from_zobj_p(Z_OBJ_P(v_zval));
+    glDepthRangeArrayv(first, cvector_size(bufferobj->vec), bufferobj->vec);
 } 
 
 /**
