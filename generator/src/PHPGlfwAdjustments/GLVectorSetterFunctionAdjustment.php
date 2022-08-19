@@ -29,6 +29,8 @@ class GLVectorSetterFunctionAdjustment implements AdjustmentInterface
                 foreach($this->arguments as $arg) {
                     $b .= $arg->getVariableDeclaration() . PHP_EOL;
                 }
+
+                // $b .= 'GLsizei count_of_el = 0;' . PHP_EOL;
                 
                 // add the hash table declaration
                 $lastArg = $this->arguments[count($this->arguments) - 1];
@@ -64,8 +66,65 @@ class GLVectorSetterFunctionAdjustment implements AdjustmentInterface
                 array_pop($callArgs);
                 $callArgs[] = 'tmpvec';
 
-                if ($this->countArgIndex !== -1) {
-                    array_splice($callArgs, $this->countArgIndex, 0, 'cvector_size(tmpvec)'); 
+                // if this function contains a count variable we need to
+                // verify the data size is in line with the requirements of the function
+                $sizeValidationCode = '';
+                $elementCountDivisor = 1;
+                switch($this->name) {
+                    case 'glUniform2fv':
+                    case 'glUniform2iv':
+                    case 'glUniform2uiv':
+                        $elementCountDivisor = 2;
+                        break;
+                    case 'glUniform3fv':
+                    case 'glUniform3iv':
+                    case 'glUniform3uiv':
+                        $elementCountDivisor = 3;
+                        break;
+                    case 'glUniform4fv':
+                    case 'glUniform4iv':
+                    case 'glUniform4uiv':
+                        $elementCountDivisor = 4;
+                        break;
+                    case 'glUniformMatrix2fv':
+                        $elementCountDivisor = 4;
+                        break;
+                    case 'glUniformMatrix3fv':
+                        $elementCountDivisor = 9;
+                        break;
+                    case 'glUniformMatrix4fv':
+                        $elementCountDivisor = 16;
+                        break;
+                    case 'glUniformMatrix2x3fv':
+                    case 'glUniformMatrix3x2fv':
+                        $elementCountDivisor = 6;
+                        break;
+                    case 'glUniformMatrix2x4fv':
+                    case 'glUniformMatrix4x2fv':
+                        $elementCountDivisor = 8;
+                        break;
+                    case 'glUniformMatrix3x4fv':
+                    case 'glUniformMatrix4x3fv':
+                        $elementCountDivisor = 12;
+                        break;
+                }
+
+                if ($this->countArgIndex !== -1) 
+                {
+                    if ($elementCountDivisor > 1) {
+                        // inject the count argument into the call
+                        array_splice($callArgs, $this->countArgIndex, 0, 'cvector_size(tmpvec) / ' . $elementCountDivisor); 
+                        
+                        $sizeValidationCode = 'if (cvector_size(tmpvec) % '.$elementCountDivisor.' != 0) {' . PHP_EOL;
+                        $sizeValidationCode .= '    zend_throw_error(NULL, "Invalid data size for ' . $this->name . ', the number of values must be dividable by '.$elementCountDivisor.'.");' . PHP_EOL;
+                        $sizeValidationCode .= '    return;' . PHP_EOL;
+                        $sizeValidationCode .= '}' . PHP_EOL;
+                    }
+                    else {
+
+                        // inject the count argument into the call
+                        array_splice($callArgs, $this->countArgIndex, 0, 'cvector_size(tmpvec)'); 
+                    }
                 }
 
                 // generate the code to iterate of the hash table
@@ -73,6 +132,8 @@ class GLVectorSetterFunctionAdjustment implements AdjustmentInterface
                 // using a pointer to that vector
                 $phpType = ExtType::getPHPType($this->initalDataArg->argumentType);
                 $funcCall = $this->internalCallFunc . '('. implode(', ', $callArgs) .');';
+ 
+                $tsizeValidationCode = tabulate($sizeValidationCode);
 
                 $b .= <<<EOD
     
@@ -85,6 +146,7 @@ class GLVectorSetterFunctionAdjustment implements AdjustmentInterface
             zend_throw_error(NULL, "All elements of the given array have to be of type: {$phpType}");
         }
     ZEND_HASH_FOREACH_END();
+{$tsizeValidationCode}
     {$funcCall}
     cvector_free(tmpvec);
 
@@ -106,10 +168,22 @@ EOD;
 
                 // also inject the count argument if needed
                 if ($this->countArgIndex !== -1) {
-                    array_splice($callArgs, $this->countArgIndex, 0, 'cvector_size(bufferobj->vec)'); 
+                    if ($elementCountDivisor > 1) {
+                        array_splice($callArgs, $this->countArgIndex, 0, 'cvector_size(bufferobj->vec) / ' . $elementCountDivisor); 
+                    } else {
+                        array_splice($callArgs, $this->countArgIndex, 0, 'cvector_size(bufferobj->vec)'); 
+                    }
                 }
                 
                 $b .= PHP_EOL . $lastArg->getObjectFetchCode($lastArg->getZValName());
+
+                if ($this->countArgIndex !== -1 && $elementCountDivisor > 1) {
+                    $b .= PHP_EOL . 'if (cvector_size(bufferobj->vec) % '.$elementCountDivisor.' != 0) {' . PHP_EOL;
+                    $b .= '    zend_throw_error(NULL, "Invalid data size for ' . $this->name . ', the number of values must be dividable by '.$elementCountDivisor.'.");' . PHP_EOL;
+                    $b .= '    return;' . PHP_EOL;
+                    $b .= '}' . PHP_EOL;
+                }
+
                 $b .= PHP_EOL . $this->internalCallFunc . '('. implode(', ', $callArgs) .');';
 
                 return $b;

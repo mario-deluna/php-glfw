@@ -1922,7 +1922,7 @@ namespace {
     function glUniform4iv(int $location, \GL\Buffer\IntBuffer|array $value) : void {};
     function glUniformMatrix2fv(int $location, bool $transpose, \GL\Buffer\FloatBuffer|array $value) : void {};
     function glUniformMatrix3fv(int $location, bool $transpose, \GL\Buffer\FloatBuffer|array $value) : void {};
-    function glUniformMatrix4fv(int $location, int $count, bool $transpose, \GL\Buffer\BufferInterface $buffer) : void {};
+    function glUniformMatrix4fv(int $location, bool $transpose, \GL\Buffer\FloatBuffer|array $value) : void {};
     function glValidateProgram(int $program) : void {};
     function glVertexAttrib1d(int $index, float $x) : void {};
     function glVertexAttrib1dv(int $index, \GL\Buffer\DoubleBuffer|array $v) : void {};

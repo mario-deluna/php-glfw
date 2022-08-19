@@ -1,5 +1,5 @@
 /* This is a generated file, edit the .stub.php file instead.
- * Stub hash: 443fc164cdda432ac89c03d68e2179226f9bcf17 */
+ * Stub hash: 8ac97a61975344fef426faf7ba1bcbdf1ca0311a */
 
 ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_glCullFace, 0, 1, IS_VOID, 0)
 	ZEND_ARG_TYPE_INFO(0, mode, IS_LONG, 0)
@@ -599,12 +599,7 @@ ZEND_END_ARG_INFO()
 
 #define arginfo_glUniformMatrix3fv arginfo_glUniformMatrix2fv
 
-ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_glUniformMatrix4fv, 0, 4, IS_VOID, 0)
-	ZEND_ARG_TYPE_INFO(0, location, IS_LONG, 0)
-	ZEND_ARG_TYPE_INFO(0, count, IS_LONG, 0)
-	ZEND_ARG_TYPE_INFO(0, transpose, _IS_BOOL, 0)
-	ZEND_ARG_OBJ_INFO(0, buffer, GL\\Buffer\\BufferInterface, 0)
-ZEND_END_ARG_INFO()
+#define arginfo_glUniformMatrix4fv arginfo_glUniformMatrix2fv
 
 #define arginfo_glValidateProgram arginfo_glDeleteProgram
 

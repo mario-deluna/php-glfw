@@ -1,48 +1,248 @@
 <?php 
 namespace GL\Math 
 {
- 
-    class Vec2 {
+     
+    class Vec2 
+    {
+        /**
+         * Virtual property for "x" (0)
+         */
+        public float $x;
+
+        /**
+         * Virtual property for "y" (1)
+         */
+        public float $y;
+
+        /**
+         * Virtual property for "r" (0)
+         */
+        public float $r;
+
+        /**
+         * Virtual property for "g" (1)
+         */
+        public float $g;
+
+        
+        /**
+         * Constructor
+         */
         public function __construct(?float $x = null, ?float $y = null) {}
+
+        /**
+         * Returns the length of the vector
+         */
         public function length() : float {}
+        
+        /**
+         * Returns the dot product of this vector and another
+         */
         public function dot(Vec2 $right) : float {}
+
+        /**
+         * Returns the distance between this vector and another
+         */
         public function distance(Vec2 $right) : float {}
+
+        /**
+         * Returns squared distance between this vector and another
+         */
         public function distance2(Vec2 $right) : float {}
+
+        /**
+         * Returns a normalized version of this vector
+         */
         public function normalize() : Vec2 {}
+
+        /**
+         * Creates a new Vec2 where each component is x if x >= 0; otherwise, -x
+         */
         public function abs() : Vec2 {}
         public function __toString() : string {}
     }
  
-    class Vec3 {
+    class Vec3 
+    {
+        /**
+         * Virtual property for "x" (0)
+         */
+        public float $x;
+
+        /**
+         * Virtual property for "y" (1)
+         */
+        public float $y;
+
+        /**
+         * Virtual property for "z" (2)
+         */
+        public float $z;
+
+        /**
+         * Virtual property for "r" (0)
+         */
+        public float $r;
+
+        /**
+         * Virtual property for "g" (1)
+         */
+        public float $g;
+
+        /**
+         * Virtual property for "b" (2)
+         */
+        public float $b;
+
+        
+        /**
+         * Constructor
+         */
         public function __construct(?float $x = null, ?float $y = null, ?float $z = null) {}
+
+        /**
+         * Returns the length of the vector
+         */
         public function length() : float {}
+        
+        /**
+         * Returns the dot product of this vector and another
+         */
         public function dot(Vec3 $right) : float {}
+
+        /**
+         * Returns the distance between this vector and another
+         */
         public function distance(Vec3 $right) : float {}
+
+        /**
+         * Returns squared distance between this vector and another
+         */
         public function distance2(Vec3 $right) : float {}
+
+        /**
+         * Returns a normalized version of this vector
+         */
         public function normalize() : Vec3 {}
+
+        /**
+         * Creates a new Vec3 where each component is x if x >= 0; otherwise, -x
+         */
         public function abs() : Vec3 {}
         public function __toString() : string {}
     }
  
-    class Vec4 {
+    class Vec4 
+    {
+        /**
+         * Virtual property for "x" (0)
+         */
+        public float $x;
+
+        /**
+         * Virtual property for "y" (1)
+         */
+        public float $y;
+
+        /**
+         * Virtual property for "z" (2)
+         */
+        public float $z;
+
+        /**
+         * Virtual property for "w" (3)
+         */
+        public float $w;
+
+        /**
+         * Virtual property for "r" (0)
+         */
+        public float $r;
+
+        /**
+         * Virtual property for "g" (1)
+         */
+        public float $g;
+
+        /**
+         * Virtual property for "b" (2)
+         */
+        public float $b;
+
+        /**
+         * Virtual property for "a" (3)
+         */
+        public float $a;
+
+        
+        /**
+         * Constructor
+         */
         public function __construct(?float $x = null, ?float $y = null, ?float $z = null, ?float $w = null) {}
+
+        /**
+         * Returns the length of the vector
+         */
         public function length() : float {}
+        
+        /**
+         * Returns the dot product of this vector and another
+         */
         public function dot(Vec4 $right) : float {}
+
+        /**
+         * Returns the distance between this vector and another
+         */
         public function distance(Vec4 $right) : float {}
+
+        /**
+         * Returns squared distance between this vector and another
+         */
         public function distance2(Vec4 $right) : float {}
+
+        /**
+         * Returns a normalized version of this vector
+         */
         public function normalize() : Vec4 {}
+
+        /**
+         * Creates a new Vec4 where each component is x if x >= 0; otherwise, -x
+         */
         public function abs() : Vec4 {}
         public function __toString() : string {}
     }
  
-    class Mat4 {
+    class Mat4 
+    {
+        
+        /**
+         * Constructor
+         */
         public function __construct() {}
-        public function length() : float {}
-        public function dot(Mat4 $right) : float {}
-        public function distance(Mat4 $right) : float {}
-        public function distance2(Mat4 $right) : float {}
-        public function normalize() : Mat4 {}
-        public function abs() : Mat4 {}
+
+
+        /**
+         * Constructs and returns a new matrix based on the given array of values
+         */
+        public static function fromArray(array $values) : Mat4 {}
+
+        /**
+         * Creates and returns a copy of the current matrix
+         */
+        public function copy() : Mat4 {}
+        public function row(int $index) : Vec4 {}
+        public function setRow(int $index, Vec4 $row) : void {}
+        public function col(int $index) : Vec4 {}
+        public function setCol(int $index, Vec4 $col) : void {}
+        public function lookAt(Vec3 $eye, Vec3 $center, Vec3 $up) : void {}
+        public function perspective(float $fov, float $aspect, float $near, float $far) : void {}
+        public function ortho(float $left, float $right, float $bottom, float $top, float $near, float $far) : void {}
+        public function transpose() : void {}
+        public function inverse() : void {}
+        public function scale(Vec3 $scale) : void {}
+        public function translate(Vec3 $scale) : void {}
+        public function rotate(float $angle, Vec3 $axis) : void {}
+        public function determinant() : float {}
         public function __toString() : string {}
     }
 };
@@ -75,6 +275,26 @@ namespace GL\Buffer
          * @return void 
          */
         public function push(float $value) : void {}
+
+        /**
+         * Pushes the values of a Vec2 object into the buffer
+         */
+        public function pushVec2(\GL\Math\Vec2 $vec) : void {}
+
+        /**
+         * Pushes the values of a Vec3 object into the buffer
+         */
+        public function pushVec3(\GL\Math\Vec3 $vec) : void {}
+        
+        /**
+         * Pushes the values of a Vec4 object into the buffer
+         */
+        public function pushVec4(\GL\Math\Vec4 $vec) : void {}
+        
+        /**
+         * Pushes the values of a Mat4 (16) object into the buffer
+         */
+        public function pushMat4(\GL\Math\Mat4 $matrix) : void {}
 
         /**
          * Fills the buffer with $count amount of values. The second argument is the value that is filled in.
@@ -136,6 +356,7 @@ namespace GL\Buffer
          */
         public function push(float $value) : void {}
 
+
         /**
          * Fills the buffer with $count amount of values. The second argument is the value that is filled in.
          *
@@ -195,6 +416,7 @@ namespace GL\Buffer
          * @return void 
          */
         public function push(float $value) : void {}
+
 
         /**
          * Fills the buffer with $count amount of values. The second argument is the value that is filled in.
@@ -256,6 +478,7 @@ namespace GL\Buffer
          */
         public function push(int $value) : void {}
 
+
         /**
          * Fills the buffer with $count amount of values. The second argument is the value that is filled in.
          *
@@ -315,6 +538,7 @@ namespace GL\Buffer
          * @return void 
          */
         public function push(int $value) : void {}
+
 
         /**
          * Fills the buffer with $count amount of values. The second argument is the value that is filled in.
@@ -376,6 +600,7 @@ namespace GL\Buffer
          */
         public function push(int $value) : void {}
 
+
         /**
          * Fills the buffer with $count amount of values. The second argument is the value that is filled in.
          *
@@ -435,6 +660,7 @@ namespace GL\Buffer
          * @return void 
          */
         public function push(int $value) : void {}
+
 
         /**
          * Fills the buffer with $count amount of values. The second argument is the value that is filled in.
@@ -496,6 +722,7 @@ namespace GL\Buffer
          */
         public function push(int $value) : void {}
 
+
         /**
          * Fills the buffer with $count amount of values. The second argument is the value that is filled in.
          *
@@ -555,6 +782,7 @@ namespace GL\Buffer
          * @return void 
          */
         public function push(int $value) : void {}
+
 
         /**
          * Fills the buffer with $count amount of values. The second argument is the value that is filled in.
@@ -2009,11 +2237,10 @@ namespace {
      * glUniformMatrix4fv
      * 
      * @param int $location 
-     * @param int $count 
      * @param bool $transpose 
-     * @param \GL\Buffer\BufferInterface $buffer
+     * @param \GL\Buffer\FloatBuffer|array $value
      */ 
-    function glUniformMatrix4fv(int $location, int $count, bool $transpose, \GL\Buffer\BufferInterface $buffer) : void {};
+    function glUniformMatrix4fv(int $location, bool $transpose, \GL\Buffer\FloatBuffer|array $value) : void {};
  
     /**
      * Validates a program object

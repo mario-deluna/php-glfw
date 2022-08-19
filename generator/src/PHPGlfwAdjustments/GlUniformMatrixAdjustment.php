@@ -58,39 +58,39 @@ EOD;
     {
         $this->createDirectUploadMatrixFunction($gen);
 
-        $func = new class('glUniformMatrix4fv') extends ExtFunction 
-        {   
-            public function getFunctionCallCode() : string
-            {
-                $body = <<<EOD
-if (Z_OBJCE_P(buffer_zval) == phpglfw_get_buffer_glfloat_ce()) {
-    phpglfw_buffer_glfloat_object *obj_ptr = phpglfw_buffer_glfloat_objectptr_from_zobj_p(Z_OBJ_P(buffer_zval));
-    glUniformMatrix4fv(location, count, transpose, obj_ptr->vec);
-} else {
-    zend_throw_error(NULL, "glUniformMatrix4fv: Invalid or unsupported buffer object given.");
-}
-EOD;
-                return $body;
-            }
-        };
+//         $func = new class('glUniformMatrix4fv') extends ExtFunction 
+//         {   
+//             public function getFunctionCallCode() : string
+//             {
+//                 $body = <<<EOD
+// if (Z_OBJCE_P(buffer_zval) == phpglfw_get_buffer_glfloat_ce()) {
+//     phpglfw_buffer_glfloat_object *obj_ptr = phpglfw_buffer_glfloat_objectptr_from_zobj_p(Z_OBJ_P(buffer_zval));
+//     glUniformMatrix4fv(location, count, transpose, obj_ptr->vec);
+// } else {
+//     zend_throw_error(NULL, "glUniformMatrix4fv: Invalid or unsupported buffer object given.");
+// }
+// EOD;
+//                 return $body;
+//             }
+//         };
 
-        // copy base function into our new one and replace it in the extension
-        $baseFunc = $gen->getFunctionByName('glUniformMatrix4fv');
-        $func->copyFrom($baseFunc);
+//         // copy base function into our new one and replace it in the extension
+//         $baseFunc = $gen->getFunctionByName('glUniformMatrix4fv');
+//         $func->copyFrom($baseFunc);
 
-        $func->arguments[3] = new class('buffer', ExtType::T_CE) extends CEObjectArgument {
-            public function getClassEntryPointer() : string {
-                return 'phpglfw_get_buffer_interface_ce()';
-            }
+//         $func->arguments[3] = new class('buffer', ExtType::T_CE) extends CEObjectArgument {
+//             public function getClassEntryPointer() : string {
+//                 return 'phpglfw_get_buffer_interface_ce()';
+//             }
 
-            public function getPHPClassName() : string {
-                return "\\GL\\Buffer\\BufferInterface";
-            }
-        };
+//             public function getPHPClassName() : string {
+//                 return "\\GL\\Buffer\\BufferInterface";
+//             }
+//         };
 
-        // force complete
-        $func->incomplete = false;
+//         // force complete
+//         $func->incomplete = false;
 
-        $gen->replaceFunctionByName($func);
+//         $gen->replaceFunctionByName($func);
     }
 }

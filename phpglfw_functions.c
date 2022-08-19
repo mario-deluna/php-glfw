@@ -2434,12 +2434,20 @@ PHP_FUNCTION(glUniform2fv)
                 zend_throw_error(NULL, "All elements of the given array have to be of type: float");
             }
         ZEND_HASH_FOREACH_END();
-        glUniform2fv(location, cvector_size(tmpvec), tmpvec);
+        if (cvector_size(tmpvec) % 2 != 0) {
+            zend_throw_error(NULL, "Invalid data size for glUniform2fv, the number of values must be dividable by 2.");
+            return;
+        }
+        glUniform2fv(location, cvector_size(tmpvec) / 2, tmpvec);
         cvector_free(tmpvec);
         return;
     }
     phpglfw_buffer_glfloat_object *bufferobj = phpglfw_buffer_glfloat_objectptr_from_zobj_p(Z_OBJ_P(value_zval));
-    glUniform2fv(location, cvector_size(bufferobj->vec), bufferobj->vec);
+    if (cvector_size(bufferobj->vec) % 2 != 0) {
+        zend_throw_error(NULL, "Invalid data size for glUniform2fv, the number of values must be dividable by 2.");
+        return;
+    }
+    glUniform2fv(location, cvector_size(bufferobj->vec) / 2, bufferobj->vec);
 } 
 
 /**
@@ -2464,12 +2472,20 @@ PHP_FUNCTION(glUniform3fv)
                 zend_throw_error(NULL, "All elements of the given array have to be of type: float");
             }
         ZEND_HASH_FOREACH_END();
-        glUniform3fv(location, cvector_size(tmpvec), tmpvec);
+        if (cvector_size(tmpvec) % 3 != 0) {
+            zend_throw_error(NULL, "Invalid data size for glUniform3fv, the number of values must be dividable by 3.");
+            return;
+        }
+        glUniform3fv(location, cvector_size(tmpvec) / 3, tmpvec);
         cvector_free(tmpvec);
         return;
     }
     phpglfw_buffer_glfloat_object *bufferobj = phpglfw_buffer_glfloat_objectptr_from_zobj_p(Z_OBJ_P(value_zval));
-    glUniform3fv(location, cvector_size(bufferobj->vec), bufferobj->vec);
+    if (cvector_size(bufferobj->vec) % 3 != 0) {
+        zend_throw_error(NULL, "Invalid data size for glUniform3fv, the number of values must be dividable by 3.");
+        return;
+    }
+    glUniform3fv(location, cvector_size(bufferobj->vec) / 3, bufferobj->vec);
 } 
 
 /**
@@ -2494,12 +2510,20 @@ PHP_FUNCTION(glUniform4fv)
                 zend_throw_error(NULL, "All elements of the given array have to be of type: float");
             }
         ZEND_HASH_FOREACH_END();
-        glUniform4fv(location, cvector_size(tmpvec), tmpvec);
+        if (cvector_size(tmpvec) % 4 != 0) {
+            zend_throw_error(NULL, "Invalid data size for glUniform4fv, the number of values must be dividable by 4.");
+            return;
+        }
+        glUniform4fv(location, cvector_size(tmpvec) / 4, tmpvec);
         cvector_free(tmpvec);
         return;
     }
     phpglfw_buffer_glfloat_object *bufferobj = phpglfw_buffer_glfloat_objectptr_from_zobj_p(Z_OBJ_P(value_zval));
-    glUniform4fv(location, cvector_size(bufferobj->vec), bufferobj->vec);
+    if (cvector_size(bufferobj->vec) % 4 != 0) {
+        zend_throw_error(NULL, "Invalid data size for glUniform4fv, the number of values must be dividable by 4.");
+        return;
+    }
+    glUniform4fv(location, cvector_size(bufferobj->vec) / 4, bufferobj->vec);
 } 
 
 /**
@@ -2554,12 +2578,20 @@ PHP_FUNCTION(glUniform2iv)
                 zend_throw_error(NULL, "All elements of the given array have to be of type: int");
             }
         ZEND_HASH_FOREACH_END();
-        glUniform2iv(location, cvector_size(tmpvec), tmpvec);
+        if (cvector_size(tmpvec) % 2 != 0) {
+            zend_throw_error(NULL, "Invalid data size for glUniform2iv, the number of values must be dividable by 2.");
+            return;
+        }
+        glUniform2iv(location, cvector_size(tmpvec) / 2, tmpvec);
         cvector_free(tmpvec);
         return;
     }
     phpglfw_buffer_glint_object *bufferobj = phpglfw_buffer_glint_objectptr_from_zobj_p(Z_OBJ_P(value_zval));
-    glUniform2iv(location, cvector_size(bufferobj->vec), bufferobj->vec);
+    if (cvector_size(bufferobj->vec) % 2 != 0) {
+        zend_throw_error(NULL, "Invalid data size for glUniform2iv, the number of values must be dividable by 2.");
+        return;
+    }
+    glUniform2iv(location, cvector_size(bufferobj->vec) / 2, bufferobj->vec);
 } 
 
 /**
@@ -2584,12 +2616,20 @@ PHP_FUNCTION(glUniform3iv)
                 zend_throw_error(NULL, "All elements of the given array have to be of type: int");
             }
         ZEND_HASH_FOREACH_END();
-        glUniform3iv(location, cvector_size(tmpvec), tmpvec);
+        if (cvector_size(tmpvec) % 3 != 0) {
+            zend_throw_error(NULL, "Invalid data size for glUniform3iv, the number of values must be dividable by 3.");
+            return;
+        }
+        glUniform3iv(location, cvector_size(tmpvec) / 3, tmpvec);
         cvector_free(tmpvec);
         return;
     }
     phpglfw_buffer_glint_object *bufferobj = phpglfw_buffer_glint_objectptr_from_zobj_p(Z_OBJ_P(value_zval));
-    glUniform3iv(location, cvector_size(bufferobj->vec), bufferobj->vec);
+    if (cvector_size(bufferobj->vec) % 3 != 0) {
+        zend_throw_error(NULL, "Invalid data size for glUniform3iv, the number of values must be dividable by 3.");
+        return;
+    }
+    glUniform3iv(location, cvector_size(bufferobj->vec) / 3, bufferobj->vec);
 } 
 
 /**
@@ -2614,12 +2654,20 @@ PHP_FUNCTION(glUniform4iv)
                 zend_throw_error(NULL, "All elements of the given array have to be of type: int");
             }
         ZEND_HASH_FOREACH_END();
-        glUniform4iv(location, cvector_size(tmpvec), tmpvec);
+        if (cvector_size(tmpvec) % 4 != 0) {
+            zend_throw_error(NULL, "Invalid data size for glUniform4iv, the number of values must be dividable by 4.");
+            return;
+        }
+        glUniform4iv(location, cvector_size(tmpvec) / 4, tmpvec);
         cvector_free(tmpvec);
         return;
     }
     phpglfw_buffer_glint_object *bufferobj = phpglfw_buffer_glint_objectptr_from_zobj_p(Z_OBJ_P(value_zval));
-    glUniform4iv(location, cvector_size(bufferobj->vec), bufferobj->vec);
+    if (cvector_size(bufferobj->vec) % 4 != 0) {
+        zend_throw_error(NULL, "Invalid data size for glUniform4iv, the number of values must be dividable by 4.");
+        return;
+    }
+    glUniform4iv(location, cvector_size(bufferobj->vec) / 4, bufferobj->vec);
 } 
 
 /**
@@ -2645,12 +2693,20 @@ PHP_FUNCTION(glUniformMatrix2fv)
                 zend_throw_error(NULL, "All elements of the given array have to be of type: float");
             }
         ZEND_HASH_FOREACH_END();
-        glUniformMatrix2fv(location, cvector_size(tmpvec), transpose, tmpvec);
+        if (cvector_size(tmpvec) % 4 != 0) {
+            zend_throw_error(NULL, "Invalid data size for glUniformMatrix2fv, the number of values must be dividable by 4.");
+            return;
+        }
+        glUniformMatrix2fv(location, cvector_size(tmpvec) / 4, transpose, tmpvec);
         cvector_free(tmpvec);
         return;
     }
     phpglfw_buffer_glfloat_object *bufferobj = phpglfw_buffer_glfloat_objectptr_from_zobj_p(Z_OBJ_P(value_zval));
-    glUniformMatrix2fv(location, cvector_size(bufferobj->vec), transpose, bufferobj->vec);
+    if (cvector_size(bufferobj->vec) % 4 != 0) {
+        zend_throw_error(NULL, "Invalid data size for glUniformMatrix2fv, the number of values must be dividable by 4.");
+        return;
+    }
+    glUniformMatrix2fv(location, cvector_size(bufferobj->vec) / 4, transpose, bufferobj->vec);
 } 
 
 /**
@@ -2676,12 +2732,20 @@ PHP_FUNCTION(glUniformMatrix3fv)
                 zend_throw_error(NULL, "All elements of the given array have to be of type: float");
             }
         ZEND_HASH_FOREACH_END();
-        glUniformMatrix3fv(location, cvector_size(tmpvec), transpose, tmpvec);
+        if (cvector_size(tmpvec) % 9 != 0) {
+            zend_throw_error(NULL, "Invalid data size for glUniformMatrix3fv, the number of values must be dividable by 9.");
+            return;
+        }
+        glUniformMatrix3fv(location, cvector_size(tmpvec) / 9, transpose, tmpvec);
         cvector_free(tmpvec);
         return;
     }
     phpglfw_buffer_glfloat_object *bufferobj = phpglfw_buffer_glfloat_objectptr_from_zobj_p(Z_OBJ_P(value_zval));
-    glUniformMatrix3fv(location, cvector_size(bufferobj->vec), transpose, bufferobj->vec);
+    if (cvector_size(bufferobj->vec) % 9 != 0) {
+        zend_throw_error(NULL, "Invalid data size for glUniformMatrix3fv, the number of values must be dividable by 9.");
+        return;
+    }
+    glUniformMatrix3fv(location, cvector_size(bufferobj->vec) / 9, transpose, bufferobj->vec);
 } 
 
 /**
@@ -2690,18 +2754,38 @@ PHP_FUNCTION(glUniformMatrix3fv)
 PHP_FUNCTION(glUniformMatrix4fv)
 {
     zend_long location;
-    zend_long count;
     bool transpose;
-    zval *buffer_zval;
-    if (zend_parse_parameters(ZEND_NUM_ARGS() , "llbO", &location, &count, &transpose, &buffer_zval, phpglfw_get_buffer_interface_ce()) == FAILURE) {
+    zval *value_zval;
+    HashTable *value_ht = NULL;
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "lbO", &location, &transpose, &value_zval, phpglfw_get_buffer_glfloat_ce()) == FAILURE) {
+        if (zend_parse_parameters(ZEND_NUM_ARGS() , "lbh", &location, &transpose, &value_ht) == FAILURE) {
+            return;
+        }
+        
+        zval *data;
+        cvector_vector_type(GLfloat) tmpvec = NULL;
+        ZEND_HASH_FOREACH_VAL(value_ht, data)
+            if (Z_TYPE_P(data) == IS_DOUBLE) {
+                cvector_push_back(tmpvec, Z_DVAL_P(data));
+            } else {
+                zend_throw_error(NULL, "All elements of the given array have to be of type: float");
+            }
+        ZEND_HASH_FOREACH_END();
+        if (cvector_size(tmpvec) % 16 != 0) {
+            zend_throw_error(NULL, "Invalid data size for glUniformMatrix4fv, the number of values must be dividable by 16.");
+            return;
+        }
+        glUniformMatrix4fv(location, cvector_size(tmpvec) / 16, transpose, tmpvec);
+        cvector_free(tmpvec);
         return;
     }
-    if (Z_OBJCE_P(buffer_zval) == phpglfw_get_buffer_glfloat_ce()) {
-        phpglfw_buffer_glfloat_object *obj_ptr = phpglfw_buffer_glfloat_objectptr_from_zobj_p(Z_OBJ_P(buffer_zval));
-        glUniformMatrix4fv(location, count, transpose, obj_ptr->vec);
-    } else {
-        zend_throw_error(NULL, "glUniformMatrix4fv: Invalid or unsupported buffer object given.");
-    };
+    phpglfw_buffer_glfloat_object *bufferobj = phpglfw_buffer_glfloat_objectptr_from_zobj_p(Z_OBJ_P(value_zval));
+    if (cvector_size(bufferobj->vec) % 16 != 0) {
+        zend_throw_error(NULL, "Invalid data size for glUniformMatrix4fv, the number of values must be dividable by 16.");
+        return;
+    }
+
+    glUniformMatrix4fv(location, cvector_size(bufferobj->vec) / 16, transpose, bufferobj->vec);
 } 
 
 /**
@@ -3636,12 +3720,20 @@ PHP_FUNCTION(glUniformMatrix2x3fv)
                 zend_throw_error(NULL, "All elements of the given array have to be of type: float");
             }
         ZEND_HASH_FOREACH_END();
-        glUniformMatrix2x3fv(location, cvector_size(tmpvec), transpose, tmpvec);
+        if (cvector_size(tmpvec) % 6 != 0) {
+            zend_throw_error(NULL, "Invalid data size for glUniformMatrix2x3fv, the number of values must be dividable by 6.");
+            return;
+        }
+        glUniformMatrix2x3fv(location, cvector_size(tmpvec) / 6, transpose, tmpvec);
         cvector_free(tmpvec);
         return;
     }
     phpglfw_buffer_glfloat_object *bufferobj = phpglfw_buffer_glfloat_objectptr_from_zobj_p(Z_OBJ_P(value_zval));
-    glUniformMatrix2x3fv(location, cvector_size(bufferobj->vec), transpose, bufferobj->vec);
+    if (cvector_size(bufferobj->vec) % 6 != 0) {
+        zend_throw_error(NULL, "Invalid data size for glUniformMatrix2x3fv, the number of values must be dividable by 6.");
+        return;
+    }
+    glUniformMatrix2x3fv(location, cvector_size(bufferobj->vec) / 6, transpose, bufferobj->vec);
 } 
 
 /**
@@ -3667,12 +3759,20 @@ PHP_FUNCTION(glUniformMatrix3x2fv)
                 zend_throw_error(NULL, "All elements of the given array have to be of type: float");
             }
         ZEND_HASH_FOREACH_END();
-        glUniformMatrix3x2fv(location, cvector_size(tmpvec), transpose, tmpvec);
+        if (cvector_size(tmpvec) % 6 != 0) {
+            zend_throw_error(NULL, "Invalid data size for glUniformMatrix3x2fv, the number of values must be dividable by 6.");
+            return;
+        }
+        glUniformMatrix3x2fv(location, cvector_size(tmpvec) / 6, transpose, tmpvec);
         cvector_free(tmpvec);
         return;
     }
     phpglfw_buffer_glfloat_object *bufferobj = phpglfw_buffer_glfloat_objectptr_from_zobj_p(Z_OBJ_P(value_zval));
-    glUniformMatrix3x2fv(location, cvector_size(bufferobj->vec), transpose, bufferobj->vec);
+    if (cvector_size(bufferobj->vec) % 6 != 0) {
+        zend_throw_error(NULL, "Invalid data size for glUniformMatrix3x2fv, the number of values must be dividable by 6.");
+        return;
+    }
+    glUniformMatrix3x2fv(location, cvector_size(bufferobj->vec) / 6, transpose, bufferobj->vec);
 } 
 
 /**
@@ -3698,12 +3798,20 @@ PHP_FUNCTION(glUniformMatrix2x4fv)
                 zend_throw_error(NULL, "All elements of the given array have to be of type: float");
             }
         ZEND_HASH_FOREACH_END();
-        glUniformMatrix2x4fv(location, cvector_size(tmpvec), transpose, tmpvec);
+        if (cvector_size(tmpvec) % 8 != 0) {
+            zend_throw_error(NULL, "Invalid data size for glUniformMatrix2x4fv, the number of values must be dividable by 8.");
+            return;
+        }
+        glUniformMatrix2x4fv(location, cvector_size(tmpvec) / 8, transpose, tmpvec);
         cvector_free(tmpvec);
         return;
     }
     phpglfw_buffer_glfloat_object *bufferobj = phpglfw_buffer_glfloat_objectptr_from_zobj_p(Z_OBJ_P(value_zval));
-    glUniformMatrix2x4fv(location, cvector_size(bufferobj->vec), transpose, bufferobj->vec);
+    if (cvector_size(bufferobj->vec) % 8 != 0) {
+        zend_throw_error(NULL, "Invalid data size for glUniformMatrix2x4fv, the number of values must be dividable by 8.");
+        return;
+    }
+    glUniformMatrix2x4fv(location, cvector_size(bufferobj->vec) / 8, transpose, bufferobj->vec);
 } 
 
 /**
@@ -3729,12 +3837,20 @@ PHP_FUNCTION(glUniformMatrix4x2fv)
                 zend_throw_error(NULL, "All elements of the given array have to be of type: float");
             }
         ZEND_HASH_FOREACH_END();
-        glUniformMatrix4x2fv(location, cvector_size(tmpvec), transpose, tmpvec);
+        if (cvector_size(tmpvec) % 8 != 0) {
+            zend_throw_error(NULL, "Invalid data size for glUniformMatrix4x2fv, the number of values must be dividable by 8.");
+            return;
+        }
+        glUniformMatrix4x2fv(location, cvector_size(tmpvec) / 8, transpose, tmpvec);
         cvector_free(tmpvec);
         return;
     }
     phpglfw_buffer_glfloat_object *bufferobj = phpglfw_buffer_glfloat_objectptr_from_zobj_p(Z_OBJ_P(value_zval));
-    glUniformMatrix4x2fv(location, cvector_size(bufferobj->vec), transpose, bufferobj->vec);
+    if (cvector_size(bufferobj->vec) % 8 != 0) {
+        zend_throw_error(NULL, "Invalid data size for glUniformMatrix4x2fv, the number of values must be dividable by 8.");
+        return;
+    }
+    glUniformMatrix4x2fv(location, cvector_size(bufferobj->vec) / 8, transpose, bufferobj->vec);
 } 
 
 /**
@@ -3760,12 +3876,20 @@ PHP_FUNCTION(glUniformMatrix3x4fv)
                 zend_throw_error(NULL, "All elements of the given array have to be of type: float");
             }
         ZEND_HASH_FOREACH_END();
-        glUniformMatrix3x4fv(location, cvector_size(tmpvec), transpose, tmpvec);
+        if (cvector_size(tmpvec) % 12 != 0) {
+            zend_throw_error(NULL, "Invalid data size for glUniformMatrix3x4fv, the number of values must be dividable by 12.");
+            return;
+        }
+        glUniformMatrix3x4fv(location, cvector_size(tmpvec) / 12, transpose, tmpvec);
         cvector_free(tmpvec);
         return;
     }
     phpglfw_buffer_glfloat_object *bufferobj = phpglfw_buffer_glfloat_objectptr_from_zobj_p(Z_OBJ_P(value_zval));
-    glUniformMatrix3x4fv(location, cvector_size(bufferobj->vec), transpose, bufferobj->vec);
+    if (cvector_size(bufferobj->vec) % 12 != 0) {
+        zend_throw_error(NULL, "Invalid data size for glUniformMatrix3x4fv, the number of values must be dividable by 12.");
+        return;
+    }
+    glUniformMatrix3x4fv(location, cvector_size(bufferobj->vec) / 12, transpose, bufferobj->vec);
 } 
 
 /**
@@ -3791,12 +3915,20 @@ PHP_FUNCTION(glUniformMatrix4x3fv)
                 zend_throw_error(NULL, "All elements of the given array have to be of type: float");
             }
         ZEND_HASH_FOREACH_END();
-        glUniformMatrix4x3fv(location, cvector_size(tmpvec), transpose, tmpvec);
+        if (cvector_size(tmpvec) % 12 != 0) {
+            zend_throw_error(NULL, "Invalid data size for glUniformMatrix4x3fv, the number of values must be dividable by 12.");
+            return;
+        }
+        glUniformMatrix4x3fv(location, cvector_size(tmpvec) / 12, transpose, tmpvec);
         cvector_free(tmpvec);
         return;
     }
     phpglfw_buffer_glfloat_object *bufferobj = phpglfw_buffer_glfloat_objectptr_from_zobj_p(Z_OBJ_P(value_zval));
-    glUniformMatrix4x3fv(location, cvector_size(bufferobj->vec), transpose, bufferobj->vec);
+    if (cvector_size(bufferobj->vec) % 12 != 0) {
+        zend_throw_error(NULL, "Invalid data size for glUniformMatrix4x3fv, the number of values must be dividable by 12.");
+        return;
+    }
+    glUniformMatrix4x3fv(location, cvector_size(bufferobj->vec) / 12, transpose, bufferobj->vec);
 } 
 
 /**
@@ -4663,12 +4795,20 @@ PHP_FUNCTION(glUniform2uiv)
                 zend_throw_error(NULL, "All elements of the given array have to be of type: int");
             }
         ZEND_HASH_FOREACH_END();
-        glUniform2uiv(location, cvector_size(tmpvec), tmpvec);
+        if (cvector_size(tmpvec) % 2 != 0) {
+            zend_throw_error(NULL, "Invalid data size for glUniform2uiv, the number of values must be dividable by 2.");
+            return;
+        }
+        glUniform2uiv(location, cvector_size(tmpvec) / 2, tmpvec);
         cvector_free(tmpvec);
         return;
     }
     phpglfw_buffer_gluint_object *bufferobj = phpglfw_buffer_gluint_objectptr_from_zobj_p(Z_OBJ_P(value_zval));
-    glUniform2uiv(location, cvector_size(bufferobj->vec), bufferobj->vec);
+    if (cvector_size(bufferobj->vec) % 2 != 0) {
+        zend_throw_error(NULL, "Invalid data size for glUniform2uiv, the number of values must be dividable by 2.");
+        return;
+    }
+    glUniform2uiv(location, cvector_size(bufferobj->vec) / 2, bufferobj->vec);
 } 
 
 /**
@@ -4693,12 +4833,20 @@ PHP_FUNCTION(glUniform3uiv)
                 zend_throw_error(NULL, "All elements of the given array have to be of type: int");
             }
         ZEND_HASH_FOREACH_END();
-        glUniform3uiv(location, cvector_size(tmpvec), tmpvec);
+        if (cvector_size(tmpvec) % 3 != 0) {
+            zend_throw_error(NULL, "Invalid data size for glUniform3uiv, the number of values must be dividable by 3.");
+            return;
+        }
+        glUniform3uiv(location, cvector_size(tmpvec) / 3, tmpvec);
         cvector_free(tmpvec);
         return;
     }
     phpglfw_buffer_gluint_object *bufferobj = phpglfw_buffer_gluint_objectptr_from_zobj_p(Z_OBJ_P(value_zval));
-    glUniform3uiv(location, cvector_size(bufferobj->vec), bufferobj->vec);
+    if (cvector_size(bufferobj->vec) % 3 != 0) {
+        zend_throw_error(NULL, "Invalid data size for glUniform3uiv, the number of values must be dividable by 3.");
+        return;
+    }
+    glUniform3uiv(location, cvector_size(bufferobj->vec) / 3, bufferobj->vec);
 } 
 
 /**
@@ -4723,12 +4871,20 @@ PHP_FUNCTION(glUniform4uiv)
                 zend_throw_error(NULL, "All elements of the given array have to be of type: int");
             }
         ZEND_HASH_FOREACH_END();
-        glUniform4uiv(location, cvector_size(tmpvec), tmpvec);
+        if (cvector_size(tmpvec) % 4 != 0) {
+            zend_throw_error(NULL, "Invalid data size for glUniform4uiv, the number of values must be dividable by 4.");
+            return;
+        }
+        glUniform4uiv(location, cvector_size(tmpvec) / 4, tmpvec);
         cvector_free(tmpvec);
         return;
     }
     phpglfw_buffer_gluint_object *bufferobj = phpglfw_buffer_gluint_objectptr_from_zobj_p(Z_OBJ_P(value_zval));
-    glUniform4uiv(location, cvector_size(bufferobj->vec), bufferobj->vec);
+    if (cvector_size(bufferobj->vec) % 4 != 0) {
+        zend_throw_error(NULL, "Invalid data size for glUniform4uiv, the number of values must be dividable by 4.");
+        return;
+    }
+    glUniform4uiv(location, cvector_size(bufferobj->vec) / 4, bufferobj->vec);
 } 
 
 /**
