@@ -5,8 +5,6 @@ query the properties of a sync object
 function glGetSynciv(int $sync, int $pname, int $count, int &$length, int &$values) : void
 ```
 
-
-
 arguments
 
 :    1. `int` `$sync` Specifies the sync object whose properties to query.
@@ -17,8 +15,6 @@ arguments
     number of integers placed in values.
     5. `int` `$values` Specifies the address of an array to receive the values
     of the queried parameter.
-
-
 
 ---
      

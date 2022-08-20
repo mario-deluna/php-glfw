@@ -5,14 +5,10 @@ glColorP4uiv
 function glColorP4uiv(int $type, \GL\Buffer\UIntBuffer|array $color) : void
 ```
 
-
-
 arguments
 
 :    1. `int` `$type` 
     2. `\GL\Buffer\UIntBuffer|array` `$color` 
-
-
 
 ---
      

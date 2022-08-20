@@ -5,14 +5,10 @@ glBlendEquationi
 function glBlendEquationi(int $buf, int $mode) : void
 ```
 
-
-
 arguments
 
 :    1. `int` `$buf` 
     2. `int` `$mode` 
-
-
 
 ---
      

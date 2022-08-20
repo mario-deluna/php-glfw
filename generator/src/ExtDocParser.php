@@ -154,6 +154,25 @@ class ExtDocParser
         return $docblock->getDescription();
     }
 
+    public function getExtensionNote(string $symbol) : ?string
+    {
+        $docblock = $this->getSymbolDocBlock($symbol);   
+
+        $glfwTags = $docblock->getTagsByName('PHP-GLFW:');
+        $glfwTags = array_merge($glfwTags, $docblock->getTagsByName('PHP-GLFW'));
+
+        if ($glfwTags) {
+            $buffer = "";
+            foreach($glfwTags as $tag) {
+                $buffer .= $tag->getDescription() . "\n\n";
+            }
+
+            return trim($buffer);;
+        }
+
+        return null;
+    }
+
     public function getAPIArgsMarkdown(string $symbol) : string
     {
         $docblock = $this->getSymbolDocBlock($symbol);   
@@ -177,7 +196,6 @@ class ExtDocParser
         $docblock = $this->getSymbolDocBlock($symbol);   
         $returnTags = $docblock->getTagsByName('return');
 
-        // no params nothing todo..
         if (count($returnTags) === 0) return '';
 
         $b = "returns\n\n:";
@@ -199,18 +217,30 @@ class ExtDocParser
 
         $argsMd = $this->getAPIArgsMarkdown($symbol);
         $returnMd = $this->getAPIReturnMarkdown($symbol);
+        $extNote = $this->getExtensionNote($symbol);
+
+        if ($extNote) {
+            $extNote = tabulate($extNote);
+            $extNote = <<<MARKDOWN
+!!! hint "PHP-GLFW Note"
+
+{$extNote}
+MARKDOWN;
+        }
 
         $b = '';
         if (($options['no-title'] ?? false) !== true) {
             $b .= "### `{$data['function']}`\n\n";
         }
-
+        
         $b .= <<<MARKDOWN
 {$summary}
 
 ```php
 {$sig}
 ```
+
+{$extNote}
 
 {$desc}
 
@@ -220,6 +250,8 @@ class ExtDocParser
 ---
     
 MARKDOWN;
+
+        $b = preg_replace("/\n\n+/", "\n\n", $b);
 
         return $b;
     }

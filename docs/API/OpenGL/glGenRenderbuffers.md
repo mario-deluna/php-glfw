@@ -5,14 +5,10 @@ generate renderbuffer object names
 function glGenRenderbuffers(int $n, ?int &...$renderbuffers) : void
 ```
 
-
-
 arguments
 
 :    1. `int` `$n` Specifies the number of renderbuffer object names to generate.
     2. `?int` `$renderbuffers` 
-
-
 
 ---
      

@@ -5,13 +5,9 @@ glDisableVertexAttribArray
 function glDisableVertexAttribArray(int $index) : void
 ```
 
-
-
 arguments
 
 :    1. `int` `$index` 
-
-
 
 ---
      

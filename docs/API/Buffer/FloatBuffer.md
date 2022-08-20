@@ -74,8 +74,6 @@ pushes a value into the buffer, this is exactly the same as when you would write
 function push(float $value) : void
 ```
 
-
-
 arguments
 
 :    1. `float` `$value` The value to be pushed into the buffer.
@@ -128,8 +126,6 @@ Reserves the $size amount of space. Values are still undefined.
 function reserve(int $size) : void
 ```
 
-
-
 arguments
 
 :    1. `int` `$size` The number of elements to reserve space for.
@@ -148,9 +144,6 @@ Will clear the Buffer, internally this will release all allocated data. Meaning 
 function clear() : void
 ```
 
-
-
-
 returns
 
 :    `void` 
@@ -165,9 +158,6 @@ Returns the actual size / number of elements of the buffer.
 function size() : int
 ```
 
-
-
-
 returns
 
 :    `int` buffer size in element count (not bytes)
@@ -181,9 +171,6 @@ Returns the current reserved space of the buffer.
 ```php
 function capacity() : int
 ```
-
-
-
 
 returns
 

@@ -5,14 +5,10 @@ glVertexAttrib4iv
 function glVertexAttrib4iv(int $index, \GL\Buffer\IntBuffer|array $v) : void
 ```
 
-
-
 arguments
 
 :    1. `int` `$index` 
     2. `\GL\Buffer\IntBuffer|array` `$v` 
-
-
 
 ---
      

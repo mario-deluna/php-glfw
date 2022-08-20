@@ -5,15 +5,11 @@ bind a named buffer object
 function glBindBuffer(int $target, int $buffer) : void
 ```
 
-
-
 arguments
 
 :    1. `int` `$target` Specifies the target to which the buffer object is bound,
     which must be one of the buffer binding targets in the following table:
     2. `int` `$buffer` Specifies the name of a buffer object.
-
-
 
 ---
      

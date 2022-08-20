@@ -5,14 +5,10 @@ glUniform2dv
 function glUniform2dv(int $location, \GL\Buffer\DoubleBuffer|array $value) : void
 ```
 
-
-
 arguments
 
 :    1. `int` `$location` 
     2. `\GL\Buffer\DoubleBuffer|array` `$value` 
-
-
 
 ---
      

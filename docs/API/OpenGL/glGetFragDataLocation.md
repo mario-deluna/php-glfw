@@ -5,16 +5,12 @@ query the bindings of color numbers to user-defined varying out variables
 function glGetFragDataLocation(int $program, string $name) : int
 ```
 
-
-
 arguments
 
 :    1. `int` `$program` The name of the program containing varying out variable
     whose binding to query
     2. `string` `$name` The name of the user-defined varying out variable whose
     binding to query
-
-
 
 ---
      

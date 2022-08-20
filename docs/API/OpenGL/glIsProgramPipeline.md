@@ -5,14 +5,10 @@ determine if a name corresponds to a program pipeline object
 function glIsProgramPipeline(int $pipeline) : bool
 ```
 
-
-
 arguments
 
 :    1. `int` `$pipeline` Specifies a value that may be the name of a program
     pipeline object.
-
-
 
 ---
      

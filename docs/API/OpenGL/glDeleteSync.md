@@ -5,13 +5,9 @@ delete a sync object
 function glDeleteSync(int $sync) : void
 ```
 
-
-
 arguments
 
 :    1. `int` `$sync` The sync object to be deleted.
-
-
 
 ---
      

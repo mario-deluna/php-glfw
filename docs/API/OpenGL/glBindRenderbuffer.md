@@ -5,16 +5,12 @@ bind a renderbuffer to a renderbuffer target
 function glBindRenderbuffer(int $target, int $renderbuffer) : void
 ```
 
-
-
 arguments
 
 :    1. `int` `$target` Specifies the renderbuffer target of the binding
     operation. target must be <constant>GL_RENDERBUFFER</constant>.
     2. `int` `$renderbuffer` Specifies the name of the renderbuffer object to
     bind.
-
-
 
 ---
      

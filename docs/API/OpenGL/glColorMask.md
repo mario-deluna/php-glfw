@@ -5,8 +5,6 @@ enable and disable writing of frame buffer color components
 function glColorMask(bool $red, bool $green, bool $blue, bool $alpha) : void
 ```
 
-
-
 arguments
 
 :    1. `bool` `$red` Specify whether red, green, blue, and alpha are to be
@@ -16,8 +14,6 @@ arguments
     2. `bool` `$green` 
     3. `bool` `$blue` 
     4. `bool` `$alpha` 
-
-
 
 ---
      

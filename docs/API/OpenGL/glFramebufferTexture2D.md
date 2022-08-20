@@ -5,8 +5,6 @@ glFramebufferTexture2D
 function glFramebufferTexture2D(int $target, int $attachment, int $textarget, int $texture, int $level) : void
 ```
 
-
-
 arguments
 
 :    1. `int` `$target` 
@@ -14,8 +12,6 @@ arguments
     3. `int` `$textarget` 
     4. `int` `$texture` 
     5. `int` `$level` 
-
-
 
 ---
      

@@ -5,8 +5,6 @@ glUniform4i
 function glUniform4i(int $location, int $v0, int $v1, int $v2, int $v3) : void
 ```
 
-
-
 arguments
 
 :    1. `int` `$location` 
@@ -14,8 +12,6 @@ arguments
     3. `int` `$v1` 
     4. `int` `$v2` 
     5. `int` `$v3` 
-
-
 
 ---
      

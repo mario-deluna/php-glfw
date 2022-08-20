@@ -5,13 +5,9 @@ glfwExtensionSupported
 function glfwExtensionSupported(string $extension) : int
 ```
 
-
-
 arguments
 
 :    1. `string` `$extension` 
-
-
 
 ---
      

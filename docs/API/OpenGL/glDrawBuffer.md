@@ -5,8 +5,6 @@ specify which color buffers are to be drawn into
 function glDrawBuffer(int $buf) : void
 ```
 
-
-
 arguments
 
 :    1. `int` `$buf` For default framebuffer, the argument specifies up to four
@@ -22,8 +20,6 @@ arguments
     <constant>GL_COLOR_ATTACHMENT$m$</constant> and <constant>GL_NONE</constant>
     enums are accepted, where <constant>$m$</constant> is a value between 0 and
     <constant>GL_MAX_COLOR_ATTACHMENTS</constant>.
-
-
 
 ---
      

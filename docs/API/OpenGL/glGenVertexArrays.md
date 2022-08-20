@@ -5,14 +5,10 @@ generate vertex array object names
 function glGenVertexArrays(int $n, ?int &...$arrays) : void
 ```
 
-
-
 arguments
 
 :    1. `int` `$n` Specifies the number of vertex array object names to generate.
     2. `?int` `$arrays` 
-
-
 
 ---
      

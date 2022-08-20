@@ -5,8 +5,6 @@ glfwGetWindowFrameSize
 function glfwGetWindowFrameSize(\GLFWwindow $window, int &$left, int &$top, int &$right, int &$bottom) : void
 ```
 
-
-
 arguments
 
 :    1. `\GLFWwindow` `$window` 
@@ -14,8 +12,6 @@ arguments
     3. `int` `$top` 
     4. `int` `$right` 
     5. `int` `$bottom` 
-
-
 
 ---
      

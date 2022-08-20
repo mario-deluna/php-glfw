@@ -5,8 +5,6 @@ indicate modifications to a range of a mapped buffer
 function glFlushMappedBufferRange(int $target, int $offset, int $length) : void
 ```
 
-
-
 arguments
 
 :    1. `int` `$target` Specifies the target to which the buffer object is bound
@@ -16,8 +14,6 @@ arguments
     machine units.
     3. `int` `$length` Specifies the length of the buffer subrange, in basic
     machine units.
-
-
 
 ---
      

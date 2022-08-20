@@ -5,8 +5,6 @@ bind stages of a program object to a program pipeline
 function glUseProgramStages(int $pipeline, int $stages, int $program) : void
 ```
 
-
-
 arguments
 
 :    1. `int` `$pipeline` Specifies the program pipeline object to which to bind
@@ -15,8 +13,6 @@ arguments
     pipeline object.
     3. `int` `$program` Specifies the program object containing the shader
     executables to use in pipeline.
-
-
 
 ---
      

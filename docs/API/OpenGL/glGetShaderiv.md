@@ -5,15 +5,11 @@ glGetShaderiv
 function glGetShaderiv(int $shader, int $pname, int &$params) : void
 ```
 
-
-
 arguments
 
 :    1. `int` `$shader` 
     2. `int` `$pname` 
     3. `int` `$params` 
-
-
 
 ---
      

@@ -5,16 +5,12 @@ glUniform3f
 function glUniform3f(int $location, float $v0, float $v1, float $v2) : void
 ```
 
-
-
 arguments
 
 :    1. `int` `$location` 
     2. `float` `$v0` 
     3. `float` `$v1` 
     4. `float` `$v2` 
-
-
 
 ---
      

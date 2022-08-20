@@ -5,13 +5,9 @@ glfwUpdateGamepadMappings
 function glfwUpdateGamepadMappings(string $string) : int
 ```
 
-
-
 arguments
 
 :    1. `string` `$string` 
-
-
 
 ---
      

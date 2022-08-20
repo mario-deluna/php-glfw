@@ -5,14 +5,10 @@ generate framebuffer object names
 function glGenFramebuffers(int $n, ?int &...$framebuffers) : void
 ```
 
-
-
 arguments
 
 :    1. `int` `$n` Specifies the number of framebuffer object names to generate.
     2. `?int` `$framebuffers` 
-
-
 
 ---
      

@@ -5,8 +5,6 @@ glVertexAttribI4ui
 function glVertexAttribI4ui(int $index, int $x, int $y, int $z, int $w) : void
 ```
 
-
-
 arguments
 
 :    1. `int` `$index` 
@@ -14,8 +12,6 @@ arguments
     3. `int` `$y` 
     4. `int` `$z` 
     5. `int` `$w` 
-
-
 
 ---
      

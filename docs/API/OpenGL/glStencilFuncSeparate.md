@@ -5,8 +5,6 @@ set front and/or back function and reference value for stencil testing
 function glStencilFuncSeparate(int $face, int $func, int $ref, int $mask) : void
 ```
 
-
-
 arguments
 
 :    1. `int` `$face` Specifies whether front and/or back stencil state is
@@ -24,8 +22,6 @@ arguments
     4. `int` `$mask` Specifies a mask that is ANDed with both the reference value
     and the stored stencil value when the test is done. The initial value is all
     1's.
-
-
 
 ---
      

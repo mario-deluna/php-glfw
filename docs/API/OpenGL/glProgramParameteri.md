@@ -5,15 +5,11 @@ glProgramParameteri
 function glProgramParameteri(int $program, int $pname, int $value) : void
 ```
 
-
-
 arguments
 
 :    1. `int` `$program` 
     2. `int` `$pname` 
     3. `int` `$value` 
-
-
 
 ---
      

@@ -5,6 +5,13 @@ creates and initializes a buffer object's data store
 function glBufferData(int $target, \GL\Buffer\BufferInterface $buffer, int $usage) : void
 ```
 
+!!! hint "PHP-GLFW Note"
+
+    In the PHP extension this method has different signiture compared
+    to the original.
+    Instead of passing byte size and a pointer to the function, in PHP you pass a
+    `GL\Buffer\BufferInterface` instance.
+
 Example:
 ```php
 $buffer = new GL\Buffer\FloatBuffer([
@@ -31,8 +38,6 @@ arguments
     symbolic constant must be GL_STREAM_DRAW, GL_STREAM_READ, GL_STREAM_COPY,
     GL_STATIC_DRAW, GL_STATIC_READ, GL_STATIC_COPY, GL_DYNAMIC_DRAW,
     GL_DYNAMIC_READ, or GL_DYNAMIC_COPY.
-
-
 
 ---
      

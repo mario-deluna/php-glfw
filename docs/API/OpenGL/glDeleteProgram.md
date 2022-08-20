@@ -5,13 +5,9 @@ Deletes a program object
 function glDeleteProgram(int $program) : void
 ```
 
-
-
 arguments
 
 :    1. `int` `$program` Specifies the program object to be deleted.
-
-
 
 ---
      

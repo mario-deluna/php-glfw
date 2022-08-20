@@ -5,14 +5,10 @@ glDepthRangeArrayv
 function glDepthRangeArrayv(int $first, \GL\Buffer\DoubleBuffer|array $v) : void
 ```
 
-
-
 arguments
 
 :    1. `int` `$first` 
     2. `\GL\Buffer\DoubleBuffer|array` `$v` 
-
-
 
 ---
      

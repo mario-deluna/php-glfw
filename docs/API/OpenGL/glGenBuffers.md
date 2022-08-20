@@ -5,14 +5,10 @@ generate buffer object names
 function glGenBuffers(int $n, ?int &...$buffers) : void
 ```
 
-
-
 arguments
 
 :    1. `int` `$n` Specifies the number of buffer object names to be generated.
     2. `?int` `$buffers` 
-
-
 
 ---
      

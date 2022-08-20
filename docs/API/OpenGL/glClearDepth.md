@@ -5,14 +5,10 @@ specify the clear value for the depth buffer
 function glClearDepth(float $depth) : void
 ```
 
-
-
 arguments
 
 :    1. `float` `$depth` Specifies the depth value used when the depth buffer is
     cleared. The initial value is 1.
-
-
 
 ---
      

@@ -5,15 +5,11 @@ glGetUniformuiv
 function glGetUniformuiv(int $program, int $location, int &$params) : void
 ```
 
-
-
 arguments
 
 :    1. `int` `$program` 
     2. `int` `$location` 
     3. `int` `$params` 
-
-
 
 ---
      

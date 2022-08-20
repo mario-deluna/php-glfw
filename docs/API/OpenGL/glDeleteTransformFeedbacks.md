@@ -5,14 +5,10 @@ delete transform feedback objects
 function glDeleteTransformFeedbacks(int $n, ?int ...$ids) : void
 ```
 
-
-
 arguments
 
 :    1. `int` `$n` Specifies the number of transform feedback objects to delete.
     2. `?int` `$ids` 
-
-
 
 ---
      

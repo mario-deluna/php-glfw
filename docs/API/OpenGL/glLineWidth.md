@@ -5,14 +5,10 @@ specify the width of rasterized lines
 function glLineWidth(float $width) : void
 ```
 
-
-
 arguments
 
 :    1. `float` `$width` Specifies the width of rasterized lines. The initial
     value is 1.
-
-
 
 ---
      

@@ -5,8 +5,6 @@ specify the value used for depth buffer comparisons
 function glDepthFunc(int $func) : void
 ```
 
-
-
 arguments
 
 :    1. `int` `$func` Specifies the depth comparison function. Symbolic constants
@@ -15,8 +13,6 @@ arguments
     <constant>GL_GREATER</constant>, <constant>GL_NOTEQUAL</constant>,
     <constant>GL_GEQUAL</constant>, and <constant>GL_ALWAYS</constant> are
     accepted. The initial value is <constant>GL_LESS</constant>.
-
-
 
 ---
      

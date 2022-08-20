@@ -5,8 +5,6 @@ bind a named texture to a texturing target
 function glBindTexture(int $target, int $texture) : void
 ```
 
-
-
 arguments
 
 :    1. `int` `$target` Specifies the target to which the texture is bound. Must
@@ -21,8 +19,6 @@ arguments
     <constant>GL_TEXTURE_2D_MULTISAMPLE</constant> or
     <constant>GL_TEXTURE_2D_MULTISAMPLE_ARRAY</constant>.
     2. `int` `$texture` Specifies the name of a texture.
-
-
 
 ---
      

@@ -5,14 +5,10 @@ determine if a name corresponds to a framebuffer object
 function glIsFramebuffer(int $framebuffer) : bool
 ```
 
-
-
 arguments
 
 :    1. `int` `$framebuffer` Specifies a value that may be the name of a
     framebuffer object.
-
-
 
 ---
      

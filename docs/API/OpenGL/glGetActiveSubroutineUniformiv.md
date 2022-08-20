@@ -5,8 +5,6 @@ glGetActiveSubroutineUniformiv
 function glGetActiveSubroutineUniformiv(int $program, int $shadertype, int $index, int $pname, int &$values) : void
 ```
 
-
-
 arguments
 
 :    1. `int` `$program` 
@@ -14,8 +12,6 @@ arguments
     3. `int` `$index` 
     4. `int` `$pname` 
     5. `int` `$values` 
-
-
 
 ---
      

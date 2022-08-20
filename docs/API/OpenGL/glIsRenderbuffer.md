@@ -5,14 +5,10 @@ determine if a name corresponds to a renderbuffer object
 function glIsRenderbuffer(int $renderbuffer) : bool
 ```
 
-
-
 arguments
 
 :    1. `int` `$renderbuffer` Specifies a value that may be the name of a
     renderbuffer object.
-
-
 
 ---
      

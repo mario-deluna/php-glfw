@@ -5,10 +5,5 @@ glfwWaitEvents
 function glfwWaitEvents() : void
 ```
 
-
-
-
-
-
 ---
      

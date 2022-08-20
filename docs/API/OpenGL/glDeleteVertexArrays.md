@@ -5,14 +5,10 @@ delete vertex array objects
 function glDeleteVertexArrays(int $n, ?int ...$arrays) : void
 ```
 
-
-
 arguments
 
 :    1. `int` `$n` Specifies the number of vertex array objects to be deleted.
     2. `?int` `$arrays` 
-
-
 
 ---
      

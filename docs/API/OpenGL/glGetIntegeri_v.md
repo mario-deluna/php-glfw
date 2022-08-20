@@ -5,15 +5,11 @@ glGetIntegeri_v
 function glGetIntegeri_v(int $target, int $index, ?bool &...$data) : void
 ```
 
-
-
 arguments
 
 :    1. `int` `$target` 
     2. `int` `$index` 
     3. `?bool` `$data` 
-
-
 
 ---
      

@@ -5,15 +5,11 @@ bind a named sampler to a texturing target
 function glBindSampler(int $unit, int $sampler) : void
 ```
 
-
-
 arguments
 
 :    1. `int` `$unit` Specifies the index of the texture unit to which the sampler
     is bound.
     2. `int` `$sampler` Specifies the name of a sampler.
-
-
 
 ---
      

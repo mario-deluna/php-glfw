@@ -5,8 +5,6 @@ set front and/or back stencil test actions
 function glStencilOpSeparate(int $face, int $sfail, int $dpfail, int $dppass) : void
 ```
 
-
-
 arguments
 
 :    1. `int` `$face` Specifies whether front and/or back stencil state is
@@ -27,8 +25,6 @@ arguments
     no depth buffer or depth testing is not enabled. dppass accepts the same
     symbolic constants as sfail. The initial value is
     <constant>GL_KEEP</constant>.
-
-
 
 ---
      

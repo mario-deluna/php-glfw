@@ -5,8 +5,6 @@ create a new sync object and insert it into the GL command stream
 function glFenceSync(int $condition, int $flags) : int
 ```
 
-
-
 arguments
 
 :    1. `int` `$condition` Specifies the condition that must be met to set the
@@ -16,8 +14,6 @@ arguments
     behavior of the sync object. No flags are presently defined for this
     operation and flags must be zero. flags is a placeholder for anticipated
     future extensions of fence sync object capabilities.
-
-
 
 ---
      

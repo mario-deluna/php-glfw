@@ -5,13 +5,9 @@ Compiles a shader object
 function glCompileShader(int $shader) : void
 ```
 
-
-
 arguments
 
 :    1. `int` `$shader` Specifies the shader object to be compiled.
-
-
 
 ---
      

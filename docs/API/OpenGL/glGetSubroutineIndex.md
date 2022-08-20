@@ -6,8 +6,6 @@ program
 function glGetSubroutineIndex(int $program, int $shadertype, string $name) : int
 ```
 
-
-
 arguments
 
 :    1. `int` `$program` Specifies the name of the program containing shader
@@ -21,8 +19,6 @@ arguments
     <constant>GL_FRAGMENT_SHADER</constant>.
     3. `string` `$name` Specifies the name of the subroutine uniform whose index
     to query.
-
-
 
 ---
      

@@ -5,14 +5,10 @@ glPointParameterf
 function glPointParameterf(int $pname, float $param) : void
 ```
 
-
-
 arguments
 
 :    1. `int` `$pname` 
     2. `float` `$param` 
-
-
 
 ---
      

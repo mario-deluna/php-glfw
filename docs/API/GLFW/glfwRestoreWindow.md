@@ -5,13 +5,9 @@ glfwRestoreWindow
 function glfwRestoreWindow(\GLFWwindow $window) : void
 ```
 
-
-
 arguments
 
 :    1. `\GLFWwindow` `$window` 
-
-
 
 ---
      

@@ -6,8 +6,6 @@ compiler
 function glGetShaderPrecisionFormat(int $shadertype, int $precisiontype, int &$range, int &$precision) : void
 ```
 
-
-
 arguments
 
 :    1. `int` `$shadertype` 
@@ -16,8 +14,6 @@ arguments
     encodings of the implementation's numeric range are returned.
     4. `int` `$precision` Specifies the address of an integer into which the
     numeric precision of the implementation is written.
-
-
 
 ---
      

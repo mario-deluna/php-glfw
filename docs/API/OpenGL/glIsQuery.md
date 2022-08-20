@@ -5,13 +5,9 @@ determine if a name corresponds to a query object
 function glIsQuery(int $id) : bool
 ```
 
-
-
 arguments
 
 :    1. `int` `$id` Specifies a value that may be the name of a query object.
-
-
 
 ---
      

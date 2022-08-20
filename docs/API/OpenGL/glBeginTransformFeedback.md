@@ -5,14 +5,10 @@ start transform feedback operation
 function glBeginTransformFeedback(int $primitiveMode) : void
 ```
 
-
-
 arguments
 
 :    1. `int` `$primitiveMode` Specify the output type of the primitives that will
     be recorded into the buffer objects that are bound for transform feedback.
-
-
 
 ---
      

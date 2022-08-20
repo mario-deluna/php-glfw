@@ -5,8 +5,6 @@ glFramebufferTexture3D
 function glFramebufferTexture3D(int $target, int $attachment, int $textarget, int $texture, int $level, int $zoffset) : void
 ```
 
-
-
 arguments
 
 :    1. `int` `$target` 
@@ -15,8 +13,6 @@ arguments
     4. `int` `$texture` 
     5. `int` `$level` 
     6. `int` `$zoffset` 
-
-
 
 ---
      

@@ -5,10 +5,5 @@ glfwGetVersionString
 function glfwGetVersionString() : string
 ```
 
-
-
-
-
-
 ---
      

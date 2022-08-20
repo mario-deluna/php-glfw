@@ -5,15 +5,11 @@ Attaches a shader object to a program object
 function glAttachShader(int $program, int $shader) : void
 ```
 
-
-
 arguments
 
 :    1. `int` `$program` Specifies the program object to which a shader object
     will be attached.
     2. `int` `$shader` Specifies the shader object that is to be attached.
-
-
 
 ---
      

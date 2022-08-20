@@ -5,15 +5,11 @@ set the value of a sub-word of the sample mask
 function glSampleMaski(int $maskNumber, int $mask) : void
 ```
 
-
-
 arguments
 
 :    1. `int` `$maskNumber` Specifies which 32-bit sub-word of the sample mask to
     update.
     2. `int` `$mask` Specifies the new value of the mask sub-word.
-
-
 
 ---
      

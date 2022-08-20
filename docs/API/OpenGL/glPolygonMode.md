@@ -5,8 +5,6 @@ select a polygon rasterization mode
 function glPolygonMode(int $face, int $mode) : void
 ```
 
-
-
 arguments
 
 :    1. `int` `$face` Specifies the polygons that mode applies to. Must be
@@ -15,8 +13,6 @@ arguments
     are <constant>GL_POINT</constant>, <constant>GL_LINE</constant>, and
     <constant>GL_FILL</constant>. The initial value is
     <constant>GL_FILL</constant> for both front- and back-facing polygons.
-
-
 
 ---
      

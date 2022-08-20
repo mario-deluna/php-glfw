@@ -5,10 +5,5 @@ glfwPollEvents
 function glfwPollEvents() : void
 ```
 
-
-
-
-
-
 ---
      

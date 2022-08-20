@@ -5,16 +5,12 @@ set the active program object for a program pipeline object
 function glActiveShaderProgram(int $pipeline, int $program) : void
 ```
 
-
-
 arguments
 
 :    1. `int` `$pipeline` Specifies the program pipeline object to set the active
     program object for.
     2. `int` `$program` Specifies the program object to set as the active program
     pipeline object pipeline.
-
-
 
 ---
      

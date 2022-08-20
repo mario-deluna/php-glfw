@@ -5,14 +5,10 @@ glVertexP2ui
 function glVertexP2ui(int $type, int $value) : void
 ```
 
-
-
 arguments
 
 :    1. `int` `$type` 
     2. `int` `$value` 
-
-
 
 ---
      

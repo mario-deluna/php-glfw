@@ -6,8 +6,6 @@ signaled
 function glWaitSync(int $sync, int $flags, int $timeout) : void
 ```
 
-
-
 arguments
 
 :    1. `int` `$sync` Specifies the sync object whose status to wait on.
@@ -15,8 +13,6 @@ arguments
     may be zero.
     3. `int` `$timeout` Specifies the timeout that the server should wait before
     continuing. timeout must be <constant>GL_TIMEOUT_IGNORED</constant>.
-
-
 
 ---
      

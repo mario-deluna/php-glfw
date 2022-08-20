@@ -5,14 +5,10 @@ specify the diameter of rasterized points
 function glPointSize(float $size) : void
 ```
 
-
-
 arguments
 
 :    1. `float` `$size` Specifies the diameter of rasterized points. The initial
     value is 1.
-
-
 
 ---
      

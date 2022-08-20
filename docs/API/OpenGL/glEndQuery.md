@@ -5,13 +5,9 @@ glEndQuery
 function glEndQuery(int $target) : void
 ```
 
-
-
 arguments
 
 :    1. `int` `$target` 
-
-
 
 ---
      

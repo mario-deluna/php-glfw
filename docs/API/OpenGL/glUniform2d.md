@@ -5,15 +5,11 @@ glUniform2d
 function glUniform2d(int $location, float $x, float $y) : void
 ```
 
-
-
 arguments
 
 :    1. `int` `$location` 
     2. `float` `$x` 
     3. `float` `$y` 
-
-
 
 ---
      

@@ -5,8 +5,6 @@ specify implementation-specific hints
 function glHint(int $target, int $mode) : void
 ```
 
-
-
 arguments
 
 :    1. `int` `$target` Specifies a symbolic constant indicating the behavior to
@@ -17,8 +15,6 @@ arguments
     2. `int` `$mode` Specifies a symbolic constant indicating the desired
     behavior. <constant>GL_FASTEST</constant>, <constant>GL_NICEST</constant>,
     and <constant>GL_DONT_CARE</constant> are accepted.
-
-
 
 ---
      

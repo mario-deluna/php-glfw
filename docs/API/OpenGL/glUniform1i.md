@@ -5,14 +5,10 @@ glUniform1i
 function glUniform1i(int $location, int $v0) : void
 ```
 
-
-
 arguments
 
 :    1. `int` `$location` 
     2. `int` `$v0` 
-
-
 
 ---
      

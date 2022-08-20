@@ -6,8 +6,6 @@ multisample texture's image
 function glTexImage2DMultisample(int $target, int $samples, int $internalformat, int $width, int $height, bool $fixedsamplelocations) : void
 ```
 
-
-
 arguments
 
 :    1. `int` `$target` Specifies the target of the operation. target must be
@@ -23,8 +21,6 @@ arguments
     identical sample locations and the same number of samples for all texels in
     the image, and the sample locations will not depend on the internal format or
     size of the image.
-
-
 
 ---
      

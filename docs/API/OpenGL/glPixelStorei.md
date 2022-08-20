@@ -5,14 +5,10 @@ glPixelStorei
 function glPixelStorei(int $pname, int $param) : void
 ```
 
-
-
 arguments
 
 :    1. `int` `$pname` 
     2. `int` `$param` 
-
-
 
 ---
      

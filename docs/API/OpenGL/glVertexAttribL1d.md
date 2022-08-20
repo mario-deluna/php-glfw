@@ -5,14 +5,10 @@ glVertexAttribL1d
 function glVertexAttribL1d(int $index, float $x) : void
 ```
 
-
-
 arguments
 
 :    1. `int` `$index` 
     2. `float` `$x` 
-
-
 
 ---
      

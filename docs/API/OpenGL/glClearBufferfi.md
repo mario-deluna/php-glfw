@@ -5,16 +5,12 @@ glClearBufferfi
 function glClearBufferfi(int $buffer, int $drawbuffer, float $depth, int $stencil) : void
 ```
 
-
-
 arguments
 
 :    1. `int` `$buffer` 
     2. `int` `$drawbuffer` 
     3. `float` `$depth` 
     4. `int` `$stencil` 
-
-
 
 ---
      

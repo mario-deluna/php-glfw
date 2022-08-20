@@ -5,16 +5,12 @@ glProgramUniform2f
 function glProgramUniform2f(int $program, int $location, float $v0, float $v1) : void
 ```
 
-
-
 arguments
 
 :    1. `int` `$program` 
     2. `int` `$location` 
     3. `float` `$v0` 
     4. `float` `$v1` 
-
-
 
 ---
      

@@ -5,15 +5,11 @@ glTexParameterf
 function glTexParameterf(int $target, int $pname, float $param) : void
 ```
 
-
-
 arguments
 
 :    1. `int` `$target` 
     2. `int` `$pname` 
     3. `float` `$param` 
-
-
 
 ---
      

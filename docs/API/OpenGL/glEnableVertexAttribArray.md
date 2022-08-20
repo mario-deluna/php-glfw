@@ -6,14 +6,10 @@ Enable or disable a generic vertex attribute
 function glEnableVertexAttribArray(int $index) : void
 ```
 
-
-
 arguments
 
 :    1. `int` `$index` Specifies the index of the generic vertex attribute to be
     enabled or disabled.
-
-
 
 ---
      

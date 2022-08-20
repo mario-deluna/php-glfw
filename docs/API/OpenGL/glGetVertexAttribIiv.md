@@ -5,15 +5,11 @@ glGetVertexAttribIiv
 function glGetVertexAttribIiv(int $index, int $pname, int &$params) : void
 ```
 
-
-
 arguments
 
 :    1. `int` `$index` 
     2. `int` `$pname` 
     3. `int` `$params` 
-
-
 
 ---
      

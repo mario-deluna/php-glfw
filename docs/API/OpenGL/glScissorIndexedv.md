@@ -5,14 +5,10 @@ glScissorIndexedv
 function glScissorIndexedv(int $index, \GL\Buffer\IntBuffer|array $v) : void
 ```
 
-
-
 arguments
 
 :    1. `int` `$index` 
     2. `\GL\Buffer\IntBuffer|array` `$v` 
-
-
 
 ---
      

@@ -5,15 +5,11 @@ glTexParameterfv
 function glTexParameterfv(int $target, int $pname, \GL\Buffer\FloatBuffer|array $params) : void
 ```
 
-
-
 arguments
 
 :    1. `int` `$target` 
     2. `int` `$pname` 
     3. `\GL\Buffer\FloatBuffer|array` `$params` 
-
-
 
 ---
      

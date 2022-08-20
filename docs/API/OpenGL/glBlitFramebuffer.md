@@ -5,8 +5,6 @@ copy a block of pixels from one framebuffer object to another
 function glBlitFramebuffer(int $srcX0, int $srcY0, int $srcX1, int $srcY1, int $dstX0, int $dstY0, int $dstX1, int $dstY1, int $mask, int $filter) : void
 ```
 
-
-
 arguments
 
 :    1. `int` `$srcX0` Specify the bounds of the source rectangle within the read
@@ -26,8 +24,6 @@ arguments
     10. `int` `$filter` Specifies the interpolation to be applied if the image is
     stretched. Must be <constant>GL_NEAREST</constant> or
     <constant>GL_LINEAR</constant>.
-
-
 
 ---
      

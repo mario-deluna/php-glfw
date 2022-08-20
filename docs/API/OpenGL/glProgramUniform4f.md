@@ -5,8 +5,6 @@ glProgramUniform4f
 function glProgramUniform4f(int $program, int $location, float $v0, float $v1, float $v2, float $v3) : void
 ```
 
-
-
 arguments
 
 :    1. `int` `$program` 
@@ -15,8 +13,6 @@ arguments
     4. `float` `$v1` 
     5. `float` `$v2` 
     6. `float` `$v3` 
-
-
 
 ---
      

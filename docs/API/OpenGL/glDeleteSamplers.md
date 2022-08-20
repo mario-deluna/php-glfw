@@ -5,14 +5,10 @@ delete named sampler objects
 function glDeleteSamplers(int $count, ?int ...$samplers) : void
 ```
 
-
-
 arguments
 
 :    1. `int` `$count` 
     2. `?int` `$samplers` 
-
-
 
 ---
      

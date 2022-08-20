@@ -5,8 +5,6 @@ generate mipmaps for a specified texture object
 function glGenerateMipmap(int $target) : void
 ```
 
-
-
 arguments
 
 :    1. `int` `$target` Specifies the target to which the texture object is bound
@@ -16,8 +14,6 @@ arguments
     <constant>GL_TEXTURE_2D_ARRAY</constant>,
     <constant>GL_TEXTURE_CUBE_MAP</constant>, or
     <constant>GL_TEXTURE_CUBE_MAP_ARRAY</constant>.
-
-
 
 ---
      

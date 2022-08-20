@@ -5,15 +5,11 @@ glMultiTexCoordP4uiv
 function glMultiTexCoordP4uiv(int $texture, int $type, \GL\Buffer\UIntBuffer|array $coords) : void
 ```
 
-
-
 arguments
 
 :    1. `int` `$texture` 
     2. `int` `$type` 
     3. `\GL\Buffer\UIntBuffer|array` `$coords` 
-
-
 
 ---
      

@@ -5,15 +5,11 @@ glSamplerParameterf
 function glSamplerParameterf(int $sampler, int $pname, float $param) : void
 ```
 
-
-
 arguments
 
 :    1. `int` `$sampler` 
     2. `int` `$pname` 
     3. `float` `$param` 
-
-
 
 ---
      

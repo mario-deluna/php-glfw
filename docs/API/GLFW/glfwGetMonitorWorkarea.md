@@ -5,8 +5,6 @@ glfwGetMonitorWorkarea
 function glfwGetMonitorWorkarea(\GLFWmonitor $monitor, int &$xpos, int &$ypos, int &$width, int &$height) : void
 ```
 
-
-
 arguments
 
 :    1. `\GLFWmonitor` `$monitor` 
@@ -14,8 +12,6 @@ arguments
     3. `int` `$ypos` 
     4. `int` `$width` 
     5. `int` `$height` 
-
-
 
 ---
      

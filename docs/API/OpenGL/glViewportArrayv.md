@@ -5,14 +5,10 @@ glViewportArrayv
 function glViewportArrayv(int $first, \GL\Buffer\FloatBuffer|array $v) : void
 ```
 
-
-
 arguments
 
 :    1. `int` `$first` 
     2. `\GL\Buffer\FloatBuffer|array` `$v` 
-
-
 
 ---
      

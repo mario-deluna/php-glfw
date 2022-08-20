@@ -5,13 +5,9 @@ Creates a shader object
 function glCreateShader(int $type) : int
 ```
 
-
-
 arguments
 
 :    1. `int` `$type` 
-
-
 
 ---
      

@@ -5,15 +5,11 @@ glTexParameteri
 function glTexParameteri(int $target, int $pname, int $param) : void
 ```
 
-
-
 arguments
 
 :    1. `int` `$target` 
     2. `int` `$pname` 
     3. `int` `$param` 
-
-
 
 ---
      

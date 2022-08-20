@@ -5,13 +5,9 @@ glClearDepthf
 function glClearDepthf(float $d) : void
 ```
 
-
-
 arguments
 
 :    1. `float` `$d` 
-
-
 
 ---
      

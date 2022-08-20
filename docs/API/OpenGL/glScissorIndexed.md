@@ -5,8 +5,6 @@ define the scissor box for a specific viewport
 function glScissorIndexed(int $index, int $left, int $bottom, int $width, int $height) : void
 ```
 
-
-
 arguments
 
 :    1. `int` `$index` Specifies the index of the viewport whose scissor box to
@@ -16,8 +14,6 @@ arguments
     3. `int` `$bottom` 
     4. `int` `$width` Specify ths dimensions of the scissor box, in pixels.
     5. `int` `$height` 
-
-
 
 ---
      

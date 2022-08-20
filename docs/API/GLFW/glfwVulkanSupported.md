@@ -5,10 +5,5 @@ glfwVulkanSupported
 function glfwVulkanSupported() : int
 ```
 
-
-
-
-
-
 ---
      

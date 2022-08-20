@@ -5,8 +5,6 @@ glBlendFuncSeparatei
 function glBlendFuncSeparatei(int $buf, int $srcRGB, int $dstRGB, int $srcAlpha, int $dstAlpha) : void
 ```
 
-
-
 arguments
 
 :    1. `int` `$buf` 
@@ -14,8 +12,6 @@ arguments
     3. `int` `$dstRGB` 
     4. `int` `$srcAlpha` 
     5. `int` `$dstAlpha` 
-
-
 
 ---
      

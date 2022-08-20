@@ -5,15 +5,11 @@ Returns the location of an attribute variable
 function glGetAttribLocation(int $program, string $name) : int
 ```
 
-
-
 arguments
 
 :    1. `int` `$program` Specifies the program object to be queried.
     2. `string` `$name` Points to a null terminated string containing the name of
     the attribute variable whose location is to be queried.
-
-
 
 ---
      

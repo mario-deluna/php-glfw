@@ -5,13 +5,9 @@ Determines if a name corresponds to a shader object
 function glIsShader(int $shader) : bool
 ```
 
-
-
 arguments
 
 :    1. `int` `$shader` Specifies a potential shader object.
-
-
 
 ---
      

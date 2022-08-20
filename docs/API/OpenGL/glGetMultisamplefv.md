@@ -5,8 +5,6 @@ retrieve the location of a sample
 function glGetMultisamplefv(int $pname, int $index, float &$val) : void
 ```
 
-
-
 arguments
 
 :    1. `int` `$pname` Specifies the sample parameter name. pname must be
@@ -14,8 +12,6 @@ arguments
     2. `int` `$index` Specifies the index of the sample whose position to query.
     3. `float` `$val` Specifies the address of an array to receive the position
     of the sample.
-
-
 
 ---
      

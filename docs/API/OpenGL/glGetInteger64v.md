@@ -5,14 +5,10 @@ glGetInteger64v
 function glGetInteger64v(int $pname, int &$data) : void
 ```
 
-
-
 arguments
 
 :    1. `int` `$pname` 
     2. `int` `$data` 
-
-
 
 ---
      

@@ -5,14 +5,10 @@ delete framebuffer objects
 function glDeleteFramebuffers(int $n, ?int ...$framebuffers) : void
 ```
 
-
-
 arguments
 
 :    1. `int` `$n` Specifies the number of framebuffer objects to be deleted.
     2. `?int` `$framebuffers` 
-
-
 
 ---
      

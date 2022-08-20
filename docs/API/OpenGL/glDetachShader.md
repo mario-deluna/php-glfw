@@ -5,15 +5,11 @@ Detaches a shader object from a program object to which it is attached
 function glDetachShader(int $program, int $shader) : void
 ```
 
-
-
 arguments
 
 :    1. `int` `$program` Specifies the program object from which to detach the
     shader object.
     2. `int` `$shader` Specifies the shader object to be detached.
-
-
 
 ---
      

@@ -5,14 +5,10 @@ delete program pipeline objects
 function glDeleteProgramPipelines(int $n, ?int ...$pipelines) : void
 ```
 
-
-
 arguments
 
 :    1. `int` `$n` Specifies the number of program pipeline objects to delete.
     2. `?int` `$pipelines` 
-
-
 
 ---
      

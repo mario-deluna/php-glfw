@@ -5,14 +5,10 @@ glScissorArrayv
 function glScissorArrayv(int $first, \GL\Buffer\IntBuffer|array $v) : void
 ```
 
-
-
 arguments
 
 :    1. `int` `$first` 
     2. `\GL\Buffer\IntBuffer|array` `$v` 
-
-
 
 ---
      

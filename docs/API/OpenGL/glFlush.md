@@ -5,11 +5,6 @@ force execution of GL commands in finite time
 function glFlush() : void
 ```
 
-
-
-
-
-
 ---
      
 

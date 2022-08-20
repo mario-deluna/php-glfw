@@ -5,8 +5,6 @@ bind a buffer object to an indexed buffer target
 function glBindBufferBase(int $target, int $index, int $buffer) : void
 ```
 
-
-
 arguments
 
 :    1. `int` `$target` Specify the target of the bind operation. target must be
@@ -18,8 +16,6 @@ arguments
     specified by target.
     3. `int` `$buffer` The name of a buffer object to bind to the specified
     binding point.
-
-
 
 ---
      

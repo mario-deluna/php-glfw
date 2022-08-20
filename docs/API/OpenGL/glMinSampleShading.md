@@ -5,14 +5,10 @@ specifies minimum rate at which sample shading takes place
 function glMinSampleShading(float $value) : void
 ```
 
-
-
 arguments
 
 :    1. `float` `$value` Specifies the rate at which samples are shaded within
     each covered pixel.
-
-
 
 ---
      

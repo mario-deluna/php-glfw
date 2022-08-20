@@ -5,14 +5,10 @@ delete named textures
 function glDeleteTextures(int $n, ?int ...$textures) : void
 ```
 
-
-
 arguments
 
 :    1. `int` `$n` Specifies the number of textures to be deleted.
     2. `?int` `$textures` 
-
-
 
 ---
      

@@ -5,8 +5,6 @@ define the scissor box
 function glScissor(int $x, int $y, int $width, int $height) : void
 ```
 
-
-
 arguments
 
 :    1. `int` `$x` Specify the lower left corner of the scissor box. Initially (0,
@@ -16,8 +14,6 @@ arguments
     context is first attached to a window, width and height are set to the
     dimensions of that window.
     4. `int` `$height` 
-
-
 
 ---
      

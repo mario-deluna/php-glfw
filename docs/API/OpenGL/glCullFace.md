@@ -6,11 +6,6 @@ Functions
 function glCullFace(int $mode) : void
 ```
 
-
-
-
-
-
 ---
      
 

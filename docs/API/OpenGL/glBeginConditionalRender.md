@@ -5,16 +5,12 @@ start conditional rendering
 function glBeginConditionalRender(int $id, int $mode) : void
 ```
 
-
-
 arguments
 
 :    1. `int` `$id` Specifies the name of an occlusion query object whose results
     are used to determine if the rendering commands are discarded.
     2. `int` `$mode` Specifies how glBeginConditionalRender interprets the
     results of the occlusion query.
-
-
 
 ---
      

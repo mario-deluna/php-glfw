@@ -5,15 +5,11 @@ set front and back stencil test actions
 function glStencilOp(int $fail, int $zfail, int $zpass) : void
 ```
 
-
-
 arguments
 
 :    1. `int` `$fail` 
     2. `int` `$zfail` 
     3. `int` `$zpass` 
-
-
 
 ---
      

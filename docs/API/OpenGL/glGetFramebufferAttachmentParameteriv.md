@@ -5,8 +5,6 @@ retrieve information about attachments of a framebuffer object
 function glGetFramebufferAttachmentParameteriv(int $target, int $attachment, int $pname, int &$params) : void
 ```
 
-
-
 arguments
 
 :    1. `int` `$target` Specifies the target to which the framebuffer object is
@@ -15,8 +13,6 @@ arguments
     query.
     3. `int` `$pname` Specifies the parameter of attachment to query.
     4. `int` `$params` Returns the value of parameter pname for attachment.
-
-
 
 ---
      

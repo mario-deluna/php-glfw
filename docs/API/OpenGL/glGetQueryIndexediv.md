@@ -5,8 +5,6 @@ return parameters of an indexed query object target
 function glGetQueryIndexediv(int $target, int $index, int $pname, int &$params) : void
 ```
 
-
-
 arguments
 
 :    1. `int` `$target` Specifies a query object target. Must be
@@ -21,8 +19,6 @@ arguments
     parameter. Accepted values are <constant>GL_CURRENT_QUERY</constant> or
     <constant>GL_QUERY_COUNTER_BITS</constant>.
     4. `int` `$params` Returns the requested data.
-
-
 
 ---
      

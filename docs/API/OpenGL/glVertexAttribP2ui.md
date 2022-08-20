@@ -5,16 +5,12 @@ glVertexAttribP2ui
 function glVertexAttribP2ui(int $index, int $type, bool $normalized, int $value) : void
 ```
 
-
-
 arguments
 
 :    1. `int` `$index` 
     2. `int` `$type` 
     3. `bool` `$normalized` 
     4. `int` `$value` 
-
-
 
 ---
      

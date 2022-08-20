@@ -5,13 +5,9 @@ glfwShowWindow
 function glfwShowWindow(\GLFWwindow $window) : void
 ```
 
-
-
 arguments
 
 :    1. `\GLFWwindow` `$window` 
-
-
 
 ---
      

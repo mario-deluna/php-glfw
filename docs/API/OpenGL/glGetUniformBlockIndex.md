@@ -5,16 +5,12 @@ retrieve the index of a named uniform block
 function glGetUniformBlockIndex(int $program, string $uniformBlockName) : int
 ```
 
-
-
 arguments
 
 :    1. `int` `$program` Specifies the name of a program containing the uniform
     block.
     2. `string` `$uniformBlockName` Specifies the address an array of characters
     to containing the name of the uniform block whose index to retrieve.
-
-
 
 ---
      

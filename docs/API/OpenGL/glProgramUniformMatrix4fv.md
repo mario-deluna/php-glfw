@@ -5,16 +5,12 @@ glProgramUniformMatrix4fv
 function glProgramUniformMatrix4fv(int $program, int $location, bool $transpose, \GL\Buffer\FloatBuffer|array $value) : void
 ```
 
-
-
 arguments
 
 :    1. `int` `$program` 
     2. `int` `$location` 
     3. `bool` `$transpose` 
     4. `\GL\Buffer\FloatBuffer|array` `$value` 
-
-
 
 ---
      

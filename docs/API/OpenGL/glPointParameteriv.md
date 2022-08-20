@@ -5,14 +5,10 @@ glPointParameteriv
 function glPointParameteriv(int $pname, \GL\Buffer\IntBuffer|array $params) : void
 ```
 
-
-
 arguments
 
 :    1. `int` `$pname` 
     2. `\GL\Buffer\IntBuffer|array` `$params` 
-
-
 
 ---
      

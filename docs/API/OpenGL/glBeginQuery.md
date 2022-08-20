@@ -5,8 +5,6 @@ delimit the boundaries of a query object
 function glBeginQuery(int $target, int $id) : void
 ```
 
-
-
 arguments
 
 :    1. `int` `$target` Specifies the target type of query object established
@@ -18,8 +16,6 @@ arguments
     <constant>GL_TRANSFORM_FEEDBACK_PRIMITIVES_WRITTEN</constant>, or
     <constant>GL_TIME_ELAPSED</constant>.
     2. `int` `$id` Specifies the name of a query object.
-
-
 
 ---
      

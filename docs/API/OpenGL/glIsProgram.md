@@ -5,13 +5,9 @@ Determines if a name corresponds to a program object
 function glIsProgram(int $program) : bool
 ```
 
-
-
 arguments
 
 :    1. `int` `$program` Specifies a potential program object.
-
-
 
 ---
      

@@ -6,8 +6,6 @@ and index
 function glBindFragDataLocationIndexed(int $program, int $colorNumber, int $index, string $name) : void
 ```
 
-
-
 arguments
 
 :    1. `int` `$program` The name of the program containing varying out variable
@@ -18,8 +16,6 @@ arguments
     varying out variable to
     4. `string` `$name` The name of the user-defined varying out variable whose
     binding to modify
-
-
 
 ---
      

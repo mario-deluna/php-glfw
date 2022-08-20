@@ -6,8 +6,6 @@ establish data storage, format, dimensions and sample count of
 function glRenderbufferStorageMultisample(int $target, int $samples, int $internalformat, int $width, int $height) : void
 ```
 
-
-
 arguments
 
 :    1. `int` `$target` Specifies a binding target of the allocation for
@@ -19,8 +17,6 @@ arguments
     renderbuffer object's image.
     4. `int` `$width` Specifies the width of the renderbuffer, in pixels.
     5. `int` `$height` Specifies the height of the renderbuffer, in pixels.
-
-
 
 ---
      

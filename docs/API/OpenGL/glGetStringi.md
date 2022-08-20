@@ -5,14 +5,10 @@ glGetStringi
 function glGetStringi(int $name, int $index) : string
 ```
 
-
-
 arguments
 
 :    1. `int` `$name` 
     2. `int` `$index` 
-
-
 
 ---
      

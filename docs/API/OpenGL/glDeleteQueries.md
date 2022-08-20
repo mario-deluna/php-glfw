@@ -5,14 +5,10 @@ delete named query objects
 function glDeleteQueries(int $n, ?int ...$ids) : void
 ```
 
-
-
 arguments
 
 :    1. `int` `$n` Specifies the number of query objects to be deleted.
     2. `?int` `$ids` 
-
-
 
 ---
      

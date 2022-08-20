@@ -6,8 +6,6 @@ another buffer object
 function glCopyBufferSubData(int $readTarget, int $writeTarget, int $readOffset, int $writeOffset, int $size) : void
 ```
 
-
-
 arguments
 
 :    1. `int` `$readTarget` Specifies the target to which the source buffer object
@@ -21,8 +19,6 @@ arguments
     written.
     5. `int` `$size` Specifies the size, in basic machine units, of the data to
     be copied from the source buffer object to the destination buffer object.
-
-
 
 ---
      

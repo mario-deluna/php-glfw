@@ -5,14 +5,10 @@ glVertexAttrib1fv
 function glVertexAttrib1fv(int $index, \GL\Buffer\FloatBuffer|array $v) : void
 ```
 
-
-
 arguments
 
 :    1. `int` `$index` 
     2. `\GL\Buffer\FloatBuffer|array` `$v` 
-
-
 
 ---
      

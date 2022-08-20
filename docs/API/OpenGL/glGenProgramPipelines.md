@@ -5,15 +5,11 @@ reserve program pipeline object names
 function glGenProgramPipelines(int $n, ?int &...$pipelines) : void
 ```
 
-
-
 arguments
 
 :    1. `int` `$n` Specifies the number of program pipeline object names to
     reserve.
     2. `?int` `$pipelines` 
-
-
 
 ---
      

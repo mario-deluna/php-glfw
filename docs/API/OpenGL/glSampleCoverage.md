@@ -5,8 +5,6 @@ specify multisample coverage parameters
 function glSampleCoverage(float $value, bool $invert) : void
 ```
 
-
-
 arguments
 
 :    1. `float` `$value` Specify a single floating-point sample coverage value.
@@ -15,8 +13,6 @@ arguments
     coverage masks should be inverted.  <constant>GL_TRUE</constant> and
     <constant>GL_FALSE</constant> are accepted.  The initial value is
     <constant>GL_FALSE</constant>.
-
-
 
 ---
      

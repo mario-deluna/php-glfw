@@ -5,13 +5,9 @@ determine if a name corresponds to a sync object
 function glIsSync(int $sync) : bool
 ```
 
-
-
 arguments
 
 :    1. `int` `$sync` Specifies a value that may be the name of a sync object.
-
-
 
 ---
      

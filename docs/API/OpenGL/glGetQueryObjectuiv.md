@@ -5,15 +5,11 @@ glGetQueryObjectuiv
 function glGetQueryObjectuiv(int $id, int $pname, int &$params) : void
 ```
 
-
-
 arguments
 
 :    1. `int` `$id` 
     2. `int` `$pname` 
     3. `int` `$params` 
-
-
 
 ---
      

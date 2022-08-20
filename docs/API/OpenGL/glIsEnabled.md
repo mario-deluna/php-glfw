@@ -5,13 +5,9 @@ test whether a capability is enabled
 function glIsEnabled(int $cap) : bool
 ```
 
-
-
 arguments
 
 :    1. `int` `$cap` Specifies a symbolic constant indicating a GL capability.
-
-
 
 ---
      

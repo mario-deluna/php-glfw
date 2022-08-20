@@ -5,8 +5,6 @@ assign a binding point to an active uniform block
 function glUniformBlockBinding(int $program, int $uniformBlockIndex, int $uniformBlockBinding) : void
 ```
 
-
-
 arguments
 
 :    1. `int` `$program` The name of a program object containing the active
@@ -15,8 +13,6 @@ arguments
     program whose binding to assign.
     3. `int` `$uniformBlockBinding` Specifies the binding point to which to bind
     the uniform block with index uniformBlockIndex within program.
-
-
 
 ---
      

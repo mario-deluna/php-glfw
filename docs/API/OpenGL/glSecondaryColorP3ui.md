@@ -5,14 +5,10 @@ glSecondaryColorP3ui
 function glSecondaryColorP3ui(int $type, int $color) : void
 ```
 
-
-
 arguments
 
 :    1. `int` `$type` 
     2. `int` `$color` 
-
-
 
 ---
      

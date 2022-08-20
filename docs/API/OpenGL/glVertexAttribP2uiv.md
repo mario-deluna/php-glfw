@@ -5,16 +5,12 @@ glVertexAttribP2uiv
 function glVertexAttribP2uiv(int $index, int $type, bool $normalized, \GL\Buffer\UIntBuffer|array $value) : void
 ```
 
-
-
 arguments
 
 :    1. `int` `$index` 
     2. `int` `$type` 
     3. `bool` `$normalized` 
     4. `\GL\Buffer\UIntBuffer|array` `$value` 
-
-
 
 ---
      

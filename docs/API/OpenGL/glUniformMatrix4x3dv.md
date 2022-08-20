@@ -5,15 +5,11 @@ glUniformMatrix4x3dv
 function glUniformMatrix4x3dv(int $location, bool $transpose, \GL\Buffer\DoubleBuffer|array $value) : void
 ```
 
-
-
 arguments
 
 :    1. `int` `$location` 
     2. `bool` `$transpose` 
     3. `\GL\Buffer\DoubleBuffer|array` `$value` 
-
-
 
 ---
      

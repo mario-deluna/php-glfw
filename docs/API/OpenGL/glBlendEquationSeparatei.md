@@ -5,15 +5,11 @@ glBlendEquationSeparatei
 function glBlendEquationSeparatei(int $buf, int $modeRGB, int $modeAlpha) : void
 ```
 
-
-
 arguments
 
 :    1. `int` `$buf` 
     2. `int` `$modeRGB` 
     3. `int` `$modeAlpha` 
-
-
 
 ---
      

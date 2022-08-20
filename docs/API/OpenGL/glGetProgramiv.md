@@ -5,15 +5,11 @@ glGetProgramiv
 function glGetProgramiv(int $program, int $pname, int &$params) : void
 ```
 
-
-
 arguments
 
 :    1. `int` `$program` 
     2. `int` `$pname` 
     3. `int` `$params` 
-
-
 
 ---
      

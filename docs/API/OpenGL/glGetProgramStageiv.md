@@ -5,16 +5,12 @@ glGetProgramStageiv
 function glGetProgramStageiv(int $program, int $shadertype, int $pname, int &$values) : void
 ```
 
-
-
 arguments
 
 :    1. `int` `$program` 
     2. `int` `$shadertype` 
     3. `int` `$pname` 
     4. `int` `$values` 
-
-
 
 ---
      

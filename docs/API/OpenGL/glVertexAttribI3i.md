@@ -5,16 +5,12 @@ glVertexAttribI3i
 function glVertexAttribI3i(int $index, int $x, int $y, int $z) : void
 ```
 
-
-
 arguments
 
 :    1. `int` `$index` 
     2. `int` `$x` 
     3. `int` `$y` 
     4. `int` `$z` 
-
-
 
 ---
      

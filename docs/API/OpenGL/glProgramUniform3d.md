@@ -5,8 +5,6 @@ glProgramUniform3d
 function glProgramUniform3d(int $program, int $location, float $v0, float $v1, float $v2) : void
 ```
 
-
-
 arguments
 
 :    1. `int` `$program` 
@@ -14,8 +12,6 @@ arguments
     3. `float` `$v0` 
     4. `float` `$v1` 
     5. `float` `$v2` 
-
-
 
 ---
      

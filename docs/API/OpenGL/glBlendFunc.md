@@ -5,8 +5,6 @@ specify pixel arithmetic
 function glBlendFunc(int $sfactor, int $dfactor) : void
 ```
 
-
-
 arguments
 
 :    1. `int` `$sfactor` Specifies how the red, green, blue, and alpha source
@@ -28,8 +26,6 @@ arguments
     <constant>GL_CONSTANT_ALPHA</constant>, and
     <constant>GL_ONE_MINUS_CONSTANT_ALPHA</constant>. The initial value is
     <constant>GL_ZERO</constant>.
-
-
 
 ---
      

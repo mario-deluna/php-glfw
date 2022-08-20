@@ -5,15 +5,11 @@ enable or disable writing into the depth buffer
 function glDepthMask(bool $flag) : void
 ```
 
-
-
 arguments
 
 :    1. `bool` `$flag` Specifies whether the depth buffer is enabled for writing.
     If flag is <constant>GL_FALSE</constant>, depth buffer writing is disabled.
     Otherwise, it is enabled. Initially, depth buffer writing is enabled.
-
-
 
 ---
      

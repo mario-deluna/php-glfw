@@ -5,13 +5,9 @@ glfwIconifyWindow
 function glfwIconifyWindow(\GLFWwindow $window) : void
 ```
 
-
-
 arguments
 
 :    1. `\GLFWwindow` `$window` 
-
-
 
 ---
      

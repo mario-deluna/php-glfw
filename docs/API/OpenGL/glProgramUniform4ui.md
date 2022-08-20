@@ -5,8 +5,6 @@ glProgramUniform4ui
 function glProgramUniform4ui(int $program, int $location, int $v0, int $v1, int $v2, int $v3) : void
 ```
 
-
-
 arguments
 
 :    1. `int` `$program` 
@@ -15,8 +13,6 @@ arguments
     4. `int` `$v1` 
     5. `int` `$v2` 
     6. `int` `$v3` 
-
-
 
 ---
      

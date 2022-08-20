@@ -5,15 +5,11 @@ Returns the location of a uniform variable
 function glGetUniformLocation(int $program, string $name) : int
 ```
 
-
-
 arguments
 
 :    1. `int` `$program` Specifies the program object to be queried.
     2. `string` `$name` Points to a null terminated string containing the name of
     the uniform variable whose location is to be queried.
-
-
 
 ---
      

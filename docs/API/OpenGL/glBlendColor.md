@@ -5,8 +5,6 @@ set the blend color
 function glBlendColor(float $red, float $green, float $blue, float $alpha) : void
 ```
 
-
-
 arguments
 
 :    1. `float` `$red` specify the components of
@@ -14,8 +12,6 @@ arguments
     2. `float` `$green` 
     3. `float` `$blue` 
     4. `float` `$alpha` 
-
-
 
 ---
      

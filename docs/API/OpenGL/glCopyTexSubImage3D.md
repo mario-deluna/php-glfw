@@ -5,8 +5,6 @@ copy a three-dimensional texture subimage
 function glCopyTexSubImage3D(int $target, int $level, int $xoffset, int $yoffset, int $zoffset, int $x, int $y, int $width, int $height) : void
 ```
 
-
-
 arguments
 
 :    1. `int` `$target` Specifies the target to which the texture object is bound
@@ -26,8 +24,6 @@ arguments
     7. `int` `$y` 
     8. `int` `$width` Specifies the width of the texture subimage.
     9. `int` `$height` Specifies the height of the texture subimage.
-
-
 
 ---
      

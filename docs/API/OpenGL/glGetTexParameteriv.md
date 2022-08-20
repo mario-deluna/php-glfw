@@ -5,15 +5,11 @@ glGetTexParameteriv
 function glGetTexParameteriv(int $target, int $pname, ?bool &...$params) : void
 ```
 
-
-
 arguments
 
 :    1. `int` `$target` 
     2. `int` `$pname` 
     3. `?bool` `$params` 
-
-
 
 ---
      

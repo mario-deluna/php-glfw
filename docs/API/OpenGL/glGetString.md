@@ -5,8 +5,6 @@ return a string describing the current GL connection
 function glGetString(int $name) : string
 ```
 
-
-
 arguments
 
 :    1. `int` `$name` Specifies a symbolic constant, one of
@@ -14,8 +12,6 @@ arguments
     <constant>GL_VERSION</constant>, or
     <constant>GL_SHADING_LANGUAGE_VERSION</constant>. Additionally, glGetStringi
     accepts the <constant>GL_EXTENSIONS</constant> token.
-
-
 
 ---
      

@@ -6,16 +6,12 @@ reached the GL server but have not yet necessarily executed.
 function glQueryCounter(int $id, int $target) : void
 ```
 
-
-
 arguments
 
 :    1. `int` `$id` Specify the name of a query object into which to record the GL
     time.
     2. `int` `$target` Specify the counter to query. target must be
     <constant>GL_TIMESTAMP</constant>.
-
-
 
 ---
      

@@ -5,8 +5,6 @@ specify a logical pixel operation for rendering
 function glLogicOp(int $opcode) : void
 ```
 
-
-
 arguments
 
 :    1. `int` `$opcode` Specifies a symbolic constant that selects a logical
@@ -20,8 +18,6 @@ arguments
     <constant>GL_AND_INVERTED</constant>, <constant>GL_OR_REVERSE</constant>, and
     <constant>GL_OR_INVERTED</constant>. The initial value is
     <constant>GL_COPY</constant>.
-
-
 
 ---
      

@@ -5,8 +5,6 @@ glUniform4d
 function glUniform4d(int $location, float $x, float $y, float $z, float $w) : void
 ```
 
-
-
 arguments
 
 :    1. `int` `$location` 
@@ -14,8 +12,6 @@ arguments
     3. `float` `$y` 
     4. `float` `$z` 
     5. `float` `$w` 
-
-
 
 ---
      

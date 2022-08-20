@@ -5,15 +5,11 @@ glUniformMatrix2fv
 function glUniformMatrix2fv(int $location, bool $transpose, \GL\Buffer\FloatBuffer|array $value) : void
 ```
 
-
-
 arguments
 
 :    1. `int` `$location` 
     2. `bool` `$transpose` 
     3. `\GL\Buffer\FloatBuffer|array` `$value` 
-
-
 
 ---
      

@@ -5,14 +5,10 @@ Validates a program object
 function glValidateProgram(int $program) : void
 ```
 
-
-
 arguments
 
 :    1. `int` `$program` Specifies the handle of the program object to be
     validated.
-
-
 
 ---
      

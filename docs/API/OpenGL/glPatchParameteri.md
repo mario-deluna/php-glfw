@@ -5,14 +5,10 @@ glPatchParameteri
 function glPatchParameteri(int $pname, int $value) : void
 ```
 
-
-
 arguments
 
 :    1. `int` `$pname` 
     2. `int` `$value` 
-
-
 
 ---
      

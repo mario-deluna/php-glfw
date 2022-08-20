@@ -5,10 +5,5 @@ glfwDefaultWindowHints
 function glfwDefaultWindowHints() : void
 ```
 
-
-
-
-
-
 ---
      

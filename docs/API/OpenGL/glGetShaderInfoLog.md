@@ -5,7 +5,10 @@ Returns the information log for a shader object
 function glGetShaderInfoLog(int $shader, int $bufSize) : string
 ```
 
+!!! hint "PHP-GLFW Note"
 
+    In the PHP extension this function directly returns the error
+    string instead of being passed by reference as an argument.
 
 arguments
 
@@ -13,8 +16,6 @@ arguments
     queried.
     2. `int` `$bufSize` Specifies the size of the character buffer for storing
     the returned information log.
-
-
 
 ---
      

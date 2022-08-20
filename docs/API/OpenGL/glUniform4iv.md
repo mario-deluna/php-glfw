@@ -5,14 +5,10 @@ glUniform4iv
 function glUniform4iv(int $location, \GL\Buffer\IntBuffer|array $value) : void
 ```
 
-
-
 arguments
 
 :    1. `int` `$location` 
     2. `\GL\Buffer\IntBuffer|array` `$value` 
-
-
 
 ---
      

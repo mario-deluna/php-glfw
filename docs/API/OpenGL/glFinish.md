@@ -5,11 +5,6 @@ block until all GL execution is complete
 function glFinish() : void
 ```
 
-
-
-
-
-
 ---
      
 

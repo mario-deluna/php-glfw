@@ -5,8 +5,6 @@ set front and back function and reference value for stencil testing
 function glStencilFunc(int $func, int $ref, int $mask) : void
 ```
 
-
-
 arguments
 
 :    1. `int` `$func` Specifies the test function. Eight symbolic constants are
@@ -21,8 +19,6 @@ arguments
     3. `int` `$mask` Specifies a mask that is ANDed with both the reference value
     and the stored stencil value when the test is done. The initial value is all
     1's.
-
-
 
 ---
      

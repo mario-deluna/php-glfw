@@ -5,14 +5,10 @@ specify the clear value for the stencil buffer
 function glClearStencil(int $s) : void
 ```
 
-
-
 arguments
 
 :    1. `int` `$s` Specifies the index used when the stencil buffer is cleared.
     The initial value is 0.
-
-
 
 ---
      

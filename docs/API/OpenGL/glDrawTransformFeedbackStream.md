@@ -6,8 +6,6 @@ feedback object
 function glDrawTransformFeedbackStream(int $mode, int $id, int $stream) : void
 ```
 
-
-
 arguments
 
 :    1. `int` `$mode` Specifies what kind of primitives to render. Symbolic
@@ -24,8 +22,6 @@ arguments
     to retrieve a primitive count.
     3. `int` `$stream` Specifies the index of the transform feedback stream from
     which to retrieve a primitive count.
-
-
 
 ---
      

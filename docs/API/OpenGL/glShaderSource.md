@@ -16,8 +16,6 @@ arguments
     2. `string` `$source` Specifies a string containing the source code to be
     loaded into the shader.
 
-
-
 ---
      
 

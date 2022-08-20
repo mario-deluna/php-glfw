@@ -6,15 +6,11 @@ rendering
 function glVertexAttribDivisor(int $index, int $divisor) : void
 ```
 
-
-
 arguments
 
 :    1. `int` `$index` Specify the index of the generic vertex attribute.
     2. `int` `$divisor` Specify the number of instances that will pass between
     updates of the generic attribute at slot index.
-
-
 
 ---
      

@@ -5,10 +5,5 @@ glfwInit
 function glfwInit() : int
 ```
 
-
-
-
-
-
 ---
      

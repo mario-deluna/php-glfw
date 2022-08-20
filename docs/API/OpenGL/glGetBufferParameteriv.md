@@ -5,8 +5,6 @@ return parameters of a buffer object
 function glGetBufferParameteriv(int $target, int $pname, int &$params) : void
 ```
 
-
-
 arguments
 
 :    1. `int` `$target` Specifies the target to which the buffer object is bound
@@ -14,8 +12,6 @@ arguments
     buffer binding targets in the following table:
     2. `int` `$pname` 
     3. `int` `$params` 
-
-
 
 ---
      

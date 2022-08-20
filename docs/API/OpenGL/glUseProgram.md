@@ -5,14 +5,10 @@ Installs a program object as part of current rendering state
 function glUseProgram(int $program) : void
 ```
 
-
-
 arguments
 
 :    1. `int` `$program` Specifies the handle of the program object whose
     executables are to be used as part of current rendering state.
-
-
 
 ---
      

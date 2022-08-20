@@ -5,13 +5,9 @@ glDisable
 function glDisable(int $cap) : void
 ```
 
-
-
 arguments
 
 :    1. `int` `$cap` 
-
-
 
 ---
      

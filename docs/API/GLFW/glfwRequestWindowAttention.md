@@ -5,13 +5,9 @@ glfwRequestWindowAttention
 function glfwRequestWindowAttention(\GLFWwindow $window) : void
 ```
 
-
-
 arguments
 
 :    1. `\GLFWwindow` `$window` 
-
-
 
 ---
      

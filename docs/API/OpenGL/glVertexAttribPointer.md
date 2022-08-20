@@ -5,8 +5,6 @@ define an array of generic vertex attribute data
 function glVertexAttribPointer(int $index, int $size, int $type, bool $normalized, int $stride, int $offset) : void
 ```
 
-
-
 arguments
 
 :    1. `int` `$index` Specifies the index of the generic vertex attribute to be
@@ -36,8 +34,6 @@ arguments
     vertex attributes. If stride is 0, the generic vertex attributes are
     understood to be tightly packed in the array. The initial value is 0.
     6. `int` `$offset` 
-
-
 
 ---
      

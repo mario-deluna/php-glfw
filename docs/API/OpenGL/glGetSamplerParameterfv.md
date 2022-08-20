@@ -5,15 +5,11 @@ glGetSamplerParameterfv
 function glGetSamplerParameterfv(int $sampler, int $pname, float &$params) : void
 ```
 
-
-
 arguments
 
 :    1. `int` `$sampler` 
     2. `int` `$pname` 
     3. `float` `$params` 
-
-
 
 ---
      

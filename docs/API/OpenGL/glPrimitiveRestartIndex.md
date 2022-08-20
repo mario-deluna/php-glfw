@@ -5,14 +5,10 @@ specify the primitive restart index
 function glPrimitiveRestartIndex(int $index) : void
 ```
 
-
-
 arguments
 
 :    1. `int` `$index` Specifies the value to be interpreted as the primitive
     restart index.
-
-
 
 ---
      

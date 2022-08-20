@@ -5,8 +5,6 @@ draw multiple instances of a range of elements
 function glDrawArraysInstanced(int $mode, int $first, int $count, int $instancecount) : void
 ```
 
-
-
 arguments
 
 :    1. `int` `$mode` Specifies what kind of primitives to render. Symbolic
@@ -22,8 +20,6 @@ arguments
     3. `int` `$count` Specifies the number of indices to be rendered.
     4. `int` `$instancecount` Specifies the number of instances of the specified
     range of indices to be rendered.
-
-
 
 ---
      

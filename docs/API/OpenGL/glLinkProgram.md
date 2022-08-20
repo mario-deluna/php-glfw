@@ -5,13 +5,9 @@ Links a program object
 function glLinkProgram(int $program) : void
 ```
 
-
-
 arguments
 
 :    1. `int` `$program` Specifies the handle of the program object to be linked.
-
-
 
 ---
      

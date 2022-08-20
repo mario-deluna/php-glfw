@@ -5,13 +5,9 @@ glfwGetMonitorName
 function glfwGetMonitorName(\GLFWmonitor $monitor) : string
 ```
 
-
-
 arguments
 
 :    1. `\GLFWmonitor` `$monitor` 
-
-
 
 ---
      

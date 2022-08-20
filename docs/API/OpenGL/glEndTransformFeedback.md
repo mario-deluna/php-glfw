@@ -5,11 +5,6 @@ glEndTransformFeedback
 function glEndTransformFeedback() : void
 ```
 
-
-
-
-
-
 ---
      
 

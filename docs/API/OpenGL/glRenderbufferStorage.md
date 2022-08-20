@@ -6,8 +6,6 @@ establish data storage, format and dimensions of a
 function glRenderbufferStorage(int $target, int $internalformat, int $width, int $height) : void
 ```
 
-
-
 arguments
 
 :    1. `int` `$target` Specifies a binding target of the allocation for
@@ -16,8 +14,6 @@ arguments
     renderbuffer object's image.
     3. `int` `$width` Specifies the width of the renderbuffer, in pixels.
     4. `int` `$height` Specifies the height of the renderbuffer, in pixels.
-
-
 
 ---
      

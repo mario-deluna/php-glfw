@@ -5,15 +5,11 @@ glGetUniformSubroutineuiv
 function glGetUniformSubroutineuiv(int $shadertype, int $location, int &$params) : void
 ```
 
-
-
 arguments
 
 :    1. `int` `$shadertype` 
     2. `int` `$location` 
     3. `int` `$params` 
-
-
 
 ---
      

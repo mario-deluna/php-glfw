@@ -5,15 +5,11 @@ glTexParameteriv
 function glTexParameteriv(int $target, int $pname, \GL\Buffer\IntBuffer|array $params) : void
 ```
 
-
-
 arguments
 
 :    1. `int` `$target` 
     2. `int` `$pname` 
     3. `\GL\Buffer\IntBuffer|array` `$params` 
-
-
 
 ---
      

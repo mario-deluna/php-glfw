@@ -5,14 +5,10 @@ generate texture names
 function glGenTextures(int $n, ?int &...$textures) : void
 ```
 
-
-
 arguments
 
 :    1. `int` `$n` Specifies the number of texture names to be generated.
     2. `?int` `$textures` 
-
-
 
 ---
      

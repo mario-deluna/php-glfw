@@ -5,15 +5,11 @@ glSamplerParameterfv
 function glSamplerParameterfv(int $sampler, int $pname, \GL\Buffer\FloatBuffer|array $param) : void
 ```
 
-
-
 arguments
 
 :    1. `int` `$sampler` 
     2. `int` `$pname` 
     3. `\GL\Buffer\FloatBuffer|array` `$param` 
-
-
 
 ---
      

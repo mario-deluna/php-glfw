@@ -5,13 +5,9 @@ specifiy the vertex to be used as the source of data for flat shaded varyings
 function glProvokingVertex(int $mode) : void
 ```
 
-
-
 arguments
 
 :    1. `int` `$mode` 
-
-
 
 ---
      

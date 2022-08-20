@@ -5,14 +5,10 @@ generate sampler object names
 function glGenSamplers(int $count, ?int &...$samplers) : void
 ```
 
-
-
 arguments
 
 :    1. `int` `$count` 
     2. `?int` `$samplers` 
-
-
 
 ---
      

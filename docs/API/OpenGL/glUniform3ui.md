@@ -5,16 +5,12 @@ glUniform3ui
 function glUniform3ui(int $location, int $v0, int $v1, int $v2) : void
 ```
 
-
-
 arguments
 
 :    1. `int` `$location` 
     2. `int` `$v0` 
     3. `int` `$v1` 
     4. `int` `$v2` 
-
-
 
 ---
      

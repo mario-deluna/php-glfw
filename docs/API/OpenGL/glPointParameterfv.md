@@ -5,14 +5,10 @@ glPointParameterfv
 function glPointParameterfv(int $pname, \GL\Buffer\FloatBuffer|array $params) : void
 ```
 
-
-
 arguments
 
 :    1. `int` `$pname` 
     2. `\GL\Buffer\FloatBuffer|array` `$params` 
-
-
 
 ---
      

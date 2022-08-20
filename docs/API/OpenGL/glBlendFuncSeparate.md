@@ -5,16 +5,12 @@ specify pixel arithmetic for RGB and alpha components separately
 function glBlendFuncSeparate(int $sfactorRGB, int $dfactorRGB, int $sfactorAlpha, int $dfactorAlpha) : void
 ```
 
-
-
 arguments
 
 :    1. `int` `$sfactorRGB` 
     2. `int` `$dfactorRGB` 
     3. `int` `$sfactorAlpha` 
     4. `int` `$dfactorAlpha` 
-
-
 
 ---
      

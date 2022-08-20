@@ -5,14 +5,10 @@ glTexCoordP1uiv
 function glTexCoordP1uiv(int $type, \GL\Buffer\UIntBuffer|array $coords) : void
 ```
 
-
-
 arguments
 
 :    1. `int` `$type` 
     2. `\GL\Buffer\UIntBuffer|array` `$coords` 
-
-
 
 ---
      

@@ -5,14 +5,10 @@ glGetDoublev
 function glGetDoublev(int $pname, ?bool &...$data) : void
 ```
 
-
-
 arguments
 
 :    1. `int` `$pname` 
     2. `?bool` `$data` 
-
-
 
 ---
      

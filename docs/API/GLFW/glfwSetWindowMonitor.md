@@ -5,8 +5,6 @@ glfwSetWindowMonitor
 function glfwSetWindowMonitor(\GLFWwindow $window, \GLFWmonitor $monitor, int $xpos, int $ypos, int $width, int $height, int $refreshRate) : void
 ```
 
-
-
 arguments
 
 :    1. `\GLFWwindow` `$window` 
@@ -16,8 +14,6 @@ arguments
     5. `int` `$width` 
     6. `int` `$height` 
     7. `int` `$refreshRate` 
-
-
 
 ---
      

@@ -5,8 +5,6 @@ bind a range within a buffer object to an indexed buffer target
 function glBindBufferRange(int $target, int $index, int $buffer, int $offset, int $size) : void
 ```
 
-
-
 arguments
 
 :    1. `int` `$target` Specify the target of the bind operation. target must be
@@ -22,8 +20,6 @@ arguments
     object buffer.
     5. `int` `$size` The amount of data in machine units that can be read from
     the buffer object while used as an indexed target.
-
-
 
 ---
      

@@ -5,8 +5,6 @@ copy pixels into a 2D texture image
 function glCopyTexImage2D(int $target, int $level, int $internalformat, int $x, int $y, int $width, int $height, int $border) : void
 ```
 
-
-
 arguments
 
 :    1. `int` `$target` Specifies the target texture. Must be
@@ -49,8 +47,6 @@ arguments
     6. `int` `$width` Specifies the width of the texture image.
     7. `int` `$height` Specifies the height of the texture image.
     8. `int` `$border` Must be 0.
-
-
 
 ---
      

@@ -5,16 +5,12 @@ glGetActiveUniformBlockiv
 function glGetActiveUniformBlockiv(int $program, int $uniformBlockIndex, int $pname, int &$params) : void
 ```
 
-
-
 arguments
 
 :    1. `int` `$program` 
     2. `int` `$uniformBlockIndex` 
     3. `int` `$pname` 
     4. `int` `$params` 
-
-
 
 ---
      

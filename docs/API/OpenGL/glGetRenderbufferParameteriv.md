@@ -5,15 +5,11 @@ glGetRenderbufferParameteriv
 function glGetRenderbufferParameteriv(int $target, int $pname, int &$params) : void
 ```
 
-
-
 arguments
 
 :    1. `int` `$target` 
     2. `int` `$pname` 
     3. `int` `$params` 
-
-
 
 ---
      

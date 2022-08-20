@@ -5,13 +5,9 @@ enable or disable server-side GL capabilities
 function glEnable(int $cap) : void
 ```
 
-
-
 arguments
 
 :    1. `int` `$cap` Specifies a symbolic constant indicating a GL capability.
-
-
 
 ---
      

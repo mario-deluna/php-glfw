@@ -6,8 +6,6 @@ equation
 function glBlendEquation(int $mode) : void
 ```
 
-
-
 arguments
 
 :    1. `int` `$mode` specifies how source and destination colors are combined. It
@@ -15,8 +13,6 @@ arguments
     <constant>GL_FUNC_SUBTRACT</constant>,
     <constant>GL_FUNC_REVERSE_SUBTRACT</constant>, <constant>GL_MIN</constant>,
     <constant>GL_MAX</constant>.
-
-
 
 ---
      

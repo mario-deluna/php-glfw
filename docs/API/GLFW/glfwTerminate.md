@@ -5,10 +5,5 @@ glfwTerminate
 function glfwTerminate() : void
 ```
 
-
-
-
-
-
 ---
      

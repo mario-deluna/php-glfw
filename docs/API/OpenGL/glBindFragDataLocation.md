@@ -5,8 +5,6 @@ bind a user-defined varying out variable to a fragment shader color number
 function glBindFragDataLocation(int $program, int $color, string $name) : void
 ```
 
-
-
 arguments
 
 :    1. `int` `$program` The name of the program containing varying out variable
@@ -14,8 +12,6 @@ arguments
     2. `int` `$color` 
     3. `string` `$name` The name of the user-defined varying out variable whose
     binding to modify
-
-
 
 ---
      

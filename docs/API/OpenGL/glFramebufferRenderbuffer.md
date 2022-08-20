@@ -5,8 +5,6 @@ attach a renderbuffer as a logical buffer of a framebuffer object
 function glFramebufferRenderbuffer(int $target, int $attachment, int $renderbuffertarget, int $renderbuffer) : void
 ```
 
-
-
 arguments
 
 :    1. `int` `$target` Specifies the target to which the framebuffer is bound for
@@ -16,8 +14,6 @@ arguments
     <constant>GL_RENDERBUFFER</constant>.
     4. `int` `$renderbuffer` Specifies the name of an existing renderbuffer
     object of type renderbuffertarget to attach.
-
-
 
 ---
      

@@ -5,14 +5,10 @@ glUniformSubroutinesuiv
 function glUniformSubroutinesuiv(int $shadertype, \GL\Buffer\UIntBuffer|array $indices) : void
 ```
 
-
-
 arguments
 
 :    1. `int` `$shadertype` 
     2. `\GL\Buffer\UIntBuffer|array` `$indices` 
-
-
 
 ---
      

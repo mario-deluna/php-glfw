@@ -5,14 +5,10 @@ bind a framebuffer to a framebuffer target
 function glBindFramebuffer(int $target, int $framebuffer) : void
 ```
 
-
-
 arguments
 
 :    1. `int` `$target` Specifies the framebuffer target of the binding operation.
     2. `int` `$framebuffer` Specifies the name of the framebuffer object to bind.
-
-
 
 ---
      

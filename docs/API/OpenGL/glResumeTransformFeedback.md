@@ -5,11 +5,6 @@ resume transform feedback operations
 function glResumeTransformFeedback() : void
 ```
 
-
-
-
-
-
 ---
      
 

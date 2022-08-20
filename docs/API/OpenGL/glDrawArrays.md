@@ -5,8 +5,6 @@ render primitives from array data
 function glDrawArrays(int $mode, int $first, int $count) : void
 ```
 
-
-
 arguments
 
 :    1. `int` `$mode` Specifies what kind of primitives to render. Symbolic
@@ -21,8 +19,6 @@ arguments
     <constant>GL_PATCHES</constant> are accepted.
     2. `int` `$first` Specifies the starting index in the enabled arrays.
     3. `int` `$count` Specifies the number of indices to be rendered.
-
-
 
 ---
      

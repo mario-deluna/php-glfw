@@ -5,8 +5,6 @@ return parameters of a query object target
 function glGetQueryiv(int $target, int $pname, int &$params) : void
 ```
 
-
-
 arguments
 
 :    1. `int` `$target` Specifies a query object target. Must be
@@ -20,8 +18,6 @@ arguments
     parameter. Accepted values are <constant>GL_CURRENT_QUERY</constant> or
     <constant>GL_QUERY_COUNTER_BITS</constant>.
     3. `int` `$params` Returns the requested data.
-
-
 
 ---
      

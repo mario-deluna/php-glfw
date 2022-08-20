@@ -5,8 +5,6 @@ attach a buffer object's data store to a buffer texture object
 function glTexBuffer(int $target, int $internalformat, int $buffer) : void
 ```
 
-
-
 arguments
 
 :    1. `int` `$target` Specifies the target to which the texture is bound for
@@ -15,8 +13,6 @@ arguments
     store belonging to buffer.
     3. `int` `$buffer` Specifies the name of the buffer object whose storage to
     attach to the active buffer texture.
-
-
 
 ---
      

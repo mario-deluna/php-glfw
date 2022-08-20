@@ -5,15 +5,11 @@ glClearBufferiv
 function glClearBufferiv(int $buffer, int $drawbuffer, \GL\Buffer\IntBuffer|array $value) : void
 ```
 
-
-
 arguments
 
 :    1. `int` `$buffer` 
     2. `int` `$drawbuffer` 
     3. `\GL\Buffer\IntBuffer|array` `$value` 
-
-
 
 ---
      

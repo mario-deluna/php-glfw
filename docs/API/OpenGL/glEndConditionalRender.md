@@ -5,11 +5,6 @@ glEndConditionalRender
 function glEndConditionalRender() : void
 ```
 
-
-
-
-
-
 ---
      
 

@@ -5,14 +5,10 @@ generate query object names
 function glGenQueries(int $n, ?int &...$ids) : void
 ```
 
-
-
 arguments
 
 :    1. `int` `$n` Specifies the number of query object names to be generated.
     2. `?int` `$ids` 
-
-
 
 ---
      

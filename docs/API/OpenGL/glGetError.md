@@ -5,11 +5,6 @@ return error information
 function glGetError() : int
 ```
 
-
-
-
-
-
 ---
      
 

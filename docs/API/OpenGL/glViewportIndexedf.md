@@ -5,8 +5,6 @@ glViewportIndexedf
 function glViewportIndexedf(int $index, float $x, float $y, float $w, float $h) : void
 ```
 
-
-
 arguments
 
 :    1. `int` `$index` 
@@ -14,8 +12,6 @@ arguments
     3. `float` `$y` 
     4. `float` `$w` 
     5. `float` `$h` 
-
-
 
 ---
      

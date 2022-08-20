@@ -5,8 +5,6 @@ set the RGB blend equation and the alpha blend equation separately
 function glBlendEquationSeparate(int $modeRGB, int $modeAlpha) : void
 ```
 
-
-
 arguments
 
 :    1. `int` `$modeRGB` specifies the RGB blend equation, how the red, green, and
@@ -19,8 +17,6 @@ arguments
     <constant>GL_FUNC_ADD</constant>, <constant>GL_FUNC_SUBTRACT</constant>,
     <constant>GL_FUNC_REVERSE_SUBTRACT</constant>, <constant>GL_MIN</constant>,
     <constant>GL_MAX</constant>.
-
-
 
 ---
      

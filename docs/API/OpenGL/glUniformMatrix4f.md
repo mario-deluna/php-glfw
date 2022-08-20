@@ -5,15 +5,16 @@ Sets a matrix (mat4x4) uniform value to the current shader program.
 function glUniformMatrix4f(int $location, bool $transpose, \GL\Math\Mat4 $matrix) : void
 ```
 
+!!! hint "PHP-GLFW Note"
 
+    This method is specifc to the php extension and not part of the
+    original OpenGL API.
 
 arguments
 
 :    1. `int` `$location` 
     2. `bool` `$transpose` 
     3. `\GL\Math\Mat4` `$matrix` 
-
-
 
 ---
      

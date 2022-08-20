@@ -5,15 +5,11 @@ glProgramUniform4iv
 function glProgramUniform4iv(int $program, int $location, \GL\Buffer\IntBuffer|array $value) : void
 ```
 
-
-
 arguments
 
 :    1. `int` `$program` 
     2. `int` `$location` 
     3. `\GL\Buffer\IntBuffer|array` `$value` 
-
-
 
 ---
      

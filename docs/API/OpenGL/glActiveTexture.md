@@ -5,8 +5,6 @@ select active texture unit
 function glActiveTexture(int $texture) : void
 ```
 
-
-
 arguments
 
 :    1. `int` `$texture` Specifies which texture unit to make active. The number
@@ -14,8 +12,6 @@ arguments
     texture must be one of <constant>GL_TEXTURE</constant>i, where i ranges from
     zero to the value of <constant>GL_MAX_COMBINED_TEXTURE_IMAGE_UNITS</constant>
     minus one. The initial value is <constant>GL_TEXTURE0</constant>.
-
-
 
 ---
      

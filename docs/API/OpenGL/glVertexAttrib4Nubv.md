@@ -5,14 +5,10 @@ glVertexAttrib4Nubv
 function glVertexAttrib4Nubv(int $index, \GL\Buffer\UbyteBuffer|array $v) : void
 ```
 
-
-
 arguments
 
 :    1. `int` `$index` 
     2. `\GL\Buffer\UbyteBuffer|array` `$v` 
-
-
 
 ---
      

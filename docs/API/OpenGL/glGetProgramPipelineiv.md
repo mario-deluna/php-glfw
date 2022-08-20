@@ -5,15 +5,11 @@ glGetProgramPipelineiv
 function glGetProgramPipelineiv(int $pipeline, int $pname, int &$params) : void
 ```
 
-
-
 arguments
 
 :    1. `int` `$pipeline` 
     2. `int` `$pname` 
     3. `int` `$params` 
-
-
 
 ---
      

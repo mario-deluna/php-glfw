@@ -5,8 +5,6 @@ Associates a generic vertex attribute index with a named attribute variable
 function glBindAttribLocation(int $program, int $index, string $name) : void
 ```
 
-
-
 arguments
 
 :    1. `int` `$program` Specifies the handle of the program object in which the
@@ -15,8 +13,6 @@ arguments
     bound.
     3. `string` `$name` Specifies a null terminated string containing the name of
     the vertex shader attribute variable to which index is to be bound.
-
-
 
 ---
      

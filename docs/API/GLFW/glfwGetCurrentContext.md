@@ -5,10 +5,5 @@ glfwGetCurrentContext
 function glfwGetCurrentContext() : \GLFWwindow
 ```
 
-
-
-
-
-
 ---
      

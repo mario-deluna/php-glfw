@@ -5,11 +5,6 @@ release resources consumed by the implementation's shader compiler
 function glReleaseShaderCompiler() : void
 ```
 
-
-
-
-
-
 ---
      
 

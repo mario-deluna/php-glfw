@@ -5,13 +5,9 @@ determine if a name corresponds to a sampler object
 function glIsSampler(int $sampler) : bool
 ```
 
-
-
 arguments
 
 :    1. `int` `$sampler` 
-
-
 
 ---
      

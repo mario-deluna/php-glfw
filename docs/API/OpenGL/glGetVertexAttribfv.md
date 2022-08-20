@@ -5,15 +5,11 @@ glGetVertexAttribfv
 function glGetVertexAttribfv(int $index, int $pname, float &$params) : void
 ```
 
-
-
 arguments
 
 :    1. `int` `$index` 
     2. `int` `$pname` 
     3. `float` `$params` 
-
-
 
 ---
      

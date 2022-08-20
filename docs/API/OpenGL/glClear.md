@@ -5,16 +5,12 @@ clear buffers to preset values
 function glClear(int $mask) : void
 ```
 
-
-
 arguments
 
 :    1. `int` `$mask` Bitwise OR of masks that indicate the buffers to be cleared.
     The three masks are <constant>GL_COLOR_BUFFER_BIT</constant>,
     <constant>GL_DEPTH_BUFFER_BIT</constant>, and
     <constant>GL_STENCIL_BUFFER_BIT</constant>.
-
-
 
 ---
      

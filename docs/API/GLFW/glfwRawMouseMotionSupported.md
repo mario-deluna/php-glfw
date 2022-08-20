@@ -5,10 +5,5 @@ glfwRawMouseMotionSupported
 function glfwRawMouseMotionSupported() : int
 ```
 
-
-
-
-
-
 ---
      

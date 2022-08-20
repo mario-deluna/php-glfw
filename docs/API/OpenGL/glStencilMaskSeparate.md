@@ -6,8 +6,6 @@ planes
 function glStencilMaskSeparate(int $face, int $mask) : void
 ```
 
-
-
 arguments
 
 :    1. `int` `$face` Specifies whether the front and/or back stencil writemask is
@@ -15,8 +13,6 @@ arguments
     <constant>GL_BACK</constant>, and <constant>GL_FRONT_AND_BACK</constant>.
     2. `int` `$mask` Specifies a bit mask to enable and disable writing of
     individual bits in the stencil planes. Initially, the mask is all 1's.
-
-
 
 ---
      

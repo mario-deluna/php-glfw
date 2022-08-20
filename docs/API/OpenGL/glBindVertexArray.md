@@ -5,13 +5,9 @@ bind a vertex array object
 function glBindVertexArray(int $array) : void
 ```
 
-
-
 arguments
 
 :    1. `int` `$array` Specifies the name of the vertex array to bind.
-
-
 
 ---
      

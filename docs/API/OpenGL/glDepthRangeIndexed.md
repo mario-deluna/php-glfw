@@ -6,16 +6,12 @@ coordinates for a specified viewport
 function glDepthRangeIndexed(int $index, float $n, float $f) : void
 ```
 
-
-
 arguments
 
 :    1. `int` `$index` Specifies the index of the viewport whose depth range to
     update.
     2. `float` `$n` 
     3. `float` `$f` 
-
-
 
 ---
      

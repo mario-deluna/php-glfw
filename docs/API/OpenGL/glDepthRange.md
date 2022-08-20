@@ -6,14 +6,10 @@ coordinates
 function glDepthRange(float $n, float $f) : void
 ```
 
-
-
 arguments
 
 :    1. `float` `$n` 
     2. `float` `$f` 
-
-
 
 ---
      

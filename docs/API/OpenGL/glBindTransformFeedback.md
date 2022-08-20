@@ -5,8 +5,6 @@ bind a transform feedback object
 function glBindTransformFeedback(int $target, int $id) : void
 ```
 
-
-
 arguments
 
 :    1. `int` `$target` Specifies the target to which to bind the transform
@@ -14,8 +12,6 @@ arguments
     <constant>GL_TRANSFORM_FEEDBACK</constant>.
     2. `int` `$id` Specifies the name of a transform feedback object reserved by
     glGenTransformFeedbacks.
-
-
 
 ---
      

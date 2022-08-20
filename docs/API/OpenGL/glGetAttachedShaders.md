@@ -5,8 +5,6 @@ Returns the handles of the shader objects attached to a program object
 function glGetAttachedShaders(int $program, int $maxCount, int &$count, int &$shaders) : void
 ```
 
-
-
 arguments
 
 :    1. `int` `$program` Specifies the program object to be queried.
@@ -15,8 +13,6 @@ arguments
     3. `int` `$count` Returns the number of names actually returned in shaders.
     4. `int` `$shaders` Specifies an array that is used to return the names of
     attached shader objects.
-
-
 
 ---
      

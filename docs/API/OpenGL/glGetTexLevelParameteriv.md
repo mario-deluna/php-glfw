@@ -5,16 +5,12 @@ glGetTexLevelParameteriv
 function glGetTexLevelParameteriv(int $target, int $level, int $pname, int &$params) : void
 ```
 
-
-
 arguments
 
 :    1. `int` `$target` 
     2. `int` `$level` 
     3. `int` `$pname` 
     4. `int` `$params` 
-
-
 
 ---
      

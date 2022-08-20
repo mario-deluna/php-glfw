@@ -5,16 +5,12 @@ glProgramUniformMatrix3x2dv
 function glProgramUniformMatrix3x2dv(int $program, int $location, bool $transpose, \GL\Buffer\DoubleBuffer|array $value) : void
 ```
 
-
-
 arguments
 
 :    1. `int` `$program` 
     2. `int` `$location` 
     3. `bool` `$transpose` 
     4. `\GL\Buffer\DoubleBuffer|array` `$value` 
-
-
 
 ---
      

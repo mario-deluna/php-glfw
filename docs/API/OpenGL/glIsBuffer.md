@@ -5,13 +5,9 @@ determine if a name corresponds to a buffer object
 function glIsBuffer(int $buffer) : bool
 ```
 
-
-
 arguments
 
 :    1. `int` `$buffer` Specifies a value that may be the name of a buffer object.
-
-
 
 ---
      

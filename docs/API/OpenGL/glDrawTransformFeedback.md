@@ -5,8 +5,6 @@ render primitives using a count derived from a transform feedback object
 function glDrawTransformFeedback(int $mode, int $id) : void
 ```
 
-
-
 arguments
 
 :    1. `int` `$mode` Specifies what kind of primitives to render. Symbolic
@@ -21,8 +19,6 @@ arguments
     <constant>GL_PATCHES</constant> are accepted.
     2. `int` `$id` Specifies the name of a transform feedback object from which
     to retrieve a primitive count.
-
-
 
 ---
      

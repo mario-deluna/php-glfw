@@ -5,8 +5,6 @@ glColorMaski
 function glColorMaski(int $index, bool $r, bool $g, bool $b, bool $a) : void
 ```
 
-
-
 arguments
 
 :    1. `int` `$index` 
@@ -14,8 +12,6 @@ arguments
     3. `bool` `$g` 
     4. `bool` `$b` 
     5. `bool` `$a` 
-
-
 
 ---
      

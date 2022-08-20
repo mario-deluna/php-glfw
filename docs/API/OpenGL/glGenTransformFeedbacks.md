@@ -5,15 +5,11 @@ reserve transform feedback object names
 function glGenTransformFeedbacks(int $n, ?int &...$ids) : void
 ```
 
-
-
 arguments
 
 :    1. `int` `$n` Specifies the number of transform feedback object names to
     reserve.
     2. `?int` `$ids` 
-
-
 
 ---
      

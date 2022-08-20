@@ -5,14 +5,10 @@ glVertexAttrib4Nsv
 function glVertexAttrib4Nsv(int $index, \GL\Buffer\ShortBuffer|array $v) : void
 ```
 
-
-
 arguments
 
 :    1. `int` `$index` 
     2. `\GL\Buffer\ShortBuffer|array` `$v` 
-
-
 
 ---
      

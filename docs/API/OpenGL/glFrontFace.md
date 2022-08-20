@@ -5,15 +5,11 @@ define front- and back-facing polygons
 function glFrontFace(int $mode) : void
 ```
 
-
-
 arguments
 
 :    1. `int` `$mode` Specifies the orientation of front-facing polygons.
     <constant>GL_CW</constant> and <constant>GL_CCW</constant> are accepted. The
     initial value is <constant>GL_CCW</constant>.
-
-
 
 ---
      

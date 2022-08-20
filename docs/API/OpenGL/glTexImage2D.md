@@ -5,8 +5,6 @@ specify a two-dimensional texture image
 function glTexImage2D(int $target, int $level, int $internalformat, int $width, int $height, int $border, int $format, int $type, \GL\Buffer\BufferInterface $data) : void
 ```
 
-
-
 arguments
 
 :    1. `int` `$target` Specifies the target texture. Must be
@@ -67,8 +65,6 @@ arguments
     <constant>GL_UNSIGNED_INT_10_10_10_2</constant>, and
     <constant>GL_UNSIGNED_INT_2_10_10_10_REV</constant>.
     9. `\GL\Buffer\BufferInterface` `$data` 
-
-
 
 ---
      

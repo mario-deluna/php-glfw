@@ -5,15 +5,11 @@ glMultiTexCoordP1ui
 function glMultiTexCoordP1ui(int $texture, int $type, int $coords) : void
 ```
 
-
-
 arguments
 
 :    1. `int` `$texture` 
     2. `int` `$type` 
     3. `int` `$coords` 
-
-
 
 ---
      

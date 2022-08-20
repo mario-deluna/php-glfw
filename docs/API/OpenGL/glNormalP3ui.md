@@ -5,14 +5,10 @@ glNormalP3ui
 function glNormalP3ui(int $type, int $coords) : void
 ```
 
-
-
 arguments
 
 :    1. `int` `$type` 
     2. `int` `$coords` 
-
-
 
 ---
      

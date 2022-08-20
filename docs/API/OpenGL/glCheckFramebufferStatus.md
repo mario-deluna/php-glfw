@@ -5,15 +5,11 @@ check the completeness status of a framebuffer
 function glCheckFramebufferStatus(int $target) : int
 ```
 
-
-
 arguments
 
 :    1. `int` `$target` Specify the target to which the framebuffer is bound for
     glCheckFramebufferStatus, and the target against which framebuffer
     completeness of framebuffer is checked for glCheckNamedFramebufferStatus.
-
-
 
 ---
      

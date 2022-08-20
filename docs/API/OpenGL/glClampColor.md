@@ -5,16 +5,12 @@ specify whether data read via glReadPixels should be clamped
 function glClampColor(int $target, int $clamp) : void
 ```
 
-
-
 arguments
 
 :    1. `int` `$target` Target for color clamping. target must be
     <constant>GL_CLAMP_READ_COLOR</constant>.
     2. `int` `$clamp` Specifies whether to apply color clamping. clamp must be
     <constant>GL_TRUE</constant> or <constant>GL_FALSE</constant>.
-
-
 
 ---
      

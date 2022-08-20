@@ -5,15 +5,11 @@ glBlendFunci
 function glBlendFunci(int $buf, int $src, int $dst) : void
 ```
 
-
-
 arguments
 
 :    1. `int` `$buf` 
     2. `int` `$src` 
     3. `int` `$dst` 
-
-
 
 ---
      

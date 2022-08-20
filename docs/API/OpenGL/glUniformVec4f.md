@@ -5,14 +5,15 @@ Sets a vector (vec4) uniform value to the current shader program.
 function glUniformVec4f(int $location, \GL\Math\Vec4 $vec) : void
 ```
 
+!!! hint "PHP-GLFW Note"
 
+    This method is specifc to the php extension and not part of the
+    original OpenGL API.
 
 arguments
 
 :    1. `int` `$location` 
     2. `\GL\Math\Vec4` `$vec` 
-
-
 
 ---
      

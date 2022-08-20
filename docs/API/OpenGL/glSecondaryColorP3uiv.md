@@ -5,14 +5,10 @@ glSecondaryColorP3uiv
 function glSecondaryColorP3uiv(int $type, \GL\Buffer\UIntBuffer|array $color) : void
 ```
 
-
-
 arguments
 
 :    1. `int` `$type` 
     2. `\GL\Buffer\UIntBuffer|array` `$color` 
-
-
 
 ---
      

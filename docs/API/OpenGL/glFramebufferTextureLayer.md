@@ -6,8 +6,6 @@ framebuffer object
 function glFramebufferTextureLayer(int $target, int $attachment, int $texture, int $level, int $layer) : void
 ```
 
-
-
 arguments
 
 :    1. `int` `$target` Specifies the target to which the framebuffer is bound for
@@ -17,8 +15,6 @@ arguments
     attach.
     4. `int` `$level` Specifies the mipmap level of the texture object to attach.
     5. `int` `$layer` Specifies the layer of the texture object to attach.
-
-
 
 ---
      

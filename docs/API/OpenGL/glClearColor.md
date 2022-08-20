@@ -5,8 +5,6 @@ specify clear values for the color buffers
 function glClearColor(float $red, float $green, float $blue, float $alpha) : void
 ```
 
-
-
 arguments
 
 :    1. `float` `$red` Specify the red, green, blue, and alpha values used when
@@ -14,8 +12,6 @@ arguments
     2. `float` `$green` 
     3. `float` `$blue` 
     4. `float` `$alpha` 
-
-
 
 ---
      

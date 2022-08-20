@@ -5,8 +5,6 @@ block and wait for a sync object to become signaled
 function glClientWaitSync(int $sync, int $flags, int $timeout) : int
 ```
 
-
-
 arguments
 
 :    1. `int` `$sync` The sync object whose status to wait on.
@@ -14,8 +12,6 @@ arguments
     may be <constant>GL_SYNC_FLUSH_COMMANDS_BIT</constant>.
     3. `int` `$timeout` The timeout, specified in nanoseconds, for which the
     implementation should wait for sync to become signaled.
-
-
 
 ---
      

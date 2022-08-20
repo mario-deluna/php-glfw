@@ -5,14 +5,10 @@ glEndQueryIndexed
 function glEndQueryIndexed(int $target, int $index) : void
 ```
 
-
-
 arguments
 
 :    1. `int` `$target` 
     2. `int` `$index` 
-
-
 
 ---
      

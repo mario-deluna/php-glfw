@@ -5,14 +5,10 @@ glTexCoordP2ui
 function glTexCoordP2ui(int $type, int $coords) : void
 ```
 
-
-
 arguments
 
 :    1. `int` `$type` 
     2. `int` `$coords` 
-
-
 
 ---
      

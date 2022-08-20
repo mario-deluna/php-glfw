@@ -5,13 +5,9 @@ select a color buffer source for pixels
 function glReadBuffer(int $src) : void
 ```
 
-
-
 arguments
 
 :    1. `int` `$src` 
-
-
 
 ---
      

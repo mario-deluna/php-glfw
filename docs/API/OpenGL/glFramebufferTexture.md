@@ -6,8 +6,6 @@ object
 function glFramebufferTexture(int $target, int $attachment, int $texture, int $level) : void
 ```
 
-
-
 arguments
 
 :    1. `int` `$target` Specifies the target to which the framebuffer is bound for
@@ -16,8 +14,6 @@ arguments
     3. `int` `$texture` Specifies the name of an existing texture object to
     attach.
     4. `int` `$level` Specifies the mipmap level of the texture object to attach.
-
-
 
 ---
      

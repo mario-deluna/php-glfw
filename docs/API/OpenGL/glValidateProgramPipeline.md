@@ -5,14 +5,10 @@ validate a program pipeline object against current GL state
 function glValidateProgramPipeline(int $pipeline) : void
 ```
 
-
-
 arguments
 
 :    1. `int` `$pipeline` Specifies the name of a program pipeline object to
     validate.
-
-
 
 ---
      

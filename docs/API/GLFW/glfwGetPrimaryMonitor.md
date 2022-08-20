@@ -5,10 +5,5 @@ glfwGetPrimaryMonitor
 function glfwGetPrimaryMonitor() : \GLFWmonitor
 ```
 
-
-
-
-
-
 ---
      

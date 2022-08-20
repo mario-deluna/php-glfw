@@ -6,15 +6,11 @@ space
 function glUnmapBuffer(int $target) : bool
 ```
 
-
-
 arguments
 
 :    1. `int` `$target` Specifies the target to which the buffer object is bound
     for glUnmapBuffer, which must be one of the buffer binding targets in the
     following table:
-
-
 
 ---
      

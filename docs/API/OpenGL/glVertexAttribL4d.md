@@ -5,8 +5,6 @@ glVertexAttribL4d
 function glVertexAttribL4d(int $index, float $x, float $y, float $z, float $w) : void
 ```
 
-
-
 arguments
 
 :    1. `int` `$index` 
@@ -14,8 +12,6 @@ arguments
     3. `float` `$y` 
     4. `float` `$z` 
     5. `float` `$w` 
-
-
 
 ---
      
