@@ -11,6 +11,10 @@ arguments
     2. `int` `$modeRGB` 
     3. `int` `$modeAlpha` 
 
+returns
+
+:    `void` 
+
 ---
      
 

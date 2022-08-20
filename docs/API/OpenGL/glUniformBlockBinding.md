@@ -14,6 +14,10 @@ arguments
     3. `int` `$uniformBlockBinding` Specifies the binding point to which to bind
     the uniform block with index uniformBlockIndex within program.
 
+returns
+
+:    `void` 
+
 ---
      
 

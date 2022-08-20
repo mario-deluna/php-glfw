@@ -11,6 +11,10 @@ arguments
     which must be one of the buffer binding targets in the following table:
     2. `int` `$buffer` Specifies the name of a buffer object.
 
+returns
+
+:    `void` 
+
 ---
      
 

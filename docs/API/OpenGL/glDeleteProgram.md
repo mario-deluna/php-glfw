@@ -9,6 +9,10 @@ arguments
 
 :    1. `int` `$program` Specifies the program object to be deleted.
 
+returns
+
+:    `void` 
+
 ---
      
 

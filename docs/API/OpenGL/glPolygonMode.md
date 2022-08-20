@@ -14,6 +14,10 @@ arguments
     <constant>GL_FILL</constant>. The initial value is
     <constant>GL_FILL</constant> for both front- and back-facing polygons.
 
+returns
+
+:    `void` 
+
 ---
      
 

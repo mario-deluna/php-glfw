@@ -10,6 +10,10 @@ arguments
 :    1. `int` `$id` Specifies a value that may be the name of a transform feedback
     object.
 
+returns
+
+:    `bool` 
+
 ---
      
 

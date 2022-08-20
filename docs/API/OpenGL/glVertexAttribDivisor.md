@@ -12,6 +12,10 @@ arguments
     2. `int` `$divisor` Specify the number of instances that will pass between
     updates of the generic attribute at slot index.
 
+returns
+
+:    `void` 
+
 ---
      
 

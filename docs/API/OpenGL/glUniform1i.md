@@ -10,6 +10,10 @@ arguments
 :    1. `int` `$location` 
     2. `int` `$v0` 
 
+returns
+
+:    `void` 
+
 ---
      
 

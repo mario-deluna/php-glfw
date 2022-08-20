@@ -17,6 +17,10 @@ arguments
     5. `int` `$y` 
     6. `int` `$width` Specifies the width of the texture subimage.
 
+returns
+
+:    `void` 
+
 ---
      
 

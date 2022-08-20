@@ -14,6 +14,10 @@ arguments
     3. `int` `$program` Specifies the program object containing the shader
     executables to use in pipeline.
 
+returns
+
+:    `void` 
+
 ---
      
 

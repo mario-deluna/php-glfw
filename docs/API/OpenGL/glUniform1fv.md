@@ -10,6 +10,10 @@ arguments
 :    1. `int` `$location` 
     2. `\GL\Buffer\FloatBuffer|array` `$value` 
 
+returns
+
+:    `void` 
+
 ---
      
 

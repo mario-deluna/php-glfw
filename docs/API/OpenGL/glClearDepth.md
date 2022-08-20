@@ -10,6 +10,10 @@ arguments
 :    1. `float` `$depth` Specifies the depth value used when the depth buffer is
     cleared. The initial value is 1.
 
+returns
+
+:    `void` 
+
 ---
      
 

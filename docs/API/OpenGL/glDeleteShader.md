@@ -9,6 +9,10 @@ arguments
 
 :    1. `int` `$shader` Specifies the shader object to be deleted.
 
+returns
+
+:    `void` 
+
 ---
      
 

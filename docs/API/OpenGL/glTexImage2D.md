@@ -66,6 +66,10 @@ arguments
     <constant>GL_UNSIGNED_INT_2_10_10_10_REV</constant>.
     9. `\GL\Buffer\BufferInterface` `$data` 
 
+returns
+
+:    `void` 
+
 ---
      
 

@@ -9,5 +9,9 @@ arguments
 
 :    1. `string` `$extension` 
 
+returns
+
+:    `int` 
+
 ---
      

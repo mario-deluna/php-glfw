@@ -9,6 +9,10 @@ arguments
 
 :    1. `int` `$id` Specifies a value that may be the name of a query object.
 
+returns
+
+:    `bool` 
+
 ---
      
 

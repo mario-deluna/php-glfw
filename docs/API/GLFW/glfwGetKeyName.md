@@ -10,5 +10,9 @@ arguments
 :    1. `int` `$key` 
     2. `int` `$scancode` 
 
+returns
+
+:    `string` 
+
 ---
      

@@ -5,5 +5,9 @@ glfwVulkanSupported
 function glfwVulkanSupported() : int
 ```
 
+returns
+
+:    `int` 
+
 ---
      

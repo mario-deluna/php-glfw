@@ -11,5 +11,9 @@ arguments
     2. `int` `$numer` 
     3. `int` `$denom` 
 
+returns
+
+:    `void` 
+
 ---
      

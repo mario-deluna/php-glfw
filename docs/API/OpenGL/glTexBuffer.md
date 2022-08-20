@@ -14,6 +14,10 @@ arguments
     3. `int` `$buffer` Specifies the name of the buffer object whose storage to
     attach to the active buffer texture.
 
+returns
+
+:    `void` 
+
 ---
      
 

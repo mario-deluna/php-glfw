@@ -14,6 +14,10 @@ arguments
     3. `int` `$timeout` Specifies the timeout that the server should wait before
     continuing. timeout must be <constant>GL_TIMEOUT_IGNORED</constant>.
 
+returns
+
+:    `void` 
+
 ---
      
 

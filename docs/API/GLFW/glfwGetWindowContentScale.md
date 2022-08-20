@@ -11,5 +11,9 @@ arguments
     2. `float` `$xscale` 
     3. `float` `$yscale` 
 
+returns
+
+:    `void` 
+
 ---
      

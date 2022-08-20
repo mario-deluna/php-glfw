@@ -9,6 +9,10 @@ arguments
 
 :    1. `int` `$shader` Specifies a potential shader object.
 
+returns
+
+:    `bool` 
+
 ---
      
 

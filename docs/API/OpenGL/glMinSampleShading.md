@@ -10,6 +10,10 @@ arguments
 :    1. `float` `$value` Specifies the rate at which samples are shaded within
     each covered pixel.
 
+returns
+
+:    `void` 
+
 ---
      
 

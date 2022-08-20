@@ -10,5 +10,9 @@ arguments
 :    1. `\GLFWmonitor` `$monitor` 
     2. `float` `$gamma` 
 
+returns
+
+:    `void` 
+
 ---
      

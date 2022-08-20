@@ -10,5 +10,9 @@ arguments
 :    1. `\GLFWwindow` `$window` 
     2. `int` `$key` 
 
+returns
+
+:    `int` 
+
 ---
      

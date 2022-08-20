@@ -16,6 +16,10 @@ arguments
     2. `bool` `$transpose` 
     3. `\GL\Math\Mat4` `$matrix` 
 
+returns
+
+:    `void` 
+
 ---
      
 

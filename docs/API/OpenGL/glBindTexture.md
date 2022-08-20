@@ -20,6 +20,10 @@ arguments
     <constant>GL_TEXTURE_2D_MULTISAMPLE_ARRAY</constant>.
     2. `int` `$texture` Specifies the name of a texture.
 
+returns
+
+:    `void` 
+
 ---
      
 

@@ -9,5 +9,9 @@ arguments
 
 :    1. `\GLFWmonitor` `$monitor` 
 
+returns
+
+:    `string` 
+
 ---
      

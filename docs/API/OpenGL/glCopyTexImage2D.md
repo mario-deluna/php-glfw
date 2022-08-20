@@ -48,6 +48,10 @@ arguments
     7. `int` `$height` Specifies the height of the texture image.
     8. `int` `$border` Must be 0.
 
+returns
+
+:    `void` 
+
 ---
      
 

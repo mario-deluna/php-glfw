@@ -10,6 +10,10 @@ arguments
 :    1. `int` `$index` 
     2. `float` `$x` 
 
+returns
+
+:    `void` 
+
 ---
      
 

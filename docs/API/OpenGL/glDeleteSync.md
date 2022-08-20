@@ -9,6 +9,10 @@ arguments
 
 :    1. `int` `$sync` The sync object to be deleted.
 
+returns
+
+:    `void` 
+
 ---
      
 

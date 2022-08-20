@@ -20,6 +20,10 @@ arguments
     3. `string` `$name` Specifies the name of the subroutine uniform whose index
     to query.
 
+returns
+
+:    `int` 
+
 ---
      
 

@@ -12,6 +12,10 @@ arguments
     2. `int` `$clamp` Specifies whether to apply color clamping. clamp must be
     <constant>GL_TRUE</constant> or <constant>GL_FALSE</constant>.
 
+returns
+
+:    `void` 
+
 ---
      
 

@@ -11,6 +11,10 @@ arguments
     2. `int` `$zfail` 
     3. `int` `$zpass` 
 
+returns
+
+:    `void` 
+
 ---
      
 

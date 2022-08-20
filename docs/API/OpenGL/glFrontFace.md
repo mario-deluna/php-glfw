@@ -11,6 +11,10 @@ arguments
     <constant>GL_CW</constant> and <constant>GL_CCW</constant> are accepted. The
     initial value is <constant>GL_CCW</constant>.
 
+returns
+
+:    `void` 
+
 ---
      
 

@@ -10,6 +10,10 @@ arguments
 :    1. `int` `$array` Specifies a value that may be the name of a vertex array
     object.
 
+returns
+
+:    `bool` 
+
 ---
      
 

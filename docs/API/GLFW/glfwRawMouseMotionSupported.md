@@ -5,5 +5,9 @@ glfwRawMouseMotionSupported
 function glfwRawMouseMotionSupported() : int
 ```
 
+returns
+
+:    `int` 
+
 ---
      

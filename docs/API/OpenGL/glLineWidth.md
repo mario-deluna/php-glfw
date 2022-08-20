@@ -10,6 +10,10 @@ arguments
 :    1. `float` `$width` Specifies the width of rasterized lines. The initial
     value is 1.
 
+returns
+
+:    `void` 
+
 ---
      
 

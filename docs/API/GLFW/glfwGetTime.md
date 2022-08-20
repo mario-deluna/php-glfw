@@ -5,5 +5,9 @@ glfwGetTime
 function glfwGetTime() : float
 ```
 
+returns
+
+:    `float` 
+
 ---
      

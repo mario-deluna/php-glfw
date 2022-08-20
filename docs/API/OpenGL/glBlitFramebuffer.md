@@ -25,6 +25,10 @@ arguments
     stretched. Must be <constant>GL_NEAREST</constant> or
     <constant>GL_LINEAR</constant>.
 
+returns
+
+:    `void` 
+
 ---
      
 

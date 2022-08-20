@@ -13,6 +13,10 @@ arguments
     zero to the value of <constant>GL_MAX_COMBINED_TEXTURE_IMAGE_UNITS</constant>
     minus one. The initial value is <constant>GL_TEXTURE0</constant>.
 
+returns
+
+:    `void` 
+
 ---
      
 

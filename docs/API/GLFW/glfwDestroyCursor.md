@@ -9,5 +9,9 @@ arguments
 
 :    1. `\GLFWcursor` `$cursor` 
 
+returns
+
+:    `void` 
+
 ---
      

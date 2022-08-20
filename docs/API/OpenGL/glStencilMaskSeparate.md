@@ -14,6 +14,10 @@ arguments
     2. `int` `$mask` Specifies a bit mask to enable and disable writing of
     individual bits in the stencil planes. Initially, the mask is all 1's.
 
+returns
+
+:    `void` 
+
 ---
      
 

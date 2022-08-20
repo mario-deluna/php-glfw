@@ -9,6 +9,10 @@ arguments
 
 :    1. `int` `$program` Specifies a potential program object.
 
+returns
+
+:    `bool` 
+
 ---
      
 

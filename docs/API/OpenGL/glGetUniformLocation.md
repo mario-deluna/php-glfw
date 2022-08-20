@@ -11,6 +11,10 @@ arguments
     2. `string` `$name` Points to a null terminated string containing the name of
     the uniform variable whose location is to be queried.
 
+returns
+
+:    `int` 
+
 ---
      
 

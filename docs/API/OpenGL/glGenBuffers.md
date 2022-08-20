@@ -10,6 +10,10 @@ arguments
 :    1. `int` `$n` Specifies the number of buffer object names to be generated.
     2. `?int` `$buffers` 
 
+returns
+
+:    `void` 
+
 ---
      
 

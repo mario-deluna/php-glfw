@@ -11,6 +11,10 @@ arguments
     reserve.
     2. `?int` `$ids` 
 
+returns
+
+:    `void` 
+
 ---
      
 

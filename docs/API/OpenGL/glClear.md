@@ -12,6 +12,10 @@ arguments
     <constant>GL_DEPTH_BUFFER_BIT</constant>, and
     <constant>GL_STENCIL_BUFFER_BIT</constant>.
 
+returns
+
+:    `void` 
+
 ---
      
 

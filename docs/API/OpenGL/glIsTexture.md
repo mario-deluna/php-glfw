@@ -9,6 +9,10 @@ arguments
 
 :    1. `int` `$texture` Specifies a value that may be the name of a texture.
 
+returns
+
+:    `bool` 
+
 ---
      
 

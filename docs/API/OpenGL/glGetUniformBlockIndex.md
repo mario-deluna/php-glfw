@@ -12,6 +12,10 @@ arguments
     2. `string` `$uniformBlockName` Specifies the address an array of characters
     to containing the name of the uniform block whose index to retrieve.
 
+returns
+
+:    `int` 
+
 ---
      
 

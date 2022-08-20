@@ -39,5 +39,9 @@ arguments
 :    1. `\GLFWwindow` `$window` 
     2. `callable` `$callback` 
 
+returns
+
+:    `void` 
+
 ---
      

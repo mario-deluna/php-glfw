@@ -5,6 +5,10 @@ glEndConditionalRender
 function glEndConditionalRender() : void
 ```
 
+returns
+
+:    `void` 
+
 ---
      
 

@@ -23,6 +23,10 @@ arguments
     the image, and the sample locations will not depend on the internal format or
     size of the image.
 
+returns
+
+:    `void` 
+
 ---
      
 

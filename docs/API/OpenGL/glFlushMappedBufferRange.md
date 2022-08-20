@@ -15,6 +15,10 @@ arguments
     3. `int` `$length` Specifies the length of the buffer subrange, in basic
     machine units.
 
+returns
+
+:    `void` 
+
 ---
      
 

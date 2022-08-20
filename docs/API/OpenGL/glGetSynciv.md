@@ -16,6 +16,10 @@ arguments
     5. `int` `$values` Specifies the address of an array to receive the values
     of the queried parameter.
 
+returns
+
+:    `void` 
+
 ---
      
 

@@ -20,6 +20,10 @@ arguments
     5. `int` `$size` Specifies the size, in basic machine units, of the data to
     be copied from the source buffer object to the destination buffer object.
 
+returns
+
+:    `void` 
+
 ---
      
 

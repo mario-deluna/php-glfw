@@ -9,5 +9,9 @@ arguments
 
 :    1. `float` `$time` 
 
+returns
+
+:    `void` 
+
 ---
      

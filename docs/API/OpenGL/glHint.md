@@ -16,6 +16,10 @@ arguments
     behavior. <constant>GL_FASTEST</constant>, <constant>GL_NICEST</constant>,
     and <constant>GL_DONT_CARE</constant> are accepted.
 
+returns
+
+:    `void` 
+
 ---
      
 

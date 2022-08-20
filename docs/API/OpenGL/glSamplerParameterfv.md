@@ -11,6 +11,10 @@ arguments
     2. `int` `$pname` 
     3. `\GL\Buffer\FloatBuffer|array` `$param` 
 
+returns
+
+:    `void` 
+
 ---
      
 

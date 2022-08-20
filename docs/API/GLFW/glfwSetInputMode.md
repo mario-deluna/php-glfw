@@ -11,5 +11,9 @@ arguments
     2. `int` `$mode` 
     3. `int` `$value` 
 
+returns
+
+:    `void` 
+
 ---
      

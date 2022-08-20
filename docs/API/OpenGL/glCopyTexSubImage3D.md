@@ -25,6 +25,10 @@ arguments
     8. `int` `$width` Specifies the width of the texture subimage.
     9. `int` `$height` Specifies the height of the texture subimage.
 
+returns
+
+:    `void` 
+
 ---
      
 

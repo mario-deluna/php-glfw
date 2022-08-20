@@ -5,5 +5,9 @@ glfwGetPrimaryMonitor
 function glfwGetPrimaryMonitor() : \GLFWmonitor
 ```
 
+returns
+
+:    `\GLFWmonitor` 
+
 ---
      

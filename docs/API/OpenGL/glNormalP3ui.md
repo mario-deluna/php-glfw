@@ -10,6 +10,10 @@ arguments
 :    1. `int` `$type` 
     2. `int` `$coords` 
 
+returns
+
+:    `void` 
+
 ---
      
 

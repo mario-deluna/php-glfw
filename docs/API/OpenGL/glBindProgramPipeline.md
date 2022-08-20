@@ -10,6 +10,10 @@ arguments
 :    1. `int` `$pipeline` Specifies the name of the pipeline object to bind to the
     context.
 
+returns
+
+:    `void` 
+
 ---
      
 

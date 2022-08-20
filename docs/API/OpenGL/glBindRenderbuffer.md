@@ -12,6 +12,10 @@ arguments
     2. `int` `$renderbuffer` Specifies the name of the renderbuffer object to
     bind.
 
+returns
+
+:    `void` 
+
 ---
      
 

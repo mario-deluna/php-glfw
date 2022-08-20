@@ -20,6 +20,10 @@ arguments
     2. `int` `$first` Specifies the starting index in the enabled arrays.
     3. `int` `$count` Specifies the number of indices to be rendered.
 
+returns
+
+:    `void` 
+
 ---
      
 

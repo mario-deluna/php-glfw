@@ -42,6 +42,10 @@ arguments
     texture image is 1.
     7. `int` `$border` Must be 0.
 
+returns
+
+:    `void` 
+
 ---
      
 

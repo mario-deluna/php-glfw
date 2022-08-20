@@ -14,6 +14,10 @@ arguments
     4. `int` `$shaders` Specifies an array that is used to return the names of
     attached shader objects.
 
+returns
+
+:    `void` 
+
 ---
      
 

@@ -5,6 +5,10 @@ Creates a program object
 function glCreateProgram() : int
 ```
 
+returns
+
+:    `int` 
+
 ---
      
 

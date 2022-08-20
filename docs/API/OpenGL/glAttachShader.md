@@ -11,6 +11,10 @@ arguments
     will be attached.
     2. `int` `$shader` Specifies the shader object that is to be attached.
 
+returns
+
+:    `void` 
+
 ---
      
 

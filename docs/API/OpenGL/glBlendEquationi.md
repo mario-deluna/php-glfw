@@ -10,6 +10,10 @@ arguments
 :    1. `int` `$buf` 
     2. `int` `$mode` 
 
+returns
+
+:    `void` 
+
 ---
      
 

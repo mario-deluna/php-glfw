@@ -11,5 +11,9 @@ arguments
     2. `int` `$attrib` 
     3. `int` `$value` 
 
+returns
+
+:    `void` 
+
 ---
      

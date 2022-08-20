@@ -19,6 +19,10 @@ arguments
     <constant>GL_OR_INVERTED</constant>. The initial value is
     <constant>GL_COPY</constant>.
 
+returns
+
+:    `void` 
+
 ---
      
 

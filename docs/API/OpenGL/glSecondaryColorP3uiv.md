@@ -10,6 +10,10 @@ arguments
 :    1. `int` `$type` 
     2. `\GL\Buffer\UIntBuffer|array` `$color` 
 
+returns
+
+:    `void` 
+
 ---
      
 

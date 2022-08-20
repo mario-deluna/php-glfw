@@ -15,6 +15,10 @@ arguments
     3. `int` `$width` Specifies the width of the renderbuffer, in pixels.
     4. `int` `$height` Specifies the height of the renderbuffer, in pixels.
 
+returns
+
+:    `void` 
+
 ---
      
 

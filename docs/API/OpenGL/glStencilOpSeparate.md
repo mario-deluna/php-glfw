@@ -26,6 +26,10 @@ arguments
     symbolic constants as sfail. The initial value is
     <constant>GL_KEEP</constant>.
 
+returns
+
+:    `void` 
+
 ---
      
 

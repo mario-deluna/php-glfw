@@ -20,6 +20,10 @@ arguments
     <constant>GL_QUERY_COUNTER_BITS</constant>.
     4. `int` `$params` Returns the requested data.
 
+returns
+
+:    `void` 
+
 ---
      
 

@@ -17,6 +17,10 @@ arguments
     2. `int` `$bufSize` Specifies the size of the character buffer for storing
     the returned information log.
 
+returns
+
+:    `string` 
+
 ---
      
 

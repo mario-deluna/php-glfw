@@ -11,6 +11,10 @@ arguments
     2. `int` `$src` 
     3. `int` `$dst` 
 
+returns
+
+:    `void` 
+
 ---
      
 

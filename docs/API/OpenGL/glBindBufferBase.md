@@ -17,6 +17,10 @@ arguments
     3. `int` `$buffer` The name of a buffer object to bind to the specified
     binding point.
 
+returns
+
+:    `void` 
+
 ---
      
 

@@ -11,5 +11,9 @@ arguments
     2. `int` `$width` 
     3. `int` `$height` 
 
+returns
+
+:    `void` 
+
 ---
      

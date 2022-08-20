@@ -13,5 +13,9 @@ arguments
     4. `?\GLFWmonitor` `$monitor` 
     5. `?\GLFWwindow` `$share` 
 
+returns
+
+:    `\GLFWwindow` 
+
 ---
      

@@ -23,6 +23,10 @@ arguments
     3. `int` `$stream` Specifies the index of the transform feedback stream from
     which to retrieve a primitive count.
 
+returns
+
+:    `void` 
+
 ---
      
 

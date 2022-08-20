@@ -5,6 +5,10 @@ pause transform feedback operations
 function glPauseTransformFeedback() : void
 ```
 
+returns
+
+:    `void` 
+
 ---
      
 

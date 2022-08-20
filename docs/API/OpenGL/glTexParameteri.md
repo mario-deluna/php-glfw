@@ -11,6 +11,10 @@ arguments
     2. `int` `$pname` 
     3. `int` `$param` 
 
+returns
+
+:    `void` 
+
 ---
      
 

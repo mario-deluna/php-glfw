@@ -14,6 +14,10 @@ arguments
     3. `string` `$name` Specifies a null terminated string containing the name of
     the vertex shader attribute variable to which index is to be bound.
 
+returns
+
+:    `void` 
+
 ---
      
 

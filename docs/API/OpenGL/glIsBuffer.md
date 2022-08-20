@@ -9,6 +9,10 @@ arguments
 
 :    1. `int` `$buffer` Specifies a value that may be the name of a buffer object.
 
+returns
+
+:    `bool` 
+
 ---
      
 

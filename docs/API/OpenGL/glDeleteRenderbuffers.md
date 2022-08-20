@@ -10,6 +10,10 @@ arguments
 :    1. `int` `$n` Specifies the number of renderbuffer objects to be deleted.
     2. `?int` `$renderbuffers` 
 
+returns
+
+:    `void` 
+
 ---
      
 

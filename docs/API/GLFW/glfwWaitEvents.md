@@ -5,5 +5,9 @@ glfwWaitEvents
 function glfwWaitEvents() : void
 ```
 
+returns
+
+:    `void` 
+
 ---
      

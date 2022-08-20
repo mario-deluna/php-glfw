@@ -5,5 +5,9 @@ glfwPostEmptyEvent
 function glfwPostEmptyEvent() : void
 ```
 
+returns
+
+:    `void` 
+
 ---
      

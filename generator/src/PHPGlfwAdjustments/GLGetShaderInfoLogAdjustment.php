@@ -50,6 +50,7 @@ class GLGetShaderInfoLogAdjustment implements AdjustmentInterface
 
             $func->arguments = array_slice($func->arguments, 0, 2);
             $func->returnType = ExtType::T_STRING;
+            $func->returnComment = "Returns the information log for the specified object.";
             $func->comment .= PHP_EOL . PHP_EOL . '@PHP-GLFW: In the PHP extension this function directly returns the error string instead of being passed by reference as an argument.';
             
             $func->incomplete = false;

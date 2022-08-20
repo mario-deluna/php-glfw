@@ -13,6 +13,10 @@ arguments
     4. `int` `$texture` 
     5. `int` `$level` 
 
+returns
+
+:    `void` 
+
 ---
      
 

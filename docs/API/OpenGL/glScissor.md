@@ -15,6 +15,10 @@ arguments
     dimensions of that window.
     4. `int` `$height` 
 
+returns
+
+:    `void` 
+
 ---
      
 

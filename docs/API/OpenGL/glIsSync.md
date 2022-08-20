@@ -9,6 +9,10 @@ arguments
 
 :    1. `int` `$sync` Specifies a value that may be the name of a sync object.
 
+returns
+
+:    `bool` 
+
 ---
      
 

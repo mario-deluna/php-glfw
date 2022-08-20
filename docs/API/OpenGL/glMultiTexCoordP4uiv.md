@@ -11,6 +11,10 @@ arguments
     2. `int` `$type` 
     3. `\GL\Buffer\UIntBuffer|array` `$coords` 
 
+returns
+
+:    `void` 
+
 ---
      
 

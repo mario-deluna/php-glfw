@@ -21,6 +21,10 @@ arguments
     enums are accepted, where <constant>$m$</constant> is a value between 0 and
     <constant>GL_MAX_COLOR_ATTACHMENTS</constant>.
 
+returns
+
+:    `void` 
+
 ---
      
 

@@ -11,6 +11,10 @@ arguments
     2. `int` `$location` 
     3. `\GL\Buffer\IntBuffer|array` `$value` 
 
+returns
+
+:    `void` 
+
 ---
      
 

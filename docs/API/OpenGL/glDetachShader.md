@@ -11,6 +11,10 @@ arguments
     shader object.
     2. `int` `$shader` Specifies the shader object to be detached.
 
+returns
+
+:    `void` 
+
 ---
      
 

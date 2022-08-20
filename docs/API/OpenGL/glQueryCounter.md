@@ -13,6 +13,10 @@ arguments
     2. `int` `$target` Specify the counter to query. target must be
     <constant>GL_TIMESTAMP</constant>.
 
+returns
+
+:    `void` 
+
 ---
      
 

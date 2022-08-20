@@ -11,6 +11,10 @@ arguments
     is bound.
     2. `int` `$sampler` Specifies the name of a sampler.
 
+returns
+
+:    `void` 
+
 ---
      
 

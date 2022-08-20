@@ -10,6 +10,10 @@ arguments
 :    1. `int` `$pipeline` Specifies a value that may be the name of a program
     pipeline object.
 
+returns
+
+:    `bool` 
+
 ---
      
 

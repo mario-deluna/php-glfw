@@ -13,5 +13,9 @@ arguments
     4. `int` `$maxwidth` 
     5. `int` `$maxheight` 
 
+returns
+
+:    `void` 
+
 ---
      

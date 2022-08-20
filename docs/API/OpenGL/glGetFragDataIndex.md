@@ -12,6 +12,10 @@ arguments
     2. `string` `$name` The name of the user-defined varying out variable whose
     index to query
 
+returns
+
+:    `int` 
+
 ---
      
 

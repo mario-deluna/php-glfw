@@ -20,6 +20,10 @@ arguments
     2. `int` `$id` Specifies the name of a transform feedback object from which
     to retrieve a primitive count.
 
+returns
+
+:    `void` 
+
 ---
      
 

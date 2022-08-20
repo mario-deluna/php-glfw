@@ -14,6 +14,10 @@ arguments
     3. `int` `$pname` Specifies the parameter of attachment to query.
     4. `int` `$params` Returns the value of parameter pname for attachment.
 
+returns
+
+:    `void` 
+
 ---
      
 

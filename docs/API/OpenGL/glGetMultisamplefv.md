@@ -13,6 +13,10 @@ arguments
     3. `float` `$val` Specifies the address of an array to receive the position
     of the sample.
 
+returns
+
+:    `void` 
+
 ---
      
 

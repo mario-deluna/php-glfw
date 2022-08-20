@@ -21,6 +21,10 @@ arguments
     4. `int` `$instancecount` Specifies the number of instances of the specified
     range of indices to be rendered.
 
+returns
+
+:    `void` 
+
 ---
      
 

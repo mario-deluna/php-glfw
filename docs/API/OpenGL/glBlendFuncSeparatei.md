@@ -13,6 +13,10 @@ arguments
     4. `int` `$srcAlpha` 
     5. `int` `$dstAlpha` 
 
+returns
+
+:    `void` 
+
 ---
      
 

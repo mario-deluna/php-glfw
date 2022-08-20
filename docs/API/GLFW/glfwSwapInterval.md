@@ -9,5 +9,9 @@ arguments
 
 :    1. `int` `$interval` 
 
+returns
+
+:    `void` 
+
 ---
      

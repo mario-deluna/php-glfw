@@ -9,6 +9,10 @@ arguments
 
 :    1. `int` `$array` Specifies the name of the vertex array to bind.
 
+returns
+
+:    `void` 
+
 ---
      
 

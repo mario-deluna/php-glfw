@@ -15,6 +15,10 @@ arguments
     4. `int` `$precision` Specifies the address of an integer into which the
     numeric precision of the implementation is written.
 
+returns
+
+:    `void` 
+
 ---
      
 

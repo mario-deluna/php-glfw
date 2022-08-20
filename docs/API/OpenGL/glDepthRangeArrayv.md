@@ -10,6 +10,10 @@ arguments
 :    1. `int` `$first` 
     2. `\GL\Buffer\DoubleBuffer|array` `$v` 
 
+returns
+
+:    `void` 
+
 ---
      
 

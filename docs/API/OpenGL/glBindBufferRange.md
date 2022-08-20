@@ -21,6 +21,10 @@ arguments
     5. `int` `$size` The amount of data in machine units that can be read from
     the buffer object while used as an indexed target.
 
+returns
+
+:    `void` 
+
 ---
      
 

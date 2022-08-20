@@ -13,6 +13,10 @@ arguments
     4. `float` `$w` 
     5. `float` `$h` 
 
+returns
+
+:    `void` 
+
 ---
      
 

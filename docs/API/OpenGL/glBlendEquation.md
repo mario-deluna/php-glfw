@@ -14,6 +14,10 @@ arguments
     <constant>GL_FUNC_REVERSE_SUBTRACT</constant>, <constant>GL_MIN</constant>,
     <constant>GL_MAX</constant>.
 
+returns
+
+:    `void` 
+
 ---
      
 

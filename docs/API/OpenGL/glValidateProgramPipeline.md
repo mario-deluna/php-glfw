@@ -10,6 +10,10 @@ arguments
 :    1. `int` `$pipeline` Specifies the name of a program pipeline object to
     validate.
 
+returns
+
+:    `void` 
+
 ---
      
 

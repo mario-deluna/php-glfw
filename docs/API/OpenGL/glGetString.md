@@ -13,6 +13,10 @@ arguments
     <constant>GL_SHADING_LANGUAGE_VERSION</constant>. Additionally, glGetStringi
     accepts the <constant>GL_EXTENSIONS</constant> token.
 
+returns
+
+:    `string` 
+
 ---
      
 

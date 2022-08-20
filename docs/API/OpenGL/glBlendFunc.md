@@ -27,6 +27,10 @@ arguments
     <constant>GL_ONE_MINUS_CONSTANT_ALPHA</constant>. The initial value is
     <constant>GL_ZERO</constant>.
 
+returns
+
+:    `void` 
+
 ---
      
 

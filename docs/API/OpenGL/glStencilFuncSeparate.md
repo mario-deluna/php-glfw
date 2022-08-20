@@ -23,6 +23,10 @@ arguments
     and the stored stencil value when the test is done. The initial value is all
     1's.
 
+returns
+
+:    `void` 
+
 ---
      
 

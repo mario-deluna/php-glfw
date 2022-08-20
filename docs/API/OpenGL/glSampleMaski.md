@@ -11,6 +11,10 @@ arguments
     update.
     2. `int` `$mask` Specifies the new value of the mask sub-word.
 
+returns
+
+:    `void` 
+
 ---
      
 

@@ -15,5 +15,9 @@ arguments
     6. `int` `$height` 
     7. `int` `$refreshRate` 
 
+returns
+
+:    `void` 
+
 ---
      

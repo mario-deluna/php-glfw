@@ -10,6 +10,10 @@ arguments
 :    1. `int` `$program` Specifies the handle of the program object to be
     validated.
 
+returns
+
+:    `void` 
+
 ---
      
 

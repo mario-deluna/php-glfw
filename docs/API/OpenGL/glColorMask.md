@@ -15,6 +15,10 @@ arguments
     3. `bool` `$blue` 
     4. `bool` `$alpha` 
 
+returns
+
+:    `void` 
+
 ---
      
 

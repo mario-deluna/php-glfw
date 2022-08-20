@@ -10,6 +10,10 @@ arguments
 :    1. `int` `$program` Specifies the handle of the program object whose
     executables are to be used as part of current rendering state.
 
+returns
+
+:    `void` 
+
 ---
      
 

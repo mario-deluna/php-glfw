@@ -10,6 +10,10 @@ arguments
 :    1. `float` `$n` 
     2. `float` `$f` 
 
+returns
+
+:    `void` 
+
 ---
      
 

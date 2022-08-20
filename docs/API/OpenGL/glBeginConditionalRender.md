@@ -12,6 +12,10 @@ arguments
     2. `int` `$mode` Specifies how glBeginConditionalRender interprets the
     results of the occlusion query.
 
+returns
+
+:    `void` 
+
 ---
      
 

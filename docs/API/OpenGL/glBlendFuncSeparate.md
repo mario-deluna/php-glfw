@@ -12,6 +12,10 @@ arguments
     3. `int` `$sfactorAlpha` 
     4. `int` `$dfactorAlpha` 
 
+returns
+
+:    `void` 
+
 ---
      
 

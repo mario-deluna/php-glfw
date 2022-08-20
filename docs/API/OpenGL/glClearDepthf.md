@@ -9,6 +9,10 @@ arguments
 
 :    1. `float` `$d` 
 
+returns
+
+:    `void` 
+
 ---
      
 

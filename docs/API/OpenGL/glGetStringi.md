@@ -10,6 +10,10 @@ arguments
 :    1. `int` `$name` 
     2. `int` `$index` 
 
+returns
+
+:    `string` 
+
 ---
      
 

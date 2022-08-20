@@ -13,6 +13,10 @@ arguments
     3. `float` `$blue` 
     4. `float` `$alpha` 
 
+returns
+
+:    `void` 
+
 ---
      
 

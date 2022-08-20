@@ -15,6 +15,10 @@ arguments
     4. `int` `$renderbuffer` Specifies the name of an existing renderbuffer
     object of type renderbuffertarget to attach.
 
+returns
+
+:    `void` 
+
 ---
      
 

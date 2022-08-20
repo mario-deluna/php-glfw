@@ -11,6 +11,10 @@ arguments
 :    1. `int` `$index` Specifies the index of the generic vertex attribute to be
     enabled or disabled.
 
+returns
+
+:    `void` 
+
 ---
      
 

@@ -15,6 +15,10 @@ arguments
     4. `int` `$width` Specify ths dimensions of the scissor box, in pixels.
     5. `int` `$height` 
 
+returns
+
+:    `void` 
+
 ---
      
 

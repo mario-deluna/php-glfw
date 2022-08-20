@@ -15,6 +15,10 @@ arguments
     operation and flags must be zero. flags is a placeholder for anticipated
     future extensions of fence sync object capabilities.
 
+returns
+
+:    `int` 
+
 ---
      
 

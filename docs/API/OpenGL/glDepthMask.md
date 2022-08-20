@@ -11,6 +11,10 @@ arguments
     If flag is <constant>GL_FALSE</constant>, depth buffer writing is disabled.
     Otherwise, it is enabled. Initially, depth buffer writing is enabled.
 
+returns
+
+:    `void` 
+
 ---
      
 

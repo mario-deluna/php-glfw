@@ -15,6 +15,10 @@ arguments
 :    1. `int` `$location` 
     2. `\GL\Math\Vec2` `$vec` 
 
+returns
+
+:    `void` 
+
 ---
      
 

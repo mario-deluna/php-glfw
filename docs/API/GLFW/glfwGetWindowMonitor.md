@@ -9,5 +9,9 @@ arguments
 
 :    1. `\GLFWwindow` `$window` 
 
+returns
+
+:    `\GLFWmonitor` 
+
 ---
      

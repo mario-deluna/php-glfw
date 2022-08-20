@@ -14,6 +14,10 @@ arguments
     <constant>GL_FALSE</constant> are accepted.  The initial value is
     <constant>GL_FALSE</constant>.
 
+returns
+
+:    `void` 
+
 ---
      
 

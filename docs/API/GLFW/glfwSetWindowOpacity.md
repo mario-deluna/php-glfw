@@ -10,5 +10,9 @@ arguments
 :    1. `\GLFWwindow` `$window` 
     2. `float` `$opacity` 
 
+returns
+
+:    `void` 
+
 ---
      

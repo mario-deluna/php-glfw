@@ -10,6 +10,10 @@ arguments
 :    1. `int` `$count` 
     2. `?int` `$samplers` 
 
+returns
+
+:    `void` 
+
 ---
      
 

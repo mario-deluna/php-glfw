@@ -12,6 +12,10 @@ arguments
     3. `bool` `$normalized` 
     4. `\GL\Buffer\UIntBuffer|array` `$value` 
 
+returns
+
+:    `void` 
+
 ---
      
 

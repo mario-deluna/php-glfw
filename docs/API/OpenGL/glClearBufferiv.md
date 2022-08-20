@@ -11,6 +11,10 @@ arguments
     2. `int` `$drawbuffer` 
     3. `\GL\Buffer\IntBuffer|array` `$value` 
 
+returns
+
+:    `void` 
+
 ---
      
 

@@ -10,5 +10,9 @@ arguments
 :    1. `int` `$hint` 
     2. `int` `$value` 
 
+returns
+
+:    `void` 
+
 ---
      

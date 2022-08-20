@@ -48,6 +48,11 @@ class ExtFunction
     public string $returnType = self::RETURN_VOID;
 
     /**
+     * DocBlock return value comment
+     */
+    public string $returnComment = '';
+
+    /**
      * The to be returned IPO 
      */
     public ?ExtInternalPtrObject $returnIPO = null;
@@ -249,7 +254,13 @@ class ExtFunction
         // add some spaceing if there is content
         if ($argsBuffer) $argsBuffer = PHP_EOL . $argsBuffer . PHP_EOL;
 
-        return commentBlock(trim(sprintf("%s%s", $this->getFunctionPHPComment(), $argsBuffer)));
+        if ($this->returnType === self::RETURN_VOID) {
+            $return = '@return void';
+        } else {
+            $return = '@return ' . $this->getPHPStubReturn();
+        }
+
+        return commentBlock(trim(sprintf("%s%s\n%s", $this->getFunctionPHPComment(), $argsBuffer, $return)));
     }
 
     /**
@@ -295,17 +306,21 @@ class ExtFunction
         return $b;
     }
 
+    private function getPHPStubReturn() : string
+    {
+        if ($this->returnType === self::RETURN_IPO) {
+            return $this->returnIPO->getPHPClassName();
+        } else {
+            return $this->mapTypeToStubType($this->returnType);
+        }
+    }
+
     /**
      * Genreates the PHP stub
      */
     public function getPHPStub() : string
     {
-        if ($this->returnType === self::RETURN_IPO) {
-            $stubReturnType = $this->returnIPO->getPHPClassName();
-        } else {
-            $stubReturnType = $this->mapTypeToStubType($this->returnType);
-        }
-
+        $stubReturnType = $this->getPHPStubReturn();
         return "function {$this->name}({$this->getPHPStubArguments()}) : {$stubReturnType} {};\n";
     }
 

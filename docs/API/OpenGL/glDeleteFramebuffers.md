@@ -10,6 +10,10 @@ arguments
 :    1. `int` `$n` Specifies the number of framebuffer objects to be deleted.
     2. `?int` `$framebuffers` 
 
+returns
+
+:    `void` 
+
 ---
      
 

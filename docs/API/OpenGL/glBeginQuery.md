@@ -17,6 +17,10 @@ arguments
     <constant>GL_TIME_ELAPSED</constant>.
     2. `int` `$id` Specifies the name of a query object.
 
+returns
+
+:    `void` 
+
 ---
      
 

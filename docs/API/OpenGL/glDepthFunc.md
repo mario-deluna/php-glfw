@@ -14,6 +14,10 @@ arguments
     <constant>GL_GEQUAL</constant>, and <constant>GL_ALWAYS</constant> are
     accepted. The initial value is <constant>GL_LESS</constant>.
 
+returns
+
+:    `void` 
+
 ---
      
 

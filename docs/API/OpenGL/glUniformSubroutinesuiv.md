@@ -10,6 +10,10 @@ arguments
 :    1. `int` `$shadertype` 
     2. `\GL\Buffer\UIntBuffer|array` `$indices` 
 
+returns
+
+:    `void` 
+
 ---
      
 

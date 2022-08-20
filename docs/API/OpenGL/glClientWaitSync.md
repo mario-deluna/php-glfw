@@ -13,6 +13,10 @@ arguments
     3. `int` `$timeout` The timeout, specified in nanoseconds, for which the
     implementation should wait for sync to become signaled.
 
+returns
+
+:    `int` 
+
 ---
      
 

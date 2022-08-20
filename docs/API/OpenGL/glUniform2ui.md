@@ -11,6 +11,10 @@ arguments
     2. `int` `$v0` 
     3. `int` `$v1` 
 
+returns
+
+:    `void` 
+
 ---
      
 

@@ -9,6 +9,10 @@ arguments
 
 :    1. `int` `$cap` Specifies a symbolic constant indicating a GL capability.
 
+returns
+
+:    `bool` 
+
 ---
      
 

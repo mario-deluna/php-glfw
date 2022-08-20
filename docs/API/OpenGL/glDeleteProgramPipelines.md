@@ -10,6 +10,10 @@ arguments
 :    1. `int` `$n` Specifies the number of program pipeline objects to delete.
     2. `?int` `$pipelines` 
 
+returns
+
+:    `void` 
+
 ---
      
 

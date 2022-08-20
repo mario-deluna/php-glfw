@@ -13,6 +13,10 @@ arguments
     3. `string` `$name` The name of the user-defined varying out variable whose
     binding to modify
 
+returns
+
+:    `void` 
+
 ---
      
 

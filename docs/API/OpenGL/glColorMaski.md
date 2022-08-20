@@ -13,6 +13,10 @@ arguments
     4. `bool` `$b` 
     5. `bool` `$a` 
 
+returns
+
+:    `void` 
+
 ---
      
 

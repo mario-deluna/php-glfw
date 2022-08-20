@@ -15,6 +15,10 @@ arguments
     <constant>GL_TEXTURE_CUBE_MAP</constant>, or
     <constant>GL_TEXTURE_CUBE_MAP_ARRAY</constant>.
 
+returns
+
+:    `void` 
+
 ---
      
 

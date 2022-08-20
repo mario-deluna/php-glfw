@@ -12,6 +12,10 @@ arguments
     for glUnmapBuffer, which must be one of the buffer binding targets in the
     following table:
 
+returns
+
+:    `bool` 
+
 ---
      
 

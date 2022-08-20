@@ -12,6 +12,10 @@ arguments
     3. `bool` `$transpose` 
     4. `\GL\Buffer\FloatBuffer|array` `$value` 
 
+returns
+
+:    `void` 
+
 ---
      
 

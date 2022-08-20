@@ -11,6 +11,10 @@ arguments
     glCheckFramebufferStatus, and the target against which framebuffer
     completeness of framebuffer is checked for glCheckNamedFramebufferStatus.
 
+returns
+
+:    `int` 
+
 ---
      
 

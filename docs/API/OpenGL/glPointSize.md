@@ -10,6 +10,10 @@ arguments
 :    1. `float` `$size` Specifies the diameter of rasterized points. The initial
     value is 1.
 
+returns
+
+:    `void` 
+
 ---
      
 

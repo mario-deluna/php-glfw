@@ -10,6 +10,10 @@ arguments
 :    1. `int` `$index` Specifies the value to be interpreted as the primitive
     restart index.
 
+returns
+
+:    `void` 
+
 ---
      
 

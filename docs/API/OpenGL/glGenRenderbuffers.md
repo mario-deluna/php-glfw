@@ -10,6 +10,10 @@ arguments
 :    1. `int` `$n` Specifies the number of renderbuffer object names to generate.
     2. `?int` `$renderbuffers` 
 
+returns
+
+:    `void` 
+
 ---
      
 

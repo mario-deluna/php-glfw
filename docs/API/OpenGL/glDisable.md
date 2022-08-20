@@ -9,6 +9,10 @@ arguments
 
 :    1. `int` `$cap` 
 
+returns
+
+:    `void` 
+
 ---
      
 

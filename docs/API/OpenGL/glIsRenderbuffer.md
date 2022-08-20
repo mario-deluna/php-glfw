@@ -10,6 +10,10 @@ arguments
 :    1. `int` `$renderbuffer` Specifies a value that may be the name of a
     renderbuffer object.
 
+returns
+
+:    `bool` 
+
 ---
      
 

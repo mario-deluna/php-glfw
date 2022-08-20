@@ -35,6 +35,10 @@ arguments
     understood to be tightly packed in the array. The initial value is 0.
     6. `int` `$offset` 
 
+returns
+
+:    `void` 
+
 ---
      
 

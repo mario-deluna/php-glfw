@@ -10,6 +10,10 @@ arguments
 :    1. `int` `$framebuffer` Specifies a value that may be the name of a
     framebuffer object.
 
+returns
+
+:    `bool` 
+
 ---
      
 

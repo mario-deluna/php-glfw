@@ -10,6 +10,10 @@ arguments
 :    1. `int` `$s` Specifies the index used when the stencil buffer is cleared.
     The initial value is 0.
 
+returns
+
+:    `void` 
+
 ---
      
 
