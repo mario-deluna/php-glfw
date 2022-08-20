@@ -1,5 +1,5 @@
 /* This is a generated file, edit the .stub.php file instead.
- * Stub hash: 8ac97a61975344fef426faf7ba1bcbdf1ca0311a */
+ * Stub hash: 37dbdca5f4bdbda820fc8d3d485c7a2e1ddc6a22 */
 
 ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_glCullFace, 0, 1, IS_VOID, 0)
 	ZEND_ARG_TYPE_INFO(0, mode, IS_LONG, 0)
@@ -2194,6 +2194,21 @@ ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_glUniformMatrix4f, 0, 3, IS_VOID
 	ZEND_ARG_OBJ_INFO(0, matrix, GL\\Math\\Mat4, 0)
 ZEND_END_ARG_INFO()
 
+ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_glUniformVec2f, 0, 2, IS_VOID, 0)
+	ZEND_ARG_TYPE_INFO(0, location, IS_LONG, 0)
+	ZEND_ARG_OBJ_INFO(0, vec, GL\\Math\\Vec2, 0)
+ZEND_END_ARG_INFO()
+
+ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_glUniformVec3f, 0, 2, IS_VOID, 0)
+	ZEND_ARG_TYPE_INFO(0, location, IS_LONG, 0)
+	ZEND_ARG_OBJ_INFO(0, vec, GL\\Math\\Vec3, 0)
+ZEND_END_ARG_INFO()
+
+ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_glUniformVec4f, 0, 2, IS_VOID, 0)
+	ZEND_ARG_TYPE_INFO(0, location, IS_LONG, 0)
+	ZEND_ARG_OBJ_INFO(0, vec, GL\\Math\\Vec4, 0)
+ZEND_END_ARG_INFO()
+
 ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_class_GLM_radians, 0, 1, IS_DOUBLE, 0)
 	ZEND_ARG_TYPE_INFO(0, degrees, IS_DOUBLE, 0)
 ZEND_END_ARG_INFO()
@@ -3083,6 +3098,9 @@ ZEND_FUNCTION(glfwVulkanSupported);
 ZEND_FUNCTION(glShaderSource);
 ZEND_FUNCTION(glBufferData);
 ZEND_FUNCTION(glUniformMatrix4f);
+ZEND_FUNCTION(glUniformVec2f);
+ZEND_FUNCTION(glUniformVec3f);
+ZEND_FUNCTION(glUniformVec4f);
 ZEND_METHOD(GLM, radians);
 ZEND_METHOD(GLM, angle);
 ZEND_METHOD(GLM, triangleNormal);
@@ -3747,6 +3765,9 @@ static const zend_function_entry ext_functions[] = {
 	ZEND_FE(glShaderSource, arginfo_glShaderSource)
 	ZEND_FE(glBufferData, arginfo_glBufferData)
 	ZEND_FE(glUniformMatrix4f, arginfo_glUniformMatrix4f)
+	ZEND_FE(glUniformVec2f, arginfo_glUniformVec2f)
+	ZEND_FE(glUniformVec3f, arginfo_glUniformVec3f)
+	ZEND_FE(glUniformVec4f, arginfo_glUniformVec4f)
 	ZEND_FE_END
 };
 

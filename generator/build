@@ -58,7 +58,7 @@ $gen->adjust(PHPGlfwAdjustments\GLVertexAttribPointerAdjustment::class);
 $gen->adjust(PHPGlfwAdjustments\GLGenFunctionAdjustments::class);
 $gen->adjust(PHPGlfwAdjustments\GLDestroyFunctionAdjustments::class);
 $gen->adjust(PHPGlfwAdjustments\GLGetFunctionAdjustments::class);
-$gen->adjust(PHPGlfwAdjustments\GlUniformMatrixAdjustment::class);
+$gen->adjust(PHPGlfwAdjustments\GlUniformMathObjAdjustment::class);
 $gen->adjust(PHPGlfwAdjustments\GLTexImage2DAdjustment::class);
 $gen->adjust(PHPGlfwAdjustments\GLGetStringAdjustment::class);
 $gen->adjust(PHPGlfwAdjustments\GLVectorSetterFunctionAdjustment::class);

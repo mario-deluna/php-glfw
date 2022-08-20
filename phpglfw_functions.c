@@ -2784,7 +2784,6 @@ PHP_FUNCTION(glUniformMatrix4fv)
         zend_throw_error(NULL, "Invalid data size for glUniformMatrix4fv, the number of values must be dividable by 16.");
         return;
     }
-
     glUniformMatrix4fv(location, cvector_size(bufferobj->vec) / 16, transpose, bufferobj->vec);
 } 
 
@@ -11126,6 +11125,51 @@ PHP_FUNCTION(glUniformMatrix4f)
     }
     phpglfw_math_mat4_object *obj_ptr = phpglfw_math_mat4_objectptr_from_zobj_p(Z_OBJ_P(matrix_zval));
     glUniformMatrix4fv(location, 1, transpose, &obj_ptr->data[0][0]);
+    ;
+} 
+
+/**
+ * glUniformVec2f
+ */ 
+PHP_FUNCTION(glUniformVec2f)
+{
+    zend_long location;
+    zval *vec_zval;
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "lO", &location, &vec_zval, phpglfw_get_math_vec2_ce()) == FAILURE) {
+        return;
+    }
+    phpglfw_math_vec2_object *obj_ptr = phpglfw_math_vec2_objectptr_from_zobj_p(Z_OBJ_P(vec_zval));
+    glUniform2fv(location, 1, &obj_ptr->data[0]);
+    ;
+} 
+
+/**
+ * glUniformVec3f
+ */ 
+PHP_FUNCTION(glUniformVec3f)
+{
+    zend_long location;
+    zval *vec_zval;
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "lO", &location, &vec_zval, phpglfw_get_math_vec3_ce()) == FAILURE) {
+        return;
+    }
+    phpglfw_math_vec3_object *obj_ptr = phpglfw_math_vec3_objectptr_from_zobj_p(Z_OBJ_P(vec_zval));
+    glUniform3fv(location, 1, &obj_ptr->data[0]);
+    ;
+} 
+
+/**
+ * glUniformVec4f
+ */ 
+PHP_FUNCTION(glUniformVec4f)
+{
+    zend_long location;
+    zval *vec_zval;
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "lO", &location, &vec_zval, phpglfw_get_math_vec4_ce()) == FAILURE) {
+        return;
+    }
+    phpglfw_math_vec4_object *obj_ptr = phpglfw_math_vec4_objectptr_from_zobj_p(Z_OBJ_P(vec_zval));
+    glUniform4fv(location, 1, &obj_ptr->data[0]);
     ;
 } 
 

@@ -6033,6 +6033,39 @@ namespace {
      */ 
     function glUniformMatrix4f(int $location, bool $transpose, \GL\Math\Mat4 $matrix) : void {};
  
+    /**
+     * Sets a vector (vec2) uniform value to the current shader program.
+     * 
+     * @PHP-GLFW: This method is specifc to the php extension and not part of the
+     * original OpenGL API.
+     * 
+     * @param int $location 
+     * @param \GL\Math\Vec2 $vec
+     */ 
+    function glUniformVec2f(int $location, \GL\Math\Vec2 $vec) : void {};
+ 
+    /**
+     * Sets a vector (vec3) uniform value to the current shader program.
+     * 
+     * @PHP-GLFW: This method is specifc to the php extension and not part of the
+     * original OpenGL API.
+     * 
+     * @param int $location 
+     * @param \GL\Math\Vec3 $vec
+     */ 
+    function glUniformVec3f(int $location, \GL\Math\Vec3 $vec) : void {};
+ 
+    /**
+     * Sets a vector (vec4) uniform value to the current shader program.
+     * 
+     * @PHP-GLFW: This method is specifc to the php extension and not part of the
+     * original OpenGL API.
+     * 
+     * @param int $location 
+     * @param \GL\Math\Vec4 $vec
+     */ 
+    function glUniformVec4f(int $location, \GL\Math\Vec4 $vec) : void {};
+ 
  
 
 
