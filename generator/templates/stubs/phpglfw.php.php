@@ -28,21 +28,29 @@ namespace GL\Math
 <?php if ($obj->isVector()) : ?>
         /**
          * Returns the length of the vector
+         * 
+         * @return float
          */
         public function length() : float {}
         
         /**
          * Returns the dot product of this vector and another
+         * 
+         * @return float
          */
         public function dot(<?php echo $obj->name; ?> $right) : float {}
 
         /**
          * Returns the distance between this vector and another
+         * 
+         * @return float
          */
         public function distance(<?php echo $obj->name; ?> $right) : float {}
 
         /**
          * Returns squared distance between this vector and another
+         * 
+         * @return float
          */
         public function distance2(<?php echo $obj->name; ?> $right) : float {}
 

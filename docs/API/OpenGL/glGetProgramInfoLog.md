@@ -19,7 +19,7 @@ arguments
 
 returns
 
-:    `string` 
+:    `string` Returns the information log for the specified object.
 
 ---
      

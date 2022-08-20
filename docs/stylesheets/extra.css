@@ -39,3 +39,12 @@
     height: 100%;
     border: 0;
 }
+
+constant {
+    font-family: monospace;
+    background-color: #d5e8ff;
+    font-size: 0.7rem;
+    color: 333;
+    padding: 3px 5px;
+    border-radius: 4px;
+}

@@ -446,6 +446,7 @@ class ExtGenerator
         // docs 
         $this->docParser = new ExtDocParser;
         $this->buildDocsBuffer();
+        $this->buildDocsMath();
         $this->buildDocsOpenGL();
         $this->buildDocsGLFW();
 
@@ -577,6 +578,23 @@ class ExtGenerator
                 'buffer' => $buffer,
                 'docParser' => $this->docParser,
             ], false));
+        }
+    }
+
+    /**
+     * Builds the Docs / Math
+     */
+    private function buildDocsMath() : void
+    {
+        $mobjarr = $this->getMathObjects();
+
+        foreach($mobjarr as $mobj) {
+            if ($mobj->isVector()) {
+                file_put_contents(GEN_PATH_EXT . '/docs/API/Math/' . $mobj->name . '.md', $this->generateTemplate('docs/math_vec.md', [
+                    'docParser' => $this->docParser,
+                    'vec' => $mobj,
+                ], false));
+            }
         }
     }
 

@@ -32,21 +32,29 @@ namespace GL\Math
 
         /**
          * Returns the length of the vector
+         * 
+         * @return float
          */
         public function length() : float {}
         
         /**
          * Returns the dot product of this vector and another
+         * 
+         * @return float
          */
         public function dot(Vec2 $right) : float {}
 
         /**
          * Returns the distance between this vector and another
+         * 
+         * @return float
          */
         public function distance(Vec2 $right) : float {}
 
         /**
          * Returns squared distance between this vector and another
+         * 
+         * @return float
          */
         public function distance2(Vec2 $right) : float {}
 
@@ -102,21 +110,29 @@ namespace GL\Math
 
         /**
          * Returns the length of the vector
+         * 
+         * @return float
          */
         public function length() : float {}
         
         /**
          * Returns the dot product of this vector and another
+         * 
+         * @return float
          */
         public function dot(Vec3 $right) : float {}
 
         /**
          * Returns the distance between this vector and another
+         * 
+         * @return float
          */
         public function distance(Vec3 $right) : float {}
 
         /**
          * Returns squared distance between this vector and another
+         * 
+         * @return float
          */
         public function distance2(Vec3 $right) : float {}
 
@@ -182,21 +198,29 @@ namespace GL\Math
 
         /**
          * Returns the length of the vector
+         * 
+         * @return float
          */
         public function length() : float {}
         
         /**
          * Returns the dot product of this vector and another
+         * 
+         * @return float
          */
         public function dot(Vec4 $right) : float {}
 
         /**
          * Returns the distance between this vector and another
+         * 
+         * @return float
          */
         public function distance(Vec4 $right) : float {}
 
         /**
          * Returns squared distance between this vector and another
+         * 
+         * @return float
          */
         public function distance2(Vec4 $right) : float {}
 
@@ -2156,7 +2180,7 @@ namespace {
      * @param int $bufSize Specifies the size of the character buffer for storing
      * the returned information log.
      * 
-     * @return string
+     * @return string Returns the information log for the specified object.
      */ 
     function glGetProgramInfoLog(int $program, int $bufSize) : string {};
  
@@ -2182,7 +2206,7 @@ namespace {
      * @param int $bufSize Specifies the size of the character buffer for storing
      * the returned information log.
      * 
-     * @return string
+     * @return string Returns the information log for the specified object.
      */ 
     function glGetShaderInfoLog(int $shader, int $bufSize) : string {};
  

@@ -254,11 +254,8 @@ class ExtFunction
         // add some spaceing if there is content
         if ($argsBuffer) $argsBuffer = PHP_EOL . $argsBuffer . PHP_EOL;
 
-        if ($this->returnType === self::RETURN_VOID) {
-            $return = '@return void';
-        } else {
-            $return = '@return ' . $this->getPHPStubReturn();
-        }
+        // retrun tag
+        $return = '@return ' . $this->getPHPStubReturn() . ' ' . $this->returnComment;
 
         return commentBlock(trim(sprintf("%s%s\n%s", $this->getFunctionPHPComment(), $argsBuffer, $return)));
     }
