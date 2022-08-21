@@ -2,6 +2,11 @@
 
 Before we get to drawing anything, we need to open a window and create a context in which we can actually draw in. This requires some boilerplate code which we discuss in this guide.
 
+<figure markdown>
+  ![PHP OpenGL window creation screenshot](./window-creation-01.png){ width="400" }
+  <figcaption>GLFW Window with OpenGL context in PHP.</figcaption>
+</figure>
+
 !!! note "Full Source"
 
     This getting started tutorial is based on the examples provided with PHP-GLFW.<br> You can check out the complete source code here: [01_triangle.php](https://github.com/mario-deluna/php-glfw/blob/master/examples/01_triangle.php)
