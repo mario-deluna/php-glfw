@@ -3,7 +3,7 @@ repo_url: https://github.com/mario-deluna/php-glfw
 site_url: https://phpgl.net
 use_directory_urls: false
 nav:
-  - 'index.md'
+  - Home: index.md
   - Gettings Started:
     - Installation:
       - Linux: getting-started/installation/install-linux.md

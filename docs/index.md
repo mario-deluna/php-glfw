@@ -3,7 +3,7 @@ hide:
   - navigation
 ---
 
-# Welcome to PHP-GLFW 
+# PHP-GLFW a OpenGL and GLFW extension for PHP
 
 **A fully-featured OpenGL and GLFW extension for PHP. Batteries included 🔋!**
 
