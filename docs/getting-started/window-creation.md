@@ -125,5 +125,5 @@ Next up we are going to create our first geometry and render a triangle in our w
 
 ## Additional resources 
 
- 1. https://www.glfw.org/docs/latest/window_guide.html
- 2. https://learnopengl.com/Getting-started/Hello-Window
+ 1. [https://www.glfw.org/docs/latest/window_guide.html](https://www.glfw.org/docs/latest/window_guide.html)
+ 2. [https://learnopengl.com/Getting-started/Hello-Window](https://learnopengl.com/Getting-started/Hello-Window)

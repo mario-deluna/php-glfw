@@ -36,6 +36,7 @@
 #include "phpglfw_math.h"
 #include "phpglfw_buffer.h"
 #include "phpglfw_texture.h"
+#include "phpglfw_objparser.h"
 
 
 zend_module_entry glfw_module_entry = {
@@ -78,6 +79,9 @@ PHP_MINIT_FUNCTION(glfw)
 
     // texture module
     phpglfw_register_texture_module(INIT_FUNC_ARGS_PASSTHRU);
+
+    // object parser module
+    phpglfw_register_objparser_module(INIT_FUNC_ARGS_PASSTHRU);
 
     return SUCCESS;
 }

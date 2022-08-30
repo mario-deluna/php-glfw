@@ -82,6 +82,9 @@ if test "$PHP_GLFW" != "no"; then
   
   # STB headers
   PHP_ADD_INCLUDE(vendor/stb) 
+
+  # Fast Obj
+  PHP_ADD_INCLUDE(vendor/fastobj) 
   
   # GLFW
   PHP_ADD_INCLUDE([$GLFW_DIR/include])
@@ -137,6 +140,8 @@ if test "$PHP_GLFW" != "no"; then
     phpglfw_math.c \
     phpglfw_buffer.c \
     phpglfw_texture.c \
+    phpglfw_objparser.c \
+    vendor/fastobj/fast_obj.c \
     vendor/glad/src/glad.c"
 
   PHP_ADD_BUILD_DIR($ext_builddir/src)

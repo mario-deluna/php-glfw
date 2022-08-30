@@ -16,6 +16,24 @@ namespace {
 }
 
 
+namespace GL\Geometry
+{
+    class ObjFileParser
+    {   
+        public readonly array $materials;
+
+        public function __construct(string $file) {}
+    }
+}
+
+namespace GL\Geometry\ObjFileParser
+{
+    class Material
+    {
+        public function __construct() {}
+    }
+}
+
 namespace GL\Texture
 {
     class Texture2D {

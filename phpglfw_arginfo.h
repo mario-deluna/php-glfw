@@ -1,5 +1,5 @@
 /* This is a generated file, edit the .stub.php file instead.
- * Stub hash: 37dbdca5f4bdbda820fc8d3d485c7a2e1ddc6a22 */
+ * Stub hash: 202d3824730bec2988fd0ef2f81b98d6ca33adb5 */
 
 ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_glCullFace, 0, 1, IS_VOID, 0)
 	ZEND_ARG_TYPE_INFO(0, mode, IS_LONG, 0)
@@ -2227,6 +2227,13 @@ ZEND_BEGIN_ARG_WITH_RETURN_OBJ_TYPE_MASK_EX(arginfo_class_GLM_normalize, 0, 1, V
 	ZEND_ARG_OBJ_TYPE_MASK(0, vec, Vec2|Vec3|Vec4, 0, NULL)
 ZEND_END_ARG_INFO()
 
+ZEND_BEGIN_ARG_INFO_EX(arginfo_class_GL_Geometry_ObjFileParser___construct, 0, 0, 1)
+	ZEND_ARG_TYPE_INFO(0, file, IS_STRING, 0)
+ZEND_END_ARG_INFO()
+
+ZEND_BEGIN_ARG_INFO_EX(arginfo_class_GL_Geometry_ObjFileParser_Material___construct, 0, 0, 0)
+ZEND_END_ARG_INFO()
+
 ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(arginfo_class_GL_Texture_Texture2D_fromDisk, 0, 1, GL\\Texture\\Texture2D, 0)
 	ZEND_ARG_TYPE_INFO(0, path, IS_STRING, 0)
 ZEND_END_ARG_INFO()
@@ -2314,8 +2321,7 @@ ZEND_END_ARG_INFO()
 
 #define arginfo_class_GL_Math_Vec4___toString arginfo_glfwGetVersionString
 
-ZEND_BEGIN_ARG_INFO_EX(arginfo_class_GL_Math_Mat4___construct, 0, 0, 0)
-ZEND_END_ARG_INFO()
+#define arginfo_class_GL_Math_Mat4___construct arginfo_class_GL_Geometry_ObjFileParser_Material___construct
 
 ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(arginfo_class_GL_Math_Mat4_fromArray, 0, 1, GL\\Math\\Mat4, 0)
 	ZEND_ARG_TYPE_INFO(0, values, IS_ARRAY, 0)
@@ -3105,6 +3111,8 @@ ZEND_METHOD(GLM, radians);
 ZEND_METHOD(GLM, angle);
 ZEND_METHOD(GLM, triangleNormal);
 ZEND_METHOD(GLM, normalize);
+ZEND_METHOD(GL_Geometry_ObjFileParser, __construct);
+ZEND_METHOD(GL_Geometry_ObjFileParser_Material, __construct);
 ZEND_METHOD(GL_Texture_Texture2D, fromDisk);
 ZEND_METHOD(GL_Texture_Texture2D, buffer);
 ZEND_METHOD(GL_Texture_Texture2D, width);
@@ -3777,6 +3785,18 @@ static const zend_function_entry class_GLM_methods[] = {
 	ZEND_ME(GLM, angle, arginfo_class_GLM_angle, ZEND_ACC_PUBLIC|ZEND_ACC_STATIC)
 	ZEND_ME(GLM, triangleNormal, arginfo_class_GLM_triangleNormal, ZEND_ACC_PUBLIC|ZEND_ACC_STATIC)
 	ZEND_ME(GLM, normalize, arginfo_class_GLM_normalize, ZEND_ACC_PUBLIC|ZEND_ACC_STATIC)
+	ZEND_FE_END
+};
+
+
+static const zend_function_entry class_GL_Geometry_ObjFileParser_methods[] = {
+	ZEND_ME(GL_Geometry_ObjFileParser, __construct, arginfo_class_GL_Geometry_ObjFileParser___construct, ZEND_ACC_PUBLIC)
+	ZEND_FE_END
+};
+
+
+static const zend_function_entry class_GL_Geometry_ObjFileParser_Material_methods[] = {
+	ZEND_ME(GL_Geometry_ObjFileParser_Material, __construct, arginfo_class_GL_Geometry_ObjFileParser_Material___construct, ZEND_ACC_PUBLIC)
 	ZEND_FE_END
 };
 
