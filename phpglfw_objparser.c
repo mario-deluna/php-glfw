@@ -200,7 +200,6 @@ PHP_METHOD(GL_Geometry_ObjFileParser, __construct)
         // set the illumination model property
         zend_update_property_long(phpglfw_objparser_material_ce, Z_OBJ_P(&material_zval), "illuminationModel", sizeof("illuminationModel")-1, intern->mesh->materials[i].illum);
 
-
         // add the material to the array
         zend_hash_index_update(ht, i, &material_zval);
     }

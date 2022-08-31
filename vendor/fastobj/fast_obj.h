@@ -539,7 +539,6 @@ const char* parse_int(const char* ptr, int* val)
     int sign;
     int num;
 
-
     if (*ptr == '-')
     {
         sign = -1;
@@ -1107,7 +1106,8 @@ int read_mtllib(fastObjData* data, void* file, const fastObjCallbacks* callbacks
                 p[3] == 'm' &&
                 is_whitespace(p[4]))
             {
-                p = read_mtl_int(p + 4, &mtl.illum);
+                p = skip_whitespace(p + 4);
+                p = read_mtl_int(p, &mtl.illum);
             }
             break;
 
