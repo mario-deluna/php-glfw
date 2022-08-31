@@ -157,7 +157,7 @@ PHP_METHOD(GL_Geometry_ObjFileParser, __construct)
         specular_intern->data[1] = intern->mesh->materials[i].Ks[1];
         specular_intern->data[2] = intern->mesh->materials[i].Ks[2];
         zend_update_property(phpglfw_objparser_material_ce, Z_OBJ_P(&material_zval), "specular", sizeof("specular")-1, &specular_zval);
-        
+
 
         // add the material to the array
         zend_hash_index_update(ht, i, &material_zval);
@@ -182,11 +182,17 @@ void phpglfw_register_objparser_module(INIT_FUNC_ARGS)
 
     memcpy(&phpglfw_objparser_handlers, zend_get_std_object_handlers(), sizeof(phpglfw_objparser_handlers));
 
+#if PHP_VERSION_ID >= 80100 && 0
+    int material_access_flags = ZEND_ACC_PUBLIC | ZEND_ACC_READONLY;
+#else
+    int material_access_flags = ZEND_ACC_PUBLIC;
+#endif
+
     // meterials prop
     zval property_materials_default_value;
 	ZVAL_UNDEF(&property_materials_default_value);
 	zend_string *property_materials_name = zend_string_init("materials", sizeof("materials") - 1, 1);
-	zend_declare_typed_property(phpglfw_objparser_ce, property_materials_name, &property_materials_default_value, ZEND_ACC_PUBLIC | ZEND_ACC_READONLY, NULL, (zend_type) ZEND_TYPE_INIT_MASK(MAY_BE_ARRAY));
+	zend_declare_typed_property(phpglfw_objparser_ce, property_materials_name, &property_materials_default_value, material_access_flags, NULL, (zend_type) ZEND_TYPE_INIT_MASK(MAY_BE_ARRAY));
 	zend_string_release(property_materials_name);
 
     // phpglfw_objparser_handlers.get_debug_info = phpglfw_objparser_debug_info_handler;
@@ -196,12 +202,6 @@ void phpglfw_register_objparser_module(INIT_FUNC_ARGS)
     INIT_CLASS_ENTRY(tmp_ce, "GL\\Geometry\\ObjFileParser\\Material", class_GL_Geometry_ObjFileParser_Material_methods);
     phpglfw_objparser_material_ce = zend_register_internal_class(&tmp_ce);
     phpglfw_objparser_material_ce->create_object = phpglfw_objparser_material_create_handler;
-
-#if PHP_VERSION_ID >= 80100 && 0
-    int material_access_flags = ZEND_ACC_PUBLIC | ZEND_ACC_READONLY;
-#else
-    int material_access_flags = ZEND_ACC_PUBLIC;
-#endif
 
     // material name prop (public readonly string $name)
     zval property_material_name_default_value;
