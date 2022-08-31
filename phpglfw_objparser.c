@@ -26,6 +26,7 @@
 #include "phpglfw_objparser.h"
 #include "phpglfw_arginfo.h"
 #include "phpglfw_buffer.h"
+#include "phpglfw_math.h"
 
 #include <fast_obj.h>
 
@@ -121,12 +122,44 @@ PHP_METHOD(GL_Geometry_ObjFileParser, __construct)
     for (int i = 0; i < intern->mesh->material_count; i++) {
         zval material_zval;
         object_init_ex(&material_zval, phpglfw_objparser_material_ce);
-        phpglfw_objparser_material_object *material_intern = phpglfw_objparser_material_objectptr_from_zobj_p(&material_zval);
+        phpglfw_objparser_material_object *material_intern = phpglfw_objparser_material_objectptr_from_zobj_p(Z_OBJ_P(&material_zval));
         material_intern->material = &intern->mesh->materials[i];
 
         // set name property
         zend_update_property_string(phpglfw_objparser_material_ce, Z_OBJ_P(&material_zval), "name", sizeof("name")-1, intern->mesh->materials[i].name);
-      
+
+        // set the ambient property
+        zval ambient_zval;
+        ZVAL_UNDEF(&ambient_zval);
+        object_init_ex(&ambient_zval, phpglfw_get_math_vec3_ce());
+        phpglfw_math_vec3_object *ambient_intern = phpglfw_math_vec3_objectptr_from_zobj_p(Z_OBJ_P(&ambient_zval));
+        ambient_intern->data[0] = intern->mesh->materials[i].Ka[0];
+        ambient_intern->data[1] = intern->mesh->materials[i].Ka[1];
+        ambient_intern->data[2] = intern->mesh->materials[i].Ka[2];
+        zend_update_property(phpglfw_objparser_material_ce, Z_OBJ_P(&material_zval), "ambient", sizeof("ambient")-1, &ambient_zval);
+
+        // set the diffuse property
+        zval diffuse_zval;
+        ZVAL_UNDEF(&diffuse_zval);
+        object_init_ex(&diffuse_zval, phpglfw_get_math_vec3_ce());
+        phpglfw_math_vec3_object *diffuse_intern = phpglfw_math_vec3_objectptr_from_zobj_p(Z_OBJ_P(&diffuse_zval));
+        diffuse_intern->data[0] = intern->mesh->materials[i].Kd[0];
+        diffuse_intern->data[1] = intern->mesh->materials[i].Kd[1];
+        diffuse_intern->data[2] = intern->mesh->materials[i].Kd[2];
+        zend_update_property(phpglfw_objparser_material_ce, Z_OBJ_P(&material_zval), "diffuse", sizeof("diffuse")-1, &diffuse_zval);
+
+        // set the specular property
+        zval specular_zval;
+        ZVAL_UNDEF(&specular_zval);
+        object_init_ex(&specular_zval, phpglfw_get_math_vec3_ce());
+        phpglfw_math_vec3_object *specular_intern = phpglfw_math_vec3_objectptr_from_zobj_p(Z_OBJ_P(&specular_zval));
+        specular_intern->data[0] = intern->mesh->materials[i].Ks[0];
+        specular_intern->data[1] = intern->mesh->materials[i].Ks[1];
+        specular_intern->data[2] = intern->mesh->materials[i].Ks[2];
+        zend_update_property(phpglfw_objparser_material_ce, Z_OBJ_P(&material_zval), "specular", sizeof("specular")-1, &specular_zval);
+        
+
+        // add the material to the array
         zend_hash_index_update(ht, i, &material_zval);
     }
     
@@ -164,12 +197,41 @@ void phpglfw_register_objparser_module(INIT_FUNC_ARGS)
     phpglfw_objparser_material_ce = zend_register_internal_class(&tmp_ce);
     phpglfw_objparser_material_ce->create_object = phpglfw_objparser_material_create_handler;
 
-    // material name prop
+#if PHP_VERSION_ID >= 80100 && 0
+    int material_access_flags = ZEND_ACC_PUBLIC | ZEND_ACC_READONLY;
+#else
+    int material_access_flags = ZEND_ACC_PUBLIC;
+#endif
+
+    // material name prop (public readonly string $name)
     zval property_material_name_default_value;
     ZVAL_UNDEF(&property_material_name_default_value);
     zend_string *property_material_name = zend_string_init("name", sizeof("name") - 1, 1);
-    zend_declare_typed_property(phpglfw_objparser_material_ce, property_material_name, &property_material_name_default_value, ZEND_ACC_PUBLIC | ZEND_ACC_READONLY, NULL, (zend_type) ZEND_TYPE_INIT_MASK(MAY_BE_STRING));
+    zend_declare_typed_property(phpglfw_objparser_material_ce, property_material_name, &property_material_name_default_value, material_access_flags, NULL, (zend_type) ZEND_TYPE_INIT_MASK(MAY_BE_STRING));
     zend_string_release(property_material_name);
+
+    // material ambient prop (public readonly Vec3 $ambient)
+	zend_string *property_material_ambient_class_Vec3 = zend_string_init("GL\\Math\\Vec3", sizeof("GL\\Math\\Vec3")-1, 1);
+    zval property_material_ambient_default_value;
+    ZVAL_NULL(&property_material_ambient_default_value);
+    zend_string *property_material_ambient = zend_string_init("ambient", sizeof("ambient") - 1, 1);
+    zend_declare_typed_property(phpglfw_objparser_material_ce, property_material_ambient, &property_material_ambient_default_value, material_access_flags, NULL, (zend_type) ZEND_TYPE_INIT_CLASS(property_material_ambient_class_Vec3, 0, MAY_BE_NULL));
+
+    // material diffuse prop (public readonly Vec3 $diffuse)
+    zend_string *property_material_diffuse_class_Vec3 = zend_string_init("GL\\Math\\Vec3", sizeof("GL\\Math\\Vec3")-1, 1);
+    zval property_material_diffuse_default_value;
+    ZVAL_NULL(&property_material_diffuse_default_value);
+    zend_string *property_material_diffuse = zend_string_init("diffuse", sizeof("diffuse") - 1, 1);
+    zend_declare_typed_property(phpglfw_objparser_material_ce, property_material_diffuse, &property_material_diffuse_default_value, material_access_flags, NULL, (zend_type) ZEND_TYPE_INIT_CLASS(property_material_diffuse_class_Vec3, 0, MAY_BE_NULL));
+
+    // material diffuse prop (public readonly Vec3 $sepcular)
+    zend_string *property_material_specular_class_Vec3 = zend_string_init("GL\\Math\\Vec3", sizeof("GL\\Math\\Vec3")-1, 1);
+    zval property_material_specular_default_value;
+    ZVAL_NULL(&property_material_specular_default_value);
+    zend_string *property_material_specular = zend_string_init("specular", sizeof("specular") - 1, 1);
+    zend_declare_typed_property(phpglfw_objparser_material_ce, property_material_specular, &property_material_specular_default_value, material_access_flags, NULL, (zend_type) ZEND_TYPE_INIT_CLASS(property_material_specular_class_Vec3, 0, MAY_BE_NULL));
+
+
 
 
 }
