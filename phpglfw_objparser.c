@@ -158,6 +158,48 @@ PHP_METHOD(GL_Geometry_ObjFileParser, __construct)
         specular_intern->data[2] = intern->mesh->materials[i].Ks[2];
         zend_update_property(phpglfw_objparser_material_ce, Z_OBJ_P(&material_zval), "specular", sizeof("specular")-1, &specular_zval);
 
+        // set the emissive property
+        zval emissive_zval;
+        ZVAL_UNDEF(&emissive_zval);
+        object_init_ex(&emissive_zval, phpglfw_get_math_vec3_ce());
+        phpglfw_math_vec3_object *emissive_intern = phpglfw_math_vec3_objectptr_from_zobj_p(Z_OBJ_P(&emissive_zval));
+        emissive_intern->data[0] = intern->mesh->materials[i].Ke[0];
+        emissive_intern->data[1] = intern->mesh->materials[i].Ke[1];
+        emissive_intern->data[2] = intern->mesh->materials[i].Ke[2];
+        zend_update_property(phpglfw_objparser_material_ce, Z_OBJ_P(&material_zval), "emissive", sizeof("emissive")-1, &emissive_zval);
+
+        // set the transmittance property
+        zval transmittance_zval;
+        ZVAL_UNDEF(&transmittance_zval);
+        object_init_ex(&transmittance_zval, phpglfw_get_math_vec3_ce());
+        phpglfw_math_vec3_object *transmittance_intern = phpglfw_math_vec3_objectptr_from_zobj_p(Z_OBJ_P(&transmittance_zval));
+        transmittance_intern->data[0] = intern->mesh->materials[i].Kt[0];
+        transmittance_intern->data[1] = intern->mesh->materials[i].Kt[1];
+        transmittance_intern->data[2] = intern->mesh->materials[i].Kt[2];
+        zend_update_property(phpglfw_objparser_material_ce, Z_OBJ_P(&material_zval), "transmittance", sizeof("transmittance")-1, &transmittance_zval);
+        
+        // set the transmission filter property
+        zval transmission_filter_zval;
+        ZVAL_UNDEF(&transmission_filter_zval);
+        object_init_ex(&transmission_filter_zval, phpglfw_get_math_vec3_ce());
+        phpglfw_math_vec3_object *transmission_filter_intern = phpglfw_math_vec3_objectptr_from_zobj_p(Z_OBJ_P(&transmission_filter_zval));
+        transmission_filter_intern->data[0] = intern->mesh->materials[i].Tf[0];
+        transmission_filter_intern->data[1] = intern->mesh->materials[i].Tf[1];
+        transmission_filter_intern->data[2] = intern->mesh->materials[i].Tf[2];
+        zend_update_property(phpglfw_objparser_material_ce, Z_OBJ_P(&material_zval), "transmissionFilter", sizeof("transmissionFilter")-1, &transmission_filter_zval);
+
+        // set the shininess property
+        zend_update_property_double(phpglfw_objparser_material_ce, Z_OBJ_P(&material_zval), "shininess", sizeof("shininess")-1, intern->mesh->materials[i].Ns);
+
+        // set the index of refraction property
+        zend_update_property_double(phpglfw_objparser_material_ce, Z_OBJ_P(&material_zval), "indexOfRefraction", sizeof("indexOfRefraction")-1, intern->mesh->materials[i].Ni);
+        
+        // set the dissolve property
+        zend_update_property_double(phpglfw_objparser_material_ce, Z_OBJ_P(&material_zval), "dissolve", sizeof("dissolve")-1, intern->mesh->materials[i].d);
+
+        // set the illumination model property
+        zend_update_property_long(phpglfw_objparser_material_ce, Z_OBJ_P(&material_zval), "illuminationModel", sizeof("illuminationModel")-1, intern->mesh->materials[i].illum);
+
 
         // add the material to the array
         zend_hash_index_update(ht, i, &material_zval);
@@ -216,6 +258,7 @@ void phpglfw_register_objparser_module(INIT_FUNC_ARGS)
     ZVAL_NULL(&property_material_ambient_default_value);
     zend_string *property_material_ambient = zend_string_init("ambient", sizeof("ambient") - 1, 1);
     zend_declare_typed_property(phpglfw_objparser_material_ce, property_material_ambient, &property_material_ambient_default_value, material_access_flags, NULL, (zend_type) ZEND_TYPE_INIT_CLASS(property_material_ambient_class_Vec3, 0, MAY_BE_NULL));
+    zend_string_release(property_material_ambient);
 
     // material diffuse prop (public readonly Vec3 $diffuse)
     zend_string *property_material_diffuse_class_Vec3 = zend_string_init("GL\\Math\\Vec3", sizeof("GL\\Math\\Vec3")-1, 1);
@@ -223,15 +266,67 @@ void phpglfw_register_objparser_module(INIT_FUNC_ARGS)
     ZVAL_NULL(&property_material_diffuse_default_value);
     zend_string *property_material_diffuse = zend_string_init("diffuse", sizeof("diffuse") - 1, 1);
     zend_declare_typed_property(phpglfw_objparser_material_ce, property_material_diffuse, &property_material_diffuse_default_value, material_access_flags, NULL, (zend_type) ZEND_TYPE_INIT_CLASS(property_material_diffuse_class_Vec3, 0, MAY_BE_NULL));
+    zend_string_release(property_material_diffuse);
 
-    // material diffuse prop (public readonly Vec3 $sepcular)
+    // material specular prop (public readonly Vec3 $sepcular)
     zend_string *property_material_specular_class_Vec3 = zend_string_init("GL\\Math\\Vec3", sizeof("GL\\Math\\Vec3")-1, 1);
     zval property_material_specular_default_value;
     ZVAL_NULL(&property_material_specular_default_value);
     zend_string *property_material_specular = zend_string_init("specular", sizeof("specular") - 1, 1);
     zend_declare_typed_property(phpglfw_objparser_material_ce, property_material_specular, &property_material_specular_default_value, material_access_flags, NULL, (zend_type) ZEND_TYPE_INIT_CLASS(property_material_specular_class_Vec3, 0, MAY_BE_NULL));
+    zend_string_release(property_material_specular);
 
+    // material emissive prop (public readonly Vec3 $emissive)
+    zend_string *property_material_emissive_class_Vec3 = zend_string_init("GL\\Math\\Vec3", sizeof("GL\\Math\\Vec3")-1, 1);
+    zval property_material_emissive_default_value;
+    ZVAL_NULL(&property_material_emissive_default_value);
+    zend_string *property_material_emissive = zend_string_init("emissive", sizeof("emissive") - 1, 1);
+    zend_declare_typed_property(phpglfw_objparser_material_ce, property_material_emissive, &property_material_emissive_default_value, material_access_flags, NULL, (zend_type) ZEND_TYPE_INIT_CLASS(property_material_emissive_class_Vec3, 0, MAY_BE_NULL));
+    zend_string_release(property_material_emissive);
 
+    // material transmittance prop (public readonly Vec3 $transmittance)
+    zend_string *property_material_transmittance_class_Vec3 = zend_string_init("GL\\Math\\Vec3", sizeof("GL\\Math\\Vec3")-1, 1);
+    zval property_material_transmittance_default_value;
+    ZVAL_NULL(&property_material_transmittance_default_value);
+    zend_string *property_material_transmittance = zend_string_init("transmittance", sizeof("transmittance") - 1, 1);
+    zend_declare_typed_property(phpglfw_objparser_material_ce, property_material_transmittance, &property_material_transmittance_default_value, material_access_flags, NULL, (zend_type) ZEND_TYPE_INIT_CLASS(property_material_transmittance_class_Vec3, 0, MAY_BE_NULL));
+    zend_string_release(property_material_transmittance);
+
+    // material transmission filter prop (public readonly Vec3 $transmissionFilter)
+    zend_string *property_material_transmissionFilter_class_float = zend_string_init("GL\\Math\\Vec3", sizeof("GL\\Math\\Vec3")-1, 1);
+    zval property_material_transmissionFilter_default_value;
+    ZVAL_DOUBLE(&property_material_transmissionFilter_default_value, 1.0);
+    zend_string *property_material_transmissionFilter = zend_string_init("transmissionFilter", sizeof("transmissionFilter") - 1, 1);
+    zend_declare_typed_property(phpglfw_objparser_material_ce, property_material_transmissionFilter, &property_material_transmissionFilter_default_value, material_access_flags, NULL, (zend_type) ZEND_TYPE_INIT_CLASS(property_material_transmissionFilter_class_float, 0, MAY_BE_NULL));
+    zend_string_release(property_material_transmissionFilter);
+
+    // material shininess prop (public readonly float $shininess)
+    zval property_material_shininess_default_value;
+    ZVAL_DOUBLE(&property_material_shininess_default_value, 1.0);
+    zend_string *property_material_shininess = zend_string_init("shininess", sizeof("shininess") - 1, 1);
+    zend_declare_typed_property(phpglfw_objparser_material_ce, property_material_shininess, &property_material_shininess_default_value, material_access_flags, NULL, (zend_type) ZEND_TYPE_INIT_MASK(MAY_BE_DOUBLE));
+    zend_string_release(property_material_shininess);
+
+    // material index of refraction prop (public readonly float $indexOfRefraction)
+    zval property_material_indexOfRefraction_default_value;
+    ZVAL_DOUBLE(&property_material_indexOfRefraction_default_value, 1.0);
+    zend_string *property_material_indexOfRefraction = zend_string_init("indexOfRefraction", sizeof("indexOfRefraction") - 1, 1);
+    zend_declare_typed_property(phpglfw_objparser_material_ce, property_material_indexOfRefraction, &property_material_indexOfRefraction_default_value, material_access_flags, NULL, (zend_type) ZEND_TYPE_INIT_MASK(MAY_BE_DOUBLE));
+    zend_string_release(property_material_indexOfRefraction);
+
+    // material dissolve prop (public readonly float $dissolve)
+    zval property_material_dissolve_default_value;
+    ZVAL_DOUBLE(&property_material_dissolve_default_value, 1.0);
+    zend_string *property_material_dissolve = zend_string_init("dissolve", sizeof("dissolve") - 1, 1);
+    zend_declare_typed_property(phpglfw_objparser_material_ce, property_material_dissolve, &property_material_dissolve_default_value, material_access_flags, NULL, (zend_type) ZEND_TYPE_INIT_MASK(MAY_BE_DOUBLE));
+    zend_string_release(property_material_dissolve);
+
+    // material illumination model prop (public readonly int $illuminationModel)
+    zval property_material_illuminationModel_default_value;
+    ZVAL_LONG(&property_material_illuminationModel_default_value, 0);
+    zend_string *property_material_illuminationModel = zend_string_init("illuminationModel", sizeof("illuminationModel") - 1, 1);
+    zend_declare_typed_property(phpglfw_objparser_material_ce, property_material_illuminationModel, &property_material_illuminationModel_default_value, material_access_flags, NULL, (zend_type) ZEND_TYPE_INIT_MASK(MAY_BE_LONG));
+    zend_string_release(property_material_illuminationModel);
 
 
 }
