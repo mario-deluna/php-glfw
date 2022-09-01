@@ -20,9 +20,19 @@ namespace GL\Geometry
 {
     class ObjFileParser
     {   
+        public readonly string $name;
+
         public readonly array $materials;
 
+        public readonly array $groups;
+
+        public readonly array $objects;
+
         public function __construct(string $file) {}
+
+        public function getVertices(string $layout, ?\GL\Geometry\ObjFileParser\Group $group = null) : \GL\Buffer\FloatBuffer {}
+
+        public function getIndexedVertices(string $layout, ?\GL\Geometry\ObjFileParser\Group $group = null) : \GL\Buffer\FloatBuffer {}
     }
 }
 
@@ -30,11 +40,15 @@ namespace GL\Geometry\ObjFileParser
 {
     class Material
     {
+        public readonly string $name;
+
         public function __construct() {}
     }
 
     class Group
     {
+        public readonly string $name;
+
         public function __construct() {}
     }
 

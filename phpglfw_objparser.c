@@ -148,8 +148,6 @@ void create_meshgroup_phparray(zval *array_zval, fastObjGroup *group_ptr, unsign
         phpglfw_objparser_group_object *group_obj = phpglfw_objparser_group_objectptr_from_zobj_p(Z_OBJ_P(&group_obj_zval));
         group_obj->group = &group_ptr[i];
 
-        php_printf("%s\n", group_obj->group->name);
-
         // set name property
         if (group_obj->group->name != NULL) {
             zend_update_property_string(phpglfw_objparser_group_ce, Z_OBJ_P(&group_obj_zval), "name", sizeof("name") - 1, group_obj->group->name);
@@ -283,6 +281,62 @@ PHP_METHOD(GL_Geometry_ObjFileParser, __construct)
         // add the material to the array
         zend_hash_index_update(ht, i, &material_zval);
     }   
+}
+
+
+PHP_METHOD(GL_Geometry_ObjFileParser, getVertices)
+{
+    char *layout;
+    zval *group_zval = NULL;
+    if (zend_parse_parameters(ZEND_NUM_ARGS(), "s|O!", &layout, &group_zval, phpglfw_objparser_group_ce) == FAILURE) {
+        return;
+    }
+
+    phpglfw_objparser_object *intern = phpglfw_objparser_objectptr_from_zobj_p(Z_OBJ_P(getThis()));
+
+    // construct a new float buffer
+    object_init_ex(return_value, phpglfw_get_buffer_glfloat_ce());
+    phpglfw_buffer_glfloat_object *buffer_intern = phpglfw_buffer_glfloat_objectptr_from_zobj_p(Z_OBJ_P(return_value));
+
+    size_t layout_len = strlen(layout);
+
+    // for every index in the mesh 
+    for (int i = 0; i < intern->mesh->index_count; i++) 
+    {
+        fastObjIndex *mindex = &intern->mesh->indices[i];
+
+        // for every char in layout
+        for (int l = 0; l < layout_len; l++) {
+            // get the current char
+            char c = layout[l];
+            
+            // p === position
+            if (c == 'p') {
+                cvector_push_back(buffer_intern->vec, intern->mesh->positions[3 * mindex->p + 0]);
+                cvector_push_back(buffer_intern->vec, intern->mesh->positions[3 * mindex->p + 1]);
+                cvector_push_back(buffer_intern->vec, intern->mesh->positions[3 * mindex->p + 2]);
+            }
+            else if (c == 'n') {
+                cvector_push_back(buffer_intern->vec, intern->mesh->normals[3 * mindex->n + 0]);
+                cvector_push_back(buffer_intern->vec, intern->mesh->normals[3 * mindex->n + 1]);
+                cvector_push_back(buffer_intern->vec, intern->mesh->normals[3 * mindex->n + 2]);
+            }
+            else if (c == 't') {
+                cvector_push_back(buffer_intern->vec, intern->mesh->texcoords[2 * mindex->t + 0]);
+                cvector_push_back(buffer_intern->vec, intern->mesh->texcoords[2 * mindex->t + 1]);
+            }
+            else {
+                zend_throw_error(NULL, "Invalid layout string only (p, n, t) are allowed.");
+                return;
+            }
+        }
+    }
+
+}
+
+
+PHP_METHOD(GL_Geometry_ObjFileParser, getIndexedVertices)
+{
 }
 
 PHP_METHOD(GL_Geometry_ObjFileParser_Material, __construct)

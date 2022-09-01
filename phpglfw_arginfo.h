@@ -1,5 +1,5 @@
 /* This is a generated file, edit the .stub.php file instead.
- * Stub hash: 690a07cb3c5c465043593cb3666b55e6d9a0c499 */
+ * Stub hash: 97d240931631abbb81ecc87f01abdfd4bbc841cf */
 
 ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_glCullFace, 0, 1, IS_VOID, 0)
 	ZEND_ARG_TYPE_INFO(0, mode, IS_LONG, 0)
@@ -2231,6 +2231,13 @@ ZEND_BEGIN_ARG_INFO_EX(arginfo_class_GL_Geometry_ObjFileParser___construct, 0, 0
 	ZEND_ARG_TYPE_INFO(0, file, IS_STRING, 0)
 ZEND_END_ARG_INFO()
 
+ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(arginfo_class_GL_Geometry_ObjFileParser_getVertices, 0, 1, GL\\Buffer\\FloatBuffer, 0)
+	ZEND_ARG_TYPE_INFO(0, layout, IS_STRING, 0)
+	ZEND_ARG_OBJ_INFO_WITH_DEFAULT_VALUE(0, group, GL\\Geometry\\ObjFileParser\\Group, 1, "null")
+ZEND_END_ARG_INFO()
+
+#define arginfo_class_GL_Geometry_ObjFileParser_getIndexedVertices arginfo_class_GL_Geometry_ObjFileParser_getVertices
+
 ZEND_BEGIN_ARG_INFO_EX(arginfo_class_GL_Geometry_ObjFileParser_Material___construct, 0, 0, 0)
 ZEND_END_ARG_INFO()
 
@@ -3116,6 +3123,8 @@ ZEND_METHOD(GLM, angle);
 ZEND_METHOD(GLM, triangleNormal);
 ZEND_METHOD(GLM, normalize);
 ZEND_METHOD(GL_Geometry_ObjFileParser, __construct);
+ZEND_METHOD(GL_Geometry_ObjFileParser, getVertices);
+ZEND_METHOD(GL_Geometry_ObjFileParser, getIndexedVertices);
 ZEND_METHOD(GL_Geometry_ObjFileParser_Material, __construct);
 ZEND_METHOD(GL_Geometry_ObjFileParser_Group, __construct);
 ZEND_METHOD(GL_Geometry_ObjFileParser_Texture, __construct);
@@ -3797,6 +3806,8 @@ static const zend_function_entry class_GLM_methods[] = {
 
 static const zend_function_entry class_GL_Geometry_ObjFileParser_methods[] = {
 	ZEND_ME(GL_Geometry_ObjFileParser, __construct, arginfo_class_GL_Geometry_ObjFileParser___construct, ZEND_ACC_PUBLIC)
+	ZEND_ME(GL_Geometry_ObjFileParser, getVertices, arginfo_class_GL_Geometry_ObjFileParser_getVertices, ZEND_ACC_PUBLIC)
+	ZEND_ME(GL_Geometry_ObjFileParser, getIndexedVertices, arginfo_class_GL_Geometry_ObjFileParser_getIndexedVertices, ZEND_ACC_PUBLIC)
 	ZEND_FE_END
 };
 
