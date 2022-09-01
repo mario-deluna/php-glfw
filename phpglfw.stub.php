@@ -32,6 +32,16 @@ namespace GL\Geometry\ObjFileParser
     {
         public function __construct() {}
     }
+
+    class Group
+    {
+        public function __construct() {}
+    }
+
+    class Texture
+    {
+        public function __construct() {}
+    }
 }
 
 namespace GL\Texture

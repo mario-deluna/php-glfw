@@ -35,15 +35,26 @@ typedef struct _phpglfw_objparser_object {
     zend_object std;
 } phpglfw_objparser_object; 
 
-
 typedef struct _phpglfw_objparser_material_object {
     fastObjMaterial* material;
     zend_object std;
 } phpglfw_objparser_material_object; 
 
+typedef struct _phpglfw_objparser_group_object {
+    fastObjGroup* group;
+    zend_object std;
+} phpglfw_objparser_group_object; 
+
+typedef struct _phpglfw_objparser_texture_object {
+    fastObjTexture* texture;
+    zend_object std;
+} phpglfw_objparser_texture_object;
+
 
 zend_class_entry *phpglfw_get_geometry_objparser_ce(); 
 zend_class_entry *phpglfw_get_geometry_objparser_material_ce(); 
+zend_class_entry *phpglfw_get_geometry_objparser_group_ce(); 
+zend_class_entry *phpglfw_get_geometry_objparser_texture_ce();
 
 zend_always_inline phpglfw_objparser_object* phpglfw_objparser_objectptr_from_zobj_p(zend_object* obj)
 {
@@ -53,6 +64,16 @@ zend_always_inline phpglfw_objparser_object* phpglfw_objparser_objectptr_from_zo
 zend_always_inline phpglfw_objparser_material_object* phpglfw_objparser_material_objectptr_from_zobj_p(zend_object* obj)
 {
     return (phpglfw_objparser_material_object *) ((char *) (obj) - XtOffsetOf(phpglfw_objparser_material_object, std));
+}
+
+zend_always_inline phpglfw_objparser_group_object* phpglfw_objparser_group_objectptr_from_zobj_p(zend_object* obj)
+{
+    return (phpglfw_objparser_group_object *) ((char *) (obj) - XtOffsetOf(phpglfw_objparser_group_object, std));
+}
+
+zend_always_inline phpglfw_objparser_texture_object* phpglfw_objparser_texture_objectptr_from_zobj_p(zend_object* obj)
+{
+    return (phpglfw_objparser_texture_object *) ((char *) (obj) - XtOffsetOf(phpglfw_objparser_texture_object, std));
 }
 
 void phpglfw_register_objparser_module(INIT_FUNC_ARGS);

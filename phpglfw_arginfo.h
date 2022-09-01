@@ -1,5 +1,5 @@
 /* This is a generated file, edit the .stub.php file instead.
- * Stub hash: 202d3824730bec2988fd0ef2f81b98d6ca33adb5 */
+ * Stub hash: 690a07cb3c5c465043593cb3666b55e6d9a0c499 */
 
 ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_glCullFace, 0, 1, IS_VOID, 0)
 	ZEND_ARG_TYPE_INFO(0, mode, IS_LONG, 0)
@@ -2234,6 +2234,10 @@ ZEND_END_ARG_INFO()
 ZEND_BEGIN_ARG_INFO_EX(arginfo_class_GL_Geometry_ObjFileParser_Material___construct, 0, 0, 0)
 ZEND_END_ARG_INFO()
 
+#define arginfo_class_GL_Geometry_ObjFileParser_Group___construct arginfo_class_GL_Geometry_ObjFileParser_Material___construct
+
+#define arginfo_class_GL_Geometry_ObjFileParser_Texture___construct arginfo_class_GL_Geometry_ObjFileParser_Material___construct
+
 ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(arginfo_class_GL_Texture_Texture2D_fromDisk, 0, 1, GL\\Texture\\Texture2D, 0)
 	ZEND_ARG_TYPE_INFO(0, path, IS_STRING, 0)
 ZEND_END_ARG_INFO()
@@ -3113,6 +3117,8 @@ ZEND_METHOD(GLM, triangleNormal);
 ZEND_METHOD(GLM, normalize);
 ZEND_METHOD(GL_Geometry_ObjFileParser, __construct);
 ZEND_METHOD(GL_Geometry_ObjFileParser_Material, __construct);
+ZEND_METHOD(GL_Geometry_ObjFileParser_Group, __construct);
+ZEND_METHOD(GL_Geometry_ObjFileParser_Texture, __construct);
 ZEND_METHOD(GL_Texture_Texture2D, fromDisk);
 ZEND_METHOD(GL_Texture_Texture2D, buffer);
 ZEND_METHOD(GL_Texture_Texture2D, width);
@@ -3797,6 +3803,18 @@ static const zend_function_entry class_GL_Geometry_ObjFileParser_methods[] = {
 
 static const zend_function_entry class_GL_Geometry_ObjFileParser_Material_methods[] = {
 	ZEND_ME(GL_Geometry_ObjFileParser_Material, __construct, arginfo_class_GL_Geometry_ObjFileParser_Material___construct, ZEND_ACC_PUBLIC)
+	ZEND_FE_END
+};
+
+
+static const zend_function_entry class_GL_Geometry_ObjFileParser_Group_methods[] = {
+	ZEND_ME(GL_Geometry_ObjFileParser_Group, __construct, arginfo_class_GL_Geometry_ObjFileParser_Group___construct, ZEND_ACC_PUBLIC)
+	ZEND_FE_END
+};
+
+
+static const zend_function_entry class_GL_Geometry_ObjFileParser_Texture_methods[] = {
+	ZEND_ME(GL_Geometry_ObjFileParser_Texture, __construct, arginfo_class_GL_Geometry_ObjFileParser_Texture___construct, ZEND_ACC_PUBLIC)
 	ZEND_FE_END
 };
 
