@@ -1,7 +1,9 @@
 <?php 
 
-/** @generate-function-entries */
-/** @generate-class-entries */
+/** 
+ * @generate-function-entries
+ * ##generate-class-entries
+ */
 /**
  * GLM class to access math functions conviniently.
  */
@@ -38,6 +40,8 @@ namespace GL\Geometry
 
 namespace GL\Geometry\ObjFileParser
 {
+    class Resource {}
+
     class Material
     {
         public readonly string $name;

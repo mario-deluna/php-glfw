@@ -1,5 +1,5 @@
 /* This is a generated file, edit the .stub.php file instead.
- * Stub hash: 97d240931631abbb81ecc87f01abdfd4bbc841cf */
+ * Stub hash: 5f72f9b074e23d965b1899cbebb40444bbe80867 */
 
 ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_glCullFace, 0, 1, IS_VOID, 0)
 	ZEND_ARG_TYPE_INFO(0, mode, IS_LONG, 0)
@@ -3808,6 +3808,11 @@ static const zend_function_entry class_GL_Geometry_ObjFileParser_methods[] = {
 	ZEND_ME(GL_Geometry_ObjFileParser, __construct, arginfo_class_GL_Geometry_ObjFileParser___construct, ZEND_ACC_PUBLIC)
 	ZEND_ME(GL_Geometry_ObjFileParser, getVertices, arginfo_class_GL_Geometry_ObjFileParser_getVertices, ZEND_ACC_PUBLIC)
 	ZEND_ME(GL_Geometry_ObjFileParser, getIndexedVertices, arginfo_class_GL_Geometry_ObjFileParser_getIndexedVertices, ZEND_ACC_PUBLIC)
+	ZEND_FE_END
+};
+
+
+static const zend_function_entry class_GL_Geometry_ObjFileParser_Resource_methods[] = {
 	ZEND_FE_END
 };
 

@@ -28,14 +28,22 @@
 #include "phpglfw_buffer.h"
 #include "phpglfw_math.h"
 
+#define FAST_OBJ_REALLOC        erealloc
+#define FAST_OBJ_FREE           efree
 #include <fast_obj.h>
 
+
 zend_class_entry *phpglfw_objparser_ce; 
+zend_class_entry *phpglfw_objparser_res_ce; 
 zend_class_entry *phpglfw_objparser_material_ce; 
 zend_class_entry *phpglfw_objparser_group_ce;
 zend_class_entry *phpglfw_objparser_texture_ce;
 
 zend_class_entry *phpglfw_get_geometry_objparser_ce() {
+    return phpglfw_objparser_ce;
+}
+
+zend_class_entry *phpglfw_get_geometry_objparser_res_ce() {
     return phpglfw_objparser_ce;
 }
 
@@ -51,69 +59,81 @@ zend_class_entry *phpglfw_get_geometry_objparser_texture_ce() {
     return phpglfw_objparser_texture_ce;
 }
 
-static zend_object_handlers phpglfw_objparser_handlers;
+static zend_object_handlers phpglfw_objparser_res_handlers;
 
-zend_object *phpglfw_objparser_create_handler(zend_class_entry *class_type)
+zend_object *phpglfw_objparser_res_create_handler(zend_class_entry *class_type)
 {
-    size_t block_len = sizeof(phpglfw_objparser_object) + zend_object_properties_size(class_type);
-    phpglfw_objparser_object *intern = emalloc(block_len);
-    memset(intern, 0, block_len);
+    phpglfw_objparser_resource_object *intern;
+	intern = zend_object_alloc(sizeof(phpglfw_objparser_resource_object), class_type);
 
     intern->mesh = NULL;
 
     zend_object_std_init(&intern->std, class_type);
     object_properties_init(&intern->std, class_type);
 
-    intern->std.handlers = &phpglfw_objparser_handlers;
+    intern->std.handlers = &phpglfw_objparser_res_handlers;
 
     return &intern->std;
 }
 
-zend_object *phpglfw_objparser_material_create_handler(zend_class_entry *class_type)
-{
-    size_t block_len = sizeof(phpglfw_objparser_material_object) + zend_object_properties_size(class_type);
-    phpglfw_objparser_material_object *intern = emalloc(block_len);
-    memset(intern, 0, block_len);
+// zend_object *phpglfw_objparser_create_handler(zend_class_entry *class_type)
+// {
+//     phpglfw_objparser_object *intern;
+// 	intern = zend_object_alloc(sizeof(phpglfw_objparser_object), class_type);
 
-    zend_object_std_init(&intern->std, class_type);
-    object_properties_init(&intern->std, class_type);
+//     intern->mesh = NULL;
 
-    intern->std.handlers = zend_get_std_object_handlers();
+//     zend_object_std_init(&intern->std, class_type);
+//     object_properties_init(&intern->std, class_type);
+
+//     intern->std.handlers = &phpglfw_objparser_handlers;
+
+//     return &intern->std;
+// }
+
+// zend_object *phpglfw_objparser_material_create_handler(zend_class_entry *class_type)
+// {
+//     phpglfw_objparser_material_object *intern;
+// 	intern = zend_object_alloc(sizeof(phpglfw_objparser_material_object), class_type);
+
+//     zend_object_std_init(&intern->std, class_type);
+//     object_properties_init(&intern->std, class_type);
+
+//     intern->std.handlers = zend_get_std_object_handlers();
     
-    return &intern->std;
-}
+//     return &intern->std;
+// }
 
-zend_object *phpglfw_objparser_group_create_handler(zend_class_entry *class_type)
-{
-    size_t block_len = sizeof(phpglfw_objparser_group_object) + zend_object_properties_size(class_type);
-    phpglfw_objparser_group_object *intern = emalloc(block_len);
-    memset(intern, 0, block_len);
+// zend_object *phpglfw_objparser_group_create_handler(zend_class_entry *class_type)
+// {
+//     phpglfw_objparser_group_object *intern;
+// 	intern = zend_object_alloc(sizeof(phpglfw_objparser_group_object), class_type);
 
-    zend_object_std_init(&intern->std, class_type);
-    object_properties_init(&intern->std, class_type);
+//     zend_object_std_init(&intern->std, class_type);
+//     object_properties_init(&intern->std, class_type);
 
-    intern->std.handlers = zend_get_std_object_handlers();
+//     intern->std.handlers = zend_get_std_object_handlers();
     
-    return &intern->std;
-}
+//     return &intern->std;
+// }
 
-zend_object *phpglfw_objparser_texture_create_handler(zend_class_entry *class_type)
-{
-    size_t block_len = sizeof(phpglfw_objparser_texture_object) + zend_object_properties_size(class_type);
-    phpglfw_objparser_texture_object *intern = emalloc(block_len);
-    memset(intern, 0, block_len);
+// zend_object *phpglfw_objparser_texture_create_handler(zend_class_entry *class_type)
+// {
+//     size_t block_len = sizeof(phpglfw_objparser_texture_object) + zend_object_properties_size(class_type);
+//     phpglfw_objparser_texture_object *intern = emalloc(block_len);
+//     memset(intern, 0, block_len);
 
-    zend_object_std_init(&intern->std, class_type);
-    object_properties_init(&intern->std, class_type);
+//     zend_object_std_init(&intern->std, class_type);
+//     object_properties_init(&intern->std, class_type);
 
-    intern->std.handlers = zend_get_std_object_handlers();
+//     intern->std.handlers = zend_get_std_object_handlers();
     
-    return &intern->std;
-}
+//     return &intern->std;
+// }
 
-static void phpglfw_geometry_objparser_free_handler(zend_object *object)
+static void phpglfw_geometry_objparser_res_free_handler(zend_object *object)
 {
-    phpglfw_objparser_object *intern = phpglfw_objparser_objectptr_from_zobj_p(object);
+    phpglfw_objparser_resource_object *intern = phpglfw_objparser_res_objectptr_from_zobj_p(object);
 
     if (intern->mesh != NULL) {
         fast_obj_destroy(intern->mesh);
@@ -142,19 +162,21 @@ void create_meshgroup_phparray(zval *array_zval, fastObjGroup *group_ptr, unsign
     HashTable *ht = zend_new_array(group_size);
     ZVAL_ARR(array_zval, ht);
 
-    for (unsigned int i = 0; i < group_size; i++) {
+    for (unsigned int i = 0; i < group_size; i++) 
+    {
         zval group_obj_zval;
+        fastObjGroup *group = &group_ptr[i];
         object_init_ex(&group_obj_zval, phpglfw_objparser_group_ce);
-        phpglfw_objparser_group_object *group_obj = phpglfw_objparser_group_objectptr_from_zobj_p(Z_OBJ_P(&group_obj_zval));
-        group_obj->group = &group_ptr[i];
 
         // set name property
-        if (group_obj->group->name != NULL) {
-            zend_update_property_string(phpglfw_objparser_group_ce, Z_OBJ_P(&group_obj_zval), "name", sizeof("name") - 1, group_obj->group->name);
+        if (group->name != NULL) {
+            zend_update_property_string(phpglfw_objparser_group_ce, Z_OBJ_P(&group_obj_zval), "name", sizeof("name") - 1, group->name);
         }
 
-        // set the face count prop
-        zend_update_property_long(phpglfw_objparser_group_ce, Z_OBJ_P(&group_obj_zval), "faceCount", sizeof("faceCount") - 1, group_obj->group->face_count);
+        // set the faceCount, faceOffset and indexOffset properties
+        zend_update_property_long(phpglfw_objparser_group_ce, Z_OBJ_P(&group_obj_zval), "faceCount", sizeof("faceCount") - 1, group->face_count);
+        zend_update_property_long(phpglfw_objparser_group_ce, Z_OBJ_P(&group_obj_zval), "faceOffset", sizeof("faceOffset") - 1, group->face_offset);
+        zend_update_property_long(phpglfw_objparser_group_ce, Z_OBJ_P(&group_obj_zval), "indexOffset", sizeof("indexOffset") - 1, group->index_offset);
 
         // add the array el
         zend_hash_index_update(ht, i, &group_obj_zval);
@@ -164,13 +186,21 @@ void create_meshgroup_phparray(zval *array_zval, fastObjGroup *group_ptr, unsign
 PHP_METHOD(GL_Geometry_ObjFileParser, __construct)
 {
     zend_object *curr_obj = Z_OBJ_P(getThis());
-    phpglfw_objparser_object *intern = phpglfw_objparser_objectptr_from_zobj_p(curr_obj);
+
+    // construct a new resource object and attach it to the prop
+    zval res_obj_zval;
+    object_init_ex(&res_obj_zval, phpglfw_objparser_res_ce);
+    zend_update_property(phpglfw_objparser_ce, curr_obj, "resource", sizeof("resource") - 1, &res_obj_zval);
     
     char *file;
     size_t file_len;
     if (zend_parse_parameters(ZEND_NUM_ARGS(), "s", &file, &file_len) == FAILURE) {
         RETURN_NULL();
     }
+
+    // fetch the internal obj
+    phpglfw_objparser_resource_object *intern = phpglfw_objparser_res_objectptr_from_zobj_p(Z_OBJ_P(&res_obj_zval));
+    // zval_ptr_dtor(&res_obj_zval);
 
     intern->mesh = fast_obj_read(file);
 
@@ -200,8 +230,8 @@ PHP_METHOD(GL_Geometry_ObjFileParser, __construct)
     for (int i = 0; i < intern->mesh->material_count; i++) {
         zval material_zval;
         object_init_ex(&material_zval, phpglfw_objparser_material_ce);
-        phpglfw_objparser_material_object *material_intern = phpglfw_objparser_material_objectptr_from_zobj_p(Z_OBJ_P(&material_zval));
-        material_intern->material = &intern->mesh->materials[i];
+        // phpglfw_objparser_material_object *material_intern = phpglfw_objparser_material_objectptr_from_zobj_p(Z_OBJ_P(&material_zval));
+        // material_intern->material = &intern->mesh->materials[i];
 
         // set name property
         zend_update_property_string(phpglfw_objparser_material_ce, Z_OBJ_P(&material_zval), "name", sizeof("name")-1, intern->mesh->materials[i].name);
@@ -292,8 +322,13 @@ PHP_METHOD(GL_Geometry_ObjFileParser, getVertices)
         return;
     }
 
-    phpglfw_objparser_object *intern = phpglfw_objparser_objectptr_from_zobj_p(Z_OBJ_P(getThis()));
+    // get the resource zval from local prop
+    zval rv;
+    zval *resource_zval = zend_read_property(phpglfw_objparser_ce, Z_OBJ_P(getThis()), "resource", sizeof("resource")-1, 0, &rv);
 
+    // fetch the internal obj from resource_zval
+    phpglfw_objparser_resource_object *intern = phpglfw_objparser_res_objectptr_from_zobj_p(Z_OBJ_P(resource_zval));
+    
     // construct a new float buffer
     object_init_ex(return_value, phpglfw_get_buffer_glfloat_ce());
     phpglfw_buffer_glfloat_object *buffer_intern = phpglfw_buffer_glfloat_objectptr_from_zobj_p(Z_OBJ_P(return_value));
@@ -332,6 +367,9 @@ PHP_METHOD(GL_Geometry_ObjFileParser, getVertices)
         }
     }
 
+    
+    // php_printf("%s\n", layout);
+    // php_printf("%d\n", intern->mesh->position_count);
 }
 
 
@@ -357,19 +395,32 @@ PHP_METHOD(GL_Geometry_ObjFileParser_Texture, __construct)
 void phpglfw_register_objparser_module(INIT_FUNC_ARGS)
 {
     zend_class_entry tmp_ce;
-    
+
+    // Obj File Parser Resource
+    // ------------------------------
+    INIT_NS_CLASS_ENTRY(tmp_ce, "GL\\Geometry\\ObjFileParser", "Resource", class_GL_Geometry_ObjFileParser_Resource_methods);
+	phpglfw_objparser_res_ce = zend_register_internal_class_ex(&tmp_ce, NULL);
+    phpglfw_objparser_res_ce->create_object = phpglfw_objparser_res_create_handler;
+
+    memcpy(&phpglfw_objparser_res_handlers, zend_get_std_object_handlers(), sizeof(phpglfw_objparser_res_handlers));
+
+    phpglfw_objparser_res_handlers.free_obj = phpglfw_geometry_objparser_res_free_handler;
+
     // Obj File Parser
+    // ------------------------------
     INIT_CLASS_ENTRY(tmp_ce, "GL\\Geometry\\ObjFileParser", class_GL_Geometry_ObjFileParser_methods);
     phpglfw_objparser_ce = zend_register_internal_class(&tmp_ce);
-    phpglfw_objparser_ce->create_object = phpglfw_objparser_create_handler;
-
-    memcpy(&phpglfw_objparser_handlers, zend_get_std_object_handlers(), sizeof(phpglfw_objparser_handlers));
+    // phpglfw_objparser_ce->create_object = phpglfw_objparser_create_handler;
+    // memcpy(&phpglfw_objparser_handlers, zend_get_std_object_handlers(), sizeof(phpglfw_objparser_handlers));
 
 #if PHP_VERSION_ID >= 80100 && 0
     int prop_access_flags = ZEND_ACC_PUBLIC | ZEND_ACC_READONLY;
 #else
     int prop_access_flags = ZEND_ACC_PUBLIC;
 #endif
+
+    // resource property 
+    zend_declare_property_null(phpglfw_objparser_ce, "resource", sizeof("resource")-1, prop_access_flags);
 
     // meterials prop
     zval property_materials_default_value;
@@ -392,14 +443,11 @@ void phpglfw_register_objparser_module(INIT_FUNC_ARGS)
     zend_declare_typed_property(phpglfw_objparser_ce, property_objects_name, &property_objects_default_value, prop_access_flags, NULL, (zend_type) ZEND_TYPE_INIT_MASK(MAY_BE_ARRAY));
     zend_string_release(property_objects_name);
 
-    // phpglfw_objparser_handlers.get_debug_info = phpglfw_objparser_debug_info_handler;
-    phpglfw_objparser_handlers.free_obj = phpglfw_geometry_objparser_free_handler;
-
     // Obj File Parser Material
     // ------------------------------
     INIT_CLASS_ENTRY(tmp_ce, "GL\\Geometry\\ObjFileParser\\Material", class_GL_Geometry_ObjFileParser_Material_methods);
     phpglfw_objparser_material_ce = zend_register_internal_class(&tmp_ce);
-    phpglfw_objparser_material_ce->create_object = phpglfw_objparser_material_create_handler;
+    // phpglfw_objparser_material_ce->create_object = phpglfw_objparser_material_create_handler;
 
     // material name prop (public readonly string $name)
     zval property_material_name_default_value;
@@ -488,7 +536,7 @@ void phpglfw_register_objparser_module(INIT_FUNC_ARGS)
     // ------------------------------
     INIT_CLASS_ENTRY(tmp_ce, "GL\\Geometry\\ObjFileParser\\Group", class_GL_Geometry_ObjFileParser_Group_methods);
     phpglfw_objparser_group_ce = zend_register_internal_class(&tmp_ce);
-    phpglfw_objparser_group_ce->create_object = phpglfw_objparser_material_create_handler;
+    // phpglfw_objparser_group_ce->create_object = phpglfw_objparser_material_create_handler;
 
     // group name prop (public readonly string $name)
     zval property_group_name_default_value;
@@ -504,5 +552,17 @@ void phpglfw_register_objparser_module(INIT_FUNC_ARGS)
     zend_declare_typed_property(phpglfw_objparser_group_ce, property_group_face_count, &property_group_face_count_default_value, prop_access_flags, NULL, (zend_type) ZEND_TYPE_INIT_MASK(MAY_BE_LONG));
     zend_string_release(property_group_face_count);
 
+    // group face offset prop (public readonly int $faceOffset)
+    zval property_group_face_offset_default_value;
+    ZVAL_LONG(&property_group_face_offset_default_value, 0);
+    zend_string *property_group_face_offset = zend_string_init("faceOffset", sizeof("faceOffset") - 1, 1);
+    zend_declare_typed_property(phpglfw_objparser_group_ce, property_group_face_offset, &property_group_face_offset_default_value, prop_access_flags, NULL, (zend_type) ZEND_TYPE_INIT_MASK(MAY_BE_LONG));
+    zend_string_release(property_group_face_offset);
 
+    // group index offset prop (public readonly int $indexOffset)
+    zval property_group_index_offset_default_value;
+    ZVAL_LONG(&property_group_index_offset_default_value, 0);
+    zend_string *property_group_index_offset = zend_string_init("indexOffset", sizeof("indexOffset") - 1, 1);
+    zend_declare_typed_property(phpglfw_objparser_group_ce, property_group_index_offset, &property_group_index_offset_default_value, prop_access_flags, NULL, (zend_type) ZEND_TYPE_INIT_MASK(MAY_BE_LONG));
+    zend_string_release(property_group_index_offset);
 }
