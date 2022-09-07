@@ -317,8 +317,9 @@ PHP_METHOD(GL_Geometry_ObjFileParser, __construct)
 PHP_METHOD(GL_Geometry_ObjFileParser, getVertices)
 {
     char *layout;
+    size_t layout_len;
     zval *group_zval = NULL;
-    if (zend_parse_parameters(ZEND_NUM_ARGS(), "s|O!", &layout, &group_zval, phpglfw_objparser_group_ce) == FAILURE) {
+    if (zend_parse_parameters(ZEND_NUM_ARGS(), "s|O!", &layout, &layout_len, &group_zval, phpglfw_objparser_group_ce) == FAILURE) {
         return;
     }
 
@@ -333,10 +334,33 @@ PHP_METHOD(GL_Geometry_ObjFileParser, getVertices)
     object_init_ex(return_value, phpglfw_get_buffer_glfloat_ce());
     phpglfw_buffer_glfloat_object *buffer_intern = phpglfw_buffer_glfloat_objectptr_from_zobj_p(Z_OBJ_P(return_value));
 
-    size_t layout_len = strlen(layout);
+    vec3 tmp_tangent;
+    vec3 tmp_bitangent;
+
+    // group selection
+    fastObjGroup group;
+    group.name         = 0;
+    group.face_count   = intern->mesh->face_count;
+    group.face_offset  = 0;
+    group.index_offset = 0;
+
+    // if group_zval is not null, then we read the properties from the object and assign them to group
+    if (group_zval) {
+        // get the faceCount property
+        zval *face_count_zval = zend_read_property(phpglfw_objparser_group_ce, Z_OBJ_P(group_zval), "faceCount", sizeof("faceCount")-1, 0, &rv);
+        group.face_count = Z_LVAL_P(face_count_zval);
+
+        // get the faceOffset property
+        zval *face_offset_zval = zend_read_property(phpglfw_objparser_group_ce, Z_OBJ_P(group_zval), "faceOffset", sizeof("faceOffset")-1, 0, &rv);
+        group.face_offset = Z_LVAL_P(face_offset_zval);
+
+        // get the indexOffset property
+        zval *index_offset_zval = zend_read_property(phpglfw_objparser_group_ce, Z_OBJ_P(group_zval), "indexOffset", sizeof("indexOffset")-1, 0, &rv);
+        group.index_offset = Z_LVAL_P(index_offset_zval);
+    }
 
     // for every index in the mesh 
-    for (int i = 0; i < intern->mesh->index_count; i++) 
+    for (unsigned int i = group.index_offset; i < group.index_offset + (group.face_count * 3); i++) 
     {
         fastObjIndex *mindex = &intern->mesh->indices[i];
 
@@ -351,17 +375,25 @@ PHP_METHOD(GL_Geometry_ObjFileParser, getVertices)
                 cvector_push_back(buffer_intern->vec, intern->mesh->positions[3 * mindex->p + 1]);
                 cvector_push_back(buffer_intern->vec, intern->mesh->positions[3 * mindex->p + 2]);
             }
+            // n === normal
             else if (c == 'n') {
                 cvector_push_back(buffer_intern->vec, intern->mesh->normals[3 * mindex->n + 0]);
                 cvector_push_back(buffer_intern->vec, intern->mesh->normals[3 * mindex->n + 1]);
                 cvector_push_back(buffer_intern->vec, intern->mesh->normals[3 * mindex->n + 2]);
             }
-            else if (c == 't') {
+            // c === texture coords
+            else if (c == 'c') {
                 cvector_push_back(buffer_intern->vec, intern->mesh->texcoords[2 * mindex->t + 0]);
                 cvector_push_back(buffer_intern->vec, intern->mesh->texcoords[2 * mindex->t + 1]);
             }
+            // t === tangent 
+            // else if (c == 't') {
+            //     // the tangent is calculated on the fly
+            //     vec3 tangent;
+
+            // }
             else {
-                zend_throw_error(NULL, "Invalid layout string only (p, n, t) are allowed.");
+                zend_throw_error(NULL, "Invalid layout string only (p, n, c) are allowed.");
                 return;
             }
         }
@@ -534,7 +566,7 @@ void phpglfw_register_objparser_module(INIT_FUNC_ARGS)
 
     // Obj File Parser Group
     // ------------------------------
-    INIT_CLASS_ENTRY(tmp_ce, "GL\\Geometry\\ObjFileParser\\Group", class_GL_Geometry_ObjFileParser_Group_methods);
+    INIT_NS_CLASS_ENTRY(tmp_ce, "GL\\Geometry\\ObjFileParser", "Group", class_GL_Geometry_ObjFileParser_Group_methods);
     phpglfw_objparser_group_ce = zend_register_internal_class(&tmp_ce);
     // phpglfw_objparser_group_ce->create_object = phpglfw_objparser_material_create_handler;
 

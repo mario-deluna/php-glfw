@@ -29,6 +29,10 @@ namespace GL\Geometry
 
         public readonly array $objects;
 
+        /**
+         * Obj. file parser constructor.
+         * IMPORTANT: This obj. file parser does ONLY support triangulated meshes!
+         */
         public function __construct(string $file) {}
 
         public function getVertices(string $layout, ?\GL\Geometry\ObjFileParser\Group $group = null) : \GL\Buffer\FloatBuffer {}
