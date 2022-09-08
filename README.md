@@ -98,6 +98,8 @@ Instead of porting function by function manually, PHP-GLFW parses the OpenGL spe
 
 ### Examples
 
+![glfw-previews](https://user-images.githubusercontent.com/956212/189208007-74064a7b-0e93-4d7f-b53e-e799a0641e54.png)
+
 If you want to check out the code straight away, check out the [examples](./examples#examples) directory.
 
 ## Installation 
