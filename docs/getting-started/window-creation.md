@@ -2,10 +2,19 @@
 
 Before we get to drawing anything, we need to open a window and create a context in which we can actually draw in. This requires some boilerplate code which we discuss in this guide.
 
+Opening a window is a operating system specific task, so we usally would have to write a different program for each platform. However, as the name of this extension suggests _PHP-GLFW_ is built on top of the [GLFW](http://www.glfw.org/) library, which provides a cross-platform API for opening a window, creating a context and receiving input events for us. Having plattform specific code in PHP just doesnt feel right, so we use GLFW to do the dirty work for us.
+
+!!! question "PHP-GLFW already installed?"
+
+    Follow the **[installation guide](./installation/install-linux.md)** if you **haven't** installed the extension yet!
+
+
 <figure markdown>
   ![PHP OpenGL window creation screenshot](./window-creation-01.png){ width="400" }
   <figcaption>GLFW Window with OpenGL context in PHP.</figcaption>
 </figure>
+
+Not a very exciting screenshot, I know. But first things first, the fun stuff is coming later.
 
 !!! note "Full Source"
 
@@ -16,7 +25,7 @@ Before we get to drawing anything, we need to open a window and create a context
 
 At the very beginning we want to call [glfwInit](./../API/GLFW/glfwInit.md), which you probably can guess from the name will initialize GLFW. 
 
-GLFW is a multi-platform library for OpenGL that handles window creation, input & context for us.
+GLFW is a multi-platform library that handles window creation, input & context for us.
 
 ```php
 if (!glfwInit()) {
@@ -50,6 +59,9 @@ if (!$window = glfwCreateWindow(800, 600, "PHP GLFW Demo")) {
 ```
 
 `$window` is now an instance of the `GLFWwindow` class, which holds the internal resource to the actual window.
+
+The first two parameters are the width and height of the window in pixels. The third parameter is the title of the window.
+If the window creation fails, the function returns `NULL` and we throw an exception.
 
 ## Binding GL Context
 
@@ -105,6 +117,20 @@ while (!glfwWindowShouldClose($window))
 }
 ```
 
+Glfw holds an internal state which can be fetched using [`glfwWindowShouldClose`](./../API/GLFW/glfwWindowShouldClose.md), which will also return true if the user requested to close the window. (By clicking the close icon on the window for example).
+
+In the loop, the function [`glfwPollEvents`](./../API/GLFW/glfwPollEvents.md) will poll all queued window events and call the appropriate callback functions. Calling this function continuously is important to make sure that the window is responsive to user input and does not freeze.
+
+```php
+glfwGetCursorPos($window, $mouseX, $mouseY);
+glClearColor(sin($mouseX / 300), sin($mouseY / 300), cos($mouseY / 300), 1);
+glClear(GL_COLOR_BUFFER_BIT);
+```
+
+Here we simply get the current mouse position and use it to set the clear color. The clear color is used to clear the color buffer before rendering a new frame. Think of it as the background color of the window.
+
+Finally in the loop we call [`glfwSwapBuffers`](./../API/GLFW/glfwSwapBuffers.md) to swap the windows framebuffer with the one that is currently being rendered to. This is a double buffered window, which means that there are two framebuffers, one that is currently being rendered to and one that is currently being displayed. By swapping the buffers, we make the rendered frame visible to the user.
+
 For good mesure, let's clean up after the loop.
 
 ```php
@@ -122,6 +148,39 @@ Here you go, a colored window! Not the peak of excitement, but we are getting th
 
 Next up we are going to create our first geometry and render a triangle in our window.
 
+## Full Source Code
+
+```php
+<?php
+if (!glfwInit()) {
+    throw new Exception('GLFW could not be initialized!');
+}
+
+glfwWindowHint(GLFW_RESIZABLE, GL_TRUE);
+glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
+glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 1);
+glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
+
+if (!$window = glfwCreateWindow(800, 600, "PHP GLFW Demo")) {
+    throw new Exception('OS Window could not be initialized!');
+}
+
+glfwMakeContextCurrent($window);
+glfwSwapInterval(1);
+
+while (!glfwWindowShouldClose($window))
+{
+    glfwPollEvents();
+    glfwGetCursorPos($window, $mouseX, $mouseY);
+    glClearColor(sin($mouseX / 300), sin($mouseY / 300), cos($mouseY / 300), 1);
+    glClear(GL_COLOR_BUFFER_BIT);
+    glfwSwapBuffers($window);
+}
+
+glfwDestroyWindow($window);
+glfwTerminate();
+```
 
 ## Additional resources 
 
