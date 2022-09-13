@@ -4,7 +4,7 @@
 
 # PHP-GLFW
 
-**[Website](https://phpgl.net) • [Getting Started](https://phpgl.net/getting-started/01_installation.html) • [User Guide](https://phpgl.net/user-guide/index.html) • [API Docs](https://phpgl.net/API/Buffer/ByteBuffer.html)**
+**[Website](https://phpgl.net) • [Getting Started](https://phpgl.net/getting-started/window-creation.html) • [User Guide](https://phpgl.net/user-guide/index.html) • [API Docs](https://phpgl.net/API/Buffer/ByteBuffer.html)**
 
 **A fully-featured OpenGL and GLFW extension for PHP. Batteries included 🔋!**
 
@@ -92,7 +92,7 @@ Instead of porting function by function manually, PHP-GLFW parses the OpenGL spe
 ## Documentation 📚
 
 > 1. [Full Documentation](https://phpgl.net) 
-> 2. [Getting Started Guide](https://phpgl.net/getting-started/01_installation.html) 
+> 2. [Getting Started Guide](https://phpgl.net/getting-started/window-creation.html) 
 > 3. [User Guide](https://phpgl.net/user-guide/index.html) 
 > 4. [API Docs](https://phpgl.net/API/Buffer/ByteBuffer.html) 
 
@@ -104,7 +104,7 @@ If you want to check out the code straight away, check out the [examples](./exam
 
 ## Installation 
 
-**Please see the complete detailed installation guide here: [Installation](https://phpgl.net)**
+**Please see the complete detailed installation guide here: [Installation](https://phpgl.net/getting-started/installation/install-linux.html)**
 
 ### MacOS 
 
