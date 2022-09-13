@@ -313,49 +313,13 @@ PHP_METHOD(GL_Geometry_ObjFileParser, __construct)
     }   
 }
 
-
-PHP_METHOD(GL_Geometry_ObjFileParser, getVertices)
-{
-    char *layout;
-    size_t layout_len;
-    zval *group_zval = NULL;
-    if (zend_parse_parameters(ZEND_NUM_ARGS(), "s|O!", &layout, &layout_len, &group_zval, phpglfw_objparser_group_ce) == FAILURE) {
-        return;
-    }
-
-    // get the resource zval from local prop
-    zval rv;
-    zval *resource_zval = zend_read_property(phpglfw_objparser_ce, Z_OBJ_P(getThis()), "resource", sizeof("resource")-1, 0, &rv);
-
-    // fetch the internal obj from resource_zval
-    phpglfw_objparser_resource_object *intern = phpglfw_objparser_res_objectptr_from_zobj_p(Z_OBJ_P(resource_zval));
-    
-    // construct a new float buffer
-    object_init_ex(return_value, phpglfw_get_buffer_glfloat_ce());
-    phpglfw_buffer_glfloat_object *buffer_intern = phpglfw_buffer_glfloat_objectptr_from_zobj_p(Z_OBJ_P(return_value));
-
-    // group selection
-    fastObjGroup group;
-    group.name         = 0;
-    group.face_count   = intern->mesh->face_count;
-    group.face_offset  = 0;
-    group.index_offset = 0;
-
-    // if group_zval is not null, then we read the properties from the object and assign them to group
-    if (group_zval) {
-        // get the faceCount property
-        zval *face_count_zval = zend_read_property(phpglfw_objparser_group_ce, Z_OBJ_P(group_zval), "faceCount", sizeof("faceCount")-1, 0, &rv);
-        group.face_count = Z_LVAL_P(face_count_zval);
-
-        // get the faceOffset property
-        zval *face_offset_zval = zend_read_property(phpglfw_objparser_group_ce, Z_OBJ_P(group_zval), "faceOffset", sizeof("faceOffset")-1, 0, &rv);
-        group.face_offset = Z_LVAL_P(face_offset_zval);
-
-        // get the indexOffset property
-        zval *index_offset_zval = zend_read_property(phpglfw_objparser_group_ce, Z_OBJ_P(group_zval), "indexOffset", sizeof("indexOffset")-1, 0, &rv);
-        group.index_offset = Z_LVAL_P(index_offset_zval);
-    }
-
+void phpglfw_extract_vertexbuffer(
+    phpglfw_objparser_resource_object *intern, 
+    phpglfw_buffer_glfloat_object *floatbuffer, 
+    fastObjGroup *group, 
+    char *layout, 
+    int layout_len
+) {
     // flags from layout
     bool calc_normals = false;
     bool calc_tangents = false;
@@ -396,7 +360,7 @@ PHP_METHOD(GL_Geometry_ObjFileParser, getVertices)
     vec3 tmp_vec2;
 
     // for every index in the mesh 
-    for (unsigned int i = group.index_offset; i < group.index_offset + (group.face_count * 3); i+=3) 
+    for (unsigned int i = group->index_offset; i < group->index_offset + (group->face_count * 3); i+=3) 
     {
         i1 = &intern->mesh->indices[i + 0];
         i2 = &intern->mesh->indices[i + 1];
@@ -460,49 +424,103 @@ PHP_METHOD(GL_Geometry_ObjFileParser, getVertices)
                 
                 // p === position
                 if (c == 'p') {
-                    cvector_push_back(buffer_intern->vec, intern->mesh->positions[3 * mindex->p + 0]);
-                    cvector_push_back(buffer_intern->vec, intern->mesh->positions[3 * mindex->p + 1]);
-                    cvector_push_back(buffer_intern->vec, intern->mesh->positions[3 * mindex->p + 2]);
+                    cvector_push_back(floatbuffer->vec, intern->mesh->positions[3 * mindex->p + 0]);
+                    cvector_push_back(floatbuffer->vec, intern->mesh->positions[3 * mindex->p + 1]);
+                    cvector_push_back(floatbuffer->vec, intern->mesh->positions[3 * mindex->p + 2]);
                 }
                 // n === normal
                 else if (c == 'n') {
-                    cvector_push_back(buffer_intern->vec, intern->mesh->normals[3 * mindex->n + 0]);
-                    cvector_push_back(buffer_intern->vec, intern->mesh->normals[3 * mindex->n + 1]);
-                    cvector_push_back(buffer_intern->vec, intern->mesh->normals[3 * mindex->n + 2]);
+                    cvector_push_back(floatbuffer->vec, intern->mesh->normals[3 * mindex->n + 0]);
+                    cvector_push_back(floatbuffer->vec, intern->mesh->normals[3 * mindex->n + 1]);
+                    cvector_push_back(floatbuffer->vec, intern->mesh->normals[3 * mindex->n + 2]);
                 }
                 // N === generated normal
                 else if (c == 'N') {
-                    cvector_push_back(buffer_intern->vec, gen_norm[0]);
-                    cvector_push_back(buffer_intern->vec, gen_norm[1]);
-                    cvector_push_back(buffer_intern->vec, gen_norm[2]);
+                    cvector_push_back(floatbuffer->vec, gen_norm[0]);
+                    cvector_push_back(floatbuffer->vec, gen_norm[1]);
+                    cvector_push_back(floatbuffer->vec, gen_norm[2]);
                 }
                 // c === texture coords
                 else if (c == 'c') {
-                    cvector_push_back(buffer_intern->vec, intern->mesh->texcoords[2 * mindex->t + 0]);
-                    cvector_push_back(buffer_intern->vec, intern->mesh->texcoords[2 * mindex->t + 1]);
+                    cvector_push_back(floatbuffer->vec, intern->mesh->texcoords[2 * mindex->t + 0]);
+                    cvector_push_back(floatbuffer->vec, intern->mesh->texcoords[2 * mindex->t + 1]);
                 }
                 // t === generated tangent 
                 else if (c == 't') {
-                    cvector_push_back(buffer_intern->vec, tmp_tangent[0]);
-                    cvector_push_back(buffer_intern->vec, tmp_tangent[1]);
-                    cvector_push_back(buffer_intern->vec, tmp_tangent[2]);
+                    cvector_push_back(floatbuffer->vec, tmp_tangent[0]);
+                    cvector_push_back(floatbuffer->vec, tmp_tangent[1]);
+                    cvector_push_back(floatbuffer->vec, tmp_tangent[2]);
                 }
                 // b === generated bitangent
                 else if (c == 'b') {
-                    cvector_push_back(buffer_intern->vec, tmp_bitangent[0]);
-                    cvector_push_back(buffer_intern->vec, tmp_bitangent[1]);
-                    cvector_push_back(buffer_intern->vec, tmp_bitangent[2]);
+                    cvector_push_back(floatbuffer->vec, tmp_bitangent[0]);
+                    cvector_push_back(floatbuffer->vec, tmp_bitangent[1]);
+                    cvector_push_back(floatbuffer->vec, tmp_bitangent[2]);
                 }
                 else {
                     zend_throw_error(NULL, "Invalid layout string only (p, n, N, c, t, b) are allowed.");
                     return;
                 }
             }
-
         }
     }
 }
 
+PHP_METHOD(GL_Geometry_ObjFileParser, getVertices)
+{
+    char *layout;
+    size_t layout_len;
+    zval *group_zval = NULL;
+    if (zend_parse_parameters(ZEND_NUM_ARGS(), "s|O!", &layout, &layout_len, &group_zval, phpglfw_objparser_group_ce) == FAILURE) {
+        return;
+    }
+
+    // get the resource zval from local prop
+    zval rv;
+    zval *resource_zval = zend_read_property(phpglfw_objparser_ce, Z_OBJ_P(getThis()), "resource", sizeof("resource")-1, 0, &rv);
+
+    // fetch the internal obj from resource_zval
+    phpglfw_objparser_resource_object *intern = phpglfw_objparser_res_objectptr_from_zobj_p(Z_OBJ_P(resource_zval));
+    
+    // construct a new float buffer
+    object_init_ex(return_value, phpglfw_get_buffer_glfloat_ce());
+    phpglfw_buffer_glfloat_object *buffer_intern = phpglfw_buffer_glfloat_objectptr_from_zobj_p(Z_OBJ_P(return_value));
+
+    // group selection
+    fastObjGroup group;
+    group.name         = 0;
+    group.face_count   = intern->mesh->face_count;
+    group.face_offset  = 0;
+    group.index_offset = 0;
+
+    // if group_zval is not null, then we read the properties from the object and assign them to group
+    if (group_zval) {
+        // get the faceCount property
+        zval *face_count_zval = zend_read_property(phpglfw_objparser_group_ce, Z_OBJ_P(group_zval), "faceCount", sizeof("faceCount")-1, 0, &rv);
+        group.face_count = Z_LVAL_P(face_count_zval);
+
+        // get the faceOffset property
+        zval *face_offset_zval = zend_read_property(phpglfw_objparser_group_ce, Z_OBJ_P(group_zval), "faceOffset", sizeof("faceOffset")-1, 0, &rv);
+        group.face_offset = Z_LVAL_P(face_offset_zval);
+
+        // get the indexOffset property
+        zval *index_offset_zval = zend_read_property(phpglfw_objparser_group_ce, Z_OBJ_P(group_zval), "indexOffset", sizeof("indexOffset")-1, 0, &rv);
+        group.index_offset = Z_LVAL_P(index_offset_zval);
+    }
+
+    phpglfw_extract_vertexbuffer(intern, buffer_intern, &group, layout, layout_len);
+}
+
+int phpglfw_find_vertex_in_buffer(cvector_vector_type(GLfloat) searchbuffer, cvector_vector_type(GLfloat) sourcebuffer, unsigned int sourceoffset, size_t rowsize)
+{
+    for (unsigned int i = 0; i < cvector_size(searchbuffer); i += rowsize) {
+        // use memcmp to compare the two buffers
+        if (memcmp(&searchbuffer[i], &sourcebuffer[sourceoffset], rowsize * sizeof(GLfloat)) == 0) {
+            return i / rowsize;
+        }
+    }
+    return -1;
+}
 
 PHP_METHOD(GL_Geometry_ObjFileParser, getIndexedVertices)
 {
@@ -546,6 +564,52 @@ PHP_METHOD(GL_Geometry_ObjFileParser, getIndexedVertices)
         group.index_offset = Z_LVAL_P(index_offset_zval);
     }
 
+    // extract a full buffer into temporary buffer
+    phpglfw_buffer_glfloat_object *tempbuffer_intern = emalloc(sizeof(phpglfw_buffer_glfloat_object));
+
+    phpglfw_extract_vertexbuffer(intern, tempbuffer_intern, &group, layout, layout_len);
+
+
+    // calculate the row size of the vertex data
+    size_t vertexdata_row_size = 0;
+    for (int i = 0; i < layout_len; i++) {
+        char c = layout[i];
+        if (c == 'p' || c == 'n' || c == 'N' || c == 't' || c == 'b') {
+            vertexdata_row_size += 3;
+        }
+        else if (c == 'c') {
+            vertexdata_row_size += 2;
+        }
+        else {
+            zend_throw_error(NULL, "Invalid layout string only (p, n, N, c, t, b) are allowed.");
+            return;
+        }
+    }
+
+    // indices are stored here, the indexed vertex data is stored in buffer_intern->vec
+    cvector_vector_type(unsigned int) indices = NULL;
+
+    // iterate over the vertex data (vertices) and check for duplicates
+    for (int i = 0; i < cvector_size(tempbuffer_intern->vec); i += vertexdata_row_size) {
+        // check if the vertex data is already in the buffer
+        int index = phpglfw_find_vertex_in_buffer(buffer_intern->vec, tempbuffer_intern->vec, i, vertexdata_row_size);
+        if (index == -1) {
+            // vertex data is not in the buffer, so we add it to the buffer and add the index to the indices vector
+            for (int j = 0; j < vertexdata_row_size; j++) {
+                cvector_push_back(buffer_intern->vec, tempbuffer_intern->vec[i+j]);
+            }
+            cvector_push_back(indices, cvector_size(buffer_intern->vec)/vertexdata_row_size-1);
+        }
+        else {
+            // vertex data is already in the buffer, so we add the index to the indices vector
+            cvector_push_back(indices, index);
+        }
+    }
+
+    efree(tempbuffer_intern);
+
+    return;
+
     // create new buffer with the size of available vertices. 
     // This can be used to reindex the vertices for our current group of requested / filtered data
     unsigned int *reindex_buffer = emalloc(sizeof(unsigned int) * intern->mesh->index_count);
@@ -585,22 +649,6 @@ PHP_METHOD(GL_Geometry_ObjFileParser, getIndexedVertices)
 
 
 
-    // calculate target size of the buffer
-    size_t target_row_size = 0;
-    size_t target_size = 0;
-    for (int i = 0; i < layout_len; i++) {
-        char c = layout[i];
-        if (c == 'p' || c == 'n' || c == 'N' || c == 't' || c == 'b') {
-            target_row_size += 3;
-        }
-        else if (c == 'c') {
-            target_row_size += 2;
-        }
-        else {
-            zend_throw_error(NULL, "Invalid layout string only (p, n, N, c, t, b) are allowed.");
-            return;
-        }
-    }
 
 }
 
