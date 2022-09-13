@@ -334,8 +334,195 @@ PHP_METHOD(GL_Geometry_ObjFileParser, getVertices)
     object_init_ex(return_value, phpglfw_get_buffer_glfloat_ce());
     phpglfw_buffer_glfloat_object *buffer_intern = phpglfw_buffer_glfloat_objectptr_from_zobj_p(Z_OBJ_P(return_value));
 
+    // group selection
+    fastObjGroup group;
+    group.name         = 0;
+    group.face_count   = intern->mesh->face_count;
+    group.face_offset  = 0;
+    group.index_offset = 0;
+
+    // if group_zval is not null, then we read the properties from the object and assign them to group
+    if (group_zval) {
+        // get the faceCount property
+        zval *face_count_zval = zend_read_property(phpglfw_objparser_group_ce, Z_OBJ_P(group_zval), "faceCount", sizeof("faceCount")-1, 0, &rv);
+        group.face_count = Z_LVAL_P(face_count_zval);
+
+        // get the faceOffset property
+        zval *face_offset_zval = zend_read_property(phpglfw_objparser_group_ce, Z_OBJ_P(group_zval), "faceOffset", sizeof("faceOffset")-1, 0, &rv);
+        group.face_offset = Z_LVAL_P(face_offset_zval);
+
+        // get the indexOffset property
+        zval *index_offset_zval = zend_read_property(phpglfw_objparser_group_ce, Z_OBJ_P(group_zval), "indexOffset", sizeof("indexOffset")-1, 0, &rv);
+        group.index_offset = Z_LVAL_P(index_offset_zval);
+    }
+
+    // flags from layout
+    bool calc_normals = false;
+    bool calc_tangents = false;
+    bool calc_bitangents = false;
+    for (int i = 0; i < layout_len; i++) {
+        switch (layout[i]) {
+            case 'N':
+                calc_normals = true;
+                break;
+            case 't':
+                calc_tangents = true;
+                break;
+            case 'b':
+                calc_bitangents = true;
+                break;
+        }
+    }
+
+    // prepare some vars for the iteration
+    fastObjIndex *i1;
+    fastObjIndex *i2;
+    fastObjIndex *i3;
+
+    float *p1;
+    float *p2;
+    float *p3;
+    float *uv1;
+    float *uv2;
+    float *uv3;
+    vec3 gen_norm;
     vec3 tmp_tangent;
     vec3 tmp_bitangent;
+    vec3 tmp_dp1;
+    vec3 tmp_dp2;
+    vec2 tmp_dt1;
+    vec2 tmp_dt2;
+    vec3 tmp_vec1;
+    vec3 tmp_vec2;
+
+    // for every index in the mesh 
+    for (unsigned int i = group.index_offset; i < group.index_offset + (group.face_count * 3); i+=3) 
+    {
+        i1 = &intern->mesh->indices[i + 0];
+        i2 = &intern->mesh->indices[i + 1];
+        i3 = &intern->mesh->indices[i + 2];
+
+        if (calc_normals) 
+        {
+            p1 = &intern->mesh->positions[i1->p * 3];
+            p2 = &intern->mesh->positions[i2->p * 3];
+            p3 = &intern->mesh->positions[i3->p * 3];
+
+            // calculate the normal
+            vec3_sub(tmp_dp1, p2, p1);
+            vec3_sub(tmp_dp2, p3, p1);
+            vec3_mul_cross(gen_norm, tmp_dp1, tmp_dp2);
+            vec3_norm(gen_norm, gen_norm);
+        }
+
+        if (calc_tangents || calc_bitangents)
+        {
+            p1 = &intern->mesh->positions[i1->p * 3];
+            p2 = &intern->mesh->positions[i2->p * 3];
+            p3 = &intern->mesh->positions[i3->p * 3];
+
+            uv1 = &intern->mesh->texcoords[i1->t * 2];
+            uv2 = &intern->mesh->texcoords[i2->t * 2];
+            uv3 = &intern->mesh->texcoords[i3->t * 2];
+
+            // calculate the tangent
+            vec3_sub(tmp_dp1, p2, p1);
+            vec3_sub(tmp_dp2, p3, p1);
+
+            vec2_sub(tmp_dt1, uv2, uv1);
+            vec2_sub(tmp_dt2, uv3, uv1);
+
+            float r = 1.0f / (tmp_dt1[0] * tmp_dt2[1] - tmp_dt1[1] * tmp_dt2[0]);
+
+            // tangent
+            vec3_s_mul(tmp_vec1, tmp_dp1, tmp_dt2[1]);
+            vec3_s_mul(tmp_vec2, tmp_dp2, tmp_dt1[1]);
+            vec3_sub(tmp_tangent, tmp_vec1, tmp_vec2);
+            vec3_s_mul(tmp_tangent, tmp_tangent, r);
+            vec3_norm(tmp_tangent, tmp_tangent);
+
+            // bitangent
+            vec3_s_mul(tmp_vec1, tmp_dp2, tmp_dt1[0]);
+            vec3_s_mul(tmp_vec2, tmp_dp1, tmp_dt2[0]);
+            vec3_sub(tmp_bitangent, tmp_vec1, tmp_vec2);
+            vec3_s_mul(tmp_bitangent, tmp_bitangent, r);
+            vec3_norm(tmp_bitangent, tmp_bitangent);
+        }
+
+        for (unsigned int v = 0; v < 3; v++)
+        {
+            fastObjIndex *mindex = &intern->mesh->indices[i + v];
+
+            // for every char in layout
+            for (int l = 0; l < layout_len; l++) {
+                // get the current char
+                char c = layout[l];
+                
+                // p === position
+                if (c == 'p') {
+                    cvector_push_back(buffer_intern->vec, intern->mesh->positions[3 * mindex->p + 0]);
+                    cvector_push_back(buffer_intern->vec, intern->mesh->positions[3 * mindex->p + 1]);
+                    cvector_push_back(buffer_intern->vec, intern->mesh->positions[3 * mindex->p + 2]);
+                }
+                // n === normal
+                else if (c == 'n') {
+                    cvector_push_back(buffer_intern->vec, intern->mesh->normals[3 * mindex->n + 0]);
+                    cvector_push_back(buffer_intern->vec, intern->mesh->normals[3 * mindex->n + 1]);
+                    cvector_push_back(buffer_intern->vec, intern->mesh->normals[3 * mindex->n + 2]);
+                }
+                // N === generated normal
+                else if (c == 'N') {
+                    cvector_push_back(buffer_intern->vec, gen_norm[0]);
+                    cvector_push_back(buffer_intern->vec, gen_norm[1]);
+                    cvector_push_back(buffer_intern->vec, gen_norm[2]);
+                }
+                // c === texture coords
+                else if (c == 'c') {
+                    cvector_push_back(buffer_intern->vec, intern->mesh->texcoords[2 * mindex->t + 0]);
+                    cvector_push_back(buffer_intern->vec, intern->mesh->texcoords[2 * mindex->t + 1]);
+                }
+                // t === generated tangent 
+                else if (c == 't') {
+                    cvector_push_back(buffer_intern->vec, tmp_tangent[0]);
+                    cvector_push_back(buffer_intern->vec, tmp_tangent[1]);
+                    cvector_push_back(buffer_intern->vec, tmp_tangent[2]);
+                }
+                // b === generated bitangent
+                else if (c == 'b') {
+                    cvector_push_back(buffer_intern->vec, tmp_bitangent[0]);
+                    cvector_push_back(buffer_intern->vec, tmp_bitangent[1]);
+                    cvector_push_back(buffer_intern->vec, tmp_bitangent[2]);
+                }
+                else {
+                    zend_throw_error(NULL, "Invalid layout string only (p, n, N, c, t, b) are allowed.");
+                    return;
+                }
+            }
+
+        }
+    }
+}
+
+
+PHP_METHOD(GL_Geometry_ObjFileParser, getIndexedVertices)
+{
+    char *layout;
+    size_t layout_len;
+    zval *group_zval = NULL;
+    if (zend_parse_parameters(ZEND_NUM_ARGS(), "s|O!", &layout, &layout_len, &group_zval, phpglfw_objparser_group_ce) == FAILURE) {
+        return;
+    }
+
+    // get the resource zval from local prop
+    zval rv;
+    zval *resource_zval = zend_read_property(phpglfw_objparser_ce, Z_OBJ_P(getThis()), "resource", sizeof("resource")-1, 0, &rv);
+
+    // fetch the internal obj from resource_zval
+    phpglfw_objparser_resource_object *intern = phpglfw_objparser_res_objectptr_from_zobj_p(Z_OBJ_P(resource_zval));
+    
+    // construct a new float buffer
+    object_init_ex(return_value, phpglfw_get_buffer_glfloat_ce());
+    phpglfw_buffer_glfloat_object *buffer_intern = phpglfw_buffer_glfloat_objectptr_from_zobj_p(Z_OBJ_P(return_value));
 
     // group selection
     fastObjGroup group;
@@ -359,53 +546,69 @@ PHP_METHOD(GL_Geometry_ObjFileParser, getVertices)
         group.index_offset = Z_LVAL_P(index_offset_zval);
     }
 
-    // for every index in the mesh 
-    for (unsigned int i = group.index_offset; i < group.index_offset + (group.face_count * 3); i++) 
+    // create new buffer with the size of available vertices. 
+    // This can be used to reindex the vertices for our current group of requested / filtered data
+    unsigned int *reindex_buffer = emalloc(sizeof(unsigned int) * intern->mesh->index_count);
+    unsigned int reindex_buffer_len = 0;
+    for (unsigned int i = 0; i < intern->mesh->index_count; i++) {
+        reindex_buffer[i] = UINT_MAX;
+    }
+
+    php_printf("group.face_count: %d\n", group.face_count);
+    php_printf("group.face_offset: %d\n", group.face_offset);
+    php_printf("group.index_offset: %d\n", group.index_offset);
+    php_printf("intern->mesh->index_count: %d\n", intern->mesh->index_count);
+    php_printf("intern->mesh->face_count: %d\n", intern->mesh->face_count);
+    php_printf("intern->mesh->position_count: %d\n", intern->mesh->position_count);
+    php_printf("intern->mesh->normal_count: %d\n", intern->mesh->normal_count);
+    php_printf("intern->mesh->texcoord_count: %d\n\n", intern->mesh->texcoord_count);
+    return;
+
+    // prepare some vars for the iteration
+    fastObjIndex *i1;
+    fastObjIndex *i2;
+    fastObjIndex *i3;
+
+    for (unsigned int i = group.index_offset; i < group.index_offset + (group.face_count * 3); i+=3) 
     {
-        fastObjIndex *mindex = &intern->mesh->indices[i];
+        i1 = &intern->mesh->indices[i + 0];
+        i2 = &intern->mesh->indices[i + 1];
+        i3 = &intern->mesh->indices[i + 2];
 
-        // for every char in layout
-        for (int l = 0; l < layout_len; l++) {
-            // get the current char
-            char c = layout[l];
-            
-            // p === position
-            if (c == 'p') {
-                cvector_push_back(buffer_intern->vec, intern->mesh->positions[3 * mindex->p + 0]);
-                cvector_push_back(buffer_intern->vec, intern->mesh->positions[3 * mindex->p + 1]);
-                cvector_push_back(buffer_intern->vec, intern->mesh->positions[3 * mindex->p + 2]);
-            }
-            // n === normal
-            else if (c == 'n') {
-                cvector_push_back(buffer_intern->vec, intern->mesh->normals[3 * mindex->n + 0]);
-                cvector_push_back(buffer_intern->vec, intern->mesh->normals[3 * mindex->n + 1]);
-                cvector_push_back(buffer_intern->vec, intern->mesh->normals[3 * mindex->n + 2]);
-            }
-            // c === texture coords
-            else if (c == 'c') {
-                cvector_push_back(buffer_intern->vec, intern->mesh->texcoords[2 * mindex->t + 0]);
-                cvector_push_back(buffer_intern->vec, intern->mesh->texcoords[2 * mindex->t + 1]);
-            }
-            // t === tangent 
-            // else if (c == 't') {
-            //     // the tangent is calculated on the fly
-            //     vec3 tangent;
+        if (reindex_buffer[i] == UINT_MAX) {
+            reindex_buffer[i] = reindex_buffer_len;
+            reindex_buffer_len++;
+        }
 
-            // }
-            else {
-                zend_throw_error(NULL, "Invalid layout string only (p, n, c) are allowed.");
-                return;
-            }
+    }
+
+
+
+
+    // calculate target size of the buffer
+    size_t target_row_size = 0;
+    size_t target_size = 0;
+    for (int i = 0; i < layout_len; i++) {
+        char c = layout[i];
+        if (c == 'p' || c == 'n' || c == 'N' || c == 't' || c == 'b') {
+            target_row_size += 3;
+        }
+        else if (c == 'c') {
+            target_row_size += 2;
+        }
+        else {
+            zend_throw_error(NULL, "Invalid layout string only (p, n, N, c, t, b) are allowed.");
+            return;
         }
     }
 
-    
-    // php_printf("%s\n", layout);
-    // php_printf("%d\n", intern->mesh->position_count);
 }
 
+PHP_METHOD(GL_Geometry_ObjFileParser, getMeshes)
+{
+}
 
-PHP_METHOD(GL_Geometry_ObjFileParser, getIndexedVertices)
+PHP_METHOD(GL_Geometry_ObjFileParser, getIndexedMeshes)
 {
 }
 

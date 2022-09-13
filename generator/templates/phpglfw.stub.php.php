@@ -37,13 +37,25 @@ namespace GL\Geometry
 
         public function getVertices(string $layout, ?\GL\Geometry\ObjFileParser\Group $group = null) : \GL\Buffer\FloatBuffer {}
 
-        public function getIndexedVertices(string $layout, ?\GL\Geometry\ObjFileParser\Group $group = null) : \GL\Buffer\FloatBuffer {}
+        public function getIndexedVertices(string $layout, ?\GL\Geometry\ObjFileParser\Group $group = null) : \GL\Geometry\ObjFileParser\Mesh {}
+
+        public function getMeshes(string $layout, ?\GL\Geometry\ObjFileParser\Group $group = null) : array {}
+
+        public function getIndexedMeshes(string $layout, ?\GL\Geometry\ObjFileParser\Group $group = null) : array {}
     }
 }
 
 namespace GL\Geometry\ObjFileParser
 {
     class Resource {}
+
+    class Mesh {
+        public readonly ?Material $material;
+
+        public readonly FloatBuffer $vertices;
+
+        public readonly ?UIntBuffer $indices; 
+    }
 
     class Material
     {

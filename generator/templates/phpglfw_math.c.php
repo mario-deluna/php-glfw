@@ -735,7 +735,6 @@ PHP_METHOD(<?php echo $obj->getFullNamespaceConstString(); ?>, inverse)
     mat4x4_dup(obj_ptr->data, T);
 }
 
-
 PHP_METHOD(<?php echo $obj->getFullNamespaceConstString(); ?>, translate) {
     zval *obj;
     obj = getThis();
