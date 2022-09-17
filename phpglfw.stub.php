@@ -22,8 +22,6 @@ namespace GL\Geometry
 {
     class ObjFileParser
     {   
-        public readonly string $name;
-
         public readonly array $materials;
 
         public readonly array $groups;

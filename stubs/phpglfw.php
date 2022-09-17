@@ -850,6 +850,273 @@ namespace GL\Buffer
     }
 };
 
+namespace GL\Geometry\ObjFileParser
+{
+    /**
+     * A mesh in the ObjFileParser is simply a collection of vertices with a material and optional indices.
+     */
+    class Mesh 
+    {
+        /**
+         * The material of the mesh (can be null)
+         * 
+         * @var \GL\Geometry\ObjFileParser\Material|null
+         */
+        public readonly ?Material $material;
+
+        /**
+         * A float buffer containing vertex data of the mesh.
+         * The layout of the data is not fixed but rather requested by the user.
+         *
+         * @var \GL\Buffer\FloatBuffer
+         */
+        public readonly FloatBuffer $vertices;
+
+        /**
+         * A unsigned int buffer containing indices of the mesh. (optional)
+         *
+         * @var \GL\Buffer\UIntBuffer|null
+         */
+        public readonly ?UIntBuffer $indices; 
+    }
+
+    class Material
+    {
+        /**
+         * The name of the material 
+         */
+        public readonly string $name;
+
+        /**
+         * The ambient color of the material
+         * this usally controls the color of the object in the shadow or when a light is not directly hitting the object.
+         *
+         * @var \GL\Math\Vec3 $ambient
+         */
+        public readonly \GL\Math\Vec3 $ambient;
+
+        /**
+         * The diffuse color of the material
+         * this usally controls the color of the object when a light is directly hitting the object.
+         * This property is often also used for albedo or base color.
+         *
+         * @var \GL\Math\Vec3 $diffuse
+         */
+        public readonly \GL\Math\Vec3 $diffuse;
+
+        /**
+         * The specular color of the material
+         * This property is often also used for reflection color, shininess or highlights color.
+         *
+         * @var \GL\Math\Vec3 $specular
+         */
+        public readonly \GL\Math\Vec3 $specular;
+
+        /**
+         * The emmisive color of the material
+         * This property is often also used for illumination, self glow or light emission.
+         * 
+         * @var \GL\Math\Vec3 $emmisive
+         */
+        public readonly \GL\Math\Vec3 $emmisive;
+
+        /**
+         * The transmittance of the material
+         * This property is often also used for transparency or refraction color.
+         * 
+         * @var \GL\Math\Vec3 $transmittance
+         */
+        public readonly \GL\Math\Vec3 $transmittance;
+
+        /**
+         * The transmission filter color property of the Material
+         *
+         * @var \GL\Math\Vec3 $transmissionFilter
+         */
+        public readonly \GL\Math\Vec3 $transmissionFilter;
+
+        /**
+         * The shininess of the material
+         * This property is often also used for glossiness or specular power.
+         *
+         * @var float $shininess
+         */
+        public readonly float $shininess;
+
+        /**
+         * The index of refraction of the materials
+         *
+         * @var float $indexOfRefraction
+         */        
+        public readonly float $indexOfRefraction;
+
+        /**
+         * The dissolve of the material
+         * This property is often also used for opacity or transparency.
+         *
+         * @var float $dissolve
+         */
+        public readonly float $dissolve;
+
+        /**
+         * The illumination model of the material
+         * from the obj file specification:
+         *
+         *  0. Color on and Ambient off
+         *  1. Color on and Ambient on
+         *  2. Highlight on
+         *  3. Reflection on and Ray trace on
+         *  4. Transparency: Glass on, Reflection: Ray trace on
+         *  5. Reflection: Fresnel on and Ray trace on
+         *  6. Transparency: Refraction on, Reflection: Fresnel off and Ray trace on
+         *  7. Transparency: Refraction on, Reflection: Fresnel on and Ray trace on
+         *  8. Reflection on and Ray trace off
+         *  9. Transparency: Glass on, Reflection: Ray trace off
+         *  10. Casts shadows onto invisible surfaces
+         *
+         * @var int $illuminationModel
+         */
+        public readonly int $illuminationModel;
+
+        /**
+         * Parser materials should not be constructed from user land.
+         * calling this method will throw an exception.
+         */
+        public function __construct() {}
+    }
+
+    /**
+     * An ObjFileParser/Group is a submesh of the object, in obj. files marked as "g" or "o". (Group or Object)
+     */
+    class Group
+    {
+        /**
+         * The name of the group or object
+         * 
+         * @var string $name|null
+         */
+        public readonly ?string $name;
+
+        /**
+         * The number of faces in the group
+         * 
+         * @var int $faceCount
+         */
+        public readonly int $faceCount;
+
+        /**
+         * The offset of the first face in the resource object
+         *
+         * @var int $faceOffset
+         */
+        public readonly int $faceOffset;
+
+        /**
+         * The offset of the first index in the resource object
+         *
+         * @var int $indexOffset
+         */
+        public readonly int $indexOffset;
+
+        /**
+         * Parser groups should not be constructed from user land.
+         * calling this method will throw an exception.
+         */
+        public function __construct() {}
+    }
+
+    /**
+     * Texture object just holds the path to a texture file.
+     */
+    class Texture
+    {
+        public function __construct() {}
+    }
+
+    /**
+     * Holder of internal data structres used by the ObjFileParser
+     * This object has no direct use for the end user.
+     */
+    class Resource {}
+}
+
+namespace GL\Geometry
+{
+    /**
+     * The Obj File Parser is a simple parser for the Wavefront .obj file format.
+     * It is not a full implementation of the specification but rather a simple parser that can be used to load simple models.
+     * 
+     * **IMPORTANT: We ONLY support triangulated meshes!**
+     */
+    class ObjFileParser
+    {   
+        /**
+         * An array of material objects parsed from the file.
+         * 
+         * @var array<\GL\Geometry\ObjFileParser\Material>
+         */
+        public readonly array $materials;
+
+        /**
+         * An array objects parsed from the file. (marked as "o")
+         *
+         * @var array<\GL\Geometry\ObjFileParser\Group>
+         */
+        public readonly array $groups;
+
+        /**
+         * An array groups parsed from the file. (marked as "g")
+         *
+         * @var array<\GL\Geometry\ObjFileParser\Group>
+         */
+        public readonly array $objects;
+
+        /**
+         * Parses on `.obj` (Wavefront object) file and makes the parsed data available.
+         *  
+         * IMPORTANT: This obj. file parser does ONLY support triangulated meshes!
+         *
+         * @param string $file The path to the obj file to parse.
+         */
+        public function __construct(string $file) {}
+
+        /**
+         * Returns a FloatBuffer object containing the requested vertex data for the given group.
+         * If no group is given the entire object is returned.
+         * 
+         * The layout of the buffer is specifed as a string, where each character represents a vertex attribute.
+         * The following characters are supported:
+         *
+         *  * `p` - position
+         *  * `n` - normal 
+         *  * `N` - generated normal (estimated for each face)
+         *  * `c` - texture coordinate
+         *  * `t` - tangent (estimated for each face)
+         *  * `b` - bitangent (estimated for each face)
+         * 
+         * You can use combine those characters to specify the layout of the buffer.
+         * 
+         * Example: 
+         * Layout: `pnc`
+         * Will generate the following buffer layout:
+         * ```
+         * [position.x, position.y, position.z, normal.x, normal.y, normal.z, textureCoordinate.x, textureCoordinate.y, ...]
+         * ```
+         * @param string $layout The layout of the buffer.
+         * @param \GL\Geometry\ObjFileParser\Group|null $group The group to get the vertex data for.
+         * 
+         * @return \GL\Math\FloatBuffer The generated vertex data buffer
+         */
+        public function getVertices(string $layout, ?\GL\Geometry\ObjFileParser\Group $group = null) : \GL\Buffer\FloatBuffer {}
+
+        public function getIndexedVertices(string $layout, ?\GL\Geometry\ObjFileParser\Group $group = null) : \GL\Geometry\ObjFileParser\Mesh {}
+
+        public function getMeshes(string $layout, ?\GL\Geometry\ObjFileParser\Group $group = null) : array {}
+
+        public function getIndexedMeshes(string $layout, ?\GL\Geometry\ObjFileParser\Group $group = null) : array {}
+    }
+}
+
 namespace {
     /**
      * Functions

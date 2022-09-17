@@ -1684,7 +1684,6 @@ PHP_METHOD(GL_Math_Mat4, inverse)
     mat4x4_dup(obj_ptr->data, T);
 }
 
-
 PHP_METHOD(GL_Math_Mat4, translate) {
     zval *obj;
     obj = getThis();
