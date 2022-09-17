@@ -4,6 +4,7 @@
   * [2. 3D Cube](#2-3d-cube)
   * [3. Textured Cube](#3-textured-cube)
   * [4. Instanced Rendering](#4-instanced-rendering)
+  * [5. Object file loading](#5-object-file-loading)
 
 ## 1. Hello World
 
@@ -22,4 +23,10 @@ https://user-images.githubusercontent.com/956212/183306784-c85c2b03-ed6f-4070-a4
 ## 4. Instanced Rendering 
 
 https://user-images.githubusercontent.com/956212/183306836-4b5a06c6-5fdf-40eb-a038-b413af177b77.mov
+
+## 5. Object file loading
+
+> Code: [05_objloading.php](./examples/05_objloading.php)!
+
+<img width="512" alt="s" src="https://user-images.githubusercontent.com/956212/190877288-a61e4985-7a1b-4570-bf39-f0f95433e5a7.png">
 
