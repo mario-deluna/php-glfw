@@ -27,7 +27,7 @@ void main()
 {
     // we need to transform the normal vector to world space
     v_normal = vec3(model * vec4(a_normal, 1.0f));
-	gl_Position = projection * view * model * vec4(a_position, 1.0f);
+    gl_Position = projection * view * model * vec4(a_position, 1.0f);
 }
 GLSL,
 <<< 'GLSL'
@@ -160,14 +160,14 @@ while (!glfwWindowShouldClose($window))
     $model->rotate($rotation, new Vec3(0.0, 1.0, 0.0));
 
     // next the view matrix, this is the camera / eye position and rotation
-	$view = new Mat4;
+    $view = new Mat4;
     // you can imagine the camera is beeing moved back by 2 units here.
     $view->translate(new Vec3(0.0, -3.0, -6));
     // $view->translate(new Vec3(0.0, -1.0, -3));
 
     // and finally the projection matrix, this is the perspective matrix.
-	$projection = new Mat4;
-	$projection->perspective(glm::radians(70.0), ExampleHelper::WIN_WIDTH / ExampleHelper::WIN_HEIGHT, 0.1, 10000.0);
+    $projection = new Mat4;
+    $projection->perspective(glm::radians(70.0), ExampleHelper::WIN_WIDTH / ExampleHelper::WIN_HEIGHT, 0.1, 10000.0);
 
     // now set the uniform variables in the shader.
     // note that we use `glUniformMatrix4f` instead of `glUniformMatrix4fv` to pass a single matrix.
