@@ -449,6 +449,10 @@ namespace GL\Geometry
 
         public function getIndexedVertices(string $layout, ?\GL\Geometry\ObjFileParser\Group $group = null) : \GL\Geometry\ObjFileParser\Mesh {}
 
+        /**
+         * 
+         * @return array<\GL\Geometry\ObjFileParser\Mesh>
+         */
         public function getMeshes(string $layout, ?\GL\Geometry\ObjFileParser\Group $group = null) : array {}
 
         public function getIndexedMeshes(string $layout, ?\GL\Geometry\ObjFileParser\Group $group = null) : array {}
