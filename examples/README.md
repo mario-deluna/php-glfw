@@ -5,6 +5,7 @@
   * [3. Textured Cube](#3-textured-cube)
   * [4. Instanced Rendering](#4-instanced-rendering)
   * [5. Object file loading](#5-object-file-loading)
+  * [6. Simple lighting](#6-simple-lighting)
 
 ## 1. Hello World
 
@@ -36,3 +37,8 @@ https://user-images.githubusercontent.com/956212/183306836-4b5a06c6-5fdf-40eb-a0
 
 <img width="512" alt="s" src="https://user-images.githubusercontent.com/956212/190877288-a61e4985-7a1b-4570-bf39-f0f95433e5a7.png">
 
+## 6. Simple lighting 
+
+> Code: [06_basic_light.php](./06_basic_light.php)!
+
+<img width="512" alt="s" src="https://user-images.githubusercontent.com/956212/190879015-59616d84-b23e-4319-93b2-9c53c423f6b6.png">
