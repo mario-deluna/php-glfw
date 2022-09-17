@@ -1,6 +1,7 @@
 <?php
 
 use GL\Buffer\FloatBuffer;
+use GL\Geometry\ObjFileParser;
 use GL\Texture\Texture2D;
 
 /**
@@ -207,5 +208,21 @@ class ExampleHelper
         glGenerateMipmap(GL_TEXTURE_2D);
 
         return $texture;
+    }
+
+    public static function getShipObj() : ObjFileParser
+    {
+        if (!file_exists(__DIR__ . '/ship_light.obj')) {
+            $zip = new ZipArchive();
+            $zip->open(__DIR__ . '/ship_light.obj.zip');
+            $zip->extractTo(__DIR__);
+            $zip->close();
+        }
+        
+        // load an object file with the ObjFileParser class, the assest we are loading 
+        // is downloaded from kenney.nl, he provides a bunch of low poly free to use assets.
+        $mesh = new \GL\Geometry\ObjFileParser(__DIR__ . '/ship_light.obj');
+
+        return $mesh;
     }
 }
