@@ -318,12 +318,16 @@ PHP_METHOD(GL_Geometry_ObjFileParser, __construct)
     }   
 }
 
+// im very proud and very disgusted by this method at the same time.
+// it's a mess, but it works. And i really hope i never have to touch it again.
 void phpglfw_extract_vertexbuffer(
     phpglfw_objparser_resource_object *intern, 
     phpglfw_buffer_glfloat_object *floatbuffer, 
     fastObjGroup *group, 
     char *layout, 
-    int layout_len
+    int layout_len,
+    unsigned int *indices, // optional array of indices to use 
+    unsigned int index_count // number of indices in the array
 ) {
     // flags from layout
     bool calc_normals = false;
@@ -364,12 +368,32 @@ void phpglfw_extract_vertexbuffer(
     vec3 tmp_vec1;
     vec3 tmp_vec2;
 
+    // if no indices 
+    unsigned int *iterator_index = NULL;
+    unsigned int iterator_index_count = 0;
+    bool need_to_free_iterator_index = false;
+    if (indices == NULL || index_count == 0) {
+        iterator_index = emalloc(sizeof(unsigned int) * (group->face_count * 3));
+        for (int i = 0; i < (group->face_count * 3); i++) {
+            iterator_index[i] = group->index_offset + i;
+        }
+        iterator_index_count = group->face_count * 3;
+        need_to_free_iterator_index = true;
+    } else {
+        iterator_index = indices;
+        iterator_index_count = index_count;
+    }
+
     // for every index in the mesh 
-    for (unsigned int i = group->index_offset; i < group->index_offset + (group->face_count * 3); i+=3) 
-    {
-        i1 = &intern->mesh->indices[i + 0];
-        i2 = &intern->mesh->indices[i + 1];
-        i3 = &intern->mesh->indices[i + 2];
+    for (unsigned ii = 0; ii < iterator_index_count; ii+=3) {
+
+        unsigned int ii1 = iterator_index[ii];
+        unsigned int ii2 = iterator_index[ii+1];
+        unsigned int ii3 = iterator_index[ii+2];
+
+        i1 = &intern->mesh->indices[ii1];
+        i2 = &intern->mesh->indices[ii2];
+        i3 = &intern->mesh->indices[ii3];
 
         if (calc_normals) 
         {
@@ -420,7 +444,8 @@ void phpglfw_extract_vertexbuffer(
 
         for (unsigned int v = 0; v < 3; v++)
         {
-            fastObjIndex *mindex = &intern->mesh->indices[i + v];
+            unsigned int i = iterator_index[ii + v];
+            fastObjIndex *mindex = &intern->mesh->indices[i];
 
             // for every char in layout
             for (int l = 0; l < layout_len; l++) {
@@ -469,6 +494,10 @@ void phpglfw_extract_vertexbuffer(
             }
         }
     }
+
+    if (need_to_free_iterator_index) {
+        efree(iterator_index);
+    }
 }
 
 PHP_METHOD(GL_Geometry_ObjFileParser, getVertices)
@@ -513,7 +542,7 @@ PHP_METHOD(GL_Geometry_ObjFileParser, getVertices)
         group.index_offset = Z_LVAL_P(index_offset_zval);
     }
 
-    phpglfw_extract_vertexbuffer(intern, buffer_intern, &group, layout, layout_len);
+    phpglfw_extract_vertexbuffer(intern, buffer_intern, &group, layout, layout_len, NULL, 0);
 }
 
 int phpglfw_find_vertex_in_buffer(cvector_vector_type(GLfloat) searchbuffer, cvector_vector_type(GLfloat) sourcebuffer, unsigned int sourceoffset, size_t rowsize)
@@ -572,8 +601,7 @@ PHP_METHOD(GL_Geometry_ObjFileParser, getIndexedVertices)
     // extract a full buffer into temporary buffer
     phpglfw_buffer_glfloat_object *tempbuffer_intern = emalloc(sizeof(phpglfw_buffer_glfloat_object));
 
-    phpglfw_extract_vertexbuffer(intern, tempbuffer_intern, &group, layout, layout_len);
-
+    phpglfw_extract_vertexbuffer(intern, tempbuffer_intern, &group, layout, layout_len, NULL, 0);
 
     // calculate the row size of the vertex data
     size_t vertexdata_row_size = 0;
@@ -611,50 +639,47 @@ PHP_METHOD(GL_Geometry_ObjFileParser, getIndexedVertices)
         }
     }
 
+
+    cvector_free(tempbuffer_intern->vec);
     efree(tempbuffer_intern);
 
-    return;
+    // return;
 
-    // create new buffer with the size of available vertices. 
-    // This can be used to reindex the vertices for our current group of requested / filtered data
-    unsigned int *reindex_buffer = emalloc(sizeof(unsigned int) * intern->mesh->index_count);
-    unsigned int reindex_buffer_len = 0;
-    for (unsigned int i = 0; i < intern->mesh->index_count; i++) {
-        reindex_buffer[i] = UINT_MAX;
-    }
+    // // create new buffer with the size of available vertices. 
+    // // This can be used to reindex the vertices for our current group of requested / filtered data
+    // unsigned int *reindex_buffer = emalloc(sizeof(unsigned int) * intern->mesh->index_count);
+    // unsigned int reindex_buffer_len = 0;
+    // for (unsigned int i = 0; i < intern->mesh->index_count; i++) {
+    //     reindex_buffer[i] = UINT_MAX;
+    // }
 
-    php_printf("group.face_count: %d\n", group.face_count);
-    php_printf("group.face_offset: %d\n", group.face_offset);
-    php_printf("group.index_offset: %d\n", group.index_offset);
-    php_printf("intern->mesh->index_count: %d\n", intern->mesh->index_count);
-    php_printf("intern->mesh->face_count: %d\n", intern->mesh->face_count);
-    php_printf("intern->mesh->position_count: %d\n", intern->mesh->position_count);
-    php_printf("intern->mesh->normal_count: %d\n", intern->mesh->normal_count);
-    php_printf("intern->mesh->texcoord_count: %d\n\n", intern->mesh->texcoord_count);
-    return;
+    // php_printf("group.face_count: %d\n", group.face_count);
+    // php_printf("group.face_offset: %d\n", group.face_offset);
+    // php_printf("group.index_offset: %d\n", group.index_offset);
+    // php_printf("intern->mesh->index_count: %d\n", intern->mesh->index_count);
+    // php_printf("intern->mesh->face_count: %d\n", intern->mesh->face_count);
+    // php_printf("intern->mesh->position_count: %d\n", intern->mesh->position_count);
+    // php_printf("intern->mesh->normal_count: %d\n", intern->mesh->normal_count);
+    // php_printf("intern->mesh->texcoord_count: %d\n\n", intern->mesh->texcoord_count);
+    // return;
 
-    // prepare some vars for the iteration
-    fastObjIndex *i1;
-    fastObjIndex *i2;
-    fastObjIndex *i3;
+    // // prepare some vars for the iteration
+    // fastObjIndex *i1;
+    // fastObjIndex *i2;
+    // fastObjIndex *i3;
 
-    for (unsigned int i = group.index_offset; i < group.index_offset + (group.face_count * 3); i+=3) 
-    {
-        i1 = &intern->mesh->indices[i + 0];
-        i2 = &intern->mesh->indices[i + 1];
-        i3 = &intern->mesh->indices[i + 2];
+    // for (unsigned int i = group.index_offset; i < group.index_offset + (group.face_count * 3); i+=3) 
+    // {
+    //     i1 = &intern->mesh->indices[i + 0];
+    //     i2 = &intern->mesh->indices[i + 1];
+    //     i3 = &intern->mesh->indices[i + 2];
 
-        if (reindex_buffer[i] == UINT_MAX) {
-            reindex_buffer[i] = reindex_buffer_len;
-            reindex_buffer_len++;
-        }
+    //     if (reindex_buffer[i] == UINT_MAX) {
+    //         reindex_buffer[i] = reindex_buffer_len;
+    //         reindex_buffer_len++;
+    //     }
 
-    }
-
-
-
-
-
+    // }
 }
 
 PHP_METHOD(GL_Geometry_ObjFileParser, getMeshes)
@@ -731,12 +756,20 @@ PHP_METHOD(GL_Geometry_ObjFileParser, getMeshes)
             zval *material = zend_hash_index_find(Z_ARRVAL_P(materials), material_index);
             zend_update_property(phpglfw_objparser_mesh_ce, Z_OBJ_P(&mesh), "material", sizeof("material")-1, material);
 
+            // set the vertices property (constructs a float buffer)
+            zval vertices;
+            object_init_ex(&vertices, phpglfw_get_buffer_glfloat_ce());
+            phpglfw_buffer_glfloat_object *vertices_intern = phpglfw_buffer_glfloat_objectptr_from_zobj_p(Z_OBJ_P(&vertices));
+            // extract
+            phpglfw_extract_vertexbuffer(intern, vertices_intern, &group, layout, layout_len, indicies, cvector_size(indicies));
+            zend_update_property(phpglfw_objparser_mesh_ce, Z_OBJ_P(&mesh), "vertices", sizeof("vertices")-1, &vertices);
+            zval_ptr_dtor(&vertices);
 
             // add the mesh to the meshes array
             add_next_index_zval(&meshes, &mesh);
         }
 
-        printf("material_index: %d - %s indices: %d \n", material_index, intern->mesh->materials[material_index].name, cvector_size(indicies));
+        // printf("material_index: %d - %s indices: %d \n", material_index, intern->mesh->materials[material_index].name, cvector_size(indicies));
 
         cvector_free(indicies);
     }
