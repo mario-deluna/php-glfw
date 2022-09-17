@@ -5,6 +5,7 @@
   * [3. Textured Cube](#3-textured-cube)
   * [4. Instanced Rendering](#4-instanced-rendering)
   * [5. Object file loading](#5-object-file-loading)
+  * [6. Simple lighting](#6-simple-lighting)
 
 ## 1. Hello World
 
