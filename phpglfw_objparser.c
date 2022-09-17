@@ -38,6 +38,7 @@ zend_class_entry *phpglfw_objparser_res_ce;
 zend_class_entry *phpglfw_objparser_material_ce; 
 zend_class_entry *phpglfw_objparser_group_ce;
 zend_class_entry *phpglfw_objparser_texture_ce;
+zend_class_entry *phpglfw_objparser_mesh_ce;
 
 zend_class_entry *phpglfw_get_geometry_objparser_ce() {
     return phpglfw_objparser_ce;
@@ -57,6 +58,10 @@ zend_class_entry *phpglfw_get_geometry_objparser_group_ce() {
 
 zend_class_entry *phpglfw_get_geometry_objparser_texture_ce() {
     return phpglfw_objparser_texture_ce;
+}
+
+zend_class_entry *phpglfw_get_geometry_objparser_mesh_ce() {
+    return phpglfw_objparser_mesh_ce;
 }
 
 static zend_object_handlers phpglfw_objparser_res_handlers;
@@ -654,6 +659,89 @@ PHP_METHOD(GL_Geometry_ObjFileParser, getIndexedVertices)
 
 PHP_METHOD(GL_Geometry_ObjFileParser, getMeshes)
 {
+    char *layout;
+    size_t layout_len;
+    zval *group_zval = NULL;
+    if (zend_parse_parameters(ZEND_NUM_ARGS(), "s|O!", &layout, &layout_len, &group_zval, phpglfw_objparser_group_ce) == FAILURE) {
+        return;
+    }
+
+    // get the resource zval from local prop
+    zval rv;
+    zval *resource_zval = zend_read_property(phpglfw_objparser_ce, Z_OBJ_P(getThis()), "resource", sizeof("resource")-1, 0, &rv);
+    zval *materials = zend_read_property(phpglfw_objparser_ce, Z_OBJ_P(getThis()), "materials", sizeof("materials")-1, 0, &rv);
+
+    // fetch the internal obj from resource_zval
+    phpglfw_objparser_resource_object *intern = phpglfw_objparser_res_objectptr_from_zobj_p(Z_OBJ_P(resource_zval));
+    
+    // construct a new float buffer
+    object_init_ex(return_value, phpglfw_get_buffer_glfloat_ce());
+    phpglfw_buffer_glfloat_object *buffer_intern = phpglfw_buffer_glfloat_objectptr_from_zobj_p(Z_OBJ_P(return_value));
+
+    // group selection
+    fastObjGroup group;
+    group.name         = 0;
+    group.face_count   = intern->mesh->face_count;
+    group.face_offset  = 0;
+    group.index_offset = 0;
+
+    // if group_zval is not null, then we read the properties from the object and assign them to group
+    if (group_zval) {
+        // get the faceCount property
+        zval *face_count_zval = zend_read_property(phpglfw_objparser_group_ce, Z_OBJ_P(group_zval), "faceCount", sizeof("faceCount")-1, 0, &rv);
+        group.face_count = Z_LVAL_P(face_count_zval);
+
+        // get the faceOffset property
+        zval *face_offset_zval = zend_read_property(phpglfw_objparser_group_ce, Z_OBJ_P(group_zval), "faceOffset", sizeof("faceOffset")-1, 0, &rv);
+        group.face_offset = Z_LVAL_P(face_offset_zval);
+
+        // get the indexOffset property
+        zval *index_offset_zval = zend_read_property(phpglfw_objparser_group_ce, Z_OBJ_P(group_zval), "indexOffset", sizeof("indexOffset")-1, 0, &rv);
+        group.index_offset = Z_LVAL_P(index_offset_zval);
+    }
+
+    // construct a php hashtable to fill the mesh objects with
+    zval meshes;
+    array_init(&meshes);
+
+    // for each material iterate the faces and add the vertex data to the buffer
+    for (unsigned int material_index = 0; material_index < intern->mesh->material_count; material_index++) 
+    {
+        cvector_vector_type(unsigned int) indicies = NULL;
+
+        for (unsigned int i = group.face_offset; i < group.face_offset + group.face_count; i++) 
+        {
+            if (intern->mesh->face_materials[i] != material_index) {
+                continue;
+            }
+
+            for(int j = 0; j < 3; j++) {
+                cvector_push_back(indicies, i*3+j);
+            }
+        }
+
+        if (cvector_size(indicies) > 0) 
+        {
+            // create a new mesh object
+            zval mesh;
+            object_init_ex(&mesh, phpglfw_objparser_mesh_ce);
+
+            // set the material property based on the material index of the already 
+            // parsed material list
+            zval *material = zend_hash_index_find(Z_ARRVAL_P(materials), material_index);
+            zend_update_property(phpglfw_objparser_mesh_ce, Z_OBJ_P(&mesh), "material", sizeof("material")-1, material);
+
+
+            // add the mesh to the meshes array
+            add_next_index_zval(&meshes, &mesh);
+        }
+
+        printf("material_index: %d - %s indices: %d \n", material_index, intern->mesh->materials[material_index].name, cvector_size(indicies));
+
+        cvector_free(indicies);
+    }
+
+    RETURN_ZVAL(&meshes, 0, 1);
 }
 
 PHP_METHOD(GL_Geometry_ObjFileParser, getIndexedMeshes)
@@ -848,4 +936,33 @@ void phpglfw_register_objparser_module(INIT_FUNC_ARGS)
     zend_string *property_group_index_offset = zend_string_init("indexOffset", sizeof("indexOffset") - 1, 1);
     zend_declare_typed_property(phpglfw_objparser_group_ce, property_group_index_offset, &property_group_index_offset_default_value, prop_access_flags, NULL, (zend_type) ZEND_TYPE_INIT_MASK(MAY_BE_LONG));
     zend_string_release(property_group_index_offset);
+
+
+    // Obj File Parser Mesh
+    // ------------------------------
+    INIT_NS_CLASS_ENTRY(tmp_ce, "GL\\Geometry\\ObjFileParser", "Mesh", class_GL_Geometry_ObjFileParser_Mesh_methods);
+    phpglfw_objparser_mesh_ce = zend_register_internal_class(&tmp_ce);
+    // phpglfw_objparser_mesh_ce->create_object = phpglfw_objparser_material_create_handler;
+
+    // mesh material prop (public readonly ?Material $material = null)
+    zval property_mesh_material_default_value;
+    ZVAL_NULL(&property_mesh_material_default_value);
+    zend_string *property_mesh_material = zend_string_init("material", sizeof("material") - 1, 1);
+    zend_declare_typed_property(phpglfw_objparser_mesh_ce, property_mesh_material, &property_mesh_material_default_value, prop_access_flags, NULL, (zend_type) ZEND_TYPE_INIT_MASK(MAY_BE_NULL | MAY_BE_OBJECT));
+    zend_string_release(property_mesh_material);
+
+    // mesh vertices buffer prop (public readonly FloatBuffer $vertices)
+    zval property_mesh_vertices_buffer_default_value;
+    ZVAL_NULL(&property_mesh_vertices_buffer_default_value);
+    zend_string *property_mesh_vertices_buffer = zend_string_init("vertices", sizeof("vertices") - 1, 1);
+    zend_declare_typed_property(phpglfw_objparser_mesh_ce, property_mesh_vertices_buffer, &property_mesh_vertices_buffer_default_value, prop_access_flags, NULL, (zend_type) ZEND_TYPE_INIT_MASK(MAY_BE_OBJECT));
+    zend_string_release(property_mesh_vertices_buffer);
+
+    // mesh indices buffer prop (public readonly ?UIntBuffer $indices = null)
+    zval property_mesh_indices_buffer_default_value;
+    ZVAL_NULL(&property_mesh_indices_buffer_default_value);
+    zend_string *property_mesh_indices_buffer = zend_string_init("indices", sizeof("indices") - 1, 1);
+    zend_declare_typed_property(phpglfw_objparser_mesh_ce, property_mesh_indices_buffer, &property_mesh_indices_buffer_default_value, prop_access_flags, NULL, (zend_type) ZEND_TYPE_INIT_MASK(MAY_BE_NULL | MAY_BE_OBJECT));
+    zend_string_release(property_mesh_indices_buffer);
+    
 }

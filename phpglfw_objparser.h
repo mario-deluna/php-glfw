@@ -65,6 +65,7 @@ zend_class_entry *phpglfw_get_geometry_objparser_res_ce();
 zend_class_entry *phpglfw_get_geometry_objparser_material_ce(); 
 zend_class_entry *phpglfw_get_geometry_objparser_group_ce(); 
 zend_class_entry *phpglfw_get_geometry_objparser_texture_ce();
+zend_class_entry *phpglfw_get_geometry_objparser_mesh_ce();
 
 zend_always_inline phpglfw_objparser_resource_object* phpglfw_objparser_res_objectptr_from_zobj_p(zend_object* obj)
 {
