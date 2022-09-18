@@ -6,6 +6,7 @@
   * [4. Instanced Rendering](#4-instanced-rendering)
   * [5. Object file loading](#5-object-file-loading)
   * [6. Simple lighting](#6-simple-lighting)
+  * [7. Text Rendering](#7-text-rendering)
 
 ## 1. Hello World
 
@@ -42,3 +43,10 @@ https://user-images.githubusercontent.com/956212/183306836-4b5a06c6-5fdf-40eb-a0
 > Code: [06_basic_light.php](./06_basic_light.php)!
 
 <img width="512" alt="s" src="https://user-images.githubusercontent.com/956212/190879015-59616d84-b23e-4319-93b2-9c53c423f6b6.png">
+
+## 7. Text Rendering
+
+> Code: [07_text_rendering.php](./07_text_rendering.php)!
+
+<img width="512" alt="s" src="https://user-images.githubusercontent.com/956212/190903240-6f144bf0-77dd-4af9-a293-6e7e8ee5c198.png">
+
