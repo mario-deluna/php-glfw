@@ -182,7 +182,7 @@ class ExampleHelper
         return [$VAO, $VBO];
     }
 
-    public static function loadTexture(string $path) : int
+    public static function loadTexture(string $path, int $format = GL_RGB) : int
     {
         // generate a texture, load it from a file and bind it
         glGenTextures(1, $texture);
@@ -202,8 +202,8 @@ class ExampleHelper
         // PHP-GLFW comes with an image loader based on stb_image
         // with it you can easly create a pixel buffer object to upload to opengl
         $textureData = Texture2D::fromDisk($path);
-        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, $textureData->width(), $textureData->height(), 0, GL_RGB, GL_UNSIGNED_BYTE, $textureData->buffer());
-
+        glTexImage2D(GL_TEXTURE_2D, 0, $format, $textureData->width(), $textureData->height(), 0, $format, GL_UNSIGNED_BYTE, $textureData->buffer());
+        
         // this call generates the mipmaps for the texture
         glGenerateMipmap(GL_TEXTURE_2D);
 
@@ -212,6 +212,11 @@ class ExampleHelper
 
     public static function getShipObj() : ObjFileParser
     {
+        // ensure zip extension is loaded
+        if (!extension_loaded('zip')) {
+            throw new \Exception('The zip extension is required to run this example');
+        }
+
         if (!file_exists(__DIR__ . '/ship_light.obj')) {
             $zip = new ZipArchive();
             $zip->open(__DIR__ . '/ship_light.obj.zip');

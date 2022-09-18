@@ -8,6 +8,11 @@ require __DIR__ . '/99_example_helpers.php';
 use GL\Math\{Vec3, Vec4, Mat4};
 use GL\Buffer\FloatBuffer;
 
+// ensure zip extension is loaded
+if (!extension_loaded('zip')) {
+    throw new \Exception('The zip extension is required to run this example');
+}
+
 $window = ExampleHelper::begin();
 
 // compile a simple shader to project the cube 
