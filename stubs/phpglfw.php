@@ -1,4 +1,49 @@
 <?php 
+namespace 
+{
+    /**
+     * GLFW Window resource 
+     * This class is used to store the GLFW window resource in PHP.
+     */
+    class GLFWwindow {}
+
+    /**
+     * GLFW Monitor resource
+     * This class is used to store the GLFW monitor resource in PHP.
+     */
+    class GLFWmonitor {}
+
+    /**
+     * GLFW Cursor resource
+     * This class is used to store the GLFW cursor resource in PHP.
+     */
+    class GLFWcursor {}
+
+    /**
+     * GLFW image resource
+     * This class is used to store the GLFW image resource in PHP.
+     */
+    class GLFWimage {}
+
+    /**
+     * GLFW video mode resource
+     * This class is used to store the GLFW video mode resource in PHP.
+     */
+    class GLFWvidmode {}
+
+    /**
+     * GLFW gamma ramp resource
+     * This class is used to store the GLFW gamma ramp resource in PHP.
+     */
+    class GLFWgammaramp {}
+
+    /**
+     * GLFW Gamepad state resource
+     * This class is used to store the GLFW gamepad state resource in PHP.
+     */
+    class GLFWgamepadstate {}
+}
+
 namespace GL\Math 
 {
      
