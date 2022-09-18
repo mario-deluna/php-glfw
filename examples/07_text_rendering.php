@@ -103,7 +103,6 @@ uniform sampler2D font;
 
 void main()
 {
-    // fragment_color = vec4(texture(font, v_uv).rgb, 1.0f);
     fragment_color = vec4(vec3(texture(font, v_uv).a), 1.0f);
 }
 GLSL);
@@ -111,12 +110,45 @@ GLSL);
 // update the viewport
 glViewport(0, 0, ExampleHelper::WIN_WIDTH, ExampleHelper::WIN_HEIGHT);
 
+// declare the text buffer
+$textCorpus = "Hello PHP-GLFW, press arrow key up and down to change the text size.\nYou can also type here: ";
+$scale = 1.0;
+
+// register the char callback and extend the text corpus with use input
+glfwSetCharCallback($window, function($char) use (&$textCorpus) {
+    $textCorpus .= mb_chr($char);
+});
+
+// register the key callback and remove the last char from the text corpus
+glfwSetKeyCallback($window, function($key, $scancode, $action, $mods) use (&$textCorpus) {
+    if ($action === GLFW_PRESS && $key === GLFW_KEY_BACKSPACE) {
+        $textCorpus = mb_substr($textCorpus, 0, -1);
+    }
+    // also register linebreaks
+    if ($action === GLFW_PRESS && $key === GLFW_KEY_ENTER) {
+        $textCorpus .= "\n";
+    }
+
+    // arrow up and down to change the text size
+    if ($action === GLFW_PRESS && $key === GLFW_KEY_UP) {
+        global $scale;
+        $scale *= 1.1;
+    }
+
+    if ($action === GLFW_PRESS && $key === GLFW_KEY_DOWN) {
+        global $scale;
+        $scale *= 0.9;
+    }
+});
+
 // Main Loop
 // ---------------------------------------------------------------------------- 
 while (!glfwWindowShouldClose($window))
 {
+    glfwPollEvents();
+    
     glClearColor(0, 0, 0, 1);
-    glClear(GL_COLOR_BUFFER_BIT);
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     // use the shader, will active the given shader program
     // for the coming draw calls.
@@ -138,16 +170,43 @@ while (!glfwWindowShouldClose($window))
     glBindVertexArray($textVAO);
     glBindBuffer(GL_ARRAY_BUFFER, $textVBO);
 
+    // build final text 
+    $text = $textCorpus;
+
+    // add a blinking curosor
+    if (((int)(glfwGetTime() * 2) % 2) === 0) {
+        $text .= '_';
+    }
+
     // draw the text
-    $text = 'Hello World!';
     $x = 10;
     $y = 10;
-    $scale = 10.0;
+    $lineHeight = 20;
+
+    $vertices = new FloatBuffer();
+    $textLen = mb_strlen($text);
+
+    // the vertex count has to be counted 
+    // in the loop because some chars are not in the atlas
+    $vertexCount = 0;
     
-    for($i = 0; $i < mb_strlen($text); $i++) {
+    // reserve the memory for the vertices
+    $vertices->reserve($textLen * 6 * 4);
+    
+    // for every character in the text
+    for($i = 0; $i < $textLen; $i++) 
+    {
         $char = mb_substr($text, $i, 1);
         $charData = getAtlasChar($char);
 
+        // on linebreak
+        if ($char === "\n") {
+            $x = 10;
+            $y += $lineHeight * $scale;
+            continue;
+        }
+        
+        // skip unknown characters
         if ($charData === null) {
             continue;
         }
@@ -163,7 +222,7 @@ while (!glfwWindowShouldClose($window))
         $uvW = (float) $charData['width'] / $atlasWidth;
         $uvH = (float) $charData['height'] / $atlasHeight;
 
-        $vertices = new FloatBuffer([
+        $vertices->pushArray([
             $xpos, $ypos, $uvX, $uvY,
             $xpos + $w, $ypos, $uvX + $uvW, $uvY,
             $xpos, $ypos + $h, $uvX, $uvY + $uvH,
@@ -172,20 +231,25 @@ while (!glfwWindowShouldClose($window))
             $xpos + $w, $ypos + $h, $uvX + $uvW, $uvY + $uvH,
         ]);
 
-        glBufferData(GL_ARRAY_BUFFER, $vertices, GL_DYNAMIC_DRAW);
-
-        // render the character
-        glDrawArrays(GL_TRIANGLES, 0, 6);
+        $vertexCount += 6;
 
         // advance the cursor
         $x += $charData['xadvance'] * $scale;
+        if ($x > ExampleHelper::WIN_WIDTH - 10) {
+            $x = 10;
+            $y += $lineHeight * $scale;
+        }
     }
 
+    // buffer the vertices
+    glBufferData(GL_ARRAY_BUFFER, $vertices, GL_DYNAMIC_DRAW);
+
+    // render the characters
+    glDrawArrays(GL_TRIANGLES, 0, $vertexCount);
 
     // swap the windows framebuffer and
     // poll queued window events.
     glfwSwapBuffers($window);
-    glfwPollEvents();
 }
 
 

@@ -2379,6 +2379,7 @@ namespace {
     function glfwDestroyCursor(GLFWcursor $cursor) : void {};
     function glfwSetCursor(GLFWwindow $window, GLFWcursor $cursor) : void {};
     function glfwSetKeyCallback(GLFWwindow $window, callable $callback) : void {};
+    function glfwSetCharCallback(GLFWwindow $window, callable $callback) : void {};
     function glfwJoystickPresent(int $jid) : int {};
     function glfwGetJoystickName(int $jid) : string {};
     function glfwGetJoystickGUID(int $jid) : string {};

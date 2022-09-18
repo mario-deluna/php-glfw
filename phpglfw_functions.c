@@ -38,10 +38,12 @@
  * Global callbacks like GLFWkeyfun etc..
  */
 static zval _phpglfw_callback_keycallback;
+static zval _phpglfw_callback_charcallback;
 
 void phpglfw_init_callbacks(void)
 {
     ZVAL_UNDEF(&_phpglfw_callback_keycallback);
+    ZVAL_UNDEF(&_phpglfw_callback_charcallback);
 }
 
 void phpglfw_shutdown_callbacks(void)
@@ -50,6 +52,11 @@ void phpglfw_shutdown_callbacks(void)
 		zval_ptr_dtor(&_phpglfw_callback_keycallback);
 		ZVAL_UNDEF(&_phpglfw_callback_keycallback);
 	}
+
+    if (Z_TYPE(_phpglfw_callback_charcallback) != IS_UNDEF) {
+        zval_ptr_dtor(&_phpglfw_callback_charcallback);
+        ZVAL_UNDEF(&_phpglfw_callback_charcallback);
+    }
 }
 
 static void phpglfw_callback_keycallback_handler(GLFWwindow* window, int key, int scancode, int action, int mods)
@@ -71,6 +78,21 @@ static void phpglfw_callback_keycallback_handler(GLFWwindow* window, int key, in
 	zval_ptr_dtor(&params[2]);
 	zval_ptr_dtor(&params[3]);
 	zval_ptr_dtor(&dummy);
+}
+
+static void phpglfw_callback_charcallback_handler(GLFWwindow* window, unsigned int codepoint)
+{
+    zval params[1];
+    zval dummy;
+
+    ZVAL_NULL(&dummy);
+
+    ZVAL_LONG(&params[0], codepoint);
+    
+    call_user_function(NULL, NULL, &_phpglfw_callback_charcallback, &dummy, 1, params);
+
+    zval_ptr_dtor(&params[0]);
+    zval_ptr_dtor(&dummy);
 }
 
 /**
@@ -10885,6 +10907,25 @@ PHP_FUNCTION(glfwSetKeyCallback)
     GLFWwindow* window = phpglfw_glfwwindowptr_from_zval_ptr(window_zval);
     ZVAL_COPY(&_phpglfw_callback_keycallback, &fci.function_name);
     glfwSetKeyCallback(window, phpglfw_callback_keycallback_handler);
+} 
+
+/**
+ * glfwSetCharCallback
+ */ 
+PHP_FUNCTION(glfwSetCharCallback)
+{
+    zend_fcall_info fci;
+    zend_fcall_info_cache fcc;
+    zval *window_zval;
+    if (FAILURE == zend_parse_parameters(ZEND_NUM_ARGS(), "Of",  &window_zval, phpglfw_glfwwindow_ce, &fci, &fcc)) {
+        RETURN_THROWS();
+    }
+    if (Z_TYPE(_phpglfw_callback_charcallback) != IS_UNDEF) {
+        zval_ptr_dtor(&_phpglfw_callback_charcallback);
+    }
+    GLFWwindow* window = phpglfw_glfwwindowptr_from_zval_ptr(window_zval);
+    ZVAL_COPY(&_phpglfw_callback_charcallback, &fci.function_name);
+    glfwSetCharCallback(window, phpglfw_callback_charcallback_handler);
 } 
 
 /**
