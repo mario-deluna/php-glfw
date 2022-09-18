@@ -94,6 +94,19 @@ abstract class BufferTestCase extends \PHPUnit\Framework\TestCase
         }
     }
 
+    public function testPushArray()
+    {
+        $className = $this->getBufferClass();
+        $buffer = new $className();
+
+        $data = $this->getTestData();
+        $buffer->pushArray($data);
+
+        for($i=0; $i<count($data); $i++) {
+            $this->assertEqualBufferValue($data[$i], $buffer[$i]);
+        }
+    }
+
     public function testReadOutOfBounds()
     {
         $className = $this->getBufferClass();

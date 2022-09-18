@@ -65,7 +65,6 @@ $buffer = new FloatBuffer([
 
 The `FloatBuffer` class exposes the following methods to userland.
 
-
 ### `push`
 
 pushes a value into the buffer, this is exactly the same as when you would write `$buffer[] = 3.14`.
@@ -83,8 +82,26 @@ returns
 :    `void` 
 
 ---
-     
+    
 
+### `pushArray`
+
+pushes an array of values into the buffer. This works the same as when you pass inital data to the constructor.
+
+```php
+function pushArray(array $values) : void
+```
+
+arguments
+
+:    1. `float[]` `$values` The values to be pushed into the buffer.
+
+returns
+
+:    `void` 
+
+---
+    
 ### `fill`
 
 Fills the buffer with `$count` amount of values. The second argument is the value that is filled in.

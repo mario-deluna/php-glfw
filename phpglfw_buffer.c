@@ -320,6 +320,27 @@ PHP_METHOD(GL_Buffer_FloatBuffer, push)
     cvector_push_back(obj_ptr->vec, value);
 }
 
+PHP_METHOD(GL_Buffer_FloatBuffer, pushArray)
+{
+    zval *array;
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "a", &array) == FAILURE) {
+        return;
+    }
+
+    zval *obj;
+    obj = getThis();
+    phpglfw_buffer_glfloat_object *obj_ptr = phpglfw_buffer_glfloat_objectptr_from_zobj_p(Z_OBJ_P(obj));
+
+    ZEND_HASH_FOREACH_VAL(Z_ARRVAL_P(array), array) {
+        if (Z_TYPE_P(array) != IS_DOUBLE) {
+            zend_throw_error(NULL, "Trying to store non float value in a float type buffer.");
+            return;
+        }
+
+        cvector_push_back(obj_ptr->vec, Z_DVAL_P(array));
+    } ZEND_HASH_FOREACH_END();
+}
+
 PHP_METHOD(GL_Buffer_FloatBuffer, pushVec2)
 {
     zval *vec2;
@@ -724,6 +745,27 @@ PHP_METHOD(GL_Buffer_HFloatBuffer, push)
     cvector_push_back(obj_ptr->vec, value);
 }
 
+PHP_METHOD(GL_Buffer_HFloatBuffer, pushArray)
+{
+    zval *array;
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "a", &array) == FAILURE) {
+        return;
+    }
+
+    zval *obj;
+    obj = getThis();
+    phpglfw_buffer_glhalf_object *obj_ptr = phpglfw_buffer_glhalf_objectptr_from_zobj_p(Z_OBJ_P(obj));
+
+    ZEND_HASH_FOREACH_VAL(Z_ARRVAL_P(array), array) {
+        if (Z_TYPE_P(array) != IS_DOUBLE) {
+            zend_throw_error(NULL, "Trying to store non float value in a float type buffer.");
+            return;
+        }
+
+        cvector_push_back(obj_ptr->vec, Z_DVAL_P(array));
+    } ZEND_HASH_FOREACH_END();
+}
+
 
 
 PHP_METHOD(GL_Buffer_HFloatBuffer, reserve)
@@ -1052,6 +1094,27 @@ PHP_METHOD(GL_Buffer_DoubleBuffer, push)
     phpglfw_buffer_gldouble_object *obj_ptr = phpglfw_buffer_gldouble_objectptr_from_zobj_p(Z_OBJ_P(obj));
 
     cvector_push_back(obj_ptr->vec, value);
+}
+
+PHP_METHOD(GL_Buffer_DoubleBuffer, pushArray)
+{
+    zval *array;
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "a", &array) == FAILURE) {
+        return;
+    }
+
+    zval *obj;
+    obj = getThis();
+    phpglfw_buffer_gldouble_object *obj_ptr = phpglfw_buffer_gldouble_objectptr_from_zobj_p(Z_OBJ_P(obj));
+
+    ZEND_HASH_FOREACH_VAL(Z_ARRVAL_P(array), array) {
+        if (Z_TYPE_P(array) != IS_DOUBLE) {
+            zend_throw_error(NULL, "Trying to store non float value in a float type buffer.");
+            return;
+        }
+
+        cvector_push_back(obj_ptr->vec, Z_DVAL_P(array));
+    } ZEND_HASH_FOREACH_END();
 }
 
 
@@ -1384,6 +1447,27 @@ PHP_METHOD(GL_Buffer_IntBuffer, push)
     cvector_push_back(obj_ptr->vec, value);
 }
 
+PHP_METHOD(GL_Buffer_IntBuffer, pushArray)
+{
+    zval *array;
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "a", &array) == FAILURE) {
+        return;
+    }
+
+    zval *obj;
+    obj = getThis();
+    phpglfw_buffer_glint_object *obj_ptr = phpglfw_buffer_glint_objectptr_from_zobj_p(Z_OBJ_P(obj));
+
+    ZEND_HASH_FOREACH_VAL(Z_ARRVAL_P(array), array) {
+        if (Z_TYPE_P(array) != IS_LONG) {
+            zend_throw_error(NULL, "Trying to store non int value in a int type buffer.");
+            return;
+        }
+
+        cvector_push_back(obj_ptr->vec, Z_LVAL_P(array));
+    } ZEND_HASH_FOREACH_END();
+}
+
 
 
 PHP_METHOD(GL_Buffer_IntBuffer, reserve)
@@ -1712,6 +1796,27 @@ PHP_METHOD(GL_Buffer_UIntBuffer, push)
     phpglfw_buffer_gluint_object *obj_ptr = phpglfw_buffer_gluint_objectptr_from_zobj_p(Z_OBJ_P(obj));
 
     cvector_push_back(obj_ptr->vec, value);
+}
+
+PHP_METHOD(GL_Buffer_UIntBuffer, pushArray)
+{
+    zval *array;
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "a", &array) == FAILURE) {
+        return;
+    }
+
+    zval *obj;
+    obj = getThis();
+    phpglfw_buffer_gluint_object *obj_ptr = phpglfw_buffer_gluint_objectptr_from_zobj_p(Z_OBJ_P(obj));
+
+    ZEND_HASH_FOREACH_VAL(Z_ARRVAL_P(array), array) {
+        if (Z_TYPE_P(array) != IS_LONG) {
+            zend_throw_error(NULL, "Trying to store non int value in a int type buffer.");
+            return;
+        }
+
+        cvector_push_back(obj_ptr->vec, Z_LVAL_P(array));
+    } ZEND_HASH_FOREACH_END();
 }
 
 
@@ -2044,6 +2149,27 @@ PHP_METHOD(GL_Buffer_ShortBuffer, push)
     cvector_push_back(obj_ptr->vec, value);
 }
 
+PHP_METHOD(GL_Buffer_ShortBuffer, pushArray)
+{
+    zval *array;
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "a", &array) == FAILURE) {
+        return;
+    }
+
+    zval *obj;
+    obj = getThis();
+    phpglfw_buffer_glshort_object *obj_ptr = phpglfw_buffer_glshort_objectptr_from_zobj_p(Z_OBJ_P(obj));
+
+    ZEND_HASH_FOREACH_VAL(Z_ARRVAL_P(array), array) {
+        if (Z_TYPE_P(array) != IS_LONG) {
+            zend_throw_error(NULL, "Trying to store non int value in a int type buffer.");
+            return;
+        }
+
+        cvector_push_back(obj_ptr->vec, Z_LVAL_P(array));
+    } ZEND_HASH_FOREACH_END();
+}
+
 
 
 PHP_METHOD(GL_Buffer_ShortBuffer, reserve)
@@ -2372,6 +2498,27 @@ PHP_METHOD(GL_Buffer_UShortBuffer, push)
     phpglfw_buffer_glushort_object *obj_ptr = phpglfw_buffer_glushort_objectptr_from_zobj_p(Z_OBJ_P(obj));
 
     cvector_push_back(obj_ptr->vec, value);
+}
+
+PHP_METHOD(GL_Buffer_UShortBuffer, pushArray)
+{
+    zval *array;
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "a", &array) == FAILURE) {
+        return;
+    }
+
+    zval *obj;
+    obj = getThis();
+    phpglfw_buffer_glushort_object *obj_ptr = phpglfw_buffer_glushort_objectptr_from_zobj_p(Z_OBJ_P(obj));
+
+    ZEND_HASH_FOREACH_VAL(Z_ARRVAL_P(array), array) {
+        if (Z_TYPE_P(array) != IS_LONG) {
+            zend_throw_error(NULL, "Trying to store non int value in a int type buffer.");
+            return;
+        }
+
+        cvector_push_back(obj_ptr->vec, Z_LVAL_P(array));
+    } ZEND_HASH_FOREACH_END();
 }
 
 
@@ -2704,6 +2851,27 @@ PHP_METHOD(GL_Buffer_ByteBuffer, push)
     cvector_push_back(obj_ptr->vec, value);
 }
 
+PHP_METHOD(GL_Buffer_ByteBuffer, pushArray)
+{
+    zval *array;
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "a", &array) == FAILURE) {
+        return;
+    }
+
+    zval *obj;
+    obj = getThis();
+    phpglfw_buffer_glbyte_object *obj_ptr = phpglfw_buffer_glbyte_objectptr_from_zobj_p(Z_OBJ_P(obj));
+
+    ZEND_HASH_FOREACH_VAL(Z_ARRVAL_P(array), array) {
+        if (Z_TYPE_P(array) != IS_LONG) {
+            zend_throw_error(NULL, "Trying to store non int value in a int type buffer.");
+            return;
+        }
+
+        cvector_push_back(obj_ptr->vec, Z_LVAL_P(array));
+    } ZEND_HASH_FOREACH_END();
+}
+
 
 
 PHP_METHOD(GL_Buffer_ByteBuffer, reserve)
@@ -3032,6 +3200,27 @@ PHP_METHOD(GL_Buffer_UByteBuffer, push)
     phpglfw_buffer_glubyte_object *obj_ptr = phpglfw_buffer_glubyte_objectptr_from_zobj_p(Z_OBJ_P(obj));
 
     cvector_push_back(obj_ptr->vec, value);
+}
+
+PHP_METHOD(GL_Buffer_UByteBuffer, pushArray)
+{
+    zval *array;
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "a", &array) == FAILURE) {
+        return;
+    }
+
+    zval *obj;
+    obj = getThis();
+    phpglfw_buffer_glubyte_object *obj_ptr = phpglfw_buffer_glubyte_objectptr_from_zobj_p(Z_OBJ_P(obj));
+
+    ZEND_HASH_FOREACH_VAL(Z_ARRVAL_P(array), array) {
+        if (Z_TYPE_P(array) != IS_LONG) {
+            zend_throw_error(NULL, "Trying to store non int value in a int type buffer.");
+            return;
+        }
+
+        cvector_push_back(obj_ptr->vec, Z_LVAL_P(array));
+    } ZEND_HASH_FOREACH_END();
 }
 
 

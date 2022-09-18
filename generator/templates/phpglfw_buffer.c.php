@@ -293,6 +293,27 @@ PHP_METHOD(<?php echo $buffer->getFullNamespaceConstString(); ?>, push)
     cvector_push_back(obj_ptr->vec, value);
 }
 
+PHP_METHOD(<?php echo $buffer->getFullNamespaceConstString(); ?>, pushArray)
+{
+    zval *array;
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "a", &array) == FAILURE) {
+        return;
+    }
+
+    zval *obj;
+    obj = getThis();
+    <?php echo $buffer->getObjectName(); ?> *obj_ptr = <?php echo $buffer->objectFromZObjFunctionName(); ?>(Z_OBJ_P(obj));
+
+    ZEND_HASH_FOREACH_VAL(Z_ARRVAL_P(array), array) {
+        if (Z_TYPE_P(array) != <?php echo $buffer->getValueArg()->getZvalTypeComparisonConst(); ?>) {
+            zend_throw_error(NULL, "Trying to store non <?php echo $buffer->getValuePHPType(); ?> value in a <?php echo $buffer->getValuePHPType(); ?> type buffer.");
+            return;
+        }
+
+        cvector_push_back(obj_ptr->vec, <?php echo $buffer->getValueArg()->getValueFromZvalPointerConst(); ?>(array));
+    } ZEND_HASH_FOREACH_END();
+}
+
 <?php if ($buffer->name == 'FloatBuffer') : ?>
 PHP_METHOD(<?php echo $buffer->getFullNamespaceConstString(); ?>, pushVec2)
 {

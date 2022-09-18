@@ -301,6 +301,15 @@ namespace GL\Buffer
         public function push(float $value) : void {}
 
         /**
+         * pushes an array of values into the buffer. This works the same as when you pass inital data to the constructor.
+         *
+         * @param array<float> $values The values to be pushed into the buffer.
+         *
+         * @return void
+         */
+        public function pushArray(array $values) : void {}
+
+        /**
          * Pushes the values of a Vec2 object into the buffer
          */
         public function pushVec2(\GL\Math\Vec2 $vec) : void {}
@@ -380,6 +389,15 @@ namespace GL\Buffer
          */
         public function push(float $value) : void {}
 
+        /**
+         * pushes an array of values into the buffer. This works the same as when you pass inital data to the constructor.
+         *
+         * @param array<float> $values The values to be pushed into the buffer.
+         *
+         * @return void
+         */
+        public function pushArray(array $values) : void {}
+
 
         /**
          * Fills the buffer with $count amount of values. The second argument is the value that is filled in.
@@ -440,6 +458,15 @@ namespace GL\Buffer
          * @return void 
          */
         public function push(float $value) : void {}
+
+        /**
+         * pushes an array of values into the buffer. This works the same as when you pass inital data to the constructor.
+         *
+         * @param array<float> $values The values to be pushed into the buffer.
+         *
+         * @return void
+         */
+        public function pushArray(array $values) : void {}
 
 
         /**
@@ -502,6 +529,15 @@ namespace GL\Buffer
          */
         public function push(int $value) : void {}
 
+        /**
+         * pushes an array of values into the buffer. This works the same as when you pass inital data to the constructor.
+         *
+         * @param array<int> $values The values to be pushed into the buffer.
+         *
+         * @return void
+         */
+        public function pushArray(array $values) : void {}
+
 
         /**
          * Fills the buffer with $count amount of values. The second argument is the value that is filled in.
@@ -562,6 +598,15 @@ namespace GL\Buffer
          * @return void 
          */
         public function push(int $value) : void {}
+
+        /**
+         * pushes an array of values into the buffer. This works the same as when you pass inital data to the constructor.
+         *
+         * @param array<int> $values The values to be pushed into the buffer.
+         *
+         * @return void
+         */
+        public function pushArray(array $values) : void {}
 
 
         /**
@@ -624,6 +669,15 @@ namespace GL\Buffer
          */
         public function push(int $value) : void {}
 
+        /**
+         * pushes an array of values into the buffer. This works the same as when you pass inital data to the constructor.
+         *
+         * @param array<int> $values The values to be pushed into the buffer.
+         *
+         * @return void
+         */
+        public function pushArray(array $values) : void {}
+
 
         /**
          * Fills the buffer with $count amount of values. The second argument is the value that is filled in.
@@ -684,6 +738,15 @@ namespace GL\Buffer
          * @return void 
          */
         public function push(int $value) : void {}
+
+        /**
+         * pushes an array of values into the buffer. This works the same as when you pass inital data to the constructor.
+         *
+         * @param array<int> $values The values to be pushed into the buffer.
+         *
+         * @return void
+         */
+        public function pushArray(array $values) : void {}
 
 
         /**
@@ -746,6 +809,15 @@ namespace GL\Buffer
          */
         public function push(int $value) : void {}
 
+        /**
+         * pushes an array of values into the buffer. This works the same as when you pass inital data to the constructor.
+         *
+         * @param array<int> $values The values to be pushed into the buffer.
+         *
+         * @return void
+         */
+        public function pushArray(array $values) : void {}
+
 
         /**
          * Fills the buffer with $count amount of values. The second argument is the value that is filled in.
@@ -806,6 +878,15 @@ namespace GL\Buffer
          * @return void 
          */
         public function push(int $value) : void {}
+
+        /**
+         * pushes an array of values into the buffer. This works the same as when you pass inital data to the constructor.
+         *
+         * @param array<int> $values The values to be pushed into the buffer.
+         *
+         * @return void
+         */
+        public function pushArray(array $values) : void {}
 
 
         /**

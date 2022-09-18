@@ -159,6 +159,7 @@ namespace GL\Buffer
         public function __construct(?array $initalData = null) {}
         public function __toString() : string {}
         public function push(float $value) : void {}
+        public function pushArray(array $values) : void {}
         public function pushVec2(GL\Math\Vec2 $vec) : void {}
         public function pushVec3(GL\Math\Vec3 $vec) : void {}
         public function pushVec4(GL\Math\Vec4 $vec) : void {}
@@ -174,6 +175,7 @@ namespace GL\Buffer
         public function __construct(?array $initalData = null) {}
         public function __toString() : string {}
         public function push(float $value) : void {}
+        public function pushArray(array $values) : void {}
         public function fill(int $count, float $value) : void {}
         public function clear() : void {}
         public function size() : int {}
@@ -185,6 +187,7 @@ namespace GL\Buffer
         public function __construct(?array $initalData = null) {}
         public function __toString() : string {}
         public function push(float $value) : void {}
+        public function pushArray(array $values) : void {}
         public function fill(int $count, float $value) : void {}
         public function clear() : void {}
         public function size() : int {}
@@ -196,6 +199,7 @@ namespace GL\Buffer
         public function __construct(?array $initalData = null) {}
         public function __toString() : string {}
         public function push(int $value) : void {}
+        public function pushArray(array $values) : void {}
         public function fill(int $count, int $value) : void {}
         public function clear() : void {}
         public function size() : int {}
@@ -207,6 +211,7 @@ namespace GL\Buffer
         public function __construct(?array $initalData = null) {}
         public function __toString() : string {}
         public function push(int $value) : void {}
+        public function pushArray(array $values) : void {}
         public function fill(int $count, int $value) : void {}
         public function clear() : void {}
         public function size() : int {}
@@ -218,6 +223,7 @@ namespace GL\Buffer
         public function __construct(?array $initalData = null) {}
         public function __toString() : string {}
         public function push(int $value) : void {}
+        public function pushArray(array $values) : void {}
         public function fill(int $count, int $value) : void {}
         public function clear() : void {}
         public function size() : int {}
@@ -229,6 +235,7 @@ namespace GL\Buffer
         public function __construct(?array $initalData = null) {}
         public function __toString() : string {}
         public function push(int $value) : void {}
+        public function pushArray(array $values) : void {}
         public function fill(int $count, int $value) : void {}
         public function clear() : void {}
         public function size() : int {}
@@ -240,6 +247,7 @@ namespace GL\Buffer
         public function __construct(?array $initalData = null) {}
         public function __toString() : string {}
         public function push(int $value) : void {}
+        public function pushArray(array $values) : void {}
         public function fill(int $count, int $value) : void {}
         public function clear() : void {}
         public function size() : int {}
@@ -251,6 +259,7 @@ namespace GL\Buffer
         public function __construct(?array $initalData = null) {}
         public function __toString() : string {}
         public function push(int $value) : void {}
+        public function pushArray(array $values) : void {}
         public function fill(int $count, int $value) : void {}
         public function clear() : void {}
         public function size() : int {}

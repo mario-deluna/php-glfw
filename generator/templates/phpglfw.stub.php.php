@@ -136,6 +136,7 @@ namespace GL\Buffer
         public function __construct(?array $initalData = null) {}
         public function __toString() : string {}
         public function push(<?php echo $buffer->getValuePHPType(); ?> $value) : void {}
+        public function pushArray(array $values) : void {}
 <?php if ($buffer->name == 'FloatBuffer') : ?>
         public function pushVec2(GL\Math\Vec2 $vec) : void {}
         public function pushVec3(GL\Math\Vec3 $vec) : void {}

@@ -123,6 +123,15 @@ namespace GL\Buffer
          */
         public function push(<?php echo $buffer->getValuePHPType(); ?> $value) : void {}
 
+        /**
+         * pushes an array of values into the buffer. This works the same as when you pass inital data to the constructor.
+         *
+         * @param array<<?php echo $buffer->getValuePHPType(); ?>> $values The values to be pushed into the buffer.
+         *
+         * @return void
+         */
+        public function pushArray(array $values) : void {}
+
 <?php if ($buffer->name == 'FloatBuffer') : ?>
         /**
          * Pushes the values of a Vec2 object into the buffer

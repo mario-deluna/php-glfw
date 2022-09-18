@@ -66,8 +66,10 @@ $buffer = new <?php echo $buffer->name; ?>([
 
 The `<?php echo $buffer->name; ?>` class exposes the following methods to userland.
 
+<?php echo $docParser->getAPIRefMarkdown($buffer->getFullNamespaceString() . '::push'); ?>
 
-<?php echo $docParser->getAPIRefMarkdown($buffer->getFullNamespaceString() . '::push'); ?> 
+
+<?php echo $docParser->getAPIRefMarkdown($buffer->getFullNamespaceString() . '::pushArray'); ?>
 
 ### `fill`
 
