@@ -47,7 +47,7 @@ var_dump($vertices); // [
 // ]
 ```
 
-### Extracting Meshes
+### Extracting meshes
 
 If your model is made up of multiple materials and you want to extract the vertices for each material, you can use the `getMeshes` method.
 This method is going to be slower than the `getVertices` method, because it has to group the vertices by material. But it's still pretty fast,
@@ -67,6 +67,24 @@ foreach ($meshes as $mesh) {
 !!! tip "Example"
 
     A simple example to extract the diffuse color of a typical low poly model would be can be seen [here](https://github.com/mario-deluna/php-glfw/blob/master/examples/05_objloading.php#L60)
+
+### Extracting part of a model 
+
+Many of the methods in this class allow you to pass a [Group](/API/Geometry/ObjFileParserGroup.html) argument. 
+This allows you to extract only a part of the model.
+
+The available groups can be accessed over the `$model->groups` property and `$model->objects` property.
+
+```php
+$model = new \GL\Geometry\ObjFileParser('car.obj');
+$objects = $model->objects;
+
+$frontWheelGroup = array_filter($objects, function($group) {
+    return $group->name === 'wheel_front_left';
+});
+
+$vertices = $model->getVertices('p', $frontWheelGroup);
+```
 
 ## Properties
 

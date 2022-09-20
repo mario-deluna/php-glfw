@@ -71,6 +71,13 @@ The `<?php echo $buffer->name; ?>` class exposes the following methods to userla
 
 <?php echo $docParser->getAPIRefMarkdown($buffer->getFullNamespaceString() . '::pushArray'); ?>
 
+<?php if ($buffer->name == 'FloatBuffer') : ?> 
+<?php echo $docParser->getAPIRefMarkdown($buffer->getFullNamespaceString() . '::pushVec2'); ?> 
+<?php echo $docParser->getAPIRefMarkdown($buffer->getFullNamespaceString() . '::pushVec3'); ?> 
+<?php echo $docParser->getAPIRefMarkdown($buffer->getFullNamespaceString() . '::pushVec4'); ?> 
+<?php echo $docParser->getAPIRefMarkdown($buffer->getFullNamespaceString() . '::pushMat4'); ?> 
+<?php endif; ?>
+
 ### `fill`
 
 Fills the buffer with `$count` amount of values. The second argument is the value that is filled in.

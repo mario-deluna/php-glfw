@@ -102,6 +102,7 @@ returns
 
 ---
     
+
 ### `fill`
 
 Fills the buffer with `$count` amount of values. The second argument is the value that is filled in.

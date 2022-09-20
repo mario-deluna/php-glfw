@@ -102,6 +102,48 @@ returns
 
 ---
     
+ 
+### `pushVec2`
+
+Pushes the values of a Vec2 object into the buffer
+
+```php
+function pushVec2(\GL\Math\Vec2 $vec) : void
+```
+
+---
+     
+### `pushVec3`
+
+Pushes the values of a Vec3 object into the buffer
+
+```php
+function pushVec3(\GL\Math\Vec3 $vec) : void
+```
+
+---
+     
+### `pushVec4`
+
+Pushes the values of a Vec4 object into the buffer
+
+```php
+function pushVec4(\GL\Math\Vec4 $vec) : void
+```
+
+---
+     
+### `pushMat4`
+
+Pushes the values of a Mat4 (16) object into the buffer
+
+```php
+function pushMat4(\GL\Math\Mat4 $matrix) : void
+```
+
+---
+     
+
 ### `fill`
 
 Fills the buffer with `$count` amount of values. The second argument is the value that is filled in.
