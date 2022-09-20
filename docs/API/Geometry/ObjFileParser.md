@@ -53,7 +53,7 @@ If your model is made up of multiple materials and you want to extract the verti
 This method is going to be slower than the `getVertices` method, because it has to group the vertices by material. But it's still pretty fast,
 and for sure faster then if you would implement the grouping in PHP.
 
-One main difference between the `getVertices` and `getMeshes` method is that the `getMeshes` method returns an array of [Mesh](/API/Geometry/Mesh.html) objects.
+One main difference between the `getVertices` and `getMeshes` method is that the `getMeshes` method returns an array of [Mesh](/API/Geometry/ObjFileParserMesh.html) objects.
 
 ```php
 // extract `pnc` [position, normal, texture coords]
