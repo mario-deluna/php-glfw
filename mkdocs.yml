@@ -13,7 +13,7 @@ nav:
     - Creating a Window: getting-started/window-creation.md
     - Drawing a Triangle: getting-started/drawing_a_triangle.md
   - 'user-guide/index.md'
-  - API: 'API/'
+  - Classes / Functions & API : 'API/'
 plugins:
   - search
   - include_dir_to_nav
