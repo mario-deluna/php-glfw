@@ -501,9 +501,35 @@ namespace GL\Geometry
          */
         public function getVertices(string $layout, ?\GL\Geometry\ObjFileParser\Group $group = null) : \GL\Buffer\FloatBuffer {}
 
+        /**
+         * Almost the same as getVertices but returns an Mesh object instead.
+         * The mesh object is a wrapper around the vertex data buffer and the index buffer.
+         * 
+         * Please see the `getVertices` docs for more information about the layout string.
+         *  
+         * !!! note
+         *     Even you your object file is already indexed, this method will reindex the data.
+         *     This is required to generate the normals and tangents. As a result this method 
+         *     is a lot slower than getVertices.
+         * 
+         * @param string $layout The layout of the buffer.
+         * @param \GL\Geometry\ObjFileParser\Group|null $group The group to get the vertex data for.
+         * 
+         * @return \GL\Geometry\Mesh The generated mesh object
+         */
         public function getIndexedVertices(string $layout, ?\GL\Geometry\ObjFileParser\Group $group = null) : \GL\Geometry\ObjFileParser\Mesh {}
 
         /**
+         * Returns an array of Mesh objects grouped by material. 
+         * In many situations your object / model is split into multiple submeshes, each with its own material.
+         * with every material there are usally different material properties associated. This usally requires
+         * a uniform to be updated, a different shader to be used or a different texture to be bound.
+         * This is where `getMeshes` comes in handy. It will return an array of Mesh objects, each with its own material.
+         * 
+         * Please see the `getVertices` docs for more information about the layout string.
+         * 
+         * @param string $layout The layout of the buffer.
+         * @param \GL\Geometry\ObjFileParser\Group|null $group The group to get the vertex data for.
          * 
          * @return array<\GL\Geometry\ObjFileParser\Mesh>
          */

@@ -219,6 +219,12 @@ class ExtDocParser
         $returnMd = $this->getAPIReturnMarkdown($symbol);
         $extNote = $this->getExtensionNote($symbol);
 
+        // if ($symbol === 'glGetProgramInfoLog') {
+        //     $docblock = $this->getSymbolDocBlock($symbol);   
+        // $returnTags = $docblock->getTagsByName('return');
+        //     var_dump($docblock); die;
+        // }
+
         if ($extNote) {
             $extNote = tabulate($extNote);
             $extNote = <<<MARKDOWN

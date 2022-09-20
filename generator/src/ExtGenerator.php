@@ -449,6 +449,7 @@ class ExtGenerator
         $this->buildDocsMath();
         $this->buildDocsOpenGL();
         $this->buildDocsGLFW();
+        $this->buildDocsCommon();
 
         foreach($this->methods as $func) {
             if ($func->incomplete) {
@@ -615,6 +616,7 @@ class ExtGenerator
             ], false));
         }
     }
+
     /**
      * Builds the Docs / Buffer
      */
@@ -631,5 +633,23 @@ class ExtGenerator
                 'docParser' => $this->docParser,
             ], false));
         }
+    }
+
+    private function buildMarkdownDocsFile(string $templateName, string $targetPath)
+    {
+        $path = GEN_PATH_EXT . '/docs/' . $targetPath;
+
+        file_put_contents($path, $this->generateTemplate('docs/' . $templateName, [
+            'docParser' => $this->docParser,
+        ], false));
+    }
+
+    /**
+     * Builds the Docs / Buffer
+     */
+    private function buildDocsCommon() : void
+    {
+        // geometry
+        $this->buildMarkdownDocsFile('geo_objfileparser.md', 'API/Geometry/ObjFileParser.md');   
     }
 }
