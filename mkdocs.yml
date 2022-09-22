@@ -12,7 +12,7 @@ nav:
       - IDE Setup: getting-started/installation/ide-setup.md
     - Creating a Window: getting-started/window-creation.md
     - Drawing a Triangle: getting-started/drawing_a_triangle.md
-  - 'user-guide/index.md'
+  - User Guide: 'user-guide/'
   - Classes / Functions & API : 'API/'
 plugins:
   - search
