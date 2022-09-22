@@ -10,14 +10,14 @@ Also, these functions and classes are fast*, check out [Performance](#performanc
 !!! warning
 
     There currently is a "bug" in the zend engine where multiplication operands are switched in 
-    some expressions. This is a problem when multiplying matrices as the order / sequence there is cricitcal 
+    some expressions. This is a problem when multiplying matrices as the order/sequence there is critical 
     compared to normal multiplications...
-    
-    To workaround this you have to set paranthesis to enforce the correct order.
 
+    To workaround this you have to set parenthesis to enforce the correct order.
+    
     [https://github.com/php/php-src/issues/9175](https://github.com/php/php-src/issues/9175)
 
-## Usage
+## Usage
 
 ### Vectors
 
@@ -53,7 +53,7 @@ $vec->y = 5.0;
 $vec->z = 6.0;
 ```
 
-Note the vector properties are **virtual**, meaning that they are not stored in the vector object as real php properties. This allows us to map them to multiple keys. For example, the `$x` property is mapped `$r` aswell. This means the following code is valid:
+Note the vector properties are **virtual**, meaning that they are not stored in the vector object as real php properties. This allows us to map them to multiple keys. For example, the `$x` property is mapped `$r` as well. This means the following code is valid:
 
 ```php
 $vec->r = 42.0;
@@ -65,7 +65,7 @@ echo $vec->g; // prints 100.0
 
 #### Operators
 
-As notes above the vector classes have overloaded operators. This means that you can use the `+` operator to add two vectors together, or the `*` operator to multiply a vector with another vector or a scalar.
+As noted above the vector classes have overloaded operators. This means that you can use the `+` operator to add two vectors together, or the `*` operator to multiply a vector with another vector or a scalar.
 
 ```php
 $vec1 = new Vec3(1.0, 2.0, 3.0);
@@ -106,7 +106,7 @@ echo $vec1 / 2.0; // vec3(0.5, 1.0, 1.5)
 
 You can read about the functions available in the [`Vec2`](/API/Math/Vec2.html), [`Vec3`](/API/Math/Vec3.html), [`Vec4`](/API/Math/Vec4.html) classes in the API documentation.
 
-To just give a quick exmaple:
+To just give a quick example:
 
 ```php
 $vec1 = new Vec3(1.0, 2.0, 3.0);
@@ -114,9 +114,9 @@ echo $vec1->length(); // prints 3.7416574954987
 echo $vec1->normalize(); // prints vec3(0.2673, 0.5345, 0.8018)
 ```
 
-## Performance 
+## Performance 
 
-The math functions are implemented in C, each component of a vector is stored as a float, so the overhead of using these functions is minimal. (at least for PHP).
+The math functions are implemented in C, and each component of a vector is stored as a float, so the overhead of using these functions is minimal. (at least for PHP).
 
 Benchmarks are always controversial and depend on the use case, but here are some benchmarks for the `GL\Math\Vec4` class. Once implemented in PHP and once using the extension functions.
 
@@ -129,7 +129,7 @@ $v3 = $v1 * $v2 * $v1;
 $v4 = $v3->normalize();
 ```
 
-Im using a php implementation of Vec4 that can be found here: [Vec4.php](https://github.com/mario-deluna/php-render/blob/master/src/Math/Vec4.php)
+I'm using a PHP implementation of Vec4 that can be found here: [Vec4.php](https://github.com/mario-deluna/php-render/blob/master/src/Math/Vec4.php)
 
 ```php
 $v1 = new Vec4PHP(1.0, 2.0, 3.0, 4.0);
@@ -139,7 +139,7 @@ $v3 = Vec4PHP::_multiplyVec4($v3, $v1);
 $v4 = Vec4PHP::_normalize($v3);
 ```
 
-The benchmarks are executed using phpbench, each test case is run 10'000 times which iterates the above code 1000 times. So its run 10'000'000 times in total.
+The benchmarks are executed using phpbench, each test case is run 10'000 times which iterates the above code 1000 times. So it ran 10'000'000 times in total.
 
 #### Results
 
@@ -165,11 +165,11 @@ Average iteration times by variant
 +-----------------------+---------+-----------+--------+---------+
 ```
 
-So in this simple test GL function are about 400% faster than the PHP implementation.
+So in this simple test GL functions are about 400% faster than the PHP implementation.
 
 ### Matrix Multiplication Performance 
 
-Obviously the complexer the operation the more the performance difference will be. As in this particular sitation the PHP overhead becomes a clear bottleneck. I do not claim my PHP implementation is perfectly optimized, but so aint the C implementation either...
+Obviously the more complex the operation the more the performance difference will be. As in this particular situation, the PHP overhead becomes a clear bottleneck. I do not claim my PHP implementation is perfectly optimized, but so aint the C implementation either...
 
 PHP GLFW Code:
 
@@ -189,7 +189,7 @@ $m3 = Mat4PHP::_multiply($m1, $m2);
 $m4 = $m3->inverse();
 ```
 
-#### Results
+#### Results
 
 As expected the performance difference is even more pronounced here. PHP-GLFW is about 1'500% faster than the PHP implementation. But again this is not really a fair comparison.
 
