@@ -6726,560 +6726,1314 @@ namespace {
     function glGetDoublei_v(int $target, int $index, ?bool &...$data) : void {};
  
     /**
-     * glfwInit
-     * @return int
+     * Initializes the GLFW library.
+     * 
+     * This function initializes the GLFW library. Before most GLFW functions can
+     * be used, GLFW must be initialized, and before an application terminates GLFW
+     * should be terminated in order to free any resources allocated during or
+     * after initialization.
+     * 
+     * If this function fails, it calls
+     * [`glfwTerminate`](/API/GLFW/glfwTerminate.html) before returning. If it
+     * succeeds, you should call [`glfwTerminate`](/API/GLFW/glfwTerminate.html)
+     * before the application exits.
+     * 
+     * Additional calls to this function after successful initialization but before
+     * termination will return `GLFW_TRUE` immediately.
+     * @return int `GLFW_TRUE` if successful, or `GLFW_FALSE` if an
+     * `error` occurred.
      */ 
     function glfwInit() : int {};
  
     /**
-     * glfwTerminate
+     * Terminates the GLFW library.
+     * 
+     * This function destroys all remaining windows and cursors, restores any
+     * modified gamma ramps and frees any other allocated resources. Once this
+     * function is called, you must again call [`glfwInit`](/API/GLFW/glfwInit.html)
+     * successfully before
+     * you will be able to use most GLFW functions.
+     * 
+     * If GLFW has been successfully initialized, this function should be called
+     * before the application exits. If initialization fails, there is no need to
+     * call this function, as it is called by [`glfwInit`](/API/GLFW/glfwInit.html)
+     * before it returns
+     * failure.
+     * 
+     * This function has no effect if GLFW is not initialized.
      * @return void
      */ 
     function glfwTerminate() : void {};
  
     /**
-     * glfwInitHint
+     * Sets the specified init hint to the desired value.
      * 
-     * @param int $hint 
-     * @param int $value 
+     * This function sets hints for the next initialization of GLFW.
+     * 
+     * The values you set hints to are never reset by GLFW, but they only take
+     * effect during initialization. Once GLFW has been initialized, any values
+     * you set will be ignored until the library is terminated and initialized
+     * again.
+     * 
+     * Some hints are platform specific. These may be set on any platform but they
+     * will only affect their specific platform. Other platforms will ignore them.
+     * Setting these hints requires no platform specific headers or functions.
+     * 
+     * @param int $hint The `init hint` to set.
+     * @param int $value The new value of the init hint.
      * 
      * @return void
      */ 
     function glfwInitHint(int $hint, int $value) : void {};
  
     /**
-     * glfwGetVersion
+     * Retrieves the version of the GLFW library.
      * 
-     * @param int &$major 
-     * @param int &$minor 
-     * @param int &$rev 
+     * This function retrieves the major, minor and revision numbers of the GLFW
+     * library. It is intended for when you are using GLFW as a shared library and
+     * want to ensure that you are using the minimum required version.
+     * 
+     * Any or all of the version arguments may be `NULL`.
+     * 
+     * @param int &$major Where to store the major version number, or `NULL`.
+     * @param int &$minor Where to store the minor version number, or `NULL`.
+     * @param int &$rev Where to store the revision number, or `NULL`.
      * 
      * @return void
      */ 
     function glfwGetVersion(int &$major, int &$minor, int &$rev) : void {};
  
     /**
-     * glfwGetVersionString
-     * @return string
+     * Returns a string describing the compile-time configuration.
+     * 
+     * This function returns the compile-time generated
+     * `version string` of the GLFW library binary. It
+     * describes the version, platform, compiler and any platform-specific
+     * compile-time options. It should not be confused with the OpenGL or OpenGL
+     * ES version string, queried with `glGetString`.
+     * 
+     * __Do not use the version string__ to parse the GLFW library version. The
+     * [`glfwGetVersion`](/API/GLFW/glfwGetVersion.html) function provides the
+     * version of the running library
+     * binary in numerical format.
+     * @return string The ASCII encoded GLFW version string.
      */ 
     function glfwGetVersionString() : string {};
  
     /**
-     * glfwGetPrimaryMonitor
-     * @return GLFWmonitor
+     * Returns the primary monitor.
+     * 
+     * This function returns the primary monitor. This is usually the monitor
+     * where elements like the task bar or global menu bar are located.
+     * @return GLFWmonitor The primary monitor, or `NULL` if no monitors were found
+     * or if an
+     * `error` occurred.
      */ 
     function glfwGetPrimaryMonitor() : GLFWmonitor {};
  
     /**
-     * glfwGetMonitorPos
+     * Returns the position of the monitor's viewport on the virtual screen.
      * 
-     * @param GLFWmonitor $monitor 
-     * @param int &$xpos 
-     * @param int &$ypos 
+     * This function returns the position, in screen coordinates, of the upper-left
+     * corner of the specified monitor.
+     * 
+     * Any or all of the position arguments may be `NULL`. If an error occurs, all
+     * non-`NULL` position arguments will be set to zero.
+     * 
+     * @param GLFWmonitor $monitor The monitor to query.
+     * @param int &$xpos Where to store the monitor x-coordinate, or `NULL`.
+     * @param int &$ypos Where to store the monitor y-coordinate, or `NULL`.
      * 
      * @return void
      */ 
     function glfwGetMonitorPos(GLFWmonitor $monitor, int &$xpos, int &$ypos) : void {};
  
     /**
-     * glfwGetMonitorWorkarea
+     * Retrieves the work area of the monitor.
      * 
-     * @param GLFWmonitor $monitor 
-     * @param int &$xpos 
-     * @param int &$ypos 
-     * @param int &$width 
-     * @param int &$height 
+     * This function returns the position, in screen coordinates, of the upper-left
+     * corner of the work area of the specified monitor along with the work area
+     * size in screen coordinates. The work area is defined as the area of the
+     * monitor not occluded by the operating system task bar where present. If no
+     * task bar exists then the work area is the monitor resolution in screen
+     * coordinates.
+     * 
+     * Any or all of the position and size arguments may be `NULL`. If an error
+     * occurs, all non-`NULL` position and size arguments will be set to zero.
+     * 
+     * @param GLFWmonitor $monitor The monitor to query.
+     * @param int &$xpos Where to store the monitor x-coordinate, or `NULL`.
+     * @param int &$ypos Where to store the monitor y-coordinate, or `NULL`.
+     * @param int &$width Where to store the monitor width, or `NULL`.
+     * @param int &$height Where to store the monitor height, or `NULL`.
      * 
      * @return void
      */ 
     function glfwGetMonitorWorkarea(GLFWmonitor $monitor, int &$xpos, int &$ypos, int &$width, int &$height) : void {};
  
     /**
-     * glfwGetMonitorPhysicalSize
+     * Returns the physical size of the monitor.
      * 
-     * @param GLFWmonitor $monitor 
-     * @param int &$widthMM 
-     * @param int &$heightMM 
+     * This function returns the size, in millimetres, of the display area of the
+     * specified monitor.
+     * 
+     * Some systems do not provide accurate monitor size information, either
+     * because the monitor
+     * [EDID](https://en.wikipedia.org/wiki/Extended_display_identification_data)
+     * data is incorrect or because the driver does not report it accurately.
+     * 
+     * Any or all of the size arguments may be `NULL`. If an error occurs, all
+     * non-`NULL` size arguments will be set to zero.
+     * 
+     * @param GLFWmonitor $monitor The monitor to query.
+     * @param int &$widthMM Where to store the width, in millimetres, of the
+     * monitor's display area, or `NULL`.
+     * @param int &$heightMM Where to store the height, in millimetres, of the
+     * monitor's display area, or `NULL`.
      * 
      * @return void
      */ 
     function glfwGetMonitorPhysicalSize(GLFWmonitor $monitor, int &$widthMM, int &$heightMM) : void {};
  
     /**
-     * glfwGetMonitorContentScale
+     * Retrieves the content scale for the specified monitor.
      * 
-     * @param GLFWmonitor $monitor 
-     * @param float &$xscale 
-     * @param float &$yscale 
+     * This function retrieves the content scale for the specified monitor. The
+     * content scale is the ratio between the current DPI and the platform's
+     * default DPI. This is especially important for text and any UI elements. If
+     * the pixel dimensions of your UI scaled by this look appropriate on your
+     * machine then it should appear at a reasonable size on other machines
+     * regardless of their DPI and scaling settings. This relies on the system DPI
+     * and scaling settings being somewhat correct.
+     * 
+     * The content scale may depend on both the monitor resolution and pixel
+     * density and on user settings. It may be very different from the raw DPI
+     * calculated from the physical size and current resolution.
+     * 
+     * @param GLFWmonitor $monitor The monitor to query.
+     * @param float &$xscale Where to store the x-axis content scale, or `NULL`.
+     * @param float &$yscale Where to store the y-axis content scale, or `NULL`.
      * 
      * @return void
      */ 
     function glfwGetMonitorContentScale(GLFWmonitor $monitor, float &$xscale, float &$yscale) : void {};
  
     /**
-     * glfwGetMonitorName
+     * Returns the name of the specified monitor.
      * 
-     * @param GLFWmonitor $monitor 
+     * This function returns a human-readable name, encoded as UTF-8, of the
+     * specified monitor. The name typically reflects the make and model of the
+     * monitor and is not guaranteed to be unique among the connected monitors.
      * 
-     * @return string
+     * @param GLFWmonitor $monitor The monitor to query.
+     * 
+     * @return string The UTF-8 encoded name of the monitor, or `NULL` if an
+     * `error` occurred.
      */ 
     function glfwGetMonitorName(GLFWmonitor $monitor) : string {};
  
     /**
-     * glfwSetGamma
+     * Generates a gamma ramp and sets it for the specified monitor.
      * 
-     * @param GLFWmonitor $monitor 
-     * @param float $gamma 
+     * This function generates an appropriately sized gamma ramp from the specified
+     * exponent and then calls [`glfwSetGammaRamp`](/API/GLFW/glfwSetGammaRamp.html)
+     * with it. The value must be
+     * a finite number greater than zero.
+     * 
+     * The software controlled gamma ramp is applied _in addition_ to the hardware
+     * gamma correction, which today is usually an approximation of sRGB gamma.
+     * This means that setting a perfectly linear ramp, or gamma 1.0, will produce
+     * the default (usually sRGB-like) behavior.
+     * 
+     * For gamma correct rendering with OpenGL or OpenGL ES, see the @ref
+     * GLFW_SRGB_CAPABLE hint.
+     * 
+     * @param GLFWmonitor $monitor The monitor whose gamma ramp to set.
+     * @param float $gamma The desired exponent.
      * 
      * @return void
      */ 
     function glfwSetGamma(GLFWmonitor $monitor, float $gamma) : void {};
  
     /**
-     * glfwDefaultWindowHints
+     * Resets all window hints to their default values.
+     * 
+     * This function resets all window hints to their
+     * `default values`.
      * @return void
      */ 
     function glfwDefaultWindowHints() : void {};
  
     /**
-     * glfwWindowHint
+     * Sets the specified window hint to the desired value.
      * 
-     * @param int $hint 
-     * @param int $value 
+     * This function sets hints for the next call to
+     * [`glfwCreateWindow`](/API/GLFW/glfwCreateWindow.html). The
+     * hints, once set, retain their values until changed by a call to this
+     * function or
+     * [`glfwDefaultWindowHints`](/API/GLFW/glfwDefaultWindowHints.html), or until
+     * the library is terminated.
+     * 
+     * Only integer value hints can be set with this function. String value hints
+     * are set with [`glfwWindowHintString`](/API/GLFW/glfwWindowHintString.html).
+     * 
+     * This function does not check whether the specified hint values are valid.
+     * If you set hints to invalid values this will instead be reported by the next
+     * call to [`glfwCreateWindow`](/API/GLFW/glfwCreateWindow.html).
+     * 
+     * Some hints are platform specific. These may be set on any platform but they
+     * will only affect their specific platform. Other platforms will ignore them.
+     * Setting these hints requires no platform specific headers or functions.
+     * 
+     * @param int $hint The `window hint` to set.
+     * @param int $value The new value of the window hint.
      * 
      * @return void
      */ 
     function glfwWindowHint(int $hint, int $value) : void {};
  
     /**
-     * glfwWindowHintString
+     * Sets the specified window hint to the desired value.
      * 
-     * @param int $hint 
-     * @param string $value 
+     * This function sets hints for the next call to
+     * [`glfwCreateWindow`](/API/GLFW/glfwCreateWindow.html). The
+     * hints, once set, retain their values until changed by a call to this
+     * function or
+     * [`glfwDefaultWindowHints`](/API/GLFW/glfwDefaultWindowHints.html), or until
+     * the library is terminated.
+     * 
+     * Only string type hints can be set with this function. Integer value hints
+     * are set with [`glfwWindowHint`](/API/GLFW/glfwWindowHint.html).
+     * 
+     * This function does not check whether the specified hint values are valid.
+     * If you set hints to invalid values this will instead be reported by the next
+     * call to [`glfwCreateWindow`](/API/GLFW/glfwCreateWindow.html).
+     * 
+     * Some hints are platform specific. These may be set on any platform but they
+     * will only affect their specific platform. Other platforms will ignore them.
+     * Setting these hints requires no platform specific headers or functions.
+     * 
+     * @param int $hint The `window hint` to set.
+     * @param string $value The new value of the window hint.
      * 
      * @return void
      */ 
     function glfwWindowHintString(int $hint, string $value) : void {};
  
     /**
-     * glfwCreateWindow
+     * Creates a window and its associated context.
      * 
-     * @param int $width 
-     * @param int $height 
-     * @param string $title 
-     * @param ?GLFWmonitor $monitor 
-     * @param ?GLFWwindow $share 
+     * This function creates a window and its associated OpenGL or OpenGL ES
+     * context. Most of the options controlling how the window and its context
+     * should be created are specified with `window hints`.
      * 
-     * @return GLFWwindow
+     * Successful creation does not change which context is current. Before you
+     * can use the newly created context, you need to
+     * `make it current`. For information about the `share`
+     * parameter, see `context_sharing`.
+     * 
+     * The created window, framebuffer and context may differ from what you
+     * requested, as not all parameters and hints are
+     * `hard constraints`. This includes the size of the
+     * window, especially for full screen windows. To query the actual attributes
+     * of the created window, framebuffer and context, see @ref
+     * glfwGetWindowAttrib, [`glfwGetWindowSize`](/API/GLFW/glfwGetWindowSize.html)
+     * and [`glfwGetFramebufferSize`](/API/GLFW/glfwGetFramebufferSize.html).
+     * 
+     * To create a full screen window, you need to specify the monitor the window
+     * will cover. If no monitor is specified, the window will be windowed mode.
+     * Unless you have a way for the user to choose a specific monitor, it is
+     * recommended that you pick the primary monitor. For more information on how
+     * to query connected monitors, see `monitor_monitors`.
+     * 
+     * For full screen windows, the specified size becomes the resolution of the
+     * window's _desired video mode_. As long as a full screen window is not
+     * iconified, the supported video mode most closely matching the desired video
+     * mode is set for the specified monitor. For more information about full
+     * screen windows, including the creation of so called _windowed full screen_
+     * or _borderless full screen_ windows, see `window_windowed_full_screen`.
+     * 
+     * Once you have created the window, you can switch it between windowed and
+     * full screen mode with
+     * [`glfwSetWindowMonitor`](/API/GLFW/glfwSetWindowMonitor.html). This will not
+     * affect its
+     * OpenGL or OpenGL ES context.
+     * 
+     * By default, newly created windows use the placement recommended by the
+     * window system. To create the window at a specific position, make it
+     * initially invisible using the `GLFW_VISIBLE` window
+     * hint, set its `position](`window_pos`) and then [show`
+     * it.
+     * 
+     * As long as at least one full screen window is not iconified, the screensaver
+     * is prohibited from starting.
+     * 
+     * Window systems put limits on window sizes. Very large or very small window
+     * dimensions may be overridden by the window system on creation. Check the
+     * actual `size` after creation.
+     * 
+     * The `swap interval` is not set during window creation and
+     * the initial value may vary depending on driver settings and defaults.
+     * 
+     * @param int $width The desired width, in screen coordinates, of the window.
+     * This must be greater than zero.
+     * @param int $height The desired height, in screen coordinates, of the window.
+     * This must be greater than zero.
+     * @param string $title The initial, UTF-8 encoded window title.
+     * @param ?GLFWmonitor $monitor The monitor to use for full screen mode, or
+     * `NULL` for
+     * windowed mode.
+     * @param ?GLFWwindow $share The window whose context to share resources with,
+     * or `NULL`
+     * to not share resources.
+     * 
+     * @return GLFWwindow The handle of the created window, or `NULL` if an
+     * `error` occurred.
      */ 
     function glfwCreateWindow(int $width, int $height, string $title, ?GLFWmonitor $monitor = NULL, ?GLFWwindow $share = NULL) : GLFWwindow {};
  
     /**
-     * glfwDestroyWindow
+     * Destroys the specified window and its context.
      * 
-     * @param GLFWwindow $window 
+     * This function destroys the specified window and its context. On calling
+     * this function, no further callbacks will be called for that window.
+     * 
+     * If the context of the specified window is current on the main thread, it is
+     * detached before being destroyed.
+     * 
+     * @param GLFWwindow $window The window to destroy.
      * 
      * @return void
      */ 
     function glfwDestroyWindow(GLFWwindow $window) : void {};
  
     /**
-     * glfwWindowShouldClose
+     * Checks the close flag of the specified window.
      * 
-     * @param GLFWwindow $window 
+     * This function returns the value of the close flag of the specified window.
      * 
-     * @return int
+     * @param GLFWwindow $window The window to query.
+     * 
+     * @return int The value of the close flag.
      */ 
     function glfwWindowShouldClose(GLFWwindow $window) : int {};
  
     /**
-     * glfwSetWindowShouldClose
+     * Sets the close flag of the specified window.
      * 
-     * @param GLFWwindow $window 
-     * @param int $value 
+     * This function sets the value of the close flag of the specified window.
+     * This can be used to override the user's attempt to close the window, or
+     * to signal that it should be closed.
+     * 
+     * @param GLFWwindow $window The window whose flag to change.
+     * @param int $value The new value.
      * 
      * @return void
      */ 
     function glfwSetWindowShouldClose(GLFWwindow $window, int $value) : void {};
  
     /**
-     * glfwSetWindowTitle
+     * Sets the title of the specified window.
      * 
-     * @param GLFWwindow $window 
-     * @param string $title 
+     * This function sets the window title, encoded as UTF-8, of the specified
+     * window.
+     * 
+     * @param GLFWwindow $window The window whose title to change.
+     * @param string $title The UTF-8 encoded window title.
      * 
      * @return void
      */ 
     function glfwSetWindowTitle(GLFWwindow $window, string $title) : void {};
  
     /**
-     * glfwGetWindowPos
+     * Retrieves the position of the content area of the specified window.
      * 
-     * @param GLFWwindow $window 
-     * @param int &$xpos 
-     * @param int &$ypos 
+     * This function retrieves the position, in screen coordinates, of the
+     * upper-left corner of the content area of the specified window.
+     * 
+     * Any or all of the position arguments may be `NULL`. If an error occurs, all
+     * non-`NULL` position arguments will be set to zero.
+     * 
+     * @param GLFWwindow $window The window to query.
+     * @param int &$xpos Where to store the x-coordinate of the upper-left corner of
+     * the content area, or `NULL`.
+     * @param int &$ypos Where to store the y-coordinate of the upper-left corner of
+     * the content area, or `NULL`.
      * 
      * @return void
      */ 
     function glfwGetWindowPos(GLFWwindow $window, int &$xpos, int &$ypos) : void {};
  
     /**
-     * glfwSetWindowPos
+     * Sets the position of the content area of the specified window.
      * 
-     * @param GLFWwindow $window 
-     * @param int $xpos 
-     * @param int $ypos 
+     * This function sets the position, in screen coordinates, of the upper-left
+     * corner of the content area of the specified windowed mode window. If the
+     * window is a full screen window, this function does nothing.
+     * 
+     * __Do not use this function__ to move an already visible window unless you
+     * have very good reasons for doing so, as it will confuse and annoy the user.
+     * 
+     * The window manager may put limits on what positions are allowed. GLFW
+     * cannot and should not override these limits.
+     * 
+     * @param GLFWwindow $window The window to query.
+     * @param int $xpos The x-coordinate of the upper-left corner of the content
+     * area.
+     * @param int $ypos The y-coordinate of the upper-left corner of the content
+     * area.
      * 
      * @return void
      */ 
     function glfwSetWindowPos(GLFWwindow $window, int $xpos, int $ypos) : void {};
  
     /**
-     * glfwGetWindowSize
+     * Retrieves the size of the content area of the specified window.
      * 
-     * @param GLFWwindow $window 
-     * @param int &$width 
-     * @param int &$height 
+     * This function retrieves the size, in screen coordinates, of the content area
+     * of the specified window. If you wish to retrieve the size of the
+     * framebuffer of the window in pixels, see
+     * [`glfwGetFramebufferSize`](/API/GLFW/glfwGetFramebufferSize.html).
+     * 
+     * Any or all of the size arguments may be `NULL`. If an error occurs, all
+     * non-`NULL` size arguments will be set to zero.
+     * 
+     * @param GLFWwindow $window The window whose size to retrieve.
+     * @param int &$width Where to store the width, in screen coordinates, of the
+     * content area, or `NULL`.
+     * @param int &$height Where to store the height, in screen coordinates, of the
+     * content area, or `NULL`.
      * 
      * @return void
      */ 
     function glfwGetWindowSize(GLFWwindow $window, int &$width, int &$height) : void {};
  
     /**
-     * glfwSetWindowSizeLimits
+     * Sets the size limits of the specified window.
      * 
-     * @param GLFWwindow $window 
-     * @param int $minwidth 
-     * @param int $minheight 
-     * @param int $maxwidth 
-     * @param int $maxheight 
+     * This function sets the size limits of the content area of the specified
+     * window. If the window is full screen, the size limits only take effect
+     * once it is made windowed. If the window is not resizable, this function
+     * does nothing.
+     * 
+     * The size limits are applied immediately to a windowed mode window and may
+     * cause it to be resized.
+     * 
+     * The maximum dimensions must be greater than or equal to the minimum
+     * dimensions and all must be greater than or equal to zero.
+     * 
+     * @param GLFWwindow $window The window to set limits for.
+     * @param int $minwidth The minimum width, in screen coordinates, of the content
+     * area, or `GLFW_DONT_CARE`.
+     * @param int $minheight The minimum height, in screen coordinates, of the
+     * content area, or `GLFW_DONT_CARE`.
+     * @param int $maxwidth The maximum width, in screen coordinates, of the content
+     * area, or `GLFW_DONT_CARE`.
+     * @param int $maxheight The maximum height, in screen coordinates, of the
+     * content area, or `GLFW_DONT_CARE`.
      * 
      * @return void
      */ 
     function glfwSetWindowSizeLimits(GLFWwindow $window, int $minwidth, int $minheight, int $maxwidth, int $maxheight) : void {};
  
     /**
-     * glfwSetWindowAspectRatio
+     * Sets the aspect ratio of the specified window.
      * 
-     * @param GLFWwindow $window 
-     * @param int $numer 
-     * @param int $denom 
+     * This function sets the required aspect ratio of the content area of the
+     * specified window. If the window is full screen, the aspect ratio only takes
+     * effect once it is made windowed. If the window is not resizable, this
+     * function does nothing.
+     * 
+     * The aspect ratio is specified as a numerator and a denominator and both
+     * values must be greater than zero. For example, the common 16:9 aspect ratio
+     * is specified as 16 and 9, respectively.
+     * 
+     * If the numerator and denominator is set to `GLFW_DONT_CARE` then the aspect
+     * ratio limit is disabled.
+     * 
+     * The aspect ratio is applied immediately to a windowed mode window and may
+     * cause it to be resized.
+     * 
+     * @param GLFWwindow $window The window to set limits for.
+     * @param int $numer The numerator of the desired aspect ratio, or
+     * `GLFW_DONT_CARE`.
+     * @param int $denom The denominator of the desired aspect ratio, or
+     * `GLFW_DONT_CARE`.
      * 
      * @return void
      */ 
     function glfwSetWindowAspectRatio(GLFWwindow $window, int $numer, int $denom) : void {};
  
     /**
-     * glfwSetWindowSize
+     * Sets the size of the content area of the specified window.
      * 
-     * @param GLFWwindow $window 
-     * @param int $width 
-     * @param int $height 
+     * This function sets the size, in screen coordinates, of the content area of
+     * the specified window.
+     * 
+     * For full screen windows, this function updates the resolution of its desired
+     * video mode and switches to the video mode closest to it, without affecting
+     * the window's context. As the context is unaffected, the bit depths of the
+     * framebuffer remain unchanged.
+     * 
+     * If you wish to update the refresh rate of the desired video mode in addition
+     * to its resolution, see
+     * [`glfwSetWindowMonitor`](/API/GLFW/glfwSetWindowMonitor.html).
+     * 
+     * The window manager may put limits on what sizes are allowed. GLFW cannot
+     * and should not override these limits.
+     * 
+     * @param GLFWwindow $window The window to resize.
+     * @param int $width The desired width, in screen coordinates, of the window
+     * content area.
+     * @param int $height The desired height, in screen coordinates, of the window
+     * content area.
      * 
      * @return void
      */ 
     function glfwSetWindowSize(GLFWwindow $window, int $width, int $height) : void {};
  
     /**
-     * glfwGetFramebufferSize
+     * Retrieves the size of the framebuffer of the specified window.
      * 
-     * @param GLFWwindow $window 
-     * @param int &$width 
-     * @param int &$height 
+     * This function retrieves the size, in pixels, of the framebuffer of the
+     * specified window. If you wish to retrieve the size of the window in screen
+     * coordinates, see [`glfwGetWindowSize`](/API/GLFW/glfwGetWindowSize.html).
+     * 
+     * Any or all of the size arguments may be `NULL`. If an error occurs, all
+     * non-`NULL` size arguments will be set to zero.
+     * 
+     * @param GLFWwindow $window The window whose framebuffer to query.
+     * @param int &$width Where to store the width, in pixels, of the framebuffer,
+     * or `NULL`.
+     * @param int &$height Where to store the height, in pixels, of the framebuffer,
+     * or `NULL`.
      * 
      * @return void
      */ 
     function glfwGetFramebufferSize(GLFWwindow $window, int &$width, int &$height) : void {};
  
     /**
-     * glfwGetWindowFrameSize
+     * Retrieves the size of the frame of the window.
      * 
-     * @param GLFWwindow $window 
-     * @param int &$left 
-     * @param int &$top 
-     * @param int &$right 
-     * @param int &$bottom 
+     * This function retrieves the size, in screen coordinates, of each edge of the
+     * frame of the specified window. This size includes the title bar, if the
+     * window has one. The size of the frame may vary depending on the
+     * `window-related hints` used to create it.
+     * 
+     * Because this function retrieves the size of each window frame edge and not
+     * the offset along a particular coordinate axis, the retrieved values will
+     * always be zero or positive.
+     * 
+     * Any or all of the size arguments may be `NULL`. If an error occurs, all
+     * non-`NULL` size arguments will be set to zero.
+     * 
+     * @param GLFWwindow $window The window whose frame size to query.
+     * @param int &$left Where to store the size, in screen coordinates, of the left
+     * edge of the window frame, or `NULL`.
+     * @param int &$top Where to store the size, in screen coordinates, of the top
+     * edge of the window frame, or `NULL`.
+     * @param int &$right Where to store the size, in screen coordinates, of the
+     * right edge of the window frame, or `NULL`.
+     * @param int &$bottom Where to store the size, in screen coordinates, of the
+     * bottom edge of the window frame, or `NULL`.
      * 
      * @return void
      */ 
     function glfwGetWindowFrameSize(GLFWwindow $window, int &$left, int &$top, int &$right, int &$bottom) : void {};
  
     /**
-     * glfwGetWindowContentScale
+     * Retrieves the content scale for the specified window.
      * 
-     * @param GLFWwindow $window 
-     * @param float &$xscale 
-     * @param float &$yscale 
+     * This function retrieves the content scale for the specified window. The
+     * content scale is the ratio between the current DPI and the platform's
+     * default DPI. This is especially important for text and any UI elements. If
+     * the pixel dimensions of your UI scaled by this look appropriate on your
+     * machine then it should appear at a reasonable size on other machines
+     * regardless of their DPI and scaling settings. This relies on the system DPI
+     * and scaling settings being somewhat correct.
+     * 
+     * On systems where each monitors can have its own content scale, the window
+     * content scale will depend on which monitor the system considers the window
+     * to be on.
+     * 
+     * @param GLFWwindow $window The window to query.
+     * @param float &$xscale Where to store the x-axis content scale, or `NULL`.
+     * @param float &$yscale Where to store the y-axis content scale, or `NULL`.
      * 
      * @return void
      */ 
     function glfwGetWindowContentScale(GLFWwindow $window, float &$xscale, float &$yscale) : void {};
  
     /**
-     * glfwGetWindowOpacity
+     * Returns the opacity of the whole window.
      * 
-     * @param GLFWwindow $window 
+     * This function returns the opacity of the window, including any decorations.
      * 
-     * @return float
+     * The opacity (or alpha) value is a positive finite number between zero and
+     * one, where zero is fully transparent and one is fully opaque. If the system
+     * does not support whole window transparency, this function always returns one.
+     * 
+     * The initial opacity value for newly created windows is one.
+     * 
+     * @param GLFWwindow $window The window to query.
+     * 
+     * @return float The opacity value of the specified window.
      */ 
     function glfwGetWindowOpacity(GLFWwindow $window) : float {};
  
     /**
-     * glfwSetWindowOpacity
+     * Sets the opacity of the whole window.
      * 
-     * @param GLFWwindow $window 
-     * @param float $opacity 
+     * This function sets the opacity of the window, including any decorations.
+     * 
+     * The opacity (or alpha) value is a positive finite number between zero and
+     * one, where zero is fully transparent and one is fully opaque.
+     * 
+     * The initial opacity value for newly created windows is one.
+     * 
+     * A window created with framebuffer transparency may not use whole window
+     * transparency. The results of doing this are undefined.
+     * 
+     * @param GLFWwindow $window The window to set the opacity for.
+     * @param float $opacity The desired opacity of the specified window.
      * 
      * @return void
      */ 
     function glfwSetWindowOpacity(GLFWwindow $window, float $opacity) : void {};
  
     /**
-     * glfwIconifyWindow
+     * Iconifies the specified window.
      * 
-     * @param GLFWwindow $window 
+     * This function iconifies (minimizes) the specified window if it was
+     * previously restored. If the window is already iconified, this function does
+     * nothing.
+     * 
+     * If the specified window is a full screen window, the original monitor
+     * resolution is restored until the window is restored.
+     * 
+     * @param GLFWwindow $window The window to iconify.
      * 
      * @return void
      */ 
     function glfwIconifyWindow(GLFWwindow $window) : void {};
  
     /**
-     * glfwRestoreWindow
+     * Restores the specified window.
      * 
-     * @param GLFWwindow $window 
+     * This function restores the specified window if it was previously iconified
+     * (minimized) or maximized. If the window is already restored, this function
+     * does nothing.
+     * 
+     * If the specified window is a full screen window, the resolution chosen for
+     * the window is restored on the selected monitor.
+     * 
+     * @param GLFWwindow $window The window to restore.
      * 
      * @return void
      */ 
     function glfwRestoreWindow(GLFWwindow $window) : void {};
  
     /**
-     * glfwMaximizeWindow
+     * Maximizes the specified window.
      * 
-     * @param GLFWwindow $window 
+     * This function maximizes the specified window if it was previously not
+     * maximized. If the window is already maximized, this function does nothing.
+     * 
+     * If the specified window is a full screen window, this function does nothing.
+     * 
+     * @param GLFWwindow $window The window to maximize.
      * 
      * @return void
      */ 
     function glfwMaximizeWindow(GLFWwindow $window) : void {};
  
     /**
-     * glfwShowWindow
+     * Makes the specified window visible.
      * 
-     * @param GLFWwindow $window 
+     * This function makes the specified window visible if it was previously
+     * hidden. If the window is already visible or is in full screen mode, this
+     * function does nothing.
+     * 
+     * By default, windowed mode windows are focused when shown
+     * Set the `GLFW_FOCUS_ON_SHOW` window hint
+     * to change this behavior for all newly created windows, or change the
+     * behavior for an existing window with
+     * [`glfwSetWindowAttrib`](/API/GLFW/glfwSetWindowAttrib.html).
+     * 
+     * @param GLFWwindow $window The window to make visible.
      * 
      * @return void
      */ 
     function glfwShowWindow(GLFWwindow $window) : void {};
  
     /**
-     * glfwHideWindow
+     * Hides the specified window.
      * 
-     * @param GLFWwindow $window 
+     * This function hides the specified window if it was previously visible. If
+     * the window is already hidden or is in full screen mode, this function does
+     * nothing.
+     * 
+     * @param GLFWwindow $window The window to hide.
      * 
      * @return void
      */ 
     function glfwHideWindow(GLFWwindow $window) : void {};
  
     /**
-     * glfwFocusWindow
+     * Brings the specified window to front and sets input focus.
      * 
-     * @param GLFWwindow $window 
+     * This function brings the specified window to front and sets input focus.
+     * The window should already be visible and not iconified.
+     * 
+     * By default, both windowed and full screen mode windows are focused when
+     * initially created. Set the `GLFW_FOCUSED` to
+     * disable this behavior.
+     * 
+     * Also by default, windowed mode windows are focused when shown
+     * with [`glfwShowWindow`](/API/GLFW/glfwShowWindow.html). Set the
+     * `GLFW_FOCUS_ON_SHOW` to disable this behavior.
+     * 
+     * __Do not use this function__ to steal focus from other applications unless
+     * you are certain that is what the user wants. Focus stealing can be
+     * extremely disruptive.
+     * 
+     * For a less disruptive way of getting the user's attention, see
+     * `attention requests`.
+     * 
+     * @param GLFWwindow $window The window to give input focus.
      * 
      * @return void
      */ 
     function glfwFocusWindow(GLFWwindow $window) : void {};
  
     /**
-     * glfwRequestWindowAttention
+     * Requests user attention to the specified window.
      * 
-     * @param GLFWwindow $window 
+     * This function requests user attention to the specified window. On
+     * platforms where this is not supported, attention is requested to the
+     * application as a whole.
+     * 
+     * Once the user has given attention, usually by focusing the window or
+     * application, the system will end the request automatically.
+     * 
+     * @param GLFWwindow $window The window to request attention to.
      * 
      * @return void
      */ 
     function glfwRequestWindowAttention(GLFWwindow $window) : void {};
  
     /**
-     * glfwGetWindowMonitor
+     * Returns the monitor that the window uses for full screen mode.
      * 
-     * @param GLFWwindow $window 
+     * This function returns the handle of the monitor that the specified window is
+     * in full screen on.
      * 
-     * @return GLFWmonitor
+     * @param GLFWwindow $window The window to query.
+     * 
+     * @return GLFWmonitor The monitor, or `NULL` if the window is in windowed mode
+     * or an
+     * `error` occurred.
      */ 
     function glfwGetWindowMonitor(GLFWwindow $window) : GLFWmonitor {};
  
     /**
-     * glfwSetWindowMonitor
+     * Sets the mode, monitor, video mode and placement of a window.
      * 
-     * @param GLFWwindow $window 
-     * @param GLFWmonitor $monitor 
-     * @param int $xpos 
-     * @param int $ypos 
-     * @param int $width 
-     * @param int $height 
-     * @param int $refreshRate 
+     * This function sets the monitor that the window uses for full screen mode or,
+     * if the monitor is `NULL`, makes it windowed mode.
+     * 
+     * When setting a monitor, this function updates the width, height and refresh
+     * rate of the desired video mode and switches to the video mode closest to it.
+     * The window position is ignored when setting a monitor.
+     * 
+     * When the monitor is `NULL`, the position, width and height are used to
+     * place the window content area. The refresh rate is ignored when no monitor
+     * is specified.
+     * 
+     * If you only wish to update the resolution of a full screen window or the
+     * size of a windowed mode window, see
+     * [`glfwSetWindowSize`](/API/GLFW/glfwSetWindowSize.html).
+     * 
+     * When a window transitions from full screen to windowed mode, this function
+     * restores any previous window settings such as whether it is decorated,
+     * floating, resizable, has size or aspect ratio limits, etc.
+     * 
+     * @param GLFWwindow $window The window whose monitor, size or video mode to
+     * set.
+     * @param GLFWmonitor $monitor The desired monitor, or `NULL` to set windowed
+     * mode.
+     * @param int $xpos The desired x-coordinate of the upper-left corner of the
+     * content area.
+     * @param int $ypos The desired y-coordinate of the upper-left corner of the
+     * content area.
+     * @param int $width The desired with, in screen coordinates, of the content
+     * area or video mode.
+     * @param int $height The desired height, in screen coordinates, of the content
+     * area or video mode.
+     * @param int $refreshRate The desired refresh rate, in Hz, of the video mode,
+     * or `GLFW_DONT_CARE`.
      * 
      * @return void
      */ 
     function glfwSetWindowMonitor(GLFWwindow $window, GLFWmonitor $monitor, int $xpos, int $ypos, int $width, int $height, int $refreshRate) : void {};
  
     /**
-     * glfwGetWindowAttrib
+     * Returns an attribute of the specified window.
      * 
-     * @param GLFWwindow $window 
-     * @param int $attrib 
+     * This function returns the value of an attribute of the specified window or
+     * its OpenGL or OpenGL ES context.
      * 
-     * @return int
+     * @param GLFWwindow $window The window to query.
+     * @param int $attrib The `window attribute` whose value to
+     * return.
+     * 
+     * @return int The value of the attribute, or zero if an
+     * `error` occurred.
      */ 
     function glfwGetWindowAttrib(GLFWwindow $window, int $attrib) : int {};
  
     /**
-     * glfwSetWindowAttrib
+     * Sets an attribute of the specified window.
      * 
-     * @param GLFWwindow $window 
-     * @param int $attrib 
-     * @param int $value 
+     * This function sets the value of an attribute of the specified window.
+     * 
+     * The supported attributes are `GLFW_DECORATED`,
+     * `GLFW_RESIZABLE`,
+     * `GLFW_FLOATING`,
+     * `GLFW_AUTO_ICONIFY` and
+     * `GLFW_FOCUS_ON_SHOW`.
+     * 
+     * Some of these attributes are ignored for full screen windows. The new
+     * value will take effect if the window is later made windowed.
+     * 
+     * Some of these attributes are ignored for windowed mode windows. The new
+     * value will take effect if the window is later made full screen.
+     * 
+     * @param GLFWwindow $window The window to set the attribute for.
+     * @param int $attrib A supported window attribute.
+     * @param int $value `GLFW_TRUE` or `GLFW_FALSE`.
      * 
      * @return void
      */ 
     function glfwSetWindowAttrib(GLFWwindow $window, int $attrib, int $value) : void {};
  
     /**
-     * glfwPollEvents
+     * Processes all pending events.
+     * 
+     * This function processes only those events that are already in the event
+     * queue and then returns immediately. Processing events will cause the window
+     * and input callbacks associated with those events to be called.
+     * 
+     * On some platforms, a window move, resize or menu operation will cause event
+     * processing to block. This is due to how event processing is designed on
+     * those platforms. You can use the
+     * `window refresh callback` to redraw the contents of
+     * your window when necessary during such operations.
+     * 
+     * Do not assume that callbacks you set will _only_ be called in response to
+     * event processing functions like this one. While it is necessary to poll for
+     * events, window systems that require GLFW to register callbacks of its own
+     * can pass events to GLFW in response to many window system function calls.
+     * GLFW will pass those events on to the application callbacks before
+     * returning.
+     * 
+     * Event processing is not required for joystick input to work.
      * @return void
      */ 
     function glfwPollEvents() : void {};
  
     /**
-     * glfwWaitEvents
+     * Waits until events are queued and processes them.
+     * 
+     * This function puts the calling thread to sleep until at least one event is
+     * available in the event queue. Once one or more events are available,
+     * it behaves exactly like [`glfwPollEvents`](/API/GLFW/glfwPollEvents.html),
+     * i.e. the events in the queue
+     * are processed and the function then returns immediately. Processing events
+     * will cause the window and input callbacks associated with those events to be
+     * called.
+     * 
+     * Since not all events are associated with callbacks, this function may return
+     * without a callback having been called even if you are monitoring all
+     * callbacks.
+     * 
+     * On some platforms, a window move, resize or menu operation will cause event
+     * processing to block. This is due to how event processing is designed on
+     * those platforms. You can use the
+     * `window refresh callback` to redraw the contents of
+     * your window when necessary during such operations.
+     * 
+     * Do not assume that callbacks you set will _only_ be called in response to
+     * event processing functions like this one. While it is necessary to poll for
+     * events, window systems that require GLFW to register callbacks of its own
+     * can pass events to GLFW in response to many window system function calls.
+     * GLFW will pass those events on to the application callbacks before
+     * returning.
+     * 
+     * Event processing is not required for joystick input to work.
      * @return void
      */ 
     function glfwWaitEvents() : void {};
  
     /**
-     * glfwWaitEventsTimeout
+     * Waits with timeout until events are queued and processes them.
      * 
-     * @param float $timeout 
+     * This function puts the calling thread to sleep until at least one event is
+     * available in the event queue, or until the specified timeout is reached. If
+     * one or more events are available, it behaves exactly like @ref
+     * glfwPollEvents, i.e. the events in the queue are processed and the function
+     * then returns immediately. Processing events will cause the window and input
+     * callbacks associated with those events to be called.
+     * 
+     * The timeout value must be a positive finite number.
+     * 
+     * Since not all events are associated with callbacks, this function may return
+     * without a callback having been called even if you are monitoring all
+     * callbacks.
+     * 
+     * On some platforms, a window move, resize or menu operation will cause event
+     * processing to block. This is due to how event processing is designed on
+     * those platforms. You can use the
+     * `window refresh callback` to redraw the contents of
+     * your window when necessary during such operations.
+     * 
+     * Do not assume that callbacks you set will _only_ be called in response to
+     * event processing functions like this one. While it is necessary to poll for
+     * events, window systems that require GLFW to register callbacks of its own
+     * can pass events to GLFW in response to many window system function calls.
+     * GLFW will pass those events on to the application callbacks before
+     * returning.
+     * 
+     * Event processing is not required for joystick input to work.
+     * 
+     * @param float $timeout The maximum amount of time, in seconds, to wait.
      * 
      * @return void
      */ 
     function glfwWaitEventsTimeout(float $timeout) : void {};
  
     /**
-     * glfwPostEmptyEvent
+     * Posts an empty event to the event queue.
+     * 
+     * This function posts an empty event from the current thread to the event
+     * queue, causing [`glfwWaitEvents`](/API/GLFW/glfwWaitEvents.html) or
+     * [`glfwWaitEventsTimeout`](/API/GLFW/glfwWaitEventsTimeout.html) to return.
      * @return void
      */ 
     function glfwPostEmptyEvent() : void {};
  
     /**
-     * glfwGetInputMode
+     * Returns the value of an input option for the specified window.
      * 
-     * @param GLFWwindow $window 
-     * @param int $mode 
+     * This function returns the value of an input option for the specified window.
+     * The mode must be one of `GLFW_CURSOR`, `GLFW_STICKY_KEYS`,
+     * `GLFW_STICKY_MOUSE_BUTTONS`, `GLFW_LOCK_KEY_MODS` or
+     * `GLFW_RAW_MOUSE_MOTION`.
+     * 
+     * @param GLFWwindow $window The window to query.
+     * @param int $mode One of `GLFW_CURSOR`, `GLFW_STICKY_KEYS`,
+     * `GLFW_STICKY_MOUSE_BUTTONS`, `GLFW_LOCK_KEY_MODS` or
+     * `GLFW_RAW_MOUSE_MOTION`.
      * 
      * @return int
      */ 
     function glfwGetInputMode(GLFWwindow $window, int $mode) : int {};
  
     /**
-     * glfwSetInputMode
+     * Sets an input option for the specified window.
      * 
-     * @param GLFWwindow $window 
-     * @param int $mode 
-     * @param int $value 
+     * This function sets an input mode option for the specified window. The mode
+     * must be one of `GLFW_CURSOR`, `GLFW_STICKY_KEYS`,
+     * `GLFW_STICKY_MOUSE_BUTTONS`, `GLFW_LOCK_KEY_MODS` or
+     * `GLFW_RAW_MOUSE_MOTION`.
+     * 
+     * If the mode is `GLFW_CURSOR`, the value must be one of the following cursor
+     * modes:
+     * - `GLFW_CURSOR_NORMAL` makes the cursor visible and behaving normally.
+     * - `GLFW_CURSOR_HIDDEN` makes the cursor invisible when it is over the
+     *  content area of the window but does not restrict the cursor from leaving.
+     * - `GLFW_CURSOR_DISABLED` hides and grabs the cursor, providing virtual
+     *  and unlimited cursor movement. This is useful for implementing for
+     *  example 3D camera controls.
+     * 
+     * If the mode is `GLFW_STICKY_KEYS`, the value must be either `GLFW_TRUE` to
+     * enable sticky keys, or `GLFW_FALSE` to disable it. If sticky keys are
+     * enabled, a key press will ensure that
+     * [`glfwGetKey`](/API/GLFW/glfwGetKey.html) returns `GLFW_PRESS`
+     * the next time it is called even if the key had been released before the
+     * call. This is useful when you are only interested in whether keys have been
+     * pressed but not when or in which order.
+     * 
+     * If the mode is `GLFW_STICKY_MOUSE_BUTTONS`, the value must be either
+     * `GLFW_TRUE` to enable sticky mouse buttons, or `GLFW_FALSE` to disable it.
+     * If sticky mouse buttons are enabled, a mouse button press will ensure that
+     * [`glfwGetMouseButton`](/API/GLFW/glfwGetMouseButton.html) returns
+     * `GLFW_PRESS` the next time it is called even
+     * if the mouse button had been released before the call. This is useful when
+     * you are only interested in whether mouse buttons have been pressed but not
+     * when or in which order.
+     * 
+     * If the mode is `GLFW_LOCK_KEY_MODS`, the value must be either `GLFW_TRUE` to
+     * enable lock key modifier bits, or `GLFW_FALSE` to disable them. If enabled,
+     * callbacks that receive modifier bits will also have the @ref
+     * GLFW_MOD_CAPS_LOCK bit set when the event was generated with Caps Lock on,
+     * and the `GLFW_MOD_NUM_LOCK` bit when Num Lock was on.
+     * 
+     * If the mode is `GLFW_RAW_MOUSE_MOTION`, the value must be either `GLFW_TRUE`
+     * to enable raw (unscaled and unaccelerated) mouse motion when the cursor is
+     * disabled, or `GLFW_FALSE` to disable it. If raw motion is not supported,
+     * attempting to set this will emit `GLFW_PLATFORM_ERROR`. Call @ref
+     * glfwRawMouseMotionSupported to check for support.
+     * 
+     * @param GLFWwindow $window The window whose input mode to set.
+     * @param int $mode One of `GLFW_CURSOR`, `GLFW_STICKY_KEYS`,
+     * `GLFW_STICKY_MOUSE_BUTTONS`, `GLFW_LOCK_KEY_MODS` or
+     * `GLFW_RAW_MOUSE_MOTION`.
+     * @param int $value The new value of the specified input mode.
      * 
      * @return void
      */ 
     function glfwSetInputMode(GLFWwindow $window, int $mode, int $value) : void {};
  
     /**
-     * glfwRawMouseMotionSupported
-     * @return int
+     * Returns whether raw mouse motion is supported.
+     * 
+     * This function returns whether raw mouse motion is supported on the current
+     * system. This status does not change after GLFW has been initialized so you
+     * only need to check this once. If you attempt to enable raw motion on
+     * a system that does not support it, `GLFW_PLATFORM_ERROR` will be emitted.
+     * 
+     * Raw mouse motion is closer to the actual motion of the mouse across
+     * a surface. It is not affected by the scaling and acceleration applied to
+     * the motion of the desktop cursor. That processing is suitable for a cursor
+     * while raw motion is better for controlling for example a 3D camera. Because
+     * of this, raw mouse motion is only provided when the cursor is disabled.
+     * @return int `GLFW_TRUE` if raw mouse motion is supported on the current
+     * machine,
+     * or `GLFW_FALSE` otherwise.
      */ 
     function glfwRawMouseMotionSupported() : int {};
  
     /**
-     * glfwGetKeyName
+     * Returns the layout-specific name of the specified printable key.
      * 
-     * @param int $key 
-     * @param int $scancode 
+     * This function returns the name of the specified printable key, encoded as
+     * UTF-8. This is typically the character that key would produce without any
+     * modifier keys, intended for displaying key bindings to the user. For dead
+     * keys, it is typically the diacritic it would add to a character.
      * 
-     * @return string
+     * __Do not use this function__ for `text input`. You will
+     * break text input for many languages even if it happens to work for yours.
+     * 
+     * If the key is `GLFW_KEY_UNKNOWN`, the scancode is used to identify the key,
+     * otherwise the scancode is ignored. If you specify a non-printable key, or
+     * `GLFW_KEY_UNKNOWN` and a scancode that maps to a non-printable key, this
+     * function returns `NULL` but does not emit an error.
+     * 
+     * This behavior allows you to always pass in the arguments in the
+     * `key callback` without modification.
+     * 
+     * The printable keys are:
+     * - `GLFW_KEY_APOSTROPHE`
+     * - `GLFW_KEY_COMMA`
+     * - `GLFW_KEY_MINUS`
+     * - `GLFW_KEY_PERIOD`
+     * - `GLFW_KEY_SLASH`
+     * - `GLFW_KEY_SEMICOLON`
+     * - `GLFW_KEY_EQUAL`
+     * - `GLFW_KEY_LEFT_BRACKET`
+     * - `GLFW_KEY_RIGHT_BRACKET`
+     * - `GLFW_KEY_BACKSLASH`
+     * - `GLFW_KEY_WORLD_1`
+     * - `GLFW_KEY_WORLD_2`
+     * - `GLFW_KEY_0` to `GLFW_KEY_9`
+     * - `GLFW_KEY_A` to `GLFW_KEY_Z`
+     * - `GLFW_KEY_KP_0` to `GLFW_KEY_KP_9`
+     * - `GLFW_KEY_KP_DECIMAL`
+     * - `GLFW_KEY_KP_DIVIDE`
+     * - `GLFW_KEY_KP_MULTIPLY`
+     * - `GLFW_KEY_KP_SUBTRACT`
+     * - `GLFW_KEY_KP_ADD`
+     * - `GLFW_KEY_KP_EQUAL`
+     * 
+     * Names for printable keys depend on keyboard layout, while names for
+     * non-printable keys are the same across layouts but depend on the application
+     * language and should be localized along with other user interface text.
+     * 
+     * @param int $key The key to query, or `GLFW_KEY_UNKNOWN`.
+     * @param int $scancode The scancode of the key to query.
+     * 
+     * @return string The UTF-8 encoded, layout-specific name of the key, or `NULL`.
      */ 
     function glfwGetKeyName(int $key, int $scancode) : string {};
  
     /**
-     * glfwGetKeyScancode
+     * Returns the platform-specific scancode of the specified key.
      * 
-     * @param int $key 
+     * This function returns the platform-specific scancode of the specified key.
      * 
-     * @return int
+     * If the key is `GLFW_KEY_UNKNOWN` or does not exist on the keyboard this
+     * method will return `-1`.
+     * 
+     * @param int $key Any `named key`.
+     * 
+     * @return int The platform-specific scancode for the key, or `-1` if an
+     * `error` occurred.
      */ 
     function glfwGetKeyScancode(int $key) : int {};
  
     /**
-     * glfwGetKey
+     * Returns the last reported state of a keyboard key for the specified
+     * window.
      * 
-     * @param GLFWwindow $window 
-     * @param int $key 
+     * This function returns the last state reported for the specified key to the
+     * specified window. The returned state is one of `GLFW_PRESS` or
+     * `GLFW_RELEASE`. The higher-level action `GLFW_REPEAT` is only reported to
+     * the key callback.
      * 
-     * @return int
+     * If the `GLFW_STICKY_KEYS` input mode is enabled, this function returns
+     * `GLFW_PRESS` the first time you call it for a key that was pressed, even if
+     * that key has already been released.
+     * 
+     * The key functions deal with physical keys, with `key tokens`
+     * named after their use on the standard US keyboard layout. If you want to
+     * input text, use the Unicode character callback instead.
+     * 
+     * The `modifier key bit masks` are not key tokens and cannot be
+     * used with this function.
+     * 
+     * __Do not use this function__ to implement `text input`.
+     * 
+     * @param GLFWwindow $window The desired window.
+     * @param int $key The desired `keyboard key`. `GLFW_KEY_UNKNOWN` is
+     * not a valid key for this function.
+     * 
+     * @return int One of `GLFW_PRESS` or `GLFW_RELEASE`.
      */ 
     function glfwGetKey(GLFWwindow $window, int $key) : int {};
  
     /**
-     * glfwGetMouseButton
+     * Returns the last reported state of a mouse button for the specified
+     * window.
      * 
-     * @param GLFWwindow $window 
-     * @param int $button 
+     * This function returns the last state reported for the specified mouse button
+     * to the specified window. The returned state is one of `GLFW_PRESS` or
+     * `GLFW_RELEASE`.
      * 
-     * @return int
+     * If the `GLFW_STICKY_MOUSE_BUTTONS` input mode is enabled, this function
+     * returns `GLFW_PRESS` the first time you call it for a mouse button that was
+     * pressed, even if that mouse button has already been released.
+     * 
+     * @param GLFWwindow $window The desired window.
+     * @param int $button The desired `mouse button`.
+     * 
+     * @return int One of `GLFW_PRESS` or `GLFW_RELEASE`.
      */ 
     function glfwGetMouseButton(GLFWwindow $window, int $button) : int {};
  
     /**
-     * glfwGetCursorPos
+     * Retrieves the position of the cursor relative to the content area of
+     * the window.
      * 
-     * @param GLFWwindow $window 
-     * @param float &$xpos 
-     * @param float &$ypos 
+     * This function returns the position of the cursor, in screen coordinates,
+     * relative to the upper-left corner of the content area of the specified
+     * window.
+     * 
+     * If the cursor is disabled (with `GLFW_CURSOR_DISABLED`) then the cursor
+     * position is unbounded and limited only by the minimum and maximum values of
+     * a `double`.
+     * 
+     * The coordinate can be converted to their integer equivalents with the
+     * `floor` function. Casting directly to an integer type works for positive
+     * coordinates, but fails for negative ones.
+     * 
+     * Any or all of the position arguments may be `NULL`. If an error occurs, all
+     * non-`NULL` position arguments will be set to zero.
+     * 
+     * @param GLFWwindow $window The desired window.
+     * @param float &$xpos Where to store the cursor x-coordinate, relative to the
+     * left edge of the content area, or `NULL`.
+     * @param float &$ypos Where to store the cursor y-coordinate, relative to the
+     * to
+     * top edge of the content area, or `NULL`.
      * 
      * @return void
      */ 
     function glfwGetCursorPos(GLFWwindow $window, float &$xpos, float &$ypos) : void {};
  
     /**
-     * glfwSetCursorPos
+     * Sets the position of the cursor, relative to the content area of the
+     * window.
      * 
-     * @param GLFWwindow $window 
-     * @param float $xpos 
-     * @param float $ypos 
+     * This function sets the position, in screen coordinates, of the cursor
+     * relative to the upper-left corner of the content area of the specified
+     * window. The window must have input focus. If the window does not have
+     * input focus when this function is called, it fails silently.
+     * 
+     * __Do not use this function__ to implement things like camera controls. GLFW
+     * already provides the `GLFW_CURSOR_DISABLED` cursor mode that hides the
+     * cursor, transparently re-centers it and provides unconstrained cursor
+     * motion. See [`glfwSetInputMode`](/API/GLFW/glfwSetInputMode.html) for more
+     * information.
+     * 
+     * If the cursor mode is `GLFW_CURSOR_DISABLED` then the cursor position is
+     * unconstrained and limited only by the minimum and maximum values of
+     * a `double`.
+     * 
+     * @param GLFWwindow $window The desired window.
+     * @param float $xpos The desired x-coordinate, relative to the left edge of the
+     * content area.
+     * @param float $ypos The desired y-coordinate, relative to the top edge of the
+     * content area.
      * 
      * @return void
      */ 
     function glfwSetCursorPos(GLFWwindow $window, float $xpos, float $ypos) : void {};
  
     /**
-     * glfwCreateStandardCursor
+     * Creates a cursor with a standard shape.
      * 
-     * @param int $shape 
+     * Returns a cursor with a `standard shape`, that can be set for
+     * a window with [`glfwSetCursor`](/API/GLFW/glfwSetCursor.html).
      * 
-     * @return GLFWcursor
+     * @param int $shape One of the `standard shapes`.
+     * 
+     * @return GLFWcursor A new cursor ready to use or `NULL` if an
+     * `error` occurred.
      */ 
     function glfwCreateStandardCursor(int $shape) : GLFWcursor {};
  
     /**
-     * glfwDestroyCursor
+     * Destroys a cursor.
      * 
-     * @param GLFWcursor $cursor 
+     * This function destroys a cursor previously created with @ref
+     * glfwCreateCursor. Any remaining cursors will be destroyed by @ref
+     * glfwTerminate.
+     * 
+     * If the specified cursor is current for any window, that window will be
+     * reverted to the default cursor. This does not affect the cursor mode.
+     * 
+     * @param GLFWcursor $cursor The cursor object to destroy.
      * 
      * @return void
      */ 
     function glfwDestroyCursor(GLFWcursor $cursor) : void {};
  
     /**
-     * glfwSetCursor
+     * Sets the cursor for the window.
      * 
-     * @param GLFWwindow $window 
-     * @param GLFWcursor $cursor 
+     * This function sets the cursor image to be used when the cursor is over the
+     * content area of the specified window. The set cursor will only be visible
+     * when the `cursor mode` of the window is
+     * `GLFW_CURSOR_NORMAL`.
+     * 
+     * On some platforms, the set cursor may not be visible unless the window also
+     * has input focus.
+     * 
+     * @param GLFWwindow $window The window to set the cursor for.
+     * @param GLFWcursor $cursor The cursor to set, or `NULL` to switch back to the
+     * default
+     * arrow cursor.
      * 
      * @return void
      */ 
@@ -7317,7 +8071,7 @@ namespace {
      * Sometimes GLFW needs to generate synthetic key events, in which case the
      * scancode may be zero.
      * 
-     * @param GLFWwindow $window 
+     * @param GLFWwindow $window The window whose callback to set.
      * @param callable $callback 
      * 
      * @return void
@@ -7347,7 +8101,7 @@ namespace {
      * on Windows.
      * 
      * 
-     * @param GLFWwindow $window 
+     * @param GLFWwindow $window The window whose callback to set.
      * @param callable $callback 
      * 
      * @return void
@@ -7355,138 +8109,336 @@ namespace {
     function glfwSetCharCallback(GLFWwindow $window, callable $callback) : void {};
  
     /**
-     * glfwJoystickPresent
+     * Returns whether the specified joystick is present.
      * 
-     * @param int $jid 
+     * This function returns whether the specified joystick is present.
      * 
-     * @return int
+     * There is no need to call this function before other functions that accept
+     * a joystick ID, as they all check for presence before performing any other
+     * work.
+     * 
+     * @param int $jid The `joystick` to query.
+     * 
+     * @return int `GLFW_TRUE` if the joystick is present, or `GLFW_FALSE`
+     * otherwise.
      */ 
     function glfwJoystickPresent(int $jid) : int {};
  
     /**
-     * glfwGetJoystickName
+     * Returns the name of the specified joystick.
      * 
-     * @param int $jid 
+     * This function returns the name, encoded as UTF-8, of the specified joystick.
+     * The returned string is allocated and freed by GLFW. You should not free it
+     * yourself.
      * 
-     * @return string
+     * If the specified joystick is not present this function will return `NULL`
+     * but will not generate an error. This can be used instead of first calling
+     * [`glfwJoystickPresent`](/API/GLFW/glfwJoystickPresent.html).
+     * 
+     * @param int $jid The `joystick` to query.
+     * 
+     * @return string The UTF-8 encoded name of the joystick, or `NULL` if the
+     * joystick
+     * is not present or an `error` occurred.
      */ 
     function glfwGetJoystickName(int $jid) : string {};
  
     /**
-     * glfwGetJoystickGUID
+     * Returns the SDL compatible GUID of the specified joystick.
      * 
-     * @param int $jid 
+     * This function returns the SDL compatible GUID, as a UTF-8 encoded
+     * hexadecimal string, of the specified joystick. The returned string is
+     * allocated and freed by GLFW. You should not free it yourself.
      * 
-     * @return string
+     * The GUID is what connects a joystick to a gamepad mapping. A connected
+     * joystick will always have a GUID even if there is no gamepad mapping
+     * assigned to it.
+     * 
+     * If the specified joystick is not present this function will return `NULL`
+     * but will not generate an error. This can be used instead of first calling
+     * [`glfwJoystickPresent`](/API/GLFW/glfwJoystickPresent.html).
+     * 
+     * The GUID uses the format introduced in SDL 2.0.5. This GUID tries to
+     * uniquely identify the make and model of a joystick but does not identify
+     * a specific unit, e.g. all wired Xbox 360 controllers will have the same
+     * GUID on that platform. The GUID for a unit may vary between platforms
+     * depending on what hardware information the platform specific APIs provide.
+     * 
+     * @param int $jid The `joystick` to query.
+     * 
+     * @return string The UTF-8 encoded GUID of the joystick, or `NULL` if the
+     * joystick
+     * is not present or an `error` occurred.
      */ 
     function glfwGetJoystickGUID(int $jid) : string {};
  
     /**
-     * glfwJoystickIsGamepad
+     * Returns whether the specified joystick has a gamepad mapping.
      * 
-     * @param int $jid 
+     * This function returns whether the specified joystick is both present and has
+     * a gamepad mapping.
      * 
-     * @return int
+     * If the specified joystick is present but does not have a gamepad mapping
+     * this function will return `GLFW_FALSE` but will not generate an error. Call
+     * [`glfwJoystickPresent`](/API/GLFW/glfwJoystickPresent.html) to check if a
+     * joystick is present regardless of
+     * whether it has a mapping.
+     * 
+     * @param int $jid The `joystick` to query.
+     * 
+     * @return int `GLFW_TRUE` if a joystick is both present and has a gamepad
+     * mapping,
+     * or `GLFW_FALSE` otherwise.
      */ 
     function glfwJoystickIsGamepad(int $jid) : int {};
  
     /**
-     * glfwUpdateGamepadMappings
+     * Adds the specified SDL_GameControllerDB gamepad mappings.
      * 
-     * @param string $string 
+     * This function parses the specified ASCII encoded string and updates the
+     * internal list with any gamepad mappings it finds. This string may
+     * contain either a single gamepad mapping or many mappings separated by
+     * newlines. The parser supports the full format of the `gamecontrollerdb.txt`
+     * source file including empty lines and comments.
      * 
-     * @return int
+     * See `gamepad_mapping` for a description of the format.
+     * 
+     * If there is already a gamepad mapping for a given GUID in the internal list,
+     * it will be replaced by the one passed to this function. If the library is
+     * terminated and re-initialized the internal list will revert to the built-in
+     * default.
+     * 
+     * @param string $string The string containing the gamepad mappings.
+     * 
+     * @return int `GLFW_TRUE` if successful, or `GLFW_FALSE` if an
+     * `error` occurred.
      */ 
     function glfwUpdateGamepadMappings(string $string) : int {};
  
     /**
-     * glfwGetGamepadName
+     * Returns the human-readable gamepad name for the specified joystick.
      * 
-     * @param int $jid 
+     * This function returns the human-readable name of the gamepad from the
+     * gamepad mapping assigned to the specified joystick.
      * 
-     * @return string
+     * If the specified joystick is not present or does not have a gamepad mapping
+     * this function will return `NULL` but will not generate an error. Call
+     * [`glfwJoystickPresent`](/API/GLFW/glfwJoystickPresent.html) to check whether
+     * it is present regardless of
+     * whether it has a mapping.
+     * 
+     * @param int $jid The `joystick` to query.
+     * 
+     * @return string The UTF-8 encoded name of the gamepad, or `NULL` if the
+     * joystick is not present, does not have a mapping or an
+     * `error` occurred.
      */ 
     function glfwGetGamepadName(int $jid) : string {};
  
     /**
-     * glfwSetClipboardString
+     * Sets the clipboard to the specified string.
      * 
-     * @param GLFWwindow $window 
-     * @param string $string 
+     * This function sets the system clipboard to the specified, UTF-8 encoded
+     * string.
+     * 
+     * @param GLFWwindow $window Deprecated. Any valid window or `NULL`.
+     * @param string $string A UTF-8 encoded string.
      * 
      * @return void
      */ 
     function glfwSetClipboardString(GLFWwindow $window, string $string) : void {};
  
     /**
-     * glfwGetClipboardString
+     * Returns the contents of the clipboard as a string.
      * 
-     * @param GLFWwindow $window 
+     * This function returns the contents of the system clipboard, if it contains
+     * or is convertible to a UTF-8 encoded string. If the clipboard is empty or
+     * if its contents cannot be converted, `NULL` is returned and a @ref
+     * GLFW_FORMAT_UNAVAILABLE error is generated.
      * 
-     * @return string
+     * @param GLFWwindow $window Deprecated. Any valid window or `NULL`.
+     * 
+     * @return string The contents of the clipboard as a UTF-8 encoded string, or
+     * `NULL`
+     * if an `error` occurred.
      */ 
     function glfwGetClipboardString(GLFWwindow $window) : string {};
  
     /**
-     * glfwGetTime
-     * @return float
+     * Returns the GLFW time.
+     * 
+     * This function returns the current GLFW time, in seconds. Unless the time
+     * has been set using [`glfwSetTime`](/API/GLFW/glfwSetTime.html) it measures
+     * time elapsed since GLFW was
+     * initialized.
+     * 
+     * This function and [`glfwSetTime`](/API/GLFW/glfwSetTime.html) are helper
+     * functions on top of @ref
+     * glfwGetTimerFrequency and
+     * [`glfwGetTimerValue`](/API/GLFW/glfwGetTimerValue.html).
+     * 
+     * The resolution of the timer is system dependent, but is usually on the order
+     * of a few micro- or nanoseconds. It uses the highest-resolution monotonic
+     * time source on each supported platform.
+     * @return float The current time, in seconds, or zero if an
+     * `error` occurred.
      */ 
     function glfwGetTime() : float {};
  
     /**
-     * glfwSetTime
+     * Sets the GLFW time.
      * 
-     * @param float $time 
+     * This function sets the current GLFW time, in seconds. The value must be
+     * a positive finite number less than or equal to 18446744073.0, which is
+     * approximately 584.5 years.
+     * 
+     * This function and [`glfwGetTime`](/API/GLFW/glfwGetTime.html) are helper
+     * functions on top of @ref
+     * glfwGetTimerFrequency and
+     * [`glfwGetTimerValue`](/API/GLFW/glfwGetTimerValue.html).
+     * 
+     * @param float $time The new value, in seconds.
      * 
      * @return void
      */ 
     function glfwSetTime(float $time) : void {};
  
     /**
-     * glfwMakeContextCurrent
+     * Makes the context of the specified window current for the calling
+     * thread.
      * 
-     * @param GLFWwindow $window 
+     * This function makes the OpenGL or OpenGL ES context of the specified window
+     * current on the calling thread. A context must only be made current on
+     * a single thread at a time and each thread can have only a single current
+     * context at a time.
+     * 
+     * When moving a context between threads, you must make it non-current on the
+     * old thread before making it current on the new one.
+     * 
+     * By default, making a context non-current implicitly forces a pipeline flush.
+     * On machines that support `GL_KHR_context_flush_control`, you can control
+     * whether a context performs this flush by setting the
+     * `GLFW_CONTEXT_RELEASE_BEHAVIOR`
+     * hint.
+     * 
+     * The specified window must have an OpenGL or OpenGL ES context. Specifying
+     * a window without a context will generate a `GLFW_NO_WINDOW_CONTEXT`
+     * error.
+     * 
+     * @param GLFWwindow $window The window whose context to make current, or `NULL`
+     * to
+     * detach the current context.
      * 
      * @return void
      */ 
     function glfwMakeContextCurrent(GLFWwindow $window) : void {};
  
     /**
-     * glfwGetCurrentContext
-     * @return GLFWwindow
+     * Returns the window whose context is current on the calling thread.
+     * 
+     * This function returns the window whose OpenGL or OpenGL ES context is
+     * current on the calling thread.
+     * @return GLFWwindow The window whose context is current, or `NULL` if no
+     * window's
+     * context is current.
      */ 
     function glfwGetCurrentContext() : GLFWwindow {};
  
     /**
-     * glfwSwapBuffers
+     * Swaps the front and back buffers of the specified window.
      * 
-     * @param GLFWwindow $window 
+     * This function swaps the front and back buffers of the specified window when
+     * rendering with OpenGL or OpenGL ES. If the swap interval is greater than
+     * zero, the GPU driver waits the specified number of screen updates before
+     * swapping the buffers.
+     * 
+     * The specified window must have an OpenGL or OpenGL ES context. Specifying
+     * a window without a context will generate a `GLFW_NO_WINDOW_CONTEXT`
+     * error.
+     * 
+     * This function does not apply to Vulkan. If you are rendering with Vulkan,
+     * see `vkQueuePresentKHR` instead.
+     * 
+     * @param GLFWwindow $window The window whose buffers to swap.
      * 
      * @return void
      */ 
     function glfwSwapBuffers(GLFWwindow $window) : void {};
  
     /**
-     * glfwSwapInterval
+     * Sets the swap interval for the current context.
      * 
-     * @param int $interval 
+     * This function sets the swap interval for the current OpenGL or OpenGL ES
+     * context, i.e. the number of screen updates to wait from the time @ref
+     * glfwSwapBuffers was called before swapping the buffers and returning. This
+     * is sometimes called _vertical synchronization_, _vertical retrace
+     * synchronization_ or just _vsync_.
+     * 
+     * A context that supports either of the `WGL_EXT_swap_control_tear` and
+     * `GLX_EXT_swap_control_tear` extensions also accepts _negative_ swap
+     * intervals, which allows the driver to swap immediately even if a frame
+     * arrives a little bit late. You can check for these extensions with @ref
+     * glfwExtensionSupported.
+     * 
+     * A context must be current on the calling thread. Calling this function
+     * without a current context will cause a `GLFW_NO_CURRENT_CONTEXT` error.
+     * 
+     * This function does not apply to Vulkan. If you are rendering with Vulkan,
+     * see the present mode of your swapchain instead.
+     * 
+     * @param int $interval The minimum number of screen updates to wait for
+     * until the buffers are swapped by
+     * [`glfwSwapBuffers`](/API/GLFW/glfwSwapBuffers.html).
      * 
      * @return void
      */ 
     function glfwSwapInterval(int $interval) : void {};
  
     /**
-     * glfwExtensionSupported
+     * Returns whether the specified extension is available.
      * 
-     * @param string $extension 
+     * This function returns whether the specified
+     * `API extension` is supported by the current OpenGL or
+     * OpenGL ES context. It searches both for client API extension and context
+     * creation API extensions.
      * 
-     * @return int
+     * A context must be current on the calling thread. Calling this function
+     * without a current context will cause a `GLFW_NO_CURRENT_CONTEXT` error.
+     * 
+     * As this functions retrieves and searches one or more extension strings each
+     * call, it is recommended that you cache its results if it is going to be used
+     * frequently. The extension strings will not change during the lifetime of
+     * a context, so there is no danger in doing this.
+     * 
+     * This function does not apply to Vulkan. If you are using Vulkan, see @ref
+     * glfwGetRequiredInstanceExtensions, `vkEnumerateInstanceExtensionProperties`
+     * and `vkEnumerateDeviceExtensionProperties` instead.
+     * 
+     * @param string $extension The ASCII encoded name of the extension.
+     * 
+     * @return int `GLFW_TRUE` if the extension is available, or `GLFW_FALSE`
+     * otherwise.
      */ 
     function glfwExtensionSupported(string $extension) : int {};
  
     /**
-     * glfwVulkanSupported
-     * @return int
+     * Returns whether the Vulkan loader and an ICD have been found.
+     * 
+     * This function returns whether the Vulkan loader and any minimally functional
+     * ICD have been found.
+     * 
+     * The availability of a Vulkan loader and even an ICD does not by itself
+     * guarantee that
+     * surface creation or even instance creation is possible. Call @ref
+     * glfwGetRequiredInstanceExtensions to check whether the extensions necessary
+     * for Vulkan
+     * surface creation are available and
+     * [`glfwGetPhysicalDevicePresentationSupport`](/API/GLFW/glfwGetPhysicalDevicePresentationSupport.html)
+     * to
+     * check whether a queue family of a physical device supports image
+     * presentation.
+     * @return int `GLFW_TRUE` if Vulkan is minimally available, or `GLFW_FALSE`
+     * otherwise.
      */ 
     function glfwVulkanSupported() : int {};
  

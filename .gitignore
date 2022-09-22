@@ -40,6 +40,5 @@ generator2/vendor/
 *.cache
 Vagrantfile
 .vagrant
-vendor/
 composer.json
 composer.lock

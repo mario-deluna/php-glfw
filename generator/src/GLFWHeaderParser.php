@@ -83,8 +83,38 @@ class GLFWHeaderParser
 
         preg_match_all("/GLFWAPI (.*) (glfw.*)\((.*)?\)/", $headerContents, $funcmatches);
 
+       
+
         foreach($funcmatches[0] as $k => $fullSig) 
-        {
+        { 
+            // find the position of $fullSig in $headerContents
+            $pos = strpos($headerContents, $fullSig);
+
+            // from pos find the first occurence of the string "/*!" backwards
+            $commentStart = strrpos(substr($headerContents, 0, $pos), "/*!");
+            $comment = substr($headerContents, $commentStart, $pos - $commentStart);
+            $comment = str_replace("/*!", "/**\n * ", $comment);
+            $comment = str_replace("@brief", "", $comment);
+            $comment = str_replace('  ', ' ', $comment);
+            
+            // phpdoc block cannot read in out, also doesnt matter for the PHP extension
+            $comment = str_replace("@param[in] ", "@param int $", $comment);
+            $comment = str_replace("@param[out] ", "@param int $", $comment);
+            $comment = str_replace("@return ", "@return int ", $comment);
+
+            // for now we just remove references @todo support them!
+            $comment = preg_replace("/\[(.*)\]\(@ref (.*)\)/", "`$1`", $comment);
+
+            // replace func refs
+            $comment = preg_replace("/@ref (glfw[A-Z][a-zA-Z0-9_]+)/", "[`$1`](/API/GLFW/$1.html)", $comment);
+            // remove all other refs
+            $comment = preg_replace("/@ref ([a-zA-Z0-9_]+)/", "`$1`", $comment);
+
+            // we can use the PHP doc block paresr to parse the comment
+            // var_dump($comment); 
+            $docBlockfactory  = \phpDocumentor\Reflection\DocBlockFactory::createInstance();
+            $docblock = $docBlockfactory->create($comment);
+
             $funcReturnValue = $funcmatches[1][$k];
             $funcName = $funcmatches[2][$k];
             $funcArgs = $funcmatches[3][$k];
@@ -114,6 +144,22 @@ class GLFWHeaderParser
             // create func def
             $phpfunc = new ExtFunction($funcName);
 
+            // assign comments
+            $phpfunc->comment = $docblock->getSummary() . "\n\n" . $docblock->getDescription();
+
+            // return docs
+            $returnDoc = $docblock->getTagsByName('return');
+            if (count($returnDoc) > 0) {
+                $phpfunc->returnComment = $returnDoc[0]->getDescription();
+            }
+
+            $paramDesc = [];
+            if ($paramTags = $docblock->getTagsByName('param')) {
+                foreach($paramTags as $k => $paramTag) {
+                    $paramDesc[$paramTag->getVariableName()] = (string)$paramTag->getDescription();
+                }
+            }
+
             // add the arguments 
             foreach($funcArgs as $sourceArg) 
             {
@@ -141,6 +187,7 @@ class GLFWHeaderParser
                     $phparg = ExtArgument::make($sourceArg['name'], $this->glfwTypeToExt[$rawArgType]);
                     $phparg->argumentTypeFrom = $sourceArg['type'];
                     $phparg->passedByReference = $argIsPointer;
+                    $phparg->comment = $paramDesc[$sourceArg['name']] ?? null;
                     $phpfunc->arguments[] = $phparg;
                 }
                 // IPO
@@ -148,6 +195,7 @@ class GLFWHeaderParser
                     $ipo = $extGen->IPOs[$sourceArg['type']];
                     $phparg = ExtArgument::make($sourceArg['name'], ExtType::T_IPO);
                     $phparg->argInternalPtrObject = $ipo;
+                    $phparg->comment = $paramDesc[$sourceArg['name']] ?? null;
                     $phpfunc->arguments[] = $phparg;
                 }
                 // unmapped
