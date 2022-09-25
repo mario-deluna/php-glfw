@@ -5,6 +5,35 @@ specify a two-dimensional texture image
 function glTexImage2D(int $target, int $level, int $internalformat, int $width, int $height, int $border, int $format, int $type, \GL\Buffer\BufferInterface $data) : void
 ```
 
+!!! hint "PHP-GLFW Note"
+
+    for This function has been modified to accept a `BufferInterface`
+    object instead of a pointer.
+    Also in this PHP OpenGL extension, the arguments are validated against the
+    passed buffer object. If the buffer object is too small for the given width,
+    height, and format an exception is thrown. This is done to prevent segfaults,
+    this will unfortunately, make the function quite a bit slower. But as
+    uploading textures is anyway a heavy operation the impact should not be
+    noticeable in normal applications.
+
+Example:
+
+```php
+glGenTextures(1, $texture);
+glBindTexture(GL_TEXTURE_2D, $texture);
+
+// we just create a simple 2x2 texture with 4 channels
+$buffer = new GL\Buffer\UByteBuffer([
+    255, 0, 0, 255,
+    0, 255, 0, 255,
+    0, 0, 255, 255,
+    255, 255, 255, 255,
+]);
+
+glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, 4, 4, 0, GL_RGBA, GL_UNSIGNED_BYTE,
+$buffer);
+```
+
 arguments
 
 :    1. `int` `$target` Specifies the target texture. Must be

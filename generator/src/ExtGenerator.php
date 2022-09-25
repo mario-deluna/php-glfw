@@ -651,5 +651,7 @@ class ExtGenerator
     {
         // geometry
         $this->buildMarkdownDocsFile('geo_objfileparser.md', 'API/Geometry/ObjFileParser.md');   
+        // texture
+        $this->buildMarkdownDocsFile('texture_texture2d.md', 'API/Texture/Texture2D.md');   
     }
 }

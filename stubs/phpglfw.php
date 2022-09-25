@@ -1273,6 +1273,63 @@ namespace GL\Geometry
     }
 }
 
+namespace GL\Texture
+{
+    /**
+     * The Texture2D class is part of the PHP-GLFW OpenGL extension.
+     * It loads images / textures from common formats like PNG, JPG, GIF, BMP, TGA etc. and converts the raw bitmap to a `GL\UByteBuffer` instance.
+     */
+    class Texture2D 
+    {
+        /**
+         * Loads a texture / image from a file on disk and returns a Texture2D object.
+         *
+         * @param string $file The path to the image file to load.
+         * @return \GL\Texture\Texture2D The loaded texture object.
+         */
+        public static function fromDisk(string $path) : Texture2D {}
+
+        /**
+         * Creates and returns a `UByteBuffer` instance from the given image file.
+         * 
+         * @return \GL\UByteBuffer The loaded image data.
+         */
+        public function buffer() : \GL\Buffer\UByteBuffer {}
+
+        /**
+         * Returns the width of the image.
+         *
+         * @return int The width of the image.
+         */
+        public function width() : int {}
+
+        /**
+         * Returns the height of the image.
+         *
+         * @return int The height of the image.
+         */
+        public function height() : int {}
+
+        /**
+         * Returns the number of channels of the image.
+         *
+         * @return int The number of channels of the image.
+         */
+        public function channels() : int {}
+
+        /**
+         * Writes the image data to a file on disk. (JPEG)
+         * 
+         * @param string $file The path to the file to write to.
+         * @param int $quality The quality of the image. (0 - 100)
+         *
+         * @return void
+         */
+        public function writeJPG(string $path, int $quality = 100) : void {}
+    }
+}
+
+
 namespace {
     /**
      * Functions
@@ -1412,6 +1469,34 @@ namespace {
  
     /**
      * specify a two-dimensional texture image
+     *         
+     * Example:
+     * 
+     * ```php
+     * glGenTextures(1, $texture);
+     * glBindTexture(GL_TEXTURE_2D, $texture);
+     * 
+     * // we just create a simple 2x2 texture with 4 channels
+     * $buffer = new GL\Buffer\UByteBuffer([
+     *     255, 0, 0, 255,
+     *     0, 255, 0, 255,
+     *     0, 0, 255, 255,
+     *     255, 255, 255, 255,
+     * ]);
+     * 
+     * glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, 4, 4, 0, GL_RGBA, GL_UNSIGNED_BYTE,
+     * $buffer);
+     * ```
+     * 
+     * @PHP-GLFW: for This function has been modified to accept a `BufferInterface`
+     * object instead of a pointer.
+     * 
+     * Also in this PHP OpenGL extension, the arguments are validated against the
+     * passed buffer object. If the buffer object is too small for the given width,
+     * height, and format an exception is thrown. This is done to prevent segfaults,
+     * this will unfortunately, make the function quite a bit slower. But as
+     * uploading textures is anyway a heavy operation the impact should not be
+     * noticeable in normal applications.
      * 
      * @param int $target Specifies the target texture. Must be
      * <constant>GL_TEXTURE_2D</constant>, <constant>GL_PROXY_TEXTURE_2D</constant>,
