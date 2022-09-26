@@ -53,7 +53,7 @@ class GLFWHeaderParser
 
         // begin reading the header
         $headerContents = file_get_contents($headerFilePath);
-        preg_match_all("/#define (GLFW_[A-Z_]+) +([A-Z0-9x_]+)/", $headerContents, $matches);
+        preg_match_all("/#define (GLFW_[A-Z0-9_]+) +([A-Z0-9x_]+)/", $headerContents, $matches);
 
         // trim the names & values
         $matches[1] = array_map('trim', $matches[1]);
