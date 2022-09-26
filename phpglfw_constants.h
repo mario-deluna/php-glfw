@@ -5806,6 +5806,10 @@ void phpglfw_register_constants(INIT_FUNC_ARGS);
 #define PHPGLFW_C_GLFW_HAT_LEFT GLFW_HAT_LEFT // => 8  
 #endif
  
+#ifdef GLFW_KEY_UNKNOWN 
+#define PHPGLFW_C_GLFW_KEY_UNKNOWN GLFW_KEY_UNKNOWN // => -1  
+#endif
+ 
 #ifdef GLFW_KEY_SPACE 
 #define PHPGLFW_C_GLFW_KEY_SPACE GLFW_KEY_SPACE // => 32  
 #endif
@@ -6896,6 +6900,10 @@ void phpglfw_register_constants(INIT_FUNC_ARGS);
  
 #ifdef GLFW_COCOA_MENUBAR 
 #define PHPGLFW_C_GLFW_COCOA_MENUBAR GLFW_COCOA_MENUBAR // => 0x00051002  
+#endif
+ 
+#ifdef GLFW_DONT_CARE 
+#define PHPGLFW_C_GLFW_DONT_CARE GLFW_DONT_CARE // => -1  
 #endif
 
 #endif

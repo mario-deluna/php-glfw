@@ -10026,6 +10026,7 @@ namespace {
     define('GLFW_HAT_RIGHT', 2);
     define('GLFW_HAT_DOWN', 4);
     define('GLFW_HAT_LEFT', 8);
+    define('GLFW_KEY_UNKNOWN', -1);
     define('GLFW_KEY_SPACE', 32);
     define('GLFW_KEY_APOSTROPHE', 39);
     define('GLFW_KEY_COMMA', 44);
@@ -10299,4 +10300,5 @@ namespace {
     define('GLFW_JOYSTICK_HAT_BUTTONS', 0x00050001);
     define('GLFW_COCOA_CHDIR_RESOURCES', 0x00051001);
     define('GLFW_COCOA_MENUBAR', 0x00051002);
+    define('GLFW_DONT_CARE', -1);
 }

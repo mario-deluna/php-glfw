@@ -1659,6 +1659,7 @@ namespace {
     // const GLFW_HAT_RIGHT = 2;
     // const GLFW_HAT_DOWN = 4;
     // const GLFW_HAT_LEFT = 8;
+    // const GLFW_KEY_UNKNOWN = -1;
     // const GLFW_KEY_SPACE = 32;
     // const GLFW_KEY_APOSTROPHE = 39;
     // const GLFW_KEY_COMMA = 44;
@@ -1932,6 +1933,7 @@ namespace {
     // const GLFW_JOYSTICK_HAT_BUTTONS = 0x00050001;
     // const GLFW_COCOA_CHDIR_RESOURCES = 0x00051001;
     // const GLFW_COCOA_MENUBAR = 0x00051002;
+    // const GLFW_DONT_CARE = -1;
 
     /**
      * Functions
