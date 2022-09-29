@@ -181,31 +181,31 @@ class ExtGenerator
         $glfwExtCG = new ExtConstantGroup();
         $glfwExtCG->name = "PHPGlfw Extension";
 
-        $apiConst = new ExtConstant("PHPGLFW_COMPILED_API", $api);
+        $apiConst = new ExtConstant("PHPGLFW_COMPILED_API", $api, var_export($api, true));
         $apiConst->isForwardDefinition = false;
         $apiConst->constantCompiledType = ExtConstant::TYPE_STRING;
         $apiConst->group = $glfwExtCG;
         $this->addConstant($apiConst);
 
-        $apiVersionConst = new ExtConstant("PHPGLFW_COMPILED_API_VERSION", $version);
+        $apiVersionConst = new ExtConstant("PHPGLFW_COMPILED_API_VERSION", $version, var_export($version, true));
         $apiVersionConst->isForwardDefinition = false;
         $apiVersionConst->constantCompiledType = ExtConstant::TYPE_STRING;
         $apiVersionConst->group = $glfwExtCG;
         $this->addConstant($apiVersionConst);
 
         foreach([
-            'GLbyte' => 'BYTE',
-            'GLubyte' => 'UNSIGNED_BYTE',
-            'GLshort' => 'SHORT',
-            'GLushort' => 'UNSIGNED_SHORT',
-            'GLint' => 'INT',
-            'GLuint' => 'UNSIGNED_INT',
-            'GLfloat' => 'FLOAT',
-            'GLhalf' => 'HALF_FLOAT',
-            'GLdouble' => 'DOUBLE',
-        ] as $type => $name) {
+            'GLbyte' => ['BYTE', 1],
+            'GLubyte' => ['UNSIGNED_BYTE', 1],
+            'GLshort' => ['SHORT', 2],
+            'GLushort' => ['UNSIGNED_SHORT', 2],
+            'GLint' => ['INT', 4],
+            'GLuint' => ['UNSIGNED_INT', 4],
+            'GLfloat' => ['FLOAT', 4],
+            'GLhalf' => ['HALF_FLOAT', 2],
+            'GLdouble' => ['DOUBLE', 8],
+        ] as $type => [$name, $nb]) {
             // size of varios data typey
-            $glSizeofType = new ExtConstant("GL_SIZEOF_" . $name, 'sizeof('. $type .')');
+            $glSizeofType = new ExtConstant("GL_SIZEOF_" . $name, 'sizeof('. $type .')', $nb);
             $glSizeofType->isForwardDefinition = false;
             $glSizeofType->constantCompiledType = ExtConstant::TYPE_PASSTHROUGH;
             $glSizeofType->group = $glfwExtCG;

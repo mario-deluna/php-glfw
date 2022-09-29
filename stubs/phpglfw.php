@@ -8641,17 +8641,17 @@ namespace {
      * Constants
      * ----------------------------------------------------------------------------
      */
-//define('a', 'stable');
-//define('a', 'stable');
-//define('a', 'stable');
-//define('a', 'stable');
-//define('a', 'stable');
-//define('a', 'stable');
-//define('a', 'stable');
-//define('a', 'stable');
-//define('a', 'stable');
-//define('a', 'stable');
-//define('a', 'stable');
+    define('PHPGLFW_COMPILED_API', 'gl');
+    define('PHPGLFW_COMPILED_API_VERSION', '4.1');
+    define('GL_SIZEOF_BYTE', 1);
+    define('GL_SIZEOF_UNSIGNED_BYTE', 1);
+    define('GL_SIZEOF_SHORT', 2);
+    define('GL_SIZEOF_UNSIGNED_SHORT', 2);
+    define('GL_SIZEOF_INT', 4);
+    define('GL_SIZEOF_UNSIGNED_INT', 4);
+    define('GL_SIZEOF_FLOAT', 4);
+    define('GL_SIZEOF_HALF_FLOAT', 2);
+    define('GL_SIZEOF_DOUBLE', 8);
     define('GL_DEPTH_BUFFER_BIT', 0x00000100);
     define('GL_STENCIL_BUFFER_BIT', 0x00000400);
     define('GL_COLOR_BUFFER_BIT', 0x00004000);

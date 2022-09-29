@@ -612,10 +612,6 @@ namespace {
      * ----------------------------------------------------------------------------
      */
 <?php foreach($constants as $const) : ?>
-<?php if ($const->isForwardDefinition) : ?>
     define('<?php echo $const->name; ?>', <?php echo $const->definitionValueString; ?>);
-<?php else : ?>
-//define('a', 'stable');
-<?php endif; ?>
 <?php endforeach; ?>
 }
