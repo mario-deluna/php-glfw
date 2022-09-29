@@ -11085,6 +11085,15 @@ PHP_FUNCTION(glfwSwapBuffers)
     }
     GLFWwindow* window = phpglfw_glfwwindowptr_from_zval_ptr(window_zval);
     glfwSwapBuffers(window);
+    #ifdef __APPLE__
+        static bool macMovedToFix1334 = false;
+        if (!macMovedToFix1334) {
+            int x, y;
+            glfwGetWindowPos(window, &x, &y);
+            glfwSetWindowPos(window, ++x, y);
+            macMovedToFix1334 = true;
+        }
+    #endif
 } 
 
 /**

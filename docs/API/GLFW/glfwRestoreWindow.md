@@ -9,8 +9,8 @@ This function restores the specified window if it was previously iconified
 (minimized) or maximized. If the window is already restored, this function
 does nothing.
 
-If the specified window is a full screen window, the resolution chosen for
-the window is restored on the selected monitor.
+If the specified window is an iconified full screen window, its desired
+video mode is set again for its monitor when the window is restored.
 
 arguments
 

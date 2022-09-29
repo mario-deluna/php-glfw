@@ -39,6 +39,9 @@ class ExampleHelper
         // but mostly this fixes an issue many expirence on MacOS
         glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
 
+        // disable retina fb because there seems to be an issue: https://github.com/glfw/glfw/issues/1334
+        // glfwWindowHint(GLFW_COCOA_RETINA_FRAMEBUFFER, GL_FALSE);
+
         // glfwCreateWindow will initalizes a new window in which you can render,
         // you can have multiple windows of course.
         if (!$window = glfwCreateWindow(self::WIN_WIDTH, self::WIN_HEIGHT, "PHP GLFW Demo")) {

@@ -9,8 +9,9 @@ This function iconifies (minimizes) the specified window if it was
 previously restored. If the window is already iconified, this function does
 nothing.
 
-If the specified window is a full screen window, the original monitor
-resolution is restored until the window is restored.
+If the specified window is a full screen window, GLFW restores the original
+video mode of the monitor. The window's desired video mode is set again
+when the window is restored.
 
 arguments
 

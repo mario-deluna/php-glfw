@@ -1648,7 +1648,7 @@ namespace {
     // const GL_ALL_SHADER_BITS = 0xFFFFFFFF;
     // const GLFW_VERSION_MAJOR = 3;
     // const GLFW_VERSION_MINOR = 3;
-    // const GLFW_VERSION_REVISION = 5;
+    // const GLFW_VERSION_REVISION = 8;
     // const GLFW_TRUE = 1;
     // const GLFW_FALSE = GLFW_FALSE;
     // const GLFW_RELEASE = GLFW_RELEASE;
