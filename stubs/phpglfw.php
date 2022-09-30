@@ -4551,21 +4551,6 @@ namespace {
     function glProvokingVertex(int $mode) : void {};
  
     /**
-     * create a new sync object and insert it into the GL command stream
-     * 
-     * @param int $condition Specifies the condition that must be met to set the
-     * sync object's state to signaled. condition must be
-     * <constant>GL_SYNC_GPU_COMMANDS_COMPLETE</constant>.
-     * @param int $flags Specifies a bitwise combination of flags controlling the
-     * behavior of the sync object. No flags are presently defined for this
-     * operation and flags must be zero. flags is a placeholder for anticipated
-     * future extensions of fence sync object capabilities.
-     * 
-     * @return int
-     */ 
-    function glFenceSync(int $condition, int $flags) : int {};
- 
-    /**
      * determine if a name corresponds to a sync object
      * 
      * @param int $sync Specifies a value that may be the name of a sync object.
@@ -4573,42 +4558,6 @@ namespace {
      * @return bool
      */ 
     function glIsSync(int $sync) : bool {};
- 
-    /**
-     * delete a sync object
-     * 
-     * @param int $sync The sync object to be deleted.
-     * 
-     * @return void
-     */ 
-    function glDeleteSync(int $sync) : void {};
- 
-    /**
-     * block and wait for a sync object to become signaled
-     * 
-     * @param int $sync The sync object whose status to wait on.
-     * @param int $flags A bitfield controlling the command flushing behavior. flags
-     * may be <constant>GL_SYNC_FLUSH_COMMANDS_BIT</constant>.
-     * @param int $timeout The timeout, specified in nanoseconds, for which the
-     * implementation should wait for sync to become signaled.
-     * 
-     * @return int
-     */ 
-    function glClientWaitSync(int $sync, int $flags, int $timeout) : int {};
- 
-    /**
-     * instruct the GL server to block until the specified sync object becomes
-     * signaled
-     * 
-     * @param int $sync Specifies the sync object whose status to wait on.
-     * @param int $flags A bitfield controlling the command flushing behavior. flags
-     * may be zero.
-     * @param int $timeout Specifies the timeout that the server should wait before
-     * continuing. timeout must be <constant>GL_TIMEOUT_IGNORED</constant>.
-     * 
-     * @return void
-     */ 
-    function glWaitSync(int $sync, int $flags, int $timeout) : void {};
  
     /**
      * glGetInteger64v
@@ -4619,22 +4568,6 @@ namespace {
      * @return void
      */ 
     function glGetInteger64v(int $pname, int &$data) : void {};
- 
-    /**
-     * query the properties of a sync object
-     * 
-     * @param int $sync Specifies the sync object whose properties to query.
-     * @param int $pname Specifies the parameter whose value to retrieve from the
-     * sync object specified in sync.
-     * @param int $count 
-     * @param int &$length Specifies the address of an variable to receive the
-     * number of integers placed in values.
-     * @param int &$values Specifies the address of an array to receive the values
-     * of the queried parameter.
-     * 
-     * @return void
-     */ 
-    function glGetSynciv(int $sync, int $pname, int $count, int &$length, int &$values) : void {};
  
     /**
      * glGetInteger64i_v
@@ -7172,8 +7105,7 @@ namespace {
      * or `NULL`
      * to not share resources.
      * 
-     * @return GLFWwindow The handle of the created window, or `NULL` if an
-     * `error` occurred.
+     * @return GLFWwindow
      */ 
     function glfwCreateWindow(int $width, int $height, string $title, ?GLFWmonitor $monitor = NULL, ?GLFWwindow $share = NULL) : GLFWwindow {};
  

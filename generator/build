@@ -21,6 +21,11 @@ $reader->parse($spec, __DIR__ . '/data/gl.xml', __DIR__ . '/data/glrefs.json');
 $gen->import($spec, 'gl', '4.1', [
     'glShaderSource', // custom implementation
     'glBufferData', // custom implementation
+    'glGetSynciv', // currently not supported
+    'glWaitSync', // currently not supported
+    'glDeleteSync', // currently not supported
+    'glFenceSync', // currently not supported
+    'glClientWaitSync', // currently not supported
 ]);
 
 // parse the glfw header
@@ -53,6 +58,7 @@ $gen->adjust(PHPGlfwAdjustments\GLFWDestroyFunctionAdjustment::class);
 $gen->adjust(PHPGlfwAdjustments\GLFWGladLoader::class);
 $gen->adjust(PHPGlfwAdjustments\GLFWSwapBuffersAdjustment::class);
 $gen->adjust(PHPGlfwAdjustments\GLFWCallbacksAdjustment::class);
+$gen->adjust(PHPGlfwAdjustments\GLFWCreateWindowAdjustment::class);
 $gen->adjust(PHPGlfwAdjustments\GLShaderSourceAdjustment::class);
 $gen->adjust(PHPGlfwAdjustments\GLBufferDataAdjustment::class);
 $gen->adjust(PHPGlfwAdjustments\GLVertexAttribPointerAdjustment::class);

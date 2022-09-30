@@ -1,5 +1,5 @@
 /* This is a generated file, edit the .stub.php file instead.
- * Stub hash: 43bbb3beb1676eabab34980af88453cc39b6b93c */
+ * Stub hash: a3f211321ec23398438df9af6bbfbb4bb9516485 */
 
 ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_glCullFace, 0, 1, IS_VOID, 0)
 	ZEND_ARG_TYPE_INFO(0, mode, IS_LONG, 0)
@@ -1113,42 +1113,13 @@ ZEND_END_ARG_INFO()
 
 #define arginfo_glProvokingVertex arginfo_glCullFace
 
-ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_glFenceSync, 0, 2, IS_LONG, 0)
-	ZEND_ARG_TYPE_INFO(0, condition, IS_LONG, 0)
-	ZEND_ARG_TYPE_INFO(0, flags, IS_LONG, 0)
-ZEND_END_ARG_INFO()
-
 ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_glIsSync, 0, 1, _IS_BOOL, 0)
 	ZEND_ARG_TYPE_INFO(0, sync, IS_LONG, 0)
-ZEND_END_ARG_INFO()
-
-ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_glDeleteSync, 0, 1, IS_VOID, 0)
-	ZEND_ARG_TYPE_INFO(0, sync, IS_LONG, 0)
-ZEND_END_ARG_INFO()
-
-ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_glClientWaitSync, 0, 3, IS_LONG, 0)
-	ZEND_ARG_TYPE_INFO(0, sync, IS_LONG, 0)
-	ZEND_ARG_TYPE_INFO(0, flags, IS_LONG, 0)
-	ZEND_ARG_TYPE_INFO(0, timeout, IS_LONG, 0)
-ZEND_END_ARG_INFO()
-
-ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_glWaitSync, 0, 3, IS_VOID, 0)
-	ZEND_ARG_TYPE_INFO(0, sync, IS_LONG, 0)
-	ZEND_ARG_TYPE_INFO(0, flags, IS_LONG, 0)
-	ZEND_ARG_TYPE_INFO(0, timeout, IS_LONG, 0)
 ZEND_END_ARG_INFO()
 
 ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_glGetInteger64v, 0, 2, IS_VOID, 0)
 	ZEND_ARG_TYPE_INFO(0, pname, IS_LONG, 0)
 	ZEND_ARG_TYPE_INFO(1, data, IS_LONG, 0)
-ZEND_END_ARG_INFO()
-
-ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_glGetSynciv, 0, 5, IS_VOID, 0)
-	ZEND_ARG_TYPE_INFO(0, sync, IS_LONG, 0)
-	ZEND_ARG_TYPE_INFO(0, pname, IS_LONG, 0)
-	ZEND_ARG_TYPE_INFO(0, count, IS_LONG, 0)
-	ZEND_ARG_TYPE_INFO(1, length, IS_LONG, 0)
-	ZEND_ARG_TYPE_INFO(1, values, IS_LONG, 0)
 ZEND_END_ARG_INFO()
 
 ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_glGetInteger64i_v, 0, 3, IS_VOID, 0)
@@ -2873,13 +2844,8 @@ ZEND_FUNCTION(glGetUniformBlockIndex);
 ZEND_FUNCTION(glGetActiveUniformBlockiv);
 ZEND_FUNCTION(glUniformBlockBinding);
 ZEND_FUNCTION(glProvokingVertex);
-ZEND_FUNCTION(glFenceSync);
 ZEND_FUNCTION(glIsSync);
-ZEND_FUNCTION(glDeleteSync);
-ZEND_FUNCTION(glClientWaitSync);
-ZEND_FUNCTION(glWaitSync);
 ZEND_FUNCTION(glGetInteger64v);
-ZEND_FUNCTION(glGetSynciv);
 ZEND_FUNCTION(glGetInteger64i_v);
 ZEND_FUNCTION(glGetBufferParameteri64v);
 ZEND_FUNCTION(glFramebufferTexture);
@@ -3558,13 +3524,8 @@ static const zend_function_entry ext_functions[] = {
 	ZEND_FE(glGetActiveUniformBlockiv, arginfo_glGetActiveUniformBlockiv)
 	ZEND_FE(glUniformBlockBinding, arginfo_glUniformBlockBinding)
 	ZEND_FE(glProvokingVertex, arginfo_glProvokingVertex)
-	ZEND_FE(glFenceSync, arginfo_glFenceSync)
 	ZEND_FE(glIsSync, arginfo_glIsSync)
-	ZEND_FE(glDeleteSync, arginfo_glDeleteSync)
-	ZEND_FE(glClientWaitSync, arginfo_glClientWaitSync)
-	ZEND_FE(glWaitSync, arginfo_glWaitSync)
 	ZEND_FE(glGetInteger64v, arginfo_glGetInteger64v)
-	ZEND_FE(glGetSynciv, arginfo_glGetSynciv)
 	ZEND_FE(glGetInteger64i_v, arginfo_glGetInteger64i_v)
 	ZEND_FE(glGetBufferParameteri64v, arginfo_glGetBufferParameteri64v)
 	ZEND_FE(glFramebufferTexture, arginfo_glFramebufferTexture)

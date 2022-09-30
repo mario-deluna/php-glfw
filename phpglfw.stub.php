@@ -2199,13 +2199,8 @@ namespace {
     function glGetActiveUniformBlockiv(int $program, int $uniformBlockIndex, int $pname, int &$params) : void {};
     function glUniformBlockBinding(int $program, int $uniformBlockIndex, int $uniformBlockBinding) : void {};
     function glProvokingVertex(int $mode) : void {};
-    function glFenceSync(int $condition, int $flags) : int {};
     function glIsSync(int $sync) : bool {};
-    function glDeleteSync(int $sync) : void {};
-    function glClientWaitSync(int $sync, int $flags, int $timeout) : int {};
-    function glWaitSync(int $sync, int $flags, int $timeout) : void {};
     function glGetInteger64v(int $pname, int &$data) : void {};
-    function glGetSynciv(int $sync, int $pname, int $count, int &$length, int &$values) : void {};
     function glGetInteger64i_v(int $target, int $index, int &$data) : void {};
     function glGetBufferParameteri64v(int $target, int $pname, int &$params) : void {};
     function glFramebufferTexture(int $target, int $attachment, int $texture, int $level) : void {};

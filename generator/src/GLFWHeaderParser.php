@@ -27,7 +27,31 @@ class GLFWHeaderParser
 
     private function createIPODefinitions(ExtGenerator $extGen)
     {
-        $extGen->addIPO(new class('GLFWwindow', 'GLFWwindow*') extends ExtInternalPtrObject {
+        $extGen->addIPO(new class('GLFWwindow', 'GLFWwindow*') extends ExtInternalPtrObject 
+        {
+            public array $additionalZvals = [
+                // window callbacks
+                'poscallback',
+                'sizecallback',
+                'closecallback',
+                'refreshcallback',
+                'focuscallback',
+                'iconifycallback',
+                'maximizecallback',
+                'framebuffersizecallback',
+                'contentcalecallback',
+
+                // input 
+                'keycallback',
+                'charcallback',
+                'charmodscallback',
+                'mousebuttoncallback',
+                'cursorposcallback',
+                'cursorentercallback',
+                'scrollcallback',
+                'dropcallback',
+            ];
+
             public function getDestructionCall(string $var) : string {
                 return "glfwDestroyWindow($var);";
             }

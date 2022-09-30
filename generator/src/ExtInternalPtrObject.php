@@ -16,6 +16,14 @@ class ExtInternalPtrObject
     public string $type;
 
     /**
+     * An array of Zvals that should be added to the object,
+     * i use this to store the callback functions for example
+     * 
+     * @var array
+     */
+    public array $additionalZvals = [];
+
+    /**
      * Constructor
      */
     public function __construct(string $name, string $type) 

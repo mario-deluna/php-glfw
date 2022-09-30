@@ -30,70 +30,6 @@
 #include "phpglfw_buffer.h"
 #include "phpglfw_math.h"
 #include <zend_API.h>
-    
-/**
- * ----------------------------------------------------------------------------
- * PHPGlfw Global callbacks
- * ----------------------------------------------------------------------------
- * Global callbacks like GLFWkeyfun etc..
- */
-static zval _phpglfw_callback_keycallback;
-static zval _phpglfw_callback_charcallback;
-
-void phpglfw_init_callbacks(void)
-{
-    ZVAL_UNDEF(&_phpglfw_callback_keycallback);
-    ZVAL_UNDEF(&_phpglfw_callback_charcallback);
-}
-
-void phpglfw_shutdown_callbacks(void)
-{
-    if (Z_TYPE(_phpglfw_callback_keycallback) != IS_UNDEF) {
-		zval_ptr_dtor(&_phpglfw_callback_keycallback);
-		ZVAL_UNDEF(&_phpglfw_callback_keycallback);
-	}
-
-    if (Z_TYPE(_phpglfw_callback_charcallback) != IS_UNDEF) {
-        zval_ptr_dtor(&_phpglfw_callback_charcallback);
-        ZVAL_UNDEF(&_phpglfw_callback_charcallback);
-    }
-}
-
-static void phpglfw_callback_keycallback_handler(GLFWwindow* window, int key, int scancode, int action, int mods)
-{
-	zval params[4];
-	zval dummy;
-
-	ZVAL_NULL(&dummy);
-
-    ZVAL_LONG(&params[0], key);
-    ZVAL_LONG(&params[1], scancode);
-    ZVAL_LONG(&params[2], action);
-    ZVAL_LONG(&params[3], mods);
-    
-	call_user_function(NULL, NULL, &_phpglfw_callback_keycallback, &dummy, 4, params);
-
-	zval_ptr_dtor(&params[0]);
-	zval_ptr_dtor(&params[1]);
-	zval_ptr_dtor(&params[2]);
-	zval_ptr_dtor(&params[3]);
-	zval_ptr_dtor(&dummy);
-}
-
-static void phpglfw_callback_charcallback_handler(GLFWwindow* window, unsigned int codepoint)
-{
-    zval params[1];
-    zval dummy;
-
-    ZVAL_NULL(&dummy);
-
-    ZVAL_LONG(&params[0], codepoint);
-    
-    call_user_function(NULL, NULL, &_phpglfw_callback_charcallback, &dummy, 1, params);
-
-    zval_ptr_dtor(&params[0]);
-    zval_ptr_dtor(&dummy);
-}
 
 /**
  * ----------------------------------------------------------------------------
@@ -124,6 +60,9 @@ zend_class_entry *<?php echo $ipo->getClassEntryName(); ?>;
 typedef struct _<?php echo $ipo->getObjectStructName(); ?> {
     <?php echo $ipo->getType(); ?> <?php echo $ipo->getObjectStructPointerVar(); ?>;
     zend_object std;
+<?php foreach($ipo->additionalZvals as $zval) : ?>
+    zval <?php echo $zval; ?>;
+<?php endforeach; ?>
 } <?php echo $ipo->getObjectStructName(); ?>; 
 
 <?php endforeach; ?>
@@ -212,6 +151,81 @@ void <?php echo $ipo->getObjectMinitHelperFunctionName(); ?>(void)
 }
 
 <?php endforeach; ?>
+
+    
+/**
+ * ----------------------------------------------------------------------------
+ * PHPGlfw callbacks
+ * ----------------------------------------------------------------------------
+ * callbacks like GLFWkeyfun etc..
+ */
+static zval _phpglfw_callback_keycallback;
+static zval _phpglfw_callback_charcallback;
+
+void phpglfw_init_callbacks(void)
+{
+    ZVAL_UNDEF(&_phpglfw_callback_keycallback);
+    ZVAL_UNDEF(&_phpglfw_callback_charcallback);
+}
+
+void phpglfw_shutdown_callbacks(void)
+{
+    if (Z_TYPE(_phpglfw_callback_keycallback) != IS_UNDEF) {
+		zval_ptr_dtor(&_phpglfw_callback_keycallback);
+		ZVAL_UNDEF(&_phpglfw_callback_keycallback);
+	}
+
+    if (Z_TYPE(_phpglfw_callback_charcallback) != IS_UNDEF) {
+        zval_ptr_dtor(&_phpglfw_callback_charcallback);
+        ZVAL_UNDEF(&_phpglfw_callback_charcallback);
+    }
+}
+
+static void phpglfw_callback_keycallback_handler(GLFWwindow* window, int key, int scancode, int action, int mods)
+{
+    // ensure _phpglfw_callback_keycallback is actually a function 
+    if (Z_TYPE(_phpglfw_callback_keycallback) != IS_CALLABLE) {
+        return;
+    }
+
+	zval params[4];
+	zval dummy;
+
+	ZVAL_NULL(&dummy);
+
+    ZVAL_LONG(&params[0], key);
+    ZVAL_LONG(&params[1], scancode);
+    ZVAL_LONG(&params[2], action);
+    ZVAL_LONG(&params[3], mods);
+    
+	call_user_function(NULL, NULL, &_phpglfw_callback_keycallback, &dummy, 4, params);
+
+	zval_ptr_dtor(&params[0]);
+	zval_ptr_dtor(&params[1]);
+	zval_ptr_dtor(&params[2]);
+	zval_ptr_dtor(&params[3]);
+	zval_ptr_dtor(&dummy);
+}
+
+static void phpglfw_callback_charcallback_handler(GLFWwindow* window, unsigned int codepoint)
+{
+    // ensure _phpglfw_callback_charcallback is actually a function 
+    if (Z_TYPE(_phpglfw_callback_charcallback) != IS_CALLABLE) {
+        return;
+    }
+
+    zval params[1];
+    zval dummy;
+
+    ZVAL_NULL(&dummy);
+
+    ZVAL_LONG(&params[0], codepoint);
+    
+    call_user_function(NULL, NULL, &_phpglfw_callback_charcallback, &dummy, 1, params);
+
+    zval_ptr_dtor(&params[0]);
+    zval_ptr_dtor(&dummy);
+}
 
 /**
  * ----------------------------------------------------------------------------
