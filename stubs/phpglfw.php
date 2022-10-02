@@ -8329,6 +8329,146 @@ namespace {
     function glfwSetCharCallback(GLFWwindow $window, callable $callback) : void {};
  
     /**
+     * This function sets the character with modifiers callback of the specified
+     * window, which is called when a Unicode character is input regardless of what
+     * modifier keys are used.
+     * 
+     * The character with modifiers callback is intended for implementing custom
+     * Unicode character input. For regular Unicode text input, see the character
+     * callback.
+     * 
+     * Example:
+     * ```php
+     * glfwSetCharModsCallback($window, function($codepoint, $mods) {
+     *     echo "Character: " . mb_chr($codepoint) . ' with mods: ' . $mods .
+     * PHP_EOL;
+     * });
+     * ```
+     * 
+     * 
+     * @param GLFWwindow $window The window whose callback to set.
+     * @param callable $callback 
+     * 
+     * @return void
+     */ 
+    function glfwSetCharModsCallback(GLFWwindow $window, callable $callback) : void {};
+ 
+    /**
+     * This function sets the mouse button callback of the specified window, which
+     * is called when a mouse button is pressed or released.
+     * 
+     * Example:
+     * ```php
+     * glfwSetMouseButtonCallback($window, function($button, $action, $mods) {
+     *     if ($button == GLFW_MOUSE_BUTTON_LEFT && $action == GLFW_PRESS) {
+     *         echo "Left mouse button pressed" . PHP_EOL;
+     *     }
+     * });
+     * ```
+     * 
+     * When a window loses input focus, it will generate synthetic mouse button
+     * release events for all pressed mouse buttons. You can tell these events from
+     * user-generated events by the fact that the synthetic ones are generated after
+     * the focus loss event has been processed, i.e. after the window focus callback
+     * has been called.
+     * 
+     * 
+     * @param GLFWwindow $window The window whose callback to set.
+     * @param callable $callback 
+     * 
+     * @return void
+     */ 
+    function glfwSetMouseButtonCallback(GLFWwindow $window, callable $callback) : void {};
+ 
+    /**
+     * This function sets the cursor position callback of the specified window,
+     * which is called when the cursor is moved.
+     * 
+     * The callback is provided with the position, in screen coordinates, relative
+     * to the upper-left corner of the client area of the window.
+     * 
+     * Example:
+     * ```php
+     * glfwSetCursorPosCallback($window, function($xpos, $ypos) {
+     *     echo "Cursor position: " . $xpos . ", " . $ypos . PHP_EOL;
+     * });
+     * ```
+     * 
+     * 
+     * @param GLFWwindow $window The window whose callback to set.
+     * @param callable $callback 
+     * 
+     * @return void
+     */ 
+    function glfwSetCursorPosCallback(GLFWwindow $window, callable $callback) : void {};
+ 
+    /**
+     * This function sets the cursor boundary crossing callback of the specified
+     * window, which is called when the cursor enters or leaves the client area of
+     * the window.
+     * 
+     * Example:
+     * ```php
+     * glfwSetCursorEnterCallback($window, function($entered) {
+     *     if ($entered) {
+     *         echo "Cursor entered window" . PHP_EOL;
+     *     } else {
+     *         echo "Cursor left window" . PHP_EOL;
+     *     }
+     * });
+     * ```
+     * 
+     * 
+     * @param GLFWwindow $window The window whose callback to set.
+     * @param callable $callback 
+     * 
+     * @return void
+     */ 
+    function glfwSetCursorEnterCallback(GLFWwindow $window, callable $callback) : void {};
+ 
+    /**
+     * This function sets the scroll callback of the specified window, which is
+     * called when a scrolling device is used, such as a mouse wheel or scrolling
+     * area of a touchpad.
+     * 
+     * Example:
+     * ```php
+     * glfwSetScrollCallback($window, function($xoffset, $yoffset) {
+     *     echo "Scroll offset: " . $xoffset . ", " . $yoffset . PHP_EOL;
+     * });
+     * ```
+     * 
+     * 
+     * @param GLFWwindow $window The window whose callback to set.
+     * @param callable $callback 
+     * 
+     * @return void
+     */ 
+    function glfwSetScrollCallback(GLFWwindow $window, callable $callback) : void {};
+ 
+    /**
+     * This function sets the file drop callback of the specified window, which is
+     * called when one or more dragged files are dropped on the window.
+     * 
+     * Example:
+     * ```php
+     * glfwSetDropCallback($window, function($paths) {
+     *     echo "Dropped files:" . PHP_EOL;
+     *     foreach ($paths as $path) {
+     *         echo "  " . $path . PHP_EOL;
+     *     }
+     * });
+     * ```
+     * 
+     * 
+     * @param GLFWwindow $window The window whose callback to set.
+     * @param callable $callback 
+     * 
+     * @return void
+     */ 
+    function glfwSetDropCallback(GLFWwindow $window, callable $callback) : void {};
+ 
+    /**
      * Returns whether the specified joystick is present.
      * 
      * This function returns whether the specified joystick is present.

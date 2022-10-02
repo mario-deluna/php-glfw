@@ -599,6 +599,154 @@ static void phpglfw_callback_charcallback_handler(GLFWwindow* window, unsigned i
     efree(params);
 }
 
+static void phpglfw_callback_charmodscallback_handler(GLFWwindow* window, unsigned int codepoint, int mods)
+{
+    // update args of the callback function entry
+    zval return_val;
+    zval *params = emalloc(2 * sizeof(zval));
+
+    ZVAL_NULL(&return_val);
+
+    ZVAL_LONG(&params[0], codepoint);
+    ZVAL_LONG(&params[1], mods);
+
+    // load the internal obj from the user pointer
+    phpglfw_glfwwindow_object* window_obj = (phpglfw_glfwwindow_object*)glfwGetWindowUserPointer(window);
+
+    window_obj->charmodscallback.fci.params = params;
+    window_obj->charmodscallback.fci.param_count = 2;
+    window_obj->charmodscallback.fci.retval = &return_val;
+
+    zend_call_function(&window_obj->charmodscallback.fci, &window_obj->charmodscallback.fci_cache);
+
+    zval_ptr_dtor(&return_val);
+    efree(params);
+}
+
+static void phpglfw_callback_mousebuttoncallback_handler(GLFWwindow* window, int button, int action, int mods)
+{
+    // update args of the callback function entry
+    zval return_val;
+    zval *params = emalloc(3 * sizeof(zval));
+
+    ZVAL_NULL(&return_val);
+
+    ZVAL_LONG(&params[0], button);
+    ZVAL_LONG(&params[1], action);
+    ZVAL_LONG(&params[2], mods);
+
+    // load the internal obj from the user pointer
+    phpglfw_glfwwindow_object* window_obj = (phpglfw_glfwwindow_object*)glfwGetWindowUserPointer(window);
+
+    window_obj->mousebuttoncallback.fci.params = params;
+    window_obj->mousebuttoncallback.fci.param_count = 3;
+    window_obj->mousebuttoncallback.fci.retval = &return_val;
+
+    zend_call_function(&window_obj->mousebuttoncallback.fci, &window_obj->mousebuttoncallback.fci_cache);
+
+    zval_ptr_dtor(&return_val);
+    efree(params);
+}
+
+static void phpglfw_callback_cursorposcallback_handler(GLFWwindow* window, double xpos, double ypos)
+{
+    // update args of the callback function entry
+    zval return_val;
+    zval *params = emalloc(2 * sizeof(zval));
+
+    ZVAL_NULL(&return_val);
+
+    ZVAL_DOUBLE(&params[0], xpos);
+    ZVAL_DOUBLE(&params[1], ypos);
+
+    // load the internal obj from the user pointer
+    phpglfw_glfwwindow_object* window_obj = (phpglfw_glfwwindow_object*)glfwGetWindowUserPointer(window);
+
+    window_obj->cursorposcallback.fci.params = params;
+    window_obj->cursorposcallback.fci.param_count = 2;
+    window_obj->cursorposcallback.fci.retval = &return_val;
+
+    zend_call_function(&window_obj->cursorposcallback.fci, &window_obj->cursorposcallback.fci_cache);
+
+    zval_ptr_dtor(&return_val);
+    efree(params);
+}
+
+static void phpglfw_callback_cursorentercallback_handler(GLFWwindow* window, int entered)
+{
+    // update args of the callback function entry
+    zval return_val;
+    zval *params = emalloc(1 * sizeof(zval));
+
+    ZVAL_NULL(&return_val);
+
+    ZVAL_LONG(&params[0], entered);
+
+    // load the internal obj from the user pointer
+    phpglfw_glfwwindow_object* window_obj = (phpglfw_glfwwindow_object*)glfwGetWindowUserPointer(window);
+
+    window_obj->cursorentercallback.fci.params = params;
+    window_obj->cursorentercallback.fci.param_count = 1;
+    window_obj->cursorentercallback.fci.retval = &return_val;
+
+    zend_call_function(&window_obj->cursorentercallback.fci, &window_obj->cursorentercallback.fci_cache);
+
+    zval_ptr_dtor(&return_val);
+    efree(params);
+}
+
+static void phpglfw_callback_scrollcallback_handler(GLFWwindow* window, double xoffset, double yoffset)
+{
+    // update args of the callback function entry
+    zval return_val;
+    zval *params = emalloc(2 * sizeof(zval));
+
+    ZVAL_NULL(&return_val);
+
+    ZVAL_DOUBLE(&params[0], xoffset);
+    ZVAL_DOUBLE(&params[1], yoffset);
+
+    // load the internal obj from the user pointer
+    phpglfw_glfwwindow_object* window_obj = (phpglfw_glfwwindow_object*)glfwGetWindowUserPointer(window);
+
+    window_obj->scrollcallback.fci.params = params;
+    window_obj->scrollcallback.fci.param_count = 2;
+    window_obj->scrollcallback.fci.retval = &return_val;
+
+    zend_call_function(&window_obj->scrollcallback.fci, &window_obj->scrollcallback.fci_cache);
+
+    zval_ptr_dtor(&return_val);
+    efree(params);
+}
+
+static void phpglfw_callback_dropcallback_handler(GLFWwindow* window, int count, const char** paths)
+{
+    // update args of the callback function entry
+    zval return_val;
+    zval *params = emalloc(2 * sizeof(zval));
+
+    ZVAL_NULL(&return_val);
+
+    ZVAL_LONG(&params[0], count);
+
+    array_init(&params[1]);
+    for (int i = 0; i < count; i++) {
+        add_next_index_string(&params[1], paths[i]);
+    }
+
+    // load the internal obj from the user pointer
+    phpglfw_glfwwindow_object* window_obj = (phpglfw_glfwwindow_object*)glfwGetWindowUserPointer(window);
+
+    window_obj->dropcallback.fci.params = params;
+    window_obj->dropcallback.fci.param_count = 2;
+    window_obj->dropcallback.fci.retval = &return_val;
+
+    zend_call_function(&window_obj->dropcallback.fci, &window_obj->dropcallback.fci_cache);
+
+    zval_ptr_dtor(&return_val);
+    efree(params);
+}
+
 /**
  * ----------------------------------------------------------------------------
  * PHPGlfw Functions 
@@ -11267,6 +11415,132 @@ PHP_FUNCTION(glfwSetCharCallback)
     memcpy((void*)&obj_ptr->charcallback.fci, (void*)&fci, sizeof(zend_fcall_info));
     memcpy((void*)&obj_ptr->charcallback.fci_cache, (void*)&fcc, sizeof(zend_fcall_info_cache));
     glfwSetCharCallback(obj_ptr->glfwwindow, phpglfw_callback_charcallback_handler);
+} 
+
+/**
+ * glfwSetCharModsCallback
+ */ 
+PHP_FUNCTION(glfwSetCharModsCallback)
+{
+    zend_fcall_info fci;
+    zend_fcall_info_cache fcc;
+    zval *window_zval;
+    if (FAILURE == zend_parse_parameters(ZEND_NUM_ARGS(), "Of",  &window_zval, phpglfw_glfwwindow_ce, &fci, &fcc)) {
+        RETURN_THROWS();
+    }
+    phpglfw_glfwwindow_object *obj_ptr = phpglfw_glfwwindow_objectptr_from_zobj_p(Z_OBJ_P(window_zval));
+    Z_TRY_ADDREF(fci.function_name);
+    if (fcc.object) {
+        GC_ADDREF(fcc.object);
+    }
+    memcpy((void*)&obj_ptr->charmodscallback.fci, (void*)&fci, sizeof(zend_fcall_info));
+    memcpy((void*)&obj_ptr->charmodscallback.fci_cache, (void*)&fcc, sizeof(zend_fcall_info_cache));
+    glfwSetCharModsCallback(obj_ptr->glfwwindow, phpglfw_callback_charmodscallback_handler);
+} 
+
+/**
+ * glfwSetMouseButtonCallback
+ */ 
+PHP_FUNCTION(glfwSetMouseButtonCallback)
+{
+    zend_fcall_info fci;
+    zend_fcall_info_cache fcc;
+    zval *window_zval;
+    if (FAILURE == zend_parse_parameters(ZEND_NUM_ARGS(), "Of",  &window_zval, phpglfw_glfwwindow_ce, &fci, &fcc)) {
+        RETURN_THROWS();
+    }
+    phpglfw_glfwwindow_object *obj_ptr = phpglfw_glfwwindow_objectptr_from_zobj_p(Z_OBJ_P(window_zval));
+    Z_TRY_ADDREF(fci.function_name);
+    if (fcc.object) {
+        GC_ADDREF(fcc.object);
+    }
+    memcpy((void*)&obj_ptr->mousebuttoncallback.fci, (void*)&fci, sizeof(zend_fcall_info));
+    memcpy((void*)&obj_ptr->mousebuttoncallback.fci_cache, (void*)&fcc, sizeof(zend_fcall_info_cache));
+    glfwSetMouseButtonCallback(obj_ptr->glfwwindow, phpglfw_callback_mousebuttoncallback_handler);
+} 
+
+/**
+ * glfwSetCursorPosCallback
+ */ 
+PHP_FUNCTION(glfwSetCursorPosCallback)
+{
+    zend_fcall_info fci;
+    zend_fcall_info_cache fcc;
+    zval *window_zval;
+    if (FAILURE == zend_parse_parameters(ZEND_NUM_ARGS(), "Of",  &window_zval, phpglfw_glfwwindow_ce, &fci, &fcc)) {
+        RETURN_THROWS();
+    }
+    phpglfw_glfwwindow_object *obj_ptr = phpglfw_glfwwindow_objectptr_from_zobj_p(Z_OBJ_P(window_zval));
+    Z_TRY_ADDREF(fci.function_name);
+    if (fcc.object) {
+        GC_ADDREF(fcc.object);
+    }
+    memcpy((void*)&obj_ptr->cursorposcallback.fci, (void*)&fci, sizeof(zend_fcall_info));
+    memcpy((void*)&obj_ptr->cursorposcallback.fci_cache, (void*)&fcc, sizeof(zend_fcall_info_cache));
+    glfwSetCursorPosCallback(obj_ptr->glfwwindow, phpglfw_callback_cursorposcallback_handler);
+} 
+
+/**
+ * glfwSetCursorEnterCallback
+ */ 
+PHP_FUNCTION(glfwSetCursorEnterCallback)
+{
+    zend_fcall_info fci;
+    zend_fcall_info_cache fcc;
+    zval *window_zval;
+    if (FAILURE == zend_parse_parameters(ZEND_NUM_ARGS(), "Of",  &window_zval, phpglfw_glfwwindow_ce, &fci, &fcc)) {
+        RETURN_THROWS();
+    }
+    phpglfw_glfwwindow_object *obj_ptr = phpglfw_glfwwindow_objectptr_from_zobj_p(Z_OBJ_P(window_zval));
+    Z_TRY_ADDREF(fci.function_name);
+    if (fcc.object) {
+        GC_ADDREF(fcc.object);
+    }
+    memcpy((void*)&obj_ptr->cursorentercallback.fci, (void*)&fci, sizeof(zend_fcall_info));
+    memcpy((void*)&obj_ptr->cursorentercallback.fci_cache, (void*)&fcc, sizeof(zend_fcall_info_cache));
+    glfwSetCursorEnterCallback(obj_ptr->glfwwindow, phpglfw_callback_cursorentercallback_handler);
+} 
+
+/**
+ * glfwSetScrollCallback
+ */ 
+PHP_FUNCTION(glfwSetScrollCallback)
+{
+    zend_fcall_info fci;
+    zend_fcall_info_cache fcc;
+    zval *window_zval;
+    if (FAILURE == zend_parse_parameters(ZEND_NUM_ARGS(), "Of",  &window_zval, phpglfw_glfwwindow_ce, &fci, &fcc)) {
+        RETURN_THROWS();
+    }
+    phpglfw_glfwwindow_object *obj_ptr = phpglfw_glfwwindow_objectptr_from_zobj_p(Z_OBJ_P(window_zval));
+    Z_TRY_ADDREF(fci.function_name);
+    if (fcc.object) {
+        GC_ADDREF(fcc.object);
+    }
+    memcpy((void*)&obj_ptr->scrollcallback.fci, (void*)&fci, sizeof(zend_fcall_info));
+    memcpy((void*)&obj_ptr->scrollcallback.fci_cache, (void*)&fcc, sizeof(zend_fcall_info_cache));
+    glfwSetScrollCallback(obj_ptr->glfwwindow, phpglfw_callback_scrollcallback_handler);
+} 
+
+/**
+ * glfwSetDropCallback
+ */ 
+PHP_FUNCTION(glfwSetDropCallback)
+{
+    zend_fcall_info fci;
+    zend_fcall_info_cache fcc;
+    zval *window_zval;
+    if (FAILURE == zend_parse_parameters(ZEND_NUM_ARGS(), "Of",  &window_zval, phpglfw_glfwwindow_ce, &fci, &fcc)) {
+        RETURN_THROWS();
+    }
+    phpglfw_glfwwindow_object *obj_ptr = phpglfw_glfwwindow_objectptr_from_zobj_p(Z_OBJ_P(window_zval));
+    Z_TRY_ADDREF(fci.function_name);
+    if (fcc.object) {
+        GC_ADDREF(fcc.object);
+    }
+    memcpy((void*)&obj_ptr->dropcallback.fci, (void*)&fci, sizeof(zend_fcall_info));
+    memcpy((void*)&obj_ptr->dropcallback.fci_cache, (void*)&fcc, sizeof(zend_fcall_info_cache));
+    glfwSetDropCallback(obj_ptr->glfwwindow, phpglfw_callback_dropcallback_handler);
 } 
 
 /**

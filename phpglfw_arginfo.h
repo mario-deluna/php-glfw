@@ -1,5 +1,5 @@
 /* This is a generated file, edit the .stub.php file instead.
- * Stub hash: e7c3b1799c3eb7c38176c6421a286cb919b3b1a9 */
+ * Stub hash: 68d65e39acb5487492570805b5b17a803b609cab */
 
 ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_glCullFace, 0, 1, IS_VOID, 0)
 	ZEND_ARG_TYPE_INFO(0, mode, IS_LONG, 0)
@@ -2117,6 +2117,18 @@ ZEND_END_ARG_INFO()
 
 #define arginfo_glfwSetCharCallback arginfo_glfwSetWindowPosCallback
 
+#define arginfo_glfwSetCharModsCallback arginfo_glfwSetWindowPosCallback
+
+#define arginfo_glfwSetMouseButtonCallback arginfo_glfwSetWindowPosCallback
+
+#define arginfo_glfwSetCursorPosCallback arginfo_glfwSetWindowPosCallback
+
+#define arginfo_glfwSetCursorEnterCallback arginfo_glfwSetWindowPosCallback
+
+#define arginfo_glfwSetScrollCallback arginfo_glfwSetWindowPosCallback
+
+#define arginfo_glfwSetDropCallback arginfo_glfwSetWindowPosCallback
+
 ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_glfwJoystickPresent, 0, 1, IS_LONG, 0)
 	ZEND_ARG_TYPE_INFO(0, jid, IS_LONG, 0)
 ZEND_END_ARG_INFO()
@@ -3122,6 +3134,12 @@ ZEND_FUNCTION(glfwDestroyCursor);
 ZEND_FUNCTION(glfwSetCursor);
 ZEND_FUNCTION(glfwSetKeyCallback);
 ZEND_FUNCTION(glfwSetCharCallback);
+ZEND_FUNCTION(glfwSetCharModsCallback);
+ZEND_FUNCTION(glfwSetMouseButtonCallback);
+ZEND_FUNCTION(glfwSetCursorPosCallback);
+ZEND_FUNCTION(glfwSetCursorEnterCallback);
+ZEND_FUNCTION(glfwSetScrollCallback);
+ZEND_FUNCTION(glfwSetDropCallback);
 ZEND_FUNCTION(glfwJoystickPresent);
 ZEND_FUNCTION(glfwGetJoystickName);
 ZEND_FUNCTION(glfwGetJoystickGUID);
@@ -3811,6 +3829,12 @@ static const zend_function_entry ext_functions[] = {
 	ZEND_FE(glfwSetCursor, arginfo_glfwSetCursor)
 	ZEND_FE(glfwSetKeyCallback, arginfo_glfwSetKeyCallback)
 	ZEND_FE(glfwSetCharCallback, arginfo_glfwSetCharCallback)
+	ZEND_FE(glfwSetCharModsCallback, arginfo_glfwSetCharModsCallback)
+	ZEND_FE(glfwSetMouseButtonCallback, arginfo_glfwSetMouseButtonCallback)
+	ZEND_FE(glfwSetCursorPosCallback, arginfo_glfwSetCursorPosCallback)
+	ZEND_FE(glfwSetCursorEnterCallback, arginfo_glfwSetCursorEnterCallback)
+	ZEND_FE(glfwSetScrollCallback, arginfo_glfwSetScrollCallback)
+	ZEND_FE(glfwSetDropCallback, arginfo_glfwSetDropCallback)
 	ZEND_FE(glfwJoystickPresent, arginfo_glfwJoystickPresent)
 	ZEND_FE(glfwGetJoystickName, arginfo_glfwGetJoystickName)
 	ZEND_FE(glfwGetJoystickGUID, arginfo_glfwGetJoystickGUID)
