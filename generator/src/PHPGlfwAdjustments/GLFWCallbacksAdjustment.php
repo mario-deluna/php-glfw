@@ -273,6 +273,235 @@ EOD;
         $gen->replaceFunctionByName($func);
     }
 
+    /**
+     * GLFW Window refresh Callback 
+     * 
+     * ------------------------------------------------------------------------------------------------------
+     */
+    private function patchGlfwSetWindowRefreshCallback(ExtGenerator $gen) : void
+    {
+        $functionName = 'glfwSetWindowRefreshCallback';
+
+        $func = new class($functionName) extends ExtFunction 
+        {
+            public function getFunctionImplementationBody(): string
+            {
+                return GLFWCallbacksAdjustment::createCallbackImpl('phpglfw_callback_windowrefreshcallback_handler', 'windowrefreshcallback', 'glfwSetWindowRefreshCallback');
+            }
+        };
+
+        // copy base function into our new one and replace it in the extension
+        $baseFunc = $gen->getFunctionByName($functionName);
+        $func->copyFrom($baseFunc);
+
+        $func->arguments[1] = ExtArgument::make('callback', ExtType::T_FUNC);
+
+        $func->comment = <<<EOD
+This function sets the refresh callback of the specified window, which is called when the client area of the window needs to be redrawn, for example if the window has been exposed after having been covered by another window.
+
+On compositing window systems such as Aero, Compiz, Aqua or Wayland, where the window contents are saved off-screen, this callback may be called only very infrequently or never at all.
+
+Example:
+```php
+glfwSetWindowRefreshCallback(\$window, function() {
+    echo "Window needs to be redrawn" . PHP_EOL;
+});
+```
+
+EOD;
+        $gen->replaceFunctionByName($func);
+    }
+
+    /**
+     * GLFW Window focus Callback 
+     * 
+     * ------------------------------------------------------------------------------------------------------
+     */
+    private function patchGlfwSetWindowFocusCallback(ExtGenerator $gen) : void
+    {
+        $functionName = 'glfwSetWindowFocusCallback';
+
+        $func = new class($functionName) extends ExtFunction 
+        {
+            public function getFunctionImplementationBody(): string
+            {
+                return GLFWCallbacksAdjustment::createCallbackImpl('phpglfw_callback_windowfocuscallback_handler', 'windowfocuscallback', 'glfwSetWindowFocusCallback');
+            }
+        };
+
+        // copy base function into our new one and replace it in the extension
+        $baseFunc = $gen->getFunctionByName($functionName);
+        $func->copyFrom($baseFunc);
+
+        $func->arguments[1] = ExtArgument::make('callback', ExtType::T_FUNC);
+
+        $func->comment = <<<EOD
+This function sets the focus callback of the specified window, which is called when the window gains or loses input focus.
+
+After the focus callback is called for a window that lost input focus, synthetic key and mouse button release events will be generated for all such that had been pressed.  For more information, see glfwSetKeyCallback and glfwSetMouseButtonCallback.
+
+Example:
+```php
+glfwSetWindowFocusCallback(\$window, function(\$focused) {
+    echo "Window focus changed to: " . \$focused . PHP_EOL;
+});
+```
+
+EOD;
+        $gen->replaceFunctionByName($func);
+    }
+
+    /**
+     * GLFW Window iconify Callback 
+     * 
+     * ------------------------------------------------------------------------------------------------------
+     */
+    private function patchGlfwSetWindowIconifyCallback(ExtGenerator $gen) : void
+    {
+        $functionName = 'glfwSetWindowIconifyCallback';
+
+        $func = new class($functionName) extends ExtFunction 
+        {
+            public function getFunctionImplementationBody(): string
+            {
+                return GLFWCallbacksAdjustment::createCallbackImpl('phpglfw_callback_windowiconifycallback_handler', 'windowiconifycallback', 'glfwSetWindowIconifyCallback');
+            }
+        };
+
+        // copy base function into our new one and replace it in the extension
+        $baseFunc = $gen->getFunctionByName($functionName);
+        $func->copyFrom($baseFunc);
+
+        $func->arguments[1] = ExtArgument::make('callback', ExtType::T_FUNC);
+
+        $func->comment = <<<EOD
+This function sets the iconification callback of the specified window, which is called when the window is iconified or restored.
+
+Example:
+```php
+glfwSetWindowIconifyCallback(\$window, function(\$iconified) {
+    echo "Window iconified changed to: " . \$iconified . PHP_EOL;
+});
+```
+
+EOD;
+        $gen->replaceFunctionByName($func);
+    }
+
+    /**
+     * GLFW Window maximize Callback 
+     * 
+     * ------------------------------------------------------------------------------------------------------
+     */
+    private function patchGlfwSetWindowMaximizeCallback(ExtGenerator $gen) : void
+    {
+        $functionName = 'glfwSetWindowMaximizeCallback';
+
+        $func = new class($functionName) extends ExtFunction 
+        {
+            public function getFunctionImplementationBody(): string
+            {
+                return GLFWCallbacksAdjustment::createCallbackImpl('phpglfw_callback_windowmaximizecallback_handler', 'windowmaximizecallback', 'glfwSetWindowMaximizeCallback');
+            }
+        };
+
+        // copy base function into our new one and replace it in the extension
+        $baseFunc = $gen->getFunctionByName($functionName);
+        $func->copyFrom($baseFunc);
+
+        $func->arguments[1] = ExtArgument::make('callback', ExtType::T_FUNC);
+
+        $func->comment = <<<EOD
+This function sets the maximize callback of the specified window, which is called when the window is maximized or restored.
+
+Example:
+```php
+glfwSetWindowMaximizeCallback(\$window, function(\$maximized) {
+    echo "Window maximized changed to: " . \$maximized . PHP_EOL;
+});
+```
+
+EOD;
+        $gen->replaceFunctionByName($func);
+    }
+
+    /**
+     * GLFW Window framebuffer resize Callback 
+     * 
+     * ------------------------------------------------------------------------------------------------------
+     */
+    private function patchGlfwSetFramebufferSizeCallback(ExtGenerator $gen) : void
+    {
+        $functionName = 'glfwSetFramebufferSizeCallback';
+
+        $func = new class($functionName) extends ExtFunction 
+        {
+            public function getFunctionImplementationBody(): string
+            {
+                return GLFWCallbacksAdjustment::createCallbackImpl('phpglfw_callback_windowframebuffersizecallback_handler', 'windowframebuffersizecallback', 'glfwSetFramebufferSizeCallback');
+            }
+        };
+
+        // copy base function into our new one and replace it in the extension
+        $baseFunc = $gen->getFunctionByName($functionName);
+        $func->copyFrom($baseFunc);
+
+        $func->arguments[1] = ExtArgument::make('callback', ExtType::T_FUNC);
+
+        $func->comment = <<<EOD
+This function sets the framebuffer resize callback of the specified window, which is called when the framebuffer of the specified window is resized.
+
+This callback is provided for convenience.  The equivalent functionality can be achieved by registering a window size callback and querying the framebuffer size within that callback.
+
+Example:
+```php
+glfwSetFramebufferSizeCallback(\$window, function(\$width, \$height) {
+    echo "Framebuffer size changed to: " . \$width . "x" . \$height . PHP_EOL;
+});
+```
+
+EOD;
+        $gen->replaceFunctionByName($func);
+    }
+
+    /**
+     * GLFW Window content scale Callback 
+     * 
+     * ------------------------------------------------------------------------------------------------------
+     */
+    private function patchGlfwSetWindowContentScaleCallback(ExtGenerator $gen) : void
+    {
+        $functionName = 'glfwSetWindowContentScaleCallback';
+
+        $func = new class($functionName) extends ExtFunction 
+        {
+            public function getFunctionImplementationBody(): string
+            {
+                return GLFWCallbacksAdjustment::createCallbackImpl('phpglfw_callback_windowcontentscalecallback_handler', 'windowcontentscalecallback', 'glfwSetWindowContentScaleCallback');
+            }
+        };
+
+        // copy base function into our new one and replace it in the extension
+        $baseFunc = $gen->getFunctionByName($functionName);
+        $func->copyFrom($baseFunc);
+
+        $func->arguments[1] = ExtArgument::make('callback', ExtType::T_FUNC);
+
+        $func->comment = <<<EOD
+This function sets the window content scale callback of the specified window, which is called when the content scale of the specified window changes.
+
+This callback is provided for convenience.  The equivalent functionality can be achieved by registering a window size callback and querying the content scale within that callback.
+
+Example:
+```php
+glfwSetWindowContentScaleCallback(\$window, function(\$xscale, \$yscale) {
+    echo "Window content scale changed to: " . \$xscale . "x" . \$yscale . PHP_EOL;
+});
+```
+
+EOD;
+        $gen->replaceFunctionByName($func);
+    }
 
     /**
      * Recieves an instance of the extension generator before beeing built to 
@@ -286,6 +515,13 @@ EOD;
         $this->patchGlfwSetWindowPosCallback($gen);
         $this->patchGlfwSetWindowSizeCallback($gen);
         $this->patchGlfwSetWindowCloseCallback($gen);
+        $this->patchGlfwSetWindowRefreshCallback($gen);
+        $this->patchGlfwSetWindowFocusCallback($gen);
+        $this->patchGlfwSetWindowIconifyCallback($gen);
+        $this->patchGlfwSetWindowMaximizeCallback($gen);
+        $this->patchGlfwSetFramebufferSizeCallback($gen);
+        $this->patchGlfwSetWindowContentScaleCallback($gen);
+
 
     }
 }

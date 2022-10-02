@@ -7705,6 +7705,139 @@ namespace {
     function glfwSetWindowCloseCallback(GLFWwindow $window, callable $callback) : void {};
  
     /**
+     * This function sets the refresh callback of the specified window, which is
+     * called when the client area of the window needs to be redrawn, for example if
+     * the window has been exposed after having been covered by another window.
+     * 
+     * On compositing window systems such as Aero, Compiz, Aqua or Wayland, where
+     * the window contents are saved off-screen, this callback may be called only
+     * very infrequently or never at all.
+     * 
+     * Example:
+     * ```php
+     * glfwSetWindowRefreshCallback($window, function() {
+     *     echo "Window needs to be redrawn" . PHP_EOL;
+     * });
+     * ```
+     * 
+     * 
+     * @param GLFWwindow $window The window whose callback to set.
+     * @param callable $callback 
+     * 
+     * @return void
+     */ 
+    function glfwSetWindowRefreshCallback(GLFWwindow $window, callable $callback) : void {};
+ 
+    /**
+     * This function sets the focus callback of the specified window, which is
+     * called when the window gains or loses input focus.
+     * 
+     * After the focus callback is called for a window that lost input focus,
+     * synthetic key and mouse button release events will be generated for all such
+     * that had been pressed.  For more information, see glfwSetKeyCallback and
+     * glfwSetMouseButtonCallback.
+     * 
+     * Example:
+     * ```php
+     * glfwSetWindowFocusCallback($window, function($focused) {
+     *     echo "Window focus changed to: " . $focused . PHP_EOL;
+     * });
+     * ```
+     * 
+     * 
+     * @param GLFWwindow $window The window whose callback to set.
+     * @param callable $callback 
+     * 
+     * @return void
+     */ 
+    function glfwSetWindowFocusCallback(GLFWwindow $window, callable $callback) : void {};
+ 
+    /**
+     * This function sets the iconification callback of the specified window, which
+     * is called when the window is iconified or restored.
+     * 
+     * Example:
+     * ```php
+     * glfwSetWindowIconifyCallback($window, function($iconified) {
+     *     echo "Window iconified changed to: " . $iconified . PHP_EOL;
+     * });
+     * ```
+     * 
+     * 
+     * @param GLFWwindow $window The window whose callback to set.
+     * @param callable $callback 
+     * 
+     * @return void
+     */ 
+    function glfwSetWindowIconifyCallback(GLFWwindow $window, callable $callback) : void {};
+ 
+    /**
+     * This function sets the maximize callback of the specified window, which is
+     * called when the window is maximized or restored.
+     * 
+     * Example:
+     * ```php
+     * glfwSetWindowMaximizeCallback($window, function($maximized) {
+     *     echo "Window maximized changed to: " . $maximized . PHP_EOL;
+     * });
+     * ```
+     * 
+     * 
+     * @param GLFWwindow $window The window whose callback to set.
+     * @param callable $callback 
+     * 
+     * @return void
+     */ 
+    function glfwSetWindowMaximizeCallback(GLFWwindow $window, callable $callback) : void {};
+ 
+    /**
+     * This function sets the framebuffer resize callback of the specified window,
+     * which is called when the framebuffer of the specified window is resized.
+     * 
+     * This callback is provided for convenience.  The equivalent functionality can
+     * be achieved by registering a window size callback and querying the
+     * framebuffer size within that callback.
+     * 
+     * Example:
+     * ```php
+     * glfwSetFramebufferSizeCallback($window, function($width, $height) {
+     *     echo "Framebuffer size changed to: " . $width . "x" . $height . PHP_EOL;
+     * });
+     * ```
+     * 
+     * 
+     * @param GLFWwindow $window The window whose callback to set.
+     * @param callable $callback 
+     * 
+     * @return void
+     */ 
+    function glfwSetFramebufferSizeCallback(GLFWwindow $window, callable $callback) : void {};
+ 
+    /**
+     * This function sets the window content scale callback of the specified window,
+     * which is called when the content scale of the specified window changes.
+     * 
+     * This callback is provided for convenience.  The equivalent functionality can
+     * be achieved by registering a window size callback and querying the content
+     * scale within that callback.
+     * 
+     * Example:
+     * ```php
+     * glfwSetWindowContentScaleCallback($window, function($xscale, $yscale) {
+     *     echo "Window content scale changed to: " . $xscale . "x" . $yscale .
+     * PHP_EOL;
+     * });
+     * ```
+     * 
+     * 
+     * @param GLFWwindow $window The window whose callback to set.
+     * @param callable $callback 
+     * 
+     * @return void
+     */ 
+    function glfwSetWindowContentScaleCallback(GLFWwindow $window, callable $callback) : void {};
+ 
+    /**
      * Processes all pending events.
      * 
      * This function processes only those events that are already in the event

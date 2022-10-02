@@ -68,7 +68,7 @@ typedef struct _phpglfw_glfwwindow_object {
     phpglfw_callback windowiconifycallback;
     phpglfw_callback windowmaximizecallback;
     phpglfw_callback windowframebuffersizecallback;
-    phpglfw_callback windowcontentcalecallback;
+    phpglfw_callback windowcontentscalecallback;
     phpglfw_callback keycallback;
     phpglfw_callback charcallback;
     phpglfw_callback charmodscallback;
@@ -540,11 +540,11 @@ static void phpglfw_callback_windowcontentscalecallback_handler(GLFWwindow* wind
 
     phpglfw_glfwwindow_object* window_obj = (phpglfw_glfwwindow_object*)glfwGetWindowUserPointer(window);
 
-    window_obj->windowcontentcalecallback.fci.params = params;
-    window_obj->windowcontentcalecallback.fci.param_count = 2;
-    window_obj->windowcontentcalecallback.fci.retval = &return_val;
+    window_obj->windowcontentscalecallback.fci.params = params;
+    window_obj->windowcontentscalecallback.fci.param_count = 2;
+    window_obj->windowcontentscalecallback.fci.retval = &return_val;
 
-    zend_call_function(&window_obj->windowcontentcalecallback.fci, &window_obj->windowcontentcalecallback.fci_cache);
+    zend_call_function(&window_obj->windowcontentscalecallback.fci, &window_obj->windowcontentscalecallback.fci_cache);
 
     zval_ptr_dtor(&return_val);
     efree(params);
@@ -10885,6 +10885,132 @@ PHP_FUNCTION(glfwSetWindowCloseCallback)
     memcpy((void*)&obj_ptr->windowclosecallback.fci, (void*)&fci, sizeof(zend_fcall_info));
     memcpy((void*)&obj_ptr->windowclosecallback.fci_cache, (void*)&fcc, sizeof(zend_fcall_info_cache));
     glfwSetWindowCloseCallback(obj_ptr->glfwwindow, phpglfw_callback_windowclosecallback_handler);
+} 
+
+/**
+ * glfwSetWindowRefreshCallback
+ */ 
+PHP_FUNCTION(glfwSetWindowRefreshCallback)
+{
+    zend_fcall_info fci;
+    zend_fcall_info_cache fcc;
+    zval *window_zval;
+    if (FAILURE == zend_parse_parameters(ZEND_NUM_ARGS(), "Of",  &window_zval, phpglfw_glfwwindow_ce, &fci, &fcc)) {
+        RETURN_THROWS();
+    }
+    phpglfw_glfwwindow_object *obj_ptr = phpglfw_glfwwindow_objectptr_from_zobj_p(Z_OBJ_P(window_zval));
+    Z_TRY_ADDREF(fci.function_name);
+    if (fcc.object) {
+        GC_ADDREF(fcc.object);
+    }
+    memcpy((void*)&obj_ptr->windowrefreshcallback.fci, (void*)&fci, sizeof(zend_fcall_info));
+    memcpy((void*)&obj_ptr->windowrefreshcallback.fci_cache, (void*)&fcc, sizeof(zend_fcall_info_cache));
+    glfwSetWindowRefreshCallback(obj_ptr->glfwwindow, phpglfw_callback_windowrefreshcallback_handler);
+} 
+
+/**
+ * glfwSetWindowFocusCallback
+ */ 
+PHP_FUNCTION(glfwSetWindowFocusCallback)
+{
+    zend_fcall_info fci;
+    zend_fcall_info_cache fcc;
+    zval *window_zval;
+    if (FAILURE == zend_parse_parameters(ZEND_NUM_ARGS(), "Of",  &window_zval, phpglfw_glfwwindow_ce, &fci, &fcc)) {
+        RETURN_THROWS();
+    }
+    phpglfw_glfwwindow_object *obj_ptr = phpglfw_glfwwindow_objectptr_from_zobj_p(Z_OBJ_P(window_zval));
+    Z_TRY_ADDREF(fci.function_name);
+    if (fcc.object) {
+        GC_ADDREF(fcc.object);
+    }
+    memcpy((void*)&obj_ptr->windowfocuscallback.fci, (void*)&fci, sizeof(zend_fcall_info));
+    memcpy((void*)&obj_ptr->windowfocuscallback.fci_cache, (void*)&fcc, sizeof(zend_fcall_info_cache));
+    glfwSetWindowFocusCallback(obj_ptr->glfwwindow, phpglfw_callback_windowfocuscallback_handler);
+} 
+
+/**
+ * glfwSetWindowIconifyCallback
+ */ 
+PHP_FUNCTION(glfwSetWindowIconifyCallback)
+{
+    zend_fcall_info fci;
+    zend_fcall_info_cache fcc;
+    zval *window_zval;
+    if (FAILURE == zend_parse_parameters(ZEND_NUM_ARGS(), "Of",  &window_zval, phpglfw_glfwwindow_ce, &fci, &fcc)) {
+        RETURN_THROWS();
+    }
+    phpglfw_glfwwindow_object *obj_ptr = phpglfw_glfwwindow_objectptr_from_zobj_p(Z_OBJ_P(window_zval));
+    Z_TRY_ADDREF(fci.function_name);
+    if (fcc.object) {
+        GC_ADDREF(fcc.object);
+    }
+    memcpy((void*)&obj_ptr->windowiconifycallback.fci, (void*)&fci, sizeof(zend_fcall_info));
+    memcpy((void*)&obj_ptr->windowiconifycallback.fci_cache, (void*)&fcc, sizeof(zend_fcall_info_cache));
+    glfwSetWindowIconifyCallback(obj_ptr->glfwwindow, phpglfw_callback_windowiconifycallback_handler);
+} 
+
+/**
+ * glfwSetWindowMaximizeCallback
+ */ 
+PHP_FUNCTION(glfwSetWindowMaximizeCallback)
+{
+    zend_fcall_info fci;
+    zend_fcall_info_cache fcc;
+    zval *window_zval;
+    if (FAILURE == zend_parse_parameters(ZEND_NUM_ARGS(), "Of",  &window_zval, phpglfw_glfwwindow_ce, &fci, &fcc)) {
+        RETURN_THROWS();
+    }
+    phpglfw_glfwwindow_object *obj_ptr = phpglfw_glfwwindow_objectptr_from_zobj_p(Z_OBJ_P(window_zval));
+    Z_TRY_ADDREF(fci.function_name);
+    if (fcc.object) {
+        GC_ADDREF(fcc.object);
+    }
+    memcpy((void*)&obj_ptr->windowmaximizecallback.fci, (void*)&fci, sizeof(zend_fcall_info));
+    memcpy((void*)&obj_ptr->windowmaximizecallback.fci_cache, (void*)&fcc, sizeof(zend_fcall_info_cache));
+    glfwSetWindowMaximizeCallback(obj_ptr->glfwwindow, phpglfw_callback_windowmaximizecallback_handler);
+} 
+
+/**
+ * glfwSetFramebufferSizeCallback
+ */ 
+PHP_FUNCTION(glfwSetFramebufferSizeCallback)
+{
+    zend_fcall_info fci;
+    zend_fcall_info_cache fcc;
+    zval *window_zval;
+    if (FAILURE == zend_parse_parameters(ZEND_NUM_ARGS(), "Of",  &window_zval, phpglfw_glfwwindow_ce, &fci, &fcc)) {
+        RETURN_THROWS();
+    }
+    phpglfw_glfwwindow_object *obj_ptr = phpglfw_glfwwindow_objectptr_from_zobj_p(Z_OBJ_P(window_zval));
+    Z_TRY_ADDREF(fci.function_name);
+    if (fcc.object) {
+        GC_ADDREF(fcc.object);
+    }
+    memcpy((void*)&obj_ptr->windowframebuffersizecallback.fci, (void*)&fci, sizeof(zend_fcall_info));
+    memcpy((void*)&obj_ptr->windowframebuffersizecallback.fci_cache, (void*)&fcc, sizeof(zend_fcall_info_cache));
+    glfwSetFramebufferSizeCallback(obj_ptr->glfwwindow, phpglfw_callback_windowframebuffersizecallback_handler);
+} 
+
+/**
+ * glfwSetWindowContentScaleCallback
+ */ 
+PHP_FUNCTION(glfwSetWindowContentScaleCallback)
+{
+    zend_fcall_info fci;
+    zend_fcall_info_cache fcc;
+    zval *window_zval;
+    if (FAILURE == zend_parse_parameters(ZEND_NUM_ARGS(), "Of",  &window_zval, phpglfw_glfwwindow_ce, &fci, &fcc)) {
+        RETURN_THROWS();
+    }
+    phpglfw_glfwwindow_object *obj_ptr = phpglfw_glfwwindow_objectptr_from_zobj_p(Z_OBJ_P(window_zval));
+    Z_TRY_ADDREF(fci.function_name);
+    if (fcc.object) {
+        GC_ADDREF(fcc.object);
+    }
+    memcpy((void*)&obj_ptr->windowcontentscalecallback.fci, (void*)&fci, sizeof(zend_fcall_info));
+    memcpy((void*)&obj_ptr->windowcontentscalecallback.fci_cache, (void*)&fcc, sizeof(zend_fcall_info_cache));
+    glfwSetWindowContentScaleCallback(obj_ptr->glfwwindow, phpglfw_callback_windowcontentscalecallback_handler);
 } 
 
 /**

@@ -2435,6 +2435,12 @@ namespace {
     function glfwSetWindowPosCallback(GLFWwindow $window, callable $callback) : void {};
     function glfwSetWindowSizeCallback(GLFWwindow $window, callable $callback) : void {};
     function glfwSetWindowCloseCallback(GLFWwindow $window, callable $callback) : void {};
+    function glfwSetWindowRefreshCallback(GLFWwindow $window, callable $callback) : void {};
+    function glfwSetWindowFocusCallback(GLFWwindow $window, callable $callback) : void {};
+    function glfwSetWindowIconifyCallback(GLFWwindow $window, callable $callback) : void {};
+    function glfwSetWindowMaximizeCallback(GLFWwindow $window, callable $callback) : void {};
+    function glfwSetFramebufferSizeCallback(GLFWwindow $window, callable $callback) : void {};
+    function glfwSetWindowContentScaleCallback(GLFWwindow $window, callable $callback) : void {};
     function glfwPollEvents() : void {};
     function glfwWaitEvents() : void {};
     function glfwWaitEventsTimeout(float $timeout) : void {};

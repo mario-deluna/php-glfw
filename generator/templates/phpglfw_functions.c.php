@@ -356,11 +356,11 @@ static void phpglfw_callback_windowcontentscalecallback_handler(GLFWwindow* wind
 
     phpglfw_glfwwindow_object* window_obj = (phpglfw_glfwwindow_object*)glfwGetWindowUserPointer(window);
 
-    window_obj->windowcontentcalecallback.fci.params = params;
-    window_obj->windowcontentcalecallback.fci.param_count = 2;
-    window_obj->windowcontentcalecallback.fci.retval = &return_val;
+    window_obj->windowcontentscalecallback.fci.params = params;
+    window_obj->windowcontentscalecallback.fci.param_count = 2;
+    window_obj->windowcontentscalecallback.fci.retval = &return_val;
 
-    zend_call_function(&window_obj->windowcontentcalecallback.fci, &window_obj->windowcontentcalecallback.fci_cache);
+    zend_call_function(&window_obj->windowcontentscalecallback.fci, &window_obj->windowcontentscalecallback.fci_cache);
 
     zval_ptr_dtor(&return_val);
     efree(params);

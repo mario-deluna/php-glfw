@@ -39,7 +39,7 @@ class GLFWHeaderParser
                 'windowiconifycallback',
                 'windowmaximizecallback',
                 'windowframebuffersizecallback',
-                'windowcontentcalecallback',
+                'windowcontentscalecallback',
 
                 // input 
                 'keycallback',

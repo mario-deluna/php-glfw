@@ -1,5 +1,5 @@
 /* This is a generated file, edit the .stub.php file instead.
- * Stub hash: 09794d164fd8feecb784910e0b8944477e366f8c */
+ * Stub hash: e7c3b1799c3eb7c38176c6421a286cb919b3b1a9 */
 
 ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_glCullFace, 0, 1, IS_VOID, 0)
 	ZEND_ARG_TYPE_INFO(0, mode, IS_LONG, 0)
@@ -2034,6 +2034,18 @@ ZEND_END_ARG_INFO()
 
 #define arginfo_glfwSetWindowCloseCallback arginfo_glfwSetWindowPosCallback
 
+#define arginfo_glfwSetWindowRefreshCallback arginfo_glfwSetWindowPosCallback
+
+#define arginfo_glfwSetWindowFocusCallback arginfo_glfwSetWindowPosCallback
+
+#define arginfo_glfwSetWindowIconifyCallback arginfo_glfwSetWindowPosCallback
+
+#define arginfo_glfwSetWindowMaximizeCallback arginfo_glfwSetWindowPosCallback
+
+#define arginfo_glfwSetFramebufferSizeCallback arginfo_glfwSetWindowPosCallback
+
+#define arginfo_glfwSetWindowContentScaleCallback arginfo_glfwSetWindowPosCallback
+
 #define arginfo_glfwPollEvents arginfo_glFinish
 
 #define arginfo_glfwWaitEvents arginfo_glFinish
@@ -3086,6 +3098,12 @@ ZEND_FUNCTION(glfwSetWindowAttrib);
 ZEND_FUNCTION(glfwSetWindowPosCallback);
 ZEND_FUNCTION(glfwSetWindowSizeCallback);
 ZEND_FUNCTION(glfwSetWindowCloseCallback);
+ZEND_FUNCTION(glfwSetWindowRefreshCallback);
+ZEND_FUNCTION(glfwSetWindowFocusCallback);
+ZEND_FUNCTION(glfwSetWindowIconifyCallback);
+ZEND_FUNCTION(glfwSetWindowMaximizeCallback);
+ZEND_FUNCTION(glfwSetFramebufferSizeCallback);
+ZEND_FUNCTION(glfwSetWindowContentScaleCallback);
 ZEND_FUNCTION(glfwPollEvents);
 ZEND_FUNCTION(glfwWaitEvents);
 ZEND_FUNCTION(glfwWaitEventsTimeout);
@@ -3769,6 +3787,12 @@ static const zend_function_entry ext_functions[] = {
 	ZEND_FE(glfwSetWindowPosCallback, arginfo_glfwSetWindowPosCallback)
 	ZEND_FE(glfwSetWindowSizeCallback, arginfo_glfwSetWindowSizeCallback)
 	ZEND_FE(glfwSetWindowCloseCallback, arginfo_glfwSetWindowCloseCallback)
+	ZEND_FE(glfwSetWindowRefreshCallback, arginfo_glfwSetWindowRefreshCallback)
+	ZEND_FE(glfwSetWindowFocusCallback, arginfo_glfwSetWindowFocusCallback)
+	ZEND_FE(glfwSetWindowIconifyCallback, arginfo_glfwSetWindowIconifyCallback)
+	ZEND_FE(glfwSetWindowMaximizeCallback, arginfo_glfwSetWindowMaximizeCallback)
+	ZEND_FE(glfwSetFramebufferSizeCallback, arginfo_glfwSetFramebufferSizeCallback)
+	ZEND_FE(glfwSetWindowContentScaleCallback, arginfo_glfwSetWindowContentScaleCallback)
 	ZEND_FE(glfwPollEvents, arginfo_glfwPollEvents)
 	ZEND_FE(glfwWaitEvents, arginfo_glfwWaitEvents)
 	ZEND_FE(glfwWaitEventsTimeout, arginfo_glfwWaitEventsTimeout)
