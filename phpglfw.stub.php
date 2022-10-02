@@ -2432,6 +2432,9 @@ namespace {
     function glfwSetWindowMonitor(GLFWwindow $window, GLFWmonitor $monitor, int $xpos, int $ypos, int $width, int $height, int $refreshRate) : void {};
     function glfwGetWindowAttrib(GLFWwindow $window, int $attrib) : int {};
     function glfwSetWindowAttrib(GLFWwindow $window, int $attrib, int $value) : void {};
+    function glfwSetWindowPosCallback(GLFWwindow $window, callable $callback) : void {};
+    function glfwSetWindowSizeCallback(GLFWwindow $window, callable $callback) : void {};
+    function glfwSetWindowCloseCallback(GLFWwindow $window, callable $callback) : void {};
     function glfwPollEvents() : void {};
     function glfwWaitEvents() : void {};
     function glfwWaitEventsTimeout(float $timeout) : void {};

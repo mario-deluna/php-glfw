@@ -31,15 +31,15 @@ class GLFWHeaderParser
         {
             public array $additionalCallbacks = [
                 // window callbacks
-                'poscallback',
-                'sizecallback',
-                'closecallback',
-                'refreshcallback',
-                'focuscallback',
-                'iconifycallback',
-                'maximizecallback',
-                'framebuffersizecallback',
-                'contentcalecallback',
+                'windowposcallback',
+                'windowsizecallback',
+                'windowclosecallback',
+                'windowrefreshcallback',
+                'windowfocuscallback',
+                'windowiconifycallback',
+                'windowmaximizecallback',
+                'windowframebuffersizecallback',
+                'windowcontentcalecallback',
 
                 // input 
                 'keycallback',

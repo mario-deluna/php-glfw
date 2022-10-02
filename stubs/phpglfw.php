@@ -7636,6 +7636,75 @@ namespace {
     function glfwSetWindowAttrib(GLFWwindow $window, int $attrib, int $value) : void {};
  
     /**
+     * This function sets the position callback of the specified window, which is
+     * called when the window is moved.
+     * 
+     * The callback is provided with the screen position of the upper-left corner of
+     * the client area of the window.
+     * 
+     * Example:
+     * ```php
+     * glfwSetWindowPosCallback($window, function($x, $y) {
+     *     echo "Window moved to: " . $x . ", " . $y . PHP_EOL;
+     * });
+     * ```
+     * 
+     * 
+     * @param GLFWwindow $window The window whose callback to set.
+     * @param callable $callback 
+     * 
+     * @return void
+     */ 
+    function glfwSetWindowPosCallback(GLFWwindow $window, callable $callback) : void {};
+ 
+    /**
+     * This function sets the size callback of the specified window, which is called
+     * when the window is resized.
+     * 
+     * The callback is provided with the size, in screen coordinates, of the client
+     * area of the window.
+     * 
+     * Example:
+     * ```php
+     * glfwSetWindowSizeCallback($window, function($width, $height) {
+     *     echo "Window resized to: " . $width . "x" . $height . PHP_EOL;
+     * });
+     * ```
+     * 
+     * 
+     * @param GLFWwindow $window The window whose callback to set.
+     * @param callable $callback 
+     * 
+     * @return void
+     */ 
+    function glfwSetWindowSizeCallback(GLFWwindow $window, callable $callback) : void {};
+ 
+    /**
+     * This function sets the close callback of the specified window, which is
+     * called when the user attempts to close the window, for example by clicking
+     * the close widget in the title bar.
+     * 
+     * The close flag is set before this callback is called, but you can modify it
+     * at any time with glfwSetWindowShouldClose.
+     * 
+     * The close callback is not triggered by glfwDestroyWindow.
+     * 
+     * Example:
+     * ```php
+     * glfwSetWindowCloseCallback($window, function() {
+     *     echo "Window close requested" . PHP_EOL;
+     * });
+     * ```
+     * 
+     * 
+     * @param GLFWwindow $window The window whose callback to set.
+     * @param callable $callback 
+     * 
+     * @return void
+     */ 
+    function glfwSetWindowCloseCallback(GLFWwindow $window, callable $callback) : void {};
+ 
+    /**
      * Processes all pending events.
      * 
      * This function processes only those events that are already in the event

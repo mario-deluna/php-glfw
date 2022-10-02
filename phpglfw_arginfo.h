@@ -1,5 +1,5 @@
 /* This is a generated file, edit the .stub.php file instead.
- * Stub hash: a3f211321ec23398438df9af6bbfbb4bb9516485 */
+ * Stub hash: 09794d164fd8feecb784910e0b8944477e366f8c */
 
 ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_glCullFace, 0, 1, IS_VOID, 0)
 	ZEND_ARG_TYPE_INFO(0, mode, IS_LONG, 0)
@@ -2025,6 +2025,15 @@ ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_glfwSetWindowAttrib, 0, 3, IS_VO
 	ZEND_ARG_TYPE_INFO(0, value, IS_LONG, 0)
 ZEND_END_ARG_INFO()
 
+ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_glfwSetWindowPosCallback, 0, 2, IS_VOID, 0)
+	ZEND_ARG_OBJ_INFO(0, window, GLFWwindow, 0)
+	ZEND_ARG_TYPE_INFO(0, callback, IS_CALLABLE, 0)
+ZEND_END_ARG_INFO()
+
+#define arginfo_glfwSetWindowSizeCallback arginfo_glfwSetWindowPosCallback
+
+#define arginfo_glfwSetWindowCloseCallback arginfo_glfwSetWindowPosCallback
+
 #define arginfo_glfwPollEvents arginfo_glFinish
 
 #define arginfo_glfwWaitEvents arginfo_glFinish
@@ -2092,12 +2101,9 @@ ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_glfwSetCursor, 0, 2, IS_VOID, 0)
 	ZEND_ARG_OBJ_INFO(0, cursor, GLFWcursor, 0)
 ZEND_END_ARG_INFO()
 
-ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_glfwSetKeyCallback, 0, 2, IS_VOID, 0)
-	ZEND_ARG_OBJ_INFO(0, window, GLFWwindow, 0)
-	ZEND_ARG_TYPE_INFO(0, callback, IS_CALLABLE, 0)
-ZEND_END_ARG_INFO()
+#define arginfo_glfwSetKeyCallback arginfo_glfwSetWindowPosCallback
 
-#define arginfo_glfwSetCharCallback arginfo_glfwSetKeyCallback
+#define arginfo_glfwSetCharCallback arginfo_glfwSetWindowPosCallback
 
 ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_glfwJoystickPresent, 0, 1, IS_LONG, 0)
 	ZEND_ARG_TYPE_INFO(0, jid, IS_LONG, 0)
@@ -3077,6 +3083,9 @@ ZEND_FUNCTION(glfwGetWindowMonitor);
 ZEND_FUNCTION(glfwSetWindowMonitor);
 ZEND_FUNCTION(glfwGetWindowAttrib);
 ZEND_FUNCTION(glfwSetWindowAttrib);
+ZEND_FUNCTION(glfwSetWindowPosCallback);
+ZEND_FUNCTION(glfwSetWindowSizeCallback);
+ZEND_FUNCTION(glfwSetWindowCloseCallback);
 ZEND_FUNCTION(glfwPollEvents);
 ZEND_FUNCTION(glfwWaitEvents);
 ZEND_FUNCTION(glfwWaitEventsTimeout);
@@ -3757,6 +3766,9 @@ static const zend_function_entry ext_functions[] = {
 	ZEND_FE(glfwSetWindowMonitor, arginfo_glfwSetWindowMonitor)
 	ZEND_FE(glfwGetWindowAttrib, arginfo_glfwGetWindowAttrib)
 	ZEND_FE(glfwSetWindowAttrib, arginfo_glfwSetWindowAttrib)
+	ZEND_FE(glfwSetWindowPosCallback, arginfo_glfwSetWindowPosCallback)
+	ZEND_FE(glfwSetWindowSizeCallback, arginfo_glfwSetWindowSizeCallback)
+	ZEND_FE(glfwSetWindowCloseCallback, arginfo_glfwSetWindowCloseCallback)
 	ZEND_FE(glfwPollEvents, arginfo_glfwPollEvents)
 	ZEND_FE(glfwWaitEvents, arginfo_glfwWaitEvents)
 	ZEND_FE(glfwWaitEventsTimeout, arginfo_glfwWaitEventsTimeout)

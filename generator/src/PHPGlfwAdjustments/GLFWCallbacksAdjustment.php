@@ -11,6 +11,32 @@ use ExtType;
 
 class GLFWCallbacksAdjustment implements AdjustmentInterface
 {
+    public static function createCallbackImpl(string $handlerFunc, string $callbackStore, string $glfwFunc) : string
+    {
+        return <<<EOD
+
+zend_fcall_info fci;
+zend_fcall_info_cache fcc;
+zval *window_zval;
+
+if (FAILURE == zend_parse_parameters(ZEND_NUM_ARGS(), "Of",  &window_zval, phpglfw_glfwwindow_ce, &fci, &fcc)) {
+    RETURN_THROWS();
+}
+
+phpglfw_glfwwindow_object *obj_ptr = phpglfw_glfwwindow_objectptr_from_zobj_p(Z_OBJ_P(window_zval));
+
+Z_TRY_ADDREF(fci.function_name);
+if (fcc.object) {
+    GC_ADDREF(fcc.object);
+}
+
+memcpy((void*)&obj_ptr->{$callbackStore}.fci, (void*)&fci, sizeof(zend_fcall_info));
+memcpy((void*)&obj_ptr->{$callbackStore}.fci_cache, (void*)&fcc, sizeof(zend_fcall_info_cache));
+
+{$glfwFunc}(obj_ptr->glfwwindow, {$handlerFunc});
+EOD;
+    }
+
 
     /**
      * GLFW Key Callback 
@@ -100,29 +126,7 @@ EOD;
         {
             public function getFunctionImplementationBody(): string
             {
-
-                $buffer = <<<EOD
-zend_fcall_info fci;
-zend_fcall_info_cache fcc;
-zval *window_zval;
-
-if (FAILURE == zend_parse_parameters(ZEND_NUM_ARGS(), "Of",  &window_zval, phpglfw_glfwwindow_ce, &fci, &fcc)) {
-    RETURN_THROWS();
-}
-
-phpglfw_glfwwindow_object *obj_ptr = phpglfw_glfwwindow_objectptr_from_zobj_p(Z_OBJ_P(window_zval));
-
-Z_TRY_ADDREF(fci.function_name);
-if (fcc.object) {
-    GC_ADDREF(fcc.object);
-}
-
-memcpy((void*)&obj_ptr->charcallback.fci, (void*)&fci, sizeof(zend_fcall_info));
-memcpy((void*)&obj_ptr->charcallback.fci_cache, (void*)&fcc, sizeof(zend_fcall_info_cache));
-
-glfwSetCharCallback(obj_ptr->glfwwindow, phpglfw_callback_charcallback_handler);
-EOD;
-                return $buffer;
+                return GLFWCallbacksAdjustment::createCallbackImpl('phpglfw_callback_charcallback_handler', 'charcallback', 'glfwSetCharCallback');
             }
         };
 
@@ -147,10 +151,128 @@ The character callback is intended for Unicode text input. As it deals with char
 The character callback behaves as system text input normally does and will not be called if modifier keys are held down that would prevent normal text input on that platform, for example a Super (Command) key on macOS or Alt key on Windows.
 
 EOD;
-        // var_dump($func); die;
-
         $gen->replaceFunctionByName($func);
     }
+
+    /**
+     * GLFW Window position Callback 
+     * 
+     * ------------------------------------------------------------------------------------------------------
+     */
+    private function patchGlfwSetWindowPosCallback(ExtGenerator $gen) : void
+    {
+        $functionName = 'glfwSetWindowPosCallback';
+
+        $func = new class($functionName) extends ExtFunction 
+        {
+            public function getFunctionImplementationBody(): string
+            {
+                return GLFWCallbacksAdjustment::createCallbackImpl('phpglfw_callback_windowposcallback_handler', 'windowposcallback', 'glfwSetWindowPosCallback');
+            }
+        };
+
+        // copy base function into our new one and replace it in the extension
+        $baseFunc = $gen->getFunctionByName($functionName);
+        $func->copyFrom($baseFunc);
+
+        $func->arguments[1] = ExtArgument::make('callback', ExtType::T_FUNC);
+
+        $func->comment = <<<EOD
+This function sets the position callback of the specified window, which is called when the window is moved.
+
+The callback is provided with the screen position of the upper-left corner of the client area of the window.
+
+Example:
+```php
+glfwSetWindowPosCallback(\$window, function(\$x, \$y) {
+    echo "Window moved to: " . \$x . ", " . \$y . PHP_EOL;
+});
+```
+
+EOD;
+        $gen->replaceFunctionByName($func);
+    }
+
+    /**
+     * GLFW Window size Callback 
+     * 
+     * ------------------------------------------------------------------------------------------------------
+     */
+    private function patchGlfwSetWindowSizeCallback(ExtGenerator $gen) : void
+    {
+        $functionName = 'glfwSetWindowSizeCallback';
+
+        $func = new class($functionName) extends ExtFunction 
+        {
+            public function getFunctionImplementationBody(): string
+            {
+                return GLFWCallbacksAdjustment::createCallbackImpl('phpglfw_callback_windowsizecallback_handler', 'windowsizecallback', 'glfwSetWindowSizeCallback');
+            }
+        };
+
+        // copy base function into our new one and replace it in the extension
+        $baseFunc = $gen->getFunctionByName($functionName);
+        $func->copyFrom($baseFunc);
+
+        $func->arguments[1] = ExtArgument::make('callback', ExtType::T_FUNC);
+
+        $func->comment = <<<EOD
+This function sets the size callback of the specified window, which is called when the window is resized.
+
+The callback is provided with the size, in screen coordinates, of the client area of the window.
+
+Example:
+```php
+glfwSetWindowSizeCallback(\$window, function(\$width, \$height) {
+    echo "Window resized to: " . \$width . "x" . \$height . PHP_EOL;
+});
+```
+
+EOD;
+        $gen->replaceFunctionByName($func);
+    }
+
+    /**
+     * GLFW Window close Callback 
+     * 
+     * ------------------------------------------------------------------------------------------------------
+     */
+    private function patchGlfwSetWindowCloseCallback(ExtGenerator $gen) : void
+    {
+        $functionName = 'glfwSetWindowCloseCallback';
+
+        $func = new class($functionName) extends ExtFunction 
+        {
+            public function getFunctionImplementationBody(): string
+            {
+                return GLFWCallbacksAdjustment::createCallbackImpl('phpglfw_callback_windowclosecallback_handler', 'windowclosecallback', 'glfwSetWindowCloseCallback');
+            }
+        };
+
+        // copy base function into our new one and replace it in the extension
+        $baseFunc = $gen->getFunctionByName($functionName);
+        $func->copyFrom($baseFunc);
+
+        $func->arguments[1] = ExtArgument::make('callback', ExtType::T_FUNC);
+
+        $func->comment = <<<EOD
+This function sets the close callback of the specified window, which is called when the user attempts to close the window, for example by clicking the close widget in the title bar.
+
+The close flag is set before this callback is called, but you can modify it at any time with glfwSetWindowShouldClose.
+
+The close callback is not triggered by glfwDestroyWindow.
+
+Example:
+```php
+glfwSetWindowCloseCallback(\$window, function() {
+    echo "Window close requested" . PHP_EOL;
+});
+```
+
+EOD;
+        $gen->replaceFunctionByName($func);
+    }
+
 
     /**
      * Recieves an instance of the extension generator before beeing built to 
@@ -161,5 +283,9 @@ EOD;
     {
         $this->patchGlfwSetKeyCallback($gen);
         $this->patchGlfwSetCharCallback($gen);
+        $this->patchGlfwSetWindowPosCallback($gen);
+        $this->patchGlfwSetWindowSizeCallback($gen);
+        $this->patchGlfwSetWindowCloseCallback($gen);
+
     }
 }
