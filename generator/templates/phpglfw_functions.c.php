@@ -60,8 +60,11 @@ zend_class_entry *<?php echo $ipo->getClassEntryName(); ?>;
 typedef struct _<?php echo $ipo->getObjectStructName(); ?> {
     <?php echo $ipo->getType(); ?> <?php echo $ipo->getObjectStructPointerVar(); ?>;
     zend_object std;
-<?php foreach($ipo->additionalZvals as $zval) : ?>
+    <?php foreach($ipo->additionalZvals as $zval) : ?>
     zval <?php echo $zval; ?>;
+<?php endforeach; ?> 
+<?php foreach($ipo->additionalCallbacks as $callback) : ?>
+    phpglfw_callback <?php echo $callback; ?>;
 <?php endforeach; ?>
 } <?php echo $ipo->getObjectStructName(); ?>; 
 

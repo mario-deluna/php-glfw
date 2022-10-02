@@ -59,33 +59,36 @@ zend_class_entry *phpglfw_glfwcursor_ce;
 typedef struct _phpglfw_glfwwindow_object {
     GLFWwindow* glfwwindow;
     zend_object std;
-    zval poscallback;
-    zval sizecallback;
-    zval closecallback;
-    zval refreshcallback;
-    zval focuscallback;
-    zval iconifycallback;
-    zval maximizecallback;
-    zval framebuffersizecallback;
-    zval contentcalecallback;
-    zval keycallback;
-    zval charcallback;
-    zval charmodscallback;
-    zval mousebuttoncallback;
-    zval cursorposcallback;
-    zval cursorentercallback;
-    zval scrollcallback;
-    zval dropcallback;
+     
+    phpglfw_callback poscallback;
+    phpglfw_callback sizecallback;
+    phpglfw_callback closecallback;
+    phpglfw_callback refreshcallback;
+    phpglfw_callback focuscallback;
+    phpglfw_callback iconifycallback;
+    phpglfw_callback maximizecallback;
+    phpglfw_callback framebuffersizecallback;
+    phpglfw_callback contentcalecallback;
+    phpglfw_callback keycallback;
+    phpglfw_callback charcallback;
+    phpglfw_callback charmodscallback;
+    phpglfw_callback mousebuttoncallback;
+    phpglfw_callback cursorposcallback;
+    phpglfw_callback cursorentercallback;
+    phpglfw_callback scrollcallback;
+    phpglfw_callback dropcallback;
 } phpglfw_glfwwindow_object; 
 
 typedef struct _phpglfw_glfwmonitor_object {
     GLFWmonitor* glfwmonitor;
     zend_object std;
+     
 } phpglfw_glfwmonitor_object; 
 
 typedef struct _phpglfw_glfwcursor_object {
     GLFWcursor* glfwcursor;
     zend_object std;
+     
 } phpglfw_glfwcursor_object; 
 
 
@@ -365,30 +368,33 @@ void phpglfw_shutdown_callbacks(void)
     }
 }
 
-static void phpglfw_callback_keycallback_handler(GLFWwindow* window, int key, int scancode, int action, int mods)
+void phpglfw_callback_keycallback_handler(GLFWwindow* window, int key, int scancode, int action, int mods)
 {
-    // ensure _phpglfw_callback_keycallback is actually a function 
-    if (Z_TYPE(_phpglfw_callback_keycallback) != IS_CALLABLE) {
-        return;
-    }
+    // update args of the callback function entry
+	zval return_val;
+	zval *params = emalloc(4 * sizeof(zval));
 
-	zval params[4];
-	zval dummy;
-
-	ZVAL_NULL(&dummy);
+	ZVAL_NULL(&return_val);
 
     ZVAL_LONG(&params[0], key);
     ZVAL_LONG(&params[1], scancode);
     ZVAL_LONG(&params[2], action);
     ZVAL_LONG(&params[3], mods);
-    
-	call_user_function(NULL, NULL, &_phpglfw_callback_keycallback, &dummy, 4, params);
 
-	zval_ptr_dtor(&params[0]);
-	zval_ptr_dtor(&params[1]);
-	zval_ptr_dtor(&params[2]);
-	zval_ptr_dtor(&params[3]);
-	zval_ptr_dtor(&dummy);
+    php_printf("keycallback: %d %d %d %d", key, scancode, action, mods);
+
+    // load the internal obj from the user pointer
+    phpglfw_glfwwindow_object* window_obj = (phpglfw_glfwwindow_object*)glfwGetWindowUserPointer(window);
+
+    window_obj->keycallback.fci.params = params;
+    window_obj->keycallback.fci.param_count = 4;
+    window_obj->keycallback.fci.retval = &return_val;
+
+    zend_call_function(&window_obj->keycallback.fci, &window_obj->keycallback.fci_cache);
+
+	zval_ptr_dtor(&return_val);
+
+    efree(params);
 }
 
 static void phpglfw_callback_charcallback_handler(GLFWwindow* window, unsigned int codepoint)
@@ -10203,10 +10209,12 @@ PHP_FUNCTION(glfwCreateWindow)
     }
     GLFWwindow* glfwwindow = glfwCreateWindow(width, height, title, monitor, share);
     phpglfw_glfwwindow_ptr_assign_to_zval_p(return_value, glfwwindow);
+
+    // fetch the internal object
+    phpglfw_glfwwindow_object *intern = phpglfw_glfwwindow_objectptr_from_zobj_p(Z_OBJ_P(return_value));
+    
     // ensure user pointer is our internal window object
-    zval *windowzval_userptr = NULL;
-    ZVAL_COPY(windowzval_userptr, return_value);
-    glfwSetWindowUserPointer(glfwwindow, windowzval_userptr);
+    glfwSetWindowUserPointer(glfwwindow, intern);
 } 
 
 /**
@@ -10857,17 +10865,24 @@ PHP_FUNCTION(glfwSetKeyCallback)
         RETURN_THROWS();
     }
 
-    phpglfw_glfwwindow_object *window = phpglfw_glfwwindow_objectptr_from_zobj_p(Z_OBJ_P(window_zval));
+    phpglfw_glfwwindow_object *obj_ptr = phpglfw_glfwwindow_objectptr_from_zobj_p(Z_OBJ_P(window_zval));
 
-    // release old callback
-    if (Z_TYPE(window->keycallback) == IS_CALLABLE) {
-        zval_ptr_dtor(&window->keycallback);
-    }
+    // copy the function info over to the window object
+    // obj_ptr->keycallback.fci = fci;
+    // obj_ptr->keycallback.fci_cache = fcc;
 
-    ZVAL_COPY(&_phpglfw_callback_keycallback, &fci.function_name);
+    // this fixes a segfault when the callback has a reference over `use()`
+    // i honestly have no idea why this works, but it does
+    Z_TRY_ADDREF(fci.function_name);
+ 	if (fcc.object) {
+ 		GC_ADDREF(fcc.object);
+ 	}
 
-    GLFWwindow* window = phpglfw_glfwwindowptr_from_zval_ptr(window_zval);
-    glfwSetKeyCallback(window, phpglfw_callback_keycallback_handler);
+    memcpy((void*)&obj_ptr->keycallback.fci, (void*)&fci, sizeof(zend_fcall_info));
+    memcpy((void*)&obj_ptr->keycallback.fci_cache, (void*)&fcc, sizeof(zend_fcall_info_cache));
+
+
+    glfwSetKeyCallback(obj_ptr->glfwwindow, phpglfw_callback_keycallback_handler);
 } 
 
 /**

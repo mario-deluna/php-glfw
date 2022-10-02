@@ -17,11 +17,18 @@ class ExtInternalPtrObject
 
     /**
      * An array of Zvals that should be added to the object,
-     * i use this to store the callback functions for example
      * 
      * @var array
      */
     public array $additionalZvals = [];
+
+    /**
+     * An array of (zend_fcall_info, zend_fcall_info_cache) pairs
+     * I use this to store the window & input callback functions for example
+     * 
+     * @var array
+     */
+    public array $additionalCallbacks = [];
 
     /**
      * Constructor

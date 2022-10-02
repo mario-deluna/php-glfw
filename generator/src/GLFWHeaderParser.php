@@ -29,7 +29,7 @@ class GLFWHeaderParser
     {
         $extGen->addIPO(new class('GLFWwindow', 'GLFWwindow*') extends ExtInternalPtrObject 
         {
-            public array $additionalZvals = [
+            public array $additionalCallbacks = [
                 // window callbacks
                 'poscallback',
                 'sizecallback',
