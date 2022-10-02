@@ -4551,21 +4551,6 @@ namespace {
     function glProvokingVertex(int $mode) : void {};
  
     /**
-     * create a new sync object and insert it into the GL command stream
-     * 
-     * @param int $condition Specifies the condition that must be met to set the
-     * sync object's state to signaled. condition must be
-     * <constant>GL_SYNC_GPU_COMMANDS_COMPLETE</constant>.
-     * @param int $flags Specifies a bitwise combination of flags controlling the
-     * behavior of the sync object. No flags are presently defined for this
-     * operation and flags must be zero. flags is a placeholder for anticipated
-     * future extensions of fence sync object capabilities.
-     * 
-     * @return int
-     */ 
-    function glFenceSync(int $condition, int $flags) : int {};
- 
-    /**
      * determine if a name corresponds to a sync object
      * 
      * @param int $sync Specifies a value that may be the name of a sync object.
@@ -4573,42 +4558,6 @@ namespace {
      * @return bool
      */ 
     function glIsSync(int $sync) : bool {};
- 
-    /**
-     * delete a sync object
-     * 
-     * @param int $sync The sync object to be deleted.
-     * 
-     * @return void
-     */ 
-    function glDeleteSync(int $sync) : void {};
- 
-    /**
-     * block and wait for a sync object to become signaled
-     * 
-     * @param int $sync The sync object whose status to wait on.
-     * @param int $flags A bitfield controlling the command flushing behavior. flags
-     * may be <constant>GL_SYNC_FLUSH_COMMANDS_BIT</constant>.
-     * @param int $timeout The timeout, specified in nanoseconds, for which the
-     * implementation should wait for sync to become signaled.
-     * 
-     * @return int
-     */ 
-    function glClientWaitSync(int $sync, int $flags, int $timeout) : int {};
- 
-    /**
-     * instruct the GL server to block until the specified sync object becomes
-     * signaled
-     * 
-     * @param int $sync Specifies the sync object whose status to wait on.
-     * @param int $flags A bitfield controlling the command flushing behavior. flags
-     * may be zero.
-     * @param int $timeout Specifies the timeout that the server should wait before
-     * continuing. timeout must be <constant>GL_TIMEOUT_IGNORED</constant>.
-     * 
-     * @return void
-     */ 
-    function glWaitSync(int $sync, int $flags, int $timeout) : void {};
  
     /**
      * glGetInteger64v
@@ -4619,22 +4568,6 @@ namespace {
      * @return void
      */ 
     function glGetInteger64v(int $pname, int &$data) : void {};
- 
-    /**
-     * query the properties of a sync object
-     * 
-     * @param int $sync Specifies the sync object whose properties to query.
-     * @param int $pname Specifies the parameter whose value to retrieve from the
-     * sync object specified in sync.
-     * @param int $count 
-     * @param int &$length Specifies the address of an variable to receive the
-     * number of integers placed in values.
-     * @param int &$values Specifies the address of an array to receive the values
-     * of the queried parameter.
-     * 
-     * @return void
-     */ 
-    function glGetSynciv(int $sync, int $pname, int $count, int &$length, int &$values) : void {};
  
     /**
      * glGetInteger64i_v
@@ -7172,8 +7105,7 @@ namespace {
      * or `NULL`
      * to not share resources.
      * 
-     * @return GLFWwindow The handle of the created window, or `NULL` if an
-     * `error` occurred.
+     * @return GLFWwindow
      */ 
     function glfwCreateWindow(int $width, int $height, string $title, ?GLFWmonitor $monitor = NULL, ?GLFWwindow $share = NULL) : GLFWwindow {};
  
@@ -7704,6 +7636,208 @@ namespace {
     function glfwSetWindowAttrib(GLFWwindow $window, int $attrib, int $value) : void {};
  
     /**
+     * This function sets the position callback of the specified window, which is
+     * called when the window is moved.
+     * 
+     * The callback is provided with the screen position of the upper-left corner of
+     * the client area of the window.
+     * 
+     * Example:
+     * ```php
+     * glfwSetWindowPosCallback($window, function($x, $y) {
+     *     echo "Window moved to: " . $x . ", " . $y . PHP_EOL;
+     * });
+     * ```
+     * 
+     * 
+     * @param GLFWwindow $window The window whose callback to set.
+     * @param callable $callback 
+     * 
+     * @return void
+     */ 
+    function glfwSetWindowPosCallback(GLFWwindow $window, callable $callback) : void {};
+ 
+    /**
+     * This function sets the size callback of the specified window, which is called
+     * when the window is resized.
+     * 
+     * The callback is provided with the size, in screen coordinates, of the client
+     * area of the window.
+     * 
+     * Example:
+     * ```php
+     * glfwSetWindowSizeCallback($window, function($width, $height) {
+     *     echo "Window resized to: " . $width . "x" . $height . PHP_EOL;
+     * });
+     * ```
+     * 
+     * 
+     * @param GLFWwindow $window The window whose callback to set.
+     * @param callable $callback 
+     * 
+     * @return void
+     */ 
+    function glfwSetWindowSizeCallback(GLFWwindow $window, callable $callback) : void {};
+ 
+    /**
+     * This function sets the close callback of the specified window, which is
+     * called when the user attempts to close the window, for example by clicking
+     * the close widget in the title bar.
+     * 
+     * The close flag is set before this callback is called, but you can modify it
+     * at any time with glfwSetWindowShouldClose.
+     * 
+     * The close callback is not triggered by glfwDestroyWindow.
+     * 
+     * Example:
+     * ```php
+     * glfwSetWindowCloseCallback($window, function() {
+     *     echo "Window close requested" . PHP_EOL;
+     * });
+     * ```
+     * 
+     * 
+     * @param GLFWwindow $window The window whose callback to set.
+     * @param callable $callback 
+     * 
+     * @return void
+     */ 
+    function glfwSetWindowCloseCallback(GLFWwindow $window, callable $callback) : void {};
+ 
+    /**
+     * This function sets the refresh callback of the specified window, which is
+     * called when the client area of the window needs to be redrawn, for example if
+     * the window has been exposed after having been covered by another window.
+     * 
+     * On compositing window systems such as Aero, Compiz, Aqua or Wayland, where
+     * the window contents are saved off-screen, this callback may be called only
+     * very infrequently or never at all.
+     * 
+     * Example:
+     * ```php
+     * glfwSetWindowRefreshCallback($window, function() {
+     *     echo "Window needs to be redrawn" . PHP_EOL;
+     * });
+     * ```
+     * 
+     * 
+     * @param GLFWwindow $window The window whose callback to set.
+     * @param callable $callback 
+     * 
+     * @return void
+     */ 
+    function glfwSetWindowRefreshCallback(GLFWwindow $window, callable $callback) : void {};
+ 
+    /**
+     * This function sets the focus callback of the specified window, which is
+     * called when the window gains or loses input focus.
+     * 
+     * After the focus callback is called for a window that lost input focus,
+     * synthetic key and mouse button release events will be generated for all such
+     * that had been pressed.  For more information, see glfwSetKeyCallback and
+     * glfwSetMouseButtonCallback.
+     * 
+     * Example:
+     * ```php
+     * glfwSetWindowFocusCallback($window, function($focused) {
+     *     echo "Window focus changed to: " . $focused . PHP_EOL;
+     * });
+     * ```
+     * 
+     * 
+     * @param GLFWwindow $window The window whose callback to set.
+     * @param callable $callback 
+     * 
+     * @return void
+     */ 
+    function glfwSetWindowFocusCallback(GLFWwindow $window, callable $callback) : void {};
+ 
+    /**
+     * This function sets the iconification callback of the specified window, which
+     * is called when the window is iconified or restored.
+     * 
+     * Example:
+     * ```php
+     * glfwSetWindowIconifyCallback($window, function($iconified) {
+     *     echo "Window iconified changed to: " . $iconified . PHP_EOL;
+     * });
+     * ```
+     * 
+     * 
+     * @param GLFWwindow $window The window whose callback to set.
+     * @param callable $callback 
+     * 
+     * @return void
+     */ 
+    function glfwSetWindowIconifyCallback(GLFWwindow $window, callable $callback) : void {};
+ 
+    /**
+     * This function sets the maximize callback of the specified window, which is
+     * called when the window is maximized or restored.
+     * 
+     * Example:
+     * ```php
+     * glfwSetWindowMaximizeCallback($window, function($maximized) {
+     *     echo "Window maximized changed to: " . $maximized . PHP_EOL;
+     * });
+     * ```
+     * 
+     * 
+     * @param GLFWwindow $window The window whose callback to set.
+     * @param callable $callback 
+     * 
+     * @return void
+     */ 
+    function glfwSetWindowMaximizeCallback(GLFWwindow $window, callable $callback) : void {};
+ 
+    /**
+     * This function sets the framebuffer resize callback of the specified window,
+     * which is called when the framebuffer of the specified window is resized.
+     * 
+     * This callback is provided for convenience.  The equivalent functionality can
+     * be achieved by registering a window size callback and querying the
+     * framebuffer size within that callback.
+     * 
+     * Example:
+     * ```php
+     * glfwSetFramebufferSizeCallback($window, function($width, $height) {
+     *     echo "Framebuffer size changed to: " . $width . "x" . $height . PHP_EOL;
+     * });
+     * ```
+     * 
+     * 
+     * @param GLFWwindow $window The window whose callback to set.
+     * @param callable $callback 
+     * 
+     * @return void
+     */ 
+    function glfwSetFramebufferSizeCallback(GLFWwindow $window, callable $callback) : void {};
+ 
+    /**
+     * This function sets the window content scale callback of the specified window,
+     * which is called when the content scale of the specified window changes.
+     * 
+     * This callback is provided for convenience.  The equivalent functionality can
+     * be achieved by registering a window size callback and querying the content
+     * scale within that callback.
+     * 
+     * Example:
+     * ```php
+     * glfwSetWindowContentScaleCallback($window, function($xscale, $yscale) {
+     *     echo "Window content scale changed to: " . $xscale . "x" . $yscale .
+     * PHP_EOL;
+     * });
+     * ```
+     * 
+     * 
+     * @param GLFWwindow $window The window whose callback to set.
+     * @param callable $callback 
+     * 
+     * @return void
+     */ 
+    function glfwSetWindowContentScaleCallback(GLFWwindow $window, callable $callback) : void {};
+ 
+    /**
      * Processes all pending events.
      * 
      * This function processes only those events that are already in the event
@@ -8193,6 +8327,146 @@ namespace {
      * @return void
      */ 
     function glfwSetCharCallback(GLFWwindow $window, callable $callback) : void {};
+ 
+    /**
+     * This function sets the character with modifiers callback of the specified
+     * window, which is called when a Unicode character is input regardless of what
+     * modifier keys are used.
+     * 
+     * The character with modifiers callback is intended for implementing custom
+     * Unicode character input. For regular Unicode text input, see the character
+     * callback.
+     * 
+     * Example:
+     * ```php
+     * glfwSetCharModsCallback($window, function($codepoint, $mods) {
+     *     echo "Character: " . mb_chr($codepoint) . ' with mods: ' . $mods .
+     * PHP_EOL;
+     * });
+     * ```
+     * 
+     * 
+     * @param GLFWwindow $window The window whose callback to set.
+     * @param callable $callback 
+     * 
+     * @return void
+     */ 
+    function glfwSetCharModsCallback(GLFWwindow $window, callable $callback) : void {};
+ 
+    /**
+     * This function sets the mouse button callback of the specified window, which
+     * is called when a mouse button is pressed or released.
+     * 
+     * Example:
+     * ```php
+     * glfwSetMouseButtonCallback($window, function($button, $action, $mods) {
+     *     if ($button == GLFW_MOUSE_BUTTON_LEFT && $action == GLFW_PRESS) {
+     *         echo "Left mouse button pressed" . PHP_EOL;
+     *     }
+     * });
+     * ```
+     * 
+     * When a window loses input focus, it will generate synthetic mouse button
+     * release events for all pressed mouse buttons. You can tell these events from
+     * user-generated events by the fact that the synthetic ones are generated after
+     * the focus loss event has been processed, i.e. after the window focus callback
+     * has been called.
+     * 
+     * 
+     * @param GLFWwindow $window The window whose callback to set.
+     * @param callable $callback 
+     * 
+     * @return void
+     */ 
+    function glfwSetMouseButtonCallback(GLFWwindow $window, callable $callback) : void {};
+ 
+    /**
+     * This function sets the cursor position callback of the specified window,
+     * which is called when the cursor is moved.
+     * 
+     * The callback is provided with the position, in screen coordinates, relative
+     * to the upper-left corner of the client area of the window.
+     * 
+     * Example:
+     * ```php
+     * glfwSetCursorPosCallback($window, function($xpos, $ypos) {
+     *     echo "Cursor position: " . $xpos . ", " . $ypos . PHP_EOL;
+     * });
+     * ```
+     * 
+     * 
+     * @param GLFWwindow $window The window whose callback to set.
+     * @param callable $callback 
+     * 
+     * @return void
+     */ 
+    function glfwSetCursorPosCallback(GLFWwindow $window, callable $callback) : void {};
+ 
+    /**
+     * This function sets the cursor boundary crossing callback of the specified
+     * window, which is called when the cursor enters or leaves the client area of
+     * the window.
+     * 
+     * Example:
+     * ```php
+     * glfwSetCursorEnterCallback($window, function($entered) {
+     *     if ($entered) {
+     *         echo "Cursor entered window" . PHP_EOL;
+     *     } else {
+     *         echo "Cursor left window" . PHP_EOL;
+     *     }
+     * });
+     * ```
+     * 
+     * 
+     * @param GLFWwindow $window The window whose callback to set.
+     * @param callable $callback 
+     * 
+     * @return void
+     */ 
+    function glfwSetCursorEnterCallback(GLFWwindow $window, callable $callback) : void {};
+ 
+    /**
+     * This function sets the scroll callback of the specified window, which is
+     * called when a scrolling device is used, such as a mouse wheel or scrolling
+     * area of a touchpad.
+     * 
+     * Example:
+     * ```php
+     * glfwSetScrollCallback($window, function($xoffset, $yoffset) {
+     *     echo "Scroll offset: " . $xoffset . ", " . $yoffset . PHP_EOL;
+     * });
+     * ```
+     * 
+     * 
+     * @param GLFWwindow $window The window whose callback to set.
+     * @param callable $callback 
+     * 
+     * @return void
+     */ 
+    function glfwSetScrollCallback(GLFWwindow $window, callable $callback) : void {};
+ 
+    /**
+     * This function sets the file drop callback of the specified window, which is
+     * called when one or more dragged files are dropped on the window.
+     * 
+     * Example:
+     * ```php
+     * glfwSetDropCallback($window, function($paths) {
+     *     echo "Dropped files:" . PHP_EOL;
+     *     foreach ($paths as $path) {
+     *         echo "  " . $path . PHP_EOL;
+     *     }
+     * });
+     * ```
+     * 
+     * 
+     * @param GLFWwindow $window The window whose callback to set.
+     * @param callable $callback 
+     * 
+     * @return void
+     */ 
+    function glfwSetDropCallback(GLFWwindow $window, callable $callback) : void {};
  
     /**
      * Returns whether the specified joystick is present.

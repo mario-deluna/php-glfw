@@ -37,8 +37,13 @@ void phpglfw_glfwmonitor_object_minit_helper(void);
 void phpglfw_glfwcursor_object_minit_helper(void); 
 
 /**
- * Global callback handling
+ * callback handling
  */
+typedef struct {
+    zend_fcall_info fci;
+    zend_fcall_info_cache fci_cache;
+} phpglfw_callback;
+
 void phpglfw_init_callbacks(void);
 void phpglfw_shutdown_callbacks(void);
 

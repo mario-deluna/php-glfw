@@ -73,8 +73,7 @@ arguments
 
 returns
 
-:    `\GLFWwindow` The handle of the created window, or `NULL` if an
-`error` occurred.
+:    `\GLFWwindow` 
 
 ---
      

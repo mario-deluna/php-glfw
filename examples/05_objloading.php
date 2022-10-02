@@ -1,6 +1,5 @@
 <?php
 /**
- * This example will open a window and draw a 3D cube in it.
  * We utilize the example helpers here to focus on what matter in this specifc example.
  */
 require __DIR__ . '/99_example_helpers.php';
@@ -97,7 +96,7 @@ glEnable(GL_DEPTH_TEST);
 
 // capture keyboard events to toggle rendering modes
 $wireframe = false;
-glfwSetKeyCallback($window, function ($key, $scancode, $action, $mods) use (&$wireframe) {
+glfwSetKeyCallback($window, function ($key, $scancode, $action, $mods) use (&$wireframe, $window) {
     if ($key == GLFW_KEY_ESCAPE && $action == GLFW_PRESS) {
         glfwSetWindowShouldClose($window, true);
     }

@@ -1,5 +1,5 @@
 /* This is a generated file, edit the .stub.php file instead.
- * Stub hash: 43bbb3beb1676eabab34980af88453cc39b6b93c */
+ * Stub hash: 68d65e39acb5487492570805b5b17a803b609cab */
 
 ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_glCullFace, 0, 1, IS_VOID, 0)
 	ZEND_ARG_TYPE_INFO(0, mode, IS_LONG, 0)
@@ -1113,42 +1113,13 @@ ZEND_END_ARG_INFO()
 
 #define arginfo_glProvokingVertex arginfo_glCullFace
 
-ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_glFenceSync, 0, 2, IS_LONG, 0)
-	ZEND_ARG_TYPE_INFO(0, condition, IS_LONG, 0)
-	ZEND_ARG_TYPE_INFO(0, flags, IS_LONG, 0)
-ZEND_END_ARG_INFO()
-
 ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_glIsSync, 0, 1, _IS_BOOL, 0)
 	ZEND_ARG_TYPE_INFO(0, sync, IS_LONG, 0)
-ZEND_END_ARG_INFO()
-
-ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_glDeleteSync, 0, 1, IS_VOID, 0)
-	ZEND_ARG_TYPE_INFO(0, sync, IS_LONG, 0)
-ZEND_END_ARG_INFO()
-
-ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_glClientWaitSync, 0, 3, IS_LONG, 0)
-	ZEND_ARG_TYPE_INFO(0, sync, IS_LONG, 0)
-	ZEND_ARG_TYPE_INFO(0, flags, IS_LONG, 0)
-	ZEND_ARG_TYPE_INFO(0, timeout, IS_LONG, 0)
-ZEND_END_ARG_INFO()
-
-ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_glWaitSync, 0, 3, IS_VOID, 0)
-	ZEND_ARG_TYPE_INFO(0, sync, IS_LONG, 0)
-	ZEND_ARG_TYPE_INFO(0, flags, IS_LONG, 0)
-	ZEND_ARG_TYPE_INFO(0, timeout, IS_LONG, 0)
 ZEND_END_ARG_INFO()
 
 ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_glGetInteger64v, 0, 2, IS_VOID, 0)
 	ZEND_ARG_TYPE_INFO(0, pname, IS_LONG, 0)
 	ZEND_ARG_TYPE_INFO(1, data, IS_LONG, 0)
-ZEND_END_ARG_INFO()
-
-ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_glGetSynciv, 0, 5, IS_VOID, 0)
-	ZEND_ARG_TYPE_INFO(0, sync, IS_LONG, 0)
-	ZEND_ARG_TYPE_INFO(0, pname, IS_LONG, 0)
-	ZEND_ARG_TYPE_INFO(0, count, IS_LONG, 0)
-	ZEND_ARG_TYPE_INFO(1, length, IS_LONG, 0)
-	ZEND_ARG_TYPE_INFO(1, values, IS_LONG, 0)
 ZEND_END_ARG_INFO()
 
 ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_glGetInteger64i_v, 0, 3, IS_VOID, 0)
@@ -2054,6 +2025,27 @@ ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_glfwSetWindowAttrib, 0, 3, IS_VO
 	ZEND_ARG_TYPE_INFO(0, value, IS_LONG, 0)
 ZEND_END_ARG_INFO()
 
+ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_glfwSetWindowPosCallback, 0, 2, IS_VOID, 0)
+	ZEND_ARG_OBJ_INFO(0, window, GLFWwindow, 0)
+	ZEND_ARG_TYPE_INFO(0, callback, IS_CALLABLE, 0)
+ZEND_END_ARG_INFO()
+
+#define arginfo_glfwSetWindowSizeCallback arginfo_glfwSetWindowPosCallback
+
+#define arginfo_glfwSetWindowCloseCallback arginfo_glfwSetWindowPosCallback
+
+#define arginfo_glfwSetWindowRefreshCallback arginfo_glfwSetWindowPosCallback
+
+#define arginfo_glfwSetWindowFocusCallback arginfo_glfwSetWindowPosCallback
+
+#define arginfo_glfwSetWindowIconifyCallback arginfo_glfwSetWindowPosCallback
+
+#define arginfo_glfwSetWindowMaximizeCallback arginfo_glfwSetWindowPosCallback
+
+#define arginfo_glfwSetFramebufferSizeCallback arginfo_glfwSetWindowPosCallback
+
+#define arginfo_glfwSetWindowContentScaleCallback arginfo_glfwSetWindowPosCallback
+
 #define arginfo_glfwPollEvents arginfo_glFinish
 
 #define arginfo_glfwWaitEvents arginfo_glFinish
@@ -2121,12 +2113,21 @@ ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_glfwSetCursor, 0, 2, IS_VOID, 0)
 	ZEND_ARG_OBJ_INFO(0, cursor, GLFWcursor, 0)
 ZEND_END_ARG_INFO()
 
-ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_glfwSetKeyCallback, 0, 2, IS_VOID, 0)
-	ZEND_ARG_OBJ_INFO(0, window, GLFWwindow, 0)
-	ZEND_ARG_TYPE_INFO(0, callback, IS_CALLABLE, 0)
-ZEND_END_ARG_INFO()
+#define arginfo_glfwSetKeyCallback arginfo_glfwSetWindowPosCallback
 
-#define arginfo_glfwSetCharCallback arginfo_glfwSetKeyCallback
+#define arginfo_glfwSetCharCallback arginfo_glfwSetWindowPosCallback
+
+#define arginfo_glfwSetCharModsCallback arginfo_glfwSetWindowPosCallback
+
+#define arginfo_glfwSetMouseButtonCallback arginfo_glfwSetWindowPosCallback
+
+#define arginfo_glfwSetCursorPosCallback arginfo_glfwSetWindowPosCallback
+
+#define arginfo_glfwSetCursorEnterCallback arginfo_glfwSetWindowPosCallback
+
+#define arginfo_glfwSetScrollCallback arginfo_glfwSetWindowPosCallback
+
+#define arginfo_glfwSetDropCallback arginfo_glfwSetWindowPosCallback
 
 ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_glfwJoystickPresent, 0, 1, IS_LONG, 0)
 	ZEND_ARG_TYPE_INFO(0, jid, IS_LONG, 0)
@@ -2873,13 +2874,8 @@ ZEND_FUNCTION(glGetUniformBlockIndex);
 ZEND_FUNCTION(glGetActiveUniformBlockiv);
 ZEND_FUNCTION(glUniformBlockBinding);
 ZEND_FUNCTION(glProvokingVertex);
-ZEND_FUNCTION(glFenceSync);
 ZEND_FUNCTION(glIsSync);
-ZEND_FUNCTION(glDeleteSync);
-ZEND_FUNCTION(glClientWaitSync);
-ZEND_FUNCTION(glWaitSync);
 ZEND_FUNCTION(glGetInteger64v);
-ZEND_FUNCTION(glGetSynciv);
 ZEND_FUNCTION(glGetInteger64i_v);
 ZEND_FUNCTION(glGetBufferParameteri64v);
 ZEND_FUNCTION(glFramebufferTexture);
@@ -3111,6 +3107,15 @@ ZEND_FUNCTION(glfwGetWindowMonitor);
 ZEND_FUNCTION(glfwSetWindowMonitor);
 ZEND_FUNCTION(glfwGetWindowAttrib);
 ZEND_FUNCTION(glfwSetWindowAttrib);
+ZEND_FUNCTION(glfwSetWindowPosCallback);
+ZEND_FUNCTION(glfwSetWindowSizeCallback);
+ZEND_FUNCTION(glfwSetWindowCloseCallback);
+ZEND_FUNCTION(glfwSetWindowRefreshCallback);
+ZEND_FUNCTION(glfwSetWindowFocusCallback);
+ZEND_FUNCTION(glfwSetWindowIconifyCallback);
+ZEND_FUNCTION(glfwSetWindowMaximizeCallback);
+ZEND_FUNCTION(glfwSetFramebufferSizeCallback);
+ZEND_FUNCTION(glfwSetWindowContentScaleCallback);
 ZEND_FUNCTION(glfwPollEvents);
 ZEND_FUNCTION(glfwWaitEvents);
 ZEND_FUNCTION(glfwWaitEventsTimeout);
@@ -3129,6 +3134,12 @@ ZEND_FUNCTION(glfwDestroyCursor);
 ZEND_FUNCTION(glfwSetCursor);
 ZEND_FUNCTION(glfwSetKeyCallback);
 ZEND_FUNCTION(glfwSetCharCallback);
+ZEND_FUNCTION(glfwSetCharModsCallback);
+ZEND_FUNCTION(glfwSetMouseButtonCallback);
+ZEND_FUNCTION(glfwSetCursorPosCallback);
+ZEND_FUNCTION(glfwSetCursorEnterCallback);
+ZEND_FUNCTION(glfwSetScrollCallback);
+ZEND_FUNCTION(glfwSetDropCallback);
 ZEND_FUNCTION(glfwJoystickPresent);
 ZEND_FUNCTION(glfwGetJoystickName);
 ZEND_FUNCTION(glfwGetJoystickGUID);
@@ -3558,13 +3569,8 @@ static const zend_function_entry ext_functions[] = {
 	ZEND_FE(glGetActiveUniformBlockiv, arginfo_glGetActiveUniformBlockiv)
 	ZEND_FE(glUniformBlockBinding, arginfo_glUniformBlockBinding)
 	ZEND_FE(glProvokingVertex, arginfo_glProvokingVertex)
-	ZEND_FE(glFenceSync, arginfo_glFenceSync)
 	ZEND_FE(glIsSync, arginfo_glIsSync)
-	ZEND_FE(glDeleteSync, arginfo_glDeleteSync)
-	ZEND_FE(glClientWaitSync, arginfo_glClientWaitSync)
-	ZEND_FE(glWaitSync, arginfo_glWaitSync)
 	ZEND_FE(glGetInteger64v, arginfo_glGetInteger64v)
-	ZEND_FE(glGetSynciv, arginfo_glGetSynciv)
 	ZEND_FE(glGetInteger64i_v, arginfo_glGetInteger64i_v)
 	ZEND_FE(glGetBufferParameteri64v, arginfo_glGetBufferParameteri64v)
 	ZEND_FE(glFramebufferTexture, arginfo_glFramebufferTexture)
@@ -3796,6 +3802,15 @@ static const zend_function_entry ext_functions[] = {
 	ZEND_FE(glfwSetWindowMonitor, arginfo_glfwSetWindowMonitor)
 	ZEND_FE(glfwGetWindowAttrib, arginfo_glfwGetWindowAttrib)
 	ZEND_FE(glfwSetWindowAttrib, arginfo_glfwSetWindowAttrib)
+	ZEND_FE(glfwSetWindowPosCallback, arginfo_glfwSetWindowPosCallback)
+	ZEND_FE(glfwSetWindowSizeCallback, arginfo_glfwSetWindowSizeCallback)
+	ZEND_FE(glfwSetWindowCloseCallback, arginfo_glfwSetWindowCloseCallback)
+	ZEND_FE(glfwSetWindowRefreshCallback, arginfo_glfwSetWindowRefreshCallback)
+	ZEND_FE(glfwSetWindowFocusCallback, arginfo_glfwSetWindowFocusCallback)
+	ZEND_FE(glfwSetWindowIconifyCallback, arginfo_glfwSetWindowIconifyCallback)
+	ZEND_FE(glfwSetWindowMaximizeCallback, arginfo_glfwSetWindowMaximizeCallback)
+	ZEND_FE(glfwSetFramebufferSizeCallback, arginfo_glfwSetFramebufferSizeCallback)
+	ZEND_FE(glfwSetWindowContentScaleCallback, arginfo_glfwSetWindowContentScaleCallback)
 	ZEND_FE(glfwPollEvents, arginfo_glfwPollEvents)
 	ZEND_FE(glfwWaitEvents, arginfo_glfwWaitEvents)
 	ZEND_FE(glfwWaitEventsTimeout, arginfo_glfwWaitEventsTimeout)
@@ -3814,6 +3829,12 @@ static const zend_function_entry ext_functions[] = {
 	ZEND_FE(glfwSetCursor, arginfo_glfwSetCursor)
 	ZEND_FE(glfwSetKeyCallback, arginfo_glfwSetKeyCallback)
 	ZEND_FE(glfwSetCharCallback, arginfo_glfwSetCharCallback)
+	ZEND_FE(glfwSetCharModsCallback, arginfo_glfwSetCharModsCallback)
+	ZEND_FE(glfwSetMouseButtonCallback, arginfo_glfwSetMouseButtonCallback)
+	ZEND_FE(glfwSetCursorPosCallback, arginfo_glfwSetCursorPosCallback)
+	ZEND_FE(glfwSetCursorEnterCallback, arginfo_glfwSetCursorEnterCallback)
+	ZEND_FE(glfwSetScrollCallback, arginfo_glfwSetScrollCallback)
+	ZEND_FE(glfwSetDropCallback, arginfo_glfwSetDropCallback)
 	ZEND_FE(glfwJoystickPresent, arginfo_glfwJoystickPresent)
 	ZEND_FE(glfwGetJoystickName, arginfo_glfwGetJoystickName)
 	ZEND_FE(glfwGetJoystickGUID, arginfo_glfwGetJoystickGUID)

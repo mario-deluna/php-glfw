@@ -30,70 +30,6 @@
 #include "phpglfw_buffer.h"
 #include "phpglfw_math.h"
 #include <zend_API.h>
-    
-/**
- * ----------------------------------------------------------------------------
- * PHPGlfw Global callbacks
- * ----------------------------------------------------------------------------
- * Global callbacks like GLFWkeyfun etc..
- */
-static zval _phpglfw_callback_keycallback;
-static zval _phpglfw_callback_charcallback;
-
-void phpglfw_init_callbacks(void)
-{
-    ZVAL_UNDEF(&_phpglfw_callback_keycallback);
-    ZVAL_UNDEF(&_phpglfw_callback_charcallback);
-}
-
-void phpglfw_shutdown_callbacks(void)
-{
-    if (Z_TYPE(_phpglfw_callback_keycallback) != IS_UNDEF) {
-		zval_ptr_dtor(&_phpglfw_callback_keycallback);
-		ZVAL_UNDEF(&_phpglfw_callback_keycallback);
-	}
-
-    if (Z_TYPE(_phpglfw_callback_charcallback) != IS_UNDEF) {
-        zval_ptr_dtor(&_phpglfw_callback_charcallback);
-        ZVAL_UNDEF(&_phpglfw_callback_charcallback);
-    }
-}
-
-static void phpglfw_callback_keycallback_handler(GLFWwindow* window, int key, int scancode, int action, int mods)
-{
-	zval params[4];
-	zval dummy;
-
-	ZVAL_NULL(&dummy);
-
-    ZVAL_LONG(&params[0], key);
-    ZVAL_LONG(&params[1], scancode);
-    ZVAL_LONG(&params[2], action);
-    ZVAL_LONG(&params[3], mods);
-    
-	call_user_function(NULL, NULL, &_phpglfw_callback_keycallback, &dummy, 4, params);
-
-	zval_ptr_dtor(&params[0]);
-	zval_ptr_dtor(&params[1]);
-	zval_ptr_dtor(&params[2]);
-	zval_ptr_dtor(&params[3]);
-	zval_ptr_dtor(&dummy);
-}
-
-static void phpglfw_callback_charcallback_handler(GLFWwindow* window, unsigned int codepoint)
-{
-    zval params[1];
-    zval dummy;
-
-    ZVAL_NULL(&dummy);
-
-    ZVAL_LONG(&params[0], codepoint);
-    
-    call_user_function(NULL, NULL, &_phpglfw_callback_charcallback, &dummy, 1, params);
-
-    zval_ptr_dtor(&params[0]);
-    zval_ptr_dtor(&dummy);
-}
 
 /**
  * ----------------------------------------------------------------------------
@@ -123,16 +59,36 @@ zend_class_entry *phpglfw_glfwcursor_ce;
 typedef struct _phpglfw_glfwwindow_object {
     GLFWwindow* glfwwindow;
     zend_object std;
+     
+    phpglfw_callback windowposcallback;
+    phpglfw_callback windowsizecallback;
+    phpglfw_callback windowclosecallback;
+    phpglfw_callback windowrefreshcallback;
+    phpglfw_callback windowfocuscallback;
+    phpglfw_callback windowiconifycallback;
+    phpglfw_callback windowmaximizecallback;
+    phpglfw_callback windowframebuffersizecallback;
+    phpglfw_callback windowcontentscalecallback;
+    phpglfw_callback keycallback;
+    phpglfw_callback charcallback;
+    phpglfw_callback charmodscallback;
+    phpglfw_callback mousebuttoncallback;
+    phpglfw_callback cursorposcallback;
+    phpglfw_callback cursorentercallback;
+    phpglfw_callback scrollcallback;
+    phpglfw_callback dropcallback;
 } phpglfw_glfwwindow_object; 
 
 typedef struct _phpglfw_glfwmonitor_object {
     GLFWmonitor* glfwmonitor;
     zend_object std;
+     
 } phpglfw_glfwmonitor_object; 
 
 typedef struct _phpglfw_glfwcursor_object {
     GLFWcursor* glfwcursor;
     zend_object std;
+     
 } phpglfw_glfwcursor_object; 
 
 
@@ -382,6 +338,414 @@ GLFWcursor* phpglfw_glfwcursorptr_from_zval_ptr(zval* zp)
     return phpglfw_glfwcursor_objectptr_from_zobj_p(Z_OBJ_P(zp))->glfwcursor;
 }
 
+
+    
+/**
+ * ----------------------------------------------------------------------------
+ * PHPGlfw callbacks
+ * ----------------------------------------------------------------------------
+ * callbacks like GLFWkeyfun etc..
+ */
+// static zval _phpglfw_callback_keycallback;
+// static zval _phpglfw_callback_charcallback;
+
+void phpglfw_init_callbacks(void)
+{
+//     ZVAL_UNDEF(&_phpglfw_callback_keycallback);
+//     ZVAL_UNDEF(&_phpglfw_callback_charcallback);
+}
+
+void phpglfw_shutdown_callbacks(void)
+{
+    // if (Z_TYPE(_phpglfw_callback_keycallback) != IS_UNDEF) {
+	// 	zval_ptr_dtor(&_phpglfw_callback_keycallback);
+	// 	ZVAL_UNDEF(&_phpglfw_callback_keycallback);
+	// }
+
+    // if (Z_TYPE(_phpglfw_callback_charcallback) != IS_UNDEF) {
+    //     zval_ptr_dtor(&_phpglfw_callback_charcallback);
+    //     ZVAL_UNDEF(&_phpglfw_callback_charcallback);
+    // }
+}
+static void phpglfw_callback_windowposcallback_handler(GLFWwindow* window, int xpos, int ypos)
+{
+    zval return_val;
+    zval *params = emalloc(2 * sizeof(zval));
+
+    ZVAL_NULL(&return_val);
+
+    ZVAL_LONG(&params[0], xpos);
+    ZVAL_LONG(&params[1], ypos);
+
+    phpglfw_glfwwindow_object* window_obj = (phpglfw_glfwwindow_object*)glfwGetWindowUserPointer(window);
+
+    window_obj->windowposcallback.fci.params = params;
+    window_obj->windowposcallback.fci.param_count = 2;
+    window_obj->windowposcallback.fci.retval = &return_val;
+
+    zend_call_function(&window_obj->windowposcallback.fci, &window_obj->windowposcallback.fci_cache);
+
+    zval_ptr_dtor(&return_val);
+    efree(params);
+}
+
+static void phpglfw_callback_windowsizecallback_handler(GLFWwindow* window, int width, int height)
+{
+    zval return_val;
+    zval *params = emalloc(2 * sizeof(zval));
+
+    ZVAL_NULL(&return_val);
+
+    ZVAL_LONG(&params[0], width);
+    ZVAL_LONG(&params[1], height);
+
+    phpglfw_glfwwindow_object* window_obj = (phpglfw_glfwwindow_object*)glfwGetWindowUserPointer(window);
+
+    window_obj->windowsizecallback.fci.params = params;
+    window_obj->windowsizecallback.fci.param_count = 2;
+    window_obj->windowsizecallback.fci.retval = &return_val;
+
+    zend_call_function(&window_obj->windowsizecallback.fci, &window_obj->windowsizecallback.fci_cache);
+
+    zval_ptr_dtor(&return_val);
+    efree(params);
+}
+
+static void phpglfw_callback_windowclosecallback_handler(GLFWwindow* window)
+{
+    zval return_val;
+
+    ZVAL_NULL(&return_val);
+
+    phpglfw_glfwwindow_object* window_obj = (phpglfw_glfwwindow_object*)glfwGetWindowUserPointer(window);
+
+    window_obj->windowclosecallback.fci.param_count = 0;
+    window_obj->windowclosecallback.fci.retval = &return_val;
+
+    zend_call_function(&window_obj->windowclosecallback.fci, &window_obj->windowclosecallback.fci_cache);
+
+    zval_ptr_dtor(&return_val);
+}
+
+static void phpglfw_callback_windowrefreshcallback_handler(GLFWwindow* window)
+{
+    zval return_val;
+
+    ZVAL_NULL(&return_val);
+
+    phpglfw_glfwwindow_object* window_obj = (phpglfw_glfwwindow_object*)glfwGetWindowUserPointer(window);
+
+    window_obj->windowrefreshcallback.fci.param_count = 0;
+    window_obj->windowrefreshcallback.fci.retval = &return_val;
+
+    zend_call_function(&window_obj->windowrefreshcallback.fci, &window_obj->windowrefreshcallback.fci_cache);
+
+    zval_ptr_dtor(&return_val);
+}
+
+static void phpglfw_callback_windowfocuscallback_handler(GLFWwindow* window, int focused)
+{
+    zval return_val;
+    zval *params = emalloc(sizeof(zval));
+
+    ZVAL_NULL(&return_val);
+
+    ZVAL_LONG(&params[0], focused);
+
+    phpglfw_glfwwindow_object* window_obj = (phpglfw_glfwwindow_object*)glfwGetWindowUserPointer(window);
+
+    window_obj->windowfocuscallback.fci.params = params;
+    window_obj->windowfocuscallback.fci.param_count = 1;
+    window_obj->windowfocuscallback.fci.retval = &return_val;
+
+    zend_call_function(&window_obj->windowfocuscallback.fci, &window_obj->windowfocuscallback.fci_cache);
+
+    zval_ptr_dtor(&return_val);
+    efree(params);
+}
+
+static void phpglfw_callback_windowiconifycallback_handler(GLFWwindow* window, int iconified)
+{
+    zval return_val;
+    zval *params = emalloc(sizeof(zval));
+
+    ZVAL_NULL(&return_val);
+
+    ZVAL_LONG(&params[0], iconified);
+
+    phpglfw_glfwwindow_object* window_obj = (phpglfw_glfwwindow_object*)glfwGetWindowUserPointer(window);
+
+    window_obj->windowiconifycallback.fci.params = params;
+    window_obj->windowiconifycallback.fci.param_count = 1;
+    window_obj->windowiconifycallback.fci.retval = &return_val;
+
+    zend_call_function(&window_obj->windowiconifycallback.fci, &window_obj->windowiconifycallback.fci_cache);
+
+    zval_ptr_dtor(&return_val);
+    efree(params);
+}
+
+static void phpglfw_callback_windowmaximizecallback_handler(GLFWwindow* window, int maximized)
+{
+    zval return_val;
+    zval *params = emalloc(sizeof(zval));
+
+    ZVAL_NULL(&return_val);
+
+    ZVAL_LONG(&params[0], maximized);
+
+    phpglfw_glfwwindow_object* window_obj = (phpglfw_glfwwindow_object*)glfwGetWindowUserPointer(window);
+
+    window_obj->windowmaximizecallback.fci.params = params;
+    window_obj->windowmaximizecallback.fci.param_count = 1;
+    window_obj->windowmaximizecallback.fci.retval = &return_val;
+
+    zend_call_function(&window_obj->windowmaximizecallback.fci, &window_obj->windowmaximizecallback.fci_cache);
+
+    zval_ptr_dtor(&return_val);
+    efree(params);
+}
+
+static void phpglfw_callback_windowframebuffersizecallback_handler(GLFWwindow* window, int width, int height)
+{
+    zval return_val;
+    zval *params = emalloc(2 * sizeof(zval));
+
+    ZVAL_NULL(&return_val);
+
+    ZVAL_LONG(&params[0], width);
+    ZVAL_LONG(&params[1], height);
+
+    phpglfw_glfwwindow_object* window_obj = (phpglfw_glfwwindow_object*)glfwGetWindowUserPointer(window);
+
+    window_obj->windowframebuffersizecallback.fci.params = params;
+    window_obj->windowframebuffersizecallback.fci.param_count = 2;
+    window_obj->windowframebuffersizecallback.fci.retval = &return_val;
+
+    zend_call_function(&window_obj->windowframebuffersizecallback.fci, &window_obj->windowframebuffersizecallback.fci_cache);
+
+    zval_ptr_dtor(&return_val);
+    efree(params);
+}
+
+static void phpglfw_callback_windowcontentscalecallback_handler(GLFWwindow* window, float xscale, float yscale)
+{
+    zval return_val;
+    zval *params = emalloc(2 * sizeof(zval));
+
+    ZVAL_NULL(&return_val);
+
+    ZVAL_DOUBLE(&params[0], xscale);
+    ZVAL_DOUBLE(&params[1], yscale);
+
+    phpglfw_glfwwindow_object* window_obj = (phpglfw_glfwwindow_object*)glfwGetWindowUserPointer(window);
+
+    window_obj->windowcontentscalecallback.fci.params = params;
+    window_obj->windowcontentscalecallback.fci.param_count = 2;
+    window_obj->windowcontentscalecallback.fci.retval = &return_val;
+
+    zend_call_function(&window_obj->windowcontentscalecallback.fci, &window_obj->windowcontentscalecallback.fci_cache);
+
+    zval_ptr_dtor(&return_val);
+    efree(params);
+}
+
+static void phpglfw_callback_keycallback_handler(GLFWwindow* window, int key, int scancode, int action, int mods)
+{
+    // update args of the callback function entry
+	zval return_val;
+	zval *params = emalloc(4 * sizeof(zval));
+
+	ZVAL_NULL(&return_val);
+
+    ZVAL_LONG(&params[0], key);
+    ZVAL_LONG(&params[1], scancode);
+    ZVAL_LONG(&params[2], action);
+    ZVAL_LONG(&params[3], mods);
+
+    // load the internal obj from the user pointer
+    phpglfw_glfwwindow_object* window_obj = (phpglfw_glfwwindow_object*)glfwGetWindowUserPointer(window);
+
+    window_obj->keycallback.fci.params = params;
+    window_obj->keycallback.fci.param_count = 4;
+    window_obj->keycallback.fci.retval = &return_val;
+
+    zend_call_function(&window_obj->keycallback.fci, &window_obj->keycallback.fci_cache);
+
+	zval_ptr_dtor(&return_val);
+    efree(params);
+}
+
+static void phpglfw_callback_charcallback_handler(GLFWwindow* window, unsigned int codepoint)
+{
+    // update args of the callback function entry
+    zval return_val;
+    zval *params = emalloc(1 * sizeof(zval));
+
+    ZVAL_NULL(&return_val);
+
+    ZVAL_LONG(&params[0], codepoint);
+
+    // load the internal obj from the user pointer
+    phpglfw_glfwwindow_object* window_obj = (phpglfw_glfwwindow_object*)glfwGetWindowUserPointer(window);
+
+    window_obj->charcallback.fci.params = params;
+    window_obj->charcallback.fci.param_count = 1;
+    window_obj->charcallback.fci.retval = &return_val;
+
+    zend_call_function(&window_obj->charcallback.fci, &window_obj->charcallback.fci_cache);
+
+    zval_ptr_dtor(&return_val);
+    efree(params);
+}
+
+static void phpglfw_callback_charmodscallback_handler(GLFWwindow* window, unsigned int codepoint, int mods)
+{
+    // update args of the callback function entry
+    zval return_val;
+    zval *params = emalloc(2 * sizeof(zval));
+
+    ZVAL_NULL(&return_val);
+
+    ZVAL_LONG(&params[0], codepoint);
+    ZVAL_LONG(&params[1], mods);
+
+    // load the internal obj from the user pointer
+    phpglfw_glfwwindow_object* window_obj = (phpglfw_glfwwindow_object*)glfwGetWindowUserPointer(window);
+
+    window_obj->charmodscallback.fci.params = params;
+    window_obj->charmodscallback.fci.param_count = 2;
+    window_obj->charmodscallback.fci.retval = &return_val;
+
+    zend_call_function(&window_obj->charmodscallback.fci, &window_obj->charmodscallback.fci_cache);
+
+    zval_ptr_dtor(&return_val);
+    efree(params);
+}
+
+static void phpglfw_callback_mousebuttoncallback_handler(GLFWwindow* window, int button, int action, int mods)
+{
+    // update args of the callback function entry
+    zval return_val;
+    zval *params = emalloc(3 * sizeof(zval));
+
+    ZVAL_NULL(&return_val);
+
+    ZVAL_LONG(&params[0], button);
+    ZVAL_LONG(&params[1], action);
+    ZVAL_LONG(&params[2], mods);
+
+    // load the internal obj from the user pointer
+    phpglfw_glfwwindow_object* window_obj = (phpglfw_glfwwindow_object*)glfwGetWindowUserPointer(window);
+
+    window_obj->mousebuttoncallback.fci.params = params;
+    window_obj->mousebuttoncallback.fci.param_count = 3;
+    window_obj->mousebuttoncallback.fci.retval = &return_val;
+
+    zend_call_function(&window_obj->mousebuttoncallback.fci, &window_obj->mousebuttoncallback.fci_cache);
+
+    zval_ptr_dtor(&return_val);
+    efree(params);
+}
+
+static void phpglfw_callback_cursorposcallback_handler(GLFWwindow* window, double xpos, double ypos)
+{
+    // update args of the callback function entry
+    zval return_val;
+    zval *params = emalloc(2 * sizeof(zval));
+
+    ZVAL_NULL(&return_val);
+
+    ZVAL_DOUBLE(&params[0], xpos);
+    ZVAL_DOUBLE(&params[1], ypos);
+
+    // load the internal obj from the user pointer
+    phpglfw_glfwwindow_object* window_obj = (phpglfw_glfwwindow_object*)glfwGetWindowUserPointer(window);
+
+    window_obj->cursorposcallback.fci.params = params;
+    window_obj->cursorposcallback.fci.param_count = 2;
+    window_obj->cursorposcallback.fci.retval = &return_val;
+
+    zend_call_function(&window_obj->cursorposcallback.fci, &window_obj->cursorposcallback.fci_cache);
+
+    zval_ptr_dtor(&return_val);
+    efree(params);
+}
+
+static void phpglfw_callback_cursorentercallback_handler(GLFWwindow* window, int entered)
+{
+    // update args of the callback function entry
+    zval return_val;
+    zval *params = emalloc(1 * sizeof(zval));
+
+    ZVAL_NULL(&return_val);
+
+    ZVAL_LONG(&params[0], entered);
+
+    // load the internal obj from the user pointer
+    phpglfw_glfwwindow_object* window_obj = (phpglfw_glfwwindow_object*)glfwGetWindowUserPointer(window);
+
+    window_obj->cursorentercallback.fci.params = params;
+    window_obj->cursorentercallback.fci.param_count = 1;
+    window_obj->cursorentercallback.fci.retval = &return_val;
+
+    zend_call_function(&window_obj->cursorentercallback.fci, &window_obj->cursorentercallback.fci_cache);
+
+    zval_ptr_dtor(&return_val);
+    efree(params);
+}
+
+static void phpglfw_callback_scrollcallback_handler(GLFWwindow* window, double xoffset, double yoffset)
+{
+    // update args of the callback function entry
+    zval return_val;
+    zval *params = emalloc(2 * sizeof(zval));
+
+    ZVAL_NULL(&return_val);
+
+    ZVAL_DOUBLE(&params[0], xoffset);
+    ZVAL_DOUBLE(&params[1], yoffset);
+
+    // load the internal obj from the user pointer
+    phpglfw_glfwwindow_object* window_obj = (phpglfw_glfwwindow_object*)glfwGetWindowUserPointer(window);
+
+    window_obj->scrollcallback.fci.params = params;
+    window_obj->scrollcallback.fci.param_count = 2;
+    window_obj->scrollcallback.fci.retval = &return_val;
+
+    zend_call_function(&window_obj->scrollcallback.fci, &window_obj->scrollcallback.fci_cache);
+
+    zval_ptr_dtor(&return_val);
+    efree(params);
+}
+
+static void phpglfw_callback_dropcallback_handler(GLFWwindow* window, int count, const char** paths)
+{
+    // update args of the callback function entry
+    zval return_val;
+    zval *params = emalloc(2 * sizeof(zval));
+
+    ZVAL_NULL(&return_val);
+
+    ZVAL_LONG(&params[0], count);
+
+    array_init(&params[1]);
+    for (int i = 0; i < count; i++) {
+        add_next_index_string(&params[1], paths[i]);
+    }
+
+    // load the internal obj from the user pointer
+    phpglfw_glfwwindow_object* window_obj = (phpglfw_glfwwindow_object*)glfwGetWindowUserPointer(window);
+
+    window_obj->dropcallback.fci.params = params;
+    window_obj->dropcallback.fci.param_count = 2;
+    window_obj->dropcallback.fci.retval = &return_val;
+
+    zend_call_function(&window_obj->dropcallback.fci, &window_obj->dropcallback.fci_cache);
+
+    zval_ptr_dtor(&return_val);
+    efree(params);
+}
 
 /**
  * ----------------------------------------------------------------------------
@@ -5698,19 +6062,6 @@ PHP_FUNCTION(glProvokingVertex)
 } 
 
 /**
- * glFenceSync
- */ 
-PHP_FUNCTION(glFenceSync)
-{
-    zend_long condition;
-    zend_long flags;
-    if (zend_parse_parameters(ZEND_NUM_ARGS() , "ll", &condition, &flags) == FAILURE) {
-        return;
-    }
-    RETURN_LONG(glFenceSync(condition, flags));
-} 
-
-/**
  * glIsSync
  */ 
 PHP_FUNCTION(glIsSync)
@@ -5720,46 +6071,6 @@ PHP_FUNCTION(glIsSync)
         return;
     }
     RETURN_BOOL(glIsSync(sync));
-} 
-
-/**
- * glDeleteSync
- */ 
-PHP_FUNCTION(glDeleteSync)
-{
-    zend_long sync;
-    if (zend_parse_parameters(ZEND_NUM_ARGS() , "l", &sync) == FAILURE) {
-        return;
-    }
-    glDeleteSync(sync);
-} 
-
-/**
- * glClientWaitSync
- */ 
-PHP_FUNCTION(glClientWaitSync)
-{
-    zend_long sync;
-    zend_long flags;
-    zend_long timeout;
-    if (zend_parse_parameters(ZEND_NUM_ARGS() , "lll", &sync, &flags, &timeout) == FAILURE) {
-        return;
-    }
-    RETURN_LONG(glClientWaitSync(sync, flags, timeout));
-} 
-
-/**
- * glWaitSync
- */ 
-PHP_FUNCTION(glWaitSync)
-{
-    zend_long sync;
-    zend_long flags;
-    zend_long timeout;
-    if (zend_parse_parameters(ZEND_NUM_ARGS() , "lll", &sync, &flags, &timeout) == FAILURE) {
-        return;
-    }
-    glWaitSync(sync, flags, timeout);
 } 
 
 /**
@@ -5777,30 +6088,6 @@ PHP_FUNCTION(glGetInteger64v)
     convert_to_long(data_zval);
     glGetInteger64v(pname, &data_tmp);
     ZVAL_LONG(data_zval, data_tmp);
-} 
-
-/**
- * glGetSynciv
- */ 
-PHP_FUNCTION(glGetSynciv)
-{
-    zend_long sync;
-    zend_long pname;
-    zend_long count;
-    zval *length_zval;
-    GLsizei length_tmp;
-    zval *values_zval;
-    GLint values_tmp;
-    if (zend_parse_parameters(ZEND_NUM_ARGS() , "lllzz", &sync, &pname, &count, &length_zval, &values_zval) == FAILURE) {
-        return;
-    }
-    ZVAL_DEREF(length_zval);
-    convert_to_long(length_zval);
-    ZVAL_DEREF(values_zval);
-    convert_to_long(values_zval);
-    glGetSynciv(sync, pname, count, &length_tmp, &values_tmp);
-    ZVAL_LONG(length_zval, length_tmp);
-    ZVAL_LONG(values_zval, values_tmp);
 } 
 
 /**
@@ -10252,6 +10539,10 @@ PHP_FUNCTION(glfwCreateWindow)
     }
     GLFWwindow* glfwwindow = glfwCreateWindow(width, height, title, monitor, share);
     phpglfw_glfwwindow_ptr_assign_to_zval_p(return_value, glfwwindow);
+    // fetch the internal object
+    phpglfw_glfwwindow_object *intern = phpglfw_glfwwindow_objectptr_from_zobj_p(Z_OBJ_P(return_value));
+    // ensure user pointer is our internal window object
+    glfwSetWindowUserPointer(glfwwindow, intern);
 } 
 
 /**
@@ -10682,6 +10973,195 @@ PHP_FUNCTION(glfwSetWindowAttrib)
 } 
 
 /**
+ * glfwSetWindowPosCallback
+ */ 
+PHP_FUNCTION(glfwSetWindowPosCallback)
+{
+    zend_fcall_info fci;
+    zend_fcall_info_cache fcc;
+    zval *window_zval;
+    if (FAILURE == zend_parse_parameters(ZEND_NUM_ARGS(), "Of",  &window_zval, phpglfw_glfwwindow_ce, &fci, &fcc)) {
+        RETURN_THROWS();
+    }
+    phpglfw_glfwwindow_object *obj_ptr = phpglfw_glfwwindow_objectptr_from_zobj_p(Z_OBJ_P(window_zval));
+    Z_TRY_ADDREF(fci.function_name);
+    if (fcc.object) {
+        GC_ADDREF(fcc.object);
+    }
+    memcpy((void*)&obj_ptr->windowposcallback.fci, (void*)&fci, sizeof(zend_fcall_info));
+    memcpy((void*)&obj_ptr->windowposcallback.fci_cache, (void*)&fcc, sizeof(zend_fcall_info_cache));
+    glfwSetWindowPosCallback(obj_ptr->glfwwindow, phpglfw_callback_windowposcallback_handler);
+} 
+
+/**
+ * glfwSetWindowSizeCallback
+ */ 
+PHP_FUNCTION(glfwSetWindowSizeCallback)
+{
+    zend_fcall_info fci;
+    zend_fcall_info_cache fcc;
+    zval *window_zval;
+    if (FAILURE == zend_parse_parameters(ZEND_NUM_ARGS(), "Of",  &window_zval, phpglfw_glfwwindow_ce, &fci, &fcc)) {
+        RETURN_THROWS();
+    }
+    phpglfw_glfwwindow_object *obj_ptr = phpglfw_glfwwindow_objectptr_from_zobj_p(Z_OBJ_P(window_zval));
+    Z_TRY_ADDREF(fci.function_name);
+    if (fcc.object) {
+        GC_ADDREF(fcc.object);
+    }
+    memcpy((void*)&obj_ptr->windowsizecallback.fci, (void*)&fci, sizeof(zend_fcall_info));
+    memcpy((void*)&obj_ptr->windowsizecallback.fci_cache, (void*)&fcc, sizeof(zend_fcall_info_cache));
+    glfwSetWindowSizeCallback(obj_ptr->glfwwindow, phpglfw_callback_windowsizecallback_handler);
+} 
+
+/**
+ * glfwSetWindowCloseCallback
+ */ 
+PHP_FUNCTION(glfwSetWindowCloseCallback)
+{
+    zend_fcall_info fci;
+    zend_fcall_info_cache fcc;
+    zval *window_zval;
+    if (FAILURE == zend_parse_parameters(ZEND_NUM_ARGS(), "Of",  &window_zval, phpglfw_glfwwindow_ce, &fci, &fcc)) {
+        RETURN_THROWS();
+    }
+    phpglfw_glfwwindow_object *obj_ptr = phpglfw_glfwwindow_objectptr_from_zobj_p(Z_OBJ_P(window_zval));
+    Z_TRY_ADDREF(fci.function_name);
+    if (fcc.object) {
+        GC_ADDREF(fcc.object);
+    }
+    memcpy((void*)&obj_ptr->windowclosecallback.fci, (void*)&fci, sizeof(zend_fcall_info));
+    memcpy((void*)&obj_ptr->windowclosecallback.fci_cache, (void*)&fcc, sizeof(zend_fcall_info_cache));
+    glfwSetWindowCloseCallback(obj_ptr->glfwwindow, phpglfw_callback_windowclosecallback_handler);
+} 
+
+/**
+ * glfwSetWindowRefreshCallback
+ */ 
+PHP_FUNCTION(glfwSetWindowRefreshCallback)
+{
+    zend_fcall_info fci;
+    zend_fcall_info_cache fcc;
+    zval *window_zval;
+    if (FAILURE == zend_parse_parameters(ZEND_NUM_ARGS(), "Of",  &window_zval, phpglfw_glfwwindow_ce, &fci, &fcc)) {
+        RETURN_THROWS();
+    }
+    phpglfw_glfwwindow_object *obj_ptr = phpglfw_glfwwindow_objectptr_from_zobj_p(Z_OBJ_P(window_zval));
+    Z_TRY_ADDREF(fci.function_name);
+    if (fcc.object) {
+        GC_ADDREF(fcc.object);
+    }
+    memcpy((void*)&obj_ptr->windowrefreshcallback.fci, (void*)&fci, sizeof(zend_fcall_info));
+    memcpy((void*)&obj_ptr->windowrefreshcallback.fci_cache, (void*)&fcc, sizeof(zend_fcall_info_cache));
+    glfwSetWindowRefreshCallback(obj_ptr->glfwwindow, phpglfw_callback_windowrefreshcallback_handler);
+} 
+
+/**
+ * glfwSetWindowFocusCallback
+ */ 
+PHP_FUNCTION(glfwSetWindowFocusCallback)
+{
+    zend_fcall_info fci;
+    zend_fcall_info_cache fcc;
+    zval *window_zval;
+    if (FAILURE == zend_parse_parameters(ZEND_NUM_ARGS(), "Of",  &window_zval, phpglfw_glfwwindow_ce, &fci, &fcc)) {
+        RETURN_THROWS();
+    }
+    phpglfw_glfwwindow_object *obj_ptr = phpglfw_glfwwindow_objectptr_from_zobj_p(Z_OBJ_P(window_zval));
+    Z_TRY_ADDREF(fci.function_name);
+    if (fcc.object) {
+        GC_ADDREF(fcc.object);
+    }
+    memcpy((void*)&obj_ptr->windowfocuscallback.fci, (void*)&fci, sizeof(zend_fcall_info));
+    memcpy((void*)&obj_ptr->windowfocuscallback.fci_cache, (void*)&fcc, sizeof(zend_fcall_info_cache));
+    glfwSetWindowFocusCallback(obj_ptr->glfwwindow, phpglfw_callback_windowfocuscallback_handler);
+} 
+
+/**
+ * glfwSetWindowIconifyCallback
+ */ 
+PHP_FUNCTION(glfwSetWindowIconifyCallback)
+{
+    zend_fcall_info fci;
+    zend_fcall_info_cache fcc;
+    zval *window_zval;
+    if (FAILURE == zend_parse_parameters(ZEND_NUM_ARGS(), "Of",  &window_zval, phpglfw_glfwwindow_ce, &fci, &fcc)) {
+        RETURN_THROWS();
+    }
+    phpglfw_glfwwindow_object *obj_ptr = phpglfw_glfwwindow_objectptr_from_zobj_p(Z_OBJ_P(window_zval));
+    Z_TRY_ADDREF(fci.function_name);
+    if (fcc.object) {
+        GC_ADDREF(fcc.object);
+    }
+    memcpy((void*)&obj_ptr->windowiconifycallback.fci, (void*)&fci, sizeof(zend_fcall_info));
+    memcpy((void*)&obj_ptr->windowiconifycallback.fci_cache, (void*)&fcc, sizeof(zend_fcall_info_cache));
+    glfwSetWindowIconifyCallback(obj_ptr->glfwwindow, phpglfw_callback_windowiconifycallback_handler);
+} 
+
+/**
+ * glfwSetWindowMaximizeCallback
+ */ 
+PHP_FUNCTION(glfwSetWindowMaximizeCallback)
+{
+    zend_fcall_info fci;
+    zend_fcall_info_cache fcc;
+    zval *window_zval;
+    if (FAILURE == zend_parse_parameters(ZEND_NUM_ARGS(), "Of",  &window_zval, phpglfw_glfwwindow_ce, &fci, &fcc)) {
+        RETURN_THROWS();
+    }
+    phpglfw_glfwwindow_object *obj_ptr = phpglfw_glfwwindow_objectptr_from_zobj_p(Z_OBJ_P(window_zval));
+    Z_TRY_ADDREF(fci.function_name);
+    if (fcc.object) {
+        GC_ADDREF(fcc.object);
+    }
+    memcpy((void*)&obj_ptr->windowmaximizecallback.fci, (void*)&fci, sizeof(zend_fcall_info));
+    memcpy((void*)&obj_ptr->windowmaximizecallback.fci_cache, (void*)&fcc, sizeof(zend_fcall_info_cache));
+    glfwSetWindowMaximizeCallback(obj_ptr->glfwwindow, phpglfw_callback_windowmaximizecallback_handler);
+} 
+
+/**
+ * glfwSetFramebufferSizeCallback
+ */ 
+PHP_FUNCTION(glfwSetFramebufferSizeCallback)
+{
+    zend_fcall_info fci;
+    zend_fcall_info_cache fcc;
+    zval *window_zval;
+    if (FAILURE == zend_parse_parameters(ZEND_NUM_ARGS(), "Of",  &window_zval, phpglfw_glfwwindow_ce, &fci, &fcc)) {
+        RETURN_THROWS();
+    }
+    phpglfw_glfwwindow_object *obj_ptr = phpglfw_glfwwindow_objectptr_from_zobj_p(Z_OBJ_P(window_zval));
+    Z_TRY_ADDREF(fci.function_name);
+    if (fcc.object) {
+        GC_ADDREF(fcc.object);
+    }
+    memcpy((void*)&obj_ptr->windowframebuffersizecallback.fci, (void*)&fci, sizeof(zend_fcall_info));
+    memcpy((void*)&obj_ptr->windowframebuffersizecallback.fci_cache, (void*)&fcc, sizeof(zend_fcall_info_cache));
+    glfwSetFramebufferSizeCallback(obj_ptr->glfwwindow, phpglfw_callback_windowframebuffersizecallback_handler);
+} 
+
+/**
+ * glfwSetWindowContentScaleCallback
+ */ 
+PHP_FUNCTION(glfwSetWindowContentScaleCallback)
+{
+    zend_fcall_info fci;
+    zend_fcall_info_cache fcc;
+    zval *window_zval;
+    if (FAILURE == zend_parse_parameters(ZEND_NUM_ARGS(), "Of",  &window_zval, phpglfw_glfwwindow_ce, &fci, &fcc)) {
+        RETURN_THROWS();
+    }
+    phpglfw_glfwwindow_object *obj_ptr = phpglfw_glfwwindow_objectptr_from_zobj_p(Z_OBJ_P(window_zval));
+    Z_TRY_ADDREF(fci.function_name);
+    if (fcc.object) {
+        GC_ADDREF(fcc.object);
+    }
+    memcpy((void*)&obj_ptr->windowcontentscalecallback.fci, (void*)&fci, sizeof(zend_fcall_info));
+    memcpy((void*)&obj_ptr->windowcontentscalecallback.fci_cache, (void*)&fcc, sizeof(zend_fcall_info_cache));
+    glfwSetWindowContentScaleCallback(obj_ptr->glfwwindow, phpglfw_callback_windowcontentscalecallback_handler);
+} 
+
+/**
  * glfwPollEvents
  */ 
 PHP_FUNCTION(glfwPollEvents)
@@ -10901,12 +11381,19 @@ PHP_FUNCTION(glfwSetKeyCallback)
     if (FAILURE == zend_parse_parameters(ZEND_NUM_ARGS(), "Of",  &window_zval, phpglfw_glfwwindow_ce, &fci, &fcc)) {
         RETURN_THROWS();
     }
-    if (Z_TYPE(_phpglfw_callback_keycallback) != IS_UNDEF) {
-        zval_ptr_dtor(&_phpglfw_callback_keycallback);
+    phpglfw_glfwwindow_object *obj_ptr = phpglfw_glfwwindow_objectptr_from_zobj_p(Z_OBJ_P(window_zval));
+    // copy the function info over to the window object
+    // obj_ptr->keycallback.fci = fci;
+    // obj_ptr->keycallback.fci_cache = fcc;
+    // this fixes a segfault when the callback has a reference over `use()`
+    // i honestly have no idea why this works, but it does
+    Z_TRY_ADDREF(fci.function_name);
+    if (fcc.object) {
+        GC_ADDREF(fcc.object);
     }
-    GLFWwindow* window = phpglfw_glfwwindowptr_from_zval_ptr(window_zval);
-    ZVAL_COPY(&_phpglfw_callback_keycallback, &fci.function_name);
-    glfwSetKeyCallback(window, phpglfw_callback_keycallback_handler);
+    memcpy((void*)&obj_ptr->keycallback.fci, (void*)&fci, sizeof(zend_fcall_info));
+    memcpy((void*)&obj_ptr->keycallback.fci_cache, (void*)&fcc, sizeof(zend_fcall_info_cache));
+    glfwSetKeyCallback(obj_ptr->glfwwindow, phpglfw_callback_keycallback_handler);
 } 
 
 /**
@@ -10920,12 +11407,140 @@ PHP_FUNCTION(glfwSetCharCallback)
     if (FAILURE == zend_parse_parameters(ZEND_NUM_ARGS(), "Of",  &window_zval, phpglfw_glfwwindow_ce, &fci, &fcc)) {
         RETURN_THROWS();
     }
-    if (Z_TYPE(_phpglfw_callback_charcallback) != IS_UNDEF) {
-        zval_ptr_dtor(&_phpglfw_callback_charcallback);
+    phpglfw_glfwwindow_object *obj_ptr = phpglfw_glfwwindow_objectptr_from_zobj_p(Z_OBJ_P(window_zval));
+    Z_TRY_ADDREF(fci.function_name);
+    if (fcc.object) {
+        GC_ADDREF(fcc.object);
     }
-    GLFWwindow* window = phpglfw_glfwwindowptr_from_zval_ptr(window_zval);
-    ZVAL_COPY(&_phpglfw_callback_charcallback, &fci.function_name);
-    glfwSetCharCallback(window, phpglfw_callback_charcallback_handler);
+    memcpy((void*)&obj_ptr->charcallback.fci, (void*)&fci, sizeof(zend_fcall_info));
+    memcpy((void*)&obj_ptr->charcallback.fci_cache, (void*)&fcc, sizeof(zend_fcall_info_cache));
+    glfwSetCharCallback(obj_ptr->glfwwindow, phpglfw_callback_charcallback_handler);
+} 
+
+/**
+ * glfwSetCharModsCallback
+ */ 
+PHP_FUNCTION(glfwSetCharModsCallback)
+{
+    zend_fcall_info fci;
+    zend_fcall_info_cache fcc;
+    zval *window_zval;
+    if (FAILURE == zend_parse_parameters(ZEND_NUM_ARGS(), "Of",  &window_zval, phpglfw_glfwwindow_ce, &fci, &fcc)) {
+        RETURN_THROWS();
+    }
+    phpglfw_glfwwindow_object *obj_ptr = phpglfw_glfwwindow_objectptr_from_zobj_p(Z_OBJ_P(window_zval));
+    Z_TRY_ADDREF(fci.function_name);
+    if (fcc.object) {
+        GC_ADDREF(fcc.object);
+    }
+    memcpy((void*)&obj_ptr->charmodscallback.fci, (void*)&fci, sizeof(zend_fcall_info));
+    memcpy((void*)&obj_ptr->charmodscallback.fci_cache, (void*)&fcc, sizeof(zend_fcall_info_cache));
+    glfwSetCharModsCallback(obj_ptr->glfwwindow, phpglfw_callback_charmodscallback_handler);
+} 
+
+/**
+ * glfwSetMouseButtonCallback
+ */ 
+PHP_FUNCTION(glfwSetMouseButtonCallback)
+{
+    zend_fcall_info fci;
+    zend_fcall_info_cache fcc;
+    zval *window_zval;
+    if (FAILURE == zend_parse_parameters(ZEND_NUM_ARGS(), "Of",  &window_zval, phpglfw_glfwwindow_ce, &fci, &fcc)) {
+        RETURN_THROWS();
+    }
+    phpglfw_glfwwindow_object *obj_ptr = phpglfw_glfwwindow_objectptr_from_zobj_p(Z_OBJ_P(window_zval));
+    Z_TRY_ADDREF(fci.function_name);
+    if (fcc.object) {
+        GC_ADDREF(fcc.object);
+    }
+    memcpy((void*)&obj_ptr->mousebuttoncallback.fci, (void*)&fci, sizeof(zend_fcall_info));
+    memcpy((void*)&obj_ptr->mousebuttoncallback.fci_cache, (void*)&fcc, sizeof(zend_fcall_info_cache));
+    glfwSetMouseButtonCallback(obj_ptr->glfwwindow, phpglfw_callback_mousebuttoncallback_handler);
+} 
+
+/**
+ * glfwSetCursorPosCallback
+ */ 
+PHP_FUNCTION(glfwSetCursorPosCallback)
+{
+    zend_fcall_info fci;
+    zend_fcall_info_cache fcc;
+    zval *window_zval;
+    if (FAILURE == zend_parse_parameters(ZEND_NUM_ARGS(), "Of",  &window_zval, phpglfw_glfwwindow_ce, &fci, &fcc)) {
+        RETURN_THROWS();
+    }
+    phpglfw_glfwwindow_object *obj_ptr = phpglfw_glfwwindow_objectptr_from_zobj_p(Z_OBJ_P(window_zval));
+    Z_TRY_ADDREF(fci.function_name);
+    if (fcc.object) {
+        GC_ADDREF(fcc.object);
+    }
+    memcpy((void*)&obj_ptr->cursorposcallback.fci, (void*)&fci, sizeof(zend_fcall_info));
+    memcpy((void*)&obj_ptr->cursorposcallback.fci_cache, (void*)&fcc, sizeof(zend_fcall_info_cache));
+    glfwSetCursorPosCallback(obj_ptr->glfwwindow, phpglfw_callback_cursorposcallback_handler);
+} 
+
+/**
+ * glfwSetCursorEnterCallback
+ */ 
+PHP_FUNCTION(glfwSetCursorEnterCallback)
+{
+    zend_fcall_info fci;
+    zend_fcall_info_cache fcc;
+    zval *window_zval;
+    if (FAILURE == zend_parse_parameters(ZEND_NUM_ARGS(), "Of",  &window_zval, phpglfw_glfwwindow_ce, &fci, &fcc)) {
+        RETURN_THROWS();
+    }
+    phpglfw_glfwwindow_object *obj_ptr = phpglfw_glfwwindow_objectptr_from_zobj_p(Z_OBJ_P(window_zval));
+    Z_TRY_ADDREF(fci.function_name);
+    if (fcc.object) {
+        GC_ADDREF(fcc.object);
+    }
+    memcpy((void*)&obj_ptr->cursorentercallback.fci, (void*)&fci, sizeof(zend_fcall_info));
+    memcpy((void*)&obj_ptr->cursorentercallback.fci_cache, (void*)&fcc, sizeof(zend_fcall_info_cache));
+    glfwSetCursorEnterCallback(obj_ptr->glfwwindow, phpglfw_callback_cursorentercallback_handler);
+} 
+
+/**
+ * glfwSetScrollCallback
+ */ 
+PHP_FUNCTION(glfwSetScrollCallback)
+{
+    zend_fcall_info fci;
+    zend_fcall_info_cache fcc;
+    zval *window_zval;
+    if (FAILURE == zend_parse_parameters(ZEND_NUM_ARGS(), "Of",  &window_zval, phpglfw_glfwwindow_ce, &fci, &fcc)) {
+        RETURN_THROWS();
+    }
+    phpglfw_glfwwindow_object *obj_ptr = phpglfw_glfwwindow_objectptr_from_zobj_p(Z_OBJ_P(window_zval));
+    Z_TRY_ADDREF(fci.function_name);
+    if (fcc.object) {
+        GC_ADDREF(fcc.object);
+    }
+    memcpy((void*)&obj_ptr->scrollcallback.fci, (void*)&fci, sizeof(zend_fcall_info));
+    memcpy((void*)&obj_ptr->scrollcallback.fci_cache, (void*)&fcc, sizeof(zend_fcall_info_cache));
+    glfwSetScrollCallback(obj_ptr->glfwwindow, phpglfw_callback_scrollcallback_handler);
+} 
+
+/**
+ * glfwSetDropCallback
+ */ 
+PHP_FUNCTION(glfwSetDropCallback)
+{
+    zend_fcall_info fci;
+    zend_fcall_info_cache fcc;
+    zval *window_zval;
+    if (FAILURE == zend_parse_parameters(ZEND_NUM_ARGS(), "Of",  &window_zval, phpglfw_glfwwindow_ce, &fci, &fcc)) {
+        RETURN_THROWS();
+    }
+    phpglfw_glfwwindow_object *obj_ptr = phpglfw_glfwwindow_objectptr_from_zobj_p(Z_OBJ_P(window_zval));
+    Z_TRY_ADDREF(fci.function_name);
+    if (fcc.object) {
+        GC_ADDREF(fcc.object);
+    }
+    memcpy((void*)&obj_ptr->dropcallback.fci, (void*)&fci, sizeof(zend_fcall_info));
+    memcpy((void*)&obj_ptr->dropcallback.fci_cache, (void*)&fcc, sizeof(zend_fcall_info_cache));
+    glfwSetDropCallback(obj_ptr->glfwwindow, phpglfw_callback_dropcallback_handler);
 } 
 
 /**
