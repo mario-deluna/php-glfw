@@ -25,10 +25,11 @@ class GLFWCreateWindowAdjustment implements AdjustmentInterface
                 $b = parent::getFunctionImplementationBody() . PHP_EOL . PHP_EOL;
 
                 $b .= <<<EOD
+// fetch the internal object
+phpglfw_glfwwindow_object *intern = phpglfw_glfwwindow_objectptr_from_zobj_p(Z_OBJ_P(return_value));
+
 // ensure user pointer is our internal window object
-zval *windowzval_userptr = NULL;
-ZVAL_COPY(windowzval_userptr, return_value);
-glfwSetWindowUserPointer(glfwwindow, windowzval_userptr);
+glfwSetWindowUserPointer(glfwwindow, intern);
 EOD;
                 return $b;
             }

@@ -35,15 +35,23 @@ if (FAILURE == zend_parse_parameters(ZEND_NUM_ARGS(), "Of",  &window_zval, phpgl
     RETURN_THROWS();
 }
 
-if (Z_TYPE(_phpglfw_callback_keycallback) != IS_UNDEF) {
-    zval_ptr_dtor(&_phpglfw_callback_keycallback);
+phpglfw_glfwwindow_object *obj_ptr = phpglfw_glfwwindow_objectptr_from_zobj_p(Z_OBJ_P(window_zval));
+
+// copy the function info over to the window object
+// obj_ptr->keycallback.fci = fci;
+// obj_ptr->keycallback.fci_cache = fcc;
+
+// this fixes a segfault when the callback has a reference over `use()`
+// i honestly have no idea why this works, but it does
+Z_TRY_ADDREF(fci.function_name);
+if (fcc.object) {
+    GC_ADDREF(fcc.object);
 }
 
-GLFWwindow* window = phpglfw_glfwwindowptr_from_zval_ptr(window_zval);
+memcpy((void*)&obj_ptr->keycallback.fci, (void*)&fci, sizeof(zend_fcall_info));
+memcpy((void*)&obj_ptr->keycallback.fci_cache, (void*)&fcc, sizeof(zend_fcall_info_cache));
 
-ZVAL_COPY(&_phpglfw_callback_keycallback, &fci.function_name);
-
-glfwSetKeyCallback(window, phpglfw_callback_keycallback_handler);
+glfwSetKeyCallback(obj_ptr->glfwwindow, phpglfw_callback_keycallback_handler);
 EOD;
                 return $buffer;
             }
@@ -102,15 +110,17 @@ if (FAILURE == zend_parse_parameters(ZEND_NUM_ARGS(), "Of",  &window_zval, phpgl
     RETURN_THROWS();
 }
 
-if (Z_TYPE(_phpglfw_callback_charcallback) != IS_UNDEF) {
-    zval_ptr_dtor(&_phpglfw_callback_charcallback);
+phpglfw_glfwwindow_object *obj_ptr = phpglfw_glfwwindow_objectptr_from_zobj_p(Z_OBJ_P(window_zval));
+
+Z_TRY_ADDREF(fci.function_name);
+if (fcc.object) {
+    GC_ADDREF(fcc.object);
 }
 
-GLFWwindow* window = phpglfw_glfwwindowptr_from_zval_ptr(window_zval);
+memcpy((void*)&obj_ptr->charcallback.fci, (void*)&fci, sizeof(zend_fcall_info));
+memcpy((void*)&obj_ptr->charcallback.fci_cache, (void*)&fcc, sizeof(zend_fcall_info_cache));
 
-ZVAL_COPY(&_phpglfw_callback_charcallback, &fci.function_name);
-
-glfwSetCharCallback(window, phpglfw_callback_charcallback_handler);
+glfwSetCharCallback(obj_ptr->glfwwindow, phpglfw_callback_charcallback_handler);
 EOD;
                 return $buffer;
             }
