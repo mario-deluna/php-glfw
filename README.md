@@ -65,6 +65,7 @@ Having this integrated into the extension comes with a bunch of advantages:
  * low memory footprint.
  * The math structures have overloaded operators, so you can write things like:
    ```php
+   use GL\Math\Vec2;
    $v3 = Vec2(15, -5) + Vec2(42, 7); // returns Vec2(54, 2)
    ```
  * Some OpenGL functions can directly accept the math structs as arguments. 
