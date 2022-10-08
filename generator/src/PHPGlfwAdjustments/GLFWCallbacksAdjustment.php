@@ -400,35 +400,7 @@ EOD;
         {
             public function getFunctionImplementationBody(): string
             {
-
-                $buffer = <<<EOD
-zend_fcall_info fci;
-zend_fcall_info_cache fcc;
-zval *window_zval;
-
-if (FAILURE == zend_parse_parameters(ZEND_NUM_ARGS(), "Of",  &window_zval, phpglfw_glfwwindow_ce, &fci, &fcc)) {
-    RETURN_THROWS();
-}
-
-phpglfw_glfwwindow_object *obj_ptr = phpglfw_glfwwindow_objectptr_from_zobj_p(Z_OBJ_P(window_zval));
-
-// copy the function info over to the window object
-// obj_ptr->keycallback.fci = fci;
-// obj_ptr->keycallback.fci_cache = fcc;
-
-// this fixes a segfault when the callback has a reference over `use()`
-// i honestly have no idea why this works, but it does
-Z_TRY_ADDREF(fci.function_name);
-if (fcc.object) {
-    GC_ADDREF(fcc.object);
-}
-
-memcpy((void*)&obj_ptr->keycallback.fci, (void*)&fci, sizeof(zend_fcall_info));
-memcpy((void*)&obj_ptr->keycallback.fci_cache, (void*)&fcc, sizeof(zend_fcall_info_cache));
-
-glfwSetKeyCallback(obj_ptr->glfwwindow, phpglfw_callback_keycallback_handler);
-EOD;
-                return $buffer;
+                return GLFWCallbacksAdjustment::createCallbackImpl('phpglfw_callback_keycallback_handler', 'keycallback', 'glfwSetKeyCallback');
             }
         };
 
