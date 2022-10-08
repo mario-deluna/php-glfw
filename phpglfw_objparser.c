@@ -813,6 +813,7 @@ void phpglfw_register_objparser_module(INIT_FUNC_ARGS)
 
     memcpy(&phpglfw_objparser_res_handlers, zend_get_std_object_handlers(), sizeof(phpglfw_objparser_res_handlers));
 
+    phpglfw_objparser_res_handlers.offset = XtOffsetOf(phpglfw_objparser_resource_object, std);
     phpglfw_objparser_res_handlers.free_obj = phpglfw_geometry_objparser_res_free_handler;
 
     // Obj File Parser

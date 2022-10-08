@@ -104,7 +104,6 @@ phpglfw_buffer_glushort_object* phpglfw_buffer_glushort_objectptr_from_zobj_p(ze
 phpglfw_buffer_glbyte_object* phpglfw_buffer_glbyte_objectptr_from_zobj_p(zend_object* obj);
 phpglfw_buffer_glubyte_object* phpglfw_buffer_glubyte_objectptr_from_zobj_p(zend_object* obj);
 
-
 /**
  * Class entry getters
  */

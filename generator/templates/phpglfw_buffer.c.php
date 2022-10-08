@@ -53,6 +53,13 @@ zend_class_entry *<?php echo $buffer->getClassEntryNameGetter(); ?>() {
 <?php endforeach; ?>
 
 <?php foreach($buffers as $buffer) : ?>
+zend_always_inline <?php echo $buffer->getObjectName(); ?>* <?php echo $buffer->objectFromZObjFunctionName(); ?>(zend_object* obj)
+{
+    return (<?php echo $buffer->getObjectName(); ?> *) ((char *) (obj) - XtOffsetOf(<?php echo $buffer->getObjectName(); ?>, std));
+}
+<?php endforeach; ?>
+
+<?php foreach($buffers as $buffer) : ?>
 /**
  * <?php echo $buffer->getFullNamespaceString(); ?> 
  * 
@@ -162,9 +169,7 @@ static void <?php echo $buffer->getHandlerMethodName('free'); ?>(zend_object *ob
  */
 zend_object *<?php echo $buffer->getHandlerMethodName('create'); ?>(zend_class_entry *class_type)
 {
-    size_t block_len = sizeof(<?php echo $buffer->getObjectName(); ?>) + zend_object_properties_size(class_type);
-    <?php echo $buffer->getObjectName(); ?> *intern = emalloc(block_len);
-    memset(intern, 0, block_len);
+    <?php echo $buffer->getObjectName(); ?> *intern = zend_object_alloc(sizeof(<?php echo $buffer->getObjectName(); ?>), class_type);
 
     intern->vec = NULL;
 
@@ -497,12 +502,13 @@ void phpglfw_register_buffer_module(INIT_FUNC_ARGS)
     <?php echo $buffer->getClassEntryName(); ?>->get_iterator = <?php echo $buffer->getHandlerMethodName('get_iterator'); ?>;
 
 	zend_class_implements(<?php echo $buffer->getClassEntryName(); ?>, 1, phpglfw_buffer_interface_ce);
-    memcpy(&<?php echo $buffer->getHandlersVarName(); ?>, zend_get_std_object_handlers(), sizeof(<?php echo $buffer->getHandlersVarName(); ?>));
+    memcpy(&<?php echo $buffer->getHandlersVarName(); ?>, &std_object_handlers, sizeof(zend_object_handlers));
+    <?php echo $buffer->getHandlersVarName(); ?>.offset = XtOffsetOf(<?php echo $buffer->getObjectName(); ?>, std);
+    
     <?php echo $buffer->getHandlersVarName(); ?>.free_obj = <?php echo $buffer->getHandlerMethodName('free'); ?>;
     <?php echo $buffer->getHandlersVarName(); ?>.read_dimension = <?php echo $buffer->getHandlerMethodName('array_get'); ?>;
     <?php echo $buffer->getHandlersVarName(); ?>.write_dimension = <?php echo $buffer->getHandlerMethodName('array_set'); ?>;
     <?php echo $buffer->getHandlersVarName(); ?>.get_debug_info = <?php echo $buffer->getHandlerMethodName('debug_info'); ?>;
-    <?php echo $buffer->getHandlersVarName(); ?>.offset = XtOffsetOf(<?php echo $buffer->getObjectName(); ?>, std);
-
+    
 <?php endforeach; ?>
 }
