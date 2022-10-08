@@ -64,6 +64,11 @@ zend_class_entry *phpglfw_get_geometry_objparser_mesh_ce() {
     return phpglfw_objparser_mesh_ce;
 }
 
+zend_always_inline phpglfw_objparser_resource_object* phpglfw_objparser_res_objectptr_from_zobj_p(zend_object* obj)
+{
+    return (phpglfw_objparser_resource_object *) ((char *) (obj) - XtOffsetOf(phpglfw_objparser_resource_object, std));
+}
+
 static zend_object_handlers phpglfw_objparser_res_handlers;
 
 zend_object *phpglfw_objparser_res_create_handler(zend_class_entry *class_type)

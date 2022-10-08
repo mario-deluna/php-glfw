@@ -80,6 +80,51 @@ zend_class_entry *phpglfw_get_buffer_glubyte_ce() {
     return phpglfw_buffer_glubyte_ce;
 }
 
+phpglfw_buffer_glfloat_object* phpglfw_buffer_glfloat_objectptr_from_zobj_p(zend_object* obj)
+{
+    return (phpglfw_buffer_glfloat_object *) ((char *) (obj) - XtOffsetOf(phpglfw_buffer_glfloat_object, std));
+}
+
+phpglfw_buffer_glhalf_object* phpglfw_buffer_glhalf_objectptr_from_zobj_p(zend_object* obj)
+{
+    return (phpglfw_buffer_glhalf_object *) ((char *) (obj) - XtOffsetOf(phpglfw_buffer_glhalf_object, std));
+}
+
+phpglfw_buffer_gldouble_object* phpglfw_buffer_gldouble_objectptr_from_zobj_p(zend_object* obj)
+{
+    return (phpglfw_buffer_gldouble_object *) ((char *) (obj) - XtOffsetOf(phpglfw_buffer_gldouble_object, std));
+}
+
+phpglfw_buffer_glint_object* phpglfw_buffer_glint_objectptr_from_zobj_p(zend_object* obj)
+{
+    return (phpglfw_buffer_glint_object *) ((char *) (obj) - XtOffsetOf(phpglfw_buffer_glint_object, std));
+}
+
+phpglfw_buffer_gluint_object* phpglfw_buffer_gluint_objectptr_from_zobj_p(zend_object* obj)
+{
+    return (phpglfw_buffer_gluint_object *) ((char *) (obj) - XtOffsetOf(phpglfw_buffer_gluint_object, std));
+}
+
+phpglfw_buffer_glshort_object* phpglfw_buffer_glshort_objectptr_from_zobj_p(zend_object* obj)
+{
+    return (phpglfw_buffer_glshort_object *) ((char *) (obj) - XtOffsetOf(phpglfw_buffer_glshort_object, std));
+}
+
+phpglfw_buffer_glushort_object* phpglfw_buffer_glushort_objectptr_from_zobj_p(zend_object* obj)
+{
+    return (phpglfw_buffer_glushort_object *) ((char *) (obj) - XtOffsetOf(phpglfw_buffer_glushort_object, std));
+}
+
+phpglfw_buffer_glbyte_object* phpglfw_buffer_glbyte_objectptr_from_zobj_p(zend_object* obj)
+{
+    return (phpglfw_buffer_glbyte_object *) ((char *) (obj) - XtOffsetOf(phpglfw_buffer_glbyte_object, std));
+}
+
+phpglfw_buffer_glubyte_object* phpglfw_buffer_glubyte_objectptr_from_zobj_p(zend_object* obj)
+{
+    return (phpglfw_buffer_glubyte_object *) ((char *) (obj) - XtOffsetOf(phpglfw_buffer_glubyte_object, std));
+}
+
 /**
  * GL\Buffer\FloatBuffer 
  * 
