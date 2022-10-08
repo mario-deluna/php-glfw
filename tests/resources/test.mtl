@@ -9,3 +9,12 @@ Ns 50.0
 Ni 60.0
 d 70.0
 illum 42
+map_Ka test_a.png
+map_Kd test_d.png
+map_Ks test_s.png
+map_Ke test_e.png
+map_Kt test_t.png
+map_Ns test_ns.png
+map_Ni test_ni.png
+map_d test_alpha.png
+map_bump test_norm.png

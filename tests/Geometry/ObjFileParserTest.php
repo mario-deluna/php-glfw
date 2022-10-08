@@ -34,5 +34,17 @@ class ObjFileParserTest extends \PHPUnit\Framework\TestCase
         $this->assertEquals(60.0, $mesh->materials[0]->indexOfRefraction);
         $this->assertEquals(70.0, $mesh->materials[0]->dissolve);
         $this->assertEquals(42, $mesh->materials[0]->illuminationModel);
+
+        $this->assertEquals('test_a.png', $mesh->materials[0]->ambientTexture->name);
+        $this->assertEquals('test_d.png', $mesh->materials[0]->diffuseTexture->name);
+        $this->assertEquals('test_s.png', $mesh->materials[0]->specularTexture->name);
+        $this->assertEquals('test_e.png', $mesh->materials[0]->emissiveTexture->name);
+        $this->assertEquals('test_t.png', $mesh->materials[0]->transmittanceTexture->name);
+        $this->assertEquals('test_ns.png', $mesh->materials[0]->shininessTexture->name);
+        $this->assertEquals('test_ni.png', $mesh->materials[0]->indexOfRefractionTexture->name);
+        $this->assertEquals('test_alpha.png', $mesh->materials[0]->dissolveTexture->name);
+        $this->assertEquals('test_norm.png', $mesh->materials[0]->bumpTexture->name);
     }
+
+
 }

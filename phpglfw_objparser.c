@@ -193,6 +193,16 @@ void create_meshgroup_phparray(zval *array_zval, fastObjGroup *group_ptr, unsign
     }
 }
 
+static void assign_texture_to_zmaterial(fastObjTexture *objtexture, zval *material_zval, const char *propname, size_t propname_len)
+{
+    zval texture_zval;
+    ZVAL_UNDEF(&texture_zval);
+    object_init_ex(&texture_zval, phpglfw_objparser_texture_ce);
+    zend_update_property_string(phpglfw_objparser_texture_ce, Z_OBJ_P(&texture_zval), "name", sizeof("name")-1, objtexture->name);
+    zend_update_property_string(phpglfw_objparser_texture_ce, Z_OBJ_P(&texture_zval), "path", sizeof("path")-1, objtexture->path);
+    zend_update_property(phpglfw_objparser_material_ce, Z_OBJ_P(material_zval), propname, propname_len, &texture_zval);
+}
+
 PHP_METHOD(GL_Geometry_ObjFileParser, __construct)
 {
     zend_object *curr_obj = Z_OBJ_P(getThis());
@@ -317,6 +327,51 @@ PHP_METHOD(GL_Geometry_ObjFileParser, __construct)
 
         // set the illumination model property
         zend_update_property_long(phpglfw_objparser_material_ce, Z_OBJ_P(&material_zval), "illuminationModel", sizeof("illuminationModel")-1, intern->mesh->materials[i].illum);
+
+        // set the ambient texture map property
+        if (intern->mesh->materials[i].map_Ka.name) {
+            assign_texture_to_zmaterial(&intern->mesh->materials[i].map_Ka, &material_zval, "ambientTexture", sizeof("ambientTexture")-1);
+        }
+
+        // set the diffuse texture map property
+        if (intern->mesh->materials[i].map_Kd.name) {
+            assign_texture_to_zmaterial(&intern->mesh->materials[i].map_Kd, &material_zval, "diffuseTexture", sizeof("diffuseTexture")-1);
+        }
+
+        // set the specular texture map property
+        if (intern->mesh->materials[i].map_Ks.name) {
+            assign_texture_to_zmaterial(&intern->mesh->materials[i].map_Ks, &material_zval, "specularTexture", sizeof("specularTexture")-1);
+        }
+
+        // set the emissive texture map property
+        if (intern->mesh->materials[i].map_Ke.name) {
+            assign_texture_to_zmaterial(&intern->mesh->materials[i].map_Ke, &material_zval, "emissiveTexture", sizeof("emissiveTexture")-1);
+        }
+
+        // set the transmittance texture map property
+        if (intern->mesh->materials[i].map_Kt.name) {
+            assign_texture_to_zmaterial(&intern->mesh->materials[i].map_Kt, &material_zval, "transmittanceTexture", sizeof("transmittanceTexture")-1);
+        }
+
+        // set the shininess texture map property
+        if (intern->mesh->materials[i].map_Ns.name) {
+            assign_texture_to_zmaterial(&intern->mesh->materials[i].map_Ns, &material_zval, "shininessTexture", sizeof("shininessTexture")-1);
+        }
+
+        // set the index of refraction texture map property
+        if (intern->mesh->materials[i].map_Ni.name) {
+            assign_texture_to_zmaterial(&intern->mesh->materials[i].map_Ni, &material_zval, "indexOfRefractionTexture", sizeof("indexOfRefractionTexture")-1);
+        }
+
+        // set the dissolve texture map property
+        if (intern->mesh->materials[i].map_d.name) {
+            assign_texture_to_zmaterial(&intern->mesh->materials[i].map_d, &material_zval, "dissolveTexture", sizeof("dissolveTexture")-1);
+        }
+
+        // set the bump texture map property
+        if (intern->mesh->materials[i].map_bump.name) {
+            assign_texture_to_zmaterial(&intern->mesh->materials[i].map_bump, &material_zval, "bumpTexture", sizeof("bumpTexture")-1);
+        }
 
         // add the material to the array
         zend_hash_index_update(ht, i, &material_zval);
@@ -941,6 +996,99 @@ void phpglfw_register_objparser_module(INIT_FUNC_ARGS)
     zend_string *property_material_illuminationModel = zend_string_init("illuminationModel", sizeof("illuminationModel") - 1, 1);
     zend_declare_typed_property(phpglfw_objparser_material_ce, property_material_illuminationModel, &property_material_illuminationModel_default_value, prop_access_flags, NULL, (zend_type) ZEND_TYPE_INIT_MASK(MAY_BE_LONG));
     zend_string_release(property_material_illuminationModel);
+
+
+    // material ambient texture prop (public readonly Texture $ambientTexture)
+    zend_string *property_material_ambientTexture_class_Texture = zend_string_init("GL\\Geometry\\ObjFileParser\\Texture", sizeof("GL\\Geometry\\ObjFileParser\\Texture")-1, 1);
+    zval property_material_ambientTexture_default_value;
+    ZVAL_NULL(&property_material_ambientTexture_default_value);
+    zend_string *property_material_ambientTexture = zend_string_init("ambientTexture", sizeof("ambientTexture") - 1, 1);
+    zend_declare_typed_property(phpglfw_objparser_material_ce, property_material_ambientTexture, &property_material_ambientTexture_default_value, prop_access_flags, NULL, (zend_type) ZEND_TYPE_INIT_CLASS(property_material_ambientTexture_class_Texture, 0, MAY_BE_NULL));
+    zend_string_release(property_material_ambientTexture);
+
+    // material diffuse texture prop (public readonly Texture $diffuseTexture)
+    zend_string *property_material_diffuseTexture_class_Texture = zend_string_init("GL\\Geometry\\ObjFileParser\\Texture", sizeof("GL\\Geometry\\ObjFileParser\\Texture")-1, 1);
+    zval property_material_diffuseTexture_default_value;
+    ZVAL_NULL(&property_material_diffuseTexture_default_value);
+    zend_string *property_material_diffuseTexture = zend_string_init("diffuseTexture", sizeof("diffuseTexture") - 1, 1);
+    zend_declare_typed_property(phpglfw_objparser_material_ce, property_material_diffuseTexture, &property_material_diffuseTexture_default_value, prop_access_flags, NULL, (zend_type) ZEND_TYPE_INIT_CLASS(property_material_diffuseTexture_class_Texture, 0, MAY_BE_NULL));
+    zend_string_release(property_material_diffuseTexture);
+
+    // material specular texture prop (public readonly Texture $specularTexture)
+    zend_string *property_material_specularTexture_class_Texture = zend_string_init("GL\\Geometry\\ObjFileParser\\Texture", sizeof("GL\\Geometry\\ObjFileParser\\Texture")-1, 1);
+    zval property_material_specularTexture_default_value;
+    ZVAL_NULL(&property_material_specularTexture_default_value);
+    zend_string *property_material_specularTexture = zend_string_init("specularTexture", sizeof("specularTexture") - 1, 1);
+    zend_declare_typed_property(phpglfw_objparser_material_ce, property_material_specularTexture, &property_material_specularTexture_default_value, prop_access_flags, NULL, (zend_type) ZEND_TYPE_INIT_CLASS(property_material_specularTexture_class_Texture, 0, MAY_BE_NULL));
+    zend_string_release(property_material_specularTexture);
+
+    // material emissive texture prop (public readonly Texture $emissiveTexture)
+    zend_string *property_material_emissiveTexture_class_Texture = zend_string_init("GL\\Geometry\\ObjFileParser\\Texture", sizeof("GL\\Geometry\\ObjFileParser\\Texture")-1, 1);
+    zval property_material_emissiveTexture_default_value;
+    ZVAL_NULL(&property_material_emissiveTexture_default_value);
+    zend_string *property_material_emissiveTexture = zend_string_init("emissiveTexture", sizeof("emissiveTexture") - 1, 1);
+    zend_declare_typed_property(phpglfw_objparser_material_ce, property_material_emissiveTexture, &property_material_emissiveTexture_default_value, prop_access_flags, NULL, (zend_type) ZEND_TYPE_INIT_CLASS(property_material_emissiveTexture_class_Texture, 0, MAY_BE_NULL));
+    zend_string_release(property_material_emissiveTexture);
+
+    // material transmittance texture prop (public readonly Texture $transmittanceTexture)
+    zend_string *property_material_transmittanceTexture_class_Texture = zend_string_init("GL\\Geometry\\ObjFileParser\\Texture", sizeof("GL\\Geometry\\ObjFileParser\\Texture")-1, 1);
+    zval property_material_transmittanceTexture_default_value;
+    ZVAL_NULL(&property_material_transmittanceTexture_default_value);
+    zend_string *property_material_transmittanceTexture = zend_string_init("transmittanceTexture", sizeof("transmittanceTexture") - 1, 1);
+    zend_declare_typed_property(phpglfw_objparser_material_ce, property_material_transmittanceTexture, &property_material_transmittanceTexture_default_value, prop_access_flags, NULL, (zend_type) ZEND_TYPE_INIT_CLASS(property_material_transmittanceTexture_class_Texture, 0, MAY_BE_NULL));
+    zend_string_release(property_material_transmittanceTexture);
+
+    // material shininess texture prop (public readonly Texture $shininessTexture)
+    zend_string *property_material_shininessTexture_class_Texture = zend_string_init("GL\\Geometry\\ObjFileParser\\Texture", sizeof("GL\\Geometry\\ObjFileParser\\Texture")-1, 1);
+    zval property_material_shininessTexture_default_value;
+    ZVAL_NULL(&property_material_shininessTexture_default_value);
+    zend_string *property_material_shininessTexture = zend_string_init("shininessTexture", sizeof("shininessTexture") - 1, 1);
+    zend_declare_typed_property(phpglfw_objparser_material_ce, property_material_shininessTexture, &property_material_shininessTexture_default_value, prop_access_flags, NULL, (zend_type) ZEND_TYPE_INIT_CLASS(property_material_shininessTexture_class_Texture, 0, MAY_BE_NULL));
+    zend_string_release(property_material_shininessTexture);
+
+    // material index of refraction texture prop (public readonly Texture $indexOfRefractionTexture)
+    zend_string *property_material_indexOfRefractionTexture_class_Texture = zend_string_init("GL\\Geometry\\ObjFileParser\\Texture", sizeof("GL\\Geometry\\ObjFileParser\\Texture")-1, 1);
+    zval property_material_indexOfRefractionTexture_default_value;
+    ZVAL_NULL(&property_material_indexOfRefractionTexture_default_value);
+    zend_string *property_material_indexOfRefractionTexture = zend_string_init("indexOfRefractionTexture", sizeof("indexOfRefractionTexture") - 1, 1);
+    zend_declare_typed_property(phpglfw_objparser_material_ce, property_material_indexOfRefractionTexture, &property_material_indexOfRefractionTexture_default_value, prop_access_flags, NULL, (zend_type) ZEND_TYPE_INIT_CLASS(property_material_indexOfRefractionTexture_class_Texture, 0, MAY_BE_NULL));
+    zend_string_release(property_material_indexOfRefractionTexture);
+
+    // material dissolve texture prop (public readonly Texture $dissolveTexture)
+    zend_string *property_material_dissolveTexture_class_Texture = zend_string_init("GL\\Geometry\\ObjFileParser\\Texture", sizeof("GL\\Geometry\\ObjFileParser\\Texture")-1, 1);
+    zval property_material_dissolveTexture_default_value;
+    ZVAL_NULL(&property_material_dissolveTexture_default_value);
+    zend_string *property_material_dissolveTexture = zend_string_init("dissolveTexture", sizeof("dissolveTexture") - 1, 1);
+    zend_declare_typed_property(phpglfw_objparser_material_ce, property_material_dissolveTexture, &property_material_dissolveTexture_default_value, prop_access_flags, NULL, (zend_type) ZEND_TYPE_INIT_CLASS(property_material_dissolveTexture_class_Texture, 0, MAY_BE_NULL));
+    zend_string_release(property_material_dissolveTexture);
+
+    // material bump texture prop (public readonly Texture $bumpTexture)
+    zend_string *property_material_bumpTexture_class_Texture = zend_string_init("GL\\Geometry\\ObjFileParser\\Texture", sizeof("GL\\Geometry\\ObjFileParser\\Texture")-1, 1);
+    zval property_material_bumpTexture_default_value;
+    ZVAL_NULL(&property_material_bumpTexture_default_value);
+    zend_string *property_material_bumpTexture = zend_string_init("bumpTexture", sizeof("bumpTexture") - 1, 1);
+    zend_declare_typed_property(phpglfw_objparser_material_ce, property_material_bumpTexture, &property_material_bumpTexture_default_value, prop_access_flags, NULL, (zend_type) ZEND_TYPE_INIT_CLASS(property_material_bumpTexture_class_Texture, 0, MAY_BE_NULL));
+    zend_string_release(property_material_bumpTexture);
+
+    // Obj File Parser Material Texture
+    // ------------------------------
+    INIT_CLASS_ENTRY(tmp_ce, "GL\\Geometry\\ObjFileParser\\Texture", class_GL_Geometry_ObjFileParser_Texture_methods);
+    phpglfw_objparser_texture_ce = zend_register_internal_class(&tmp_ce);
+
+    // texture name prop (public readonly string $name)
+    zval property_texture_name_default_value;
+    ZVAL_NULL(&property_texture_name_default_value);
+    zend_string *property_texture_name = zend_string_init("name", sizeof("name") - 1, 1);
+    zend_declare_typed_property(phpglfw_objparser_texture_ce, property_texture_name, &property_texture_name_default_value, prop_access_flags, NULL, (zend_type) ZEND_TYPE_INIT_MASK(MAY_BE_STRING));
+    zend_string_release(property_texture_name);
+
+    // texture path prop (public readonly string $path)
+    zval property_texture_path_default_value;
+    ZVAL_NULL(&property_texture_path_default_value);
+    zend_string *property_texture_path = zend_string_init("path", sizeof("path") - 1, 1);
+    zend_declare_typed_property(phpglfw_objparser_texture_ce, property_texture_path, &property_texture_path_default_value, prop_access_flags, NULL, (zend_type) ZEND_TYPE_INIT_MASK(MAY_BE_STRING));
+    zend_string_release(property_texture_path);
+
 
     // Obj File Parser Group
     // ------------------------------
