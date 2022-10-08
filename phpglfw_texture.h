@@ -36,10 +36,7 @@ typedef struct _phpglfw_texture2d_object {
     zend_object std;
 } phpglfw_texture2d_object; 
 
-zend_always_inline phpglfw_texture2d_object* phpglfw_texture2d_objectptr_from_zobj_p(zend_object* obj)
-{
-    return (phpglfw_texture2d_object *) ((char *) (obj) - XtOffsetOf(phpglfw_texture2d_object, std));
-}
+phpglfw_texture2d_object* phpglfw_texture2d_objectptr_from_zobj_p(zend_object* obj);
 
 void phpglfw_register_texture_module(INIT_FUNC_ARGS);
 

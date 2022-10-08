@@ -41,20 +41,23 @@ zend_class_entry *phpglfw_get_texture_texture2d_ce() {
     return phpglfw_texture2d_ce;
 }
 
+zend_always_inline phpglfw_texture2d_object* phpglfw_texture2d_objectptr_from_zobj_p(zend_object* obj)
+{
+    return (phpglfw_texture2d_object *) ((char *) (obj) - XtOffsetOf(phpglfw_texture2d_object, std));
+}
+
 static zend_object_handlers phpglfw_texture2d_handlers;
 
 zend_object *phpglfw_texture2d_create_handler(zend_class_entry *class_type)
 {
-    size_t block_len = sizeof(phpglfw_texture2d_object) + zend_object_properties_size(class_type);
-    phpglfw_texture2d_object *intern = emalloc(block_len);
-    memset(intern, 0, block_len);
+    phpglfw_texture2d_object *intern = zend_object_alloc(sizeof(phpglfw_texture2d_object), class_type);
+
+	zend_object_std_init(&intern->std, class_type);
+	object_properties_init(&intern->std, class_type);
+    intern->std.handlers = &phpglfw_texture2d_handlers;
 
     ZVAL_UNDEF(&intern->buffer_zval);
     object_init_ex(&intern->buffer_zval, phpglfw_get_buffer_glubyte_ce());
-
-    zend_object_std_init(&intern->std, class_type);
-    object_properties_init(&intern->std, class_type);
-    intern->std.handlers = &phpglfw_texture2d_handlers;
 
     return &intern->std;
 }
@@ -167,9 +170,9 @@ void phpglfw_register_texture_module(INIT_FUNC_ARGS)
     
     INIT_CLASS_ENTRY(tmp_ce, "GL\\Texture\\Texture2D", class_GL_Texture_Texture2D_methods);
     phpglfw_texture2d_ce = zend_register_internal_class(&tmp_ce);
-    phpglfw_texture2d_ce->create_object = phpglfw_texture2d_create_handler;
+    phpglfw_texture2d_ce->create_object =  phpglfw_texture2d_create_handler;
 
-    memcpy(&phpglfw_texture2d_handlers, zend_get_std_object_handlers(), sizeof(phpglfw_texture2d_handlers));
-
+    memcpy(&phpglfw_texture2d_handlers, &std_object_handlers, sizeof(zend_object_handlers));
+    phpglfw_texture2d_handlers.offset = XtOffsetOf(phpglfw_texture2d_object, std);
     phpglfw_texture2d_handlers.get_debug_info = phpglfw_texture2d_debug_info_handler;
 }
