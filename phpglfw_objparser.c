@@ -64,6 +64,11 @@ zend_class_entry *phpglfw_get_geometry_objparser_mesh_ce() {
     return phpglfw_objparser_mesh_ce;
 }
 
+zend_always_inline phpglfw_objparser_resource_object* phpglfw_objparser_res_objectptr_from_zobj_p(zend_object* obj)
+{
+    return (phpglfw_objparser_resource_object *) ((char *) (obj) - XtOffsetOf(phpglfw_objparser_resource_object, std));
+}
+
 static zend_object_handlers phpglfw_objparser_res_handlers;
 
 zend_object *phpglfw_objparser_res_create_handler(zend_class_entry *class_type)
@@ -808,6 +813,7 @@ void phpglfw_register_objparser_module(INIT_FUNC_ARGS)
 
     memcpy(&phpglfw_objparser_res_handlers, zend_get_std_object_handlers(), sizeof(phpglfw_objparser_res_handlers));
 
+    phpglfw_objparser_res_handlers.offset = XtOffsetOf(phpglfw_objparser_resource_object, std);
     phpglfw_objparser_res_handlers.free_obj = phpglfw_geometry_objparser_res_free_handler;
 
     // Obj File Parser

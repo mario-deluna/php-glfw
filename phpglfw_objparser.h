@@ -67,10 +67,7 @@ zend_class_entry *phpglfw_get_geometry_objparser_group_ce();
 zend_class_entry *phpglfw_get_geometry_objparser_texture_ce();
 zend_class_entry *phpglfw_get_geometry_objparser_mesh_ce();
 
-zend_always_inline phpglfw_objparser_resource_object* phpglfw_objparser_res_objectptr_from_zobj_p(zend_object* obj)
-{
-    return (phpglfw_objparser_resource_object *) ((char *) (obj) - XtOffsetOf(phpglfw_objparser_resource_object, std));
-}
+phpglfw_objparser_resource_object* phpglfw_objparser_res_objectptr_from_zobj_p(zend_object* obj);
 
 // zend_always_inline phpglfw_objparser_object* phpglfw_objparser_objectptr_from_zobj_p(zend_object* obj)
 // {

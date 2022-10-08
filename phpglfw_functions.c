@@ -11382,11 +11382,6 @@ PHP_FUNCTION(glfwSetKeyCallback)
         RETURN_THROWS();
     }
     phpglfw_glfwwindow_object *obj_ptr = phpglfw_glfwwindow_objectptr_from_zobj_p(Z_OBJ_P(window_zval));
-    // copy the function info over to the window object
-    // obj_ptr->keycallback.fci = fci;
-    // obj_ptr->keycallback.fci_cache = fcc;
-    // this fixes a segfault when the callback has a reference over `use()`
-    // i honestly have no idea why this works, but it does
     Z_TRY_ADDREF(fci.function_name);
     if (fcc.object) {
         GC_ADDREF(fcc.object);

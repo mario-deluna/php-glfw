@@ -57,11 +57,7 @@ void phpglfw_register_buffer_module(INIT_FUNC_ARGS);
  * Fetch object helper methods
  */
 <?php foreach($buffers as $buffer) : ?>
-zend_always_inline <?php echo $buffer->getObjectName(); ?>* <?php echo $buffer->objectFromZObjFunctionName(); ?>(zend_object* obj)
-{
-    return (<?php echo $buffer->getObjectName(); ?> *) ((char *) (obj) - XtOffsetOf(<?php echo $buffer->getObjectName(); ?>, std));
-}
-
+<?php echo $buffer->getObjectName(); ?>* <?php echo $buffer->objectFromZObjFunctionName(); ?>(zend_object* obj);
 <?php endforeach; ?>
 
 /**
