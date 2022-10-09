@@ -62,6 +62,14 @@ zend_object *phpglfw_texture2d_create_handler(zend_class_entry *class_type)
     return &intern->std;
 }
 
+static void phpglfw_texture2d_free_handler(zend_object *object)
+{
+    phpglfw_texture2d_object *intern = phpglfw_texture2d_objectptr_from_zobj_p(object);
+
+    zval_ptr_dtor(&intern->buffer_zval);
+    zend_object_std_dtor(&intern->std);
+}
+
 static HashTable *phpglfw_texture2d_debug_info_handler(zend_object *object, int *is_temp)
 {
     phpglfw_texture2d_object *intern = phpglfw_texture2d_objectptr_from_zobj_p(object);
@@ -99,7 +107,7 @@ PHP_METHOD(GL_Texture_Texture2D, fromDisk)
     unsigned char *data = stbi_load(path, &intern->width, &intern->height, &intern->channels, 0);
     size_t buffersize;
     if (data == NULL) {
-        zend_throw_error(NULL, "Failed to load image from disk");
+        zend_throw_error(NULL, "Failed to load image from disk '%s'.", path);
         return;
     }
 
@@ -174,5 +182,6 @@ void phpglfw_register_texture_module(INIT_FUNC_ARGS)
 
     memcpy(&phpglfw_texture2d_handlers, &std_object_handlers, sizeof(zend_object_handlers));
     phpglfw_texture2d_handlers.offset = XtOffsetOf(phpglfw_texture2d_object, std);
+    phpglfw_texture2d_handlers.free_obj = phpglfw_texture2d_free_handler;
     phpglfw_texture2d_handlers.get_debug_info = phpglfw_texture2d_debug_info_handler;
 }
