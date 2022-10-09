@@ -1,3 +1,17 @@
+<div class="grid cards" markdown>
+
+-   :fontawesome-brands-linux:{ .lg .middle } __Install on Linux__
+
+    ---
+
+    [:octicons-arrow-right-24: Linux Installation](./install-linux.md)
+
+-   :material-apple:{ .lg .middle } __Install on MacOS__
+
+    ---
+
+    [:octicons-arrow-right-24: MacOS Installation](./install-macos.md)
+</div>
 
 # Installing PHP-GLFW on Windows
 

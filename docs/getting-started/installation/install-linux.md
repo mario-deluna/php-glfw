@@ -1,4 +1,20 @@
 
+<div class="grid cards" markdown>
+
+-   :material-apple:{ .lg .middle } __Install on MacOS__
+
+    ---
+
+    [:octicons-arrow-right-24: MacOS Installation](./install-macos.md)
+
+-   :fontawesome-brands-windows:{ .lg .middle } __Install on Windows__
+
+    ---
+
+    [:octicons-arrow-right-24: Windows Installation](./install-windows.md)
+</div>
+
+
 # Installing PHP-GLFW on Linux
 
 We currently do not have a installer script like on MacOS but the "manual" installation should be straight forward for you linux users.

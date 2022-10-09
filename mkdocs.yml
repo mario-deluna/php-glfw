@@ -5,6 +5,7 @@ use_directory_urls: false
 nav:
   - Home: index.md
   - Gettings Started:
+    - About this Guide: getting-started/getting-started-with-php-and-opengl.md
     - Installation:
       - Linux: getting-started/installation/install-linux.md
       - MacOS: getting-started/installation/install-macos.md
@@ -44,6 +45,9 @@ markdown_extensions:
   - pymdownx.snippets
   - pymdownx.extra
   - pymdownx.tabbed
+  - pymdownx.emoji:
+      emoji_index: !!python/name:materialx.emoji.twemoji
+      emoji_generator: !!python/name:materialx.emoji.to_svg
   - pymdownx.superfences:
       custom_fences:
         - name: mermaid
