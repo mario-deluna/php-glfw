@@ -101,13 +101,13 @@ graph LR
 
 To make this example a bit more interesting, we change the clear color based on the current mouse position.
 
-```php
+```{ .php .annotate }
 while (!glfwWindowShouldClose($window))
 {
     glfwPollEvents();
     
     // setting the clear color to black and clearing the color buffer
-    glfwGetCursorPos($window, $mouseX, $mouseY);
+    glfwGetCursorPos($window, $mouseX, $mouseY); # (1)!
     glClearColor(sin($mouseX / 300), sin($mouseY / 300), cos($mouseY / 300), 1);
     glClear(GL_COLOR_BUFFER_BIT);
 
@@ -116,6 +116,10 @@ while (!glfwWindowShouldClose($window))
     glfwSwapBuffers($window);
 }
 ```
+
+1.  Check out [glfwGetCursorPos](./../API/GLFW/glfwGetCursorPos.md) for more information.
+    It will return the last known mouse position in the given window.
+
 
 Glfw holds an internal state which can be fetched using [`glfwWindowShouldClose`](./../API/GLFW/glfwWindowShouldClose.md), which will also return true if the user requested to close the window. (By clicking the close icon on the window for example).
 
