@@ -10,7 +10,7 @@
 
     ---
 
-    [:octicons-arrow-right-24: Windows Installation](./window-creation.md)
+    [:octicons-arrow-right-24: Windows Installation](./install-windows.md)
 </div>
 
 
