@@ -158,6 +158,104 @@ from the obj file specification:
 public readonly int $illuminationModel;
 ```
 
+### $ambientTexture
+
+The ambient texture of the material. (marked as "map_Ka")
+
+```php
+/*
+ * @var \GL\Geometry\ObjFileParser\Texture
+ */
+public readonly Texture $ambientTexture;
+```
+
+### $diffuseTexture
+
+The diffuse texture of the material. (marked as "map_Kd")
+
+```php
+/*
+ * @var \GL\Geometry\ObjFileParser\Texture
+ */
+public readonly Texture $diffuseTexture;
+```
+
+### $specularTexture
+
+The specular texture of the material. (marked as "map_Ks")
+
+```php
+/*
+ * @var \GL\Geometry\ObjFileParser\Texture
+ */
+public readonly Texture $specularTexture;
+```
+
+### $emissiveTexture
+
+The emissive texture of the material. (marked as "map_Ke")
+
+```php
+/*
+ * @var \GL\Geometry\ObjFileParser\Texture
+ */
+public readonly Texture $emissiveTexture;
+```
+
+### $transmittanceTexture
+
+The transmittance texture of the material. (marked as "map_Tf")
+
+```php
+/*
+ * @var \GL\Geometry\ObjFileParser\Texture
+ */
+public readonly Texture $transmittanceTexture;
+```
+
+### $shininessTexture
+
+The shininess texture of the material. (marked as "map_Ns")
+
+```php
+/*
+ * @var \GL\Geometry\ObjFileParser\Texture
+ */
+public readonly Texture $shininessTexture;
+```
+
+### $indexOfRefractionTexture
+
+The index of refraction texture of the material. (marked as "map_Ni")
+
+```php
+/*
+ * @var \GL\Geometry\ObjFileParser\Texture
+ */
+public readonly Texture $indexOfRefractionTexture;
+```
+
+### $dissolveTexture
+
+The dissolve texture of the material. (marked as "map_d")
+
+```php
+/*
+ * @var \GL\Geometry\ObjFileParser\Texture
+ */
+public readonly Texture $dissolveTexture;
+```
+
+### $bumpTexture
+
+The bump texture of the material. (marked as "map_bump")
+
+```php
+/*
+ * @var \GL\Geometry\ObjFileParser\Texture
+ */
+public readonly Texture $bumpTexture;
+```
 
 
 

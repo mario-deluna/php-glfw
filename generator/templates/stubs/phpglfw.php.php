@@ -371,6 +371,69 @@ namespace GL\Geometry\ObjFileParser
         public readonly int $illuminationModel;
 
         /**
+         * The ambient texture of the material
+         *
+         * @var \GL\Geometry\ObjFileParser\Texture|null $ambientTexture
+         */
+        public readonly ?Texture $ambientTexture;
+
+        /**
+         * The diffuse texture of the material
+         *
+         * @var \GL\Geometry\ObjFileParser\Texture|null $diffuseTexture
+         */
+        public readonly ?Texture $diffuseTexture;
+
+        /**
+         * The specular texture of the material
+         *
+         * @var \GL\Geometry\ObjFileParser\Texture|null $specularTexture
+         */
+        public readonly ?Texture $specularTexture;
+
+        /**
+         * The emissive texture of the material
+         *
+         * @var \GL\Geometry\ObjFileParser\Texture|null $emissiveTexture
+         */
+        public readonly ?Texture $emissiveTexture;
+
+        /**
+         * The transmittance texture of the material
+         *
+         * @var \GL\Geometry\ObjFileParser\Texture|null $transmittanceTexture
+         */
+        public readonly ?Texture $transmittanceTexture;
+
+        /**
+         * The shininess texture of the material
+         *
+         * @var \GL\Geometry\ObjFileParser\Texture|null $shininessTexture
+         */
+        public readonly ?Texture $shininessTexture;
+
+        /**
+         * The index of refraction texture of the material
+         *
+         * @var \GL\Geometry\ObjFileParser\Texture|null $indexOfRefractionTexture
+         */
+        public readonly ?Texture $indexOfRefractionTexture;
+
+        /**
+         * The dissolve texture of the material
+         *
+         * @var \GL\Geometry\ObjFileParser\Texture|null $dissolveTexture
+         */
+        public readonly ?Texture $dissolveTexture;
+
+        /**
+         * The bump texture of the material
+         *
+         * @var \GL\Geometry\ObjFileParser\Texture|null $bumpTexture
+         */
+        public readonly ?Texture $bumpTexture;
+
+        /**
          * Parser materials should not be constructed from user land.
          * calling this method will throw an exception.
          */
@@ -422,6 +485,20 @@ namespace GL\Geometry\ObjFileParser
      */
     class Texture
     {
+        /**
+         * The name of the texture file
+         * 
+         * @var string $name|null
+         */
+        public readonly ?string $name;
+
+        /**
+         * The path to the texture file on the filesystem (absolute)
+         * 
+         * @var string $path|null
+         */
+        public readonly ?string $path;
+
         public function __construct() {}
     }
 
