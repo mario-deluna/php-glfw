@@ -11,6 +11,6 @@ jobs:
       - uses: actions/setup-python@v2
         with:
           python-version: 3.x
-      - run: pip install git+https://${GH_TOKEN}@github.com/mario-deluna/mkdocs-material-insiders.git
+      - run: "pip install git+https://${GH_TOKEN}@github.com/mario-deluna/mkdocs-material-insiders.git"
       - run: pip install mkdocs-include-dir-to-nav
       - run: mkdocs gh-deploy --force
