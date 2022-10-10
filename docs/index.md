@@ -11,6 +11,7 @@ hide:
 
 PHP-GLFW allows you to create _2D_ and _3D_ real-time applications in _PHP_. Bringing a whole different set of tools into the PHP world to develop graphical applications like _games, scientific simulations, user interfaces_ and co. 
 
+
 ## What is this extension? Features 🚀
 
 PHP-GLFW aims to be one extension containing all basics you need to start building graphical applications in PHP. That means that PHP-GLFW **does NOT just
@@ -47,9 +48,12 @@ Having this integrated into the extension comes with a bunch of advantages:
  * low memory footprint.
  * The math structures have overloaded operators, so you can write things like:
    ```php
+   use GL\Math\Vec2;
    $v3 = Vec2(15, -5) + Vec2(42, 7); // returns Vec2(54, 2)
    ```
  * Some OpenGL functions can directly accept the math structs as arguments. 
+ 
+ 1. [Read more about math functions](https://phpgl.net/user-guide/math_functions.html)
 
 ### PHPGL - Buffers
 
@@ -59,13 +63,30 @@ This extension also contains a collection of buffer objects that internally hold
  * Low memory footprint and very fast. 
  * Data is stored internally to be directly uploadable to the GPU.
 
+ 1. [Read more about the buffers](https://phpgl.net/API/Buffer/FloatBuffer.html)
+
 ### PHPGL - Textures
 
 PHP-GLFW supports the loading of images/textures into buffers without requiring an additional extension:
 
-   * can load common image formats as `jpg`, `png`, `tga`, `bmp`, `gif`. _(gd or Imagick is not required)_
-   * can write images/textures back to disk.
-   * writes data into a `BufferInterface` object giving full access to the bitmap from userland.
+ * can load common image formats as `jpg`, `png`, `tga`, `bmp`, `gif`. _(gd or Imagick is not required)_
+ * can write images/textures back to disk.
+ * writes data into a `BufferInterface` object giving full access to the bitmap from userland.
+
+ 1. [Read more about texture loading](https://phpgl.net/API/Texture/Texture2D.html)
+
+### PHPGL - Geometry
+
+PHP-GLFW also comes with a `.obj` wavefront file loader. This allows you to load and parse `.obj` files. We also provide a few helpers 
+to generate tangent and bitangent vectors for the loaded geometry directly. Right now, we only support triangulated geometry and no quads.
+
+ * can parse `.obj` and `.mtl` files.
+ * can generate the normal, tangent, and bitangent vectors for the loaded geometry on the fly.
+ * allows you to extract separate meshes and groups from the loaded geometry.
+ * can group the vertices by their material.
+ * can reindex extracted meshes to reduce the number of vertices.
+
+ 1. [Read more about geometry loading](https://phpgl.net/API/Geometry/ObjFileParser.html)
 
 ### How are the bindings achieved?
 
