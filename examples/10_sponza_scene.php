@@ -189,7 +189,7 @@ uniform sampler2D texture_diffuse;
 uniform vec3 light_dir;
 uniform vec3 light_color;
 
-uniform float ambient = 0.1;
+uniform float ambient = 0.5;
 
 void main()
 {
@@ -208,7 +208,7 @@ GLSL);
  */
 // view matrix, this is the camera / eye position and rotation
 $view = new Mat4;
-$view->translate(new Vec3(0.0, -200.0, -6));
+$view->translate(new Vec3(0.0, 200.0, -6));
 
 $projection = new Mat4;
 $projection->perspective(glm::radians(70.0), ExampleHelper::WIN_WIDTH / ExampleHelper::WIN_HEIGHT, 0.1, 10000.0);
@@ -230,13 +230,19 @@ $lastX = ExampleHelper::WIN_WIDTH / 2;
 $lastY = ExampleHelper::WIN_HEIGHT / 2;
 $firstMouse = true;
 
-glfwSetCursorPosCallback($window, function ($xpos, $ypos) use ($window, $view, &$lastX, &$lastY, &$firstMouse) {
+// camera rotation
+$cameraRotation = new Vec2(0.0, 0.0);
+
+glfwSetCursorPosCallback($window, function ($xpos, $ypos) use ($window, &$cameraRotation, &$lastX, &$lastY, &$firstMouse) {
 
     // only move the camera if the left mouse button is pressed
     if (glfwGetMouseButton($window, GLFW_MOUSE_BUTTON_LEFT) != GLFW_PRESS) {
+        glfwSetInputMode($window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
         $firstMouse = true;
         return;
     }
+
+    glfwSetInputMode($window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 
     if ($firstMouse) {
         $lastX = $xpos;
@@ -249,9 +255,9 @@ glfwSetCursorPosCallback($window, function ($xpos, $ypos) use ($window, $view, &
     $lastX = $xpos;
     $lastY = $ypos; 
 
-    // apply eular rotation to the view matrix
-    $view->rotate(GLM::radians($xoffset * 0.1), new Vec3(0.0, 1.0, 0.0));
-    $view->rotate(GLM::radians($yoffset * 0.1), new Vec3(1.0, 0.0, 0.0));
+    // apply eular rotation
+    $cameraRotation->x = $cameraRotation->x + $xoffset * 0.1;
+    $cameraRotation->y = $cameraRotation->y - $yoffset * 0.1;
 });
 
 
@@ -293,7 +299,10 @@ while (!glfwWindowShouldClose($window))
     // reverse the view matrix, because we are moving the world
     // instead of the camera
     // copy the view matrix, because we need to modify it
-    $eye = new Mat4($view);
+    $eye = $view->copy();
+    $eye->rotate(GLM::radians($cameraRotation->x), new Vec3(0.0, 1.0, 0.0));
+    $eye->rotate(GLM::radians($cameraRotation->y), new Vec3(1.0, 0.0, 0.0));
+    $eye->inverse();
 
     // now set the uniform variables in the shader.
     // note that we use `glUniformMatrix4f` instead of `glUniformMatrix4fv` to pass a single matrix.

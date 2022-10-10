@@ -15,6 +15,7 @@ nav:
     - Drawing a Triangle: getting-started/drawing_a_triangle.md
   - User Guide: 'user-guide/'
   - Classes / Functions & API : 'API/'
+  - Examples: 'examples/'
 plugins:
   - search
   - include_dir_to_nav

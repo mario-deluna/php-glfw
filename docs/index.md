@@ -11,11 +11,60 @@ hide:
 
 PHP-GLFW allows you to create _2D_ and _3D_ real-time applications in _PHP_. Bringing a whole different set of tools into the PHP world to develop graphical applications like _games, scientific simulations, user interfaces_ and co. 
 
+<div class="grid cards" markdown>
+
+-   :material-clock-fast:{ .lg .middle } __Install in 5 minutes__
+
+    ---
+
+    If you haven't installed PHP-GLFW yet, follow the installation guide for your platform.
+
+    [:octicons-arrow-right-24: Installation **Linux**](./getting-started/installation/install-linux.md)
+
+    [:octicons-arrow-right-24: Installation **MacOS**](./getting-started/installation/install-macos.md)
+    
+    [:octicons-arrow-right-24: Installation **Windows**](./getting-started/installation/install-windows.md)
+
+-   :material-lightbulb:{ .lg .middle } __PHP OpenGL Tutorial__
+
+    ---
+
+    ![PHP-GLFW](./../docs-assets/php-glfw/getting_started/basic_pipeline.png){ width="100%"}
+
+    Everything ready to get started? Jump right into the first chapter of the tutorial.
+
+    [:octicons-arrow-right-24: Getting Started (Create Window)](./getting-started/window-creation.md)
+
+-   :material-book:{ .lg .middle } __API Docs__
+
+    ---
+
+    Checkout the API documentation for all the functions and classes available in PHP-GLFW.
+
+    [:octicons-arrow-right-24: GLFW](./API/GLFW/glfwCreateWindow.md)
+    
+    [:octicons-arrow-right-24: OpenGL](./API/OpenGL/glBufferData.md)
+
+    [:octicons-arrow-right-24: Buffers](./API/Buffer/ByteBuffer.md)
+
+    [:octicons-arrow-right-24: Math](./API/Math/Vec4.md)
+
+    [:octicons-arrow-right-24: Geometry](./API/Geometry/ObjFileParser.md)
+
+-   :material-play-circle:{ .lg .middle } __Examples__
+
+    ---
+
+    ![PHP-GLFW](./../docs-assets/php-glfw/examples/preview_sponza.jpg){ width="100%"}
+
+    Want to directly dig into example code? Check out the examples folder.
+
+    [:octicons-arrow-right-24: Examples](./examples/00-about-examples.md)
+</div>
 
 ## What is this extension? Features 🚀
 
-PHP-GLFW aims to be one extension containing all basics you need to start building graphical applications in PHP. That means that PHP-GLFW **does NOT just
-provide GLFW library bindings**. Instead, it also **includes OpenGL bindings** and a bunch of classes and helpers pretty much required for building these types of applications.
+PHP-GLFW aims to be one extension containing all basics you need to start building graphical applications in PHP. That means that PHP-GLFW does **NOT only** provide GLFW library bindings. Instead, it also **includes OpenGL bindings** and a bunch of classes and helpers pretty much required for building these types of applications.
 
 ### OpenGL 
 
