@@ -134,13 +134,16 @@ namespace GL\Math
 
         /**
          * Returns a normalized version of this vector
-         */
+         * 
+         * @return Vec2         */
         public function normalize() : Vec2 {}
 
         /**
          * Creates a new Vec2 where each component is x if x >= 0; otherwise, -x
-         */
+         * 
+         * @return Vec2         */
         public function abs() : Vec2 {}
+        
         public function __toString() : string {}
     }
  
@@ -212,13 +215,21 @@ namespace GL\Math
 
         /**
          * Returns a normalized version of this vector
-         */
+         * 
+         * @return Vec3         */
         public function normalize() : Vec3 {}
 
         /**
          * Creates a new Vec3 where each component is x if x >= 0; otherwise, -x
-         */
+         * 
+         * @return Vec3         */
         public function abs() : Vec3 {}
+        
+        /**
+         * Returns the cross product of this vector and another
+         * 
+         * @return Vec3         */
+        public function cross(Vec3 $right) : Vec3 {}
         public function __toString() : string {}
     }
  
@@ -300,13 +311,16 @@ namespace GL\Math
 
         /**
          * Returns a normalized version of this vector
-         */
+         * 
+         * @return Vec4         */
         public function normalize() : Vec4 {}
 
         /**
          * Creates a new Vec4 where each component is x if x >= 0; otherwise, -x
-         */
+         * 
+         * @return Vec4         */
         public function abs() : Vec4 {}
+        
         public function __toString() : string {}
     }
  

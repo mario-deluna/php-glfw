@@ -94,6 +94,9 @@ namespace GL\Math
         public function distance2(<?php echo $obj->name; ?> $right) : float {}
         public function normalize() : <?php echo $obj->name; ?> {}
         public function abs() : <?php echo $obj->name; ?> {}
+<?php if ($obj->size === 3) : ?>
+        public function cross(<?php echo $obj->name; ?> $right) : <?php echo $obj->name; ?> {}
+<?php endif; ?>
 <?php elseif($obj->isMatrix()) : ?>
         public static function fromArray(array $values) : <?php echo $obj->name; ?> {}
         public function row(int $index) : Vec4 {}

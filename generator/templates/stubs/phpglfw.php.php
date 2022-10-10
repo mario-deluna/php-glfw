@@ -130,13 +130,26 @@ namespace GL\Math
 
         /**
          * Returns a normalized version of this vector
+         * 
+         * @return <?php echo $obj->name; ?>
          */
         public function normalize() : <?php echo $obj->name; ?> {}
 
         /**
          * Creates a new <?php echo $obj->name; ?> where each component is x if x >= 0; otherwise, -x
+         * 
+         * @return <?php echo $obj->name; ?>
          */
         public function abs() : <?php echo $obj->name; ?> {}
+        
+<?php if ($obj->size === 3) : ?>
+        /**
+         * Returns the cross product of this vector and another
+         * 
+         * @return <?php echo $obj->name; ?>
+         */
+        public function cross(<?php echo $obj->name; ?> $right) : <?php echo $obj->name; ?> {}
+<?php endif; ?>
 <?php elseif($obj->isMatrix()) : ?>
 
         /**

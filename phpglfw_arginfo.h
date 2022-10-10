@@ -1,5 +1,5 @@
 /* This is a generated file, edit the .stub.php file instead.
- * Stub hash: e5a8df56488fa7b75536260d97a36ebe69d59168 */
+ * Stub hash: 651b88bc355458f26cae43c4aa4078ff09c43c44 */
 
 ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_glCullFace, 0, 1, IS_VOID, 0)
 	ZEND_ARG_TYPE_INFO(0, mode, IS_LONG, 0)
@@ -2323,6 +2323,10 @@ ZEND_END_ARG_INFO()
 
 #define arginfo_class_GL_Math_Vec3_abs arginfo_class_GL_Math_Vec3_copy
 
+ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(arginfo_class_GL_Math_Vec3_cross, 0, 1, GL\\Math\\Vec3, 0)
+	ZEND_ARG_OBJ_INFO(0, right, GL\\Math\\Vec3, 0)
+ZEND_END_ARG_INFO()
+
 #define arginfo_class_GL_Math_Vec3___toString arginfo_glfwGetVersionString
 
 ZEND_BEGIN_ARG_INFO_EX(arginfo_class_GL_Math_Vec4___construct, 0, 0, 0)
@@ -3203,6 +3207,7 @@ ZEND_METHOD(GL_Math_Vec3, distance);
 ZEND_METHOD(GL_Math_Vec3, distance2);
 ZEND_METHOD(GL_Math_Vec3, normalize);
 ZEND_METHOD(GL_Math_Vec3, abs);
+ZEND_METHOD(GL_Math_Vec3, cross);
 ZEND_METHOD(GL_Math_Vec3, __toString);
 ZEND_METHOD(GL_Math_Vec4, __construct);
 ZEND_METHOD(GL_Math_Vec4, copy);
@@ -3951,6 +3956,7 @@ static const zend_function_entry class_GL_Math_Vec3_methods[] = {
 	ZEND_ME(GL_Math_Vec3, distance2, arginfo_class_GL_Math_Vec3_distance2, ZEND_ACC_PUBLIC)
 	ZEND_ME(GL_Math_Vec3, normalize, arginfo_class_GL_Math_Vec3_normalize, ZEND_ACC_PUBLIC)
 	ZEND_ME(GL_Math_Vec3, abs, arginfo_class_GL_Math_Vec3_abs, ZEND_ACC_PUBLIC)
+	ZEND_ME(GL_Math_Vec3, cross, arginfo_class_GL_Math_Vec3_cross, ZEND_ACC_PUBLIC)
 	ZEND_ME(GL_Math_Vec3, __toString, arginfo_class_GL_Math_Vec3___toString, ZEND_ACC_PUBLIC)
 	ZEND_FE_END
 };

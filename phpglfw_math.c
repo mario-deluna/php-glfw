@@ -471,6 +471,8 @@ PHP_METHOD(GL_Math_Vec2, abs)
     vec2_abs(resobj->data, obj_ptr->data);
 }
 
+
+
 /**
  * GL\Math\Vec3 
  * 
@@ -887,6 +889,26 @@ PHP_METHOD(GL_Math_Vec3, abs)
 
     vec3_abs(resobj->data, obj_ptr->data);
 }
+
+PHP_METHOD(GL_Math_Vec3, cross)
+{
+    zval *rightvec_zval;
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "O", &rightvec_zval, phpglfw_math_vec3_ce) == FAILURE) {
+        return;
+    }
+
+    zval *obj;
+    obj = getThis();
+    phpglfw_math_vec3_object *leftvec_ptr = phpglfw_math_vec3_objectptr_from_zobj_p(Z_OBJ_P(obj));
+    phpglfw_math_vec3_object *rightvec_ptr = phpglfw_math_vec3_objectptr_from_zobj_p(Z_OBJ_P(rightvec_zval));
+
+    // create new vec
+    object_init_ex(return_value, phpglfw_math_vec3_ce);
+    phpglfw_math_vec3_object *resobj = phpglfw_math_vec3_objectptr_from_zobj_p(Z_OBJ_P(return_value));
+
+    vec3_mul_cross(resobj->data, leftvec_ptr->data, rightvec_ptr->data);
+}
+
 
 /**
  * GL\Math\Vec4 
@@ -1321,6 +1343,8 @@ PHP_METHOD(GL_Math_Vec4, abs)
 
     vec4_abs(resobj->data, obj_ptr->data);
 }
+
+
 
 /**
  * GL\Math\Mat4 

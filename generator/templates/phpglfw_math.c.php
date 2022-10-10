@@ -561,6 +561,28 @@ PHP_METHOD(<?php echo $obj->getFullNamespaceConstString(); ?>, abs)
 
     <?php echo $obj->getVecFunction('abs'); ?>(resobj->data, obj_ptr->data);
 }
+
+<?php if ($obj->size === 3) : ?>
+PHP_METHOD(<?php echo $obj->getFullNamespaceConstString(); ?>, cross)
+{
+    zval *rightvec_zval;
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "O", &rightvec_zval, <?php echo $obj->getClassEntryName(); ?>) == FAILURE) {
+        return;
+    }
+
+    zval *obj;
+    obj = getThis();
+    <?php echo $obj->getObjectName(); ?> *leftvec_ptr = <?php echo $obj->objectFromZObjFunctionName(); ?>(Z_OBJ_P(obj));
+    <?php echo $obj->getObjectName(); ?> *rightvec_ptr = <?php echo $obj->objectFromZObjFunctionName(); ?>(Z_OBJ_P(rightvec_zval));
+
+    // create new vec
+    object_init_ex(return_value, <?php echo $obj->getClassEntryName(); ?>);
+    <?php echo $obj->getObjectName(); ?> *resobj = <?php echo $obj->objectFromZObjFunctionName(); ?>(Z_OBJ_P(return_value));
+
+    <?php echo $obj->getVecFunction('mul_cross'); ?>(resobj->data, leftvec_ptr->data, rightvec_ptr->data);
+}
+<?php endif; ?>
+
 <?php elseif($obj->isMatrix()) : ?>
 
 PHP_METHOD(<?php echo $obj->getFullNamespaceConstString(); ?>, fromArray)

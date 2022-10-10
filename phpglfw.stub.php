@@ -106,6 +106,7 @@ namespace GL\Math
         public function distance2(Vec3 $right) : float {}
         public function normalize() : Vec3 {}
         public function abs() : Vec3 {}
+        public function cross(Vec3 $right) : Vec3 {}
         public function __toString() : string {}
     }
  
