@@ -45,6 +45,35 @@ namespace
 
 namespace GL\Math 
 {
+    class GLM 
+    {
+        /**
+         * Returns the given degrees in radians.
+         *
+         * @param float $degrees The degrees to convert to radians.
+         * @return float radians.
+         */
+        public static function radians(float $degrees) : float {}
+
+        /**
+         * Returns the given radians in degrees.
+         *
+         * @param float $radians The radians to convert to degrees.
+         * @return float degrees.
+         */
+        public static function angle(float $radians) : float {}
+
+        public static function triangleNormal(GL\Math\Vec3 $p1, \GL\Math\Vec3 $p2, \GL\Math\Vec3 $p3) : \GL\Math\Vec3 {}
+
+        /**
+         * Returns a normalized vector from the given vector. (Vec2, Vec3, Vec4)
+         *
+         * @param GL\Math\Vec2|GL\Math\Vec3|GL\Math\Vec4 $vec The vector to normalize.
+         * @return GL\Math\Vec2|GL\Math\Vec3|GL\Math\Vec4 The normalized vector.
+         */
+        public static function normalize(GL\Math\Vec2|GL\Math\Vec3|GL\Math\Vec4 $vec) : GL\Math\Vec2|GL\Math\Vec3|GL\Math\Vec4 {}
+    }
+
     <?php foreach($mathObjects as $obj) : ?> 
     class <?php echo $obj->name; ?> 
     {

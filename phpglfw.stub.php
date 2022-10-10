@@ -4,19 +4,6 @@
  * @generate-function-entries
  * ##generate-class-entries
  */
-/**
- * GLM class to access math functions conviniently.
- */
-namespace {
-
-    class GLM {
-        public static function radians(float $degrees) : float {}
-        public static function angle(float $radians) : float {}
-        public static function triangleNormal(GL\Math\Vec3 $p1, \GL\Math\Vec3 $p2, \GL\Math\Vec3 $p3) : \GL\Math\Vec3 {}
-        public static function normalize(Vec2|Vec3|Vec4 $vec) : Vec2|Vec3|Vec4 {}
-    }
-}
-
 
 namespace GL\Geometry
 {
@@ -90,9 +77,17 @@ namespace GL\Texture
 
 namespace GL\Math 
 {
+    class GLM {
+        public static function radians(float $degrees) : float {}
+        public static function angle(float $radians) : float {}
+        public static function triangleNormal(GL\Math\Vec3 $p1, \GL\Math\Vec3 $p2, \GL\Math\Vec3 $p3) : \GL\Math\Vec3 {}
+        public static function normalize(GL\Math\Vec2|GL\Math\Vec3|GL\Math\Vec4 $vec) : GL\Math\Vec2|GL\Math\Vec3|GL\Math\Vec4 {}
+    }
+
  
     class Vec2 {
         public function __construct(?float $x = null, ?float $y = null) {}
+        public function copy() : Vec2 {}
         public function length() : float {}
         public function dot(Vec2 $right) : float {}
         public function distance(Vec2 $right) : float {}
@@ -104,6 +99,7 @@ namespace GL\Math
  
     class Vec3 {
         public function __construct(?float $x = null, ?float $y = null, ?float $z = null) {}
+        public function copy() : Vec3 {}
         public function length() : float {}
         public function dot(Vec3 $right) : float {}
         public function distance(Vec3 $right) : float {}
@@ -115,6 +111,7 @@ namespace GL\Math
  
     class Vec4 {
         public function __construct(?float $x = null, ?float $y = null, ?float $z = null, ?float $w = null) {}
+        public function copy() : Vec4 {}
         public function length() : float {}
         public function dot(Vec4 $right) : float {}
         public function distance(Vec4 $right) : float {}
@@ -126,8 +123,8 @@ namespace GL\Math
  
     class Mat4 {
         public function __construct() {}
-        public static function fromArray(array $values) : Mat4 {}
         public function copy() : Mat4 {}
+        public static function fromArray(array $values) : Mat4 {}
         public function row(int $index) : Vec4 {}
         public function setRow(int $index, Vec4 $row) : void {}
         public function col(int $index) : Vec4 {}

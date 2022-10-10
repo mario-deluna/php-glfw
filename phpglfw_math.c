@@ -363,6 +363,22 @@ PHP_METHOD(GL_Math_Vec2, __toString)
     smart_str_free(&my_str);
 }
 
+PHP_METHOD(GL_Math_Vec2, copy)
+{
+    zval *obj;
+    obj = getThis();
+    phpglfw_math_vec2_object *obj_ptr = phpglfw_math_vec2_objectptr_from_zobj_p(Z_OBJ_P(obj));
+
+    // create new vec
+    object_init_ex(return_value, phpglfw_math_vec2_ce);
+    phpglfw_math_vec2_object *resobj = phpglfw_math_vec2_objectptr_from_zobj_p(Z_OBJ_P(return_value));
+
+    // copy data
+    for (int i = 0; i < 2; i++) {
+        resobj->data[i] = obj_ptr->data[i];
+    }
+}
+
 PHP_METHOD(GL_Math_Vec2, length)
 {
 	if (zend_parse_parameters_none() == FAILURE) {
@@ -762,6 +778,22 @@ PHP_METHOD(GL_Math_Vec3, __toString)
     RETURN_STRINGL(ZSTR_VAL(my_str.s), ZSTR_LEN(my_str.s));
 
     smart_str_free(&my_str);
+}
+
+PHP_METHOD(GL_Math_Vec3, copy)
+{
+    zval *obj;
+    obj = getThis();
+    phpglfw_math_vec3_object *obj_ptr = phpglfw_math_vec3_objectptr_from_zobj_p(Z_OBJ_P(obj));
+
+    // create new vec
+    object_init_ex(return_value, phpglfw_math_vec3_ce);
+    phpglfw_math_vec3_object *resobj = phpglfw_math_vec3_objectptr_from_zobj_p(Z_OBJ_P(return_value));
+
+    // copy data
+    for (int i = 0; i < 3; i++) {
+        resobj->data[i] = obj_ptr->data[i];
+    }
 }
 
 PHP_METHOD(GL_Math_Vec3, length)
@@ -1180,6 +1212,22 @@ PHP_METHOD(GL_Math_Vec4, __toString)
     RETURN_STRINGL(ZSTR_VAL(my_str.s), ZSTR_LEN(my_str.s));
 
     smart_str_free(&my_str);
+}
+
+PHP_METHOD(GL_Math_Vec4, copy)
+{
+    zval *obj;
+    obj = getThis();
+    phpglfw_math_vec4_object *obj_ptr = phpglfw_math_vec4_objectptr_from_zobj_p(Z_OBJ_P(obj));
+
+    // create new vec
+    object_init_ex(return_value, phpglfw_math_vec4_ce);
+    phpglfw_math_vec4_object *resobj = phpglfw_math_vec4_objectptr_from_zobj_p(Z_OBJ_P(return_value));
+
+    // copy data
+    for (int i = 0; i < 4; i++) {
+        resobj->data[i] = obj_ptr->data[i];
+    }
 }
 
 PHP_METHOD(GL_Math_Vec4, length)
@@ -1766,7 +1814,7 @@ PHP_METHOD(GL_Math_Mat4, determinant)
  * alternative copy based math functions.
  */
 
-PHP_METHOD(GLM, radians)
+PHP_METHOD(GL_Math_GLM, radians)
 {
     double angle;
     if (zend_parse_parameters(ZEND_NUM_ARGS() , "d", &angle) == FAILURE) {
@@ -1775,7 +1823,7 @@ PHP_METHOD(GLM, radians)
     RETURN_DOUBLE(angle * M_PI / 180.0);
 }
 
-PHP_METHOD(GLM, angle)
+PHP_METHOD(GL_Math_GLM, angle)
 {
     double radians;
     if (zend_parse_parameters(ZEND_NUM_ARGS() , "d", &radians) == FAILURE) {
@@ -1784,7 +1832,7 @@ PHP_METHOD(GLM, angle)
     RETURN_DOUBLE(radians * 180.0 / M_PI);
 }
 
-PHP_METHOD(GLM, triangleNormal)
+PHP_METHOD(GL_Math_GLM, triangleNormal)
 {
     zval *v0_zval, *v1_zval, *v2_zval;
     if (zend_parse_parameters(ZEND_NUM_ARGS() , "OOO", &v0_zval, phpglfw_math_vec3_ce, &v1_zval, phpglfw_math_vec3_ce, &v2_zval, phpglfw_math_vec3_ce) == FAILURE) {
@@ -1810,13 +1858,34 @@ PHP_METHOD(GLM, triangleNormal)
     res_ptr->data[2] = dir[2];
 }
 
-PHP_METHOD(GLM, normalize)
+PHP_METHOD(GL_Math_GLM, normalize)
 {
-    double angle;
-    if (zend_parse_parameters(ZEND_NUM_ARGS() , "d", &angle) == FAILURE) {
+    zval *vec_zval;
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "o", &vec_zval) == SUCCESS) {
+        if (instanceof_function(Z_OBJCE_P(vec_zval), phpglfw_math_vec4_ce)) {
+            object_init_ex(return_value, phpglfw_math_vec4_ce);
+            phpglfw_math_vec4_object *return_obj = phpglfw_math_vec4_objectptr_from_zobj_p(Z_OBJ_P(return_value));
+            phpglfw_math_vec4_object *in_obj = phpglfw_math_vec4_objectptr_from_zobj_p(Z_OBJ_P(vec_zval));
+            vec4_norm(return_obj->data, in_obj->data);
+        } 
+        else if (instanceof_function(Z_OBJCE_P(vec_zval), phpglfw_math_vec3_ce)) {
+            object_init_ex(return_value, phpglfw_math_vec3_ce);
+            phpglfw_math_vec3_object *return_obj = phpglfw_math_vec3_objectptr_from_zobj_p(Z_OBJ_P(return_value));
+            phpglfw_math_vec3_object *in_obj = phpglfw_math_vec3_objectptr_from_zobj_p(Z_OBJ_P(vec_zval));
+            vec3_norm(return_obj->data, in_obj->data);
+        } 
+        else if (instanceof_function(Z_OBJCE_P(vec_zval), phpglfw_math_vec2_ce)) {
+            object_init_ex(return_value, phpglfw_math_vec2_ce);
+            phpglfw_math_vec2_object *return_obj = phpglfw_math_vec2_objectptr_from_zobj_p(Z_OBJ_P(return_value));
+            phpglfw_math_vec2_object *in_obj = phpglfw_math_vec2_objectptr_from_zobj_p(Z_OBJ_P(vec_zval));
+            vec2_norm(return_obj->data, in_obj->data);
+        } 
+        else {
+            zend_throw_error(NULL, "Invalid argument type, expected Vec4, Vec3 or Vec2, got %s", ZSTR_VAL(Z_OBJCE_P(vec_zval)->name));
+        }
+    } else {
         RETURN_THROWS();
     }
-    RETURN_DOUBLE(angle * M_PI / 180.0);
 }
 
 
@@ -1824,7 +1893,7 @@ void phpglfw_register_math_module(INIT_FUNC_ARGS)
 {
     zend_class_entry tmp_ce;
 
-    INIT_CLASS_ENTRY(tmp_ce, "GLM", class_GLM_methods);
+    INIT_CLASS_ENTRY(tmp_ce, "GL\\Math\\GLM", class_GL_Math_GLM_methods);
     phpglfw_glm_ce = zend_register_internal_class(&tmp_ce);
 
  

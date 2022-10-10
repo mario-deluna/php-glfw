@@ -19,35 +19,39 @@ class Vec3Test extends \PHPUnit\Framework\TestCase
 
         // vec no constuctor
         $v = new Vec3;
-        $this->assertEquals(0, $v->x);
-        $this->assertEquals(0, $v->y);
-        $this->assertEquals(0, $v->z);
+        $this->assertEqualsVector(0, 0, 0, $v);
 
         // vec with single val
         $v = new Vec3(5);
-        $this->assertEquals(5, $v->x);
-        $this->assertEquals(5, $v->y);
-        $this->assertEquals(5, $v->z);
+        $this->assertEqualsVector(5, 5, 5, $v);
 
         // vec with all args
         $v = new Vec3(1, 2, 3);
-        $this->assertEquals(1, $v->x);
-        $this->assertEquals(2, $v->y);
-        $this->assertEquals(3, $v->z);
+        $this->assertEqualsVector(1, 2, 3, $v);
+    }
+
+    public function testCopy() : void
+    {
+        $v = new Vec3(1, 2, 3);
+        $v2 = $v->copy();
+        $this->assertEqualsVector(1, 2, 3, $v2);
+
+        // ensure source vector is not modified
+        $v2->x = 4;
+        $v2->y = 5;
+        $v2->z = 6;
+        $this->assertEqualsVector(1, 2, 3, $v);
+        $this->assertEqualsVector(4, 5, 6, $v2);
     }
 
     public function testSetAndGet() : void
     {
         $vec = new Vec3;
-
-        $this->assertEquals(0.0, $vec->x);
-        $this->assertEquals(0.0, $vec->y);
-        $this->assertEquals(0.0, $vec->z);
+        $this->assertEqualsVector(0.0, 0.0, 0.0, $vec);
 
         $vec->x = 1.0;
         $vec->y = 2.0;
         $vec->z = 3.0;
-
         $this->assertEquals(1.0, $vec->x);
         $this->assertEquals(2.0, $vec->y);
         $this->assertEquals(3.0, $vec->z);

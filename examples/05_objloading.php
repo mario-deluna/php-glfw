@@ -4,7 +4,7 @@
  */
 require __DIR__ . '/99_example_helpers.php';
 
-use GL\Math\{Vec3, Vec4, Mat4};
+use GL\Math\{GLM, Vec3, Vec4, Mat4};
 use GL\Buffer\FloatBuffer;
 
 // ensure zip extension is loaded
@@ -139,7 +139,7 @@ while (!glfwWindowShouldClose($window))
 
     // and finally the projection matrix, this is the perspective matrix.
 	$projection = new Mat4;
-	$projection->perspective(glm::radians(70.0), ExampleHelper::WIN_WIDTH / ExampleHelper::WIN_HEIGHT, 0.1, 10000.0);
+	$projection->perspective(GLM::radians(70.0), ExampleHelper::WIN_WIDTH / ExampleHelper::WIN_HEIGHT, 0.1, 10000.0);
 
     // now set the uniform variables in the shader.
     // note that we use `glUniformMatrix4f` instead of `glUniformMatrix4fv` to pass a single matrix.

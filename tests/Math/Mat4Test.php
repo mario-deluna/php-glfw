@@ -2,6 +2,7 @@
 
 namespace GL\Tests\Math;
 
+use GL\Math\GLM;
 use GL\Math\Mat4;
 use GL\Math\Vec3;
 use GL\Math\Vec4;
@@ -477,7 +478,7 @@ class Mat4Test extends \PHPUnit\Framework\TestCase
     public function testRotate() : void
     {
         $m = new Mat4;
-        $m->rotate(\GLM::radians(90), new Vec3(0, 0, 1));
+        $m->rotate(GLM::radians(90), new Vec3(0, 0, 1));
 
         $this->assertEqualsMatrix(
             -4.37114e-08, 1, 0, 0,
@@ -488,7 +489,7 @@ class Mat4Test extends \PHPUnit\Framework\TestCase
         );
 
         // rotate further
-        $m->rotate(\GLM::radians(90), new Vec3(0, 0, 1));
+        $m->rotate(GLM::radians(90), new Vec3(0, 0, 1));
 
         $this->assertEqualsMatrix(
             -1, -8.74228e-08, 0, 0,
@@ -499,7 +500,7 @@ class Mat4Test extends \PHPUnit\Framework\TestCase
         );
         
         // and further on all axis for good mesure
-        $m->rotate(\GLM::radians(45), new Vec3(1, 1, 1));
+        $m->rotate(GLM::radians(45), new Vec3(1, 1, 1));
 
         $this->assertEqualsMatrix(
             -0.804738, -0.505879, -0.310617, 0,

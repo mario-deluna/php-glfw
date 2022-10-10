@@ -1,5 +1,5 @@
 /* This is a generated file, edit the .stub.php file instead.
- * Stub hash: 68d65e39acb5487492570805b5b17a803b609cab */
+ * Stub hash: e5a8df56488fa7b75536260d97a36ebe69d59168 */
 
 ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_glCullFace, 0, 1, IS_VOID, 0)
 	ZEND_ARG_TYPE_INFO(0, mode, IS_LONG, 0)
@@ -2212,24 +2212,6 @@ ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_glUniformVec4f, 0, 2, IS_VOID, 0
 	ZEND_ARG_OBJ_INFO(0, vec, GL\\Math\\Vec4, 0)
 ZEND_END_ARG_INFO()
 
-ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_class_GLM_radians, 0, 1, IS_DOUBLE, 0)
-	ZEND_ARG_TYPE_INFO(0, degrees, IS_DOUBLE, 0)
-ZEND_END_ARG_INFO()
-
-ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_class_GLM_angle, 0, 1, IS_DOUBLE, 0)
-	ZEND_ARG_TYPE_INFO(0, radians, IS_DOUBLE, 0)
-ZEND_END_ARG_INFO()
-
-ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(arginfo_class_GLM_triangleNormal, 0, 3, GL\\Math\\Vec3, 0)
-	ZEND_ARG_OBJ_INFO(0, p1, GL\\Math\\Vec3, 0)
-	ZEND_ARG_OBJ_INFO(0, p2, GL\\Math\\Vec3, 0)
-	ZEND_ARG_OBJ_INFO(0, p3, GL\\Math\\Vec3, 0)
-ZEND_END_ARG_INFO()
-
-ZEND_BEGIN_ARG_WITH_RETURN_OBJ_TYPE_MASK_EX(arginfo_class_GLM_normalize, 0, 1, Vec2|Vec3|Vec4, 0)
-	ZEND_ARG_OBJ_TYPE_MASK(0, vec, Vec2|Vec3|Vec4, 0, NULL)
-ZEND_END_ARG_INFO()
-
 ZEND_BEGIN_ARG_INFO_EX(arginfo_class_GL_Geometry_ObjFileParser___construct, 0, 0, 1)
 	ZEND_ARG_TYPE_INFO(0, file, IS_STRING, 0)
 ZEND_END_ARG_INFO()
@@ -2276,9 +2258,30 @@ ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_class_GL_Texture_Texture2D_write
 	ZEND_ARG_TYPE_INFO_WITH_DEFAULT_VALUE(0, quality, IS_LONG, 0, "100")
 ZEND_END_ARG_INFO()
 
+ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_class_GL_Math_GLM_radians, 0, 1, IS_DOUBLE, 0)
+	ZEND_ARG_TYPE_INFO(0, degrees, IS_DOUBLE, 0)
+ZEND_END_ARG_INFO()
+
+ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_class_GL_Math_GLM_angle, 0, 1, IS_DOUBLE, 0)
+	ZEND_ARG_TYPE_INFO(0, radians, IS_DOUBLE, 0)
+ZEND_END_ARG_INFO()
+
+ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(arginfo_class_GL_Math_GLM_triangleNormal, 0, 3, GL\\Math\\Vec3, 0)
+	ZEND_ARG_OBJ_INFO(0, p1, GL\\Math\\GL\\Math\\Vec3, 0)
+	ZEND_ARG_OBJ_INFO(0, p2, GL\\Math\\Vec3, 0)
+	ZEND_ARG_OBJ_INFO(0, p3, GL\\Math\\Vec3, 0)
+ZEND_END_ARG_INFO()
+
+ZEND_BEGIN_ARG_WITH_RETURN_OBJ_TYPE_MASK_EX(arginfo_class_GL_Math_GLM_normalize, 0, 1, GL\\Math\\GL\\Math\\Vec2|GL\\Math\\GL\\Math\\Vec3|GL\\Math\\GL\\Math\\Vec4, 0)
+	ZEND_ARG_OBJ_TYPE_MASK(0, vec, GL\\Math\\GL\\Math\\Vec2|GL\\Math\\GL\\Math\\Vec3|GL\\Math\\GL\\Math\\Vec4, 0, NULL)
+ZEND_END_ARG_INFO()
+
 ZEND_BEGIN_ARG_INFO_EX(arginfo_class_GL_Math_Vec2___construct, 0, 0, 0)
 	ZEND_ARG_TYPE_INFO_WITH_DEFAULT_VALUE(0, x, IS_DOUBLE, 1, "null")
 	ZEND_ARG_TYPE_INFO_WITH_DEFAULT_VALUE(0, y, IS_DOUBLE, 1, "null")
+ZEND_END_ARG_INFO()
+
+ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(arginfo_class_GL_Math_Vec2_copy, 0, 0, GL\\Math\\Vec2, 0)
 ZEND_END_ARG_INFO()
 
 #define arginfo_class_GL_Math_Vec2_length arginfo_glfwGetTime
@@ -2291,10 +2294,9 @@ ZEND_END_ARG_INFO()
 
 #define arginfo_class_GL_Math_Vec2_distance2 arginfo_class_GL_Math_Vec2_dot
 
-ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(arginfo_class_GL_Math_Vec2_normalize, 0, 0, GL\\Math\\Vec2, 0)
-ZEND_END_ARG_INFO()
+#define arginfo_class_GL_Math_Vec2_normalize arginfo_class_GL_Math_Vec2_copy
 
-#define arginfo_class_GL_Math_Vec2_abs arginfo_class_GL_Math_Vec2_normalize
+#define arginfo_class_GL_Math_Vec2_abs arginfo_class_GL_Math_Vec2_copy
 
 #define arginfo_class_GL_Math_Vec2___toString arginfo_glfwGetVersionString
 
@@ -2302,6 +2304,9 @@ ZEND_BEGIN_ARG_INFO_EX(arginfo_class_GL_Math_Vec3___construct, 0, 0, 0)
 	ZEND_ARG_TYPE_INFO_WITH_DEFAULT_VALUE(0, x, IS_DOUBLE, 1, "null")
 	ZEND_ARG_TYPE_INFO_WITH_DEFAULT_VALUE(0, y, IS_DOUBLE, 1, "null")
 	ZEND_ARG_TYPE_INFO_WITH_DEFAULT_VALUE(0, z, IS_DOUBLE, 1, "null")
+ZEND_END_ARG_INFO()
+
+ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(arginfo_class_GL_Math_Vec3_copy, 0, 0, GL\\Math\\Vec3, 0)
 ZEND_END_ARG_INFO()
 
 #define arginfo_class_GL_Math_Vec3_length arginfo_glfwGetTime
@@ -2314,10 +2319,9 @@ ZEND_END_ARG_INFO()
 
 #define arginfo_class_GL_Math_Vec3_distance2 arginfo_class_GL_Math_Vec3_dot
 
-ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(arginfo_class_GL_Math_Vec3_normalize, 0, 0, GL\\Math\\Vec3, 0)
-ZEND_END_ARG_INFO()
+#define arginfo_class_GL_Math_Vec3_normalize arginfo_class_GL_Math_Vec3_copy
 
-#define arginfo_class_GL_Math_Vec3_abs arginfo_class_GL_Math_Vec3_normalize
+#define arginfo_class_GL_Math_Vec3_abs arginfo_class_GL_Math_Vec3_copy
 
 #define arginfo_class_GL_Math_Vec3___toString arginfo_glfwGetVersionString
 
@@ -2326,6 +2330,9 @@ ZEND_BEGIN_ARG_INFO_EX(arginfo_class_GL_Math_Vec4___construct, 0, 0, 0)
 	ZEND_ARG_TYPE_INFO_WITH_DEFAULT_VALUE(0, y, IS_DOUBLE, 1, "null")
 	ZEND_ARG_TYPE_INFO_WITH_DEFAULT_VALUE(0, z, IS_DOUBLE, 1, "null")
 	ZEND_ARG_TYPE_INFO_WITH_DEFAULT_VALUE(0, w, IS_DOUBLE, 1, "null")
+ZEND_END_ARG_INFO()
+
+ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(arginfo_class_GL_Math_Vec4_copy, 0, 0, GL\\Math\\Vec4, 0)
 ZEND_END_ARG_INFO()
 
 #define arginfo_class_GL_Math_Vec4_length arginfo_glfwGetTime
@@ -2338,20 +2345,19 @@ ZEND_END_ARG_INFO()
 
 #define arginfo_class_GL_Math_Vec4_distance2 arginfo_class_GL_Math_Vec4_dot
 
-ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(arginfo_class_GL_Math_Vec4_normalize, 0, 0, GL\\Math\\Vec4, 0)
-ZEND_END_ARG_INFO()
+#define arginfo_class_GL_Math_Vec4_normalize arginfo_class_GL_Math_Vec4_copy
 
-#define arginfo_class_GL_Math_Vec4_abs arginfo_class_GL_Math_Vec4_normalize
+#define arginfo_class_GL_Math_Vec4_abs arginfo_class_GL_Math_Vec4_copy
 
 #define arginfo_class_GL_Math_Vec4___toString arginfo_glfwGetVersionString
 
 #define arginfo_class_GL_Math_Mat4___construct arginfo_class_GL_Geometry_ObjFileParser_Material___construct
 
-ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(arginfo_class_GL_Math_Mat4_fromArray, 0, 1, GL\\Math\\Mat4, 0)
-	ZEND_ARG_TYPE_INFO(0, values, IS_ARRAY, 0)
+ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(arginfo_class_GL_Math_Mat4_copy, 0, 0, GL\\Math\\Mat4, 0)
 ZEND_END_ARG_INFO()
 
-ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(arginfo_class_GL_Math_Mat4_copy, 0, 0, GL\\Math\\Mat4, 0)
+ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(arginfo_class_GL_Math_Mat4_fromArray, 0, 1, GL\\Math\\Mat4, 0)
+	ZEND_ARG_TYPE_INFO(0, values, IS_ARRAY, 0)
 ZEND_END_ARG_INFO()
 
 ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(arginfo_class_GL_Math_Mat4_row, 0, 1, GL\\Math\\Vec4, 0)
@@ -3162,10 +3168,6 @@ ZEND_FUNCTION(glUniformMatrix4f);
 ZEND_FUNCTION(glUniformVec2f);
 ZEND_FUNCTION(glUniformVec3f);
 ZEND_FUNCTION(glUniformVec4f);
-ZEND_METHOD(GLM, radians);
-ZEND_METHOD(GLM, angle);
-ZEND_METHOD(GLM, triangleNormal);
-ZEND_METHOD(GLM, normalize);
 ZEND_METHOD(GL_Geometry_ObjFileParser, __construct);
 ZEND_METHOD(GL_Geometry_ObjFileParser, getVertices);
 ZEND_METHOD(GL_Geometry_ObjFileParser, getIndexedVertices);
@@ -3180,7 +3182,12 @@ ZEND_METHOD(GL_Texture_Texture2D, width);
 ZEND_METHOD(GL_Texture_Texture2D, height);
 ZEND_METHOD(GL_Texture_Texture2D, channels);
 ZEND_METHOD(GL_Texture_Texture2D, writeJPG);
+ZEND_METHOD(GL_Math_GLM, radians);
+ZEND_METHOD(GL_Math_GLM, angle);
+ZEND_METHOD(GL_Math_GLM, triangleNormal);
+ZEND_METHOD(GL_Math_GLM, normalize);
 ZEND_METHOD(GL_Math_Vec2, __construct);
+ZEND_METHOD(GL_Math_Vec2, copy);
 ZEND_METHOD(GL_Math_Vec2, length);
 ZEND_METHOD(GL_Math_Vec2, dot);
 ZEND_METHOD(GL_Math_Vec2, distance);
@@ -3189,6 +3196,7 @@ ZEND_METHOD(GL_Math_Vec2, normalize);
 ZEND_METHOD(GL_Math_Vec2, abs);
 ZEND_METHOD(GL_Math_Vec2, __toString);
 ZEND_METHOD(GL_Math_Vec3, __construct);
+ZEND_METHOD(GL_Math_Vec3, copy);
 ZEND_METHOD(GL_Math_Vec3, length);
 ZEND_METHOD(GL_Math_Vec3, dot);
 ZEND_METHOD(GL_Math_Vec3, distance);
@@ -3197,6 +3205,7 @@ ZEND_METHOD(GL_Math_Vec3, normalize);
 ZEND_METHOD(GL_Math_Vec3, abs);
 ZEND_METHOD(GL_Math_Vec3, __toString);
 ZEND_METHOD(GL_Math_Vec4, __construct);
+ZEND_METHOD(GL_Math_Vec4, copy);
 ZEND_METHOD(GL_Math_Vec4, length);
 ZEND_METHOD(GL_Math_Vec4, dot);
 ZEND_METHOD(GL_Math_Vec4, distance);
@@ -3205,8 +3214,8 @@ ZEND_METHOD(GL_Math_Vec4, normalize);
 ZEND_METHOD(GL_Math_Vec4, abs);
 ZEND_METHOD(GL_Math_Vec4, __toString);
 ZEND_METHOD(GL_Math_Mat4, __construct);
-ZEND_METHOD(GL_Math_Mat4, fromArray);
 ZEND_METHOD(GL_Math_Mat4, copy);
+ZEND_METHOD(GL_Math_Mat4, fromArray);
 ZEND_METHOD(GL_Math_Mat4, row);
 ZEND_METHOD(GL_Math_Mat4, setRow);
 ZEND_METHOD(GL_Math_Mat4, col);
@@ -3861,15 +3870,6 @@ static const zend_function_entry ext_functions[] = {
 };
 
 
-static const zend_function_entry class_GLM_methods[] = {
-	ZEND_ME(GLM, radians, arginfo_class_GLM_radians, ZEND_ACC_PUBLIC|ZEND_ACC_STATIC)
-	ZEND_ME(GLM, angle, arginfo_class_GLM_angle, ZEND_ACC_PUBLIC|ZEND_ACC_STATIC)
-	ZEND_ME(GLM, triangleNormal, arginfo_class_GLM_triangleNormal, ZEND_ACC_PUBLIC|ZEND_ACC_STATIC)
-	ZEND_ME(GLM, normalize, arginfo_class_GLM_normalize, ZEND_ACC_PUBLIC|ZEND_ACC_STATIC)
-	ZEND_FE_END
-};
-
-
 static const zend_function_entry class_GL_Geometry_ObjFileParser_methods[] = {
 	ZEND_ME(GL_Geometry_ObjFileParser, __construct, arginfo_class_GL_Geometry_ObjFileParser___construct, ZEND_ACC_PUBLIC)
 	ZEND_ME(GL_Geometry_ObjFileParser, getVertices, arginfo_class_GL_Geometry_ObjFileParser_getVertices, ZEND_ACC_PUBLIC)
@@ -3919,8 +3919,18 @@ static const zend_function_entry class_GL_Texture_Texture2D_methods[] = {
 };
 
 
+static const zend_function_entry class_GL_Math_GLM_methods[] = {
+	ZEND_ME(GL_Math_GLM, radians, arginfo_class_GL_Math_GLM_radians, ZEND_ACC_PUBLIC|ZEND_ACC_STATIC)
+	ZEND_ME(GL_Math_GLM, angle, arginfo_class_GL_Math_GLM_angle, ZEND_ACC_PUBLIC|ZEND_ACC_STATIC)
+	ZEND_ME(GL_Math_GLM, triangleNormal, arginfo_class_GL_Math_GLM_triangleNormal, ZEND_ACC_PUBLIC|ZEND_ACC_STATIC)
+	ZEND_ME(GL_Math_GLM, normalize, arginfo_class_GL_Math_GLM_normalize, ZEND_ACC_PUBLIC|ZEND_ACC_STATIC)
+	ZEND_FE_END
+};
+
+
 static const zend_function_entry class_GL_Math_Vec2_methods[] = {
 	ZEND_ME(GL_Math_Vec2, __construct, arginfo_class_GL_Math_Vec2___construct, ZEND_ACC_PUBLIC)
+	ZEND_ME(GL_Math_Vec2, copy, arginfo_class_GL_Math_Vec2_copy, ZEND_ACC_PUBLIC)
 	ZEND_ME(GL_Math_Vec2, length, arginfo_class_GL_Math_Vec2_length, ZEND_ACC_PUBLIC)
 	ZEND_ME(GL_Math_Vec2, dot, arginfo_class_GL_Math_Vec2_dot, ZEND_ACC_PUBLIC)
 	ZEND_ME(GL_Math_Vec2, distance, arginfo_class_GL_Math_Vec2_distance, ZEND_ACC_PUBLIC)
@@ -3934,6 +3944,7 @@ static const zend_function_entry class_GL_Math_Vec2_methods[] = {
 
 static const zend_function_entry class_GL_Math_Vec3_methods[] = {
 	ZEND_ME(GL_Math_Vec3, __construct, arginfo_class_GL_Math_Vec3___construct, ZEND_ACC_PUBLIC)
+	ZEND_ME(GL_Math_Vec3, copy, arginfo_class_GL_Math_Vec3_copy, ZEND_ACC_PUBLIC)
 	ZEND_ME(GL_Math_Vec3, length, arginfo_class_GL_Math_Vec3_length, ZEND_ACC_PUBLIC)
 	ZEND_ME(GL_Math_Vec3, dot, arginfo_class_GL_Math_Vec3_dot, ZEND_ACC_PUBLIC)
 	ZEND_ME(GL_Math_Vec3, distance, arginfo_class_GL_Math_Vec3_distance, ZEND_ACC_PUBLIC)
@@ -3947,6 +3958,7 @@ static const zend_function_entry class_GL_Math_Vec3_methods[] = {
 
 static const zend_function_entry class_GL_Math_Vec4_methods[] = {
 	ZEND_ME(GL_Math_Vec4, __construct, arginfo_class_GL_Math_Vec4___construct, ZEND_ACC_PUBLIC)
+	ZEND_ME(GL_Math_Vec4, copy, arginfo_class_GL_Math_Vec4_copy, ZEND_ACC_PUBLIC)
 	ZEND_ME(GL_Math_Vec4, length, arginfo_class_GL_Math_Vec4_length, ZEND_ACC_PUBLIC)
 	ZEND_ME(GL_Math_Vec4, dot, arginfo_class_GL_Math_Vec4_dot, ZEND_ACC_PUBLIC)
 	ZEND_ME(GL_Math_Vec4, distance, arginfo_class_GL_Math_Vec4_distance, ZEND_ACC_PUBLIC)
@@ -3960,8 +3972,8 @@ static const zend_function_entry class_GL_Math_Vec4_methods[] = {
 
 static const zend_function_entry class_GL_Math_Mat4_methods[] = {
 	ZEND_ME(GL_Math_Mat4, __construct, arginfo_class_GL_Math_Mat4___construct, ZEND_ACC_PUBLIC)
-	ZEND_ME(GL_Math_Mat4, fromArray, arginfo_class_GL_Math_Mat4_fromArray, ZEND_ACC_PUBLIC|ZEND_ACC_STATIC)
 	ZEND_ME(GL_Math_Mat4, copy, arginfo_class_GL_Math_Mat4_copy, ZEND_ACC_PUBLIC)
+	ZEND_ME(GL_Math_Mat4, fromArray, arginfo_class_GL_Math_Mat4_fromArray, ZEND_ACC_PUBLIC|ZEND_ACC_STATIC)
 	ZEND_ME(GL_Math_Mat4, row, arginfo_class_GL_Math_Mat4_row, ZEND_ACC_PUBLIC)
 	ZEND_ME(GL_Math_Mat4, setRow, arginfo_class_GL_Math_Mat4_setRow, ZEND_ACC_PUBLIC)
 	ZEND_ME(GL_Math_Mat4, col, arginfo_class_GL_Math_Mat4_col, ZEND_ACC_PUBLIC)

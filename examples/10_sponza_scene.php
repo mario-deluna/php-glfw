@@ -4,7 +4,7 @@
  */
 require __DIR__ . '/99_example_helpers.php';
 
-use GL\Math\{Vec3, Vec4, Mat4, Vec2};
+use GL\Math\{GLM, Vec3, Vec4, Mat4, Vec2};
 use GL\Buffer\FloatBuffer;
 
 

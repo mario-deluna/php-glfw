@@ -3,19 +3,6 @@
  * @generate-function-entries
  * ##generate-class-entries
  */
-/**
- * GLM class to access math functions conviniently.
- */
-namespace {
-
-    class GLM {
-        public static function radians(float $degrees) : float {}
-        public static function angle(float $radians) : float {}
-        public static function triangleNormal(GL\Math\Vec3 $p1, \GL\Math\Vec3 $p2, \GL\Math\Vec3 $p3) : \GL\Math\Vec3 {}
-        public static function normalize(Vec2|Vec3|Vec4 $vec) : Vec2|Vec3|Vec4 {}
-    }
-}
-
 
 namespace GL\Geometry
 {
@@ -89,9 +76,17 @@ namespace GL\Texture
 
 namespace GL\Math 
 {
+    class GLM {
+        public static function radians(float $degrees) : float {}
+        public static function angle(float $radians) : float {}
+        public static function triangleNormal(GL\Math\Vec3 $p1, \GL\Math\Vec3 $p2, \GL\Math\Vec3 $p3) : \GL\Math\Vec3 {}
+        public static function normalize(GL\Math\Vec2|GL\Math\Vec3|GL\Math\Vec4 $vec) : GL\Math\Vec2|GL\Math\Vec3|GL\Math\Vec4 {}
+    }
+
 <?php foreach($mathObjects as $obj) : ?> 
     class <?php echo $obj->name; ?> {
         public function __construct(<?php echo $obj->getPhpArgs(); ?>) {}
+        public function copy() : <?php echo $obj->name; ?> {}
 <?php if ($obj->isVector()) : ?>
         public function length() : float {}
         public function dot(<?php echo $obj->name; ?> $right) : float {}
@@ -101,7 +96,6 @@ namespace GL\Math
         public function abs() : <?php echo $obj->name; ?> {}
 <?php elseif($obj->isMatrix()) : ?>
         public static function fromArray(array $values) : <?php echo $obj->name; ?> {}
-        public function copy() : <?php echo $obj->name; ?> {}
         public function row(int $index) : Vec4 {}
         public function setRow(int $index, Vec4 $row) : void {}
         public function col(int $index) : Vec4 {}
