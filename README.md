@@ -4,7 +4,7 @@
 
 # PHP-GLFW
 
-**[Website](https://phpgl.net) • [Getting Started](https://phpgl.net/getting-started/window-creation.html) • [User Guide](https://phpgl.net/user-guide/index.html) • [API Docs](https://phpgl.net/API/Buffer/ByteBuffer.html)**
+**[Website](https://phpgl.net) • [Getting Started](https://phpgl.net/getting-started/getting-started-with-php-and-opengl.html) • [API Docs](https://phpgl.net/API/Buffer/ByteBuffer.html) • [Examples](https://phpgl.net/examples/00-about-examples.html)**
 
 **A fully-featured OpenGL and GLFW extension for PHP. Batteries included 🔋!**
 
