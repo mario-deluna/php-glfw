@@ -68,6 +68,7 @@ if (!is_dir($sponzaDir)) {
  */
 echo "Loading Sponza scene...\n";
 $mesh = new \GL\Geometry\ObjFileParser($sponzaPath . '/sponza.obj');
+// $mesh = new \GL\Geometry\ObjFileParser($sponzaPath . '/cube.obj');
 
 // extract the meshes foreach material 
 // in this example we only care about the position data, so we pass 'p' as the second argument.
@@ -173,7 +174,9 @@ void main()
 {
     // we need to transform the normal vector to world space
     v_normal = vec3(model * vec4(a_normal, 1.0f));
-    v_texcords = a_texcords;
+
+    // flip the uvs
+    v_texcords = vec2(a_texcords.x, 1.0f - a_texcords.y);
     gl_Position = projection * view * model * vec4(a_position, 1.0f);
 }
 GLSL,
@@ -193,10 +196,17 @@ uniform float ambient = 0.5;
 
 void main()
 {
+    vec4 diffusetex = texture(texture_diffuse, v_texcords);
+
+    // if (diffusetex.a < 0.5) {
+    //     discard;
+    // }
+
     // simple lighting
     float diffuse = max(dot(v_normal, light_dir), 0.0);
-    vec3 color = (ambient + diffuse) * light_color * texture(texture_diffuse, v_texcords).rgb;
+    vec3 color = (ambient + diffuse) * light_color * diffusetex.rgb;
     fragment_color = vec4(color, 1.0f);
+    // fragment_color =  vec4(texture(texture_diffuse, v_texcords).rgb, 1.0f);
 } 
 GLSL);
 
@@ -208,7 +218,7 @@ GLSL);
  */
 // view matrix, this is the camera / eye position and rotation
 $view = new Mat4;
-$view->translate(new Vec3(0.0, 200.0, -6));
+$view->translate(new Vec3(0.0, 0.0, -2.0));
 
 $projection = new Mat4;
 $projection->perspective(glm::radians(70.0), ExampleHelper::WIN_WIDTH / ExampleHelper::WIN_HEIGHT, 0.1, 10000.0);
@@ -220,7 +230,7 @@ glfwSetKeyCallback($window, function ($key, $scancode, $action, $mods) use ($win
         glfwSetWindowShouldClose($window, true);
     }
 
-    if ($key == GLFW_KEY_W && $action == GLFW_PRESS) {
+    if ($key == GLFW_KEY_F && $action == GLFW_PRESS) {
         $wireframe = !$wireframe;
     }
 });
@@ -256,8 +266,8 @@ glfwSetCursorPosCallback($window, function ($xpos, $ypos) use ($window, &$camera
     $lastY = $ypos; 
 
     // apply eular rotation
-    $cameraRotation->x = $cameraRotation->x + $xoffset * 0.1;
-    $cameraRotation->y = $cameraRotation->y - $yoffset * 0.1;
+    $cameraRotation->x = $cameraRotation->x - $xoffset * 0.3;
+    $cameraRotation->y = $cameraRotation->y + $yoffset * 0.3;
 });
 
 
@@ -271,7 +281,7 @@ glfwSetCursorPosCallback($window, function ($xpos, $ypos) use ($window, &$camera
 echo str_repeat('-', 80) . PHP_EOL;
 echo '-> Use the mouse to rotate the object' . PHP_EOL;
 echo '-> Press ESC to close the window' . PHP_EOL;
-echo '-> Press W to toggle wireframe mode' . PHP_EOL;
+echo '-> Press F to toggle wireframe mode' . PHP_EOL;
 echo str_repeat('-', 80) . PHP_EOL;
 
 // update the viewport
@@ -285,7 +295,8 @@ glEnable(GL_DEPTH_TEST);
 // ---------------------------------------------------------------------------- 
 while (!glfwWindowShouldClose($window))
 {
-    glClearColor(0, 0, 0, 1);
+    // use some blueish color to imitate a skybox
+    glClearColor(0.52, 0.80, 0.92, 1.0);
     // note how we are clearing both the DEPTH and COLOR buffers.
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
@@ -295,6 +306,7 @@ while (!glfwWindowShouldClose($window))
 
     // define the model matrix aka the object postion in the world
     $model = new Mat4;
+    $model->scale(new Vec3(0.5));
 
     // reverse the view matrix, because we are moving the world
     // instead of the camera
@@ -303,6 +315,25 @@ while (!glfwWindowShouldClose($window))
     $eye->rotate(GLM::radians($cameraRotation->x), new Vec3(0.0, 1.0, 0.0));
     $eye->rotate(GLM::radians($cameraRotation->y), new Vec3(1.0, 0.0, 0.0));
     $eye->inverse();
+
+    // extract the forward vector from the view matrix
+    $col = $eye->col(2);
+    $forward = new Vec3($col->x, $col->y, $col->z);
+
+    // using W,A,S,D to move the camera around
+    if (glfwGetKey($window, GLFW_KEY_W) == GLFW_PRESS) {
+        $view->translate($forward * -1);
+    }
+    else if (glfwGetKey($window, GLFW_KEY_S) == GLFW_PRESS) {
+        $view->translate($forward);
+    }
+
+    if (glfwGetKey($window, GLFW_KEY_A) == GLFW_PRESS) {
+        $view->translate($forward->cross(new Vec3(0.0, 1.0, 0.0)));
+    }
+    else if (glfwGetKey($window, GLFW_KEY_D) == GLFW_PRESS) {
+        $view->translate($forward->cross(new Vec3(0.0, 1.0, 0.0)) * -1);
+    }
 
     // now set the uniform variables in the shader.
     // note that we use `glUniformMatrix4f` instead of `glUniformMatrix4fv` to pass a single matrix.
