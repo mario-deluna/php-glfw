@@ -109,6 +109,10 @@ Returns a normalized version of this vector
 function normalize() : \GL\Math\Vec3
 ```
 
+returns
+
+:    `\Vec3` 
+
 ---
      
 ### `abs`
@@ -118,6 +122,10 @@ Creates a new Vec3 where each component is x if x >= 0; otherwise, -x
 ```php
 function abs() : \GL\Math\Vec3
 ```
+
+returns
+
+:    `\Vec3` 
 
 ---
      

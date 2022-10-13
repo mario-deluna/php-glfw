@@ -112,6 +112,10 @@ Returns a normalized version of this vector
 function normalize() : \GL\Math\Vec4
 ```
 
+returns
+
+:    `\Vec4` 
+
 ---
      
 ### `abs`
@@ -121,6 +125,10 @@ Creates a new Vec4 where each component is x if x >= 0; otherwise, -x
 ```php
 function abs() : \GL\Math\Vec4
 ```
+
+returns
+
+:    `\Vec4` 
 
 ---
      

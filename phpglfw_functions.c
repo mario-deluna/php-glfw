@@ -946,7 +946,13 @@ PHP_FUNCTION(glTexImage2D)
     zend_long format;
     zend_long type;
     zval *data_zval;
-    if (zend_parse_parameters(ZEND_NUM_ARGS() , "llllllllO", &target, &level, &internalformat, &width, &height, &border, &format, &type, &data_zval, phpglfw_get_buffer_interface_ce()) == FAILURE) {
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "llllllllO!", &target, &level, &internalformat, &width, &height, &border, &format, &type, &data_zval, phpglfw_get_buffer_interface_ce()) == FAILURE) {
+        return;
+    }
+    // if no data is given, we need to pass a null pointer 
+    // also the validation is skipped then
+    if (data_zval == NULL || Z_TYPE_P(data_zval) == IS_NULL) {
+        glTexImage2D(target, level, internalformat, width, height, border, format, type, NULL);
         return;
     }
     // im still not 100% sure if we should do the validation here, 

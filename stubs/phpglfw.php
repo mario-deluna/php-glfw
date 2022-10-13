@@ -1675,11 +1675,11 @@ namespace {
      * <constant>GL_UNSIGNED_INT_8_8_8_8_REV</constant>,
      * <constant>GL_UNSIGNED_INT_10_10_10_2</constant>, and
      * <constant>GL_UNSIGNED_INT_2_10_10_10_REV</constant>.
-     * @param \GL\Buffer\BufferInterface $data 
+     * @param ?\GL\Buffer\BufferInterface $data 
      * 
      * @return void
      */ 
-    function glTexImage2D(int $target, int $level, int $internalformat, int $width, int $height, int $border, int $format, int $type, \GL\Buffer\BufferInterface $data) : void {};
+    function glTexImage2D(int $target, int $level, int $internalformat, int $width, int $height, int $border, int $format, int $type, ?\GL\Buffer\BufferInterface $data) : void {};
  
     /**
      * specify which color buffers are to be drawn into

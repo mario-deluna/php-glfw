@@ -1948,7 +1948,7 @@ namespace {
     function glTexParameterfv(int $target, int $pname, \GL\Buffer\FloatBuffer|array $params) : void {};
     function glTexParameteri(int $target, int $pname, int $param) : void {};
     function glTexParameteriv(int $target, int $pname, \GL\Buffer\IntBuffer|array $params) : void {};
-    function glTexImage2D(int $target, int $level, int $internalformat, int $width, int $height, int $border, int $format, int $type, \GL\Buffer\BufferInterface $data) : void {};
+    function glTexImage2D(int $target, int $level, int $internalformat, int $width, int $height, int $border, int $format, int $type, ?\GL\Buffer\BufferInterface $data) : void {};
     function glDrawBuffer(int $buf) : void {};
     function glClear(int $mask) : void {};
     function glClearColor(float $red, float $green, float $blue, float $alpha) : void {};

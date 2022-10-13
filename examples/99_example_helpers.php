@@ -81,7 +81,7 @@ class ExampleHelper
         glCompileShader($vertexShader);
         glGetShaderiv($vertexShader, GL_COMPILE_STATUS, $success);
         if (!$success) {
-            throw new Exception("Vertex shader could not be compiled.");
+            throw new Exception('Vertex shader compilation failed: ' . glGetShaderInfoLog($vertexShader, 4096));
         }
 
         // create, upload and compile the fragment shader
@@ -90,7 +90,7 @@ class ExampleHelper
         glCompileShader($fragShader);
         glGetShaderiv($fragShader, GL_COMPILE_STATUS, $success);
         if (!$success) {
-            throw new Exception("Fragment shader could not be compiled.");
+            throw new Exception("Fragment shader could not be compiled: " . glGetShaderInfoLog($fragShader, 4096));
         }
 
         // create a shader programm and link our vertex and framgent shader together

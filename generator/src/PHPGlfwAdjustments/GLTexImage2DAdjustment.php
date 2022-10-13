@@ -23,6 +23,13 @@ class GLTexImage2DAdjustment implements AdjustmentInterface
             {
                 // yes i could have written this method less copy pasty but i decided i dont care.
                 $body = <<<EOD
+// if no data is given, we need to pass a null pointer 
+// also the validation is skipped then
+if (data_zval == NULL || Z_TYPE_P(data_zval) == IS_NULL) {
+    glTexImage2D(target, level, internalformat, width, height, border, format, type, NULL);
+    return;
+}
+
 // im still not 100% sure if we should do the validation here, 
 // it will avoid some segfaults but I don't know if it's the best way to do it.
 // on the other hand the performance impact of the validation is going to 
@@ -193,12 +200,17 @@ EOD;
         $func->copyFrom($baseFunc);
 
         $func->arguments[8] = new class('data', ExtType::T_CE) extends CEObjectArgument {
+            /**
+             * The char used for parsing the arguments with the zend engine
+             */
+            public string $charid = 'O!';
+
             public function getClassEntryPointer() : string {
                 return 'phpglfw_get_buffer_interface_ce()';
             }
 
             public function getPHPClassName() : string {
-                return "\\GL\\Buffer\\BufferInterface";
+                return "?\\GL\\Buffer\\BufferInterface";
             }
         };
 

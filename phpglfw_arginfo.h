@@ -1,5 +1,5 @@
 /* This is a generated file, edit the .stub.php file instead.
- * Stub hash: 651b88bc355458f26cae43c4aa4078ff09c43c44 */
+ * Stub hash: aa7f5e14c3b45a25943e1db932dc8e27ef309937 */
 
 ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_glCullFace, 0, 1, IS_VOID, 0)
 	ZEND_ARG_TYPE_INFO(0, mode, IS_LONG, 0)
@@ -65,7 +65,7 @@ ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_glTexImage2D, 0, 9, IS_VOID, 0)
 	ZEND_ARG_TYPE_INFO(0, border, IS_LONG, 0)
 	ZEND_ARG_TYPE_INFO(0, format, IS_LONG, 0)
 	ZEND_ARG_TYPE_INFO(0, type, IS_LONG, 0)
-	ZEND_ARG_OBJ_INFO(0, data, GL\\Buffer\\BufferInterface, 0)
+	ZEND_ARG_OBJ_INFO(0, data, GL\\Buffer\\BufferInterface, 1)
 ZEND_END_ARG_INFO()
 
 ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_glDrawBuffer, 0, 1, IS_VOID, 0)
