@@ -31,7 +31,6 @@ PHP-GLFW allows you to create _2D_ and _3D_ real-time applications in _PHP_. Bri
     + [MacOS](#macos)
     + [Linux](#linux)
     + [Stubs (IDE Support)](#stubs-ide-support)
-  * [Things to know when you start 💡](#things-to-know-when-you-start-)
   * [Credits](#credits)
   * [License](#license)
 
@@ -188,17 +187,6 @@ We created a composer package you can include as a dev dependency to have full s
 ```
 composer require --dev phpgl/ide-stubs
 ```
-
-## Things to know when you start 💡 
-
-PHP-GLFW tries to keep the core OpenGL / GLFW API as close to the original as possible and only modifies the API when necessary. This results in some functions being quite wired from a PHP point of view. Naming scheme:
-
-| prefix | module | desc |
-|--------|----------|-------------------------------------------------------------------------------------------------------------------------|
-| `gl` | OpenGL | Core OpenGL functions.<br> Examples: glClearColor, glEnable, glActiveTexture etc. |
-| `glfw` | GLFW | GLFW library functions, everything to interact with the OS window, input.<br> Examples: glfwCreateWindow, glfwGetCursorPos, glfwSwapBuffers |
-| `GL\` | PHP-GLFW | Classes and functions in this namespace are custom to the extension and are not default to OpenGL.<br> Examples: `GL\Buffer\FloatBuffer`, `GL\Math\Vec3` etc.. |
-
 
 ## Credits
 
