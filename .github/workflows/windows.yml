@@ -45,7 +45,7 @@ jobs:
       
       - run: cd ${{matrix.arch}} && ls -la
         
-      - run: cd ${{matrix.arch}}/Release_NTS && ls -la
+      - run: cd ${{matrix.arch}}/Release && ls -la
         if: ${{ matrix.ts == 'nts' }}
         
       - uses: actions/upload-artifact@v3
@@ -58,5 +58,5 @@ jobs:
         if: ${{ matrix.ts == 'nts' }}
         with:
           name: glfw_php${{matrix.version}}_nts_${{matrix.arch}}
-          path: ${{matrix.arch}}/Release_NTS/php_glfw.dll
+          path: ${{matrix.arch}}/Release/php_glfw.dll
         
