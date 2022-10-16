@@ -48,12 +48,12 @@ jobs:
       - uses: actions/upload-artifact@v3
         if: ${{ matrix.ts == 'ts' }}
         with:
-          name: ts_${{matrix.arch}}_php_glfw.dll
+          name: ${{matrix.version}}_ts_${{matrix.arch}}_php_glfw.dll
           path: ${{matrix.arch}}/Release_TS/php_glfw.dll
         
       - uses: actions/upload-artifact@v3
         if: ${{ matrix.ts == 'nts' }}
         with:
-          name: nts_${{matrix.arch}}_php_glfw.dll
+          name: ${{matrix.version}}_nts_${{matrix.arch}}_php_glfw.dll
           path: ${{matrix.arch}}/Release_NTS/php_glfw.dll
         
