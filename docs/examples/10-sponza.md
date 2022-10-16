@@ -2,6 +2,10 @@
 
 This example loads and renders the Crytek Sponza sample. If you are familiar with rendering and game engine development you probably saw this model before. It is a very popular model for testing rendering techniques and performance.
 
+<div class="video-wrapper">
+ <iframe width="1280" height="720" src="https://www.youtube-nocookie.com/embed/sPj4pLGCdPM" frameborder="0" allowfullscreen></iframe>
+</div>
+
 <figure markdown>
   ![Sponza with OpenGL in PHP](./../docs-assets/php-glfw/examples/preview_sponza.jpg){ width="100%" }
   <figcaption>Sponza with OpenGL in PHP</figcaption>
