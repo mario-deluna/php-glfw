@@ -1680,31 +1680,34 @@ PHP_METHOD(GL_Math_Mat4, setCol)
 
 PHP_METHOD(GL_Math_Mat4, perspective)
 {
-    double fov;
-    double aspect;
-    double near;
-    double far;
-    if (zend_parse_parameters(ZEND_NUM_ARGS() , "dddd", &fov, &aspect, &near, &far) == FAILURE) {
-        return;
+    // prefix with gl_ because windows has one of those
+    // globally defined as a macro. It took my hours to figure this out 
+    // because all i got was "syntax error ','"... -.-
+    double gl_fov;
+    double gl_aspect;
+    double gl_near;
+    double gl_far;
+    if (zend_parse_parameters(ZEND_NUM_ARGS(), "dddd", &gl_fov, &gl_aspect, &gl_near, &gl_far) == FAILURE) {
+        RETURN_THROWS();
     }
-
+    
     zval *obj;
     obj = getThis();
     phpglfw_math_mat4_object *obj_ptr = phpglfw_math_mat4_objectptr_from_zobj_p(Z_OBJ_P(obj));
 
-    mat4x4_perspective(obj_ptr->data, fov, aspect, near, far);
+    mat4x4_perspective(obj_ptr->data, gl_fov, gl_aspect, gl_near, gl_far);
 }
 
 
 PHP_METHOD(GL_Math_Mat4, ortho)
 {
-    double left;
-    double right;
-    double bottom;
-    double top;
-    double near;
-    double far;
-    if (zend_parse_parameters(ZEND_NUM_ARGS() , "dddddd", &left, &right, &bottom, &top, &near, &far) == FAILURE) {
+    double gl_left;
+    double gl_right;
+    double gl_bottom;
+    double gl_top;
+    double gl_near;
+    double gl_far;
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "dddddd", &gl_left, &gl_right, &gl_bottom, &gl_top, &gl_near, &gl_far) == FAILURE) {
         return;
     }
 
@@ -1712,7 +1715,7 @@ PHP_METHOD(GL_Math_Mat4, ortho)
     obj = getThis();
     phpglfw_math_mat4_object *obj_ptr = phpglfw_math_mat4_objectptr_from_zobj_p(Z_OBJ_P(obj));
 
-    mat4x4_ortho(obj_ptr->data, left, right, bottom, top, near, far);
+    mat4x4_ortho(obj_ptr->data, gl_left, gl_right, gl_bottom, gl_top, gl_near, gl_far);
 }
 
 PHP_METHOD(GL_Math_Mat4, lookAt)

@@ -22,6 +22,10 @@
     but this is still a work in progress for now!
 
 
+## Download DLL
+
+---
+
 PHP-GLFW will not run properly under WSL (Windows Subsystem) so make sure you install PHP nativley to windows. If you already done so you can skip the next section.
 
 1. Go to https://windows.php.net/download#php-8.1 and download a x64 thread safe version of PHP.
@@ -35,9 +39,6 @@ PHP-GLFW will not run properly under WSL (Windows Subsystem) so make sure you in
     5. In the edit dialog, click on the "New" and enter `C:\php`.
 5. Open up a **NEW** powershell or CMD and type `php -v` to verify the installation.
 
-## Download DLL
-
----
 
 ## Build from Source
 
@@ -51,6 +52,18 @@ In order to build PHP-GLFW we need to the "Development Package".
     1. phpsdk_deps --update --branch master
     3. Copy PHP-GLFW source into `ext/glfw` of the cloned PHP source code.
 5. run: `buildconf && configure --disable-all --enable-cli --enable-glfw=shared && nmake`
+
+another go 
+
+1. Clone the php-sdk: `git clone https://github.com/php/php-sdk-binary-tools.git php-sdk`, to drive root (`C:\`)
+2. `cd C:\php-sdk`
+3. Run the setup bat file, in my case I use the same architecture and SDK version as the downloaded precompiled PHP for windows. (`phpsdk-vs16-x64.bat`)
+4. `phpsdk_buildtree phpmaster` 
+5. `git clone https://github.com/php/php-src.git && cd php-src`
+6. `phpsdk_deps --update --branch 8.1`
+7. Copy PHP-GLFW source into `ext/glfw` of the cloned PHP source code.
+8. run: `buildconf && configure --disable-all --enable-cli --enable-glfw=shared && nmake`
+
 
 
 ### Install Dev Package

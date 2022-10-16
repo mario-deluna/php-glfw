@@ -697,31 +697,34 @@ PHP_METHOD(<?php echo $obj->getFullNamespaceConstString(); ?>, setCol)
 
 PHP_METHOD(<?php echo $obj->getFullNamespaceConstString(); ?>, perspective)
 {
-    double fov;
-    double aspect;
-    double near;
-    double far;
-    if (zend_parse_parameters(ZEND_NUM_ARGS() , "dddd", &fov, &aspect, &near, &far) == FAILURE) {
-        return;
+    // prefix with gl_ because windows has one of those
+    // globally defined as a macro. It took my hours to figure this out 
+    // because all i got was "syntax error ','"... -.-
+    double gl_fov;
+    double gl_aspect;
+    double gl_near;
+    double gl_far;
+    if (zend_parse_parameters(ZEND_NUM_ARGS(), "dddd", &gl_fov, &gl_aspect, &gl_near, &gl_far) == FAILURE) {
+        RETURN_THROWS();
     }
-
+    
     zval *obj;
     obj = getThis();
     <?php echo $obj->getObjectName(); ?> *obj_ptr = <?php echo $obj->objectFromZObjFunctionName(); ?>(Z_OBJ_P(obj));
 
-    <?php echo $obj->getMatFunction('perspective'); ?>(obj_ptr->data, fov, aspect, near, far);
+    <?php echo $obj->getMatFunction('perspective'); ?>(obj_ptr->data, gl_fov, gl_aspect, gl_near, gl_far);
 }
 
 
 PHP_METHOD(<?php echo $obj->getFullNamespaceConstString(); ?>, ortho)
 {
-    double left;
-    double right;
-    double bottom;
-    double top;
-    double near;
-    double far;
-    if (zend_parse_parameters(ZEND_NUM_ARGS() , "dddddd", &left, &right, &bottom, &top, &near, &far) == FAILURE) {
+    double gl_left;
+    double gl_right;
+    double gl_bottom;
+    double gl_top;
+    double gl_near;
+    double gl_far;
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "dddddd", &gl_left, &gl_right, &gl_bottom, &gl_top, &gl_near, &gl_far) == FAILURE) {
         return;
     }
 
@@ -729,7 +732,7 @@ PHP_METHOD(<?php echo $obj->getFullNamespaceConstString(); ?>, ortho)
     obj = getThis();
     <?php echo $obj->getObjectName(); ?> *obj_ptr = <?php echo $obj->objectFromZObjFunctionName(); ?>(Z_OBJ_P(obj));
 
-    <?php echo $obj->getMatFunction('ortho'); ?>(obj_ptr->data, left, right, bottom, top, near, far);
+    <?php echo $obj->getMatFunction('ortho'); ?>(obj_ptr->data, gl_left, gl_right, gl_bottom, gl_top, gl_near, gl_far);
 }
 
 PHP_METHOD(<?php echo $obj->getFullNamespaceConstString(); ?>, lookAt)

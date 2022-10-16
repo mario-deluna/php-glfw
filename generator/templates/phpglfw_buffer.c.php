@@ -53,7 +53,7 @@ zend_class_entry *<?php echo $buffer->getClassEntryNameGetter(); ?>() {
 <?php endforeach; ?>
 
 <?php foreach($buffers as $buffer) : ?>
-zend_always_inline <?php echo $buffer->getObjectName(); ?>* <?php echo $buffer->objectFromZObjFunctionName(); ?>(zend_object* obj)
+<?php echo $buffer->getObjectName(); ?>* <?php echo $buffer->objectFromZObjFunctionName(); ?>(zend_object* obj)
 {
     return (<?php echo $buffer->getObjectName(); ?> *) ((char *) (obj) - XtOffsetOf(<?php echo $buffer->getObjectName(); ?>, std));
 }
