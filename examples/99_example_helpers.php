@@ -10,8 +10,8 @@ use GL\Texture\Texture2D;
  */
 class ExampleHelper
 {
-    const WIN_WIDTH = 800;
-    const WIN_HEIGHT = 600;
+    const WIN_WIDTH = 1280;
+    const WIN_HEIGHT = 720;
 
     /**
      * Initializes GLFW and creates a window.

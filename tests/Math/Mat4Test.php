@@ -387,6 +387,15 @@ class Mat4Test extends \PHPUnit\Framework\TestCase
             -0.000, -17.149, 2.425, 1,
             $m
         );
+
+        $m->lookAt(new Vec3(0, 1000, 0), new Vec3(1, 1, 1), new Vec3(0.0, 1.0, 0.0));
+        $this->assertEqualsMatrix(
+            -0.707107, 0.707106, -0.001001, 0,
+            0, 0.00141563, 0.999999, 0,
+            0.707107, 0.707106, -0.001001, 0,
+            -0, -1.41563, -999.999, 1,
+            $m
+        );
     }
 
     public function testTranspose() : void

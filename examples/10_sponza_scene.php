@@ -1,11 +1,34 @@
 <?php
 /**
  * This example renders the Crytek Sponza scene. 
+ * 
+ * This example is far more complex then the previous ones. 
+ * Which is also why it includes mutliple files and is split into multiple functions.
  */
 require __DIR__ . '/99_example_helpers.php';
 
 use GL\Math\{GLM, Vec3, Vec4, Mat4, Vec2};
 use GL\Buffer\FloatBuffer;
+
+/**
+ * Config
+ * 
+ * ----------------------------------------------------------------------------
+ */
+// render resolution
+$renderResolutionX = ExampleHelper::WIN_WIDTH;
+$renderResolutionY = ExampleHelper::WIN_HEIGHT;
+$renderResolutionDPI = 1.0;
+$renderResolutionX *= $renderResolutionDPI;
+$renderResolutionY *= $renderResolutionDPI;
+
+// shadowmap resolution
+$shadowMapWidth = 2048;
+$shadowMapHeight = 2048;
+
+// its a directional light which always points at 0, 0, 0
+$lightPosition = new Vec3(0.0, 1200, 30); 
+$lightColor = new Vec3(1.0, 1.0, 1.0);
 
 
 $window = ExampleHelper::begin();
@@ -131,6 +154,15 @@ foreach ($meshes as $i => $mesh) {
         $alphaTexture = ExampleHelper::loadTexture($mesh->material->dissolveTexture->path);
     }
 
+    // determine some custom params based on the material
+    // ---
+
+    // if foliage disable face culling 
+    $cullFace = !in_array($mesh->material->name, [
+        'Material__57', // flowers
+        'leaf'
+    ]);
+
     $vertexBuffers[] = [
         'VAO' => $VAO,
         'VBO' => $VBO,
@@ -139,8 +171,12 @@ foreach ($meshes as $i => $mesh) {
         'textureDiffuse' => $diffuseTexture,
         'textureNormal' => $normalTexture,
         'textureAlpha' => $alphaTexture,
+
+        'cullFace' => $cullFace,
     ];
 }
+
+// var_dump($vertexBuffers); die;
 
 // unbind
 glBindBuffer(GL_ARRAY_BUFFER, 0); 
@@ -152,63 +188,124 @@ glBindVertexArray(0);
  * 
  * ----------------------------------------------------------------------------
  */
+$shaders = require_once __DIR__ . '/10_sponza/shaders.php';
 
-// compile a simple shader to project the cube 
-// and output the uv colors to the fragment shader
-$objectShader = ExampleHelper::compileShader(<<< 'GLSL'
-#version 330 core
-layout (location = 0) in vec3 a_position;
-layout (location = 1) in vec3 a_normal;
-layout (location = 2) in vec2 a_texcords;
-layout (location = 3) in vec3 a_tangent;
-layout (location = 4) in vec3 a_bitangent;
+// get uniform locations here so we don't have to do it every frame
+$uniformsLoc = [
+    $shaders['geometry'] => [
+        'model' => glGetUniformLocation($shaders['geometry'], 'model'),
+        'view' => glGetUniformLocation($shaders['geometry'], 'view'),
+        'projection' => glGetUniformLocation($shaders['geometry'], 'projection'),
+        'light_space' => glGetUniformLocation($shaders['geometry'], 'light_space'),
+        'texture_diffuse' => glGetUniformLocation($shaders['geometry'], 'texture_diffuse'),
+        'texture_normal' => glGetUniformLocation($shaders['geometry'], 'texture_normal'),
+        'light_dir' => glGetUniformLocation($shaders['geometry'], 'light_dir'),
+        'light_color' => glGetUniformLocation($shaders['geometry'], 'light_color'),
+        'shadowmap' => glGetUniformLocation($shaders['geometry'], 'shadowmap'),
+        'ambient' => glGetUniformLocation($shaders['geometry'], 'ambient'),
+        'use_normal_map' => glGetUniformLocation($shaders['geometry'], 'use_normal_map'),
+    ],
 
-out vec3 v_normal;
-out vec2 v_texcords;
+    $shaders['shadowmap'] => [
+        'model' => glGetUniformLocation($shaders['shadowmap'], 'model'),
+        'light_space' => glGetUniformLocation($shaders['shadowmap'], 'light_space'),
+    ],
 
-uniform mat4 model;
-uniform mat4 view;
-uniform mat4 projection;
+    $shaders['quad'] => [
+        'u_texture' => glGetUniformLocation($shaders['quad'], 'u_texture'),    
+    ],
 
-void main()
-{
-    // we need to transform the normal vector to world space
-    v_normal = vec3(model * vec4(a_normal, 1.0f));
+    $shaders['depth'] => [
+        'u_texture' => glGetUniformLocation($shaders['depth'], 'u_texture'),    
+    ],
+];
 
-    // flip the uvs
-    v_texcords = vec2(a_texcords.x, 1.0f - a_texcords.y);
-    gl_Position = projection * view * model * vec4(a_position, 1.0f);
+/**
+ * Build Shadowmap
+ * 
+ * ----------------------------------------------------------------------------
+ */
+glGenFramebuffers(1, $shadowFBO);
+glBindFramebuffer(GL_FRAMEBUFFER, $shadowFBO);
+
+// also create texture to hold depth map, this is what we will sample later
+glGenTextures(1, $shadowTexture);
+glBindTexture(GL_TEXTURE_2D, $shadowTexture);
+glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT, $shadowMapWidth, $shadowMapHeight, 0, GL_DEPTH_COMPONENT, GL_FLOAT, null);
+glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+
+// attach depth texture as FBO's depth buffer
+glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_TEXTURE_2D, $shadowTexture, 0);
+glDrawBuffer(GL_NONE);
+glReadBuffer(GL_NONE);
+glBindFramebuffer(GL_FRAMEBUFFER, 0);
+
+/**
+ * Build offscreen render target
+ *
+ * ----------------------------------------------------------------------------
+ */
+glGenFramebuffers(1, $offscreenFBO);
+glBindFramebuffer(GL_FRAMEBUFFER, $offscreenFBO);
+
+// create a color attachment texture
+glGenTextures(1, $offscreenTexture);
+glBindTexture(GL_TEXTURE_2D, $offscreenTexture);
+glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, $renderResolutionX, $renderResolutionY, 0, GL_RGB, GL_UNSIGNED_BYTE, null);
+glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+// create a renderbuffer object for depth and stencil attachment (we won't be sampling these)
+glGenRenderbuffers(1, $offscreenRBO);
+glBindRenderbuffer(GL_RENDERBUFFER, $offscreenRBO);
+glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH24_STENCIL8, $renderResolutionX, $renderResolutionY);
+
+// attach the texture and RBO to the framebuffer
+glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, $offscreenTexture, 0);
+glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_RENDERBUFFER, $offscreenRBO);
+
+// finally check if framebuffer is complete
+if (glCheckFramebufferStatus(GL_FRAMEBUFFER) !== GL_FRAMEBUFFER_COMPLETE) {
+    throw new Exception('Offscreen Framebuffer is not complete!');
 }
-GLSL,
-<<< 'GLSL'
-#version 330 core
-out vec4 fragment_color;
 
-in vec3 v_normal;
-in vec2 v_texcords;
+glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
-uniform sampler2D texture_diffuse;
+/**
+ * Debug quad
+ * To visualize various buffers
+ * 
+ * ----------------------------------------------------------------------------
+ */
+$quadVerticies = new \GL\Buffer\FloatBuffer([
+    -1.0, -1.0, 0.0, 0.0,
+    1.0, -1.0, 1.0, 0.0,
+    1.0, 1.0, 1.0, 1.0,
+    1.0, 1.0, 1.0, 1.0,
+    -1.0, 1.0, 0.0, 1.0,
+    -1.0, -1.0, 0.0, 0.0
+]);
+glGenVertexArrays(1, $quadVAO);
+glGenBuffers(1, $quadVBO);
+glBindVertexArray($quadVAO);
+glBindBuffer(GL_ARRAY_BUFFER, $quadVBO);
+glBufferData(GL_ARRAY_BUFFER, $quadVerticies, GL_STATIC_DRAW);
 
-uniform vec3 light_dir;
-uniform vec3 light_color;
+// declare the vertex attributes
+// positions
+glVertexAttribPointer(0, 2, GL_FLOAT, false, GL_SIZEOF_FLOAT * 4, 0);
+glEnableVertexAttribArray(0);
 
-uniform float ambient = 0.5;
+// uv
+glVertexAttribPointer(1, 2, GL_FLOAT, false, GL_SIZEOF_FLOAT * 4, GL_SIZEOF_FLOAT * 2);
+glEnableVertexAttribArray(1);
 
-void main()
-{
-    vec4 diffusetex = texture(texture_diffuse, v_texcords);
-
-    // if (diffusetex.a < 0.5) {
-    //     discard;
-    // }
-
-    // simple lighting
-    float diffuse = max(dot(v_normal, light_dir), 0.0);
-    vec3 color = (ambient + diffuse) * light_color * diffusetex.rgb;
-    fragment_color = vec4(color, 1.0f);
-    // fragment_color =  vec4(texture(texture_diffuse, v_texcords).rgb, 1.0f);
-} 
-GLSL);
+// unbind
+glBindBuffer(GL_ARRAY_BUFFER, 0);
+glBindVertexArray(0);
 
 
 /**
@@ -221,17 +318,32 @@ $view = new Mat4;
 $view->translate(new Vec3(0.0, 0.0, -2.0));
 
 $projection = new Mat4;
-$projection->perspective(glm::radians(70.0), ExampleHelper::WIN_WIDTH / ExampleHelper::WIN_HEIGHT, 0.1, 10000.0);
+$projection->perspective(glm::radians(70.0), ExampleHelper::WIN_WIDTH / ExampleHelper::WIN_HEIGHT, 0.1, 32000.0);
 
 // capture keyboard events to toggle rendering modes
+
+// wireframe mode
 $wireframe = false;
-glfwSetKeyCallback($window, function ($key, $scancode, $action, $mods) use ($window, &$wireframe) {
+
+// enable / disable normal mapping
+$useNormalMap = 1.0;
+
+glfwSetKeyCallback($window, function ($key, $scancode, $action, $mods) use ($window, &$wireframe, &$useNormalMap) 
+{
+    // exit app
     if ($key == GLFW_KEY_ESCAPE && $action == GLFW_PRESS) {
         glfwSetWindowShouldClose($window, true);
     }
 
+    // toggle wireframe mode
     if ($key == GLFW_KEY_F && $action == GLFW_PRESS) {
         $wireframe = !$wireframe;
+    }
+
+    // toggle normal mapping
+    if ($key == GLFW_KEY_N && $action == GLFW_PRESS) {
+        $useNormalMap = $useNormalMap ? 0.0 : 1.0;
+        echo "use normal map: " . $useNormalMap . "\n";
     }
 });
 
@@ -282,6 +394,7 @@ echo str_repeat('-', 80) . PHP_EOL;
 echo '-> Use the mouse to rotate the object' . PHP_EOL;
 echo '-> Press ESC to close the window' . PHP_EOL;
 echo '-> Press F to toggle wireframe mode' . PHP_EOL;
+echo '-> Press N to toggle normal mapping' . PHP_EOL;
 echo str_repeat('-', 80) . PHP_EOL;
 
 // update the viewport
@@ -290,23 +403,85 @@ glViewport(0, 0, ExampleHelper::WIN_WIDTH, ExampleHelper::WIN_HEIGHT);
 // enable depth testing, because we are rendering a 3d object with overlapping
 // triangles
 glEnable(GL_DEPTH_TEST);
+glEnable(GL_CULL_FACE);
+glDisable(GL_BLEND);
+
+// define the model matrix aka the object postion in the world
+// we use the same for every mesh as we render only one model that is already translated
+$model = new Mat4;
+$model->scale(new Vec3(0.5));
 
 // Main Loop
 // ---------------------------------------------------------------------------- 
 while (!glfwWindowShouldClose($window))
 {
+    // continuesly rotate the light 0
+    $lightPosition->x = cos((20 + glfwGetTime()) * 0.1) * 1000;
+    $lightPosition->z = cos((20 + glfwGetTime()) * 0.04) * 1500;
+    
+    // calculate the light direction. (It points to 0,0,0)
+    $lightDir = glm::normalize($lightPosition);
+
+    /**
+     * Shadow Pass
+     * 
+     * ----------------------------------------------------------------------------
+     */
+    // extract light position from view matrix
+    // $lightPos = new Vec3($view[12], $view[13], $view[14]);
+    $shadowSize = 600;
+
+
+    $lightProjection = new Mat4;
+    $lightProjection->ortho(-$shadowSize, $shadowSize, -$shadowSize, $shadowSize, 1.0, 5000);
+    $lightView = new Mat4;
+    $lightView->translate($lightPosition);
+    // $lightView->lookAt($lightPos, $lightPos + ($lightDir * 1000), new Vec3(0.0, 1.0, 0.0));
+    $lightView->lookAt($lightPosition, new Vec3(0, 0, 0), new Vec3(0.0, 0.0, 1.0));
+    $lightSpace = $lightProjection * $lightView;
+
+    // render our scene for the shadow map
+    glViewport(0, 0, $shadowMapWidth, $shadowMapHeight);
+    glBindFramebuffer(GL_FRAMEBUFFER, $shadowFBO);
+    glClear(GL_DEPTH_BUFFER_BIT);
+    glCullFace(GL_FRONT);
+    glUseProgram($shaders['shadowmap']);
+    glUniformMatrix4f($uniformsLoc[$shaders['shadowmap']]['light_space'], GL_FALSE, $lightSpace);
+    glUniformMatrix4f($uniformsLoc[$shaders['shadowmap']]["model"], GL_FALSE, $model);
+     
+    glEnable(GL_DEPTH_TEST);
+    glEnable(GL_CULL_FACE);
+
+    // bind & draw the vertex array
+    foreach($vertexBuffers as $vb) 
+    {
+        glBindVertexArray($vb['VAO']);
+        glDrawArrays(GL_TRIANGLES, 0, $vb['count']);
+    }
+    
+
+    /**
+     * Forward Pass
+     * 
+     * ----------------------------------------------------------------------------
+     */
+    
+    // bind the render target
+    glBindFramebuffer(GL_FRAMEBUFFER, $offscreenFBO);
+    glViewport(0, 0, $renderResolutionX, $renderResolutionY);
+
     // use some blueish color to imitate a skybox
     glClearColor(0.52, 0.80, 0.92, 1.0);
     // note how we are clearing both the DEPTH and COLOR buffers.
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
+    // reset culling
+    glCullFace(GL_BACK);
+    glEnable(GL_DEPTH_TEST);
+
     // use the shader, will active the given shader program
     // for the coming draw calls.
-    glUseProgram($objectShader);
-
-    // define the model matrix aka the object postion in the world
-    $model = new Mat4;
-    $model->scale(new Vec3(0.5));
+    glUseProgram($shaders['geometry']);
 
     // reverse the view matrix, because we are moving the world
     // instead of the camera
@@ -337,23 +512,54 @@ while (!glfwWindowShouldClose($window))
 
     // now set the uniform variables in the shader.
     // note that we use `glUniformMatrix4f` instead of `glUniformMatrix4fv` to pass a single matrix.
-    glUniformMatrix4f(glGetUniformLocation($objectShader, "model"), GL_FALSE, $model);
-    glUniformMatrix4f(glGetUniformLocation($objectShader, "view"), GL_FALSE, $eye);
-    glUniformMatrix4f(glGetUniformLocation($objectShader, "projection"), GL_FALSE, $projection);
+    glUniformMatrix4f($uniformsLoc[$shaders['geometry']]["model"], GL_FALSE, $model);
+    glUniformMatrix4f($uniformsLoc[$shaders['geometry']]["view"], GL_FALSE, $eye);
+    glUniformMatrix4f($uniformsLoc[$shaders['geometry']]["projection"], GL_FALSE, $projection);
+    $lv = $lightView->copy();
+    // $lv->inverse();
+    // glUniformMatrix4f($uniformsLoc[$shaders['geometry']]["view"], GL_FALSE, $lv);
+    // glUniformMatrix4f($uniformsLoc[$shaders['geometry']]["projection"], GL_FALSE, $lightProjection);
 
     // set the light direction and color
-    glUniform3f(glGetUniformLocation($objectShader, "light_dir"), 0.0, 0.7, 0.3);
-    glUniform3f(glGetUniformLocation($objectShader, "light_color"), 1.0, 1.0, 1.0);
+    glUniformVec3f($uniformsLoc[$shaders['geometry']]["light_dir"], $lightDir);
+    glUniformVec3f($uniformsLoc[$shaders['geometry']]["light_color"], $lightColor);
+
+    // set shadowmap
+    glActiveTexture(GL_TEXTURE10);
+    glBindTexture(GL_TEXTURE_2D, $shadowTexture);
+    glUniform1i($uniformsLoc[$shaders['geometry']]["shadowmap"], 10);
+    glUniformMatrix4f($uniformsLoc[$shaders['geometry']]["light_space"], GL_FALSE, $lightSpace);
+
+    // other settings
+    glUniform1f($uniformsLoc[$shaders['geometry']]["use_normal_map"], $useNormalMap);
 
     // bind & draw the vertex array
-    foreach($vertexBuffers as $vb) {
+    foreach($vertexBuffers as $vb) 
+    {
+        // enable disable face culling
+        if ($wireframe || $vb['cullFace'] === false) {
+            glDisable(GL_CULL_FACE);
+        } else {
+            glEnable(GL_CULL_FACE);
+        }
+
         // update the diffuse texture
         if ($vb['textureDiffuse']) {
             glActiveTexture(GL_TEXTURE0);
             glBindTexture(GL_TEXTURE_2D, $vb['textureDiffuse']);
-            glUniform1i(glGetUniformLocation($objectShader, "texture_diffuse"), 0);
+            glUniform1i($uniformsLoc[$shaders['geometry']]["texture_diffuse"], 0);
         } else {
             glActiveTexture(GL_TEXTURE0);
+            glBindTexture(GL_TEXTURE_2D, 0);
+        }
+
+        // update the normal texture
+        if ($vb['textureNormal']) {
+            glActiveTexture(GL_TEXTURE1);
+            glBindTexture(GL_TEXTURE_2D, $vb['textureNormal']);
+            glUniform1i($uniformsLoc[$shaders['geometry']]["texture_normal"], 1);
+        } else {
+            glActiveTexture(GL_TEXTURE1);
             glBindTexture(GL_TEXTURE_2D, 0);
         }
 
@@ -366,6 +572,53 @@ while (!glfwWindowShouldClose($window))
         // draw the vertex array
         glBindVertexArray($vb['VAO']);
         glDrawArrays(GL_TRIANGLES, 0, $vb['count']);
+    }
+
+
+    /**
+     * Bind the main FB
+     * 
+     * ----------------------------------------------------------------------------
+     */
+    
+    // get framebuffer size
+    glfwGetFramebufferSize($window, $fx, $fy);
+    glBindFramebuffer(GL_FRAMEBUFFER, 0);
+    glViewport(0, 0, $fx, $fy);
+    glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+
+    /**
+     * Debug Out
+     * 
+     * ----------------------------------------------------------------------------
+     */
+    if (0) 
+    {
+        $debugTexture = $shadowTexture;
+
+        glDisable(GL_DEPTH_TEST);
+        glDisable(GL_CULL_FACE);
+        glBindFramebuffer(GL_FRAMEBUFFER, 0);
+        glUseProgram($shaders['depth']);
+        glUniform1i($uniformsLoc[$shaders['depth']]["u_texture"], 0);
+        glActiveTexture(GL_TEXTURE0);
+        glBindTexture(GL_TEXTURE_2D, $debugTexture);
+        glBindVertexArray($quadVAO);
+        glBindBuffer(GL_ARRAY_BUFFER, $quadVBO);
+        glDrawArrays(GL_TRIANGLES, 0, 6);
+    }
+    else 
+    {
+        // draw the render texture to the screen
+        glDisable(GL_DEPTH_TEST);
+        glDisable(GL_CULL_FACE);
+        glUseProgram($shaders['quad']);
+        glUniform1i($uniformsLoc[$shaders['quad']]["u_texture"], 0);
+        glActiveTexture(GL_TEXTURE0);
+        glBindTexture(GL_TEXTURE_2D, $offscreenTexture);
+        glBindVertexArray($quadVAO);
+        glBindBuffer(GL_ARRAY_BUFFER, $quadVBO);
+        glDrawArrays(GL_TRIANGLES, 0, 6);
     }
 
     // swap the windows framebuffer and
