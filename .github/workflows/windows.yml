@@ -42,4 +42,12 @@ jobs:
         run: php -m
         
       - run: ls -la
+      
+      - run: cd ${{matrix.arch}} && ls -la
+        
+      - run: cd ${{matrix.arch}}/Release_TS && ls -la
+        if: ${{ matrix.ts == 'ts' }}
+        
+      - run: cd ${{matrix.arch}}/Release_NTS && ls -la
+        if: ${{ matrix.ts == 'nts' }}
         
