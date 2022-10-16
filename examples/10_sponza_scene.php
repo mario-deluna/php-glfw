@@ -28,9 +28,10 @@ if (!extension_loaded('curl')) {
 }
 
 // download and extract the sponza scene if not downloaded yet
-$sponzaDir = __DIR__ . '/sponza';
-$sponzaPath = $sponzaDir . '/Sponza-master';
-if (!is_dir($sponzaDir)) {
+$sponzaDir = __DIR__ . DIRECTORY_SEPARATOR . 'sponza';
+$sponzaPath = $sponzaDir . DIRECTORY_SEPARATOR . 'Sponza-master';
+
+if ((!is_dir($sponzaDir)) || (!file_exists($sponzaDir))) {
     echo "Downloading Sponza scene...\n";
     $sponzaZip = __DIR__ . '/sponza.zip';
     file_put_contents($sponzaZip, fopen("https://github.com/jimmiebergmann/Sponza/archive/refs/heads/master.zip", 'rb'));
@@ -59,7 +60,6 @@ if (!is_dir($sponzaDir)) {
 
     echo "Done!\n";
 }
-
 
 /**
  * Loading the scene files
