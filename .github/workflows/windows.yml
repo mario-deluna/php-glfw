@@ -14,6 +14,7 @@ jobs:
     steps:
       - name: Checkout PHP-GLFW
         uses: actions/checkout@v2
+        
       - name: Setup PHP
         id: setup-php
         uses: cmb69/setup-php-sdk@v0.6
@@ -21,8 +22,18 @@ jobs:
           version: ${{matrix.version}}
           arch: ${{matrix.arch}}
           ts: ${{matrix.ts}}
+          
       - name: Enable Developer Command Prompt
         uses: ilammy/msvc-dev-cmd@v1
         with:
           arch: ${{matrix.arch}}
           toolset: ${{steps.setup-php.outputs.toolset}}
+          
+      - name: phpize
+        run: phpize
+        
+      - name: configure
+        run: configure --enable-glfw --with-prefix=${{steps.setup-php.outputs.prefix}}
+        
+      - name: make
+        run: nmake
