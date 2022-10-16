@@ -38,16 +38,22 @@ jobs:
       - name: make
         run: nmake
         
-      - name: list modules
-        run: php -m
-        
       - run: ls -la
       
       - run: cd ${{matrix.arch}} && ls -la
         
-      - run: cd ${{matrix.arch}}/Release_TS && ls -la
-        if: ${{ matrix.ts == 'ts' }}
-        
       - run: cd ${{matrix.arch}}/Release_NTS && ls -la
         if: ${{ matrix.ts == 'nts' }}
+        
+      - uses: actions/upload-artifact@v3
+        if: ${{ matrix.ts == 'ts' }}
+        with:
+          name: ts_${{matrix.arch}}_php_glfw.dll
+          path: ${{matrix.arch}}/Release_TS/php_glfw.dll
+        
+      - uses: actions/upload-artifact@v3
+        if: ${{ matrix.ts == 'nts' }}
+        with:
+          name: nts_${{matrix.arch}}_php_glfw.dll
+          path: ${{matrix.arch}}/Release_NTS/php_glfw.dll
         
