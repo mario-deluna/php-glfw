@@ -38,5 +38,7 @@ jobs:
       - name: list modules
         run: php -m
         
+      - run: ls -la
+        
       - name: make
         run: nmake
