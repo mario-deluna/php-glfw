@@ -35,10 +35,11 @@ jobs:
       - name: configure
         run: configure --enable-glfw --with-prefix=${{steps.setup-php.outputs.prefix}}
         
+      - name: make
+        run: nmake
+        
       - name: list modules
         run: php -m
         
       - run: ls -la
         
-      - name: make
-        run: nmake
