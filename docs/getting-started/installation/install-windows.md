@@ -15,16 +15,29 @@
 
 # Installing PHP-GLFW on Windows
 
-!!! error "Unfinished"
-    
-    Sorry, we are still working on the windows build. These are just leftover notes 
-    from the processs when we tested PHP-GLFW on windows. You might get it to work 
-    but this is still a work in progress for now!
+PHP-GLFW will not run properly under WSL (Windows Subsystem) so make sure you install PHP nativley to windows. 
+If you havent already done so checkout [Installing PHP natively on Windows](#installing-php-natively-on-windows).
 
 
 ## Download DLL
 
+For Windows we provide a prebuilt `DLL` which you can simply download and but into your php extension folder.
+
+ 1. See the releases page for the latest `DLL` downloads: [PHP-GLFW Releases](https://github.com/mario-deluna/php-glfw/releases)
+ 2. Download the matching `DLL` for your local php installation. (If you follow this guide `ts_x64`)
+ 3. Move and rename the downloaded `dll` to your PHP's `ext` folder. Usally `C:\php\ext\php_glfw.dll`. 
+ 4. Enable the extension in your `php.ini` (usally at `C:\php\php.ini`)
+    ```ini
+    extension=glfw
+    ```
+
+!!! success ""
+    
+    **Thats it**, You can check if the extension is loaded properly with `php -m`.
+
 ---
+
+## Installing PHP natively on Windows
 
 PHP-GLFW will not run properly under WSL (Windows Subsystem) so make sure you install PHP nativley to windows. If you already done so you can skip the next section.
 
@@ -44,6 +57,7 @@ PHP-GLFW will not run properly under WSL (Windows Subsystem) so make sure you in
 
 In order to build PHP-GLFW we need to the "Development Package".
 
+<!--
 1. Go to https://windows.php.net/download#php-8.1 and download the x64 thread safe "Development package (SDK to develop PHP extensions)".
 2. Place the contents of the downloaded zip into `C:\php`. **If that directory does not exist, please follow the steps "Install PHP"**.
 3. Follow the following guide https://wiki.php.net/internals/windows/stepbystepbuild_sdk_2.
@@ -53,7 +67,7 @@ In order to build PHP-GLFW we need to the "Development Package".
     3. Copy PHP-GLFW source into `ext/glfw` of the cloned PHP source code.
 5. run: `buildconf && configure --disable-all --enable-cli --enable-glfw=shared && nmake`
 
-another go 
+another go -->
 
 1. Clone the php-sdk: `git clone https://github.com/php/php-sdk-binary-tools.git php-sdk`, to drive root (`C:\`)
 2. `cd C:\php-sdk`
@@ -63,17 +77,5 @@ another go
 6. `phpsdk_deps --update --branch 8.1`
 7. Copy PHP-GLFW source into `ext/glfw` of the cloned PHP source code.
 8. run: `buildconf && configure --disable-all --enable-cli --enable-glfw=shared && nmake`
+9. the resulting `dll` should be located depending on your choosen build under `x64\Release_TS\php_glfw.dll`. 
 
-
-
-### Install Dev Package
-
-
-
-### Install the extension
-
-Now we can finally build the actual extension.
-
-1. Download or clone PHP-GLFW and open the directory up in a power shell or CMD.
-2. run `phpize`
-3. run `./configure --enable-glfw`
