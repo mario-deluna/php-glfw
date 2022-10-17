@@ -1,4 +1,4 @@
-name: PHPglfw
+name: PHP-GLFW Tests
 
 on:
   push:
