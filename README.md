@@ -8,7 +8,9 @@
 
 **A fully-featured OpenGL and GLFW extension for PHP. Batteries included 🔋!**
 
-[![PHPglfw](https://github.com/mario-deluna/php-glfw/actions/workflows/build.yml/badge.svg)](https://github.com/mario-deluna/php-glfw/actions/workflows/build.yml)
+[![PHP-GLFW Tests](https://github.com/mario-deluna/php-glfw/actions/workflows/build.yml/badge.svg)](https://github.com/mario-deluna/php-glfw/actions/workflows/build.yml)
+[![MacOS Installer](https://github.com/mario-deluna/php-glfw/actions/workflows/macos_installer.yml/badge.svg)](https://github.com/mario-deluna/php-glfw/actions/workflows/macos_installer.yml)
+[![Windows Build](https://github.com/mario-deluna/php-glfw/actions/workflows/windows.yml/badge.svg)](https://github.com/mario-deluna/php-glfw/actions/workflows/windows.yml)
 
 PHP-GLFW allows you to create _2D_ and _3D_ real-time applications in _PHP_. Bringing a whole different set of tools into the PHP world to develop graphical applications like _games, scientific simulations, user interfaces_ and co. 
 
