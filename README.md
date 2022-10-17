@@ -13,9 +13,8 @@
 PHP-GLFW allows you to create _2D_ and _3D_ real-time applications in _PHP_. Bringing a whole different set of tools into the PHP world to develop graphical applications like _games, scientific simulations, user interfaces_ and co. 
 
 <p align="center">
- <img width="720px" src="https://github.com/phpgl/docs-assets/raw/master/php-glfw/examples/Sponza-GIF.gif">
+ <img width="720px" src="https://user-images.githubusercontent.com/956212/196137371-74546845-4101-4e22-8d1c-4550f0ba2adf.gif">
 </p>
-
 
   * [What is this extension? Features 🚀](#what-is-this-extension-features-)
     + [OpenGL](#opengl)
