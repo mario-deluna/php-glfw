@@ -1,4 +1,4 @@
-name: Test MacOS Installer
+name: MacOS Installer
 
 on:
   workflow_run:
