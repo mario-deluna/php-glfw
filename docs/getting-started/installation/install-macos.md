@@ -24,7 +24,7 @@ Run the following command to download and execute the installer.<br>
 **Having PHP installed locally is required!**
 
 ```
-php -r "copy('https://raw.githubusercontent.com/mario-deluna/php-glfw/master/install/macos-installer.php', 'phpglfw-installer.php');" && sudo php phpglfw-installer.php
+php -r "copy('https://raw.githubusercontent.com/mario-deluna/php-glfw/master/install/macos-installer.php', 'phpglfw-installer.php');" && php phpglfw-installer.php
 ```
 
 !!! success ""

@@ -179,8 +179,12 @@ if (!$loaded) {
     }
 
     $iniContents = file_get_contents($phpini);
-    $iniContents .= "\n\n[glfw]\nextension=glfw.so\n";
-    file_put_contents($phpini, $iniContents);
+
+    // double check the extension is not already loaded
+    if (strpos($iniContents, 'extension=glfw.so') === false) {
+        $iniContents .= "\n\n[glfw]\nextension=glfw.so\n";
+        file_put_contents($phpini, $iniContents);
+    }
 } else {
     printColor("glfw extension is already loaded\n", 'green');
 }
