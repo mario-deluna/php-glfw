@@ -132,6 +132,9 @@ If you want to check out the code straight away, check out the [examples](./exam
 
 **Please see the complete detailed installation guide here: [Installation](https://phpgl.net/getting-started/installation/install-linux.html)**
 
+> **PHP Version:** `>= 8.0`
+> While I would love to support older PHP builds, it was just not feasable for this extension.
+
 ### MacOS 
 
 #### Installer
