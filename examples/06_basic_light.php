@@ -82,7 +82,7 @@ foreach ($meshes as $mesh) {
         'VAO' => $VAO,
         'VBO' => $VBO,
         'color' => $mesh->material->diffuse,
-        'count' => $mesh->vertices->size() / 3,
+        'count' => $mesh->vertices->size() / 6,
     ];
 }
 

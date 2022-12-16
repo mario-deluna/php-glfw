@@ -166,7 +166,7 @@ foreach ($meshes as $i => $mesh) {
     $vertexBuffers[] = [
         'VAO' => $VAO,
         'VBO' => $VBO,
-        'count' => $mesh->vertices->size() / 3,
+        'count' => $mesh->vertices->size() / 14,
 
         'textureDiffuse' => $diffuseTexture,
         'textureNormal' => $normalTexture,
