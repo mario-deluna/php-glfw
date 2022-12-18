@@ -23,6 +23,6 @@ class Texture2DTest extends \PHPUnit\Framework\TestCase
             }
         }
 
-        $this->assertEquals('410ab0a97d06be141419ae4e4695a536', md5(implode('', $samples)));
+        $this->assertEquals('ba4d0004d615eb72f288739672910586', md5(implode('', $samples)));
     }
 }
