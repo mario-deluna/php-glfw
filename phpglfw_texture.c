@@ -104,6 +104,8 @@ PHP_METHOD(GL_Texture_Texture2D, fromDisk)
     phpglfw_texture2d_object *intern = phpglfw_texture2d_objectptr_from_zobj_p(Z_OBJ_P(return_value));
     phpglfw_buffer_glubyte_object *buffer = phpglfw_buffer_glubyte_objectptr_from_zobj_p(Z_OBJ_P(&intern->buffer_zval));
 
+    stbi_set_flip_vertically_on_load(1);
+
     unsigned char *data = stbi_load(path, &intern->width, &intern->height, &intern->channels, 0);
     size_t buffersize;
     if (data == NULL) {
