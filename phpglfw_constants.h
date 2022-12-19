@@ -5759,14 +5759,8 @@ void phpglfw_register_constants(INIT_FUNC_ARGS);
 #ifdef GLFW_VERSION_REVISION 
 #define PHPGLFW_C_GLFW_VERSION_REVISION GLFW_VERSION_REVISION // => 8  
 #endif
- 
-#ifdef GLFW_TRUE 
-#define PHPGLFW_C_GLFW_TRUE GLFW_TRUE // => 1  
-#endif
- 
-#ifdef GLFW_FALSE 
-#define PHPGLFW_C_GLFW_FALSE GLFW_FALSE // => 0  
-#endif
+#define PHPGLFW_C_GLFW_TRUE true // => 1  
+#define PHPGLFW_C_GLFW_FALSE false // => 0  
  
 #ifdef GLFW_RELEASE 
 #define PHPGLFW_C_GLFW_RELEASE GLFW_RELEASE // => 0  

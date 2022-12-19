@@ -245,15 +245,6 @@ class ExtGenerator
                 $extConst->isForwardDefinition = true;
                 $extConst->group = $extGroup;
 
-                // hard replace the value of GL_TRUE and GL_FALSE to a boolean
-                if ($const->name === 'GL_TRUE') {
-                    $extConst->isForwardDefinition = false;
-                    $extConst->definition = 'true';
-                } else if ($const->name === 'GL_FALSE') {
-                    $extConst->isForwardDefinition = false;
-                    $extConst->definition = 'false';
-                }
-
                 $this->addConstant($extConst);
             }
         }
@@ -460,6 +451,12 @@ class ExtGenerator
         $this->buildDocsOpenGL();
         $this->buildDocsGLFW();
         $this->buildDocsCommon();
+
+        // copy stubs if directory exists (this is rather specific to my setup)
+        // cp phpglfw.stub.php ../../phpgl/ide-stubs/src/phpglfw.php
+        if (file_exists(__DIR__ . '/../../../../phpgl/ide-stubs/src/phpglfw.php')) {
+            copy(__DIR__ . '/../../stubs/phpglfw.php', __DIR__ . '/../../../../phpgl/ide-stubs/src/phpglfw.php');
+        }
 
         foreach($this->methods as $func) {
             if ($func->incomplete) {

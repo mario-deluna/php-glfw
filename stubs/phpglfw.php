@@ -9068,8 +9068,8 @@ namespace {
     define('GL_SCISSOR_BIT', 0x00080000);
     define('GL_ALL_ATTRIB_BITS', 0xFFFFFFFF);
     define('GL_MULTISAMPLE_BIT', 0x20000000);
-    define('GL_FALSE', GL_FALSE);
-    define('GL_TRUE', 1);
+    define('GL_FALSE', false);
+    define('GL_TRUE', true);
     define('GL_ZERO', GL_ZERO);
     define('GL_ONE', 1);
     define('GL_NONE', GL_NONE);
@@ -10411,8 +10411,8 @@ namespace {
     define('GLFW_VERSION_MAJOR', 3);
     define('GLFW_VERSION_MINOR', 3);
     define('GLFW_VERSION_REVISION', 8);
-    define('GLFW_TRUE', 1);
-    define('GLFW_FALSE', GLFW_FALSE);
+    define('GLFW_TRUE', true);
+    define('GLFW_FALSE', false);
     define('GLFW_RELEASE', GLFW_RELEASE);
     define('GLFW_PRESS', 1);
     define('GLFW_REPEAT', 2);

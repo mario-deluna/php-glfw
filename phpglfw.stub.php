@@ -304,8 +304,8 @@ namespace {
     // const GL_SCISSOR_BIT = 0x00080000;
     // const GL_ALL_ATTRIB_BITS = 0xFFFFFFFF;
     // const GL_MULTISAMPLE_BIT = 0x20000000;
-    // const GL_FALSE = GL_FALSE;
-    // const GL_TRUE = 1;
+    // const GL_FALSE = false;
+    // const GL_TRUE = true;
     // const GL_ZERO = GL_ZERO;
     // const GL_ONE = 1;
     // const GL_NONE = GL_NONE;
@@ -1647,8 +1647,8 @@ namespace {
     // const GLFW_VERSION_MAJOR = 3;
     // const GLFW_VERSION_MINOR = 3;
     // const GLFW_VERSION_REVISION = 8;
-    // const GLFW_TRUE = 1;
-    // const GLFW_FALSE = GLFW_FALSE;
+    // const GLFW_TRUE = true;
+    // const GLFW_FALSE = false;
     // const GLFW_RELEASE = GLFW_RELEASE;
     // const GLFW_PRESS = 1;
     // const GLFW_REPEAT = 2;
