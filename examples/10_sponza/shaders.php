@@ -46,7 +46,7 @@ void main()
     v_normal = n;
 
     // flip the uvs
-    v_texcords = vec2(a_texcords.x, 1.0f - a_texcords.y);
+    v_texcords = vec2(a_texcords.x, a_texcords.y);
 
     // final pos
     gl_Position = projection * view * world_pos;

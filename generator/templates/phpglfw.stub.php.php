@@ -158,7 +158,7 @@ namespace {
 <?php if ($const->isForwardDefinition) : ?>
     // const <?php echo $const->name; ?> = <?php echo $const->definitionValueString; ?>;
 <?php else : ?>
-    //define('a', 'stable');
+    // const <?php echo $const->name; ?> = <?php echo $const->definitionValueString; ?>;
 <?php endif; ?>
 <?php endforeach; ?>
 

@@ -271,17 +271,17 @@ namespace {
      * Constants
      * ----------------------------------------------------------------------------
      */
-    //define('a', 'stable');
-    //define('a', 'stable');
-    //define('a', 'stable');
-    //define('a', 'stable');
-    //define('a', 'stable');
-    //define('a', 'stable');
-    //define('a', 'stable');
-    //define('a', 'stable');
-    //define('a', 'stable');
-    //define('a', 'stable');
-    //define('a', 'stable');
+    // const PHPGLFW_COMPILED_API = 'gl';
+    // const PHPGLFW_COMPILED_API_VERSION = '4.1';
+    // const GL_SIZEOF_BYTE = 1;
+    // const GL_SIZEOF_UNSIGNED_BYTE = 1;
+    // const GL_SIZEOF_SHORT = 2;
+    // const GL_SIZEOF_UNSIGNED_SHORT = 2;
+    // const GL_SIZEOF_INT = 4;
+    // const GL_SIZEOF_UNSIGNED_INT = 4;
+    // const GL_SIZEOF_FLOAT = 4;
+    // const GL_SIZEOF_HALF_FLOAT = 2;
+    // const GL_SIZEOF_DOUBLE = 8;
     // const GL_DEPTH_BUFFER_BIT = 0x00000100;
     // const GL_STENCIL_BUFFER_BIT = 0x00000400;
     // const GL_COLOR_BUFFER_BIT = 0x00004000;

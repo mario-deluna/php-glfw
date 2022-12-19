@@ -244,6 +244,16 @@ class ExtGenerator
                 $extConst->comment = '=> ' . $const->stringVal;
                 $extConst->isForwardDefinition = true;
                 $extConst->group = $extGroup;
+
+                // hard replace the value of GL_TRUE and GL_FALSE to a boolean
+                if ($const->name === 'GL_TRUE') {
+                    $extConst->isForwardDefinition = false;
+                    $extConst->definition = 'true';
+                } else if ($const->name === 'GL_FALSE') {
+                    $extConst->isForwardDefinition = false;
+                    $extConst->definition = 'false';
+                }
+
                 $this->addConstant($extConst);
             }
         }

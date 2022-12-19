@@ -156,14 +156,8 @@ void phpglfw_register_constants(INIT_FUNC_ARGS);
  * @vendor ARB
  * Tokens whose numeric value is intrinsically meaningful 
  */
- 
-#ifdef GL_FALSE 
-#define PHPGLFW_C_GL_FALSE GL_FALSE // => 0  
-#endif
- 
-#ifdef GL_TRUE 
-#define PHPGLFW_C_GL_TRUE GL_TRUE // => 1  
-#endif
+#define PHPGLFW_C_GL_FALSE false // => 0  
+#define PHPGLFW_C_GL_TRUE true // => 1  
  
 #ifdef GL_ZERO 
 #define PHPGLFW_C_GL_ZERO GL_ZERO // => 0  
