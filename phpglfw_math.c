@@ -1684,6 +1684,29 @@ PHP_METHOD(GL_Math_Quat, eulerAngles)
     quat_euler_angles(vec_ptr->data, obj_ptr->data);
 }
 
+PHP_METHOD(GL_Math_Quat, rotate)
+{
+    double radians;
+    zval *axis_zval;
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "dO", &radians, &axis_zval, phpglfw_math_vec3_ce) == FAILURE) {
+        return;
+    }
+
+    zval *obj;
+    obj = getThis();
+    phpglfw_math_quat_object *obj_ptr = phpglfw_math_quat_objectptr_from_zobj_p(Z_OBJ_P(obj));
+
+    phpglfw_math_vec3_object *axis_ptr = phpglfw_math_vec3_objectptr_from_zobj_p(Z_OBJ_P(axis_zval));
+
+    quat temp;
+    temp[0] = obj_ptr->data[0];
+    temp[1] = obj_ptr->data[1];
+    temp[2] = obj_ptr->data[2];
+    temp[3] = obj_ptr->data[3];
+    quat_rotate_by(obj_ptr->data, temp, radians, axis_ptr->data);
+    //quat_rotate(obj_ptr->data, radians, axis_ptr->data);
+}
+
 
 /**
  * GL\Math\Mat4 

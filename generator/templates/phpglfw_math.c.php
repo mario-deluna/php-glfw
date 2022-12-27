@@ -1032,6 +1032,29 @@ PHP_METHOD(<?php echo $obj->getFullNamespaceConstString(); ?>, eulerAngles)
     <?php echo $obj->getQuatFunction('euler_angles'); ?>(vec_ptr->data, obj_ptr->data);
 }
 
+PHP_METHOD(<?php echo $obj->getFullNamespaceConstString(); ?>, rotate)
+{
+    double radians;
+    zval *axis_zval;
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "dO", &radians, &axis_zval, phpglfw_math_vec3_ce) == FAILURE) {
+        return;
+    }
+
+    zval *obj;
+    obj = getThis();
+    <?php echo $obj->getObjectName(); ?> *obj_ptr = <?php echo $obj->objectFromZObjFunctionName(); ?>(Z_OBJ_P(obj));
+
+    phpglfw_math_vec3_object *axis_ptr = phpglfw_math_vec3_objectptr_from_zobj_p(Z_OBJ_P(axis_zval));
+
+    quat temp;
+    temp[0] = obj_ptr->data[0];
+    temp[1] = obj_ptr->data[1];
+    temp[2] = obj_ptr->data[2];
+    temp[3] = obj_ptr->data[3];
+    <?php echo $obj->getQuatFunction('rotate_by'); ?>(obj_ptr->data, temp, radians, axis_ptr->data);
+    //<?php echo $obj->getQuatFunction('rotate'); ?>(obj_ptr->data, radians, axis_ptr->data);
+}
+
 <?php endif; ?>
 
 <?php endforeach; ?>

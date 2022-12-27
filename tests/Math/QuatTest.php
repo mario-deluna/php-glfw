@@ -51,4 +51,31 @@ class QuatTest extends \PHPUnit\Framework\TestCase
         $q = new Quat(1, 2, 3, 4);
         $this->assertEqualsWithDelta(5.4772257804870605, $q->length(), 0.005);
     }
+
+    public function testRotate() : void 
+    {
+        // test rotate on x axis
+        $q = new Quat;
+        $q->rotate(GLM::radians(45), new Vec3(1, 0, 0));
+        $this->assertEqualsQuat(0.92388, 0.382683, 0, 0, $q);
+
+        // test rotate on y axis
+        $q = new Quat;
+        $q->rotate(GLM::radians(45), new Vec3(0, 1, 0));
+        $this->assertEqualsQuat(0.92388, 0, 0.382683, 0, $q);
+
+        // test rotate on z axis
+        $q = new Quat;
+        $q->rotate(GLM::radians(45), new Vec3(0, 0, 1));
+        $this->assertEqualsQuat(0.92388, 0, 0, 0.382683, $q);
+
+        // now test multiple consecutive rotations
+        $q = new Quat;
+        $q->rotate(GLM::radians(45), new Vec3(1, 0, 0));
+        $this->assertEqualsQuat(0.92388, 0.382683, 0, 0, $q);
+        $q->rotate(GLM::radians(45), new Vec3(0, 1, 0));
+        $this->assertEqualsQuat(0.853553, 0.353553, 0.353553, 0.146447, $q);
+        $q->rotate(GLM::radians(45), new Vec3(0, 0, 1));
+        $this->assertEqualsQuat(0.732538, 0.46194, 0.191342, 0.46194, $q);
+    }
 }

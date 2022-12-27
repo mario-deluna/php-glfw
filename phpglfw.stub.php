@@ -127,6 +127,7 @@ namespace GL\Math
         public function copy() : Quat {}
         public function length() : float {}
         public function eulerAngles() : Vec3 {}
+        public function rotate(float $angle, Vec3 $axis) : void {}
         public function __toString() : string {}
     }
  
@@ -144,7 +145,7 @@ namespace GL\Math
         public function transpose() : void {}
         public function inverse() : void {}
         public function scale(Vec3 $scale) : void {}
-        public function translate(Vec3 $scale) : void {}
+        public function translate(Vec3 $translation) : void {}
         public function rotate(float $angle, Vec3 $axis) : void {}
         public function determinant() : float {}
         public function __toString() : string {}

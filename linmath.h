@@ -525,13 +525,10 @@ static inline void quat_sub(quat r, quat a, quat b)
 }
 static inline void quat_mul(quat r, quat p, quat q)
 {
-	vec3 w;
-	vec3_mul_cross(r, p, q);
-	vec3_scale(w, p, q[3]);
-	vec3_add(r, r, w);
-	vec3_scale(w, q, p[3]);
-	vec3_add(r, r, w);
-	r[3] = p[3]*q[3] - vec3_mul_inner(p, q);
+    r[0] = p[0]*q[0] - p[1]*q[1] - p[2]*q[2] - p[3]*q[3];
+    r[1] = p[0]*q[1] + p[1]*q[0] + p[2]*q[3] - p[3]*q[2];
+    r[2] = p[0]*q[2] - p[1]*q[3] + p[2]*q[0] + p[3]*q[1];
+    r[3] = p[0]*q[3] + p[1]*q[2] - p[2]*q[1] + p[3]*q[0];
 }
 static inline float quat_len(quat q)
 {
@@ -559,12 +556,17 @@ static inline void quat_conj(quat r, quat q)
 	r[3] = q[3];
 }
 static inline void quat_rotate(quat r, float angle, vec3 axis) {
-	vec3 v;
-	vec3_scale(v, axis, sinf(angle / 2));
-	int i;
-	for(i=0; i<3; ++i)
-		r[i] = v[i];
-	r[3] = cosf(angle / 2);
+    float half_angle = angle * 0.5f;
+    float s = sinf(half_angle);
+    r[0] = cosf(half_angle);
+    r[1] = axis[0] * s;
+    r[2] = axis[1] * s;
+    r[3] = axis[2] * s;
+}
+static inline void quat_rotate_by(quat r, quat q, float angle, vec3 axis) {
+    quat p;
+    quat_rotate(p, angle, axis);
+    quat_mul(r, q, p);
 }
 static inline void quat_euler_angles(vec3 r, quat q)
 {
