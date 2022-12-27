@@ -377,7 +377,7 @@ glfwSetCursorPosCallback($window, function ($xpos, $ypos) use ($window, &$camera
     $lastX = $xpos;
     $lastY = $ypos; 
 
-    // apply eular rotation
+    // apply euler rotation
     $cameraRotation->x = $cameraRotation->x - $xoffset * 0.3;
     $cameraRotation->y = $cameraRotation->y + $yoffset * 0.3;
 });

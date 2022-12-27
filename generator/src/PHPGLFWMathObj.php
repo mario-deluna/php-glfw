@@ -30,6 +30,9 @@ class PHPGLFWMathObj
     public function isMatrix() : bool {
         return substr($this->name, 0, 3) === 'Mat';
     }
+    public function isQuat() : bool {
+        return $this->name === 'Quat';
+    }
 
     public function propNameForPos(int $p) : string {
         return $this->propNames[$p];
@@ -86,6 +89,11 @@ class PHPGLFWMathObj
     public function getMatFunction(string $func) : string
     {
         return sprintf("mat4x4_%s", $func);
+    }
+
+    public function getQuatFunction(string $func) : string
+    {
+        return sprintf("quat_%s", $func);
     }
     
     public function getClassEntryNameGetter() : string

@@ -47,6 +47,11 @@ typedef struct _phpglfw_math_vec4_object {
     zend_object std;
 } phpglfw_math_vec4_object; 
 
+typedef struct _phpglfw_math_quat_object {
+    quat data;
+    zend_object std;
+} phpglfw_math_quat_object; 
+
 typedef struct _phpglfw_math_mat4_object {
     mat4x4 data;
     zend_object std;
@@ -73,6 +78,11 @@ zend_always_inline phpglfw_math_vec4_object* phpglfw_math_vec4_objectptr_from_zo
     return (phpglfw_math_vec4_object *) ((char *) (obj) - XtOffsetOf(phpglfw_math_vec4_object, std));
 }
 
+zend_always_inline phpglfw_math_quat_object* phpglfw_math_quat_objectptr_from_zobj_p(zend_object* obj)
+{
+    return (phpglfw_math_quat_object *) ((char *) (obj) - XtOffsetOf(phpglfw_math_quat_object, std));
+}
+
 zend_always_inline phpglfw_math_mat4_object* phpglfw_math_mat4_objectptr_from_zobj_p(zend_object* obj)
 {
     return (phpglfw_math_mat4_object *) ((char *) (obj) - XtOffsetOf(phpglfw_math_mat4_object, std));
@@ -85,6 +95,7 @@ zend_always_inline phpglfw_math_mat4_object* phpglfw_math_mat4_objectptr_from_zo
 zend_class_entry *phpglfw_get_math_vec2_ce(); 
 zend_class_entry *phpglfw_get_math_vec3_ce(); 
 zend_class_entry *phpglfw_get_math_vec4_ce(); 
+zend_class_entry *phpglfw_get_math_quat_ce(); 
 zend_class_entry *phpglfw_get_math_mat4_ce(); 
 
 #endif

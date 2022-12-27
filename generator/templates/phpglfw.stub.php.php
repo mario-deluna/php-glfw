@@ -112,6 +112,9 @@ namespace GL\Math
         public function translate(Vec3 $scale) : void {}
         public function rotate(float $angle, Vec3 $axis) : void {}
         public function determinant() : float {}
+<?php elseif($obj->isQuat()) : ?>
+        public function length() : float {}
+        public function eulerAngles() : Vec3 {}
 <?php endif; ?>
         public function __toString() : string {}
     }

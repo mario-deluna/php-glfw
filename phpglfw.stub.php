@@ -122,6 +122,14 @@ namespace GL\Math
         public function __toString() : string {}
     }
  
+    class Quat {
+        public function __construct(?float $x = null, ?float $y = null, ?float $z = null, ?float $w = null) {}
+        public function copy() : Quat {}
+        public function length() : float {}
+        public function eulerAngles() : Vec3 {}
+        public function __toString() : string {}
+    }
+ 
     class Mat4 {
         public function __construct() {}
         public function copy() : Mat4 {}

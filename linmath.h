@@ -533,6 +533,10 @@ static inline void quat_mul(quat r, quat p, quat q)
 	vec3_add(r, r, w);
 	r[3] = p[3]*q[3] - vec3_mul_inner(p, q);
 }
+static inline float quat_len(quat q)
+{
+    return sqrtf(q[0]*q[0] + q[1]*q[1] + q[2]*q[2] + q[3]*q[3]);
+}
 static inline void quat_scale(quat r, quat v, float s)
 {
 	int i;
@@ -561,6 +565,25 @@ static inline void quat_rotate(quat r, float angle, vec3 axis) {
 	for(i=0; i<3; ++i)
 		r[i] = v[i];
 	r[3] = cosf(angle / 2);
+}
+static inline void quat_euler_angles(vec3 r, quat q)
+{
+    // roll (x-axis rotation)
+    double sinr_cosp = 2 * (q[0] * q[1] + q[2] * q[3]);
+    double cosr_cosp = 1 - 2 * (q[1] * q[1] + q[2] * q[2]);
+    r[0] = atan2(sinr_cosp, cosr_cosp);
+
+    // pitch (y-axis rotation)
+    double sinp = 2 * (q[0] * q[2] - q[3] * q[1]);
+    if (fabs(sinp) >= 1)
+        r[1] = copysign(M_PI / 2, sinp); // use 90 degrees if out of range
+    else
+        r[1] = asin(sinp);
+
+    // yaw (z-axis rotation)
+    double siny_cosp = 2 * (q[0] * q[3] + q[1] * q[2]);
+    double cosy_cosp = 1 - 2 * (q[2] * q[2] + q[3] * q[3]);
+    r[2] = atan2(siny_cosp, cosy_cosp);
 }
 #define quat_norm vec4_norm
 static inline void quat_mul_vec3(vec3 r, quat q, vec3 v)

@@ -1,5 +1,5 @@
 /* This is a generated file, edit the .stub.php file instead.
- * Stub hash: 7464076dec594a1edd19da9e037605f4770db6de */
+ * Stub hash: 424f22ecfbab17ae4a6c90101dee0429f1396b19 */
 
 ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_glCullFace, 0, 1, IS_VOID, 0)
 	ZEND_ARG_TYPE_INFO(0, mode, IS_LONG, 0)
@@ -2355,6 +2355,17 @@ ZEND_END_ARG_INFO()
 
 #define arginfo_class_GL_Math_Vec4___toString arginfo_glfwGetVersionString
 
+#define arginfo_class_GL_Math_Quat___construct arginfo_class_GL_Math_Vec4___construct
+
+ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(arginfo_class_GL_Math_Quat_copy, 0, 0, GL\\Math\\Quat, 0)
+ZEND_END_ARG_INFO()
+
+#define arginfo_class_GL_Math_Quat_length arginfo_glfwGetTime
+
+#define arginfo_class_GL_Math_Quat_eulerAngles arginfo_class_GL_Math_Vec3_copy
+
+#define arginfo_class_GL_Math_Quat___toString arginfo_glfwGetVersionString
+
 #define arginfo_class_GL_Math_Mat4___construct arginfo_class_GL_Geometry_ObjFileParser_Material___construct
 
 ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(arginfo_class_GL_Math_Mat4_copy, 0, 0, GL\\Math\\Mat4, 0)
@@ -3218,6 +3229,11 @@ ZEND_METHOD(GL_Math_Vec4, distance2);
 ZEND_METHOD(GL_Math_Vec4, normalize);
 ZEND_METHOD(GL_Math_Vec4, abs);
 ZEND_METHOD(GL_Math_Vec4, __toString);
+ZEND_METHOD(GL_Math_Quat, __construct);
+ZEND_METHOD(GL_Math_Quat, copy);
+ZEND_METHOD(GL_Math_Quat, length);
+ZEND_METHOD(GL_Math_Quat, eulerAngles);
+ZEND_METHOD(GL_Math_Quat, __toString);
 ZEND_METHOD(GL_Math_Mat4, __construct);
 ZEND_METHOD(GL_Math_Mat4, copy);
 ZEND_METHOD(GL_Math_Mat4, fromArray);
@@ -3972,6 +3988,16 @@ static const zend_function_entry class_GL_Math_Vec4_methods[] = {
 	ZEND_ME(GL_Math_Vec4, normalize, arginfo_class_GL_Math_Vec4_normalize, ZEND_ACC_PUBLIC)
 	ZEND_ME(GL_Math_Vec4, abs, arginfo_class_GL_Math_Vec4_abs, ZEND_ACC_PUBLIC)
 	ZEND_ME(GL_Math_Vec4, __toString, arginfo_class_GL_Math_Vec4___toString, ZEND_ACC_PUBLIC)
+	ZEND_FE_END
+};
+
+
+static const zend_function_entry class_GL_Math_Quat_methods[] = {
+	ZEND_ME(GL_Math_Quat, __construct, arginfo_class_GL_Math_Quat___construct, ZEND_ACC_PUBLIC)
+	ZEND_ME(GL_Math_Quat, copy, arginfo_class_GL_Math_Quat_copy, ZEND_ACC_PUBLIC)
+	ZEND_ME(GL_Math_Quat, length, arginfo_class_GL_Math_Quat_length, ZEND_ACC_PUBLIC)
+	ZEND_ME(GL_Math_Quat, eulerAngles, arginfo_class_GL_Math_Quat_eulerAngles, ZEND_ACC_PUBLIC)
+	ZEND_ME(GL_Math_Quat, __toString, arginfo_class_GL_Math_Quat___toString, ZEND_ACC_PUBLIC)
 	ZEND_FE_END
 };
 

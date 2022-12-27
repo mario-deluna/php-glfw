@@ -116,6 +116,15 @@ static HashTable *<?php echo $obj->getHandlerMethodName('debug_info'); ?>(zend_o
     zend_hash_index_update(ht, <?php echo ($i * 4) + $y; ?>, &zv);
 <?php endfor; ?>
 <?php endfor; ?>
+<?php elseif ($obj->isQuat()) : ?>
+    ZVAL_DOUBLE(&zv, obj_ptr->data[0]);
+    zend_hash_str_update(ht, "w", sizeof("w") - 1, &zv);
+    ZVAL_DOUBLE(&zv, obj_ptr->data[1]);
+    zend_hash_str_update(ht, "x", sizeof("x") - 1, &zv);
+    ZVAL_DOUBLE(&zv, obj_ptr->data[2]);
+    zend_hash_str_update(ht, "y", sizeof("y") - 1, &zv);
+    ZVAL_DOUBLE(&zv, obj_ptr->data[3]);
+    zend_hash_str_update(ht, "z", sizeof("z") - 1, &zv);
 <?php endif; ?>
 
     return ht;
@@ -133,7 +142,7 @@ zval *<?php echo $obj->getHandlerMethodName('array_get'); ?>(zend_object *object
 		size_t index = (size_t)Z_LVAL_P(offset);
 
         if (index < <?php echo $obj->size; ?>) {
-<?php if ($obj->isVector()) : ?>
+<?php if ($obj->isVector() || $obj->isQuat()) : ?>
             ZVAL_DOUBLE(rv, obj_ptr->data[index]);
 <?php elseif ($obj->isMatrix()) : ?>
             ZVAL_DOUBLE(rv, obj_ptr->data[index / 4][index % 4]);
@@ -168,7 +177,7 @@ void <?php echo $obj->getHandlerMethodName('array_set'); ?>(zend_object *object,
             if (index >= <?php echo $obj->size; ?>) {
                 zend_throw_error(NULL, "<?php echo $obj->name; ?> has a fixed space, the given index [%d] is out of bounds...",  (int) index);
             }
-<?php if ($obj->isVector()) : ?>
+<?php if ($obj->isVector() || $obj->isQuat()) : ?>
             obj_ptr->data[index] = Z_DVAL_P(value);
 <?php elseif($obj->isMatrix()) : ?>
             obj_ptr->data[index / 4][index % 4] = Z_DVAL_P(value);
@@ -180,6 +189,11 @@ void <?php echo $obj->getHandlerMethodName('array_set'); ?>(zend_object *object,
 }
 
 <?php if ($obj->isVector()) : ?>
+/**
+ * Vector (<?php echo $obj->name; ?>) Property READ / WRITE
+ * 
+ * ----------------------------------------------------------------------------
+ */
 static zval *<?php echo $obj->getHandlerMethodName('read_prop'); ?>(zend_object *object, zend_string *member, int type, void **cache_slot, zval *rv) 
 {
     <?php echo $obj->getObjectName(); ?> *obj_ptr = <?php echo $obj->objectFromZObjFunctionName(); ?>(object);
@@ -238,6 +252,68 @@ static zval *<?php echo $obj->getHandlerMethodName('write_prop'); ?>(zend_object
 	return value;
 }
 
+<?php elseif ($obj->isQuat()) : ?>
+/**
+ * Quaternion Property READ / WRITE
+ * 
+ * ----------------------------------------------------------------------------
+ */
+static zval *<?php echo $obj->getHandlerMethodName('read_prop'); ?>(zend_object *object, zend_string *member, int type, void **cache_slot, zval *rv) 
+{
+    <?php echo $obj->getObjectName(); ?> *obj_ptr = <?php echo $obj->objectFromZObjFunctionName(); ?>(object);
+
+	if ((type != BP_VAR_R && type != BP_VAR_IS)) {
+		zend_throw_error(NULL, <?php echo $obj->getFullNamespaceCString(); ?>  " properties are virtual and cannot be referenced.");
+		rv = &EG( uninitialized_zval );
+	} else {
+
+<?php foreach(['w', 'x', 'y', 'z'] as $i => $name) : ?>
+        <?php echo ($i !== 0 ? 'else ' : '') ?>if (zend_string_equals_literal(member, "<?php echo $name; ?>")) {
+		    ZVAL_DOUBLE(rv, obj_ptr->data[<?php echo $i; ?>]);
+        }
+<?php endforeach; ?>
+        else {
+            ZVAL_NULL(rv);
+        }
+	}
+
+	return rv;
+}
+
+static zval *<?php echo $obj->getHandlerMethodName('write_prop'); ?>(zend_object *object, zend_string *member, zval *value, void **cache_slot) 
+{
+    if (Z_TYPE_P(value) == IS_LONG) {
+        convert_to_double(value);
+    }
+    
+    if (Z_TYPE_P(value) != IS_DOUBLE) {
+		zend_throw_error(NULL, <?php echo $obj->getFullNamespaceCString(); ?> " properties can only be of type 'float'.");
+        return value;
+    }
+    else {
+        <?php echo $obj->getObjectName(); ?> *obj_ptr = <?php echo $obj->objectFromZObjFunctionName(); ?>(object);
+
+<?php foreach(['w', 'x', 'y', 'z'] as $i => $name) : ?>
+        <?php echo ($i !== 0 ? 'else ' : '') ?>if (zend_string_equals_literal(member, "<?php echo $name; ?>")) {
+		    obj_ptr->data[<?php echo $i; ?>] = Z_DVAL_P(value); 
+        }
+<?php endforeach; ?>
+        else {
+		    zend_throw_error(NULL, <?php echo $obj->getFullNamespaceCString(); ?> " trying to write into a invalid property.");
+        }
+    }
+
+	return value;
+}
+
+<?php endif; ?>
+
+<?php if ($obj->isVector()) : ?>
+/**
+ * Vector (<?php echo $obj->name; ?>) Operation Handler
+ * 
+ * ----------------------------------------------------------------------------
+ */
 static zend_always_inline int <?php echo $obj->getHandlerMethodName('do_op_scalar'); ?>(zend_uchar opcode, <?php echo $obj->getObjectName(); ?> *resobj, <?php echo $obj->getObjectName(); ?> *vecobj, zval *mod)
 {
     if (Z_TYPE_P(mod) == IS_LONG) {
@@ -322,9 +398,10 @@ static int <?php echo $obj->getHandlerMethodName('do_op'); ?>(zend_uchar opcode,
 <?php elseif ($obj->isMatrix()) : ?>
 
 /**
- * Matrix operation handler
+ * Matrix Operation Handler
+ * 
+ * ----------------------------------------------------------------------------
  */
-
 static int <?php echo $obj->getHandlerMethodName('do_op_ex'); ?>(zend_uchar opcode, zval *result, zval *op1, zval *op2)
 {
     object_init_ex(result, <?php echo $obj->getClassEntryName(); ?>);
@@ -380,6 +457,18 @@ static int <?php echo $obj->getHandlerMethodName('do_op'); ?>(zend_uchar opcode,
     return retval;
 }
 
+<?php elseif ($obj->isQuat()) : ?>
+
+/**
+ * Quat Operation Handler
+ * 
+ * ----------------------------------------------------------------------------
+ */
+static int <?php echo $obj->getHandlerMethodName('do_op'); ?>(zend_uchar opcode, zval *result, zval *op1, zval *op2)
+{
+    return FAILURE;
+}
+
 <?php endif; ?>
 
 PHP_METHOD(<?php echo $obj->getFullNamespaceConstString(); ?>, __construct)
@@ -408,6 +497,27 @@ PHP_METHOD(<?php echo $obj->getFullNamespaceConstString(); ?>, __construct)
 <?php for($i=0; $i<$obj->size; $i++) : ?>
     obj_ptr->data[<?php echo $i; ?>] = <?php echo $obj->propNameForPos($i); ?>val;
 <?php endfor; ?>
+<?php elseif ($obj->isQuat()) : ?>
+    double wval = 1.0f;
+    double xval = 0.0f;
+    double yval = 0.0f;
+    double zval = 0.0f;
+    if (zend_parse_parameters(ZEND_NUM_ARGS(), "|dddd", &wval, &xval, &yval, &zval) == FAILURE) {
+        return;
+    }
+
+    if (ZEND_NUM_ARGS() == 0) {
+        obj_ptr->data[0] = 1.0f;
+        obj_ptr->data[1] = 0.0f;
+        obj_ptr->data[2] = 0.0f;
+        obj_ptr->data[3] = 0.0f;
+        return;
+    }
+
+    obj_ptr->data[0] = wval;
+    obj_ptr->data[1] = xval;
+    obj_ptr->data[2] = yval;
+    obj_ptr->data[3] = zval;
 <?php endif; ?>
 }
 
@@ -444,6 +554,15 @@ PHP_METHOD(<?php echo $obj->getFullNamespaceConstString(); ?>, __toString)
             }
         }
     }
+<?php elseif ($obj->isQuat()) : ?>
+    smart_str_appends(&my_str, "w: ");
+    glfw_smart_str_append_double(&my_str, obj_ptr->data[0], 4, true);
+    smart_str_appends(&my_str, ", x: ");
+    glfw_smart_str_append_double(&my_str, obj_ptr->data[1], 4, true);
+    smart_str_appends(&my_str, ", y: ");
+    glfw_smart_str_append_double(&my_str, obj_ptr->data[2], 4, true);
+    smart_str_appends(&my_str, ", z: ");
+    glfw_smart_str_append_double(&my_str, obj_ptr->data[3], 4, true);
 <?php endif; ?>
     smart_str_appends(&my_str, ")");
     smart_str_0(&my_str);
@@ -454,6 +573,12 @@ PHP_METHOD(<?php echo $obj->getFullNamespaceConstString(); ?>, __toString)
 }
 
 <?php if ($obj->isVector()) : ?>
+
+/**
+ * Vector (<?php echo $obj->name; ?>) specific methods
+ * 
+ * ----------------------------------------------------------------------------
+ */
 PHP_METHOD(<?php echo $obj->getFullNamespaceConstString(); ?>, copy)
 {
     zval *obj;
@@ -585,6 +710,11 @@ PHP_METHOD(<?php echo $obj->getFullNamespaceConstString(); ?>, cross)
 
 <?php elseif($obj->isMatrix()) : ?>
 
+/**
+ * Matrix specific methods
+ * 
+ * ----------------------------------------------------------------------------
+ */
 PHP_METHOD(<?php echo $obj->getFullNamespaceConstString(); ?>, fromArray)
 {
     HashTable *initaldata = NULL;
@@ -850,6 +980,58 @@ PHP_METHOD(<?php echo $obj->getFullNamespaceConstString(); ?>, determinant)
     RETURN_DOUBLE(<?php echo $obj->getMatFunction('det'); ?>(obj_ptr->data));
 }
 
+<?php elseif($obj->isQuat()): ?>
+
+/**
+ * Quaternion specific methods
+ * 
+ * ----------------------------------------------------------------------------
+ */
+PHP_METHOD(<?php echo $obj->getFullNamespaceConstString(); ?>, copy)
+{
+    zval *obj;
+    obj = getThis();
+    <?php echo $obj->getObjectName(); ?> *obj_ptr = <?php echo $obj->objectFromZObjFunctionName(); ?>(Z_OBJ_P(obj));
+    
+    // create new quat
+    object_init_ex(return_value, <?php echo $obj->getClassEntryName(); ?>);
+    <?php echo $obj->getObjectName(); ?> *res_ptr = <?php echo $obj->objectFromZObjFunctionName(); ?>(Z_OBJ_P(return_value));
+
+    for(int i = 0; i < 4; i++) {
+        res_ptr->data[i] = obj_ptr->data[i];
+    }
+}
+
+PHP_METHOD(<?php echo $obj->getFullNamespaceConstString(); ?>, length)
+{
+    if (zend_parse_parameters_none() == FAILURE) {
+        RETURN_THROWS();
+    }
+
+    zval *obj;
+    obj = getThis();
+    <?php echo $obj->getObjectName(); ?> *obj_ptr = <?php echo $obj->objectFromZObjFunctionName(); ?>(Z_OBJ_P(obj));
+
+    RETURN_DOUBLE(<?php echo $obj->getQuatFunction('len'); ?>(obj_ptr->data));
+}
+
+PHP_METHOD(<?php echo $obj->getFullNamespaceConstString(); ?>, eulerAngles)
+{
+    if (zend_parse_parameters_none() == FAILURE) {
+        RETURN_THROWS();
+    }
+
+    zval *obj;
+    obj = getThis();
+    <?php echo $obj->getObjectName(); ?> *obj_ptr = <?php echo $obj->objectFromZObjFunctionName(); ?>(Z_OBJ_P(obj));
+
+    // construct a new Vec3 object to be returned
+    object_init_ex(return_value, phpglfw_math_vec3_ce);
+    phpglfw_math_vec3_object *vec_ptr = phpglfw_math_vec3_objectptr_from_zobj_p(Z_OBJ_P(return_value));
+
+    <?php echo $obj->getQuatFunction('euler_angles'); ?>(vec_ptr->data, obj_ptr->data);
+}
+
 <?php endif; ?>
 
 <?php endforeach; ?>
@@ -952,7 +1134,7 @@ void phpglfw_register_math_module(INIT_FUNC_ARGS)
     <?php echo $obj->getHandlersVarName(); ?>.read_dimension = <?php echo $obj->getHandlerMethodName('array_get'); ?>;
     <?php echo $obj->getHandlersVarName(); ?>.write_dimension = <?php echo $obj->getHandlerMethodName('array_set'); ?>;
 
-<?php if ($obj->isVector()) : ?>
+<?php if ($obj->isVector() || $obj->isQuat()) : ?>
     <?php echo $obj->getHandlersVarName(); ?>.read_property = <?php echo $obj->getHandlerMethodName('read_prop'); ?>;
     <?php echo $obj->getHandlersVarName(); ?>.write_property = <?php echo $obj->getHandlerMethodName('write_prop'); ?>;
 <?php endif; ?>

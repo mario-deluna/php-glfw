@@ -7,35 +7,11 @@ use GL\Math\Mat4;
 use GL\Math\Vec3;
 use GL\Math\Vec4;
 
+require_once __DIR__ . '/MathObjectAssertions.php';
+
 class Mat4Test extends \PHPUnit\Framework\TestCase
 {
-    private function assertEqualsMatrix($m00, $m01, $m02, $m03, $m10, $m11, $m12, $m13, $m20, $m21, $m22, $m23, $m30, $m31, $m32, $m33, Mat4 $m)
-    {
-        $this->assertEqualsWithDelta($m00, $m[0], 0.005);
-        $this->assertEqualsWithDelta($m01, $m[1], 0.005);
-        $this->assertEqualsWithDelta($m02, $m[2], 0.005);
-        $this->assertEqualsWithDelta($m03, $m[3], 0.005);
-        $this->assertEqualsWithDelta($m10, $m[4], 0.005);
-        $this->assertEqualsWithDelta($m11, $m[5], 0.005);
-        $this->assertEqualsWithDelta($m12, $m[6], 0.005);
-        $this->assertEqualsWithDelta($m13, $m[7], 0.005);
-        $this->assertEqualsWithDelta($m20, $m[8], 0.005);
-        $this->assertEqualsWithDelta($m21, $m[9], 0.005);
-        $this->assertEqualsWithDelta($m22, $m[10], 0.005);
-        $this->assertEqualsWithDelta($m23, $m[11], 0.005);
-        $this->assertEqualsWithDelta($m30, $m[12], 0.005);
-        $this->assertEqualsWithDelta($m31, $m[13], 0.005);
-        $this->assertEqualsWithDelta($m32, $m[14], 0.005);
-        $this->assertEqualsWithDelta($m33, $m[15], 0.005);
-    }
-
-    private function assertEqualsVector4($x, $y, $z, $w, Vec4 $v)
-    {
-        $this->assertEqualsWithDelta($x, $v->x, 0.005);
-        $this->assertEqualsWithDelta($y, $v->y, 0.005);
-        $this->assertEqualsWithDelta($z, $v->z, 0.005);
-        $this->assertEqualsWithDelta($w, $v->w, 0.005);
-    }
+    use MathObjectAssertions;
 
     private function createTestMatrix() : Mat4
     {

@@ -324,6 +324,17 @@ namespace GL\Math
         public function __toString() : string {}
     }
  
+    class Quat 
+    {
+        
+        /**
+         * Constructor
+         */
+        public function __construct(?float $x = null, ?float $y = null, ?float $z = null, ?float $w = null) {}
+
+        public function __toString() : string {}
+    }
+ 
     class Mat4 
     {
         
@@ -352,7 +363,7 @@ namespace GL\Math
         public function transpose() : void {}
         public function inverse() : void {}
         public function scale(Vec3 $scale) : void {}
-        public function translate(Vec3 $scale) : void {}
+        public function translate(Vec3 $translation) : void {}
         public function rotate(float $angle, Vec3 $axis) : void {}
         public function determinant() : float {}
         public function __toString() : string {}

@@ -56,6 +56,7 @@ zend_class_entry *phpglfw_glm_ce;
 zend_class_entry *phpglfw_math_vec2_ce; 
 zend_class_entry *phpglfw_math_vec3_ce; 
 zend_class_entry *phpglfw_math_vec4_ce; 
+zend_class_entry *phpglfw_math_quat_ce; 
 zend_class_entry *phpglfw_math_mat4_ce; 
 
 zend_class_entry *phpglfw_get_math_vec2_ce() {
@@ -66,6 +67,9 @@ zend_class_entry *phpglfw_get_math_vec3_ce() {
 }
 zend_class_entry *phpglfw_get_math_vec4_ce() {
     return phpglfw_math_vec4_ce;
+}
+zend_class_entry *phpglfw_get_math_quat_ce() {
+    return phpglfw_math_quat_ce;
 }
 zend_class_entry *phpglfw_get_math_mat4_ce() {
     return phpglfw_math_mat4_ce;
@@ -166,6 +170,11 @@ void phpglfw_math_vec2_array_set_handler(zend_object *object, zval *offset, zval
     }
 }
 
+/**
+ * Vector (Vec2) Property READ / WRITE
+ * 
+ * ----------------------------------------------------------------------------
+ */
 static zval *phpglfw_math_vec2_read_prop_handler(zend_object *object, zend_string *member, int type, void **cache_slot, zval *rv) 
 {
     phpglfw_math_vec2_object *obj_ptr = phpglfw_math_vec2_objectptr_from_zobj_p(object);
@@ -228,6 +237,12 @@ static zval *phpglfw_math_vec2_write_prop_handler(zend_object *object, zend_stri
 	return value;
 }
 
+
+/**
+ * Vector (Vec2) Operation Handler
+ * 
+ * ----------------------------------------------------------------------------
+ */
 static zend_always_inline int phpglfw_math_vec2_do_op_scalar_handler(zend_uchar opcode, phpglfw_math_vec2_object *resobj, phpglfw_math_vec2_object *vecobj, zval *mod)
 {
     if (Z_TYPE_P(mod) == IS_LONG) {
@@ -363,6 +378,12 @@ PHP_METHOD(GL_Math_Vec2, __toString)
     smart_str_free(&my_str);
 }
 
+
+/**
+ * Vector (Vec2) specific methods
+ * 
+ * ----------------------------------------------------------------------------
+ */
 PHP_METHOD(GL_Math_Vec2, copy)
 {
     zval *obj;
@@ -570,6 +591,11 @@ void phpglfw_math_vec3_array_set_handler(zend_object *object, zval *offset, zval
     }
 }
 
+/**
+ * Vector (Vec3) Property READ / WRITE
+ * 
+ * ----------------------------------------------------------------------------
+ */
 static zval *phpglfw_math_vec3_read_prop_handler(zend_object *object, zend_string *member, int type, void **cache_slot, zval *rv) 
 {
     phpglfw_math_vec3_object *obj_ptr = phpglfw_math_vec3_objectptr_from_zobj_p(object);
@@ -644,6 +670,12 @@ static zval *phpglfw_math_vec3_write_prop_handler(zend_object *object, zend_stri
 	return value;
 }
 
+
+/**
+ * Vector (Vec3) Operation Handler
+ * 
+ * ----------------------------------------------------------------------------
+ */
 static zend_always_inline int phpglfw_math_vec3_do_op_scalar_handler(zend_uchar opcode, phpglfw_math_vec3_object *resobj, phpglfw_math_vec3_object *vecobj, zval *mod)
 {
     if (Z_TYPE_P(mod) == IS_LONG) {
@@ -782,6 +814,12 @@ PHP_METHOD(GL_Math_Vec3, __toString)
     smart_str_free(&my_str);
 }
 
+
+/**
+ * Vector (Vec3) specific methods
+ * 
+ * ----------------------------------------------------------------------------
+ */
 PHP_METHOD(GL_Math_Vec3, copy)
 {
     zval *obj;
@@ -1009,6 +1047,11 @@ void phpglfw_math_vec4_array_set_handler(zend_object *object, zval *offset, zval
     }
 }
 
+/**
+ * Vector (Vec4) Property READ / WRITE
+ * 
+ * ----------------------------------------------------------------------------
+ */
 static zval *phpglfw_math_vec4_read_prop_handler(zend_object *object, zend_string *member, int type, void **cache_slot, zval *rv) 
 {
     phpglfw_math_vec4_object *obj_ptr = phpglfw_math_vec4_objectptr_from_zobj_p(object);
@@ -1095,6 +1138,12 @@ static zval *phpglfw_math_vec4_write_prop_handler(zend_object *object, zend_stri
 	return value;
 }
 
+
+/**
+ * Vector (Vec4) Operation Handler
+ * 
+ * ----------------------------------------------------------------------------
+ */
 static zend_always_inline int phpglfw_math_vec4_do_op_scalar_handler(zend_uchar opcode, phpglfw_math_vec4_object *resobj, phpglfw_math_vec4_object *vecobj, zval *mod)
 {
     if (Z_TYPE_P(mod) == IS_LONG) {
@@ -1236,6 +1285,12 @@ PHP_METHOD(GL_Math_Vec4, __toString)
     smart_str_free(&my_str);
 }
 
+
+/**
+ * Vector (Vec4) specific methods
+ * 
+ * ----------------------------------------------------------------------------
+ */
 PHP_METHOD(GL_Math_Vec4, copy)
 {
     zval *obj;
@@ -1344,6 +1399,290 @@ PHP_METHOD(GL_Math_Vec4, abs)
     vec4_abs(resobj->data, obj_ptr->data);
 }
 
+
+
+/**
+ * GL\Math\Quat 
+ * 
+ * ----------------------------------------------------------------------------
+ */
+static zend_object_handlers phpglfw_math_quat_handlers;
+
+/**
+ * Creation (GL\Math\Quat)
+ */
+zend_object *phpglfw_math_quat_create_handler(zend_class_entry *class_type)
+{
+    size_t block_len = sizeof(phpglfw_math_quat_object) + zend_object_properties_size(class_type);
+    phpglfw_math_quat_object *intern = emalloc(block_len);
+    memset(intern, 0, block_len);
+
+
+    zend_object_std_init(&intern->std, class_type);
+    object_properties_init(&intern->std, class_type);
+    intern->std.handlers = &phpglfw_math_quat_handlers;
+
+    return &intern->std;
+}
+
+static HashTable *phpglfw_math_quat_debug_info_handler(zend_object *object, int *is_temp)
+{
+    phpglfw_math_quat_object *obj_ptr = phpglfw_math_quat_objectptr_from_zobj_p(object);
+    zval zv;
+    HashTable *ht;
+
+    ht = zend_new_array(4);
+    *is_temp = 1;
+
+    ZVAL_DOUBLE(&zv, obj_ptr->data[0]);
+    zend_hash_str_update(ht, "w", sizeof("w") - 1, &zv);
+    ZVAL_DOUBLE(&zv, obj_ptr->data[1]);
+    zend_hash_str_update(ht, "x", sizeof("x") - 1, &zv);
+    ZVAL_DOUBLE(&zv, obj_ptr->data[2]);
+    zend_hash_str_update(ht, "y", sizeof("y") - 1, &zv);
+    ZVAL_DOUBLE(&zv, obj_ptr->data[3]);
+    zend_hash_str_update(ht, "z", sizeof("z") - 1, &zv);
+
+    return ht;
+}
+
+zval *phpglfw_math_quat_array_get_handler(zend_object *object, zval *offset, int type, zval *rv)
+{
+	if(offset == NULL) {
+        zend_throw_error(NULL, "Cannot apply [] to GL\\Math\\Quat object");
+	}
+
+    phpglfw_math_quat_object *obj_ptr = phpglfw_math_quat_objectptr_from_zobj_p(object);
+
+    if (Z_TYPE_P(offset) == IS_LONG) {
+		size_t index = (size_t)Z_LVAL_P(offset);
+
+        if (index < 4) {
+            ZVAL_DOUBLE(rv, obj_ptr->data[index]);
+        } else {
+            ZVAL_NULL(rv);
+        }
+	} else {
+        zend_throw_error(NULL, "Only a int offset '$vec[int]' can be used with the GL\\Math\\Quat object");
+		ZVAL_NULL(rv);
+	}
+
+	return rv;
+}
+
+void phpglfw_math_quat_array_set_handler(zend_object *object, zval *offset, zval *value)
+{
+    if (Z_TYPE_P(value) != IS_DOUBLE) {
+        zend_throw_error(NULL, "Trying to store non float value in a Quat.");
+        return;
+    }
+
+    phpglfw_math_quat_object *obj_ptr = phpglfw_math_quat_objectptr_from_zobj_p(object);
+
+	if (offset == NULL) {
+        zend_throw_error(NULL, "You cannot append values into a Quat.");
+	} 
+    else {
+        if (Z_TYPE_P(offset) == IS_LONG) {
+            size_t index = (size_t)Z_LVAL_P(offset);
+
+            if (index >= 4) {
+                zend_throw_error(NULL, "Quat has a fixed space, the given index [%d] is out of bounds...",  (int) index);
+            }
+            obj_ptr->data[index] = Z_DVAL_P(value);
+        } else {
+            zend_throw_error(NULL, "Only a int offset '$vec[int]' can be used with the GL\\Math\\Quat object");
+        }
+    }
+}
+
+/**
+ * Quaternion Property READ / WRITE
+ * 
+ * ----------------------------------------------------------------------------
+ */
+static zval *phpglfw_math_quat_read_prop_handler(zend_object *object, zend_string *member, int type, void **cache_slot, zval *rv) 
+{
+    phpglfw_math_quat_object *obj_ptr = phpglfw_math_quat_objectptr_from_zobj_p(object);
+
+	if ((type != BP_VAR_R && type != BP_VAR_IS)) {
+		zend_throw_error(NULL, "GL\\Math\\Quat"  " properties are virtual and cannot be referenced.");
+		rv = &EG( uninitialized_zval );
+	} else {
+
+        if (zend_string_equals_literal(member, "w")) {
+		    ZVAL_DOUBLE(rv, obj_ptr->data[0]);
+        }
+        else if (zend_string_equals_literal(member, "x")) {
+		    ZVAL_DOUBLE(rv, obj_ptr->data[1]);
+        }
+        else if (zend_string_equals_literal(member, "y")) {
+		    ZVAL_DOUBLE(rv, obj_ptr->data[2]);
+        }
+        else if (zend_string_equals_literal(member, "z")) {
+		    ZVAL_DOUBLE(rv, obj_ptr->data[3]);
+        }
+        else {
+            ZVAL_NULL(rv);
+        }
+	}
+
+	return rv;
+}
+
+static zval *phpglfw_math_quat_write_prop_handler(zend_object *object, zend_string *member, zval *value, void **cache_slot) 
+{
+    if (Z_TYPE_P(value) == IS_LONG) {
+        convert_to_double(value);
+    }
+    
+    if (Z_TYPE_P(value) != IS_DOUBLE) {
+		zend_throw_error(NULL, "GL\\Math\\Quat" " properties can only be of type 'float'.");
+        return value;
+    }
+    else {
+        phpglfw_math_quat_object *obj_ptr = phpglfw_math_quat_objectptr_from_zobj_p(object);
+
+        if (zend_string_equals_literal(member, "w")) {
+		    obj_ptr->data[0] = Z_DVAL_P(value); 
+        }
+        else if (zend_string_equals_literal(member, "x")) {
+		    obj_ptr->data[1] = Z_DVAL_P(value); 
+        }
+        else if (zend_string_equals_literal(member, "y")) {
+		    obj_ptr->data[2] = Z_DVAL_P(value); 
+        }
+        else if (zend_string_equals_literal(member, "z")) {
+		    obj_ptr->data[3] = Z_DVAL_P(value); 
+        }
+        else {
+		    zend_throw_error(NULL, "GL\\Math\\Quat" " trying to write into a invalid property.");
+        }
+    }
+
+	return value;
+}
+
+
+
+/**
+ * Quat Operation Handler
+ * 
+ * ----------------------------------------------------------------------------
+ */
+static int phpglfw_math_quat_do_op_handler(zend_uchar opcode, zval *result, zval *op1, zval *op2)
+{
+    return FAILURE;
+}
+
+
+PHP_METHOD(GL_Math_Quat, __construct)
+{
+    zval *obj;
+    obj = getThis();
+    phpglfw_math_quat_object *obj_ptr = phpglfw_math_quat_objectptr_from_zobj_p(Z_OBJ_P(obj));
+
+    double wval = 1.0f;
+    double xval = 0.0f;
+    double yval = 0.0f;
+    double zval = 0.0f;
+    if (zend_parse_parameters(ZEND_NUM_ARGS(), "|dddd", &wval, &xval, &yval, &zval) == FAILURE) {
+        return;
+    }
+
+    if (ZEND_NUM_ARGS() == 0) {
+        obj_ptr->data[0] = 1.0f;
+        obj_ptr->data[1] = 0.0f;
+        obj_ptr->data[2] = 0.0f;
+        obj_ptr->data[3] = 0.0f;
+        return;
+    }
+
+    obj_ptr->data[0] = wval;
+    obj_ptr->data[1] = xval;
+    obj_ptr->data[2] = yval;
+    obj_ptr->data[3] = zval;
+}
+
+PHP_METHOD(GL_Math_Quat, __toString)
+{
+	if (zend_parse_parameters_none() == FAILURE) {
+		RETURN_THROWS();
+	}
+
+    zval *obj;
+    obj = getThis();
+    phpglfw_math_quat_object *obj_ptr = phpglfw_math_quat_objectptr_from_zobj_p(Z_OBJ_P(obj));
+
+    smart_str my_str = {0};
+    smart_str_appends(&my_str, "quat(");
+
+    smart_str_appends(&my_str, "w: ");
+    glfw_smart_str_append_double(&my_str, obj_ptr->data[0], 4, true);
+    smart_str_appends(&my_str, ", x: ");
+    glfw_smart_str_append_double(&my_str, obj_ptr->data[1], 4, true);
+    smart_str_appends(&my_str, ", y: ");
+    glfw_smart_str_append_double(&my_str, obj_ptr->data[2], 4, true);
+    smart_str_appends(&my_str, ", z: ");
+    glfw_smart_str_append_double(&my_str, obj_ptr->data[3], 4, true);
+    smart_str_appends(&my_str, ")");
+    smart_str_0(&my_str);
+
+    RETURN_STRINGL(ZSTR_VAL(my_str.s), ZSTR_LEN(my_str.s));
+
+    smart_str_free(&my_str);
+}
+
+
+/**
+ * Quaternion specific methods
+ * 
+ * ----------------------------------------------------------------------------
+ */
+PHP_METHOD(GL_Math_Quat, copy)
+{
+    zval *obj;
+    obj = getThis();
+    phpglfw_math_quat_object *obj_ptr = phpglfw_math_quat_objectptr_from_zobj_p(Z_OBJ_P(obj));
+    
+    // create new quat
+    object_init_ex(return_value, phpglfw_math_quat_ce);
+    phpglfw_math_quat_object *res_ptr = phpglfw_math_quat_objectptr_from_zobj_p(Z_OBJ_P(return_value));
+
+    for(int i = 0; i < 4; i++) {
+        res_ptr->data[i] = obj_ptr->data[i];
+    }
+}
+
+PHP_METHOD(GL_Math_Quat, length)
+{
+    if (zend_parse_parameters_none() == FAILURE) {
+        RETURN_THROWS();
+    }
+
+    zval *obj;
+    obj = getThis();
+    phpglfw_math_quat_object *obj_ptr = phpglfw_math_quat_objectptr_from_zobj_p(Z_OBJ_P(obj));
+
+    RETURN_DOUBLE(quat_len(obj_ptr->data));
+}
+
+PHP_METHOD(GL_Math_Quat, eulerAngles)
+{
+    if (zend_parse_parameters_none() == FAILURE) {
+        RETURN_THROWS();
+    }
+
+    zval *obj;
+    obj = getThis();
+    phpglfw_math_quat_object *obj_ptr = phpglfw_math_quat_objectptr_from_zobj_p(Z_OBJ_P(obj));
+
+    // construct a new Vec3 object to be returned
+    object_init_ex(return_value, phpglfw_math_vec3_ce);
+    phpglfw_math_vec3_object *vec_ptr = phpglfw_math_vec3_objectptr_from_zobj_p(Z_OBJ_P(return_value));
+
+    quat_euler_angles(vec_ptr->data, obj_ptr->data);
+}
 
 
 /**
@@ -1467,10 +1806,12 @@ void phpglfw_math_mat4_array_set_handler(zend_object *object, zval *offset, zval
 }
 
 
-/**
- * Matrix operation handler
- */
 
+/**
+ * Matrix Operation Handler
+ * 
+ * ----------------------------------------------------------------------------
+ */
 static int phpglfw_math_mat4_do_op_ex_handler(zend_uchar opcode, zval *result, zval *op1, zval *op2)
 {
     object_init_ex(result, phpglfw_math_mat4_ce);
@@ -1568,6 +1909,11 @@ PHP_METHOD(GL_Math_Mat4, __toString)
 }
 
 
+/**
+ * Matrix specific methods
+ * 
+ * ----------------------------------------------------------------------------
+ */
 PHP_METHOD(GL_Math_Mat4, fromArray)
 {
     HashTable *initaldata = NULL;
@@ -1965,6 +2311,20 @@ void phpglfw_register_math_module(INIT_FUNC_ARGS)
     phpglfw_math_vec4_handlers.write_property = phpglfw_math_vec4_write_prop_handler;
     phpglfw_math_vec4_handlers.do_operation = phpglfw_math_vec4_do_op_handler;
     phpglfw_math_vec4_handlers.offset = XtOffsetOf(phpglfw_math_vec4_object, std);
+ 
+    INIT_CLASS_ENTRY(tmp_ce, "GL\\Math\\Quat", class_GL_Math_Quat_methods);
+    phpglfw_math_quat_ce = zend_register_internal_class(&tmp_ce);
+    phpglfw_math_quat_ce->create_object = phpglfw_math_quat_create_handler;
+
+    memcpy(&phpglfw_math_quat_handlers, zend_get_std_object_handlers(), sizeof(phpglfw_math_quat_handlers));
+    phpglfw_math_quat_handlers.get_debug_info = phpglfw_math_quat_debug_info_handler;
+    phpglfw_math_quat_handlers.read_dimension = phpglfw_math_quat_array_get_handler;
+    phpglfw_math_quat_handlers.write_dimension = phpglfw_math_quat_array_set_handler;
+
+    phpglfw_math_quat_handlers.read_property = phpglfw_math_quat_read_prop_handler;
+    phpglfw_math_quat_handlers.write_property = phpglfw_math_quat_write_prop_handler;
+    phpglfw_math_quat_handlers.do_operation = phpglfw_math_quat_do_op_handler;
+    phpglfw_math_quat_handlers.offset = XtOffsetOf(phpglfw_math_quat_object, std);
  
     INIT_CLASS_ENTRY(tmp_ce, "GL\\Math\\Mat4", class_GL_Math_Mat4_methods);
     phpglfw_math_mat4_ce = zend_register_internal_class(&tmp_ce);
