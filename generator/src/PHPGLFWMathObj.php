@@ -21,8 +21,16 @@ class PHPGLFWMathObj
         $this->size = $size;
     }
 
-    private array $propNames = ['x', 'y', 'z', 'w'];
     private array $altPropNames = ['r', 'g', 'b', 'a'];
+
+    public function getPropsNames() : array
+    {
+        if ($this->isQuat()) {
+            return ['w', 'x', 'y', 'z'];
+        }
+
+        return ['x', 'y', 'z', 'w'];
+    }
 
     public function isVector() : bool {
         return substr($this->name, 0, 3) === 'Vec';
@@ -35,7 +43,7 @@ class PHPGLFWMathObj
     }
 
     public function propNameForPos(int $p) : string {
-        return $this->propNames[$p];
+        return $this->getPropsNames()[$p];
     }
 
     public function altPropNameForPos(int $p) : string {

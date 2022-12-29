@@ -113,9 +113,11 @@ namespace GL\Math
         public function rotate(float $angle, Vec3 $axis) : void {}
         public function determinant() : float {}
 <?php elseif($obj->isQuat()) : ?>
+        public static function fromMat4(Mat4 $matrix) : <?php echo $obj->name; ?> {}
         public function length() : float {}
         public function eulerAngles() : Vec3 {}
         public function rotate(float $angle, Vec3 $axis) : void {}
+        public function mat4() : Mat4 {}
 <?php endif; ?>
         public function __toString() : string {}
     }

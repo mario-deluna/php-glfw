@@ -1,5 +1,5 @@
 /* This is a generated file, edit the .stub.php file instead.
- * Stub hash: 1641659657c39463f6342ea99daaeeb81a8f1eed */
+ * Stub hash: ec3409868591e6dd70cfe46516c57aa1482ce2bc */
 
 ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_glCullFace, 0, 1, IS_VOID, 0)
 	ZEND_ARG_TYPE_INFO(0, mode, IS_LONG, 0)
@@ -2355,9 +2355,18 @@ ZEND_END_ARG_INFO()
 
 #define arginfo_class_GL_Math_Vec4___toString arginfo_glfwGetVersionString
 
-#define arginfo_class_GL_Math_Quat___construct arginfo_class_GL_Math_Vec4___construct
+ZEND_BEGIN_ARG_INFO_EX(arginfo_class_GL_Math_Quat___construct, 0, 0, 0)
+	ZEND_ARG_TYPE_INFO_WITH_DEFAULT_VALUE(0, w, IS_DOUBLE, 1, "null")
+	ZEND_ARG_TYPE_INFO_WITH_DEFAULT_VALUE(0, x, IS_DOUBLE, 1, "null")
+	ZEND_ARG_TYPE_INFO_WITH_DEFAULT_VALUE(0, y, IS_DOUBLE, 1, "null")
+	ZEND_ARG_TYPE_INFO_WITH_DEFAULT_VALUE(0, z, IS_DOUBLE, 1, "null")
+ZEND_END_ARG_INFO()
 
 ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(arginfo_class_GL_Math_Quat_copy, 0, 0, GL\\Math\\Quat, 0)
+ZEND_END_ARG_INFO()
+
+ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(arginfo_class_GL_Math_Quat_fromMat4, 0, 1, GL\\Math\\Quat, 0)
+	ZEND_ARG_OBJ_INFO(0, matrix, GL\\Math\\Mat4, 0)
 ZEND_END_ARG_INFO()
 
 #define arginfo_class_GL_Math_Quat_length arginfo_glfwGetTime
@@ -2369,12 +2378,14 @@ ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_class_GL_Math_Quat_rotate, 0, 2,
 	ZEND_ARG_OBJ_INFO(0, axis, GL\\Math\\Vec3, 0)
 ZEND_END_ARG_INFO()
 
+ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(arginfo_class_GL_Math_Quat_mat4, 0, 0, GL\\Math\\Mat4, 0)
+ZEND_END_ARG_INFO()
+
 #define arginfo_class_GL_Math_Quat___toString arginfo_glfwGetVersionString
 
 #define arginfo_class_GL_Math_Mat4___construct arginfo_class_GL_Geometry_ObjFileParser_Material___construct
 
-ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(arginfo_class_GL_Math_Mat4_copy, 0, 0, GL\\Math\\Mat4, 0)
-ZEND_END_ARG_INFO()
+#define arginfo_class_GL_Math_Mat4_copy arginfo_class_GL_Math_Quat_mat4
 
 ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(arginfo_class_GL_Math_Mat4_fromArray, 0, 1, GL\\Math\\Mat4, 0)
 	ZEND_ARG_TYPE_INFO(0, values, IS_ARRAY, 0)
@@ -3235,9 +3246,11 @@ ZEND_METHOD(GL_Math_Vec4, abs);
 ZEND_METHOD(GL_Math_Vec4, __toString);
 ZEND_METHOD(GL_Math_Quat, __construct);
 ZEND_METHOD(GL_Math_Quat, copy);
+ZEND_METHOD(GL_Math_Quat, fromMat4);
 ZEND_METHOD(GL_Math_Quat, length);
 ZEND_METHOD(GL_Math_Quat, eulerAngles);
 ZEND_METHOD(GL_Math_Quat, rotate);
+ZEND_METHOD(GL_Math_Quat, mat4);
 ZEND_METHOD(GL_Math_Quat, __toString);
 ZEND_METHOD(GL_Math_Mat4, __construct);
 ZEND_METHOD(GL_Math_Mat4, copy);
@@ -4000,9 +4013,11 @@ static const zend_function_entry class_GL_Math_Vec4_methods[] = {
 static const zend_function_entry class_GL_Math_Quat_methods[] = {
 	ZEND_ME(GL_Math_Quat, __construct, arginfo_class_GL_Math_Quat___construct, ZEND_ACC_PUBLIC)
 	ZEND_ME(GL_Math_Quat, copy, arginfo_class_GL_Math_Quat_copy, ZEND_ACC_PUBLIC)
+	ZEND_ME(GL_Math_Quat, fromMat4, arginfo_class_GL_Math_Quat_fromMat4, ZEND_ACC_PUBLIC|ZEND_ACC_STATIC)
 	ZEND_ME(GL_Math_Quat, length, arginfo_class_GL_Math_Quat_length, ZEND_ACC_PUBLIC)
 	ZEND_ME(GL_Math_Quat, eulerAngles, arginfo_class_GL_Math_Quat_eulerAngles, ZEND_ACC_PUBLIC)
 	ZEND_ME(GL_Math_Quat, rotate, arginfo_class_GL_Math_Quat_rotate, ZEND_ACC_PUBLIC)
+	ZEND_ME(GL_Math_Quat, mat4, arginfo_class_GL_Math_Quat_mat4, ZEND_ACC_PUBLIC)
 	ZEND_ME(GL_Math_Quat, __toString, arginfo_class_GL_Math_Quat___toString, ZEND_ACC_PUBLIC)
 	ZEND_FE_END
 };

@@ -123,11 +123,13 @@ namespace GL\Math
     }
  
     class Quat {
-        public function __construct(?float $x = null, ?float $y = null, ?float $z = null, ?float $w = null) {}
+        public function __construct(?float $w = null, ?float $x = null, ?float $y = null, ?float $z = null) {}
         public function copy() : Quat {}
+        public static function fromMat4(Mat4 $matrix) : Quat {}
         public function length() : float {}
         public function eulerAngles() : Vec3 {}
         public function rotate(float $angle, Vec3 $axis) : void {}
+        public function mat4() : Mat4 {}
         public function __toString() : string {}
     }
  

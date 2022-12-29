@@ -330,7 +330,7 @@ namespace GL\Math
         /**
          * Constructor
          */
-        public function __construct(?float $x = null, ?float $y = null, ?float $z = null, ?float $w = null) {}
+        public function __construct(?float $w = null, ?float $x = null, ?float $y = null, ?float $z = null) {}
 
         public function __toString() : string {}
     }

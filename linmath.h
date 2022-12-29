@@ -534,6 +534,10 @@ static inline float quat_len(quat q)
 {
     return sqrtf(q[0]*q[0] + q[1]*q[1] + q[2]*q[2] + q[3]*q[3]);
 }
+static inline float quat_len2(quat q)
+{
+    return q[0]*q[0] + q[1]*q[1] + q[2]*q[2] + q[3]*q[3];
+}
 static inline void quat_scale(quat r, quat v, float s)
 {
 	int i;
@@ -609,33 +613,31 @@ v' = v + q.w * t + cross(q.xyz, t)
 	vec3_add(r, r, u);
 }
 static inline void mat4x4_from_quat(mat4x4 M, quat q)
-{
-	float a = q[3];
-	float b = q[0];
-	float c = q[1];
-	float d = q[2];
-	float a2 = a*a;
-	float b2 = b*b;
-	float c2 = c*c;
-	float d2 = d*d;
-	
-	M[0][0] = a2 + b2 - c2 - d2;
-	M[0][1] = 2.f*(b*c + a*d);
-	M[0][2] = 2.f*(b*d - a*c);
-	M[0][3] = 0.f;
+{   
+    // this is basically a direct port of the code from the GLM library
+    float qxx = q[1] * q[1];
+    float qyy = q[2] * q[2];
+    float qzz = q[3] * q[3];
+    float qxz = q[1] * q[3];
+    float qxy = q[1] * q[2];
+    float qyz = q[2] * q[3];
+    float qwx = q[0] * q[1];
+    float qwy = q[0] * q[2];
+    float qwz = q[0] * q[3];
 
-	M[1][0] = 2*(b*c - a*d);
-	M[1][1] = a2 - b2 + c2 - d2;
-	M[1][2] = 2.f*(c*d + a*b);
-	M[1][3] = 0.f;
+    M[0][0] = 1.f - 2.f * (qyy +  qzz);
+    M[0][1] = 2.f * (qxy + qwz);
+    M[0][2] = 2.f * (qxz - qwy);
+    M[0][3] = 0.f;
 
-	M[2][0] = 2.f*(b*d + a*c);
-	M[2][1] = 2.f*(c*d - a*b);
-	M[2][2] = a2 - b2 - c2 + d2;
-	M[2][3] = 0.f;
+    M[1][0] = 2.f * (qxy - qwz);
+    M[1][1] = 1.f - 2.f * (qxx +  qzz);
+    M[1][2] = 2.f * (qyz + qwx);
 
-	M[3][0] = M[3][1] = M[3][2] = 0.f;
-	M[3][3] = 1.f;
+    M[2][0] = 2.f * (qxz + qwy);
+    M[2][1] = 2.f * (qyz - qwx);
+    M[2][2] = 1.f - 2.f * (qxx +  qyy);
+    M[2][3] = 0.f;
 }
 
 static inline void mat4x4o_mul_quat(mat4x4 R, mat4x4 M, quat q)
@@ -651,32 +653,66 @@ static inline void mat4x4o_mul_quat(mat4x4 R, mat4x4 M, quat q)
 }
 static inline void quat_from_mat4x4(quat q, mat4x4 M)
 {
-	float r=0.f;
-	int i;
+    //  this again is basically a direct port of the code from the GLM library
+    float fourXSquaredMinus1 = M[0][0] - M[1][1] - M[2][2];
+    float fourYSquaredMinus1 = M[1][1] - M[0][0] - M[2][2];
+    float fourZSquaredMinus1 = M[2][2] - M[0][0] - M[1][1];
+    float fourWSquaredMinus1 = M[0][0] + M[1][1] + M[2][2];
 
-	int perm[] = { 0, 1, 2, 0, 1 };
-	int *p = perm;
+    int biggestIndex = 0;
+    float fourBiggestSquaredMinus1 = fourWSquaredMinus1;
+    if(fourXSquaredMinus1 > fourBiggestSquaredMinus1)
+    {
+        fourBiggestSquaredMinus1 = fourXSquaredMinus1;
+        biggestIndex = 1;
+    }
+    if(fourYSquaredMinus1 > fourBiggestSquaredMinus1)
+    {
+        fourBiggestSquaredMinus1 = fourYSquaredMinus1;
+        biggestIndex = 2;
+    }
+    if(fourZSquaredMinus1 > fourBiggestSquaredMinus1)
+    {
+        fourBiggestSquaredMinus1 = fourZSquaredMinus1;
+        biggestIndex = 3;
+    }
 
-	for(i = 0; i<3; i++) {
-		float m = M[i][i];
-		if( m < r )
-			continue;
-		m = r;
-		p = &perm[i];
-	}
+    float biggestVal = sqrt(fourBiggestSquaredMinus1 + 1.f) * 0.5f;
+    float mult = 0.25f / biggestVal;
 
-	r = sqrtf(1.f + M[p[0]][p[0]] - M[p[1]][p[1]] - M[p[2]][p[2]] );
-
-	if(r < 1e-6) {
-		q[0] = 1.f;
-		q[1] = q[2] = q[3] = 0.f;
-		return;
-	}
-
-	q[0] = r/2.f;
-	q[1] = (M[p[0]][p[1]] - M[p[1]][p[0]])/(2.f*r);
-	q[2] = (M[p[2]][p[0]] - M[p[0]][p[2]])/(2.f*r);
-	q[3] = (M[p[2]][p[1]] - M[p[1]][p[2]])/(2.f*r);
+    switch(biggestIndex)
+    {
+    case 0:
+        q[0] = biggestVal;
+        q[1] = (M[1][2] - M[2][1]) * mult;
+        q[2] = (M[2][0] - M[0][2]) * mult;
+        q[3] = (M[0][1] - M[1][0]) * mult;
+        break;
+    case 1:
+        q[0] = (M[1][2] - M[2][1]) * mult;
+        q[1] = biggestVal;
+        q[2] = (M[0][1] + M[1][0]) * mult;
+        q[3] = (M[2][0] + M[0][2]) * mult;
+        break;
+    case 2:
+        q[0] = (M[2][0] - M[0][2]) * mult;
+        q[1] = (M[0][1] + M[1][0]) * mult;
+        q[2] = biggestVal;
+        q[3] = (M[1][2] + M[2][1]) * mult;
+        break;
+    case 3:
+        q[0] = (M[0][1] - M[1][0]) * mult;
+        q[1] = (M[2][0] + M[0][2]) * mult;
+        q[2] = (M[1][2] + M[2][1]) * mult;
+        q[3] = biggestVal;
+        break;
+    default: 
+        q[0] = 1;
+        q[1] = 0;
+        q[2] = 0;
+        q[3] = 0;
+        break;
+    }
 }
 
 #endif

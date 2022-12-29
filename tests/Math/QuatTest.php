@@ -78,4 +78,86 @@ class QuatTest extends \PHPUnit\Framework\TestCase
         $q->rotate(GLM::radians(45), new Vec3(0, 0, 1));
         $this->assertEqualsQuat(0.732538, 0.46194, 0.191342, 0.46194, $q);
     }
+
+    public function testMat4() : void
+    {
+        $q = new Quat();
+        $m = $q->mat4();
+
+        $this->assertEqualsMatrix(
+            1, 0, 0, 0,
+            0, 1, 0, 0,
+            0, 0, 1, 0,
+            0, 0, 0, 1,
+            $m
+        );
+
+        // rotate on x axis
+        $q = new Quat();
+        $q->rotate(GLM::radians(45), new Vec3(1, 0, 0));
+        $m = $q->mat4();
+
+        $this->assertEqualsMatrix(
+            1, 0, 0, 0,
+            0, 0.7071067811865475, 0.7071067811865475, 0,
+            0, -0.7071067811865475, 0.7071067811865475, 0,
+            0, 0, 0, 1,
+            $m
+        );
+
+        // rotate on y axis
+        $q->rotate(GLM::radians(45), new Vec3(0, 1, 0));
+        $m = $q->mat4();
+
+        $this->assertEqualsMatrix(
+            0.7071067811865475, 0.5, -0.5, 0,
+            0, 0.7071067811865475, 0.7071067811865475, 0,
+            0.7071067811865475, -0.5, 0.5, 0,
+            0, 0, 0, 1,
+            $m
+        );
+
+        // rotate on z axis
+        $q->rotate(GLM::radians(45), new Vec3(0, 0, 1));
+        $m = $q->mat4();
+
+        $this->assertEqualsMatrix(
+            0.5, 0.853553, 0.146447, 0,
+            -0.5, 0.146446, 0.853553, 0,
+            0.707107, -0.5, 0.5, 0,
+            0, 0, 0, 1,
+            $m
+        );
+    }
+
+    public function testConstructFromMat4()
+    {
+        $m = new Mat4;
+        $q = Quat::fromMat4($m);
+
+        $this->assertEqualsQuat(1, 0, 0, 0, $q);
+
+        // rotate on x axis
+        $m = new Mat4;
+        $m->rotate(GLM::radians(45), new Vec3(1, 0, 0));
+
+        $q = Quat::fromMat4($m);
+        $this->assertEqualsQuat(0.92388, 0.382683, 0, 0, $q);
+
+        // rotate on y axis
+        $m = new Mat4;
+        $m->rotate(GLM::radians(45), new Vec3(0, 1, 0));
+
+        $q = Quat::fromMat4($m);
+        $this->assertEqualsQuat(0.92388, 0, 0.382683, 0, $q);
+
+        // now consecutive rotations
+        $m = new Mat4;
+        $m->rotate(GLM::radians(45), new Vec3(1, 0, 0));
+        $m->rotate(GLM::radians(45), new Vec3(0, 1, 0));
+        $m->rotate(GLM::radians(45), new Vec3(0, 0, 1));
+
+        $q = Quat::fromMat4($m);
+        $this->assertEqualsQuat(0.732538, 0.46194, 0.191342, 0.46194, $q);
+    }
 }

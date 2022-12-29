@@ -1002,6 +1002,21 @@ PHP_METHOD(<?php echo $obj->getFullNamespaceConstString(); ?>, copy)
     }
 }
 
+PHP_METHOD(<?php echo $obj->getFullNamespaceConstString(); ?>, fromMat4)
+{
+    zval *mat_zval;
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "O", &mat_zval, phpglfw_math_mat4_ce) == FAILURE) {
+        return;
+    }
+
+    // create new quat
+    object_init_ex(return_value, <?php echo $obj->getClassEntryName(); ?>);
+    <?php echo $obj->getObjectName(); ?> *res_ptr = <?php echo $obj->objectFromZObjFunctionName(); ?>(Z_OBJ_P(return_value));
+
+    phpglfw_math_mat4_object *mat_ptr = phpglfw_math_mat4_objectptr_from_zobj_p(Z_OBJ_P(mat_zval));
+    <?php echo $obj->getQuatFunction('from_mat4x4'); ?>(res_ptr->data, mat_ptr->data);
+}
+
 PHP_METHOD(<?php echo $obj->getFullNamespaceConstString(); ?>, length)
 {
     if (zend_parse_parameters_none() == FAILURE) {
@@ -1053,6 +1068,23 @@ PHP_METHOD(<?php echo $obj->getFullNamespaceConstString(); ?>, rotate)
     temp[3] = obj_ptr->data[3];
     <?php echo $obj->getQuatFunction('rotate_by'); ?>(obj_ptr->data, temp, radians, axis_ptr->data);
     //<?php echo $obj->getQuatFunction('rotate'); ?>(obj_ptr->data, radians, axis_ptr->data);
+}
+
+PHP_METHOD(<?php echo $obj->getFullNamespaceConstString(); ?>, mat4)
+{
+    if (zend_parse_parameters_none() == FAILURE) {
+        RETURN_THROWS();
+    }
+
+    zval *obj;
+    obj = getThis();
+    <?php echo $obj->getObjectName(); ?> *obj_ptr = <?php echo $obj->objectFromZObjFunctionName(); ?>(Z_OBJ_P(obj));
+
+    // construct a new Mat4 object to be returned
+    object_init_ex(return_value, phpglfw_math_mat4_ce);
+    phpglfw_math_mat4_object *mat_ptr = phpglfw_math_mat4_objectptr_from_zobj_p(Z_OBJ_P(return_value));
+
+    mat4x4_from_quat(mat_ptr->data, obj_ptr->data);
 }
 
 <?php endif; ?>

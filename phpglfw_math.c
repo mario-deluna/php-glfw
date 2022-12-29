@@ -1654,6 +1654,21 @@ PHP_METHOD(GL_Math_Quat, copy)
     }
 }
 
+PHP_METHOD(GL_Math_Quat, fromMat4)
+{
+    zval *mat_zval;
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "O", &mat_zval, phpglfw_math_mat4_ce) == FAILURE) {
+        return;
+    }
+
+    // create new quat
+    object_init_ex(return_value, phpglfw_math_quat_ce);
+    phpglfw_math_quat_object *res_ptr = phpglfw_math_quat_objectptr_from_zobj_p(Z_OBJ_P(return_value));
+
+    phpglfw_math_mat4_object *mat_ptr = phpglfw_math_mat4_objectptr_from_zobj_p(Z_OBJ_P(mat_zval));
+    quat_from_mat4x4(res_ptr->data, mat_ptr->data);
+}
+
 PHP_METHOD(GL_Math_Quat, length)
 {
     if (zend_parse_parameters_none() == FAILURE) {
@@ -1705,6 +1720,23 @@ PHP_METHOD(GL_Math_Quat, rotate)
     temp[3] = obj_ptr->data[3];
     quat_rotate_by(obj_ptr->data, temp, radians, axis_ptr->data);
     //quat_rotate(obj_ptr->data, radians, axis_ptr->data);
+}
+
+PHP_METHOD(GL_Math_Quat, mat4)
+{
+    if (zend_parse_parameters_none() == FAILURE) {
+        RETURN_THROWS();
+    }
+
+    zval *obj;
+    obj = getThis();
+    phpglfw_math_quat_object *obj_ptr = phpglfw_math_quat_objectptr_from_zobj_p(Z_OBJ_P(obj));
+
+    // construct a new Mat4 object to be returned
+    object_init_ex(return_value, phpglfw_math_mat4_ce);
+    phpglfw_math_mat4_object *mat_ptr = phpglfw_math_mat4_objectptr_from_zobj_p(Z_OBJ_P(return_value));
+
+    mat4x4_from_quat(mat_ptr->data, obj_ptr->data);
 }
 
 
