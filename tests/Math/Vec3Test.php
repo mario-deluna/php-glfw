@@ -184,7 +184,9 @@ class Vec3Test extends \PHPUnit\Framework\TestCase
         $vec1 = new Vec3(5.0, 12.5, 7.5);
         $vec2 = new Vec3(0.5, 2.0, 0.75);
         
-        $this->assertEqualsWithDelta(13.268, $vec1->distance($vec2), 0.05);
+        $this->assertEqualsWithDelta(13.268, $vec1->distanceTo($vec2), 0.05);
+
+        $this->assertEqualsWithDelta(13.268, Vec3::distance($vec1, $vec2), 0.05);
     }
 
     public function testDistanceSquared() : void
@@ -192,7 +194,9 @@ class Vec3Test extends \PHPUnit\Framework\TestCase
         $vec1 = new Vec3(5.0, 12.5, 7.5);
         $vec2 = new Vec3(0.5, 2.0, 0.75);
         
-        $this->assertEqualsWithDelta(176.062, $vec1->distance2($vec2), 0.05);
+        $this->assertEqualsWithDelta(176.062, $vec1->distance2To($vec2), 0.05);
+
+        $this->assertEqualsWithDelta(176.062, Vec3::distance2($vec1, $vec2), 0.05);
     }
 
     public function testToString() : void

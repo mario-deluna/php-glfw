@@ -88,12 +88,16 @@ namespace GL\Math
     class Vec2 {
         public function __construct(?float $x = null, ?float $y = null) {}
         public function copy() : Vec2 {}
+        // static
+        public static function normalized(Vec2 $vec) : Vec2 {}
+        public static function distance(Vec2 $left, Vec2 $right) : float {}
+        public static function distance2(Vec2 $left, Vec2 $right) : float {}
+        // member function
         public function length() : float {}
         public function dot(Vec2 $right) : float {}
-        public function distance(Vec2 $right) : float {}
-        public function distance2(Vec2 $right) : float {}
+        public function distanceTo(Vec2 $right) : float {}
+        public function distance2To(Vec2 $right) : float {}
         public function normalize() : void {}
-        public static function normalized(Vec2 $vec) : Vec2 {}
         public function abs() : void {}
         public function __toString() : string {}
     }
@@ -101,12 +105,16 @@ namespace GL\Math
     class Vec3 {
         public function __construct(?float $x = null, ?float $y = null, ?float $z = null) {}
         public function copy() : Vec3 {}
+        // static
+        public static function normalized(Vec3 $vec) : Vec3 {}
+        public static function distance(Vec3 $left, Vec3 $right) : float {}
+        public static function distance2(Vec3 $left, Vec3 $right) : float {}
+        // member function
         public function length() : float {}
         public function dot(Vec3 $right) : float {}
-        public function distance(Vec3 $right) : float {}
-        public function distance2(Vec3 $right) : float {}
+        public function distanceTo(Vec3 $right) : float {}
+        public function distance2To(Vec3 $right) : float {}
         public function normalize() : void {}
-        public static function normalized(Vec3 $vec) : Vec3 {}
         public function abs() : void {}
         public static function cross(Vec3 $left, Vec3 $right) : Vec3 {}
         public function __toString() : string {}
@@ -115,12 +123,16 @@ namespace GL\Math
     class Vec4 {
         public function __construct(?float $x = null, ?float $y = null, ?float $z = null, ?float $w = null) {}
         public function copy() : Vec4 {}
+        // static
+        public static function normalized(Vec4 $vec) : Vec4 {}
+        public static function distance(Vec4 $left, Vec4 $right) : float {}
+        public static function distance2(Vec4 $left, Vec4 $right) : float {}
+        // member function
         public function length() : float {}
         public function dot(Vec4 $right) : float {}
-        public function distance(Vec4 $right) : float {}
-        public function distance2(Vec4 $right) : float {}
+        public function distanceTo(Vec4 $right) : float {}
+        public function distance2To(Vec4 $right) : float {}
         public function normalize() : void {}
-        public static function normalized(Vec4 $vec) : Vec4 {}
         public function abs() : void {}
         public function __toString() : string {}
     }

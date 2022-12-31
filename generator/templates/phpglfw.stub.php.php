@@ -88,12 +88,16 @@ namespace GL\Math
         public function __construct(<?php echo $obj->getPhpArgs(); ?>) {}
         public function copy() : <?php echo $obj->name; ?> {}
 <?php if ($obj->isVector()) : ?>
+        // static
+        public static function normalized(<?php echo $obj->name; ?> $vec) : <?php echo $obj->name; ?> {}
+        public static function distance(<?php echo $obj->name; ?> $left, <?php echo $obj->name; ?> $right) : float {}
+        public static function distance2(<?php echo $obj->name; ?> $left, <?php echo $obj->name; ?> $right) : float {}
+        // member function
         public function length() : float {}
         public function dot(<?php echo $obj->name; ?> $right) : float {}
-        public function distance(<?php echo $obj->name; ?> $right) : float {}
-        public function distance2(<?php echo $obj->name; ?> $right) : float {}
+        public function distanceTo(<?php echo $obj->name; ?> $right) : float {}
+        public function distance2To(<?php echo $obj->name; ?> $right) : float {}
         public function normalize() : void {}
-        public static function normalized(<?php echo $obj->name; ?> $vec) : <?php echo $obj->name; ?> {}
         public function abs() : void {}
 <?php if ($obj->size === 3) : ?>
         public static function cross(<?php echo $obj->name; ?> $left, <?php echo $obj->name; ?> $right) : <?php echo $obj->name; ?> {}

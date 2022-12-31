@@ -193,6 +193,18 @@ class Vec4Test extends \PHPUnit\Framework\TestCase
         $vec1 = new Vec4(5.0, 12.5, 7.5, 5.0);
         $vec2 = new Vec4(0.5, 2.0, 0.75, 1.0);
 
-        $this->assertEqualsWithDelta(13.85, $vec1->distance($vec2), 0.05);
+        $this->assertEqualsWithDelta(13.85, $vec1->distanceTo($vec2), 0.05);
+
+        $this->assertEqualsWithDelta(13.85, Vec4::distance($vec1, $vec2), 0.05);
+    }
+
+    public function testDistanceSquared() : void
+    {
+        $vec1 = new Vec4(5.0, 12.5, 7.5, 5.0);
+        $vec2 = new Vec4(0.5, 2.0, 0.75, 1.0);
+
+        $this->assertEquals(192.0625, $vec1->distance2To($vec2));
+
+        $this->assertEquals(192.0625, Vec4::distance2($vec1, $vec2));
     }
 }   
