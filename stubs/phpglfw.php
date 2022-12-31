@@ -151,7 +151,7 @@ namespace GL\Math
          * @param Vec2 $left The left vector.
          * @param Vec2 $right The right vector.
          */
-        public function dot(Vec2 $left, Vec2 $right) : float {}
+        public static function dot(Vec2 $left, Vec2 $right) : float {}
 
         /**
          * Returns the length of the vector
@@ -275,7 +275,7 @@ namespace GL\Math
          * @param Vec3 $left The left vector.
          * @param Vec3 $right The right vector.
          */
-        public function dot(Vec3 $left, Vec3 $right) : float {}
+        public static function dot(Vec3 $left, Vec3 $right) : float {}
 
         /**
          * Returns the length of the vector
@@ -418,7 +418,7 @@ namespace GL\Math
          * @param Vec4 $left The left vector.
          * @param Vec4 $right The right vector.
          */
-        public function dot(Vec4 $left, Vec4 $right) : float {}
+        public static function dot(Vec4 $left, Vec4 $right) : float {}
 
         /**
          * Returns the length of the vector

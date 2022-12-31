@@ -61,7 +61,7 @@ returns
 Returns the dot product of the left and right vectors
 
 ```php
-function dot(\GL\Math\Vec2 $left, \GL\Math\Vec2 $right) : float
+static function dot(\GL\Math\Vec2 $left, \GL\Math\Vec2 $right) : float
 ```
 
 ```php

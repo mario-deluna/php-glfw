@@ -148,7 +148,7 @@ namespace GL\Math
          * @param <?php echo $obj->name; ?> $left The left vector.
          * @param <?php echo $obj->name; ?> $right The right vector.
          */
-        public function dot(<?php echo $obj->name; ?> $left, <?php echo $obj->name; ?> $right) : float {}
+        public static function dot(<?php echo $obj->name; ?> $left, <?php echo $obj->name; ?> $right) : float {}
 
         /**
          * Returns the length of the vector
