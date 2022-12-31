@@ -75,35 +75,53 @@ returns
      
 ### `distance`
 
-Returns the distance between this vector and another
+Returns the distance between the left and right vectors
 
 ```php
-function distance(\GL\Math\Vec3 $right) : float
+static function distance(\GL\Math\Vec3 $left, \GL\Math\Vec3 $right) : float
 ```
+
+```php
+$distance = Vec3::distance($left, $right);
+```
+
+arguments
+
+:    1. `\Vec3` `$left` The left vector.
+    2. `\Vec3` `$right` The right vector.
 
 returns
 
-:    `float` 
+:    `float` The distance between the left and right vectors.
 
 ---
      
 ### `distance2`
 
-Returns squared distance between this vector and another
+Returns the squared distance between the left and right vectors
 
 ```php
-function distance2(\GL\Math\Vec3 $right) : float
+static function distance2(\GL\Math\Vec3 $left, \GL\Math\Vec3 $right) : float
 ```
+
+```php
+$distance = Vec3::distance2($left, $right);
+```
+
+arguments
+
+:    1. `\Vec3` `$left` The left vector.
+    2. `\Vec3` `$right` The right vector.
 
 returns
 
-:    `float` 
+:    `float` The squared distance between the left and right vectors.
 
 ---
      
 ### `normalize`
 
-Returns a normalized version of this vector
+normalizes the current vector
 
 ```php
 function normalize() : \GL\Math\Vec3
@@ -117,7 +135,7 @@ returns
      
 ### `abs`
 
-Creates a new Vec3 where each component is x if x >= 0; otherwise, -x
+Makes each component x if x >= 0; otherwise, -x
 
 ```php
 function abs() : \GL\Math\Vec3
@@ -125,7 +143,7 @@ function abs() : \GL\Math\Vec3
 
 returns
 
-:    `\Vec3` 
+:    `void` 
 
 ---
      

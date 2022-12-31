@@ -101,6 +101,44 @@ namespace GL\Math
 
 <?php if ($obj->isVector()) : ?>
         /**
+         * Returns the distance between the left and right vectors
+         * 
+         * ```php    
+         * $distance = <?php echo $obj->name; ?>::distance($left, $right);
+         * ```
+         *
+         * @param <?php echo $obj->name; ?> $left The left vector.
+         * @param <?php echo $obj->name; ?> $right The right vector.
+         * @return float The distance between the left and right vectors.
+         */
+        public static function distance(<?php echo $obj->name; ?> $left, <?php echo $obj->name; ?> $right) : float {}
+        
+        /**
+         * Returns the squared distance between the left and right vectors
+         *
+         * ```php
+         * $distance = <?php echo $obj->name; ?>::distance2($left, $right);
+         * ```
+         *
+         * @param <?php echo $obj->name; ?> $left The left vector.
+         * @param <?php echo $obj->name; ?> $right The right vector.
+         * @return float The squared distance between the left and right vectors.
+         */
+        public static function distance2(<?php echo $obj->name; ?> $left, <?php echo $obj->name; ?> $right) : float {}
+
+        /**
+         * Retruns a normalized version of the given <?php echo $obj->name; ?>
+         * 
+         * ```php
+         * $normalized = <?php echo $obj->name; ?>::normalize(new <?php echo $obj->name; ?>($x, $y, $z));
+         * ```
+         * 
+         * @param <?php echo $obj->name; ?> $vec The vector to normalize.
+         * @return <?php echo $obj->name; ?> The normalized vector.
+         */
+        public static function normalized(<?php echo $obj->name; ?> $vec) : <?php echo $obj->name; ?> {}
+
+        /**
          * Returns the length of the vector
          * 
          * @return float
@@ -119,26 +157,26 @@ namespace GL\Math
          * 
          * @return float
          */
-        public function distance(<?php echo $obj->name; ?> $right) : float {}
+        public function distanceTo(<?php echo $obj->name; ?> $right) : float {}
 
         /**
          * Returns squared distance between this vector and another
          * 
          * @return float
          */
-        public function distance2(<?php echo $obj->name; ?> $right) : float {}
+        public function distance2To(<?php echo $obj->name; ?> $right) : float {}
 
         /**
-         * Returns a normalized version of this vector
+         * normalizes the current vector
          * 
          * @return <?php echo $obj->name; ?>
          */
         public function normalize() : <?php echo $obj->name; ?> {}
 
         /**
-         * Creates a new <?php echo $obj->name; ?> where each component is x if x >= 0; otherwise, -x
+         * Makes each component x if x >= 0; otherwise, -x
          * 
-         * @return <?php echo $obj->name; ?>
+         * @return void
          */
         public function abs() : <?php echo $obj->name; ?> {}
         
@@ -146,9 +184,13 @@ namespace GL\Math
         /**
          * Returns the cross product of this vector and another
          * 
+         * ```php
+         * $cross = <?php echo $obj->name; ?>::cross($left, $right);
+         * ```
+         * 
          * @return <?php echo $obj->name; ?>
          */
-        public function cross(<?php echo $obj->name; ?> $right) : <?php echo $obj->name; ?> {}
+        public static function cross(<?php echo $obj->name; ?> $right) : <?php echo $obj->name; ?> {}
 <?php endif; ?>
 <?php elseif($obj->isMatrix()) : ?>
 
