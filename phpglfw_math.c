@@ -940,14 +940,13 @@ PHP_METHOD(GL_Math_Vec3, abs)
 
 PHP_METHOD(GL_Math_Vec3, cross)
 {
+    zval *leftvec_zval;
     zval *rightvec_zval;
-    if (zend_parse_parameters(ZEND_NUM_ARGS() , "O", &rightvec_zval, phpglfw_math_vec3_ce) == FAILURE) {
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "OO", &leftvec_zval, phpglfw_math_vec3_ce,  &rightvec_zval, phpglfw_math_vec3_ce) == FAILURE) {
         return;
     }
 
-    zval *obj;
-    obj = getThis();
-    phpglfw_math_vec3_object *leftvec_ptr = phpglfw_math_vec3_objectptr_from_zobj_p(Z_OBJ_P(obj));
+    phpglfw_math_vec3_object *leftvec_ptr = phpglfw_math_vec3_objectptr_from_zobj_p(Z_OBJ_P(leftvec_zval));
     phpglfw_math_vec3_object *rightvec_ptr = phpglfw_math_vec3_objectptr_from_zobj_p(Z_OBJ_P(rightvec_zval));
 
     // create new vec

@@ -205,7 +205,7 @@ class Vec3Test extends \PHPUnit\Framework\TestCase
     {
         $vec1 = new Vec3(5.0, 12.5, 7.5);
         $vec2 = new Vec3(0.5, 2.0, 0.75);
-        $r = $vec1->cross($vec2);
+        $r = Vec3::cross($vec1, $vec2);
         
         $this->assertEqualsVector(-5.625, 0, 3.75, $r);
     }

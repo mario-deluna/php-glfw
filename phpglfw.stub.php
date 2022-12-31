@@ -108,7 +108,7 @@ namespace GL\Math
         public function normalize() : void {}
         public static function normalized(Vec3 $vec) : Vec3 {}
         public function abs() : void {}
-        public function cross(Vec3 $right) : Vec3 {}
+        public static function cross(Vec3 $left, Vec3 $right) : Vec3 {}
         public function __toString() : string {}
     }
  

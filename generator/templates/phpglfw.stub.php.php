@@ -96,7 +96,7 @@ namespace GL\Math
         public static function normalized(<?php echo $obj->name; ?> $vec) : <?php echo $obj->name; ?> {}
         public function abs() : void {}
 <?php if ($obj->size === 3) : ?>
-        public function cross(<?php echo $obj->name; ?> $right) : <?php echo $obj->name; ?> {}
+        public static function cross(<?php echo $obj->name; ?> $left, <?php echo $obj->name; ?> $right) : <?php echo $obj->name; ?> {}
 <?php endif; ?>
 <?php elseif($obj->isMatrix()) : ?>
         public static function fromArray(array $values) : <?php echo $obj->name; ?> {}

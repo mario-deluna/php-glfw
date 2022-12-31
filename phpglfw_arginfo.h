@@ -1,5 +1,5 @@
 /* This is a generated file, edit the .stub.php file instead.
- * Stub hash: 77308ef8fe79b15a54ffa99e3045de178000298d */
+ * Stub hash: 87a0c434a144ec2a3efc49d7aebcf674ced7d377 */
 
 ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_glCullFace, 0, 1, IS_VOID, 0)
 	ZEND_ARG_TYPE_INFO(0, mode, IS_LONG, 0)
@@ -2331,7 +2331,8 @@ ZEND_END_ARG_INFO()
 
 #define arginfo_class_GL_Math_Vec3_abs arginfo_glFinish
 
-ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(arginfo_class_GL_Math_Vec3_cross, 0, 1, GL\\Math\\Vec3, 0)
+ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(arginfo_class_GL_Math_Vec3_cross, 0, 2, GL\\Math\\Vec3, 0)
+	ZEND_ARG_OBJ_INFO(0, left, GL\\Math\\Vec3, 0)
 	ZEND_ARG_OBJ_INFO(0, right, GL\\Math\\Vec3, 0)
 ZEND_END_ARG_INFO()
 
@@ -4015,7 +4016,7 @@ static const zend_function_entry class_GL_Math_Vec3_methods[] = {
 	ZEND_ME(GL_Math_Vec3, normalize, arginfo_class_GL_Math_Vec3_normalize, ZEND_ACC_PUBLIC)
 	ZEND_ME(GL_Math_Vec3, normalized, arginfo_class_GL_Math_Vec3_normalized, ZEND_ACC_PUBLIC|ZEND_ACC_STATIC)
 	ZEND_ME(GL_Math_Vec3, abs, arginfo_class_GL_Math_Vec3_abs, ZEND_ACC_PUBLIC)
-	ZEND_ME(GL_Math_Vec3, cross, arginfo_class_GL_Math_Vec3_cross, ZEND_ACC_PUBLIC)
+	ZEND_ME(GL_Math_Vec3, cross, arginfo_class_GL_Math_Vec3_cross, ZEND_ACC_PUBLIC|ZEND_ACC_STATIC)
 	ZEND_ME(GL_Math_Vec3, __toString, arginfo_class_GL_Math_Vec3___toString, ZEND_ACC_PUBLIC)
 	ZEND_FE_END
 };
