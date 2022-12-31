@@ -140,6 +140,18 @@ namespace GL\Math
          * @return Vec2 The normalized vector.
          */
         public static function normalized(Vec2 $vec) : Vec2 {}
+        
+        /**
+         * Returns the dot product of the left and right vectors
+         * 
+         * ```php
+         * $dot = Vec2::dot($left, $right);
+         * ```
+         * 
+         * @param Vec2 $left The left vector.
+         * @param Vec2 $right The right vector.
+         */
+        public function dot(Vec2 $left, Vec2 $right) : float {}
 
         /**
          * Returns the length of the vector
@@ -147,13 +159,6 @@ namespace GL\Math
          * @return float
          */
         public function length() : float {}
-        
-        /**
-         * Returns the dot product of this vector and another
-         * 
-         * @return float
-         */
-        public function dot(Vec2 $right) : float {}
 
         /**
          * Returns the distance between this vector and another
@@ -259,6 +264,18 @@ namespace GL\Math
          * @return Vec3 The normalized vector.
          */
         public static function normalized(Vec3 $vec) : Vec3 {}
+        
+        /**
+         * Returns the dot product of the left and right vectors
+         * 
+         * ```php
+         * $dot = Vec3::dot($left, $right);
+         * ```
+         * 
+         * @param Vec3 $left The left vector.
+         * @param Vec3 $right The right vector.
+         */
+        public function dot(Vec3 $left, Vec3 $right) : float {}
 
         /**
          * Returns the length of the vector
@@ -266,13 +283,6 @@ namespace GL\Math
          * @return float
          */
         public function length() : float {}
-        
-        /**
-         * Returns the dot product of this vector and another
-         * 
-         * @return float
-         */
-        public function dot(Vec3 $right) : float {}
 
         /**
          * Returns the distance between this vector and another
@@ -397,6 +407,18 @@ namespace GL\Math
          * @return Vec4 The normalized vector.
          */
         public static function normalized(Vec4 $vec) : Vec4 {}
+        
+        /**
+         * Returns the dot product of the left and right vectors
+         * 
+         * ```php
+         * $dot = Vec4::dot($left, $right);
+         * ```
+         * 
+         * @param Vec4 $left The left vector.
+         * @param Vec4 $right The right vector.
+         */
+        public function dot(Vec4 $left, Vec4 $right) : float {}
 
         /**
          * Returns the length of the vector
@@ -404,13 +426,6 @@ namespace GL\Math
          * @return float
          */
         public function length() : float {}
-        
-        /**
-         * Returns the dot product of this vector and another
-         * 
-         * @return float
-         */
-        public function dot(Vec4 $right) : float {}
 
         /**
          * Returns the distance between this vector and another

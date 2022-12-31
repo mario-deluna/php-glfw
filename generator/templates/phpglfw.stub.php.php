@@ -92,9 +92,9 @@ namespace GL\Math
         public static function normalized(<?php echo $obj->name; ?> $vec) : <?php echo $obj->name; ?> {}
         public static function distance(<?php echo $obj->name; ?> $left, <?php echo $obj->name; ?> $right) : float {}
         public static function distance2(<?php echo $obj->name; ?> $left, <?php echo $obj->name; ?> $right) : float {}
+        public static function dot(<?php echo $obj->name; ?> $left, <?php echo $obj->name; ?> $right) : float {}
         // member function
         public function length() : float {}
-        public function dot(<?php echo $obj->name; ?> $right) : float {}
         public function distanceTo(<?php echo $obj->name; ?> $right) : float {}
         public function distance2To(<?php echo $obj->name; ?> $right) : float {}
         public function normalize() : void {}

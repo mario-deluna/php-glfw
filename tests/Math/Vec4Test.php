@@ -185,7 +185,7 @@ class Vec4Test extends \PHPUnit\Framework\TestCase
         $vec1 = new Vec4(5.0, 12.5, 7.5, 1.0);
         $vec2 = new Vec4(0.5, 2.0, 0.75, 1.0);
 
-        $this->assertEquals(34.125, $vec1->dot($vec2));
+        $this->assertEquals(34.125, Vec4::dot($vec1, $vec2));
     }
 
     public function testDistance() : void

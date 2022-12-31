@@ -137,6 +137,18 @@ namespace GL\Math
          * @return <?php echo $obj->name; ?> The normalized vector.
          */
         public static function normalized(<?php echo $obj->name; ?> $vec) : <?php echo $obj->name; ?> {}
+        
+        /**
+         * Returns the dot product of the left and right vectors
+         * 
+         * ```php
+         * $dot = <?php echo $obj->name; ?>::dot($left, $right);
+         * ```
+         * 
+         * @param <?php echo $obj->name; ?> $left The left vector.
+         * @param <?php echo $obj->name; ?> $right The right vector.
+         */
+        public function dot(<?php echo $obj->name; ?> $left, <?php echo $obj->name; ?> $right) : float {}
 
         /**
          * Returns the length of the vector
@@ -144,13 +156,6 @@ namespace GL\Math
          * @return float
          */
         public function length() : float {}
-        
-        /**
-         * Returns the dot product of this vector and another
-         * 
-         * @return float
-         */
-        public function dot(<?php echo $obj->name; ?> $right) : float {}
 
         /**
          * Returns the distance between this vector and another

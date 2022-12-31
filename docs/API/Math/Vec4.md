@@ -64,15 +64,20 @@ returns
      
 ### `dot`
 
-Returns the dot product of this vector and another
+Returns the dot product of the left and right vectors
 
 ```php
-function dot(\GL\Math\Vec4 $right) : float
+function dot(\GL\Math\Vec4 $left, \GL\Math\Vec4 $right) : float
 ```
 
-returns
+```php
+$dot = Vec4::dot($left, $right);
+```
 
-:    `float` 
+arguments
+
+:    1. `\Vec4` `$left` The left vector.
+    2. `\Vec4` `$right` The right vector.
 
 ---
      

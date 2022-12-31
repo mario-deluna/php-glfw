@@ -176,7 +176,7 @@ class Vec3Test extends \PHPUnit\Framework\TestCase
         $vec1 = new Vec3(5.0, 12.5, 7.5);
         $vec2 = new Vec3(0.5, 2.0, 0.75);
         
-        $this->assertEqualsWithDelta(33.125, $vec1->dot($vec2), 0.05);
+        $this->assertEqualsWithDelta(33.125, Vec3::dot($vec1, $vec2), 0.05);
     }
 
     public function testDistance() : void

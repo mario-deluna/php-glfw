@@ -92,9 +92,9 @@ namespace GL\Math
         public static function normalized(Vec2 $vec) : Vec2 {}
         public static function distance(Vec2 $left, Vec2 $right) : float {}
         public static function distance2(Vec2 $left, Vec2 $right) : float {}
+        public static function dot(Vec2 $left, Vec2 $right) : float {}
         // member function
         public function length() : float {}
-        public function dot(Vec2 $right) : float {}
         public function distanceTo(Vec2 $right) : float {}
         public function distance2To(Vec2 $right) : float {}
         public function normalize() : void {}
@@ -109,9 +109,9 @@ namespace GL\Math
         public static function normalized(Vec3 $vec) : Vec3 {}
         public static function distance(Vec3 $left, Vec3 $right) : float {}
         public static function distance2(Vec3 $left, Vec3 $right) : float {}
+        public static function dot(Vec3 $left, Vec3 $right) : float {}
         // member function
         public function length() : float {}
-        public function dot(Vec3 $right) : float {}
         public function distanceTo(Vec3 $right) : float {}
         public function distance2To(Vec3 $right) : float {}
         public function normalize() : void {}
@@ -127,9 +127,9 @@ namespace GL\Math
         public static function normalized(Vec4 $vec) : Vec4 {}
         public static function distance(Vec4 $left, Vec4 $right) : float {}
         public static function distance2(Vec4 $left, Vec4 $right) : float {}
+        public static function dot(Vec4 $left, Vec4 $right) : float {}
         // member function
         public function length() : float {}
-        public function dot(Vec4 $right) : float {}
         public function distanceTo(Vec4 $right) : float {}
         public function distance2To(Vec4 $right) : float {}
         public function normalize() : void {}

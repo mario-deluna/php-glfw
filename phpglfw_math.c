@@ -416,13 +416,12 @@ PHP_METHOD(GL_Math_Vec2, length)
 PHP_METHOD(GL_Math_Vec2, dot)
 {
     zval *rightvec_zval;
-    if (zend_parse_parameters(ZEND_NUM_ARGS() , "O", &rightvec_zval, phpglfw_math_vec2_ce) == FAILURE) {
-        return;
+    zval *leftvec_zval;
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "OO", &leftvec_zval, phpglfw_math_vec2_ce, &rightvec_zval, phpglfw_math_vec2_ce) == FAILURE) {
+        RETURN_THROWS();
     }
 
-    zval *obj;
-    obj = getThis();
-    phpglfw_math_vec2_object *leftvec_ptr = phpglfw_math_vec2_objectptr_from_zobj_p(Z_OBJ_P(obj));
+    phpglfw_math_vec2_object *leftvec_ptr = phpglfw_math_vec2_objectptr_from_zobj_p(Z_OBJ_P(leftvec_zval));
     phpglfw_math_vec2_object *rightvec_ptr = phpglfw_math_vec2_objectptr_from_zobj_p(Z_OBJ_P(rightvec_zval));
 
     RETURN_DOUBLE(vec2_mul_inner(leftvec_ptr->data, rightvec_ptr->data));
@@ -883,13 +882,12 @@ PHP_METHOD(GL_Math_Vec3, length)
 PHP_METHOD(GL_Math_Vec3, dot)
 {
     zval *rightvec_zval;
-    if (zend_parse_parameters(ZEND_NUM_ARGS() , "O", &rightvec_zval, phpglfw_math_vec3_ce) == FAILURE) {
-        return;
+    zval *leftvec_zval;
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "OO", &leftvec_zval, phpglfw_math_vec3_ce, &rightvec_zval, phpglfw_math_vec3_ce) == FAILURE) {
+        RETURN_THROWS();
     }
 
-    zval *obj;
-    obj = getThis();
-    phpglfw_math_vec3_object *leftvec_ptr = phpglfw_math_vec3_objectptr_from_zobj_p(Z_OBJ_P(obj));
+    phpglfw_math_vec3_object *leftvec_ptr = phpglfw_math_vec3_objectptr_from_zobj_p(Z_OBJ_P(leftvec_zval));
     phpglfw_math_vec3_object *rightvec_ptr = phpglfw_math_vec3_objectptr_from_zobj_p(Z_OBJ_P(rightvec_zval));
 
     RETURN_DOUBLE(vec3_mul_inner(leftvec_ptr->data, rightvec_ptr->data));
@@ -1384,13 +1382,12 @@ PHP_METHOD(GL_Math_Vec4, length)
 PHP_METHOD(GL_Math_Vec4, dot)
 {
     zval *rightvec_zval;
-    if (zend_parse_parameters(ZEND_NUM_ARGS() , "O", &rightvec_zval, phpglfw_math_vec4_ce) == FAILURE) {
-        return;
+    zval *leftvec_zval;
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "OO", &leftvec_zval, phpglfw_math_vec4_ce, &rightvec_zval, phpglfw_math_vec4_ce) == FAILURE) {
+        RETURN_THROWS();
     }
 
-    zval *obj;
-    obj = getThis();
-    phpglfw_math_vec4_object *leftvec_ptr = phpglfw_math_vec4_objectptr_from_zobj_p(Z_OBJ_P(obj));
+    phpglfw_math_vec4_object *leftvec_ptr = phpglfw_math_vec4_objectptr_from_zobj_p(Z_OBJ_P(leftvec_zval));
     phpglfw_math_vec4_object *rightvec_ptr = phpglfw_math_vec4_objectptr_from_zobj_p(Z_OBJ_P(rightvec_zval));
 
     RETURN_DOUBLE(vec4_mul_inner(leftvec_ptr->data, rightvec_ptr->data));
