@@ -527,8 +527,20 @@ static inline void quat_mul(quat r, quat p, quat q)
 {
     r[0] = p[0]*q[0] - p[1]*q[1] - p[2]*q[2] - p[3]*q[3];
     r[1] = p[0]*q[1] + p[1]*q[0] + p[2]*q[3] - p[3]*q[2];
-    r[2] = p[0]*q[2] - p[1]*q[3] + p[2]*q[0] + p[3]*q[1];
-    r[3] = p[0]*q[3] + p[1]*q[2] - p[2]*q[1] + p[3]*q[0];
+    r[2] = p[0]*q[2] + p[2]*q[0] + p[3]*q[1] - p[1]*q[3];
+    r[3] = p[0]*q[3] + p[3]*q[0] + p[1]*q[2] - p[2]*q[1];
+}
+static inline void quat_mul_scalar(quat r, quat q, float s)
+{
+    int i;
+    for(i=0; i<4; ++i)
+        r[i] = q[i] * s;
+}
+static inline void quat_div_scalar(quat r, quat p, float s)
+{
+    int i;
+    for(i=0; i<4; ++i)
+        r[i] = p[i] / s;
 }
 static inline float quat_len(quat q)
 {

@@ -79,8 +79,8 @@ namespace GL\Math
     class GLM {
         public static function radians(float $degrees) : float {}
         public static function angle(float $radians) : float {}
-        public static function triangleNormal(GL\Math\Vec3 $p1, \GL\Math\Vec3 $p2, \GL\Math\Vec3 $p3) : \GL\Math\Vec3 {}
-        public static function normalize(GL\Math\Vec2|GL\Math\Vec3|GL\Math\Vec4 $vec) : GL\Math\Vec2|GL\Math\Vec3|GL\Math\Vec4 {}
+        public static function triangleNormal(Vec3 $p1, Vec3 $p2, Vec3 $p3) : Vec3 {}
+        public static function normalize(Vec2|Vec3|Vec4 $vec) : Vec2|Vec3|Vec4 {}
     }
 
 <?php foreach($mathObjects as $obj) : ?> 
@@ -92,7 +92,8 @@ namespace GL\Math
         public function dot(<?php echo $obj->name; ?> $right) : float {}
         public function distance(<?php echo $obj->name; ?> $right) : float {}
         public function distance2(<?php echo $obj->name; ?> $right) : float {}
-        public function normalize() : <?php echo $obj->name; ?> {}
+        public function normalize() : void {}
+        public static function normalized(<?php echo $obj->name; ?> $vec) : <?php echo $obj->name; ?> {}
         public function abs() : <?php echo $obj->name; ?> {}
 <?php if ($obj->size === 3) : ?>
         public function cross(<?php echo $obj->name; ?> $right) : <?php echo $obj->name; ?> {}
@@ -114,6 +115,8 @@ namespace GL\Math
         public function determinant() : float {}
 <?php elseif($obj->isQuat()) : ?>
         public static function fromMat4(Mat4 $matrix) : <?php echo $obj->name; ?> {}
+        public function normalize() : void {}
+        public static function normalized(<?php echo $obj->name; ?> $quat) : <?php echo $obj->name; ?> {} 
         public function length() : float {}
         public function eulerAngles() : Vec3 {}
         public function rotate(float $angle, Vec3 $axis) : void {}

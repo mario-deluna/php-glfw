@@ -466,6 +466,54 @@ static int <?php echo $obj->getHandlerMethodName('do_op'); ?>(zend_uchar opcode,
  */
 static int <?php echo $obj->getHandlerMethodName('do_op'); ?>(zend_uchar opcode, zval *result, zval *op1, zval *op2)
 {
+    object_init_ex(result, <?php echo $obj->getClassEntryName(); ?>);
+    <?php echo $obj->getObjectName(); ?> *resobj = <?php echo $obj->objectFromZObjFunctionName(); ?>(Z_OBJ_P(result));
+
+    // if left and right are both quat...
+    if (
+        Z_TYPE_P(op1) == IS_OBJECT && Z_OBJCE_P(op1) == <?php echo $obj->getClassEntryName(); ?> &&
+        Z_TYPE_P(op2) == IS_OBJECT && Z_OBJCE_P(op2) == <?php echo $obj->getClassEntryName(); ?>
+    ) {
+        <?php echo $obj->getObjectName(); ?> *quatobj1 = <?php echo $obj->objectFromZObjFunctionName(); ?>(Z_OBJ_P(op1));
+        <?php echo $obj->getObjectName(); ?> *quatobj2 = <?php echo $obj->objectFromZObjFunctionName(); ?>(Z_OBJ_P(op2));
+
+        switch (opcode) {
+        case ZEND_ADD:
+            <?php echo $obj->getQuatFunction('add'); ?>(resobj->data, quatobj1->data, quatobj2->data);
+            return SUCCESS;
+        case ZEND_SUB:
+            <?php echo $obj->getQuatFunction('sub'); ?>(resobj->data, quatobj1->data, quatobj2->data);
+            return SUCCESS;
+        case ZEND_MUL:
+            <?php echo $obj->getQuatFunction('mul'); ?>(resobj->data, quatobj1->data, quatobj2->data);
+            return SUCCESS;
+        default:
+            return FAILURE;
+        }
+    }
+    // left is quat, right is scalar
+    else if (
+        Z_TYPE_P(op1) == IS_OBJECT && Z_OBJCE_P(op1) == <?php echo $obj->getClassEntryName(); ?> &&
+        (Z_TYPE_P(op2) == IS_LONG || Z_TYPE_P(op2) == IS_DOUBLE)
+    ) {
+        <?php echo $obj->getObjectName(); ?> *quatobj1 = <?php echo $obj->objectFromZObjFunctionName(); ?>(Z_OBJ_P(op1));
+
+        // get scalar value
+        if (Z_TYPE_P(op2) == IS_LONG) {
+            convert_to_double(op2);
+        }
+
+        switch (opcode) {
+        case ZEND_MUL:
+            <?php echo $obj->getQuatFunction('mul_scalar'); ?>(resobj->data, quatobj1->data, Z_DVAL_P(op2));
+            return SUCCESS;
+        case ZEND_DIV:
+            <?php echo $obj->getQuatFunction('div_scalar'); ?>(resobj->data, quatobj1->data, Z_DVAL_P(op2));
+            return SUCCESS;
+        default:
+            return FAILURE;
+        }
+    }
     return FAILURE;
 }
 
@@ -655,19 +703,29 @@ PHP_METHOD(<?php echo $obj->getFullNamespaceConstString(); ?>, distance2)
 
 PHP_METHOD(<?php echo $obj->getFullNamespaceConstString(); ?>, normalize)
 {
-	if (zend_parse_parameters_none() == FAILURE) {
-		RETURN_THROWS();
-	}
+    if (zend_parse_parameters_none() == FAILURE) {
+        RETURN_THROWS();
+    }
 
     zval *obj;
     obj = getThis();
     <?php echo $obj->getObjectName(); ?> *obj_ptr = <?php echo $obj->objectFromZObjFunctionName(); ?>(Z_OBJ_P(obj));
 
-    // create new vec
-    object_init_ex(return_value, <?php echo $obj->getClassEntryName(); ?>);
-    <?php echo $obj->getObjectName(); ?> *resobj = <?php echo $obj->objectFromZObjFunctionName(); ?>(Z_OBJ_P(return_value));
+    <?php echo $obj->getVecFunction('norm'); ?>(obj_ptr->data, obj_ptr->data);
+}
 
-    <?php echo $obj->getVecFunction('norm'); ?>(resobj->data, obj_ptr->data);
+PHP_METHOD(<?php echo $obj->getFullNamespaceConstString(); ?>, normalized)
+{
+    zval *vec_zval;
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "O", &vec_zval,  <?php echo $obj->getClassEntryName(); ?>) == FAILURE) {
+        return;
+    }
+
+    object_init_ex(return_value, <?php echo $obj->getClassEntryName(); ?>);
+    <?php echo $obj->getObjectName(); ?> *res_ptr = <?php echo $obj->objectFromZObjFunctionName(); ?>(Z_OBJ_P(return_value));
+    <?php echo $obj->getObjectName(); ?> *in_obj =  <?php echo $obj->objectFromZObjFunctionName(); ?>(Z_OBJ_P(vec_zval));
+
+    <?php echo $obj->getVecFunction('norm'); ?>(res_ptr->data, in_obj->data);
 }
 
 PHP_METHOD(<?php echo $obj->getFullNamespaceConstString(); ?>, abs)
@@ -1015,6 +1073,33 @@ PHP_METHOD(<?php echo $obj->getFullNamespaceConstString(); ?>, fromMat4)
 
     phpglfw_math_mat4_object *mat_ptr = phpglfw_math_mat4_objectptr_from_zobj_p(Z_OBJ_P(mat_zval));
     <?php echo $obj->getQuatFunction('from_mat4x4'); ?>(res_ptr->data, mat_ptr->data);
+}
+
+PHP_METHOD(<?php echo $obj->getFullNamespaceConstString(); ?>, normalize)
+{
+    if (zend_parse_parameters_none() == FAILURE) {
+        RETURN_THROWS();
+    }
+
+    zval *obj;
+    obj = getThis();
+    <?php echo $obj->getObjectName(); ?> *obj_ptr = <?php echo $obj->objectFromZObjFunctionName(); ?>(Z_OBJ_P(obj));
+
+    <?php echo $obj->getQuatFunction('norm'); ?>(obj_ptr->data, obj_ptr->data);
+}
+
+PHP_METHOD(<?php echo $obj->getFullNamespaceConstString(); ?>, normalized)
+{
+    zval *quat_zval;
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "O", &quat_zval,  <?php echo $obj->getClassEntryName(); ?>) == FAILURE) {
+        return;
+    }
+
+    object_init_ex(return_value, <?php echo $obj->getClassEntryName(); ?>);
+    <?php echo $obj->getObjectName(); ?> *res_ptr = <?php echo $obj->objectFromZObjFunctionName(); ?>(Z_OBJ_P(return_value));
+    <?php echo $obj->getObjectName(); ?> *in_obj =  <?php echo $obj->objectFromZObjFunctionName(); ?>(Z_OBJ_P(quat_zval));
+
+    <?php echo $obj->getQuatFunction('norm'); ?>(res_ptr->data, in_obj->data);
 }
 
 PHP_METHOD(<?php echo $obj->getFullNamespaceConstString(); ?>, length)

@@ -460,19 +460,29 @@ PHP_METHOD(GL_Math_Vec2, distance2)
 
 PHP_METHOD(GL_Math_Vec2, normalize)
 {
-	if (zend_parse_parameters_none() == FAILURE) {
-		RETURN_THROWS();
-	}
+    if (zend_parse_parameters_none() == FAILURE) {
+        RETURN_THROWS();
+    }
 
     zval *obj;
     obj = getThis();
     phpglfw_math_vec2_object *obj_ptr = phpglfw_math_vec2_objectptr_from_zobj_p(Z_OBJ_P(obj));
 
-    // create new vec
-    object_init_ex(return_value, phpglfw_math_vec2_ce);
-    phpglfw_math_vec2_object *resobj = phpglfw_math_vec2_objectptr_from_zobj_p(Z_OBJ_P(return_value));
+    vec2_norm(obj_ptr->data, obj_ptr->data);
+}
 
-    vec2_norm(resobj->data, obj_ptr->data);
+PHP_METHOD(GL_Math_Vec2, normalized)
+{
+    zval *vec_zval;
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "O", &vec_zval,  phpglfw_math_vec2_ce) == FAILURE) {
+        return;
+    }
+
+    object_init_ex(return_value, phpglfw_math_vec2_ce);
+    phpglfw_math_vec2_object *res_ptr = phpglfw_math_vec2_objectptr_from_zobj_p(Z_OBJ_P(return_value));
+    phpglfw_math_vec2_object *in_obj =  phpglfw_math_vec2_objectptr_from_zobj_p(Z_OBJ_P(vec_zval));
+
+    vec2_norm(res_ptr->data, in_obj->data);
 }
 
 PHP_METHOD(GL_Math_Vec2, abs)
@@ -896,19 +906,29 @@ PHP_METHOD(GL_Math_Vec3, distance2)
 
 PHP_METHOD(GL_Math_Vec3, normalize)
 {
-	if (zend_parse_parameters_none() == FAILURE) {
-		RETURN_THROWS();
-	}
+    if (zend_parse_parameters_none() == FAILURE) {
+        RETURN_THROWS();
+    }
 
     zval *obj;
     obj = getThis();
     phpglfw_math_vec3_object *obj_ptr = phpglfw_math_vec3_objectptr_from_zobj_p(Z_OBJ_P(obj));
 
-    // create new vec
-    object_init_ex(return_value, phpglfw_math_vec3_ce);
-    phpglfw_math_vec3_object *resobj = phpglfw_math_vec3_objectptr_from_zobj_p(Z_OBJ_P(return_value));
+    vec3_norm(obj_ptr->data, obj_ptr->data);
+}
 
-    vec3_norm(resobj->data, obj_ptr->data);
+PHP_METHOD(GL_Math_Vec3, normalized)
+{
+    zval *vec_zval;
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "O", &vec_zval,  phpglfw_math_vec3_ce) == FAILURE) {
+        return;
+    }
+
+    object_init_ex(return_value, phpglfw_math_vec3_ce);
+    phpglfw_math_vec3_object *res_ptr = phpglfw_math_vec3_objectptr_from_zobj_p(Z_OBJ_P(return_value));
+    phpglfw_math_vec3_object *in_obj =  phpglfw_math_vec3_objectptr_from_zobj_p(Z_OBJ_P(vec_zval));
+
+    vec3_norm(res_ptr->data, in_obj->data);
 }
 
 PHP_METHOD(GL_Math_Vec3, abs)
@@ -1367,19 +1387,29 @@ PHP_METHOD(GL_Math_Vec4, distance2)
 
 PHP_METHOD(GL_Math_Vec4, normalize)
 {
-	if (zend_parse_parameters_none() == FAILURE) {
-		RETURN_THROWS();
-	}
+    if (zend_parse_parameters_none() == FAILURE) {
+        RETURN_THROWS();
+    }
 
     zval *obj;
     obj = getThis();
     phpglfw_math_vec4_object *obj_ptr = phpglfw_math_vec4_objectptr_from_zobj_p(Z_OBJ_P(obj));
 
-    // create new vec
-    object_init_ex(return_value, phpglfw_math_vec4_ce);
-    phpglfw_math_vec4_object *resobj = phpglfw_math_vec4_objectptr_from_zobj_p(Z_OBJ_P(return_value));
+    vec4_norm(obj_ptr->data, obj_ptr->data);
+}
 
-    vec4_norm(resobj->data, obj_ptr->data);
+PHP_METHOD(GL_Math_Vec4, normalized)
+{
+    zval *vec_zval;
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "O", &vec_zval,  phpglfw_math_vec4_ce) == FAILURE) {
+        return;
+    }
+
+    object_init_ex(return_value, phpglfw_math_vec4_ce);
+    phpglfw_math_vec4_object *res_ptr = phpglfw_math_vec4_objectptr_from_zobj_p(Z_OBJ_P(return_value));
+    phpglfw_math_vec4_object *in_obj =  phpglfw_math_vec4_objectptr_from_zobj_p(Z_OBJ_P(vec_zval));
+
+    vec4_norm(res_ptr->data, in_obj->data);
 }
 
 PHP_METHOD(GL_Math_Vec4, abs)
@@ -1572,6 +1602,53 @@ static zval *phpglfw_math_quat_write_prop_handler(zend_object *object, zend_stri
  */
 static int phpglfw_math_quat_do_op_handler(zend_uchar opcode, zval *result, zval *op1, zval *op2)
 {
+    object_init_ex(result, phpglfw_math_quat_ce);
+    phpglfw_math_quat_object *resobj = phpglfw_math_quat_objectptr_from_zobj_p(Z_OBJ_P(result));
+
+    // if left and right are both quat...
+    if (
+        Z_TYPE_P(op1) == IS_OBJECT && Z_OBJCE_P(op1) == phpglfw_math_quat_ce &&
+        Z_TYPE_P(op2) == IS_OBJECT && Z_OBJCE_P(op2) == phpglfw_math_quat_ce    ) {
+        phpglfw_math_quat_object *quatobj1 = phpglfw_math_quat_objectptr_from_zobj_p(Z_OBJ_P(op1));
+        phpglfw_math_quat_object *quatobj2 = phpglfw_math_quat_objectptr_from_zobj_p(Z_OBJ_P(op2));
+
+        switch (opcode) {
+        case ZEND_ADD:
+            quat_add(resobj->data, quatobj1->data, quatobj2->data);
+            return SUCCESS;
+        case ZEND_SUB:
+            quat_sub(resobj->data, quatobj1->data, quatobj2->data);
+            return SUCCESS;
+        case ZEND_MUL:
+            quat_mul(resobj->data, quatobj1->data, quatobj2->data);
+            return SUCCESS;
+        default:
+            return FAILURE;
+        }
+    }
+    // left is quat, right is scalar
+    else if (
+        Z_TYPE_P(op1) == IS_OBJECT && Z_OBJCE_P(op1) == phpglfw_math_quat_ce &&
+        (Z_TYPE_P(op2) == IS_LONG || Z_TYPE_P(op2) == IS_DOUBLE)
+    ) {
+        phpglfw_math_quat_object *quatobj1 = phpglfw_math_quat_objectptr_from_zobj_p(Z_OBJ_P(op1));
+
+        // get scalar value
+        if (Z_TYPE_P(op2) == IS_LONG) {
+            convert_to_double(op2);
+        }
+
+        switch (opcode) {
+        case ZEND_MUL:
+            quat_mul_scalar(resobj->data, quatobj1->data, Z_DVAL_P(op2));
+            return SUCCESS;
+        case ZEND_DIV:
+            quat_div_scalar(resobj->data, quatobj1->data, Z_DVAL_P(op2));
+            return SUCCESS;
+        default:
+            return FAILURE;
+        }
+    }
     return FAILURE;
 }
 
@@ -1667,6 +1744,33 @@ PHP_METHOD(GL_Math_Quat, fromMat4)
 
     phpglfw_math_mat4_object *mat_ptr = phpglfw_math_mat4_objectptr_from_zobj_p(Z_OBJ_P(mat_zval));
     quat_from_mat4x4(res_ptr->data, mat_ptr->data);
+}
+
+PHP_METHOD(GL_Math_Quat, normalize)
+{
+    if (zend_parse_parameters_none() == FAILURE) {
+        RETURN_THROWS();
+    }
+
+    zval *obj;
+    obj = getThis();
+    phpglfw_math_quat_object *obj_ptr = phpglfw_math_quat_objectptr_from_zobj_p(Z_OBJ_P(obj));
+
+    quat_norm(obj_ptr->data, obj_ptr->data);
+}
+
+PHP_METHOD(GL_Math_Quat, normalized)
+{
+    zval *quat_zval;
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "O", &quat_zval,  phpglfw_math_quat_ce) == FAILURE) {
+        return;
+    }
+
+    object_init_ex(return_value, phpglfw_math_quat_ce);
+    phpglfw_math_quat_object *res_ptr = phpglfw_math_quat_objectptr_from_zobj_p(Z_OBJ_P(return_value));
+    phpglfw_math_quat_object *in_obj =  phpglfw_math_quat_objectptr_from_zobj_p(Z_OBJ_P(quat_zval));
+
+    quat_norm(res_ptr->data, in_obj->data);
 }
 
 PHP_METHOD(GL_Math_Quat, length)

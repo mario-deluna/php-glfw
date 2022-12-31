@@ -80,8 +80,8 @@ namespace GL\Math
     class GLM {
         public static function radians(float $degrees) : float {}
         public static function angle(float $radians) : float {}
-        public static function triangleNormal(GL\Math\Vec3 $p1, \GL\Math\Vec3 $p2, \GL\Math\Vec3 $p3) : \GL\Math\Vec3 {}
-        public static function normalize(GL\Math\Vec2|GL\Math\Vec3|GL\Math\Vec4 $vec) : GL\Math\Vec2|GL\Math\Vec3|GL\Math\Vec4 {}
+        public static function triangleNormal(Vec3 $p1, Vec3 $p2, Vec3 $p3) : Vec3 {}
+        public static function normalize(Vec2|Vec3|Vec4 $vec) : Vec2|Vec3|Vec4 {}
     }
 
  
@@ -92,7 +92,8 @@ namespace GL\Math
         public function dot(Vec2 $right) : float {}
         public function distance(Vec2 $right) : float {}
         public function distance2(Vec2 $right) : float {}
-        public function normalize() : Vec2 {}
+        public function normalize() : void {}
+        public static function normalized(Vec2 $vec) : Vec2 {}
         public function abs() : Vec2 {}
         public function __toString() : string {}
     }
@@ -104,7 +105,8 @@ namespace GL\Math
         public function dot(Vec3 $right) : float {}
         public function distance(Vec3 $right) : float {}
         public function distance2(Vec3 $right) : float {}
-        public function normalize() : Vec3 {}
+        public function normalize() : void {}
+        public static function normalized(Vec3 $vec) : Vec3 {}
         public function abs() : Vec3 {}
         public function cross(Vec3 $right) : Vec3 {}
         public function __toString() : string {}
@@ -117,7 +119,8 @@ namespace GL\Math
         public function dot(Vec4 $right) : float {}
         public function distance(Vec4 $right) : float {}
         public function distance2(Vec4 $right) : float {}
-        public function normalize() : Vec4 {}
+        public function normalize() : void {}
+        public static function normalized(Vec4 $vec) : Vec4 {}
         public function abs() : Vec4 {}
         public function __toString() : string {}
     }
@@ -126,6 +129,8 @@ namespace GL\Math
         public function __construct(?float $w = null, ?float $x = null, ?float $y = null, ?float $z = null) {}
         public function copy() : Quat {}
         public static function fromMat4(Mat4 $matrix) : Quat {}
+        public function normalize() : void {}
+        public static function normalized(Quat $quat) : Quat {} 
         public function length() : float {}
         public function eulerAngles() : Vec3 {}
         public function rotate(float $angle, Vec3 $axis) : void {}

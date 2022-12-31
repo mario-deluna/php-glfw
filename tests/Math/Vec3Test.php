@@ -143,7 +143,15 @@ class Vec3Test extends \PHPUnit\Framework\TestCase
     public function testNormalize() : void
     {
         $vec = new Vec3(5.0, 12.5, 7.5);
-        $r = $vec->normalize();
+        $vec->normalize();
+        
+        $this->assertEqualsVector(0.324, 0.811, 0.486, $vec);
+    }
+
+    public function testNormalized() : void
+    {
+        $vec = new Vec3(5.0, 12.5, 7.5);
+        $r = Vec3::normalized($vec);
         
         $this->assertEqualsVector(0.324, 0.811, 0.486, $r);
     }

@@ -52,6 +52,20 @@ class QuatTest extends \PHPUnit\Framework\TestCase
         $this->assertEqualsWithDelta(5.4772257804870605, $q->length(), 0.005);
     }
 
+    public function testNormalize() : void
+    {
+        $q = new Quat(1, 2, 3, 4);
+        $q->normalize();
+        $this->assertEqualsQuat(0.182574, 0.365148, 0.547723, 0.730297, $q);
+    }
+
+    public function testNormalized() : void
+    {
+        $q = new Quat(1, 2, 3, 4);
+        $q = Quat::normalized($q);
+        $this->assertEqualsQuat(0.182574, 0.365148, 0.547723, 0.730297, $q);
+    }
+
     public function testRotate() : void 
     {
         // test rotate on x axis
@@ -159,5 +173,64 @@ class QuatTest extends \PHPUnit\Framework\TestCase
 
         $q = Quat::fromMat4($m);
         $this->assertEqualsQuat(0.732538, 0.46194, 0.191342, 0.46194, $q);
+    }
+
+    public function testOperationAddition()
+    {
+        $q1 = new Quat(1, 2, 3, 4);
+        $q2 = new Quat(5, 6, 7, 8);
+
+        $q3 = $q1 + $q2;
+        $this->assertEqualsQuat(6, 8, 10, 12, $q3);
+
+        // test with switched operands
+        $q3 = $q2 + $q1;
+        $this->assertEqualsQuat(6, 8, 10, 12, $q3);
+    }
+
+    public function testOperationSubtraction()
+    {
+        $q1 = new Quat(1, 2, 3, 4);
+        $q2 = new Quat(5, 6, 7, 8);
+
+        $q3 = $q1 - $q2;
+        $this->assertEqualsQuat(-4, -4, -4, -4, $q3);
+
+        // test with switched operands
+        $q3 = $q2 - $q1;
+        $this->assertEqualsQuat(4, 4, 4, 4, $q3);
+    }
+
+    public function testOperationMultiplication()
+    {
+        $q1 = new Quat(1, 2, 3, 4);
+        $q2 = new Quat(5, 6, 7, 8);
+
+        $q3 = $q1 * $q2;
+        $this->assertEqualsQuat(-60, 12, 30, 24, $q3);
+
+        // test with switched operands
+        $q3 = $q2 * $q1;
+        $this->assertEqualsQuat(-60, 20, 14, 32, $q3);
+    }
+
+    public function testOperationScalarMultiplication()
+    {
+        $q = new Quat(1, 2, 3, 4);
+
+        $q2 = $q * 2;
+        $this->assertEqualsQuat(2, 4, 6, 8, $q2);
+
+        // test with switched operands
+        $q2 = 2 * $q;
+        $this->assertEqualsQuat(2, 4, 6, 8, $q2);
+    }
+
+    public function testOperationScalarDivision()
+    {
+        $q = new Quat(1, 2, 3, 4);
+
+        $q2 = $q / 2;
+        $this->assertEqualsQuat(0.5, 1, 1.5, 2, $q2);
     }
 }

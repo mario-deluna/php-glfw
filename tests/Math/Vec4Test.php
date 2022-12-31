@@ -152,7 +152,15 @@ class Vec4Test extends \PHPUnit\Framework\TestCase
     public function testNormalize() : void
     {
         $vec = new Vec4(5.0, 12.5, 7.5, 1.0);
-        $r = $vec->normalize();
+        $vec->normalize();
+
+        $this->assertEqualsVector(0.324, 0.811, 0.486, 0.064, $vec);
+    }
+
+    public function testNormalized() : void
+    {
+        $vec = new Vec4(5.0, 12.5, 7.5, 1.0);
+        $r = Vec4::normalized($vec);
 
         $this->assertEqualsVector(0.324, 0.811, 0.486, 0.064, $r);
     }
