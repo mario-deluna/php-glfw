@@ -175,9 +175,9 @@ class Vec4Test extends \PHPUnit\Framework\TestCase
     public function testAbs() : void
     {
         $vec = new Vec4(-5.0, 12.5, -7.5, 5.0);
-        $r = $vec->abs();
+        $vec->abs();
 
-        $this->assertEqualsVector(5.0, 12.5, 7.5, 5.0, $r);
+        $this->assertEqualsVector(5.0, 12.5, 7.5, 5.0, $vec);
     }
 
     public function testDot() : void

@@ -1,5 +1,5 @@
 /* This is a generated file, edit the .stub.php file instead.
- * Stub hash: 52700ea8d2662efb6c4ca0b6bc189e1b3b801d0e */
+ * Stub hash: 77308ef8fe79b15a54ffa99e3045de178000298d */
 
 ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_glCullFace, 0, 1, IS_VOID, 0)
 	ZEND_ARG_TYPE_INFO(0, mode, IS_LONG, 0)
@@ -2300,7 +2300,7 @@ ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(arginfo_class_GL_Math_Vec2_normalized, 0,
 	ZEND_ARG_OBJ_INFO(0, vec, GL\\Math\\Vec2, 0)
 ZEND_END_ARG_INFO()
 
-#define arginfo_class_GL_Math_Vec2_abs arginfo_class_GL_Math_Vec2_copy
+#define arginfo_class_GL_Math_Vec2_abs arginfo_glFinish
 
 #define arginfo_class_GL_Math_Vec2___toString arginfo_glfwGetVersionString
 
@@ -2329,7 +2329,7 @@ ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(arginfo_class_GL_Math_Vec3_normalized, 0,
 	ZEND_ARG_OBJ_INFO(0, vec, GL\\Math\\Vec3, 0)
 ZEND_END_ARG_INFO()
 
-#define arginfo_class_GL_Math_Vec3_abs arginfo_class_GL_Math_Vec3_copy
+#define arginfo_class_GL_Math_Vec3_abs arginfo_glFinish
 
 ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(arginfo_class_GL_Math_Vec3_cross, 0, 1, GL\\Math\\Vec3, 0)
 	ZEND_ARG_OBJ_INFO(0, right, GL\\Math\\Vec3, 0)
@@ -2363,7 +2363,7 @@ ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(arginfo_class_GL_Math_Vec4_normalized, 0,
 	ZEND_ARG_OBJ_INFO(0, vec, GL\\Math\\Vec4, 0)
 ZEND_END_ARG_INFO()
 
-#define arginfo_class_GL_Math_Vec4_abs arginfo_class_GL_Math_Vec4_copy
+#define arginfo_class_GL_Math_Vec4_abs arginfo_glFinish
 
 #define arginfo_class_GL_Math_Vec4___toString arginfo_glfwGetVersionString
 

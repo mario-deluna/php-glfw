@@ -94,7 +94,7 @@ namespace GL\Math
         public function distance2(Vec2 $right) : float {}
         public function normalize() : void {}
         public static function normalized(Vec2 $vec) : Vec2 {}
-        public function abs() : Vec2 {}
+        public function abs() : void {}
         public function __toString() : string {}
     }
  
@@ -107,7 +107,7 @@ namespace GL\Math
         public function distance2(Vec3 $right) : float {}
         public function normalize() : void {}
         public static function normalized(Vec3 $vec) : Vec3 {}
-        public function abs() : Vec3 {}
+        public function abs() : void {}
         public function cross(Vec3 $right) : Vec3 {}
         public function __toString() : string {}
     }
@@ -121,7 +121,7 @@ namespace GL\Math
         public function distance2(Vec4 $right) : float {}
         public function normalize() : void {}
         public static function normalized(Vec4 $vec) : Vec4 {}
-        public function abs() : Vec4 {}
+        public function abs() : void {}
         public function __toString() : string {}
     }
  

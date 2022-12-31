@@ -494,12 +494,7 @@ PHP_METHOD(GL_Math_Vec2, abs)
     zval *obj;
     obj = getThis();
     phpglfw_math_vec2_object *obj_ptr = phpglfw_math_vec2_objectptr_from_zobj_p(Z_OBJ_P(obj));
-
-    // create new vec
-    object_init_ex(return_value, phpglfw_math_vec2_ce);
-    phpglfw_math_vec2_object *resobj = phpglfw_math_vec2_objectptr_from_zobj_p(Z_OBJ_P(return_value));
-
-    vec2_abs(resobj->data, obj_ptr->data);
+    vec2_abs(obj_ptr->data, obj_ptr->data);
 }
 
 
@@ -940,12 +935,7 @@ PHP_METHOD(GL_Math_Vec3, abs)
     zval *obj;
     obj = getThis();
     phpglfw_math_vec3_object *obj_ptr = phpglfw_math_vec3_objectptr_from_zobj_p(Z_OBJ_P(obj));
-
-    // create new vec
-    object_init_ex(return_value, phpglfw_math_vec3_ce);
-    phpglfw_math_vec3_object *resobj = phpglfw_math_vec3_objectptr_from_zobj_p(Z_OBJ_P(return_value));
-
-    vec3_abs(resobj->data, obj_ptr->data);
+    vec3_abs(obj_ptr->data, obj_ptr->data);
 }
 
 PHP_METHOD(GL_Math_Vec3, cross)
@@ -1421,12 +1411,7 @@ PHP_METHOD(GL_Math_Vec4, abs)
     zval *obj;
     obj = getThis();
     phpglfw_math_vec4_object *obj_ptr = phpglfw_math_vec4_objectptr_from_zobj_p(Z_OBJ_P(obj));
-
-    // create new vec
-    object_init_ex(return_value, phpglfw_math_vec4_ce);
-    phpglfw_math_vec4_object *resobj = phpglfw_math_vec4_objectptr_from_zobj_p(Z_OBJ_P(return_value));
-
-    vec4_abs(resobj->data, obj_ptr->data);
+    vec4_abs(obj_ptr->data, obj_ptr->data);
 }
 
 

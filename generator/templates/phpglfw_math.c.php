@@ -737,12 +737,7 @@ PHP_METHOD(<?php echo $obj->getFullNamespaceConstString(); ?>, abs)
     zval *obj;
     obj = getThis();
     <?php echo $obj->getObjectName(); ?> *obj_ptr = <?php echo $obj->objectFromZObjFunctionName(); ?>(Z_OBJ_P(obj));
-
-    // create new vec
-    object_init_ex(return_value, <?php echo $obj->getClassEntryName(); ?>);
-    <?php echo $obj->getObjectName(); ?> *resobj = <?php echo $obj->objectFromZObjFunctionName(); ?>(Z_OBJ_P(return_value));
-
-    <?php echo $obj->getVecFunction('abs'); ?>(resobj->data, obj_ptr->data);
+    <?php echo $obj->getVecFunction('abs'); ?>(obj_ptr->data, obj_ptr->data);
 }
 
 <?php if ($obj->size === 3) : ?>

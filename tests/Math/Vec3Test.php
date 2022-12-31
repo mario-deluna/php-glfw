@@ -166,9 +166,9 @@ class Vec3Test extends \PHPUnit\Framework\TestCase
     public function testAbs() : void
     {
         $vec = new Vec3(5.0, -12.5, -7.5);
-        $r = $vec->abs();
+        $vec->abs();
         
-        $this->assertEqualsVector(5, 12.5, 7.5, $r);
+        $this->assertEqualsVector(5, 12.5, 7.5, $vec);
     }
 
     public function testDot() : void
