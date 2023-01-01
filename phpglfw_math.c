@@ -2087,13 +2087,15 @@ void phpglfw_math_mat4_array_set_handler(zend_object *object, zval *offset, zval
  */
 static int phpglfw_math_mat4_do_op_ex_handler(zend_uchar opcode, zval *result, zval *op1, zval *op2)
 {
-    object_init_ex(result, phpglfw_math_mat4_ce);
-    phpglfw_math_mat4_object *resobj = phpglfw_math_mat4_objectptr_from_zobj_p(Z_OBJ_P(result));
 
     // if left and right are both mat...
     if (
         Z_TYPE_P(op1) == IS_OBJECT && Z_OBJCE_P(op1) == phpglfw_math_mat4_ce &&
         Z_TYPE_P(op2) == IS_OBJECT && Z_OBJCE_P(op2) == phpglfw_math_mat4_ce    ) {
+
+        object_init_ex(result, phpglfw_math_mat4_ce);
+        phpglfw_math_mat4_object *resobj = phpglfw_math_mat4_objectptr_from_zobj_p(Z_OBJ_P(result));
+
         phpglfw_math_mat4_object *matobj1 = phpglfw_math_mat4_objectptr_from_zobj_p(Z_OBJ_P(op1));
         phpglfw_math_mat4_object *matobj2 = phpglfw_math_mat4_objectptr_from_zobj_p(Z_OBJ_P(op2));
 
@@ -2116,9 +2118,24 @@ static int phpglfw_math_mat4_do_op_ex_handler(zend_uchar opcode, zval *result, z
             return FAILURE;
         }
     }
-    else {
-        return FAILURE;
+    // if left is matrix and right is vec3 (mul)
+    else if (
+        Z_TYPE_P(op1) == IS_OBJECT && Z_OBJCE_P(op1) == phpglfw_math_mat4_ce &&
+        Z_TYPE_P(op2) == IS_OBJECT && Z_OBJCE_P(op2) == phpglfw_math_vec3_ce &&
+        opcode == ZEND_MUL
+    ) {
+        object_init_ex(result, phpglfw_math_vec3_ce);
+        phpglfw_math_vec3_object *resobj = phpglfw_math_vec3_objectptr_from_zobj_p(Z_OBJ_P(result));
+
+        phpglfw_math_mat4_object *matobj = phpglfw_math_mat4_objectptr_from_zobj_p(Z_OBJ_P(op1));
+        phpglfw_math_vec3_object *vecobj = phpglfw_math_vec3_objectptr_from_zobj_p(Z_OBJ_P(op2));
+
+        mat4x4_mul_vec3(resobj->data, matobj->data, vecobj->data);
+
+        return SUCCESS;
     }
+
+    return FAILURE;
 }
 static int phpglfw_math_mat4_do_op_handler(zend_uchar opcode, zval *result, zval *op1, zval *op2)
 {

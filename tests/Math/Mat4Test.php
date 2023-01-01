@@ -314,6 +314,36 @@ class Mat4Test extends \PHPUnit\Framework\TestCase
         );
     }
 
+    public function testOperationMultiplyVector3() : void
+    {
+        $v = new Vec3(0.5, 1, 5);
+        $m = new Mat4;
+
+        $m->translate(new Vec3(10, 0, 0));
+        $m->scale(new Vec3(5, 5, 5));
+        
+        $v2 = $m * $v;
+
+        $this->assertEqualsVector3(12.5, 5, 25, $v2);
+
+        // now with the stupid test matrix
+        $m = $this->createTestMatrix();
+        $v = new Vec3(1, 2, 3);
+
+        $v2 = $m * $v;
+
+        $this->assertEqualsVector3(51, 58, 65, $v2);
+
+        // test a rotation 
+        $m = new Mat4;
+        $m->rotate(GLM::radians(45), new Vec3(0, 0, 1));
+        $v = new Vec3(0.5, 1, 5);
+
+        $v2 = $m * $v;
+
+        $this->assertEqualsVector3(-0.353553, 1.06066, 5, $v2);
+    }
+
     public function testPerspective() : void
     {
         $m = new Mat4;
