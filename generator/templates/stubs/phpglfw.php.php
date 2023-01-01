@@ -147,6 +147,7 @@ namespace GL\Math
          * 
          * @param <?php echo $obj->name; ?> $left The left vector.
          * @param <?php echo $obj->name; ?> $right The right vector.
+         * @return float The dot product of the left and right vectors.
          */
         public static function dot(<?php echo $obj->name; ?> $left, <?php echo $obj->name; ?> $right) : float {}
 
@@ -174,16 +175,16 @@ namespace GL\Math
         /**
          * normalizes the current vector
          * 
-         * @return <?php echo $obj->name; ?>
+         * @return void
          */
-        public function normalize() : <?php echo $obj->name; ?> {}
+        public function normalize() : void {}
 
         /**
          * Makes each component x if x >= 0; otherwise, -x
          * 
          * @return void
          */
-        public function abs() : <?php echo $obj->name; ?> {}
+        public function abs() : void {}
         
 <?php if ($obj->size === 3) : ?>
         /**
@@ -193,7 +194,9 @@ namespace GL\Math
          * $cross = <?php echo $obj->name; ?>::cross($left, $right);
          * ```
          * 
-         * @return <?php echo $obj->name; ?>
+         * @param <?php echo $obj->name; ?> $right The right vector.  
+         * @param <?php echo $obj->name; ?> $left The left vector.       
+         * @return <?php echo $obj->name; ?> The cross product of the left and right vectors.
          */
         public static function cross(<?php echo $obj->name; ?> $right) : <?php echo $obj->name; ?> {}
 <?php endif; ?>
@@ -210,6 +213,9 @@ namespace GL\Math
          *     0, 0, 0, 1
          * ]);
          * ```
+         *
+         * @param array $values The values to use for the matrix. (flat)
+         * @return <?php echo $obj->name; ?> The new matrix.
          */
         public static function fromArray(array $values) : <?php echo $obj->name; ?> {}
 
@@ -219,6 +225,9 @@ namespace GL\Math
          * ```php
          * $inverse = <?php echo $obj->name; ?>::inverse($matrix);
          * ```
+         *
+         * @param <?php echo $obj->name; ?> $matrix The matrix to invert.
+         * @return <?php echo $obj->name; ?> The inverted matrix.
          */
         public static function inverted(<?php echo $obj->name; ?> $matrix) : <?php echo $obj->name; ?> {}
 
@@ -239,6 +248,97 @@ namespace GL\Math
         public function translate(Vec3 $translation) : void {}
         public function rotate(float $angle, Vec3 $axis) : void {}
         public function determinant() : float {}
+<?php elseif($obj->isQuat()) : ?>
+
+        /**
+         * Constructs and returns a new quaternion based on the given Mat4 matrix
+         *
+         * ```php
+         * $quat = <?php echo $obj->name; ?>::fromMat4($matrix);
+         * ```
+         *
+         * @param Mat4 $matrix The matrix to construct the quaternion from.
+         * @return <?php echo $obj->name; ?> The constructed quaternion.
+         */
+        public static function fromMat4(Mat4 $matrix) : <?php echo $obj->name; ?> {}
+
+        /**
+         * Constructs and returns a new quaternion based on the given Vec4 vector.
+         * The quaternion is arragned as (w, x, y, z), while the vector is arranged as (x, y, z, w).
+         * This method will swap the x and w components.
+         *
+         * ```php
+         * $quat = <?php echo $obj->name; ?>::fromVec4($vector);
+         * ```
+         *
+         * @param Vec4 $vector The vector to construct the quaternion from.
+         * @return <?php echo $obj->name; ?> The constructed quaternion.
+         */
+        public static function fromVec4(Vec4 $vec) : <?php echo $obj->name; ?> {}
+
+        /**
+         * Constructs and returns a normalized quaternion based on the given one
+         *
+         * ```php
+         * $normalized = <?php echo $obj->name; ?>::normalized($quat);
+         * ```
+         *
+         * @param <?php echo $obj->name; ?> $quat The quaternion to normalize.
+         * @return <?php echo $obj->name; ?> The normalized quaternion.
+         */
+        public static function normalized(<?php echo $obj->name; ?> $quat) : <?php echo $obj->name; ?> {} 
+
+        /**
+         * The same as `normalized()`, but modifies the current quaternion instead of creating a new one.
+         *
+         * ```php
+         * $quat->normalize();
+         * ```
+         */
+        public function normalize() : void {}
+
+        /**
+         * Returns the length of the quaternion
+         * 
+         * ```php
+         * $length = $quat->length();
+         * ```
+         */
+        public function length() : float {}
+
+        /**
+         * Returns the quaternion represented as euler angles (in radians)
+         * 
+         * ```php
+         * $euler = $quat->eulerAngles();
+         * ```
+         *
+         * @return Vec3 The euler angles.
+         */
+        public function eulerAngles() : Vec3 {}
+
+        /**
+         * Rotates the quaternion by the given angle (in radians) around the given axis
+         * 
+         * ```php
+         * $quat->rotate(GLM::radians(45.0), new Vec3(0, 1, 0));
+         * ```
+         * 
+         * @param float $angle The angle to rotate by (in radians)
+         * @param Vec3 $axis The axis to rotate around
+         */
+        public function rotate(float $angle, Vec3 $axis) : void {}
+
+        /**
+         * Constructs a Mat4 matrix based on the current quaternion
+         *
+         * ```php
+         * $matrix = $quat->mat4();
+         * ```
+         *
+         * @return Mat4 The matrix representation of the quaternion.
+         */
+        public function mat4() : Mat4 {}
 <?php endif; ?>
         public function __toString() : string {}
     }

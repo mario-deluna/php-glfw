@@ -73,6 +73,10 @@ arguments
 :    1. `\Vec2` `$left` The left vector.
     2. `\Vec2` `$right` The right vector.
 
+returns
+
+:    `float` The dot product of the left and right vectors.
+
 ---
      
 ### `distance`
@@ -126,12 +130,12 @@ returns
 normalizes the current vector
 
 ```php
-function normalize() : \GL\Math\Vec2
+function normalize() : void
 ```
 
 returns
 
-:    `\Vec2` 
+:    `void` 
 
 ---
      
@@ -140,7 +144,7 @@ returns
 Makes each component x if x >= 0; otherwise, -x
 
 ```php
-function abs() : \GL\Math\Vec2
+function abs() : void
 ```
 
 returns

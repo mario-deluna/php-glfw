@@ -604,6 +604,16 @@ class ExtGenerator
                     'docParser' => $this->docParser,
                     'vec' => $mobj,
                 ], false));
+            } elseif ($mobj->isMatrix()) {
+                file_put_contents(GEN_PATH_EXT . '/docs/API/Math/' . $mobj->name . '.md', $this->generateTemplate('docs/math_mat.md', [
+                    'docParser' => $this->docParser,
+                    'mat' => $mobj,
+                ], false));
+            }  elseif ($mobj->isQuat()) {
+                file_put_contents(GEN_PATH_EXT . '/docs/API/Math/' . $mobj->name . '.md', $this->generateTemplate('docs/math_quat.md', [
+                    'docParser' => $this->docParser,
+                    'quat' => $mobj,
+                ], false));
             }
         }
     }

@@ -150,6 +150,7 @@ namespace GL\Math
          * 
          * @param Vec2 $left The left vector.
          * @param Vec2 $right The right vector.
+         * @return float The dot product of the left and right vectors.
          */
         public static function dot(Vec2 $left, Vec2 $right) : float {}
 
@@ -177,15 +178,16 @@ namespace GL\Math
         /**
          * normalizes the current vector
          * 
-         * @return Vec2         */
-        public function normalize() : Vec2 {}
+         * @return void
+         */
+        public function normalize() : void {}
 
         /**
          * Makes each component x if x >= 0; otherwise, -x
          * 
          * @return void
          */
-        public function abs() : Vec2 {}
+        public function abs() : void {}
         
         public function __toString() : string {}
     }
@@ -274,6 +276,7 @@ namespace GL\Math
          * 
          * @param Vec3 $left The left vector.
          * @param Vec3 $right The right vector.
+         * @return float The dot product of the left and right vectors.
          */
         public static function dot(Vec3 $left, Vec3 $right) : float {}
 
@@ -301,15 +304,16 @@ namespace GL\Math
         /**
          * normalizes the current vector
          * 
-         * @return Vec3         */
-        public function normalize() : Vec3 {}
+         * @return void
+         */
+        public function normalize() : void {}
 
         /**
          * Makes each component x if x >= 0; otherwise, -x
          * 
          * @return void
          */
-        public function abs() : Vec3 {}
+        public function abs() : void {}
         
         /**
          * Returns the cross product of this vector and another
@@ -318,7 +322,10 @@ namespace GL\Math
          * $cross = Vec3::cross($left, $right);
          * ```
          * 
-         * @return Vec3         */
+         * @param Vec3 $right The right vector.  
+         * @param Vec3 $left The left vector.       
+         * @return Vec3 The cross product of the left and right vectors.
+         */
         public static function cross(Vec3 $right) : Vec3 {}
         public function __toString() : string {}
     }
@@ -417,6 +424,7 @@ namespace GL\Math
          * 
          * @param Vec4 $left The left vector.
          * @param Vec4 $right The right vector.
+         * @return float The dot product of the left and right vectors.
          */
         public static function dot(Vec4 $left, Vec4 $right) : float {}
 
@@ -444,15 +452,16 @@ namespace GL\Math
         /**
          * normalizes the current vector
          * 
-         * @return Vec4         */
-        public function normalize() : Vec4 {}
+         * @return void
+         */
+        public function normalize() : void {}
 
         /**
          * Makes each component x if x >= 0; otherwise, -x
          * 
          * @return void
          */
-        public function abs() : Vec4 {}
+        public function abs() : void {}
         
         public function __toString() : string {}
     }
@@ -465,6 +474,96 @@ namespace GL\Math
          */
         public function __construct(?float $w = null, ?float $x = null, ?float $y = null, ?float $z = null) {}
 
+
+        /**
+         * Constructs and returns a new quaternion based on the given Mat4 matrix
+         *
+         * ```php
+         * $quat = Quat::fromMat4($matrix);
+         * ```
+         *
+         * @param Mat4 $matrix The matrix to construct the quaternion from.
+         * @return Quat The constructed quaternion.
+         */
+        public static function fromMat4(Mat4 $matrix) : Quat {}
+
+        /**
+         * Constructs and returns a new quaternion based on the given Vec4 vector.
+         * The quaternion is arragned as (w, x, y, z), while the vector is arranged as (x, y, z, w).
+         * This method will swap the x and w components.
+         *
+         * ```php
+         * $quat = Quat::fromVec4($vector);
+         * ```
+         *
+         * @param Vec4 $vector The vector to construct the quaternion from.
+         * @return Quat The constructed quaternion.
+         */
+        public static function fromVec4(Vec4 $vec) : Quat {}
+
+        /**
+         * Constructs and returns a normalized quaternion based on the given one
+         *
+         * ```php
+         * $normalized = Quat::normalized($quat);
+         * ```
+         *
+         * @param Quat $quat The quaternion to normalize.
+         * @return Quat The normalized quaternion.
+         */
+        public static function normalized(Quat $quat) : Quat {} 
+
+        /**
+         * The same as `normalized()`, but modifies the current quaternion instead of creating a new one.
+         *
+         * ```php
+         * $quat->normalize();
+         * ```
+         */
+        public function normalize() : void {}
+
+        /**
+         * Returns the length of the quaternion
+         * 
+         * ```php
+         * $length = $quat->length();
+         * ```
+         */
+        public function length() : float {}
+
+        /**
+         * Returns the quaternion represented as euler angles (in radians)
+         * 
+         * ```php
+         * $euler = $quat->eulerAngles();
+         * ```
+         *
+         * @return Vec3 The euler angles.
+         */
+        public function eulerAngles() : Vec3 {}
+
+        /**
+         * Rotates the quaternion by the given angle (in radians) around the given axis
+         * 
+         * ```php
+         * $quat->rotate(GLM::radians(45.0), new Vec3(0, 1, 0));
+         * ```
+         * 
+         * @param float $angle The angle to rotate by (in radians)
+         * @param Vec3 $axis The axis to rotate around
+         */
+        public function rotate(float $angle, Vec3 $axis) : void {}
+
+        /**
+         * Constructs a Mat4 matrix based on the current quaternion
+         *
+         * ```php
+         * $matrix = $quat->mat4();
+         * ```
+         *
+         * @return Mat4 The matrix representation of the quaternion.
+         */
+        public function mat4() : Mat4 {}
         public function __toString() : string {}
     }
  
@@ -488,6 +587,9 @@ namespace GL\Math
          *     0, 0, 0, 1
          * ]);
          * ```
+         *
+         * @param array $values The values to use for the matrix. (flat)
+         * @return Mat4 The new matrix.
          */
         public static function fromArray(array $values) : Mat4 {}
 
@@ -497,6 +599,9 @@ namespace GL\Math
          * ```php
          * $inverse = Mat4::inverse($matrix);
          * ```
+         *
+         * @param Mat4 $matrix The matrix to invert.
+         * @return Mat4 The inverted matrix.
          */
         public static function inverted(Mat4 $matrix) : Mat4 {}
 
