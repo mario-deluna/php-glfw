@@ -78,7 +78,7 @@ Having this integrated into the extension comes with a bunch of advantages:
    ```
  * Some OpenGL functions can directly accept the math structs as arguments. 
  
- 1. [Read more about math functions](https://phpgl.net/user-guide/math_functions.html)
+ 1. [Read more about math functions](https://phpgl.net/user-guide/math/math_functions.html)
 
 ### PHPGL - Buffers
 
@@ -121,7 +121,7 @@ Instead of porting function by function manually, PHP-GLFW parses the OpenGL spe
 
 > 1. [Full Documentation](https://phpgl.net) 
 > 2. [Getting Started Guide](https://phpgl.net/getting-started/window-creation.html) 
-> 3. [User Guide](https://phpgl.net/user-guide/index.html) 
+> 3. [User Guide](https://phpgl.net/user-guide/math/math_functions.html) 
 > 4. [API Docs](https://phpgl.net/API/Buffer/ByteBuffer.html) 
 
 ### Examples
