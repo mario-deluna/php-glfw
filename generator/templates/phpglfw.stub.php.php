@@ -104,6 +104,7 @@ namespace GL\Math
 <?php endif; ?>
 <?php elseif($obj->isMatrix()) : ?>
         public static function fromArray(array $values) : <?php echo $obj->name; ?> {}
+        public static function inverted(<?php echo $obj->name; ?> $matrix) : <?php echo $obj->name; ?> {}
         public function row(int $index) : Vec4 {}
         public function setRow(int $index, Vec4 $row) : void {}
         public function col(int $index) : Vec4 {}

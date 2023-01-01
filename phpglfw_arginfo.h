@@ -1,5 +1,5 @@
 /* This is a generated file, edit the .stub.php file instead.
- * Stub hash: 80f65463213f63c1f5203efecb9ae5156490aae8 */
+ * Stub hash: 91379a4909820881cc39be54e4d6a8f53bc94204 */
 
 ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_glCullFace, 0, 1, IS_VOID, 0)
 	ZEND_ARG_TYPE_INFO(0, mode, IS_LONG, 0)
@@ -2435,6 +2435,10 @@ ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(arginfo_class_GL_Math_Mat4_fromArray, 0, 
 	ZEND_ARG_TYPE_INFO(0, values, IS_ARRAY, 0)
 ZEND_END_ARG_INFO()
 
+ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(arginfo_class_GL_Math_Mat4_inverted, 0, 1, GL\\Math\\Mat4, 0)
+	ZEND_ARG_OBJ_INFO(0, matrix, GL\\Math\\Mat4, 0)
+ZEND_END_ARG_INFO()
+
 ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(arginfo_class_GL_Math_Mat4_row, 0, 1, GL\\Math\\Vec4, 0)
 	ZEND_ARG_TYPE_INFO(0, index, IS_LONG, 0)
 ZEND_END_ARG_INFO()
@@ -3311,6 +3315,7 @@ ZEND_METHOD(GL_Math_Quat, __toString);
 ZEND_METHOD(GL_Math_Mat4, __construct);
 ZEND_METHOD(GL_Math_Mat4, copy);
 ZEND_METHOD(GL_Math_Mat4, fromArray);
+ZEND_METHOD(GL_Math_Mat4, inverted);
 ZEND_METHOD(GL_Math_Mat4, row);
 ZEND_METHOD(GL_Math_Mat4, setRow);
 ZEND_METHOD(GL_Math_Mat4, col);
@@ -4095,6 +4100,7 @@ static const zend_function_entry class_GL_Math_Mat4_methods[] = {
 	ZEND_ME(GL_Math_Mat4, __construct, arginfo_class_GL_Math_Mat4___construct, ZEND_ACC_PUBLIC)
 	ZEND_ME(GL_Math_Mat4, copy, arginfo_class_GL_Math_Mat4_copy, ZEND_ACC_PUBLIC)
 	ZEND_ME(GL_Math_Mat4, fromArray, arginfo_class_GL_Math_Mat4_fromArray, ZEND_ACC_PUBLIC|ZEND_ACC_STATIC)
+	ZEND_ME(GL_Math_Mat4, inverted, arginfo_class_GL_Math_Mat4_inverted, ZEND_ACC_PUBLIC|ZEND_ACC_STATIC)
 	ZEND_ME(GL_Math_Mat4, row, arginfo_class_GL_Math_Mat4_row, ZEND_ACC_PUBLIC)
 	ZEND_ME(GL_Math_Mat4, setRow, arginfo_class_GL_Math_Mat4_setRow, ZEND_ACC_PUBLIC)
 	ZEND_ME(GL_Math_Mat4, col, arginfo_class_GL_Math_Mat4_col, ZEND_ACC_PUBLIC)

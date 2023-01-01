@@ -155,6 +155,7 @@ namespace GL\Math
         public function __construct() {}
         public function copy() : Mat4 {}
         public static function fromArray(array $values) : Mat4 {}
+        public static function inverted(Mat4 $matrix) : Mat4 {}
         public function row(int $index) : Vec4 {}
         public function setRow(int $index, Vec4 $row) : void {}
         public function col(int $index) : Vec4 {}

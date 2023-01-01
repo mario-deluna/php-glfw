@@ -201,8 +201,26 @@ namespace GL\Math
 
         /**
          * Constructs and returns a new matrix based on the given array of values
+         * 
+         * ```php
+         * $matrix = <?php echo $obj->name; ?>::fromArray([
+         *     1, 0, 0, 0,
+         *     0, 1, 0, 0,
+         *     0, 0, 1, 0,
+         *     0, 0, 0, 1
+         * ]);
+         * ```
          */
         public static function fromArray(array $values) : <?php echo $obj->name; ?> {}
+
+        /**
+         * Constructs and returns an inverse of the given matrix
+         * 
+         * ```php
+         * $inverse = <?php echo $obj->name; ?>::inverse($matrix);
+         * ```
+         */
+        public static function inverted(<?php echo $obj->name; ?> $matrix) : <?php echo $obj->name; ?> {}
 
         /**
          * Creates and returns a copy of the current matrix

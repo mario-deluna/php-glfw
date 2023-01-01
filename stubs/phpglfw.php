@@ -479,8 +479,26 @@ namespace GL\Math
 
         /**
          * Constructs and returns a new matrix based on the given array of values
+         * 
+         * ```php
+         * $matrix = Mat4::fromArray([
+         *     1, 0, 0, 0,
+         *     0, 1, 0, 0,
+         *     0, 0, 1, 0,
+         *     0, 0, 0, 1
+         * ]);
+         * ```
          */
         public static function fromArray(array $values) : Mat4 {}
+
+        /**
+         * Constructs and returns an inverse of the given matrix
+         * 
+         * ```php
+         * $inverse = Mat4::inverse($matrix);
+         * ```
+         */
+        public static function inverted(Mat4 $matrix) : Mat4 {}
 
         /**
          * Creates and returns a copy of the current matrix

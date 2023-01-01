@@ -413,6 +413,21 @@ class Mat4Test extends \PHPUnit\Framework\TestCase
         );
     }
 
+    public function testInverted()
+    {
+        $m = new Mat4;
+        $m->lookAt(new Vec3(10, 10, 10), new Vec3(50, -50, 50), new Vec3(0, 1, 0));
+        $m2 = Mat4::inverted($m);
+
+        $this->assertEqualsMatrix(
+            -0.707107, -0, 0.707107, -0,
+            0.514496, 0.685994, 0.514496, 0,
+            -0.485071, 0.727607, -0.485071, 0,
+            10, 10, 10, 1,
+            $m2
+        );
+    }
+
     public function testTranslate() : void
     {
         $m = $this->createTestMatrix();

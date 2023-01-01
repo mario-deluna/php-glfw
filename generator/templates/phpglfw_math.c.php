@@ -863,6 +863,20 @@ PHP_METHOD(<?php echo $obj->getFullNamespaceConstString(); ?>, fromArray)
     } ZEND_HASH_FOREACH_END();
 }
 
+PHP_METHOD(<?php echo $obj->getFullNamespaceConstString(); ?>, inverted)
+{
+    zval *mat_zval;
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "O", &mat_zval,  <?php echo $obj->getClassEntryName(); ?>) == FAILURE) {
+        return;
+    }
+
+    object_init_ex(return_value, <?php echo $obj->getClassEntryName(); ?>);
+    <?php echo $obj->getObjectName(); ?> *res_ptr = <?php echo $obj->objectFromZObjFunctionName(); ?>(Z_OBJ_P(return_value));
+    <?php echo $obj->getObjectName(); ?> *in_obj =  <?php echo $obj->objectFromZObjFunctionName(); ?>(Z_OBJ_P(mat_zval));
+
+    <?php echo $obj->getMatFunction('invert'); ?>(res_ptr->data, in_obj->data);
+}
+
 PHP_METHOD(<?php echo $obj->getFullNamespaceConstString(); ?>, row)
 {
     zend_long row_index;

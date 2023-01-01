@@ -2221,6 +2221,20 @@ PHP_METHOD(GL_Math_Mat4, fromArray)
     } ZEND_HASH_FOREACH_END();
 }
 
+PHP_METHOD(GL_Math_Mat4, inverted)
+{
+    zval *mat_zval;
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "O", &mat_zval,  phpglfw_math_mat4_ce) == FAILURE) {
+        return;
+    }
+
+    object_init_ex(return_value, phpglfw_math_mat4_ce);
+    phpglfw_math_mat4_object *res_ptr = phpglfw_math_mat4_objectptr_from_zobj_p(Z_OBJ_P(return_value));
+    phpglfw_math_mat4_object *in_obj =  phpglfw_math_mat4_objectptr_from_zobj_p(Z_OBJ_P(mat_zval));
+
+    mat4x4_invert(res_ptr->data, in_obj->data);
+}
+
 PHP_METHOD(GL_Math_Mat4, row)
 {
     zend_long row_index;
