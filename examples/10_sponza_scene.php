@@ -504,10 +504,10 @@ while (!glfwWindowShouldClose($window))
     }
 
     if (glfwGetKey($window, GLFW_KEY_A) == GLFW_PRESS) {
-        $view->translate($forward->cross(new Vec3(0.0, 1.0, 0.0)));
+        $view->translate(Vec3::cross($forward, new Vec3(0.0, 1.0, 0.0)));
     }
     else if (glfwGetKey($window, GLFW_KEY_D) == GLFW_PRESS) {
-        $view->translate($forward->cross(new Vec3(0.0, 1.0, 0.0)) * -1);
+        $view->translate(Vec3::cross($forward, new Vec3(0.0, -1.0, 0.0)));
     }
 
     // now set the uniform variables in the shader.
