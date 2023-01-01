@@ -119,8 +119,9 @@ namespace GL\Math
         public function determinant() : float {}
 <?php elseif($obj->isQuat()) : ?>
         public static function fromMat4(Mat4 $matrix) : <?php echo $obj->name; ?> {}
-        public function normalize() : void {}
+        public static function fromVec4(Vec4 $vec) : <?php echo $obj->name; ?> {}
         public static function normalized(<?php echo $obj->name; ?> $quat) : <?php echo $obj->name; ?> {} 
+        public function normalize() : void {}
         public function length() : float {}
         public function eulerAngles() : Vec3 {}
         public function rotate(float $angle, Vec3 $axis) : void {}

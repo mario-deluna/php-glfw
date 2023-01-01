@@ -606,23 +606,42 @@ static inline void quat_euler_angles(vec3 r, quat q)
 #define quat_norm vec4_norm
 static inline void quat_mul_vec3(vec3 r, quat q, vec3 v)
 {
-/*
- * Method by Fabian 'ryg' Giessen (of Farbrausch)
-t = 2 * cross(q.xyz, v)
-v' = v + q.w * t + cross(q.xyz, t)
- */
-	vec3 t;
-	vec3 q_xyz = {q[0], q[1], q[2]};
-	vec3 u = {q[0], q[1], q[2]};
-
-	vec3_mul_cross(t, q_xyz, v);
-	vec3_scale(t, t, 2);
-
-	vec3_mul_cross(u, q_xyz, t);
-	vec3_scale(t, t, q[3]);
-
-	vec3_add(r, v, t);
-	vec3_add(r, r, u);
+    /**
+     * Method by Fabian 'ryg' Giessen (of Farbrausch)
+     * t = 2 * cross(q.xyz, v)
+     * v' = v + q.w * t + cross(q.xyz, t)
+     */
+    // r = quat * vec3
+    float qxx = q[1] * q[1];
+    float qyy = q[2] * q[2];
+    float qzz = q[3] * q[3];
+    float qxz = q[1] * q[3];
+    float qxy = q[1] * q[2];
+    float qyz = q[2] * q[3];
+    float qwx = q[0] * q[1];
+    float qwy = q[0] * q[2];
+    float qwz = q[0] * q[3];
+    
+    r[0] = v[0] * (1.f - 2.f * (qyy +  qzz)) + v[1] * (2.f * (qxy - qwz)) + v[2] * (2.f * (qxz + qwy));
+    r[1] = v[0] * (2.f * (qxy + qwz)) + v[1] * (1.f - 2.f * (qxx +  qzz)) + v[2] * (2.f * (qyz - qwx));
+    r[2] = v[0] * (2.f * (qxz - qwy)) + v[1] * (2.f * (qyz + qwx)) + v[2] * (1.f - 2.f * (qxx +  qyy));
+}
+static inline void vec3_mul_quat(vec3 r, vec3 v, quat q)
+{
+    // r = vec3 * quat
+    float qxx = q[1] * q[1];
+    float qyy = q[2] * q[2];
+    float qzz = q[3] * q[3];
+    float qxz = q[1] * q[3];
+    float qxy = q[1] * q[2];
+    float qyz = q[2] * q[3];
+    float qwx = q[0] * q[1];
+    float qwy = q[0] * q[2];
+    float qwz = q[0] * q[3];
+    
+    r[0] = v[0] * (1.f - 2.f * (qyy +  qzz)) + v[1] * (2.f * (qxy + qwz)) + v[2] * (2.f * (qxz - qwy));
+    r[1] = v[0] * (2.f * (qxy - qwz)) + v[1] * (1.f - 2.f * (qxx +  qzz)) + v[2] * (2.f * (qyz + qwx));
+    r[2] = v[0] * (2.f * (qxz + qwy)) + v[1] * (2.f * (qyz - qwx)) + v[2] * (1.f - 2.f * (qxx +  qyy));
 }
 static inline void mat4x4_from_quat(mat4x4 M, quat q)
 {   

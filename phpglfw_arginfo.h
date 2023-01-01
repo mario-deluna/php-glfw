@@ -1,5 +1,5 @@
 /* This is a generated file, edit the .stub.php file instead.
- * Stub hash: f8ffca231d720759f1302919af69d0a145ea0096 */
+ * Stub hash: 80f65463213f63c1f5203efecb9ae5156490aae8 */
 
 ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_glCullFace, 0, 1, IS_VOID, 0)
 	ZEND_ARG_TYPE_INFO(0, mode, IS_LONG, 0)
@@ -2403,11 +2403,15 @@ ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(arginfo_class_GL_Math_Quat_fromMat4, 0, 1
 	ZEND_ARG_OBJ_INFO(0, matrix, GL\\Math\\Mat4, 0)
 ZEND_END_ARG_INFO()
 
-#define arginfo_class_GL_Math_Quat_normalize arginfo_glFinish
+ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(arginfo_class_GL_Math_Quat_fromVec4, 0, 1, GL\\Math\\Quat, 0)
+	ZEND_ARG_OBJ_INFO(0, vec, GL\\Math\\Vec4, 0)
+ZEND_END_ARG_INFO()
 
 ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(arginfo_class_GL_Math_Quat_normalized, 0, 1, GL\\Math\\Quat, 0)
 	ZEND_ARG_OBJ_INFO(0, quat, GL\\Math\\Quat, 0)
 ZEND_END_ARG_INFO()
+
+#define arginfo_class_GL_Math_Quat_normalize arginfo_glFinish
 
 #define arginfo_class_GL_Math_Quat_length arginfo_glfwGetTime
 
@@ -3296,8 +3300,9 @@ ZEND_METHOD(GL_Math_Vec4, __toString);
 ZEND_METHOD(GL_Math_Quat, __construct);
 ZEND_METHOD(GL_Math_Quat, copy);
 ZEND_METHOD(GL_Math_Quat, fromMat4);
-ZEND_METHOD(GL_Math_Quat, normalize);
+ZEND_METHOD(GL_Math_Quat, fromVec4);
 ZEND_METHOD(GL_Math_Quat, normalized);
+ZEND_METHOD(GL_Math_Quat, normalize);
 ZEND_METHOD(GL_Math_Quat, length);
 ZEND_METHOD(GL_Math_Quat, eulerAngles);
 ZEND_METHOD(GL_Math_Quat, rotate);
@@ -4074,8 +4079,9 @@ static const zend_function_entry class_GL_Math_Quat_methods[] = {
 	ZEND_ME(GL_Math_Quat, __construct, arginfo_class_GL_Math_Quat___construct, ZEND_ACC_PUBLIC)
 	ZEND_ME(GL_Math_Quat, copy, arginfo_class_GL_Math_Quat_copy, ZEND_ACC_PUBLIC)
 	ZEND_ME(GL_Math_Quat, fromMat4, arginfo_class_GL_Math_Quat_fromMat4, ZEND_ACC_PUBLIC|ZEND_ACC_STATIC)
-	ZEND_ME(GL_Math_Quat, normalize, arginfo_class_GL_Math_Quat_normalize, ZEND_ACC_PUBLIC)
+	ZEND_ME(GL_Math_Quat, fromVec4, arginfo_class_GL_Math_Quat_fromVec4, ZEND_ACC_PUBLIC|ZEND_ACC_STATIC)
 	ZEND_ME(GL_Math_Quat, normalized, arginfo_class_GL_Math_Quat_normalized, ZEND_ACC_PUBLIC|ZEND_ACC_STATIC)
+	ZEND_ME(GL_Math_Quat, normalize, arginfo_class_GL_Math_Quat_normalize, ZEND_ACC_PUBLIC)
 	ZEND_ME(GL_Math_Quat, length, arginfo_class_GL_Math_Quat_length, ZEND_ACC_PUBLIC)
 	ZEND_ME(GL_Math_Quat, eulerAngles, arginfo_class_GL_Math_Quat_eulerAngles, ZEND_ACC_PUBLIC)
 	ZEND_ME(GL_Math_Quat, rotate, arginfo_class_GL_Math_Quat_rotate, ZEND_ACC_PUBLIC)

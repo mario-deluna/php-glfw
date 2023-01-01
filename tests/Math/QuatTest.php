@@ -175,6 +175,14 @@ class QuatTest extends \PHPUnit\Framework\TestCase
         $this->assertEqualsQuat(0.732538, 0.46194, 0.191342, 0.46194, $q);
     }
 
+    public function testConstructFromVec4()
+    {
+        $v = new Vec4(1, 2, 3, 4);
+        $q = Quat::fromVec4($v);
+
+        $this->assertEqualsQuat(4, 1, 2, 3, $q);
+    }
+
     public function testOperationAddition()
     {
         $q1 = new Quat(1, 2, 3, 4);
@@ -232,5 +240,36 @@ class QuatTest extends \PHPUnit\Framework\TestCase
 
         $q2 = $q / 2;
         $this->assertEqualsQuat(0.5, 1, 1.5, 2, $q2);
+    }
+    
+    public function testOperationVec3Multiplication()
+    {
+        $q = new Quat(1, 2, 3, 4);
+        $q->normalize();
+        $v = new Vec3(5, 6, 7);
+
+        $v2 = $q * $v;
+
+        $this->assertEqualsVector3(2.6, 6, 8.2, $v2);
+
+        // test with switched operands
+        $v2 = $v * $q;
+    
+        $this->assertEqualsVector3(3, 5.2, 8.6, $v2);
+
+
+        // test a rotation for human
+        // we create a quat that rotates 90 degrees on y axis
+        $q = new Quat;
+        $q->rotate(GLM::radians(90), new Vec3(0, 1, 0));
+
+        // we create a vector that points to the right
+        $v = new Vec3(1, 0, 0);
+
+        // we rotate the vector
+        $v2 = $q * $v;
+
+        // we expect the vector to point to the front
+        $this->assertEqualsVector3(0, 0, -1, $v2);
     }
 }

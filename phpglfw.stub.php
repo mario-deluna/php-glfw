@@ -141,8 +141,9 @@ namespace GL\Math
         public function __construct(?float $w = null, ?float $x = null, ?float $y = null, ?float $z = null) {}
         public function copy() : Quat {}
         public static function fromMat4(Mat4 $matrix) : Quat {}
-        public function normalize() : void {}
+        public static function fromVec4(Vec4 $vec) : Quat {}
         public static function normalized(Quat $quat) : Quat {} 
+        public function normalize() : void {}
         public function length() : float {}
         public function eulerAngles() : Vec3 {}
         public function rotate(float $angle, Vec3 $axis) : void {}
