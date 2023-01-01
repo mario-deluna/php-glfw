@@ -94,12 +94,13 @@ namespace GL\Math
 <?php endforeach; ?>
 <?php endif; ?>
         
+
+<?php if ($obj->isVector()) : ?>
         /**
          * Constructor
          */
         public function __construct(<?php echo $obj->getPhpArgs(); ?>) {}
 
-<?php if ($obj->isVector()) : ?>
         /**
          * Returns the distance between the left and right vectors
          * 
@@ -203,6 +204,19 @@ namespace GL\Math
 <?php elseif($obj->isMatrix()) : ?>
 
         /**
+         * Constructucts a new <?php echo $obj->name; ?> matrix
+         * Does not take any arguments and always returns an identity matrix.
+         * aka: 
+         * ```
+         * 1 0 0 0
+         * 0 1 0 0
+         * 0 0 1 0
+         * 0 0 0 1         
+         * ```
+         */
+        public function __construct(<?php echo $obj->getPhpArgs(); ?>) {}
+
+        /**
          * Constructs and returns a new matrix based on the given array of values
          * 
          * ```php
@@ -249,6 +263,11 @@ namespace GL\Math
         public function rotate(float $angle, Vec3 $axis) : void {}
         public function determinant() : float {}
 <?php elseif($obj->isQuat()) : ?>
+
+        /**
+         * Constructor
+         */
+        public function __construct(<?php echo $obj->getPhpArgs(); ?>) {}
 
         /**
          * Constructs and returns a new quaternion based on the given Mat4 matrix

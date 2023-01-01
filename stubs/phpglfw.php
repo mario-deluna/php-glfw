@@ -99,6 +99,7 @@ namespace GL\Math
         public float $g;
 
         
+
         /**
          * Constructor
          */
@@ -225,6 +226,7 @@ namespace GL\Math
         public float $b;
 
         
+
         /**
          * Constructor
          */
@@ -373,6 +375,7 @@ namespace GL\Math
         public float $a;
 
         
+
         /**
          * Constructor
          */
@@ -469,11 +472,12 @@ namespace GL\Math
     class Quat 
     {
         
+
+
         /**
          * Constructor
          */
         public function __construct(?float $w = null, ?float $x = null, ?float $y = null, ?float $z = null) {}
-
 
         /**
          * Constructs and returns a new quaternion based on the given Mat4 matrix
@@ -570,11 +574,20 @@ namespace GL\Math
     class Mat4 
     {
         
+
+
         /**
-         * Constructor
+         * Constructucts a new Mat4 matrix
+         * Does not take any arguments and always returns an identity matrix.
+         * aka: 
+         * ```
+         * 1 0 0 0
+         * 0 1 0 0
+         * 0 0 1 0
+         * 0 0 0 1         
+         * ```
          */
         public function __construct() {}
-
 
         /**
          * Constructs and returns a new matrix based on the given array of values
