@@ -319,7 +319,7 @@ class QuatTest extends \PHPUnit\Framework\TestCase
         $q2 = new Quat;
         $q2->rotate(0.5, new Vec3(0, 1, 0));
 
-        $this->assertEquals(0.938791275, Quat::dot($q1, $q2));
+        $this->assertEquals(0.9387912750244141, Quat::dot($q1, $q2));
     }
     
     public function testOperationVec3Multiplication()
