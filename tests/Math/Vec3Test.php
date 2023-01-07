@@ -213,4 +213,38 @@ class Vec3Test extends \PHPUnit\Framework\TestCase
         
         $this->assertEqualsVector(-5.625, 0, 3.75, $r);
     }
+
+    public function testMix() : void
+    {
+        $vec1 = new Vec3(5.0, 12.5, 7.5);
+        $vec2 = new Vec3(0.5, 2.0, 0.75);
+        $r = Vec3::mix($vec1, $vec2, 0.5);
+        
+        $this->assertEqualsVector(2.75, 7.25, 4.125, $r);
+
+        // test the same with lerp as it is an alias
+        $r = Vec3::lerp($vec1, $vec2, 0.5);
+
+        $this->assertEqualsVector(2.75, 7.25, 4.125, $r);
+    }
+
+    public function testSlerp() : void
+    {
+        $vec1 = new Vec3(5.0, 12.5, 7.5);
+        $vec2 = new Vec3(0.5, 2.0, 0.75);
+        $vec1->normalize();
+        $vec2->normalize();
+
+        $r = Vec3::slerp($vec1, $vec2, 0.5);
+
+        $this->assertEqualsVector(0.277587, 0.865779, 0.416381, $r);
+
+        $r = Vec3::slerp($vec1, $vec2, 0.25);
+
+        $this->assertEqualsVector(0.301397, 0.839506, 0.452095, $r);
+
+        $r = Vec3::slerp($vec1, $vec2, 0.1);
+
+        $this->assertEqualsVector(0.31532, 0.822717, 0.47298, $r);
+    }
 }

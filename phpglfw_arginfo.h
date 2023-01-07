@@ -1,5 +1,5 @@
 /* This is a generated file, edit the .stub.php file instead.
- * Stub hash: 519e99177a731db41f993cf168fd9f495566a6dd */
+ * Stub hash: 3cab7377cccc19ce9913bd23ca1a7bffafde5897 */
 
 ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_glCullFace, 0, 1, IS_VOID, 0)
 	ZEND_ARG_TYPE_INFO(0, mode, IS_LONG, 0)
@@ -2297,6 +2297,16 @@ ZEND_END_ARG_INFO()
 
 #define arginfo_class_GL_Math_Vec2_dot arginfo_class_GL_Math_Vec2_distance
 
+ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(arginfo_class_GL_Math_Vec2_mix, 0, 3, GL\\Math\\Vec2, 0)
+	ZEND_ARG_OBJ_INFO(0, left, GL\\Math\\Vec2, 0)
+	ZEND_ARG_OBJ_INFO(0, right, GL\\Math\\Vec2, 0)
+	ZEND_ARG_TYPE_INFO(0, t, IS_DOUBLE, 0)
+ZEND_END_ARG_INFO()
+
+#define arginfo_class_GL_Math_Vec2_lerp arginfo_class_GL_Math_Vec2_mix
+
+#define arginfo_class_GL_Math_Vec2_slerp arginfo_class_GL_Math_Vec2_mix
+
 #define arginfo_class_GL_Math_Vec2_length arginfo_glfwGetTime
 
 ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_class_GL_Math_Vec2_distanceTo, 0, 1, IS_DOUBLE, 0)
@@ -2332,6 +2342,16 @@ ZEND_END_ARG_INFO()
 #define arginfo_class_GL_Math_Vec3_distance2 arginfo_class_GL_Math_Vec3_distance
 
 #define arginfo_class_GL_Math_Vec3_dot arginfo_class_GL_Math_Vec3_distance
+
+ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(arginfo_class_GL_Math_Vec3_mix, 0, 3, GL\\Math\\Vec3, 0)
+	ZEND_ARG_OBJ_INFO(0, left, GL\\Math\\Vec3, 0)
+	ZEND_ARG_OBJ_INFO(0, right, GL\\Math\\Vec3, 0)
+	ZEND_ARG_TYPE_INFO(0, t, IS_DOUBLE, 0)
+ZEND_END_ARG_INFO()
+
+#define arginfo_class_GL_Math_Vec3_lerp arginfo_class_GL_Math_Vec3_mix
+
+#define arginfo_class_GL_Math_Vec3_slerp arginfo_class_GL_Math_Vec3_mix
 
 #define arginfo_class_GL_Math_Vec3_length arginfo_glfwGetTime
 
@@ -2379,6 +2399,16 @@ ZEND_END_ARG_INFO()
 #define arginfo_class_GL_Math_Vec4_distance2 arginfo_class_GL_Math_Vec4_distance
 
 #define arginfo_class_GL_Math_Vec4_dot arginfo_class_GL_Math_Vec4_distance
+
+ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(arginfo_class_GL_Math_Vec4_mix, 0, 3, GL\\Math\\Vec4, 0)
+	ZEND_ARG_OBJ_INFO(0, left, GL\\Math\\Vec4, 0)
+	ZEND_ARG_OBJ_INFO(0, right, GL\\Math\\Vec4, 0)
+	ZEND_ARG_TYPE_INFO(0, t, IS_DOUBLE, 0)
+ZEND_END_ARG_INFO()
+
+#define arginfo_class_GL_Math_Vec4_lerp arginfo_class_GL_Math_Vec4_mix
+
+#define arginfo_class_GL_Math_Vec4_slerp arginfo_class_GL_Math_Vec4_mix
 
 #define arginfo_class_GL_Math_Vec4_length arginfo_glfwGetTime
 
@@ -3299,6 +3329,9 @@ ZEND_METHOD(GL_Math_Vec2, normalized);
 ZEND_METHOD(GL_Math_Vec2, distance);
 ZEND_METHOD(GL_Math_Vec2, distance2);
 ZEND_METHOD(GL_Math_Vec2, dot);
+ZEND_METHOD(GL_Math_Vec2, mix);
+ZEND_METHOD(GL_Math_Vec2, lerp);
+ZEND_METHOD(GL_Math_Vec2, slerp);
 ZEND_METHOD(GL_Math_Vec2, length);
 ZEND_METHOD(GL_Math_Vec2, distanceTo);
 ZEND_METHOD(GL_Math_Vec2, distance2To);
@@ -3311,6 +3344,9 @@ ZEND_METHOD(GL_Math_Vec3, normalized);
 ZEND_METHOD(GL_Math_Vec3, distance);
 ZEND_METHOD(GL_Math_Vec3, distance2);
 ZEND_METHOD(GL_Math_Vec3, dot);
+ZEND_METHOD(GL_Math_Vec3, mix);
+ZEND_METHOD(GL_Math_Vec3, lerp);
+ZEND_METHOD(GL_Math_Vec3, slerp);
 ZEND_METHOD(GL_Math_Vec3, length);
 ZEND_METHOD(GL_Math_Vec3, distanceTo);
 ZEND_METHOD(GL_Math_Vec3, distance2To);
@@ -3325,6 +3361,9 @@ ZEND_METHOD(GL_Math_Vec4, normalized);
 ZEND_METHOD(GL_Math_Vec4, distance);
 ZEND_METHOD(GL_Math_Vec4, distance2);
 ZEND_METHOD(GL_Math_Vec4, dot);
+ZEND_METHOD(GL_Math_Vec4, mix);
+ZEND_METHOD(GL_Math_Vec4, lerp);
+ZEND_METHOD(GL_Math_Vec4, slerp);
 ZEND_METHOD(GL_Math_Vec4, length);
 ZEND_METHOD(GL_Math_Vec4, distanceTo);
 ZEND_METHOD(GL_Math_Vec4, distance2To);
@@ -4071,6 +4110,9 @@ static const zend_function_entry class_GL_Math_Vec2_methods[] = {
 	ZEND_ME(GL_Math_Vec2, distance, arginfo_class_GL_Math_Vec2_distance, ZEND_ACC_PUBLIC|ZEND_ACC_STATIC)
 	ZEND_ME(GL_Math_Vec2, distance2, arginfo_class_GL_Math_Vec2_distance2, ZEND_ACC_PUBLIC|ZEND_ACC_STATIC)
 	ZEND_ME(GL_Math_Vec2, dot, arginfo_class_GL_Math_Vec2_dot, ZEND_ACC_PUBLIC|ZEND_ACC_STATIC)
+	ZEND_ME(GL_Math_Vec2, mix, arginfo_class_GL_Math_Vec2_mix, ZEND_ACC_PUBLIC|ZEND_ACC_STATIC)
+	ZEND_ME(GL_Math_Vec2, lerp, arginfo_class_GL_Math_Vec2_lerp, ZEND_ACC_PUBLIC|ZEND_ACC_STATIC)
+	ZEND_ME(GL_Math_Vec2, slerp, arginfo_class_GL_Math_Vec2_slerp, ZEND_ACC_PUBLIC|ZEND_ACC_STATIC)
 	ZEND_ME(GL_Math_Vec2, length, arginfo_class_GL_Math_Vec2_length, ZEND_ACC_PUBLIC)
 	ZEND_ME(GL_Math_Vec2, distanceTo, arginfo_class_GL_Math_Vec2_distanceTo, ZEND_ACC_PUBLIC)
 	ZEND_ME(GL_Math_Vec2, distance2To, arginfo_class_GL_Math_Vec2_distance2To, ZEND_ACC_PUBLIC)
@@ -4088,6 +4130,9 @@ static const zend_function_entry class_GL_Math_Vec3_methods[] = {
 	ZEND_ME(GL_Math_Vec3, distance, arginfo_class_GL_Math_Vec3_distance, ZEND_ACC_PUBLIC|ZEND_ACC_STATIC)
 	ZEND_ME(GL_Math_Vec3, distance2, arginfo_class_GL_Math_Vec3_distance2, ZEND_ACC_PUBLIC|ZEND_ACC_STATIC)
 	ZEND_ME(GL_Math_Vec3, dot, arginfo_class_GL_Math_Vec3_dot, ZEND_ACC_PUBLIC|ZEND_ACC_STATIC)
+	ZEND_ME(GL_Math_Vec3, mix, arginfo_class_GL_Math_Vec3_mix, ZEND_ACC_PUBLIC|ZEND_ACC_STATIC)
+	ZEND_ME(GL_Math_Vec3, lerp, arginfo_class_GL_Math_Vec3_lerp, ZEND_ACC_PUBLIC|ZEND_ACC_STATIC)
+	ZEND_ME(GL_Math_Vec3, slerp, arginfo_class_GL_Math_Vec3_slerp, ZEND_ACC_PUBLIC|ZEND_ACC_STATIC)
 	ZEND_ME(GL_Math_Vec3, length, arginfo_class_GL_Math_Vec3_length, ZEND_ACC_PUBLIC)
 	ZEND_ME(GL_Math_Vec3, distanceTo, arginfo_class_GL_Math_Vec3_distanceTo, ZEND_ACC_PUBLIC)
 	ZEND_ME(GL_Math_Vec3, distance2To, arginfo_class_GL_Math_Vec3_distance2To, ZEND_ACC_PUBLIC)
@@ -4107,6 +4152,9 @@ static const zend_function_entry class_GL_Math_Vec4_methods[] = {
 	ZEND_ME(GL_Math_Vec4, distance, arginfo_class_GL_Math_Vec4_distance, ZEND_ACC_PUBLIC|ZEND_ACC_STATIC)
 	ZEND_ME(GL_Math_Vec4, distance2, arginfo_class_GL_Math_Vec4_distance2, ZEND_ACC_PUBLIC|ZEND_ACC_STATIC)
 	ZEND_ME(GL_Math_Vec4, dot, arginfo_class_GL_Math_Vec4_dot, ZEND_ACC_PUBLIC|ZEND_ACC_STATIC)
+	ZEND_ME(GL_Math_Vec4, mix, arginfo_class_GL_Math_Vec4_mix, ZEND_ACC_PUBLIC|ZEND_ACC_STATIC)
+	ZEND_ME(GL_Math_Vec4, lerp, arginfo_class_GL_Math_Vec4_lerp, ZEND_ACC_PUBLIC|ZEND_ACC_STATIC)
+	ZEND_ME(GL_Math_Vec4, slerp, arginfo_class_GL_Math_Vec4_slerp, ZEND_ACC_PUBLIC|ZEND_ACC_STATIC)
 	ZEND_ME(GL_Math_Vec4, length, arginfo_class_GL_Math_Vec4_length, ZEND_ACC_PUBLIC)
 	ZEND_ME(GL_Math_Vec4, distanceTo, arginfo_class_GL_Math_Vec4_distanceTo, ZEND_ACC_PUBLIC)
 	ZEND_ME(GL_Math_Vec4, distance2To, arginfo_class_GL_Math_Vec4_distance2To, ZEND_ACC_PUBLIC)

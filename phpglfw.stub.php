@@ -93,6 +93,10 @@ namespace GL\Math
         public static function distance(Vec2 $left, Vec2 $right) : float {}
         public static function distance2(Vec2 $left, Vec2 $right) : float {}
         public static function dot(Vec2 $left, Vec2 $right) : float {}
+        public static function mix(Vec2 $left, Vec2 $right, float $t) : Vec2 {}
+        public static function lerp(Vec2 $left, Vec2 $right, float $t) : Vec2 {}
+        public static function slerp(Vec2 $left, Vec2 $right, float $t) : Vec2 {}
+
         // member function
         public function length() : float {}
         public function distanceTo(Vec2 $right) : float {}
@@ -110,6 +114,10 @@ namespace GL\Math
         public static function distance(Vec3 $left, Vec3 $right) : float {}
         public static function distance2(Vec3 $left, Vec3 $right) : float {}
         public static function dot(Vec3 $left, Vec3 $right) : float {}
+        public static function mix(Vec3 $left, Vec3 $right, float $t) : Vec3 {}
+        public static function lerp(Vec3 $left, Vec3 $right, float $t) : Vec3 {}
+        public static function slerp(Vec3 $left, Vec3 $right, float $t) : Vec3 {}
+
         // member function
         public function length() : float {}
         public function distanceTo(Vec3 $right) : float {}
@@ -129,6 +137,10 @@ namespace GL\Math
         public static function distance(Vec4 $left, Vec4 $right) : float {}
         public static function distance2(Vec4 $left, Vec4 $right) : float {}
         public static function dot(Vec4 $left, Vec4 $right) : float {}
+        public static function mix(Vec4 $left, Vec4 $right, float $t) : Vec4 {}
+        public static function lerp(Vec4 $left, Vec4 $right, float $t) : Vec4 {}
+        public static function slerp(Vec4 $left, Vec4 $right, float $t) : Vec4 {}
+
         // member function
         public function length() : float {}
         public function distanceTo(Vec4 $right) : float {}

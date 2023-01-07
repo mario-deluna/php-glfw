@@ -207,4 +207,19 @@ class Vec4Test extends \PHPUnit\Framework\TestCase
 
         $this->assertEquals(192.0625, Vec4::distance2($vec1, $vec2));
     }
+
+    public function testMix() : void
+    {
+        $vec1 = new Vec4(5.0, 12.5, 7.5, 4.0);
+        $vec2 = new Vec4(0.5, 2.0, 0.75, 1.0);
+
+        $r = Vec4::mix($vec1, $vec2, 0.5);
+
+        $this->assertEqualsVector(2.75, 7.25, 4.125, 2.5, $r);
+
+        $r = Vec4::lerp($vec1, $vec2, 0.25);
+
+        $this->assertEqualsVector(3.875, 9.875, 5.8125, 3.25, $r);
+    }
+
 }   

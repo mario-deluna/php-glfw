@@ -158,6 +158,49 @@ namespace GL\Math
         public static function dot(<?php echo $obj->name; ?> $left, <?php echo $obj->name; ?> $right) : float {}
 
         /**
+         * Linearly interpolates between the left and right vectors by the given t value.
+         *
+         * ```php
+         * $mixed = <?php echo $obj->name; ?>::mix($left, $right, $t);
+         * ```
+         *
+         * @param <?php echo $obj->name; ?> $left The left vector.
+         * @param <?php echo $obj->name; ?> $right The right vector.
+         * @param float $t The t value (progress / state) 0.0 == left, 1.0 == right.
+         * @return <?php echo $obj->name; ?> The mixed vector.
+         */
+        public static function mix(<?php echo $obj->name; ?> $left, <?php echo $obj->name; ?> $right, float $t) : <?php echo $obj->name; ?> {}
+
+        /**
+         * Linearly interpolates between the left and right vectors by the given t value.
+         * This does exactly the same as mix..
+         * 
+         * ```php
+         * $lerped = <?php echo $obj->name; ?>::lerp($left, $right, $t);
+         * ```
+         *
+         * @param <?php echo $obj->name; ?> $left The left vector.
+         * @param <?php echo $obj->name; ?> $right The right vector.
+         * @param float $t The t value (progress / state) 0.0 == left, 1.0 == right.
+         * @return <?php echo $obj->name; ?> The lerped vector.
+         */
+        public static function lerp(<?php echo $obj->name; ?> $left, <?php echo $obj->name; ?> $right, float $t) : <?php echo $obj->name; ?> {}
+
+        /**
+         * Spherically interpolates between the left and right vectors by the given t value.
+         * 
+         * ```php
+         * $slerped = <?php echo $obj->name; ?>::slerp($left, $right, $t);
+         * ```
+         * 
+         * @param <?php echo $obj->name; ?> $left The left vector.
+         * @param <?php echo $obj->name; ?> $right The right vector.
+         * @param float $t The t value (progress / state) 0.0 == left, 1.0 == right.
+         * @return <?php echo $obj->name; ?> The slerped vector.
+         */
+        public static function slerp(<?php echo $obj->name; ?> $left, <?php echo $obj->name; ?> $right, float $t) : <?php echo $obj->name; ?> {}
+
+        /**
          * Returns the length of the vector
          * 
          * @return float

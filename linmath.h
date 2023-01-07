@@ -109,7 +109,45 @@ static inline void vec##n##_abs(vec##n r, vec##n a) \
 	int i; \
 	for(i=0; i<n; ++i) \
 		r[i] = fabs(a[i]); \
-}
+} \
+static inline void vec##n##_mix(vec##n r, vec##n a, vec##n b, float t) \
+{ \
+    int i; \
+    for(i=0; i<n; ++i) \
+        r[i] = a[i] + (b[i] - a[i]) * t; \
+} \
+static inline void vec##n##_lerp(vec##n r, vec##n a, vec##n b, float t) \
+{ \
+    vec##n##_mix(r, a, b, t); \
+} \
+static inline void vec##n##_slerp(vec##n r, vec##n a, vec##n b, float t) \
+{ \
+    float omega, cosom, sinom, scale0, scale1; \
+    cosom = vec##n##_mul_inner(a, b); \
+    if ((1.0 + cosom) > 0.000001) { \
+        if ((1.0 - cosom) > 0.000001) { \
+            omega = acos(cosom); \
+            sinom = sin(omega); \
+            scale0 = sin((1.0 - t) * omega) / sinom; \
+            scale1 = sin(t * omega) / sinom; \
+        } else { \
+            scale0 = 1.0 - t; \
+            scale1 = t; \
+        } \
+        int i; \
+        for(i=0; i<n; ++i) \
+            r[i] = scale0 * a[i] + scale1 * b[i]; \
+    } else { \
+        r[0] = -a[1]; \
+        r[1] = a[0]; \
+        r[2] = 0.0; \
+        scale0 = sin((1.0 - t) * M_PI * 0.5); \
+        scale1 = sin(t * M_PI * 0.5); \
+        int i; \
+        for(i=0; i<n; ++i) \
+            r[i] = scale0 * a[i] + scale1 * r[i]; \
+    } \
+} \
 
 
 LINMATH_H_DEFINE_VEC(2)

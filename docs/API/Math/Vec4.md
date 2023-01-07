@@ -48,40 +48,24 @@ function __construct(?float $x = null, ?float $y = null, ?float $z = null, ?floa
 
 ---
      
-### `length`
+### `normalized`
 
-Returns the length of the vector
-
+Retruns a normalized version of the given Vec4         *
 ```php
-function length() : float
-```
-
-returns
-
-:    `float` 
-
----
-     
-### `dot`
-
-Returns the dot product of the left and right vectors
-
-```php
-static function dot(\GL\Math\Vec4 $left, \GL\Math\Vec4 $right) : float
+$normalized = Vec4::normalize(new Vec4($x, $y, $z));
 ```
 
 ```php
-$dot = Vec4::dot($left, $right);
+static function normalized(\GL\Math\Vec4 $vec) : \GL\Math\Vec4
 ```
 
 arguments
 
-:    1. `\Vec4` `$left` The left vector.
-    2. `\Vec4` `$right` The right vector.
+:    1. `\Vec4` `$vec` The vector to normalize.
 
 returns
 
-:    `float` The dot product of the left and right vectors.
+:    `\Vec4` The normalized vector.
 
 ---
      
@@ -128,6 +112,145 @@ arguments
 returns
 
 :    `float` The squared distance between the left and right vectors.
+
+---
+     
+### `dot`
+
+Returns the dot product of the left and right vectors
+
+```php
+static function dot(\GL\Math\Vec4 $left, \GL\Math\Vec4 $right) : float
+```
+
+```php
+$dot = Vec4::dot($left, $right);
+```
+
+arguments
+
+:    1. `\Vec4` `$left` The left vector.
+    2. `\Vec4` `$right` The right vector.
+
+returns
+
+:    `float` The dot product of the left and right vectors.
+
+---
+     
+### `mix`
+
+Linearly interpolates between the left and right vectors by the given t value.
+
+```php
+static function mix(\GL\Math\Vec4 $left, \GL\Math\Vec4 $right, float $t) : \GL\Math\Vec4
+```
+
+```php
+$mixed = Vec4::mix($left, $right, $t);
+```
+
+arguments
+
+:    1. `\Vec4` `$left` The left vector.
+    2. `\Vec4` `$right` The right vector.
+    3. `float` `$t` The t value (progress / state) 0.0 == left, 1.0 == right.
+
+returns
+
+:    `\Vec4` The mixed vector.
+
+---
+     
+### `lerp`
+
+Linearly interpolates between the left and right vectors by the given t value.
+
+```php
+static function lerp(\GL\Math\Vec4 $left, \GL\Math\Vec4 $right, float $t) : \GL\Math\Vec4
+```
+
+This does exactly the same as mix..
+
+```php
+$lerped = Vec4::lerp($left, $right, $t);
+```
+
+arguments
+
+:    1. `\Vec4` `$left` The left vector.
+    2. `\Vec4` `$right` The right vector.
+    3. `float` `$t` The t value (progress / state) 0.0 == left, 1.0 == right.
+
+returns
+
+:    `\Vec4` The lerped vector.
+
+---
+     
+### `slerp`
+
+Spherically interpolates between the left and right vectors by the given t value.
+
+```php
+static function slerp(\GL\Math\Vec4 $left, \GL\Math\Vec4 $right, float $t) : \GL\Math\Vec4
+```
+
+```php
+$slerped = Vec4::slerp($left, $right, $t);
+```
+
+arguments
+
+:    1. `\Vec4` `$left` The left vector.
+    2. `\Vec4` `$right` The right vector.
+    3. `float` `$t` The t value (progress / state) 0.0 == left, 1.0 == right.
+
+returns
+
+:    `\Vec4` The slerped vector.
+
+---
+     
+### `length`
+
+Returns the length of the vector
+
+```php
+function length() : float
+```
+
+returns
+
+:    `float` 
+
+---
+     
+### `distanceTo`
+
+Returns the distance between this vector and another
+
+```php
+function distanceTo(\GL\Math\Vec4 $right) : float
+```
+
+returns
+
+:    `float` 
+
+---
+     
+### `distance2To`
+
+Returns squared distance between this vector and another
+
+```php
+function distance2To(\GL\Math\Vec4 $right) : float
+```
+
+returns
+
+:    `float` 
 
 ---
      

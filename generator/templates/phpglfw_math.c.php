@@ -740,18 +740,46 @@ PHP_METHOD(<?php echo $obj->getFullNamespaceConstString(); ?>, copy)
     }
 }
 
-PHP_METHOD(<?php echo $obj->getFullNamespaceConstString(); ?>, length)
+PHP_METHOD(<?php echo $obj->getFullNamespaceConstString(); ?>, normalized)
 {
-	if (zend_parse_parameters_none() == FAILURE) {
-		RETURN_THROWS();
-	}
+    zval *vec_zval;
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "O", &vec_zval,  <?php echo $obj->getClassEntryName(); ?>) == FAILURE) {
+        return;
+    }
 
-    zval *obj;
-    obj = getThis();
-    <?php echo $obj->getObjectName(); ?> *obj_ptr = <?php echo $obj->objectFromZObjFunctionName(); ?>(Z_OBJ_P(obj));
+    object_init_ex(return_value, <?php echo $obj->getClassEntryName(); ?>);
+    <?php echo $obj->getObjectName(); ?> *res_ptr = <?php echo $obj->objectFromZObjFunctionName(); ?>(Z_OBJ_P(return_value));
+    <?php echo $obj->getObjectName(); ?> *in_obj =  <?php echo $obj->objectFromZObjFunctionName(); ?>(Z_OBJ_P(vec_zval));
 
-    RETURN_DOUBLE(<?php echo $obj->getVecFunction('len'); ?>(obj_ptr->data));
+    <?php echo $obj->getVecFunction('norm'); ?>(res_ptr->data, in_obj->data);
 }
+
+PHP_METHOD(<?php echo $obj->getFullNamespaceConstString(); ?>, distance)
+{
+    zval *leftvec_zval, *rightvec_zval;
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "OO", &leftvec_zval, <?php echo $obj->getClassEntryName(); ?>, &rightvec_zval, <?php echo $obj->getClassEntryName(); ?>) == FAILURE) {
+        return;
+    }
+
+    <?php echo $obj->getObjectName(); ?> *leftvec_ptr = <?php echo $obj->objectFromZObjFunctionName(); ?>(Z_OBJ_P(leftvec_zval));
+    <?php echo $obj->getObjectName(); ?> *rightvec_ptr = <?php echo $obj->objectFromZObjFunctionName(); ?>(Z_OBJ_P(rightvec_zval));
+
+    RETURN_DOUBLE(sqrt(<?php echo $obj->getVecFunction('distance_square'); ?>(leftvec_ptr->data, rightvec_ptr->data)));
+}
+
+PHP_METHOD(<?php echo $obj->getFullNamespaceConstString(); ?>, distance2)
+{
+    zval *leftvec_zval, *rightvec_zval;
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "OO", &leftvec_zval, <?php echo $obj->getClassEntryName(); ?>, &rightvec_zval, <?php echo $obj->getClassEntryName(); ?>) == FAILURE) {
+        return;
+    }
+
+    <?php echo $obj->getObjectName(); ?> *leftvec_ptr = <?php echo $obj->objectFromZObjFunctionName(); ?>(Z_OBJ_P(leftvec_zval));
+    <?php echo $obj->getObjectName(); ?> *rightvec_ptr = <?php echo $obj->objectFromZObjFunctionName(); ?>(Z_OBJ_P(rightvec_zval));
+
+    RETURN_DOUBLE(<?php echo $obj->getVecFunction('distance_square'); ?>(leftvec_ptr->data, rightvec_ptr->data));
+}
+
 
 PHP_METHOD(<?php echo $obj->getFullNamespaceConstString(); ?>, dot)
 {
@@ -766,6 +794,76 @@ PHP_METHOD(<?php echo $obj->getFullNamespaceConstString(); ?>, dot)
 
     RETURN_DOUBLE(<?php echo $obj->getVecFunction('mul_inner'); ?>(leftvec_ptr->data, rightvec_ptr->data));
 }
+
+
+PHP_METHOD(<?php echo $obj->getFullNamespaceConstString(); ?>, mix)
+{
+    zval *rightvec_zval;
+    zval *leftvec_zval;
+    double ratio;
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "OOd", &leftvec_zval, <?php echo $obj->getClassEntryName(); ?>, &rightvec_zval, <?php echo $obj->getClassEntryName(); ?>, &ratio) == FAILURE) {
+        RETURN_THROWS();
+    }
+
+    <?php echo $obj->getObjectName(); ?> *leftvec_ptr = <?php echo $obj->objectFromZObjFunctionName(); ?>(Z_OBJ_P(leftvec_zval));
+    <?php echo $obj->getObjectName(); ?> *rightvec_ptr = <?php echo $obj->objectFromZObjFunctionName(); ?>(Z_OBJ_P(rightvec_zval));
+
+    object_init_ex(return_value, <?php echo $obj->getClassEntryName(); ?>);
+    <?php echo $obj->getObjectName(); ?> *res_ptr = <?php echo $obj->objectFromZObjFunctionName(); ?>(Z_OBJ_P(return_value));
+
+    <?php echo $obj->getVecFunction('mix'); ?>(res_ptr->data, leftvec_ptr->data, rightvec_ptr->data, ratio);
+}
+
+
+PHP_METHOD(<?php echo $obj->getFullNamespaceConstString(); ?>, lerp)
+{
+    zval *rightvec_zval;
+    zval *leftvec_zval;
+    double ratio;
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "OOd", &leftvec_zval, <?php echo $obj->getClassEntryName(); ?>, &rightvec_zval, <?php echo $obj->getClassEntryName(); ?>, &ratio) == FAILURE) {
+        RETURN_THROWS();
+    }
+
+    <?php echo $obj->getObjectName(); ?> *leftvec_ptr = <?php echo $obj->objectFromZObjFunctionName(); ?>(Z_OBJ_P(leftvec_zval));
+    <?php echo $obj->getObjectName(); ?> *rightvec_ptr = <?php echo $obj->objectFromZObjFunctionName(); ?>(Z_OBJ_P(rightvec_zval));
+
+    object_init_ex(return_value, <?php echo $obj->getClassEntryName(); ?>);
+    <?php echo $obj->getObjectName(); ?> *res_ptr = <?php echo $obj->objectFromZObjFunctionName(); ?>(Z_OBJ_P(return_value));
+
+    <?php echo $obj->getVecFunction('lerp'); ?>(res_ptr->data, leftvec_ptr->data, rightvec_ptr->data, ratio);   
+}
+
+PHP_METHOD(<?php echo $obj->getFullNamespaceConstString(); ?>, slerp)
+{
+    zval *rightvec_zval;
+    zval *leftvec_zval;
+    double ratio;
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "OOd", &leftvec_zval, <?php echo $obj->getClassEntryName(); ?>, &rightvec_zval, <?php echo $obj->getClassEntryName(); ?>, &ratio) == FAILURE) {
+        RETURN_THROWS();
+    }
+
+    <?php echo $obj->getObjectName(); ?> *leftvec_ptr = <?php echo $obj->objectFromZObjFunctionName(); ?>(Z_OBJ_P(leftvec_zval));
+    <?php echo $obj->getObjectName(); ?> *rightvec_ptr = <?php echo $obj->objectFromZObjFunctionName(); ?>(Z_OBJ_P(rightvec_zval));
+
+    object_init_ex(return_value, <?php echo $obj->getClassEntryName(); ?>);
+    <?php echo $obj->getObjectName(); ?> *res_ptr = <?php echo $obj->objectFromZObjFunctionName(); ?>(Z_OBJ_P(return_value));
+
+    <?php echo $obj->getVecFunction('slerp'); ?>(res_ptr->data, leftvec_ptr->data, rightvec_ptr->data, ratio);   
+}
+
+PHP_METHOD(<?php echo $obj->getFullNamespaceConstString(); ?>, length)
+{
+	if (zend_parse_parameters_none() == FAILURE) {
+		RETURN_THROWS();
+	}
+
+    zval *obj;
+    obj = getThis();
+    <?php echo $obj->getObjectName(); ?> *obj_ptr = <?php echo $obj->objectFromZObjFunctionName(); ?>(Z_OBJ_P(obj));
+
+    RETURN_DOUBLE(<?php echo $obj->getVecFunction('len'); ?>(obj_ptr->data));
+}
+
 
 PHP_METHOD(<?php echo $obj->getFullNamespaceConstString(); ?>, distanceTo)
 {
@@ -797,31 +895,6 @@ PHP_METHOD(<?php echo $obj->getFullNamespaceConstString(); ?>, distance2To)
     RETURN_DOUBLE(<?php echo $obj->getVecFunction('distance_square'); ?>(leftvec_ptr->data, rightvec_ptr->data));
 }
 
-PHP_METHOD(<?php echo $obj->getFullNamespaceConstString(); ?>, distance)
-{
-    zval *leftvec_zval, *rightvec_zval;
-    if (zend_parse_parameters(ZEND_NUM_ARGS() , "OO", &leftvec_zval, <?php echo $obj->getClassEntryName(); ?>, &rightvec_zval, <?php echo $obj->getClassEntryName(); ?>) == FAILURE) {
-        return;
-    }
-
-    <?php echo $obj->getObjectName(); ?> *leftvec_ptr = <?php echo $obj->objectFromZObjFunctionName(); ?>(Z_OBJ_P(leftvec_zval));
-    <?php echo $obj->getObjectName(); ?> *rightvec_ptr = <?php echo $obj->objectFromZObjFunctionName(); ?>(Z_OBJ_P(rightvec_zval));
-
-    RETURN_DOUBLE(sqrt(<?php echo $obj->getVecFunction('distance_square'); ?>(leftvec_ptr->data, rightvec_ptr->data)));
-}
-
-PHP_METHOD(<?php echo $obj->getFullNamespaceConstString(); ?>, distance2)
-{
-    zval *leftvec_zval, *rightvec_zval;
-    if (zend_parse_parameters(ZEND_NUM_ARGS() , "OO", &leftvec_zval, <?php echo $obj->getClassEntryName(); ?>, &rightvec_zval, <?php echo $obj->getClassEntryName(); ?>) == FAILURE) {
-        return;
-    }
-
-    <?php echo $obj->getObjectName(); ?> *leftvec_ptr = <?php echo $obj->objectFromZObjFunctionName(); ?>(Z_OBJ_P(leftvec_zval));
-    <?php echo $obj->getObjectName(); ?> *rightvec_ptr = <?php echo $obj->objectFromZObjFunctionName(); ?>(Z_OBJ_P(rightvec_zval));
-
-    RETURN_DOUBLE(<?php echo $obj->getVecFunction('distance_square'); ?>(leftvec_ptr->data, rightvec_ptr->data));
-}
 
 PHP_METHOD(<?php echo $obj->getFullNamespaceConstString(); ?>, normalize)
 {
@@ -836,19 +909,6 @@ PHP_METHOD(<?php echo $obj->getFullNamespaceConstString(); ?>, normalize)
     <?php echo $obj->getVecFunction('norm'); ?>(obj_ptr->data, obj_ptr->data);
 }
 
-PHP_METHOD(<?php echo $obj->getFullNamespaceConstString(); ?>, normalized)
-{
-    zval *vec_zval;
-    if (zend_parse_parameters(ZEND_NUM_ARGS() , "O", &vec_zval,  <?php echo $obj->getClassEntryName(); ?>) == FAILURE) {
-        return;
-    }
-
-    object_init_ex(return_value, <?php echo $obj->getClassEntryName(); ?>);
-    <?php echo $obj->getObjectName(); ?> *res_ptr = <?php echo $obj->objectFromZObjFunctionName(); ?>(Z_OBJ_P(return_value));
-    <?php echo $obj->getObjectName(); ?> *in_obj =  <?php echo $obj->objectFromZObjFunctionName(); ?>(Z_OBJ_P(vec_zval));
-
-    <?php echo $obj->getVecFunction('norm'); ?>(res_ptr->data, in_obj->data);
-}
 
 PHP_METHOD(<?php echo $obj->getFullNamespaceConstString(); ?>, abs)
 {

@@ -161,6 +161,49 @@ namespace GL\Math
         public static function dot(Vec2 $left, Vec2 $right) : float {}
 
         /**
+         * Linearly interpolates between the left and right vectors by the given t value.
+         *
+         * ```php
+         * $mixed = Vec2::mix($left, $right, $t);
+         * ```
+         *
+         * @param Vec2 $left The left vector.
+         * @param Vec2 $right The right vector.
+         * @param float $t The t value (progress / state) 0.0 == left, 1.0 == right.
+         * @return Vec2 The mixed vector.
+         */
+        public static function mix(Vec2 $left, Vec2 $right, float $t) : Vec2 {}
+
+        /**
+         * Linearly interpolates between the left and right vectors by the given t value.
+         * This does exactly the same as mix..
+         * 
+         * ```php
+         * $lerped = Vec2::lerp($left, $right, $t);
+         * ```
+         *
+         * @param Vec2 $left The left vector.
+         * @param Vec2 $right The right vector.
+         * @param float $t The t value (progress / state) 0.0 == left, 1.0 == right.
+         * @return Vec2 The lerped vector.
+         */
+        public static function lerp(Vec2 $left, Vec2 $right, float $t) : Vec2 {}
+
+        /**
+         * Spherically interpolates between the left and right vectors by the given t value.
+         * 
+         * ```php
+         * $slerped = Vec2::slerp($left, $right, $t);
+         * ```
+         * 
+         * @param Vec2 $left The left vector.
+         * @param Vec2 $right The right vector.
+         * @param float $t The t value (progress / state) 0.0 == left, 1.0 == right.
+         * @return Vec2 The slerped vector.
+         */
+        public static function slerp(Vec2 $left, Vec2 $right, float $t) : Vec2 {}
+
+        /**
          * Returns the length of the vector
          * 
          * @return float
@@ -291,6 +334,49 @@ namespace GL\Math
          * @return float The dot product of the left and right vectors.
          */
         public static function dot(Vec3 $left, Vec3 $right) : float {}
+
+        /**
+         * Linearly interpolates between the left and right vectors by the given t value.
+         *
+         * ```php
+         * $mixed = Vec3::mix($left, $right, $t);
+         * ```
+         *
+         * @param Vec3 $left The left vector.
+         * @param Vec3 $right The right vector.
+         * @param float $t The t value (progress / state) 0.0 == left, 1.0 == right.
+         * @return Vec3 The mixed vector.
+         */
+        public static function mix(Vec3 $left, Vec3 $right, float $t) : Vec3 {}
+
+        /**
+         * Linearly interpolates between the left and right vectors by the given t value.
+         * This does exactly the same as mix..
+         * 
+         * ```php
+         * $lerped = Vec3::lerp($left, $right, $t);
+         * ```
+         *
+         * @param Vec3 $left The left vector.
+         * @param Vec3 $right The right vector.
+         * @param float $t The t value (progress / state) 0.0 == left, 1.0 == right.
+         * @return Vec3 The lerped vector.
+         */
+        public static function lerp(Vec3 $left, Vec3 $right, float $t) : Vec3 {}
+
+        /**
+         * Spherically interpolates between the left and right vectors by the given t value.
+         * 
+         * ```php
+         * $slerped = Vec3::slerp($left, $right, $t);
+         * ```
+         * 
+         * @param Vec3 $left The left vector.
+         * @param Vec3 $right The right vector.
+         * @param float $t The t value (progress / state) 0.0 == left, 1.0 == right.
+         * @return Vec3 The slerped vector.
+         */
+        public static function slerp(Vec3 $left, Vec3 $right, float $t) : Vec3 {}
 
         /**
          * Returns the length of the vector
@@ -452,6 +538,49 @@ namespace GL\Math
          * @return float The dot product of the left and right vectors.
          */
         public static function dot(Vec4 $left, Vec4 $right) : float {}
+
+        /**
+         * Linearly interpolates between the left and right vectors by the given t value.
+         *
+         * ```php
+         * $mixed = Vec4::mix($left, $right, $t);
+         * ```
+         *
+         * @param Vec4 $left The left vector.
+         * @param Vec4 $right The right vector.
+         * @param float $t The t value (progress / state) 0.0 == left, 1.0 == right.
+         * @return Vec4 The mixed vector.
+         */
+        public static function mix(Vec4 $left, Vec4 $right, float $t) : Vec4 {}
+
+        /**
+         * Linearly interpolates between the left and right vectors by the given t value.
+         * This does exactly the same as mix..
+         * 
+         * ```php
+         * $lerped = Vec4::lerp($left, $right, $t);
+         * ```
+         *
+         * @param Vec4 $left The left vector.
+         * @param Vec4 $right The right vector.
+         * @param float $t The t value (progress / state) 0.0 == left, 1.0 == right.
+         * @return Vec4 The lerped vector.
+         */
+        public static function lerp(Vec4 $left, Vec4 $right, float $t) : Vec4 {}
+
+        /**
+         * Spherically interpolates between the left and right vectors by the given t value.
+         * 
+         * ```php
+         * $slerped = Vec4::slerp($left, $right, $t);
+         * ```
+         * 
+         * @param Vec4 $left The left vector.
+         * @param Vec4 $right The right vector.
+         * @param float $t The t value (progress / state) 0.0 == left, 1.0 == right.
+         * @return Vec4 The slerped vector.
+         */
+        public static function slerp(Vec4 $left, Vec4 $right, float $t) : Vec4 {}
 
         /**
          * Returns the length of the vector

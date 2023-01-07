@@ -35,6 +35,6 @@ $vec-><?php echo $prop; ?> = 42.0;
 
 ## Methods
 
-<?php foreach(['__construct', 'length', 'dot', 'distance', 'distance2', 'normalize', 'abs'] as $funcName) : ?>
+<?php foreach(['__construct', 'normalized', 'distance', 'distance2', 'dot', 'mix', 'lerp', 'slerp', 'length', 'distanceTo', 'distance2To', 'normalize', 'abs'] as $funcName) : ?>
 <?php echo $docParser->getAPIRefMarkdown('GL\\Math\\' . $vec->name . '::' . $funcName); ?> 
 <?php endforeach; ?>
