@@ -205,6 +205,13 @@ namespace GL\Math
          * @return <?php echo $obj->name; ?> The cross product of the left and right vectors.
          */
         public static function cross(<?php echo $obj->name; ?> $right) : <?php echo $obj->name; ?> {}
+
+        /**
+         * Vec3 * Quat
+         * Multiplies the left vector by the right quaternion
+         * Note: **This method only exists because there is a bug with the order of operation in PHP.**
+         */
+        public static function multiplyQuat(<?php echo $obj->name; ?> $left, Quat $right) : <?php echo $obj->name; ?> {}
 <?php endif; ?>
 <?php elseif($obj->isMatrix()) : ?>
 
@@ -249,6 +256,13 @@ namespace GL\Math
          * @return <?php echo $obj->name; ?> The inverted matrix.
          */
         public static function inverted(<?php echo $obj->name; ?> $matrix) : <?php echo $obj->name; ?> {}
+
+        /**
+         * Mat4 * Quat
+         * Multiplies the left matrix by the right quaternion
+         * Note: **This method only exists because there is a bug with the order of operation in PHP.**
+         */
+        public static function multiplyQuat(<?php echo $obj->name; ?> $left, Quat $right) : <?php echo $obj->name; ?> {}
 
         /**
          * Creates and returns a copy of the current matrix
@@ -306,18 +320,6 @@ namespace GL\Math
         public static function fromVec4(Vec4 $vec) : <?php echo $obj->name; ?> {}
 
         /**
-         * Constructs and returns a normalized quaternion based on the given one
-         *
-         * ```php
-         * $normalized = <?php echo $obj->name; ?>::normalized($quat);
-         * ```
-         *
-         * @param <?php echo $obj->name; ?> $quat The quaternion to normalize.
-         * @return <?php echo $obj->name; ?> The normalized quaternion.
-         */
-        public static function normalized(<?php echo $obj->name; ?> $quat) : <?php echo $obj->name; ?> {} 
-
-        /**
          * Constructs and return a inverted quaternion based on the given one
          * 
          * ```php
@@ -328,6 +330,39 @@ namespace GL\Math
          * @return <?php echo $obj->name; ?> The inverted quaternion.
          */
         public static function inverted(<?php echo $obj->name; ?> $quat) : <?php echo $obj->name; ?> {}
+
+        /**
+        * Constructs and returns a normalized quaternion based on the given one
+        *
+        * ```php
+        * $normalized = <?php echo $obj->name; ?>::normalized($quat);
+        * ```
+        *
+        * @param <?php echo $obj->name; ?> $quat The quaternion to normalize.
+        * @return <?php echo $obj->name; ?> The normalized quaternion.
+        */
+        public static function normalized(<?php echo $obj->name; ?> $quat) : <?php echo $obj->name; ?> {} 
+
+        /**
+         * Quat * Quat
+         * Multiplies two quaternions and returns the result.
+         * Note: **This method only exists because there is a bug with the order of operation in PHP.**
+         */
+        public static function multiply(<?php echo $obj->name; ?> $left, <?php echo $obj->name; ?> $right) : <?php echo $obj->name; ?> {}
+
+        /**
+         * Quat * Vec3
+         * Multiplies a quaternion and a vector and returns the result.
+         * Note: **This method only exists because there is a bug with the order of operation in PHP.**
+         */
+        public static function multiplyVec3(<?php echo $obj->name; ?> $quat, Vec3 $vec) : Vec3 {}
+
+        /**
+         * Quat * Mat4
+         * Multiplies a quaternion and a matrix and returns the result.
+         * Note: **This method only exists because there is a bug with the order of operation in PHP.**
+         */
+        public static function multiplyMat4(<?php echo $obj->name; ?> $quat, Mat4 $mat) : Mat4 {}
 
         /**
          * The same as `normalized()`, but modifies the current quaternion instead of creating a new one.

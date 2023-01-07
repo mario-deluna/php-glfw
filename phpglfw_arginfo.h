@@ -1,5 +1,5 @@
 /* This is a generated file, edit the .stub.php file instead.
- * Stub hash: a7c71e0d813a871da1aa91b03947a6861ab09f18 */
+ * Stub hash: 519e99177a731db41f993cf168fd9f495566a6dd */
 
 ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_glCullFace, 0, 1, IS_VOID, 0)
 	ZEND_ARG_TYPE_INFO(0, mode, IS_LONG, 0)
@@ -2350,6 +2350,11 @@ ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(arginfo_class_GL_Math_Vec3_cross, 0, 2, G
 	ZEND_ARG_OBJ_INFO(0, right, GL\\Math\\Vec3, 0)
 ZEND_END_ARG_INFO()
 
+ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(arginfo_class_GL_Math_Vec3_multiplyQuat, 0, 2, GL\\Math\\Vec3, 0)
+	ZEND_ARG_OBJ_INFO(0, left, GL\\Math\\Vec3, 0)
+	ZEND_ARG_OBJ_INFO(0, right, GL\\Math\\Quat, 0)
+ZEND_END_ARG_INFO()
+
 #define arginfo_class_GL_Math_Vec3___toString arginfo_glfwGetVersionString
 
 ZEND_BEGIN_ARG_INFO_EX(arginfo_class_GL_Math_Vec4___construct, 0, 0, 0)
@@ -2413,6 +2418,21 @@ ZEND_END_ARG_INFO()
 
 #define arginfo_class_GL_Math_Quat_normalized arginfo_class_GL_Math_Quat_inverted
 
+ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(arginfo_class_GL_Math_Quat_multiply, 0, 2, GL\\Math\\Quat, 0)
+	ZEND_ARG_OBJ_INFO(0, left, GL\\Math\\Quat, 0)
+	ZEND_ARG_OBJ_INFO(0, right, GL\\Math\\Quat, 0)
+ZEND_END_ARG_INFO()
+
+ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(arginfo_class_GL_Math_Quat_multiplyVec3, 0, 2, GL\\Math\\Vec3, 0)
+	ZEND_ARG_OBJ_INFO(0, quat, GL\\Math\\Quat, 0)
+	ZEND_ARG_OBJ_INFO(0, vec, GL\\Math\\Vec3, 0)
+ZEND_END_ARG_INFO()
+
+ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(arginfo_class_GL_Math_Quat_multiplyMat4, 0, 2, GL\\Math\\Mat4, 0)
+	ZEND_ARG_OBJ_INFO(0, quat, GL\\Math\\Quat, 0)
+	ZEND_ARG_OBJ_INFO(0, mat, GL\\Math\\Mat4, 0)
+ZEND_END_ARG_INFO()
+
 #define arginfo_class_GL_Math_Quat_normalize arginfo_glFinish
 
 #define arginfo_class_GL_Math_Quat_length arginfo_glfwGetTime
@@ -2441,6 +2461,11 @@ ZEND_END_ARG_INFO()
 
 ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(arginfo_class_GL_Math_Mat4_inverted, 0, 1, GL\\Math\\Mat4, 0)
 	ZEND_ARG_OBJ_INFO(0, matrix, GL\\Math\\Mat4, 0)
+ZEND_END_ARG_INFO()
+
+ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(arginfo_class_GL_Math_Mat4_multiplyQuat, 0, 2, GL\\Math\\Mat4, 0)
+	ZEND_ARG_OBJ_INFO(0, left, GL\\Math\\Mat4, 0)
+	ZEND_ARG_OBJ_INFO(0, right, GL\\Math\\Quat, 0)
 ZEND_END_ARG_INFO()
 
 ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(arginfo_class_GL_Math_Mat4_row, 0, 1, GL\\Math\\Vec4, 0)
@@ -3292,6 +3317,7 @@ ZEND_METHOD(GL_Math_Vec3, distance2To);
 ZEND_METHOD(GL_Math_Vec3, normalize);
 ZEND_METHOD(GL_Math_Vec3, abs);
 ZEND_METHOD(GL_Math_Vec3, cross);
+ZEND_METHOD(GL_Math_Vec3, multiplyQuat);
 ZEND_METHOD(GL_Math_Vec3, __toString);
 ZEND_METHOD(GL_Math_Vec4, __construct);
 ZEND_METHOD(GL_Math_Vec4, copy);
@@ -3311,6 +3337,9 @@ ZEND_METHOD(GL_Math_Quat, fromMat4);
 ZEND_METHOD(GL_Math_Quat, fromVec4);
 ZEND_METHOD(GL_Math_Quat, inverted);
 ZEND_METHOD(GL_Math_Quat, normalized);
+ZEND_METHOD(GL_Math_Quat, multiply);
+ZEND_METHOD(GL_Math_Quat, multiplyVec3);
+ZEND_METHOD(GL_Math_Quat, multiplyMat4);
 ZEND_METHOD(GL_Math_Quat, normalize);
 ZEND_METHOD(GL_Math_Quat, length);
 ZEND_METHOD(GL_Math_Quat, eulerAngles);
@@ -3322,6 +3351,7 @@ ZEND_METHOD(GL_Math_Mat4, __construct);
 ZEND_METHOD(GL_Math_Mat4, copy);
 ZEND_METHOD(GL_Math_Mat4, fromArray);
 ZEND_METHOD(GL_Math_Mat4, inverted);
+ZEND_METHOD(GL_Math_Mat4, multiplyQuat);
 ZEND_METHOD(GL_Math_Mat4, row);
 ZEND_METHOD(GL_Math_Mat4, setRow);
 ZEND_METHOD(GL_Math_Mat4, col);
@@ -4064,6 +4094,7 @@ static const zend_function_entry class_GL_Math_Vec3_methods[] = {
 	ZEND_ME(GL_Math_Vec3, normalize, arginfo_class_GL_Math_Vec3_normalize, ZEND_ACC_PUBLIC)
 	ZEND_ME(GL_Math_Vec3, abs, arginfo_class_GL_Math_Vec3_abs, ZEND_ACC_PUBLIC)
 	ZEND_ME(GL_Math_Vec3, cross, arginfo_class_GL_Math_Vec3_cross, ZEND_ACC_PUBLIC|ZEND_ACC_STATIC)
+	ZEND_ME(GL_Math_Vec3, multiplyQuat, arginfo_class_GL_Math_Vec3_multiplyQuat, ZEND_ACC_PUBLIC|ZEND_ACC_STATIC)
 	ZEND_ME(GL_Math_Vec3, __toString, arginfo_class_GL_Math_Vec3___toString, ZEND_ACC_PUBLIC)
 	ZEND_FE_END
 };
@@ -4093,6 +4124,9 @@ static const zend_function_entry class_GL_Math_Quat_methods[] = {
 	ZEND_ME(GL_Math_Quat, fromVec4, arginfo_class_GL_Math_Quat_fromVec4, ZEND_ACC_PUBLIC|ZEND_ACC_STATIC)
 	ZEND_ME(GL_Math_Quat, inverted, arginfo_class_GL_Math_Quat_inverted, ZEND_ACC_PUBLIC|ZEND_ACC_STATIC)
 	ZEND_ME(GL_Math_Quat, normalized, arginfo_class_GL_Math_Quat_normalized, ZEND_ACC_PUBLIC|ZEND_ACC_STATIC)
+	ZEND_ME(GL_Math_Quat, multiply, arginfo_class_GL_Math_Quat_multiply, ZEND_ACC_PUBLIC|ZEND_ACC_STATIC)
+	ZEND_ME(GL_Math_Quat, multiplyVec3, arginfo_class_GL_Math_Quat_multiplyVec3, ZEND_ACC_PUBLIC|ZEND_ACC_STATIC)
+	ZEND_ME(GL_Math_Quat, multiplyMat4, arginfo_class_GL_Math_Quat_multiplyMat4, ZEND_ACC_PUBLIC|ZEND_ACC_STATIC)
 	ZEND_ME(GL_Math_Quat, normalize, arginfo_class_GL_Math_Quat_normalize, ZEND_ACC_PUBLIC)
 	ZEND_ME(GL_Math_Quat, length, arginfo_class_GL_Math_Quat_length, ZEND_ACC_PUBLIC)
 	ZEND_ME(GL_Math_Quat, eulerAngles, arginfo_class_GL_Math_Quat_eulerAngles, ZEND_ACC_PUBLIC)
@@ -4109,6 +4143,7 @@ static const zend_function_entry class_GL_Math_Mat4_methods[] = {
 	ZEND_ME(GL_Math_Mat4, copy, arginfo_class_GL_Math_Mat4_copy, ZEND_ACC_PUBLIC)
 	ZEND_ME(GL_Math_Mat4, fromArray, arginfo_class_GL_Math_Mat4_fromArray, ZEND_ACC_PUBLIC|ZEND_ACC_STATIC)
 	ZEND_ME(GL_Math_Mat4, inverted, arginfo_class_GL_Math_Mat4_inverted, ZEND_ACC_PUBLIC|ZEND_ACC_STATIC)
+	ZEND_ME(GL_Math_Mat4, multiplyQuat, arginfo_class_GL_Math_Mat4_multiplyQuat, ZEND_ACC_PUBLIC|ZEND_ACC_STATIC)
 	ZEND_ME(GL_Math_Mat4, row, arginfo_class_GL_Math_Mat4_row, ZEND_ACC_PUBLIC)
 	ZEND_ME(GL_Math_Mat4, setRow, arginfo_class_GL_Math_Mat4_setRow, ZEND_ACC_PUBLIC)
 	ZEND_ME(GL_Math_Mat4, col, arginfo_class_GL_Math_Mat4_col, ZEND_ACC_PUBLIC)

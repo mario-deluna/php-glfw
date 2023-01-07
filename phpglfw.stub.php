@@ -117,6 +117,7 @@ namespace GL\Math
         public function normalize() : void {}
         public function abs() : void {}
         public static function cross(Vec3 $left, Vec3 $right) : Vec3 {}
+        public static function multiplyQuat(Vec3 $left, Quat $right) : Vec3 {}
         public function __toString() : string {}
     }
  
@@ -144,6 +145,9 @@ namespace GL\Math
         public static function fromVec4(Vec4 $vec) : Quat {}
         public static function inverted(Quat $quat) : Quat {}
         public static function normalized(Quat $quat) : Quat {} 
+        public static function multiply(Quat $left, Quat $right) : Quat {}
+        public static function multiplyVec3(Quat $quat, Vec3 $vec) : Vec3 {}
+        public static function multiplyMat4(Quat $quat, Mat4 $mat) : Mat4 {}
         public function normalize() : void {}
         public function length() : float {}
         public function eulerAngles() : Vec3 {}
@@ -158,6 +162,7 @@ namespace GL\Math
         public function copy() : Mat4 {}
         public static function fromArray(array $values) : Mat4 {}
         public static function inverted(Mat4 $matrix) : Mat4 {}
+        public static function multiplyQuat(Mat4 $left, Quat $right) : Mat4 {}
         public function row(int $index) : Vec4 {}
         public function setRow(int $index, Vec4 $row) : void {}
         public function col(int $index) : Vec4 {}

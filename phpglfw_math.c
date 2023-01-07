@@ -1021,6 +1021,26 @@ PHP_METHOD(GL_Math_Vec3, cross)
     vec3_mul_cross(resobj->data, leftvec_ptr->data, rightvec_ptr->data);
 }
 
+PHP_METHOD(GL_Math_Vec3, multiplyQuat)
+{
+    zval *leftvec_zval;
+    zval *rightvec_zval;
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "OO", &leftvec_zval, phpglfw_math_vec3_ce,  &rightvec_zval, phpglfw_math_quat_ce) == FAILURE) {
+        return;
+    }
+
+    phpglfw_math_vec3_object *leftvec_ptr = phpglfw_math_vec3_objectptr_from_zobj_p(Z_OBJ_P(leftvec_zval));
+    phpglfw_math_quat_object *rightvec_ptr = phpglfw_math_quat_objectptr_from_zobj_p(Z_OBJ_P(rightvec_zval));
+
+    // create new vec
+    object_init_ex(return_value, phpglfw_math_vec3_ce);
+    phpglfw_math_vec3_object *resobj = phpglfw_math_vec3_objectptr_from_zobj_p(Z_OBJ_P(return_value));
+
+    vec3_mul_quat(resobj->data, leftvec_ptr->data, rightvec_ptr->data);
+}
+
+
+
 
 /**
  * GL\Math\Vec4 
@@ -1924,6 +1944,59 @@ PHP_METHOD(GL_Math_Quat, inverted)
     quat_inverse(res_ptr->data, in_obj->data);
 }
 
+PHP_METHOD(GL_Math_Quat, multiply)
+{
+    zval *leftquat_zval;
+    zval *rightquat_zval;
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "OO", &leftquat_zval,  phpglfw_math_quat_ce, &rightquat_zval,  phpglfw_math_quat_ce) == FAILURE) {
+        return;
+    }
+
+    object_init_ex(return_value, phpglfw_math_quat_ce);
+    phpglfw_math_quat_object *res_ptr = phpglfw_math_quat_objectptr_from_zobj_p(Z_OBJ_P(return_value));
+    phpglfw_math_quat_object *left_obj =  phpglfw_math_quat_objectptr_from_zobj_p(Z_OBJ_P(leftquat_zval));
+    phpglfw_math_quat_object *right_obj =  phpglfw_math_quat_objectptr_from_zobj_p(Z_OBJ_P(rightquat_zval));
+
+    quat_mul(res_ptr->data, left_obj->data, right_obj->data);
+}
+
+PHP_METHOD(GL_Math_Quat, multiplyVec3)
+{
+    zval *quat_zval;
+    zval *vec_zval;
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "OO", &quat_zval,  phpglfw_math_quat_ce, &vec_zval, phpglfw_math_vec3_ce) == FAILURE) {
+        return;
+    }
+
+    object_init_ex(return_value, phpglfw_math_vec3_ce);
+    phpglfw_math_vec3_object *res_ptr = phpglfw_math_vec3_objectptr_from_zobj_p(Z_OBJ_P(return_value));
+    phpglfw_math_quat_object *quat_obj =  phpglfw_math_quat_objectptr_from_zobj_p(Z_OBJ_P(quat_zval));
+    phpglfw_math_vec3_object *vec_obj = phpglfw_math_vec3_objectptr_from_zobj_p(Z_OBJ_P(vec_zval));
+
+    quat_mul_vec3(res_ptr->data, quat_obj->data, vec_obj->data);
+}
+
+
+PHP_METHOD(GL_Math_Quat, multiplyMat4)
+{
+    zval *quat_zval;
+    zval *mat_zval;
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "OO", &quat_zval,  phpglfw_math_quat_ce, &mat_zval, phpglfw_math_mat4_ce) == FAILURE) {
+        return;
+    }
+
+    object_init_ex(return_value, phpglfw_math_mat4_ce);
+    phpglfw_math_mat4_object *res_ptr = phpglfw_math_mat4_objectptr_from_zobj_p(Z_OBJ_P(return_value));
+    phpglfw_math_quat_object *quat_obj =  phpglfw_math_quat_objectptr_from_zobj_p(Z_OBJ_P(quat_zval));
+    phpglfw_math_mat4_object *mat_obj = phpglfw_math_mat4_objectptr_from_zobj_p(Z_OBJ_P(mat_zval));
+
+    mat4x4 matquat;
+    mat4x4_identity(matquat);
+    mat4x4_from_quat(matquat, quat_obj->data);
+
+    mat4x4_mul(res_ptr->data, matquat, mat_obj->data);
+}
+
 PHP_METHOD(GL_Math_Quat, length)
 {
     if (zend_parse_parameters_none() == FAILURE) {
@@ -2320,6 +2393,29 @@ PHP_METHOD(GL_Math_Mat4, inverted)
     phpglfw_math_mat4_object *in_obj =  phpglfw_math_mat4_objectptr_from_zobj_p(Z_OBJ_P(mat_zval));
 
     mat4x4_invert(res_ptr->data, in_obj->data);
+}
+
+PHP_METHOD(GL_Math_Mat4, multiplyQuat)
+{
+    zval *leftmat_zval;
+    zval *rightquat_zval;
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "OO", &leftmat_zval, phpglfw_math_mat4_ce,  &rightquat_zval, phpglfw_math_quat_ce) == FAILURE) {
+        return;
+    }
+
+    phpglfw_math_mat4_object *leftmat_ptr = phpglfw_math_mat4_objectptr_from_zobj_p(Z_OBJ_P(leftmat_zval));
+    phpglfw_math_quat_object *rightquat_ptr = phpglfw_math_quat_objectptr_from_zobj_p(Z_OBJ_P(rightquat_zval));
+
+    // create new vec
+    object_init_ex(return_value, phpglfw_math_mat4_ce);
+    phpglfw_math_mat4_object *resobj = phpglfw_math_mat4_objectptr_from_zobj_p(Z_OBJ_P(return_value));
+
+    // create a matrix from the quaternion and multiply it with the matrix
+    mat4x4 matquat;
+    mat4x4_identity(matquat);
+    mat4x4_from_quat(matquat, rightquat_ptr->data);
+
+    mat4x4_mul(resobj->data, leftmat_ptr->data, matquat);
 }
 
 PHP_METHOD(GL_Math_Mat4, row)

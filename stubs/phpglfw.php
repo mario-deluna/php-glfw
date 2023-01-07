@@ -339,6 +339,13 @@ namespace GL\Math
          * @return Vec3 The cross product of the left and right vectors.
          */
         public static function cross(Vec3 $right) : Vec3 {}
+
+        /**
+         * Vec3 * Quat
+         * Multiplies the left vector by the right quaternion
+         * Note: **This method only exists because there is a bug with the order of operation in PHP.**
+         */
+        public static function multiplyQuat(Vec3 $left, Quat $right) : Vec3 {}
         public function __toString() : string {}
     }
  
@@ -526,18 +533,6 @@ namespace GL\Math
         public static function fromVec4(Vec4 $vec) : Quat {}
 
         /**
-         * Constructs and returns a normalized quaternion based on the given one
-         *
-         * ```php
-         * $normalized = Quat::normalized($quat);
-         * ```
-         *
-         * @param Quat $quat The quaternion to normalize.
-         * @return Quat The normalized quaternion.
-         */
-        public static function normalized(Quat $quat) : Quat {} 
-
-        /**
          * Constructs and return a inverted quaternion based on the given one
          * 
          * ```php
@@ -548,6 +543,39 @@ namespace GL\Math
          * @return Quat The inverted quaternion.
          */
         public static function inverted(Quat $quat) : Quat {}
+
+        /**
+        * Constructs and returns a normalized quaternion based on the given one
+        *
+        * ```php
+        * $normalized = Quat::normalized($quat);
+        * ```
+        *
+        * @param Quat $quat The quaternion to normalize.
+        * @return Quat The normalized quaternion.
+        */
+        public static function normalized(Quat $quat) : Quat {} 
+
+        /**
+         * Quat * Quat
+         * Multiplies two quaternions and returns the result.
+         * Note: **This method only exists because there is a bug with the order of operation in PHP.**
+         */
+        public static function multiply(Quat $left, Quat $right) : Quat {}
+
+        /**
+         * Quat * Vec3
+         * Multiplies a quaternion and a vector and returns the result.
+         * Note: **This method only exists because there is a bug with the order of operation in PHP.**
+         */
+        public static function multiplyVec3(Quat $quat, Vec3 $vec) : Vec3 {}
+
+        /**
+         * Quat * Mat4
+         * Multiplies a quaternion and a matrix and returns the result.
+         * Note: **This method only exists because there is a bug with the order of operation in PHP.**
+         */
+        public static function multiplyMat4(Quat $quat, Mat4 $mat) : Mat4 {}
 
         /**
          * The same as `normalized()`, but modifies the current quaternion instead of creating a new one.
@@ -659,6 +687,13 @@ namespace GL\Math
          * @return Mat4 The inverted matrix.
          */
         public static function inverted(Mat4 $matrix) : Mat4 {}
+
+        /**
+         * Mat4 * Quat
+         * Multiplies the left matrix by the right quaternion
+         * Note: **This method only exists because there is a bug with the order of operation in PHP.**
+         */
+        public static function multiplyQuat(Mat4 $left, Quat $right) : Mat4 {}
 
         /**
          * Creates and returns a copy of the current matrix

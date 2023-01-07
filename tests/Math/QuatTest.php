@@ -222,6 +222,19 @@ class QuatTest extends \PHPUnit\Framework\TestCase
         $this->assertEqualsQuat(-60, 20, 14, 32, $q3);
     }
 
+    public function testOperationMultiplicationFunctional()
+    {
+        $q1 = new Quat(1, 2, 3, 4);
+        $q2 = new Quat(5, 6, 7, 8);
+
+        $q3 = Quat::multiply($q1, $q2);
+        $this->assertEqualsQuat(-60, 12, 30, 24, $q3);
+
+        // test with switched operands
+        $q3 = Quat::multiply($q2, $q1);
+        $this->assertEqualsQuat(-60, 20, 14, 32, $q3);
+    }
+
     public function testOperationScalarMultiplication()
     {
         $q = new Quat(1, 2, 3, 4);
@@ -280,7 +293,6 @@ class QuatTest extends \PHPUnit\Framework\TestCase
         // test with switched operands
         $v2 = $v * $q;
         
-        // 0.286039, 0.495801, 0.819978
         $this->assertEqualsVector3(0.286039, 0.495801, 0.819978, $v2);
 
         // test a rotation for human
@@ -315,7 +327,37 @@ class QuatTest extends \PHPUnit\Framework\TestCase
         // we have to declare the vector in a seperate variable
         $v = new Vec3(0, 0, -1);
         $this->assertEqualsVector3(0.966345, -0.0472734, 0.25287, $v * $q);
+    }
+
+    public function testOperationVec3MultiplicationFunctional()
+    {
+        $q = new Quat(1, 2, 3, 4);
+        $q->normalize();
+        $v = new Vec3(5, 6, 7);
+        $v->normalize();
+
+        $v2 = Quat::multiplyVec3($q, $v);
+
+        $this->assertEqualsVector3(0.2479, 0.572078, 0.781839, $v2);
+
+        // test with switched operands
+        $v2 = Vec3::multiplyQuat($v, $q);
         
+        $this->assertEqualsVector3(0.286039, 0.495801, 0.819978, $v2);
+
+        // test a rotation for human
+        // we create a quat that rotates 90 degrees on y axis
+        $q = new Quat;
+        $q->rotate(GLM::radians(90), new Vec3(0, 1, 0));
+
+        // we create a vector that points to the right
+        $v = new Vec3(1, 0, 0);
+
+        // we rotate the vector
+        $v2 = Quat::multiplyVec3($q, $v);
+
+        // we expect the vector to point to the front
+        $this->assertEqualsVector3(0, 0, -1, $v2);
     }
 
     public function testOperationMat4Multiplication() 
@@ -398,6 +440,36 @@ class QuatTest extends \PHPUnit\Framework\TestCase
             0, 1, 0, 0,
             1, 0, 5.96046e-08, 0,
             20, 20, -20, 1,
+            $m2
+        );
+    }
+
+    public function testOperationMat4MultiplicationFunctional() 
+    {
+        $m = new Mat4;
+        $m->translate(new Vec3(20, 20, 20));
+
+        $q = new Quat;
+        $q->rotate(GLM::radians(90), new Vec3(0, 1, 0));
+
+        $m2 = Quat::multiplyMat4($q, $m);
+
+        $this->assertEqualsMatrix(
+            5.96046e-08, 0, -1, 0,
+            0, 1, 0, 0,
+            1, 0, 5.96046e-08, 0,
+            20, 20, -20, 1,
+            $m2
+        );
+
+        // reversed order of operation
+        $m2 = Mat4::multiplyQuat($m, $q);
+
+        $this->assertEqualsMatrix(
+            5.96046e-08, 0, -1, 0,
+            0, 1, 0, 0,
+            1, 0, 5.96046e-08, 0,
+            20, 20, 20, 1,
             $m2
         );
     }

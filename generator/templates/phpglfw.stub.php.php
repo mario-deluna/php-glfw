@@ -101,10 +101,12 @@ namespace GL\Math
         public function abs() : void {}
 <?php if ($obj->size === 3) : ?>
         public static function cross(<?php echo $obj->name; ?> $left, <?php echo $obj->name; ?> $right) : <?php echo $obj->name; ?> {}
+        public static function multiplyQuat(<?php echo $obj->name; ?> $left, Quat $right) : <?php echo $obj->name; ?> {}
 <?php endif; ?>
 <?php elseif($obj->isMatrix()) : ?>
         public static function fromArray(array $values) : <?php echo $obj->name; ?> {}
         public static function inverted(<?php echo $obj->name; ?> $matrix) : <?php echo $obj->name; ?> {}
+        public static function multiplyQuat(<?php echo $obj->name; ?> $left, Quat $right) : <?php echo $obj->name; ?> {}
         public function row(int $index) : Vec4 {}
         public function setRow(int $index, Vec4 $row) : void {}
         public function col(int $index) : Vec4 {}
@@ -123,6 +125,9 @@ namespace GL\Math
         public static function fromVec4(Vec4 $vec) : <?php echo $obj->name; ?> {}
         public static function inverted(<?php echo $obj->name; ?> $quat) : <?php echo $obj->name; ?> {}
         public static function normalized(<?php echo $obj->name; ?> $quat) : <?php echo $obj->name; ?> {} 
+        public static function multiply(<?php echo $obj->name; ?> $left, <?php echo $obj->name; ?> $right) : <?php echo $obj->name; ?> {}
+        public static function multiplyVec3(<?php echo $obj->name; ?> $quat, Vec3 $vec) : Vec3 {}
+        public static function multiplyMat4(<?php echo $obj->name; ?> $quat, Mat4 $mat) : Mat4 {}
         public function normalize() : void {}
         public function length() : float {}
         public function eulerAngles() : Vec3 {}
