@@ -272,4 +272,88 @@ class QuatTest extends \PHPUnit\Framework\TestCase
         // we expect the vector to point to the front
         $this->assertEqualsVector3(0, 0, -1, $v2);
     }
+
+    public function testOperationMat4Multiplication() 
+    {
+        $m = new Mat4;
+        $m->translate(new Vec3(20, 20, 20));
+
+        $q = new Quat;
+        $q->rotate(GLM::radians(90), new Vec3(0, 1, 0));
+
+        // declaring the matrix in a seperate variable 
+        // is required because of the PHP order of operation bug
+        $mq = $q->mat4();
+        $m2 = $mq * $m;
+
+        $m2->scale(new Vec3(1.0, 1.0, 1.0));
+
+        $this->assertEqualsMatrix(
+            5.96046e-08, 0, -1, 0,
+            0, 1, 0, 0,
+            1, 0, 5.96046e-08, 0,
+            20, 20, -20, 1,
+            $m2
+        );
+
+        // ensure the other way around works too
+        $m = new Mat4;
+        $m->translate(new Vec3(20, 20, 20));
+
+        $q = new Quat;
+        $q->rotate(GLM::radians(90), new Vec3(0, 1, 0));
+
+        // declaring the matrix in a seperate variable
+        // is required because of the PHP order of operation bug
+        $mq = $q->mat4();
+        $m2 = $m * $mq;
+
+        $m2->scale(new Vec3(1.0, 1.0, 1.0));
+
+        // here the z component is flipped because the matrix is applied first
+        $this->assertEqualsMatrix(
+            5.96046e-08, 0, -1, 0,
+            0, 1, 0, 0,
+            1, 0, 5.96046e-08, 0,
+            20, 20, 20, 1,
+            $m2
+        );
+
+        // now check this behavior using the opertator directly
+        $m = new Mat4;
+        $m->translate(new Vec3(20, 20, 20));
+
+        $q = new Quat;
+        $q->rotate(GLM::radians(90), new Vec3(0, 1, 0));
+
+        $m2 = $m * $q;
+        $m2->scale(new Vec3(1.0, 1.0, 1.0));
+
+        $this->assertEqualsMatrix(
+            5.96046e-08, 0, -1, 0,
+            0, 1, 0, 0,
+            1, 0, 5.96046e-08, 0,
+            20, 20, 20, 1,
+            $m2,
+        );
+
+        // and again the other way around where the z component is flipped
+        $m = new Mat4;
+        $m->translate(new Vec3(20, 20, 20));
+
+        $q = new Quat;
+        $q->rotate(GLM::radians(90), new Vec3(0, 1, 0));
+
+        $m2 = $q * $m;
+        $m2->scale(new Vec3(1.0, 1.0, 1.0));
+
+
+        $this->assertEqualsMatrix(
+            5.96046e-08, 0, -1, 0,
+            0, 1, 0, 0,
+            1, 0, 5.96046e-08, 0,
+            20, 20, -20, 1,
+            $m2
+        );
+    }
 }

@@ -468,6 +468,27 @@ static int <?php echo $obj->getHandlerMethodName('do_op_ex'); ?>(zend_uchar opco
 
         return SUCCESS;
     }
+    // if left is matrix and right is a quat (mul)
+    // we convert the quat to a mat4 and then multiply
+    else if (
+        Z_TYPE_P(op1) == IS_OBJECT && Z_OBJCE_P(op1) == <?php echo $obj->getClassEntryName(); ?> &&
+        Z_TYPE_P(op2) == IS_OBJECT && Z_OBJCE_P(op2) == phpglfw_math_quat_ce &&
+        opcode == ZEND_MUL
+    ) {
+        object_init_ex(result, <?php echo $obj->getClassEntryName(); ?>);
+        <?php echo $obj->getObjectName(); ?> *resobj = <?php echo $obj->objectFromZObjFunctionName(); ?>(Z_OBJ_P(result));
+
+        <?php echo $obj->getObjectName(); ?> *matobj = <?php echo $obj->objectFromZObjFunctionName(); ?>(Z_OBJ_P(op1));
+        phpglfw_math_quat_object *quatobj = phpglfw_math_quat_objectptr_from_zobj_p(Z_OBJ_P(op2));
+
+        mat4x4 matquat;
+        mat4x4_identity(matquat);
+        mat4x4_from_quat(matquat, quatobj->data);
+
+        <?php echo $obj->getMatFunction('mul'); ?>(resobj->data, matobj->data, matquat);
+
+        return SUCCESS;
+    }
 
     return FAILURE;
 }
@@ -564,6 +585,28 @@ static int <?php echo $obj->getHandlerMethodName('do_op'); ?>(zend_uchar opcode,
         phpglfw_math_vec3_object *vecobj = phpglfw_math_vec3_objectptr_from_zobj_p(Z_OBJ_P(op2));
 
         <?php echo $obj->getQuatFunction('mul_vec3'); ?>(resobj->data, quatobj->data, vecobj->data);
+
+        return SUCCESS;
+    }
+    // left is quat, right is mat4 
+    // this will rotate the mat4 by the quat and return a mat4
+    else if (
+        Z_TYPE_P(op1) == IS_OBJECT && Z_OBJCE_P(op1) == <?php echo $obj->getClassEntryName(); ?> &&
+        Z_TYPE_P(op2) == IS_OBJECT && Z_OBJCE_P(op2) == phpglfw_math_mat4_ce &&
+        opcode == ZEND_MUL
+    ) {
+        // mul with mat4 returns mat4 
+        object_init_ex(result, phpglfw_math_mat4_ce);
+        phpglfw_math_mat4_object *resobj = phpglfw_math_mat4_objectptr_from_zobj_p(Z_OBJ_P(result));
+
+        <?php echo $obj->getObjectName(); ?> *quatobj = <?php echo $obj->objectFromZObjFunctionName(); ?>(Z_OBJ_P(op1));
+        phpglfw_math_mat4_object *matobj = phpglfw_math_mat4_objectptr_from_zobj_p(Z_OBJ_P(op2));
+
+        mat4x4 matquat;
+        mat4x4_identity(matquat);
+        mat4x4_from_quat(matquat, quatobj->data);
+
+        mat4x4_mul(resobj->data, matquat, matobj->data);
 
         return SUCCESS;
     }

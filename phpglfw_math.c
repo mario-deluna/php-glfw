@@ -1744,6 +1744,28 @@ static int phpglfw_math_quat_do_op_handler(zend_uchar opcode, zval *result, zval
 
         return SUCCESS;
     }
+    // left is quat, right is mat4 
+    // this will rotate the mat4 by the quat and return a mat4
+    else if (
+        Z_TYPE_P(op1) == IS_OBJECT && Z_OBJCE_P(op1) == phpglfw_math_quat_ce &&
+        Z_TYPE_P(op2) == IS_OBJECT && Z_OBJCE_P(op2) == phpglfw_math_mat4_ce &&
+        opcode == ZEND_MUL
+    ) {
+        // mul with mat4 returns mat4 
+        object_init_ex(result, phpglfw_math_mat4_ce);
+        phpglfw_math_mat4_object *resobj = phpglfw_math_mat4_objectptr_from_zobj_p(Z_OBJ_P(result));
+
+        phpglfw_math_quat_object *quatobj = phpglfw_math_quat_objectptr_from_zobj_p(Z_OBJ_P(op1));
+        phpglfw_math_mat4_object *matobj = phpglfw_math_mat4_objectptr_from_zobj_p(Z_OBJ_P(op2));
+
+        mat4x4 matquat;
+        mat4x4_identity(matquat);
+        mat4x4_from_quat(matquat, quatobj->data);
+
+        mat4x4_mul(resobj->data, matquat, matobj->data);
+
+        return SUCCESS;
+    }
     
     return FAILURE;
 }
@@ -2131,6 +2153,27 @@ static int phpglfw_math_mat4_do_op_ex_handler(zend_uchar opcode, zval *result, z
         phpglfw_math_vec3_object *vecobj = phpglfw_math_vec3_objectptr_from_zobj_p(Z_OBJ_P(op2));
 
         mat4x4_mul_vec3(resobj->data, matobj->data, vecobj->data);
+
+        return SUCCESS;
+    }
+    // if left is matrix and right is a quat (mul)
+    // we convert the quat to a mat4 and then multiply
+    else if (
+        Z_TYPE_P(op1) == IS_OBJECT && Z_OBJCE_P(op1) == phpglfw_math_mat4_ce &&
+        Z_TYPE_P(op2) == IS_OBJECT && Z_OBJCE_P(op2) == phpglfw_math_quat_ce &&
+        opcode == ZEND_MUL
+    ) {
+        object_init_ex(result, phpglfw_math_mat4_ce);
+        phpglfw_math_mat4_object *resobj = phpglfw_math_mat4_objectptr_from_zobj_p(Z_OBJ_P(result));
+
+        phpglfw_math_mat4_object *matobj = phpglfw_math_mat4_objectptr_from_zobj_p(Z_OBJ_P(op1));
+        phpglfw_math_quat_object *quatobj = phpglfw_math_quat_objectptr_from_zobj_p(Z_OBJ_P(op2));
+
+        mat4x4 matquat;
+        mat4x4_identity(matquat);
+        mat4x4_from_quat(matquat, quatobj->data);
+
+        mat4x4_mul(resobj->data, matobj->data, matquat);
 
         return SUCCESS;
     }
