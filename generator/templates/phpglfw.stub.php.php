@@ -126,6 +126,7 @@ namespace GL\Math
         public function length() : float {}
         public function eulerAngles() : Vec3 {}
         public function rotate(float $angle, Vec3 $axis) : void {}
+        public function inverse() : void {}
         public function mat4() : Mat4 {}
 <?php endif; ?>
         public function __toString() : string {}

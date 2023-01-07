@@ -1303,6 +1303,18 @@ PHP_METHOD(<?php echo $obj->getFullNamespaceConstString(); ?>, rotate)
     //<?php echo $obj->getQuatFunction('rotate'); ?>(obj_ptr->data, radians, axis_ptr->data);
 }
 
+PHP_METHOD(<?php echo $obj->getFullNamespaceConstString(); ?>, inverse)
+{
+    if (zend_parse_parameters_none() == FAILURE) {
+        RETURN_THROWS();
+    }
+
+    zval *obj;
+    obj = getThis();
+    <?php echo $obj->getObjectName(); ?> *obj_ptr = <?php echo $obj->objectFromZObjFunctionName(); ?>(Z_OBJ_P(obj));
+    <?php echo $obj->getQuatFunction('inverse'); ?>(obj_ptr->data, obj_ptr->data);
+}
+
 PHP_METHOD(<?php echo $obj->getFullNamespaceConstString(); ?>, mat4)
 {
     if (zend_parse_parameters_none() == FAILURE) {

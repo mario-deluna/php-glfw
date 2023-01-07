@@ -1962,6 +1962,18 @@ PHP_METHOD(GL_Math_Quat, rotate)
     //quat_rotate(obj_ptr->data, radians, axis_ptr->data);
 }
 
+PHP_METHOD(GL_Math_Quat, inverse)
+{
+    if (zend_parse_parameters_none() == FAILURE) {
+        RETURN_THROWS();
+    }
+
+    zval *obj;
+    obj = getThis();
+    phpglfw_math_quat_object *obj_ptr = phpglfw_math_quat_objectptr_from_zobj_p(Z_OBJ_P(obj));
+    quat_inverse(obj_ptr->data, obj_ptr->data);
+}
+
 PHP_METHOD(GL_Math_Quat, mat4)
 {
     if (zend_parse_parameters_none() == FAILURE) {

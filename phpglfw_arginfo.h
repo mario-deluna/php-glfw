@@ -1,5 +1,5 @@
 /* This is a generated file, edit the .stub.php file instead.
- * Stub hash: 91379a4909820881cc39be54e4d6a8f53bc94204 */
+ * Stub hash: 6cf4b8175393df06dd846d8091589190d9c8fb2c */
 
 ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_glCullFace, 0, 1, IS_VOID, 0)
 	ZEND_ARG_TYPE_INFO(0, mode, IS_LONG, 0)
@@ -2422,6 +2422,8 @@ ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_class_GL_Math_Quat_rotate, 0, 2,
 	ZEND_ARG_OBJ_INFO(0, axis, GL\\Math\\Vec3, 0)
 ZEND_END_ARG_INFO()
 
+#define arginfo_class_GL_Math_Quat_inverse arginfo_glFinish
+
 ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(arginfo_class_GL_Math_Quat_mat4, 0, 0, GL\\Math\\Mat4, 0)
 ZEND_END_ARG_INFO()
 
@@ -3310,6 +3312,7 @@ ZEND_METHOD(GL_Math_Quat, normalize);
 ZEND_METHOD(GL_Math_Quat, length);
 ZEND_METHOD(GL_Math_Quat, eulerAngles);
 ZEND_METHOD(GL_Math_Quat, rotate);
+ZEND_METHOD(GL_Math_Quat, inverse);
 ZEND_METHOD(GL_Math_Quat, mat4);
 ZEND_METHOD(GL_Math_Quat, __toString);
 ZEND_METHOD(GL_Math_Mat4, __construct);
@@ -4090,6 +4093,7 @@ static const zend_function_entry class_GL_Math_Quat_methods[] = {
 	ZEND_ME(GL_Math_Quat, length, arginfo_class_GL_Math_Quat_length, ZEND_ACC_PUBLIC)
 	ZEND_ME(GL_Math_Quat, eulerAngles, arginfo_class_GL_Math_Quat_eulerAngles, ZEND_ACC_PUBLIC)
 	ZEND_ME(GL_Math_Quat, rotate, arginfo_class_GL_Math_Quat_rotate, ZEND_ACC_PUBLIC)
+	ZEND_ME(GL_Math_Quat, inverse, arginfo_class_GL_Math_Quat_inverse, ZEND_ACC_PUBLIC)
 	ZEND_ME(GL_Math_Quat, mat4, arginfo_class_GL_Math_Quat_mat4, ZEND_ACC_PUBLIC)
 	ZEND_ME(GL_Math_Quat, __toString, arginfo_class_GL_Math_Quat___toString, ZEND_ACC_PUBLIC)
 	ZEND_FE_END

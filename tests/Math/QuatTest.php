@@ -241,22 +241,37 @@ class QuatTest extends \PHPUnit\Framework\TestCase
         $q2 = $q / 2;
         $this->assertEqualsQuat(0.5, 1, 1.5, 2, $q2);
     }
+
+    public function testInverse()
+    {
+        $q = new Quat(1, 2, 3, 4);
+        $q->normalize();
+        $this->assertEqualsQuat(0.182574, 0.365148, 0.547723, 0.730297, $q);
+        $q->inverse();
+        $this->assertEqualsQuat(0.182574, -0.365148, -0.547723, -0.730297, $q);
+
+        // test one that bit me..
+        $q = new Quat(0.6068052053451538, -0.05623327195644379, 0.789476215839386, 0.07316158711910248);
+        $q->inverse();
+        $this->assertEqualsQuat(0.606805, 0.0562333, -0.789476, -0.0731616, $q);
+    }
     
     public function testOperationVec3Multiplication()
     {
         $q = new Quat(1, 2, 3, 4);
         $q->normalize();
         $v = new Vec3(5, 6, 7);
+        $v->normalize();
 
         $v2 = $q * $v;
 
-        $this->assertEqualsVector3(2.6, 6, 8.2, $v2);
+        $this->assertEqualsVector3(0.2479, 0.572078, 0.781839, $v2);
 
         // test with switched operands
         $v2 = $v * $q;
-    
-        $this->assertEqualsVector3(3, 5.2, 8.6, $v2);
-
+        
+        // 0.286039, 0.495801, 0.819978
+        $this->assertEqualsVector3(0.286039, 0.495801, 0.819978, $v2);
 
         // test a rotation for human
         // we create a quat that rotates 90 degrees on y axis
@@ -271,6 +286,26 @@ class QuatTest extends \PHPUnit\Framework\TestCase
 
         // we expect the vector to point to the front
         $this->assertEqualsVector3(0, 0, -1, $v2);
+
+        // another test based on a bug i ran into
+        $q = new Quat(0.6068052053451538, -0.05623327195644379, 0.789476215839386, 0.07316158711910248);
+        $this->assertEqualsVector3(-0.949888, -0.183764, 0.25287, $q * new Vec3(0, 0, -1));
+        $this->assertEqualsVector3(0.949888, 0.183764, -0.25287, $q * new Vec3(0, 0, 1));
+        $this->assertEqualsVector3(-0.177579, 0.98297, 0.0472734, $q * new Vec3(0, 1, 0));
+        $this->assertEqualsVector3(-0.257251, 0, -0.966345, $q * new Vec3(1, 0, 0));
+
+        $q = new Quat(-0.6651056408882141, -0.01823088340461254, 0.7462464570999146, -0.020454995334148407);
+        $this->assertEqualsVector3(0.99192, 0.0547799, 0.114432,  $q * new Vec3(0, 0, -1));
+        $this->assertEqualsVector3(0.0544189, -0.998498, 0.00627801, $q * new Vec3(0, -1, 0));
+        $this->assertEqualsVector3(0.114604, 0, -0.993411, $q * new Vec3(-1, 0, 0));
+
+        // reversed order of opertation
+        $q = new Quat(0.6068052053451538, -0.05623327195644379, 0.789476215839386, 0.07316158711910248);
+        // again do to the PHP order of operation bug
+        // we have to declare the vector in a seperate variable
+        $v = new Vec3(0, 0, -1);
+        $this->assertEqualsVector3(0.966345, -0.0472734, 0.25287, $v * $q);
+        
     }
 
     public function testOperationMat4Multiplication() 
