@@ -142,6 +142,7 @@ namespace GL\Math
         public function copy() : Quat {}
         public static function fromMat4(Mat4 $matrix) : Quat {}
         public static function fromVec4(Vec4 $vec) : Quat {}
+        public static function inverted(Quat $quat) : Quat {}
         public static function normalized(Quat $quat) : Quat {} 
         public function normalize() : void {}
         public function length() : float {}

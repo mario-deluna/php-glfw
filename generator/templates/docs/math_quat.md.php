@@ -42,6 +42,8 @@ $quat[<?php echo $i; ?>] = 42.0;
     'fromMat4',
     'normalized',
     'normalize',
+    'inverse',
+    'inverted',
     'length',
     'eulerAngles',
     'rotate',

@@ -1,5 +1,5 @@
 /* This is a generated file, edit the .stub.php file instead.
- * Stub hash: 6cf4b8175393df06dd846d8091589190d9c8fb2c */
+ * Stub hash: a7c71e0d813a871da1aa91b03947a6861ab09f18 */
 
 ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_glCullFace, 0, 1, IS_VOID, 0)
 	ZEND_ARG_TYPE_INFO(0, mode, IS_LONG, 0)
@@ -2407,9 +2407,11 @@ ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(arginfo_class_GL_Math_Quat_fromVec4, 0, 1
 	ZEND_ARG_OBJ_INFO(0, vec, GL\\Math\\Vec4, 0)
 ZEND_END_ARG_INFO()
 
-ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(arginfo_class_GL_Math_Quat_normalized, 0, 1, GL\\Math\\Quat, 0)
+ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(arginfo_class_GL_Math_Quat_inverted, 0, 1, GL\\Math\\Quat, 0)
 	ZEND_ARG_OBJ_INFO(0, quat, GL\\Math\\Quat, 0)
 ZEND_END_ARG_INFO()
+
+#define arginfo_class_GL_Math_Quat_normalized arginfo_class_GL_Math_Quat_inverted
 
 #define arginfo_class_GL_Math_Quat_normalize arginfo_glFinish
 
@@ -3307,6 +3309,7 @@ ZEND_METHOD(GL_Math_Quat, __construct);
 ZEND_METHOD(GL_Math_Quat, copy);
 ZEND_METHOD(GL_Math_Quat, fromMat4);
 ZEND_METHOD(GL_Math_Quat, fromVec4);
+ZEND_METHOD(GL_Math_Quat, inverted);
 ZEND_METHOD(GL_Math_Quat, normalized);
 ZEND_METHOD(GL_Math_Quat, normalize);
 ZEND_METHOD(GL_Math_Quat, length);
@@ -4088,6 +4091,7 @@ static const zend_function_entry class_GL_Math_Quat_methods[] = {
 	ZEND_ME(GL_Math_Quat, copy, arginfo_class_GL_Math_Quat_copy, ZEND_ACC_PUBLIC)
 	ZEND_ME(GL_Math_Quat, fromMat4, arginfo_class_GL_Math_Quat_fromMat4, ZEND_ACC_PUBLIC|ZEND_ACC_STATIC)
 	ZEND_ME(GL_Math_Quat, fromVec4, arginfo_class_GL_Math_Quat_fromVec4, ZEND_ACC_PUBLIC|ZEND_ACC_STATIC)
+	ZEND_ME(GL_Math_Quat, inverted, arginfo_class_GL_Math_Quat_inverted, ZEND_ACC_PUBLIC|ZEND_ACC_STATIC)
 	ZEND_ME(GL_Math_Quat, normalized, arginfo_class_GL_Math_Quat_normalized, ZEND_ACC_PUBLIC|ZEND_ACC_STATIC)
 	ZEND_ME(GL_Math_Quat, normalize, arginfo_class_GL_Math_Quat_normalize, ZEND_ACC_PUBLIC)
 	ZEND_ME(GL_Math_Quat, length, arginfo_class_GL_Math_Quat_length, ZEND_ACC_PUBLIC)

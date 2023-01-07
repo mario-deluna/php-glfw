@@ -1909,6 +1909,21 @@ PHP_METHOD(GL_Math_Quat, normalized)
     quat_norm(res_ptr->data, in_obj->data);
 }
 
+
+PHP_METHOD(GL_Math_Quat, inverted)
+{
+    zval *quat_zval;
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "O", &quat_zval,  phpglfw_math_quat_ce) == FAILURE) {
+        return;
+    }
+
+    object_init_ex(return_value, phpglfw_math_quat_ce);
+    phpglfw_math_quat_object *res_ptr = phpglfw_math_quat_objectptr_from_zobj_p(Z_OBJ_P(return_value));
+    phpglfw_math_quat_object *in_obj =  phpglfw_math_quat_objectptr_from_zobj_p(Z_OBJ_P(quat_zval));
+
+    quat_inverse(res_ptr->data, in_obj->data);
+}
+
 PHP_METHOD(GL_Math_Quat, length)
 {
     if (zend_parse_parameters_none() == FAILURE) {

@@ -132,6 +132,43 @@ $quat->normalize();
 
 ---
      
+### `inverse`
+
+Invseres the current quaternion, this is basically the same as `inverted()` but
+modifies the current quaternion instead of creating a new one.
+
+```php
+function inverse() : void
+```
+
+```php
+$quat->inverse();
+```
+
+---
+     
+### `inverted`
+
+Constructs and return a inverted quaternion based on the given one
+
+```php
+static function inverted(\GL\Math\Quat $quat) : \GL\Math\Quat
+```
+
+```php
+$inverted = Quat::inverted($quat);
+```
+
+arguments
+
+:    1. `\Quat` `$quat` The quaternion to invert.
+
+returns
+
+:    `\Quat` The inverted quaternion.
+
+---
+     
 ### `length`
 
 Returns the length of the quaternion

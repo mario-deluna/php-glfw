@@ -255,6 +255,16 @@ class QuatTest extends \PHPUnit\Framework\TestCase
         $q->inverse();
         $this->assertEqualsQuat(0.606805, 0.0562333, -0.789476, -0.0731616, $q);
     }
+
+    public function testInverted()
+    {
+        $q = new Quat(1, 2, 3, 4);
+        $q->normalize();
+        $this->assertEqualsQuat(0.182574, -0.365148, -0.547723, -0.730297, Quat::inverted($q));
+
+        $q = new Quat(0.6068052053451538, -0.05623327195644379, 0.789476215839386, 0.07316158711910248);
+        $this->assertEqualsQuat(0.606805, 0.0562333, -0.789476, -0.0731616, Quat::inverted($q));
+    }
     
     public function testOperationVec3Multiplication()
     {

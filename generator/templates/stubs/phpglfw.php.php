@@ -102,6 +102,11 @@ namespace GL\Math
         public function __construct(<?php echo $obj->getPhpArgs(); ?>) {}
 
         /**
+         * Creates and returns a copy of the current <?php echo $obj->name; ?>.
+         */
+        public function copy() : <?php echo $obj->name; ?> {}
+
+        /**
          * Returns the distance between the left and right vectors
          * 
          * ```php    
@@ -270,6 +275,11 @@ namespace GL\Math
         public function __construct(<?php echo $obj->getPhpArgs(); ?>) {}
 
         /**
+         * Creates and returns a copy of the current quaternion
+         */
+        public function copy() : <?php echo $obj->name; ?> {}
+
+        /**
          * Constructs and returns a new quaternion based on the given Mat4 matrix
          *
          * ```php
@@ -306,6 +316,18 @@ namespace GL\Math
          * @return <?php echo $obj->name; ?> The normalized quaternion.
          */
         public static function normalized(<?php echo $obj->name; ?> $quat) : <?php echo $obj->name; ?> {} 
+
+        /**
+         * Constructs and return a inverted quaternion based on the given one
+         * 
+         * ```php
+         * $inverted = <?php echo $obj->name; ?>::inverted($quat);
+         * ```
+         *
+         * @param <?php echo $obj->name; ?> $quat The quaternion to invert.
+         * @return <?php echo $obj->name; ?> The inverted quaternion.
+         */
+        public static function inverted(<?php echo $obj->name; ?> $quat) : <?php echo $obj->name; ?> {}
 
         /**
          * The same as `normalized()`, but modifies the current quaternion instead of creating a new one.
@@ -347,6 +369,16 @@ namespace GL\Math
          * @param Vec3 $axis The axis to rotate around
          */
         public function rotate(float $angle, Vec3 $axis) : void {}
+
+        /**
+         * Invseres the current quaternion, this is basically the same as `inverted()` but 
+         * modifies the current quaternion instead of creating a new one.
+         *
+         * ```php
+         * $quat->inverse();
+         * ```
+         */
+        public function inverse() : void {}
 
         /**
          * Constructs a Mat4 matrix based on the current quaternion

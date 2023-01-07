@@ -121,6 +121,7 @@ namespace GL\Math
 <?php elseif($obj->isQuat()) : ?>
         public static function fromMat4(Mat4 $matrix) : <?php echo $obj->name; ?> {}
         public static function fromVec4(Vec4 $vec) : <?php echo $obj->name; ?> {}
+        public static function inverted(<?php echo $obj->name; ?> $quat) : <?php echo $obj->name; ?> {}
         public static function normalized(<?php echo $obj->name; ?> $quat) : <?php echo $obj->name; ?> {} 
         public function normalize() : void {}
         public function length() : float {}
