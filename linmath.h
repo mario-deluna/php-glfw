@@ -597,6 +597,7 @@ static inline float quat_len2(quat q)
 {
     return q[0]*q[0] + q[1]*q[1] + q[2]*q[2] + q[3]*q[3];
 }
+
 static inline void quat_scale(quat r, quat v, float s)
 {
 	int i;
@@ -618,14 +619,40 @@ static inline void quat_conj(quat r, quat q)
     r[2] = -q[2];
     r[3] = -q[3];
 }
-static inline void quat_dot(quat r, quat a, quat b)
+static inline float quat_dot(quat a, quat b)
 {
-    r[0] = a[0]*b[0] - a[1]*b[1] - a[2]*b[2] - a[3]*b[3];
-    r[1] = a[0]*b[1] + a[1]*b[0] + a[2]*b[3] - a[3]*b[2];
-    r[2] = a[0]*b[2] + a[2]*b[0] + a[3]*b[1] - a[1]*b[3];
-    r[3] = a[0]*b[3] + a[3]*b[0] + a[1]*b[2] - a[2]*b[1];
+    return a[0]*b[0] + a[1]*b[1] + a[2]*b[2] + a[3]*b[3];
 }
-
+static inline void quat_slerp(quat r, quat a, quat b, float t)
+{
+    float cosTheta = quat_dot(a, b);
+    if(cosTheta < 0.f)
+    {
+        cosTheta = -cosTheta;
+        b[0] = -b[0];
+        b[1] = -b[1];
+        b[2] = -b[2];
+        b[3] = -b[3];
+    }
+    if(cosTheta > 1.f - 1e-6f)
+    {
+        r[0] = a[0] + t * (b[0] - a[0]);
+        r[1] = a[1] + t * (b[1] - a[1]);
+        r[2] = a[2] + t * (b[2] - a[2]);
+        r[3] = a[3] + t * (b[3] - a[3]);
+    }
+    else
+    {
+        float angle = acosf(cosTheta);
+        float sinTheta = sinf(angle);
+        float a0 = sinf((1.f - t) * angle) / sinTheta;
+        float b0 = sinf(t * angle) / sinTheta;
+        r[0] = a0 * a[0] + b0 * b[0];
+        r[1] = a0 * a[1] + b0 * b[1];
+        r[2] = a0 * a[2] + b0 * b[2];
+        r[3] = a0 * a[3] + b0 * b[3];
+    }
+}
 static inline void quat_inverse(quat r, quat q)
 {
     float d = quat_inner_product(q, q); 
@@ -667,6 +694,8 @@ static inline void quat_euler_angles(vec3 r, quat q)
     r[2] = atan2(siny_cosp, cosy_cosp);
 }
 #define quat_norm vec4_norm
+#define quat_mix vec4_mix
+#define quat_lerp vec4_lerp
 static inline void quat_mul_vec3(vec3 r, quat q, vec3 v)
 {
     /**

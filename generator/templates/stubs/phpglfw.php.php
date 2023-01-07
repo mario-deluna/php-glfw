@@ -387,6 +387,62 @@ namespace GL\Math
         public static function normalized(<?php echo $obj->name; ?> $quat) : <?php echo $obj->name; ?> {} 
 
         /**
+         * Performs a linear interpolation between two quaternions and returns the resulting quaternion.
+         *
+         * ```php
+         * $result = <?php echo $obj->name; ?>::mix($left, $right, $t);
+         * ```
+         *
+         * @param <?php echo $obj->name; ?> $left The left quaternion.
+         * @param <?php echo $obj->name; ?> $right The right quaternion.
+         * @param float $t The interpolation factor.
+         * @return <?php echo $obj->name; ?> The interpolated quaternion.
+         */
+        public static function mix(<?php echo $obj->name; ?> $left, <?php echo $obj->name; ?> $right, float $t) : <?php echo $obj->name; ?> {}
+
+        /**
+         * Performs a linear interpolation between two quaternions and returns the resulting quaternion.
+         * This function is identical to `mix`.
+         * 
+         * ```php
+         * $result = <?php echo $obj->name; ?>::lerp($left, $right, $t);
+         * ```
+         *
+         * @param <?php echo $obj->name; ?> $left The left quaternion.
+         * @param <?php echo $obj->name; ?> $right The right quaternion.
+         * @param float $t The interpolation factor.
+         * @return <?php echo $obj->name; ?> The interpolated quaternion.
+         */
+        public static function lerp(<?php echo $obj->name; ?> $left, <?php echo $obj->name; ?> $right, float $t) : <?php echo $obj->name; ?> {}
+
+        /**
+         * Performs a spherical linear interpolation between two quaternions and returns the resulting quaternion.
+         *
+         * ```php
+         * $result = <?php echo $obj->name; ?>::slerp($left, $right, $t);
+         * ```
+         * 
+         * @param <?php echo $obj->name; ?> $left The left quaternion.
+         * @param <?php echo $obj->name; ?> $right The right quaternion.
+         * @param float $t The interpolation factor.
+         * @return <?php echo $obj->name; ?> The interpolated quaternion.
+         */
+        public static function slerp(<?php echo $obj->name; ?> $left, <?php echo $obj->name; ?> $right, float $t) : <?php echo $obj->name; ?> {}
+
+        /**
+         * Returns the dot product of two quaternions.
+         * 
+         * ```php
+         * $dot = <?php echo $obj->name; ?>::dot($left, $right);
+         * ```
+         * 
+         * @param <?php echo $obj->name; ?> $left The left quaternion.
+         * @param <?php echo $obj->name; ?> $right The right quaternion.
+         * @return float The dot product.
+         */
+        public static function dot(<?php echo $obj->name; ?> $left, <?php echo $obj->name; ?> $right) : float {}
+
+        /**
          * Quat * Quat
          * Multiplies two quaternions and returns the result.
          * Note: **This method only exists because there is a bug with the order of operation in PHP.**

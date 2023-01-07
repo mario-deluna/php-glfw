@@ -157,6 +157,10 @@ namespace GL\Math
         public static function fromVec4(Vec4 $vec) : Quat {}
         public static function inverted(Quat $quat) : Quat {}
         public static function normalized(Quat $quat) : Quat {} 
+        public static function mix(Quat $left, Quat $right, float $t) : Quat {}
+        public static function lerp(Quat $left, Quat $right, float $t) : Quat {}
+        public static function slerp(Quat $left, Quat $right, float $t) : Quat {}
+        public static function dot(Quat $left, Quat $right) : float {}
         public static function multiply(Quat $left, Quat $right) : Quat {}
         public static function multiplyVec3(Quat $quat, Vec3 $vec) : Vec3 {}
         public static function multiplyMat4(Quat $quat, Mat4 $mat) : Mat4 {}

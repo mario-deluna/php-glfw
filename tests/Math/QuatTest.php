@@ -278,6 +278,49 @@ class QuatTest extends \PHPUnit\Framework\TestCase
         $q = new Quat(0.6068052053451538, -0.05623327195644379, 0.789476215839386, 0.07316158711910248);
         $this->assertEqualsQuat(0.606805, 0.0562333, -0.789476, -0.0731616, Quat::inverted($q));
     }
+
+    public function testQuatMix()
+    {
+        // this is identical to vec4
+        $vec1 = new Quat(5.0, 12.5, 7.5, 4.0);
+        $vec2 = new Quat(0.5, 2.0, 0.75, 1.0);
+
+        $r = Quat::mix($vec1, $vec2, 0.5);
+
+        $this->assertEqualsQuat(2.75, 7.25, 4.125, 2.5, $r);
+
+        $r = Quat::lerp($vec1, $vec2, 0.25);
+
+        $this->assertEqualsQuat(3.875, 9.875, 5.8125, 3.25, $r);
+    }
+
+    public function testQuatSlerp()
+    {
+        $q1 = new Quat;
+        $q1->rotate(0.5, new Vec3(1, 0, 0));
+
+        $q2 = new Quat;
+        $q2->rotate(0.5, new Vec3(0, 1, 0));
+
+        $q3 = Quat::slerp($q1, $q2, 0.5);
+        $this->assertEqualsQuat(0.984088122, 0.125639483, 0.125639483, 0, $q3);
+    }
+
+    public function testQuatDot()
+    {
+        $q1 = new Quat(1, 2, 3, 4);
+        $q2 = new Quat(5, 6, 7, 8);
+
+        $this->assertEquals(70, Quat::dot($q1, $q2));
+
+        $q1 = new Quat;
+        $q1->rotate(0.5, new Vec3(1, 0, 0));
+
+        $q2 = new Quat;
+        $q2->rotate(0.5, new Vec3(0, 1, 0));
+
+        $this->assertEquals(0.938791275, Quat::dot($q1, $q2));
+    }
     
     public function testOperationVec3Multiplication()
     {

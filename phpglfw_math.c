@@ -2095,6 +2095,20 @@ PHP_METHOD(GL_Math_Quat, normalize)
     quat_norm(obj_ptr->data, obj_ptr->data);
 }
 
+PHP_METHOD(GL_Math_Quat, inverted)
+{
+    zval *quat_zval;
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "O", &quat_zval,  phpglfw_math_quat_ce) == FAILURE) {
+        return;
+    }
+
+    object_init_ex(return_value, phpglfw_math_quat_ce);
+    phpglfw_math_quat_object *res_ptr = phpglfw_math_quat_objectptr_from_zobj_p(Z_OBJ_P(return_value));
+    phpglfw_math_quat_object *in_obj =  phpglfw_math_quat_objectptr_from_zobj_p(Z_OBJ_P(quat_zval));
+
+    quat_inverse(res_ptr->data, in_obj->data);
+}
+
 PHP_METHOD(GL_Math_Quat, normalized)
 {
     zval *quat_zval;
@@ -2109,19 +2123,70 @@ PHP_METHOD(GL_Math_Quat, normalized)
     quat_norm(res_ptr->data, in_obj->data);
 }
 
-
-PHP_METHOD(GL_Math_Quat, inverted)
+PHP_METHOD(GL_Math_Quat, dot)
 {
-    zval *quat_zval;
-    if (zend_parse_parameters(ZEND_NUM_ARGS() , "O", &quat_zval,  phpglfw_math_quat_ce) == FAILURE) {
+    zval *leftquat_zval;
+    zval *rightquat_zval;
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "OO", &leftquat_zval,  phpglfw_math_quat_ce, &rightquat_zval,  phpglfw_math_quat_ce) == FAILURE) {
+        return;
+    }
+
+    phpglfw_math_quat_object *left_obj =  phpglfw_math_quat_objectptr_from_zobj_p(Z_OBJ_P(leftquat_zval));
+    phpglfw_math_quat_object *right_obj =  phpglfw_math_quat_objectptr_from_zobj_p(Z_OBJ_P(rightquat_zval));
+
+    RETURN_DOUBLE(quat_dot(left_obj->data, right_obj->data));
+}
+
+PHP_METHOD(GL_Math_Quat, mix)
+{
+    zval *leftquat_zval;
+    zval *rightquat_zval;
+    double t;
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "OOd", &leftquat_zval,  phpglfw_math_quat_ce, &rightquat_zval,  phpglfw_math_quat_ce, &t) == FAILURE) {
         return;
     }
 
     object_init_ex(return_value, phpglfw_math_quat_ce);
     phpglfw_math_quat_object *res_ptr = phpglfw_math_quat_objectptr_from_zobj_p(Z_OBJ_P(return_value));
-    phpglfw_math_quat_object *in_obj =  phpglfw_math_quat_objectptr_from_zobj_p(Z_OBJ_P(quat_zval));
+    phpglfw_math_quat_object *left_obj =  phpglfw_math_quat_objectptr_from_zobj_p(Z_OBJ_P(leftquat_zval));
+    phpglfw_math_quat_object *right_obj =  phpglfw_math_quat_objectptr_from_zobj_p(Z_OBJ_P(rightquat_zval));
 
-    quat_inverse(res_ptr->data, in_obj->data);
+    quat_mix(res_ptr->data, left_obj->data, right_obj->data, t);
+}
+
+PHP_METHOD(GL_Math_Quat, lerp)
+{
+    zval *leftquat_zval;
+    zval *rightquat_zval;
+    double t;
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "OOd", &leftquat_zval,  phpglfw_math_quat_ce, &rightquat_zval,  phpglfw_math_quat_ce, &t) == FAILURE) {
+        return;
+    }
+
+    object_init_ex(return_value, phpglfw_math_quat_ce);
+    phpglfw_math_quat_object *res_ptr = phpglfw_math_quat_objectptr_from_zobj_p(Z_OBJ_P(return_value));
+    phpglfw_math_quat_object *left_obj =  phpglfw_math_quat_objectptr_from_zobj_p(Z_OBJ_P(leftquat_zval));
+    phpglfw_math_quat_object *right_obj =  phpglfw_math_quat_objectptr_from_zobj_p(Z_OBJ_P(rightquat_zval));
+
+    quat_lerp(res_ptr->data, left_obj->data, right_obj->data, t);
+}
+
+
+PHP_METHOD(GL_Math_Quat, slerp)
+{
+    zval *leftquat_zval;
+    zval *rightquat_zval;
+    double t;
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "OOd", &leftquat_zval,  phpglfw_math_quat_ce, &rightquat_zval,  phpglfw_math_quat_ce, &t) == FAILURE) {
+        return;
+    }
+
+    object_init_ex(return_value, phpglfw_math_quat_ce);
+    phpglfw_math_quat_object *res_ptr = phpglfw_math_quat_objectptr_from_zobj_p(Z_OBJ_P(return_value));
+    phpglfw_math_quat_object *left_obj =  phpglfw_math_quat_objectptr_from_zobj_p(Z_OBJ_P(leftquat_zval));
+    phpglfw_math_quat_object *right_obj =  phpglfw_math_quat_objectptr_from_zobj_p(Z_OBJ_P(rightquat_zval));
+
+    quat_slerp(res_ptr->data, left_obj->data, right_obj->data, t);
 }
 
 PHP_METHOD(GL_Math_Quat, multiply)

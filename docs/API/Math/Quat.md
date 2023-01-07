@@ -96,6 +96,28 @@ returns
 
 ---
      
+### `inverted`
+
+Constructs and return a inverted quaternion based on the given one
+
+```php
+static function inverted(\GL\Math\Quat $quat) : \GL\Math\Quat
+```
+
+```php
+$inverted = Quat::inverted($quat);
+```
+
+arguments
+
+:    1. `\Quat` `$quat` The quaternion to invert.
+
+returns
+
+:    `\Quat` The inverted quaternion.
+
+---
+     
 ### `normalized`
 
 Constructs and returns a normalized quaternion based on the given one
@@ -118,6 +140,77 @@ returns
 
 ---
      
+### `mix`
+
+Performs a linear interpolation between two quaternions and returns the resulting quaternion.
+
+```php
+static function mix(\GL\Math\Quat $left, \GL\Math\Quat $right, float $t) : \GL\Math\Quat
+```
+
+```php
+$result = Quat::mix($left, $right, $t);
+```
+
+arguments
+
+:    1. `\Quat` `$left` The left quaternion.
+    2. `\Quat` `$right` The right quaternion.
+    3. `float` `$t` The interpolation factor.
+
+returns
+
+:    `\Quat` The interpolated quaternion.
+
+---
+     
+### `slerp`
+
+Performs a spherical linear interpolation between two quaternions and returns the resulting quaternion.
+
+```php
+static function slerp(\GL\Math\Quat $left, \GL\Math\Quat $right, float $t) : \GL\Math\Quat
+```
+
+```php
+$result = Quat::slerp($left, $right, $t);
+```
+
+arguments
+
+:    1. `\Quat` `$left` The left quaternion.
+    2. `\Quat` `$right` The right quaternion.
+    3. `float` `$t` The interpolation factor.
+
+returns
+
+:    `\Quat` The interpolated quaternion.
+
+---
+     
+### `dot`
+
+Returns the dot product of two quaternions.
+
+```php
+static function dot(\GL\Math\Quat $left, \GL\Math\Quat $right) : float
+```
+
+```php
+$dot = Quat::dot($left, $right);
+```
+
+arguments
+
+:    1. `\Quat` `$left` The left quaternion.
+    2. `\Quat` `$right` The right quaternion.
+
+returns
+
+:    `float` The dot product.
+
+---
+     
 ### `normalize`
 
 The same as `normalized()`, but modifies the current quaternion instead of creating a new one.
@@ -129,43 +222,6 @@ function normalize() : void
 ```php
 $quat->normalize();
 ```
-
----
-     
-### `inverse`
-
-Invseres the current quaternion, this is basically the same as `inverted()` but
-modifies the current quaternion instead of creating a new one.
-
-```php
-function inverse() : void
-```
-
-```php
-$quat->inverse();
-```
-
----
-     
-### `inverted`
-
-Constructs and return a inverted quaternion based on the given one
-
-```php
-static function inverted(\GL\Math\Quat $quat) : \GL\Math\Quat
-```
-
-```php
-$inverted = Quat::inverted($quat);
-```
-
-arguments
-
-:    1. `\Quat` `$quat` The quaternion to invert.
-
-returns
-
-:    `\Quat` The inverted quaternion.
 
 ---
      
@@ -217,6 +273,21 @@ arguments
 
 :    1. `float` `$angle` The angle to rotate by (in radians)
     2. `\Vec3` `$axis` The axis to rotate around
+
+---
+     
+### `inverse`
+
+Invseres the current quaternion, this is basically the same as `inverted()` but
+modifies the current quaternion instead of creating a new one.
+
+```php
+function inverse() : void
+```
+
+```php
+$quat->inverse();
+```
 
 ---
      

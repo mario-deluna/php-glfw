@@ -686,6 +686,62 @@ namespace GL\Math
         public static function normalized(Quat $quat) : Quat {} 
 
         /**
+         * Performs a linear interpolation between two quaternions and returns the resulting quaternion.
+         *
+         * ```php
+         * $result = Quat::mix($left, $right, $t);
+         * ```
+         *
+         * @param Quat $left The left quaternion.
+         * @param Quat $right The right quaternion.
+         * @param float $t The interpolation factor.
+         * @return Quat The interpolated quaternion.
+         */
+        public static function mix(Quat $left, Quat $right, float $t) : Quat {}
+
+        /**
+         * Performs a linear interpolation between two quaternions and returns the resulting quaternion.
+         * This function is identical to `mix`.
+         * 
+         * ```php
+         * $result = Quat::lerp($left, $right, $t);
+         * ```
+         *
+         * @param Quat $left The left quaternion.
+         * @param Quat $right The right quaternion.
+         * @param float $t The interpolation factor.
+         * @return Quat The interpolated quaternion.
+         */
+        public static function lerp(Quat $left, Quat $right, float $t) : Quat {}
+
+        /**
+         * Performs a spherical linear interpolation between two quaternions and returns the resulting quaternion.
+         *
+         * ```php
+         * $result = Quat::slerp($left, $right, $t);
+         * ```
+         * 
+         * @param Quat $left The left quaternion.
+         * @param Quat $right The right quaternion.
+         * @param float $t The interpolation factor.
+         * @return Quat The interpolated quaternion.
+         */
+        public static function slerp(Quat $left, Quat $right, float $t) : Quat {}
+
+        /**
+         * Returns the dot product of two quaternions.
+         * 
+         * ```php
+         * $dot = Quat::dot($left, $right);
+         * ```
+         * 
+         * @param Quat $left The left quaternion.
+         * @param Quat $right The right quaternion.
+         * @return float The dot product.
+         */
+        public static function dot(Quat $left, Quat $right) : float {}
+
+        /**
          * Quat * Quat
          * Multiplies two quaternions and returns the result.
          * Note: **This method only exists because there is a bug with the order of operation in PHP.**

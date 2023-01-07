@@ -1339,6 +1339,20 @@ PHP_METHOD(<?php echo $obj->getFullNamespaceConstString(); ?>, normalize)
     <?php echo $obj->getQuatFunction('norm'); ?>(obj_ptr->data, obj_ptr->data);
 }
 
+PHP_METHOD(<?php echo $obj->getFullNamespaceConstString(); ?>, inverted)
+{
+    zval *quat_zval;
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "O", &quat_zval,  <?php echo $obj->getClassEntryName(); ?>) == FAILURE) {
+        return;
+    }
+
+    object_init_ex(return_value, <?php echo $obj->getClassEntryName(); ?>);
+    <?php echo $obj->getObjectName(); ?> *res_ptr = <?php echo $obj->objectFromZObjFunctionName(); ?>(Z_OBJ_P(return_value));
+    <?php echo $obj->getObjectName(); ?> *in_obj =  <?php echo $obj->objectFromZObjFunctionName(); ?>(Z_OBJ_P(quat_zval));
+
+    <?php echo $obj->getQuatFunction('inverse'); ?>(res_ptr->data, in_obj->data);
+}
+
 PHP_METHOD(<?php echo $obj->getFullNamespaceConstString(); ?>, normalized)
 {
     zval *quat_zval;
@@ -1353,19 +1367,70 @@ PHP_METHOD(<?php echo $obj->getFullNamespaceConstString(); ?>, normalized)
     <?php echo $obj->getQuatFunction('norm'); ?>(res_ptr->data, in_obj->data);
 }
 
-
-PHP_METHOD(<?php echo $obj->getFullNamespaceConstString(); ?>, inverted)
+PHP_METHOD(<?php echo $obj->getFullNamespaceConstString(); ?>, dot)
 {
-    zval *quat_zval;
-    if (zend_parse_parameters(ZEND_NUM_ARGS() , "O", &quat_zval,  <?php echo $obj->getClassEntryName(); ?>) == FAILURE) {
+    zval *leftquat_zval;
+    zval *rightquat_zval;
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "OO", &leftquat_zval,  <?php echo $obj->getClassEntryName(); ?>, &rightquat_zval,  <?php echo $obj->getClassEntryName(); ?>) == FAILURE) {
+        return;
+    }
+
+    <?php echo $obj->getObjectName(); ?> *left_obj =  <?php echo $obj->objectFromZObjFunctionName(); ?>(Z_OBJ_P(leftquat_zval));
+    <?php echo $obj->getObjectName(); ?> *right_obj =  <?php echo $obj->objectFromZObjFunctionName(); ?>(Z_OBJ_P(rightquat_zval));
+
+    RETURN_DOUBLE(<?php echo $obj->getQuatFunction('dot'); ?>(left_obj->data, right_obj->data));
+}
+
+PHP_METHOD(<?php echo $obj->getFullNamespaceConstString(); ?>, mix)
+{
+    zval *leftquat_zval;
+    zval *rightquat_zval;
+    double t;
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "OOd", &leftquat_zval,  <?php echo $obj->getClassEntryName(); ?>, &rightquat_zval,  <?php echo $obj->getClassEntryName(); ?>, &t) == FAILURE) {
         return;
     }
 
     object_init_ex(return_value, <?php echo $obj->getClassEntryName(); ?>);
     <?php echo $obj->getObjectName(); ?> *res_ptr = <?php echo $obj->objectFromZObjFunctionName(); ?>(Z_OBJ_P(return_value));
-    <?php echo $obj->getObjectName(); ?> *in_obj =  <?php echo $obj->objectFromZObjFunctionName(); ?>(Z_OBJ_P(quat_zval));
+    <?php echo $obj->getObjectName(); ?> *left_obj =  <?php echo $obj->objectFromZObjFunctionName(); ?>(Z_OBJ_P(leftquat_zval));
+    <?php echo $obj->getObjectName(); ?> *right_obj =  <?php echo $obj->objectFromZObjFunctionName(); ?>(Z_OBJ_P(rightquat_zval));
 
-    <?php echo $obj->getQuatFunction('inverse'); ?>(res_ptr->data, in_obj->data);
+    <?php echo $obj->getQuatFunction('mix'); ?>(res_ptr->data, left_obj->data, right_obj->data, t);
+}
+
+PHP_METHOD(<?php echo $obj->getFullNamespaceConstString(); ?>, lerp)
+{
+    zval *leftquat_zval;
+    zval *rightquat_zval;
+    double t;
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "OOd", &leftquat_zval,  <?php echo $obj->getClassEntryName(); ?>, &rightquat_zval,  <?php echo $obj->getClassEntryName(); ?>, &t) == FAILURE) {
+        return;
+    }
+
+    object_init_ex(return_value, <?php echo $obj->getClassEntryName(); ?>);
+    <?php echo $obj->getObjectName(); ?> *res_ptr = <?php echo $obj->objectFromZObjFunctionName(); ?>(Z_OBJ_P(return_value));
+    <?php echo $obj->getObjectName(); ?> *left_obj =  <?php echo $obj->objectFromZObjFunctionName(); ?>(Z_OBJ_P(leftquat_zval));
+    <?php echo $obj->getObjectName(); ?> *right_obj =  <?php echo $obj->objectFromZObjFunctionName(); ?>(Z_OBJ_P(rightquat_zval));
+
+    <?php echo $obj->getQuatFunction('lerp'); ?>(res_ptr->data, left_obj->data, right_obj->data, t);
+}
+
+
+PHP_METHOD(<?php echo $obj->getFullNamespaceConstString(); ?>, slerp)
+{
+    zval *leftquat_zval;
+    zval *rightquat_zval;
+    double t;
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "OOd", &leftquat_zval,  <?php echo $obj->getClassEntryName(); ?>, &rightquat_zval,  <?php echo $obj->getClassEntryName(); ?>, &t) == FAILURE) {
+        return;
+    }
+
+    object_init_ex(return_value, <?php echo $obj->getClassEntryName(); ?>);
+    <?php echo $obj->getObjectName(); ?> *res_ptr = <?php echo $obj->objectFromZObjFunctionName(); ?>(Z_OBJ_P(return_value));
+    <?php echo $obj->getObjectName(); ?> *left_obj =  <?php echo $obj->objectFromZObjFunctionName(); ?>(Z_OBJ_P(leftquat_zval));
+    <?php echo $obj->getObjectName(); ?> *right_obj =  <?php echo $obj->objectFromZObjFunctionName(); ?>(Z_OBJ_P(rightquat_zval));
+
+    <?php echo $obj->getQuatFunction('slerp'); ?>(res_ptr->data, left_obj->data, right_obj->data, t);
 }
 
 PHP_METHOD(<?php echo $obj->getFullNamespaceConstString(); ?>, multiply)
