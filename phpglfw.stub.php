@@ -2070,6 +2070,7 @@ namespace {
     function glUnmapBuffer(int $target) : bool {};
     function glGetBufferParameteriv(int $target, int $pname, int &$params) : void {};
     function glBlendEquationSeparate(int $modeRGB, int $modeAlpha) : void {};
+    function glDrawBuffers(int $n, ?int ...$bufs) : void {};
     function glStencilOpSeparate(int $face, int $sfail, int $dpfail, int $dppass) : void {};
     function glStencilFuncSeparate(int $face, int $func, int $ref, int $mask) : void {};
     function glStencilMaskSeparate(int $face, int $mask) : void {};

@@ -79,7 +79,7 @@ EOD;
             if ($func->arguments[0]->argumentTypeFrom !== 'GLsizei') continue;
 
             // second arg must be GLuint pointer
-            if ($func->arguments[1]->argumentTypeFrom !== 'const GLuint *') continue;
+            if ($func->arguments[1]->argumentTypeFrom !== 'const GLuint *' && $func->arguments[1]->argumentTypeFrom !== 'const GLenum *') continue;
 
             // the func cannot return anything...
             if ($func->returnType !== ExtFunction::RETURN_VOID) continue;

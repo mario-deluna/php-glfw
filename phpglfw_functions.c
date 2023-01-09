@@ -2234,6 +2234,31 @@ PHP_FUNCTION(glBlendEquationSeparate)
 } 
 
 /**
+ * glDrawBuffers
+ */ 
+PHP_FUNCTION(glDrawBuffers)
+{
+    zend_long n;
+    zval *bufs;
+    size_t bufs_num = 0;
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "l+", &n, &bufs, &bufs_num) == FAILURE) {
+        return;
+    }
+    if (n != bufs_num) {
+        zend_throw_error(NULL, "The given number of elements needs to match the actual amount of given variadic vars.");
+        return;
+    }
+    GLuint *bufs_ids = malloc(n * sizeof(GLuint));
+    zval *data;
+    for (size_t i = 0; i <  bufs_num; i++) {
+        data = &bufs[i];
+        convert_to_long(data);
+        bufs_ids[i] = Z_LVAL_P(data);
+    }
+    glDrawBuffers(n, bufs_ids);;
+} 
+
+/**
  * glStencilOpSeparate
  */ 
 PHP_FUNCTION(glStencilOpSeparate)

@@ -1,5 +1,5 @@
 /* This is a generated file, edit the .stub.php file instead.
- * Stub hash: 08fa83213975a45af52548b001e3be4445684aa9 */
+ * Stub hash: 56f67e65c0c5ef838d63fe3ba0a4cf33051a9005 */
 
 ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_glCullFace, 0, 1, IS_VOID, 0)
 	ZEND_ARG_TYPE_INFO(0, mode, IS_LONG, 0)
@@ -387,6 +387,11 @@ ZEND_END_ARG_INFO()
 ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_glBlendEquationSeparate, 0, 2, IS_VOID, 0)
 	ZEND_ARG_TYPE_INFO(0, modeRGB, IS_LONG, 0)
 	ZEND_ARG_TYPE_INFO(0, modeAlpha, IS_LONG, 0)
+ZEND_END_ARG_INFO()
+
+ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_glDrawBuffers, 0, 1, IS_VOID, 0)
+	ZEND_ARG_TYPE_INFO(0, n, IS_LONG, 0)
+	ZEND_ARG_VARIADIC_TYPE_INFO(0, bufs, IS_LONG, 1)
 ZEND_END_ARG_INFO()
 
 ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_glStencilOpSeparate, 0, 4, IS_VOID, 0)
@@ -2852,6 +2857,7 @@ ZEND_FUNCTION(glIsBuffer);
 ZEND_FUNCTION(glUnmapBuffer);
 ZEND_FUNCTION(glGetBufferParameteriv);
 ZEND_FUNCTION(glBlendEquationSeparate);
+ZEND_FUNCTION(glDrawBuffers);
 ZEND_FUNCTION(glStencilOpSeparate);
 ZEND_FUNCTION(glStencilFuncSeparate);
 ZEND_FUNCTION(glStencilMaskSeparate);
@@ -3592,6 +3598,7 @@ static const zend_function_entry ext_functions[] = {
 	ZEND_FE(glUnmapBuffer, arginfo_glUnmapBuffer)
 	ZEND_FE(glGetBufferParameteriv, arginfo_glGetBufferParameteriv)
 	ZEND_FE(glBlendEquationSeparate, arginfo_glBlendEquationSeparate)
+	ZEND_FE(glDrawBuffers, arginfo_glDrawBuffers)
 	ZEND_FE(glStencilOpSeparate, arginfo_glStencilOpSeparate)
 	ZEND_FE(glStencilFuncSeparate, arginfo_glStencilFuncSeparate)
 	ZEND_FE(glStencilMaskSeparate, arginfo_glStencilMaskSeparate)

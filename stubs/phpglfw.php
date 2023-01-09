@@ -3143,6 +3143,17 @@ namespace {
     function glBlendEquationSeparate(int $modeRGB, int $modeAlpha) : void {};
  
     /**
+     * Specifies a list of color buffers to be drawn
+     *     into
+     * 
+     * @param int $n Specifies the number of buffers in bufs.
+     * @param ?int ...$bufs 
+     * 
+     * @return void
+     */ 
+    function glDrawBuffers(int $n, ?int ...$bufs) : void {};
+ 
+    /**
      * set front and/or back stencil test actions
      * 
      * @param int $face Specifies whether front and/or back stencil state is
