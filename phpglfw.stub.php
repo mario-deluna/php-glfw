@@ -10,9 +10,7 @@ namespace GL\Geometry
     class ObjFileParser
     {   
         public readonly array $materials;
-
         public readonly array $groups;
-
         public readonly array $objects;
 
         /**
@@ -20,13 +18,9 @@ namespace GL\Geometry
          * IMPORTANT: This obj. file parser does ONLY support triangulated meshes!
          */
         public function __construct(string $file) {}
-
         public function getVertices(string $layout, ?\GL\Geometry\ObjFileParser\Group $group = null) : \GL\Buffer\FloatBuffer {}
-
         public function getIndexedVertices(string $layout, ?\GL\Geometry\ObjFileParser\Group $group = null) : \GL\Geometry\ObjFileParser\Mesh {}
-
         public function getMeshes(string $layout, ?\GL\Geometry\ObjFileParser\Group $group = null) : array {}
-
         public function getIndexedMeshes(string $layout, ?\GL\Geometry\ObjFileParser\Group $group = null) : array {}
     }
 }
@@ -37,23 +31,21 @@ namespace GL\Geometry\ObjFileParser
 
     class Mesh {
         public readonly ?Material $material;
-
         public readonly FloatBuffer $vertices;
-
-        public readonly ?UIntBuffer $indices; 
+        public readonly ?UIntBuffer $indices;
+        public readonly ?\GL\Buffer\Vec3 $aabbMin;
+        public readonly ?\GL\Buffer\Vec3 $aabbMax;
     }
 
     class Material
     {
         public readonly string $name;
-
         public function __construct() {}
     }
 
     class Group
     {
         public readonly string $name;
-
         public function __construct() {}
     }
 

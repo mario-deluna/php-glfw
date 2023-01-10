@@ -1589,6 +1589,20 @@ namespace GL\Geometry\ObjFileParser
          * @var \GL\Buffer\UIntBuffer|null
          */
         public readonly ?UIntBuffer $indices; 
+
+        /**
+         * The min of the axis aligned bounding box of the mesh.
+         * 
+         * @var \GL\Buffer\Vec3|null
+         */
+        public readonly ?\GL\Buffer\Vec3 $aabbMin;
+
+        /**
+         * The max of the axis aligned bounding box of the mesh.
+         * 
+         * @var \GL\Buffer\Vec3|null
+         */
+        public readonly ?\GL\Buffer\Vec3 $aabbMax;
     }
 
     class Material

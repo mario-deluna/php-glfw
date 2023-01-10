@@ -387,7 +387,9 @@ void phpglfw_extract_vertexbuffer(
     char *layout, 
     int layout_len,
     unsigned int *indices, // optional array of indices to use 
-    unsigned int index_count // number of indices in the array
+    unsigned int index_count, // number of indices in the array
+    float *aabb_min,
+    float *aabb_max
 ) {
     // flags from layout
     bool calc_normals = false;
@@ -507,6 +509,10 @@ void phpglfw_extract_vertexbuffer(
             unsigned int i = iterator_index[ii + v];
             fastObjIndex *mindex = &intern->mesh->indices[i];
 
+            // update the aabb min and max
+            vec3_min(aabb_min, aabb_min, &intern->mesh->positions[mindex->p * 3]);
+            vec3_max(aabb_max, aabb_max, &intern->mesh->positions[mindex->p * 3]);
+
             // for every char in layout
             for (int l = 0; l < layout_len; l++) {
                 // get the current char
@@ -602,7 +608,9 @@ PHP_METHOD(GL_Geometry_ObjFileParser, getVertices)
         group.index_offset = Z_LVAL_P(index_offset_zval);
     }
 
-    phpglfw_extract_vertexbuffer(intern, buffer_intern, &group, layout, layout_len, NULL, 0);
+    vec3 aabb_min;
+    vec3 aabb_max;
+    phpglfw_extract_vertexbuffer(intern, buffer_intern, &group, layout, layout_len, NULL, 0, &aabb_min[0], &aabb_max[0]);
 }
 
 int phpglfw_find_vertex_in_buffer(cvector_vector_type(GLfloat) searchbuffer, cvector_vector_type(GLfloat) sourcebuffer, unsigned int sourceoffset, size_t rowsize)
@@ -661,7 +669,9 @@ PHP_METHOD(GL_Geometry_ObjFileParser, getIndexedVertices)
     // extract a full buffer into temporary buffer
     phpglfw_buffer_glfloat_object *tempbuffer_intern = emalloc(sizeof(phpglfw_buffer_glfloat_object));
 
-    phpglfw_extract_vertexbuffer(intern, tempbuffer_intern, &group, layout, layout_len, NULL, 0);
+    vec3 aabb_min;
+    vec3 aabb_max;
+    phpglfw_extract_vertexbuffer(intern, tempbuffer_intern, &group, layout, layout_len, NULL, 0, &aabb_min[0], &aabb_max[0]);
 
     // calculate the row size of the vertex data
     size_t vertexdata_row_size = 0;
@@ -821,9 +831,33 @@ PHP_METHOD(GL_Geometry_ObjFileParser, getMeshes)
             object_init_ex(&vertices, phpglfw_get_buffer_glfloat_ce());
             phpglfw_buffer_glfloat_object *vertices_intern = phpglfw_buffer_glfloat_objectptr_from_zobj_p(Z_OBJ_P(&vertices));
             // extract
-            phpglfw_extract_vertexbuffer(intern, vertices_intern, &group, layout, layout_len, indicies, cvector_size(indicies));
+            vec3 aabb_min;
+            vec3 aabb_max;
+            phpglfw_extract_vertexbuffer(intern, vertices_intern, &group, layout, layout_len, indicies, cvector_size(indicies), &aabb_min[0], &aabb_max[0]);
             zend_update_property(phpglfw_objparser_mesh_ce, Z_OBJ_P(&mesh), "vertices", sizeof("vertices")-1, &vertices);
             zval_ptr_dtor(&vertices);
+
+            // set the aabbMin property
+            zval aabb_min_zval;
+            object_init_ex(&aabb_min_zval, phpglfw_get_math_vec3_ce());
+            phpglfw_math_vec3_object *aabb_min_intern = phpglfw_math_vec3_objectptr_from_zobj_p(Z_OBJ_P(&aabb_min_zval));
+            aabb_min_intern->data[0] = aabb_min[0];
+            aabb_min_intern->data[1] = aabb_min[1];
+            aabb_min_intern->data[2] = aabb_min[2];
+
+            zend_update_property(phpglfw_objparser_mesh_ce, Z_OBJ_P(&mesh), "aabbMin", sizeof("aabbMin")-1, &aabb_min_zval);
+            zval_ptr_dtor(&aabb_min_zval);
+
+            // set the aabbMax property
+            zval aabb_max_zval;
+            object_init_ex(&aabb_max_zval, phpglfw_get_math_vec3_ce());
+            phpglfw_math_vec3_object *aabb_max_intern = phpglfw_math_vec3_objectptr_from_zobj_p(Z_OBJ_P(&aabb_max_zval));
+            aabb_max_intern->data[0] = aabb_max[0];
+            aabb_max_intern->data[1] = aabb_max[1];
+            aabb_max_intern->data[2] = aabb_max[2];
+
+            zend_update_property(phpglfw_objparser_mesh_ce, Z_OBJ_P(&mesh), "aabbMax", sizeof("aabbMax")-1, &aabb_max_zval);
+            zval_ptr_dtor(&aabb_max_zval);
 
             // add the mesh to the meshes array
             add_next_index_zval(&meshes, &mesh);

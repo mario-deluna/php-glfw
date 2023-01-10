@@ -46,5 +46,14 @@ class ObjFileParserTest extends \PHPUnit\Framework\TestCase
         $this->assertEquals('test_norm.png', $mesh->materials[0]->bumpTexture->name);
     }
 
+    public function testMeshAABB() : void
+    {
+        $obj = new ObjFileParser(__DIR__ . '/../resources/test.obj');
+
+        $meshes = $obj->getMeshes('p');
+
+        $this->assertEqualsVector(-1.0, -1.0, -1.0, $meshes[0]->aabbMin);
+        $this->assertEqualsVector(1.0, 1.0, 1.0, $meshes[0]->aabbMax);
+    }
 
 }

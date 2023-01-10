@@ -1,5 +1,5 @@
 /* This is a generated file, edit the .stub.php file instead.
- * Stub hash: 56f67e65c0c5ef838d63fe3ba0a4cf33051a9005 */
+ * Stub hash: 7a76b0d69c0e6a43fc1795a826535c039e45209e */
 
 ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_glCullFace, 0, 1, IS_VOID, 0)
 	ZEND_ARG_TYPE_INFO(0, mode, IS_LONG, 0)
