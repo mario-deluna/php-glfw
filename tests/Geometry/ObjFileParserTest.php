@@ -54,6 +54,12 @@ class ObjFileParserTest extends \PHPUnit\Framework\TestCase
 
         $this->assertEqualsVector(-1.0, -1.0, -1.0, $meshes[0]->aabbMin);
         $this->assertEqualsVector(1.0, 1.0, 1.0, $meshes[0]->aabbMax);
+
+        // repeat to test for memory issue 
+        $meshes = $obj->getMeshes('p');
+
+        $this->assertEqualsVector(-1.0, -1.0, -1.0, $meshes[0]->aabbMin);
+        $this->assertEqualsVector(1.0, 1.0, 1.0, $meshes[0]->aabbMax);
     }
 
 }

@@ -429,6 +429,7 @@ void phpglfw_extract_vertexbuffer(
     vec2 tmp_dt2;
     vec3 tmp_vec1;
     vec3 tmp_vec2;
+    vec3 tmp_pos;
 
     // if no indices 
     unsigned int *iterator_index = NULL;
@@ -510,8 +511,11 @@ void phpglfw_extract_vertexbuffer(
             fastObjIndex *mindex = &intern->mesh->indices[i];
 
             // update the aabb min and max
-            vec3_min(aabb_min, aabb_min, &intern->mesh->positions[mindex->p * 3]);
-            vec3_max(aabb_max, aabb_max, &intern->mesh->positions[mindex->p * 3]);
+            tmp_pos[0] = intern->mesh->positions[3 * mindex->p + 0];
+            tmp_pos[1] = intern->mesh->positions[3 * mindex->p + 1];
+            tmp_pos[2] = intern->mesh->positions[3 * mindex->p + 2];
+            vec3_min(aabb_min, aabb_min, tmp_pos);
+            vec3_max(aabb_max, aabb_max, tmp_pos);
 
             // for every char in layout
             for (int l = 0; l < layout_len; l++) {
