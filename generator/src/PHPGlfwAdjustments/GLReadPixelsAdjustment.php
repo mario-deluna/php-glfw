@@ -22,11 +22,35 @@ class GLReadPixelsAdjustment implements AdjustmentInterface
             public function getFunctionCallCode() : string
             {
                 $body = <<<EOD
+uint32_t channels_count = 0;
+switch (format) {
+    case GL_RED:
+    case GL_GREEN:
+    case GL_BLUE:
+    case GL_ALPHA:
+    case GL_DEPTH_COMPONENT:
+    case GL_STENCIL_INDEX:
+        channels_count = 1;
+        break;
+    case GL_RG:
+        channels_count = 2;
+        break;
+    case GL_RGB:
+        channels_count = 3;
+        break;
+    case GL_RGBA:
+        channels_count = 4;
+        break;
+    default:
+        zend_throw_error(NULL, "glReadPixels: Invalid format given.");
+        return;
+}
+
 if (Z_OBJCE_P(pixels_zval) == phpglfw_get_buffer_glubyte_ce()) {
     phpglfw_buffer_glubyte_object *obj_ptr = phpglfw_buffer_glubyte_objectptr_from_zobj_p(Z_OBJ_P(pixels_zval));
-    cvector_reserve(obj_ptr->vec, width * height * 4);
+    cvector_reserve(obj_ptr->vec, width * height * channels_count);
     glReadPixels(x, y, width, height, format, type, obj_ptr->vec);
-    cvector_set_size(obj_ptr->vec, width * height * 4);
+    cvector_set_size(obj_ptr->vec, width * height * channels_count);
 } else {
     zend_throw_error(NULL, "glReadPixels: Invalid or unsupported buffer object given.");
 }
