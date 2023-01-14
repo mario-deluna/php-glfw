@@ -1362,6 +1362,31 @@ PHP_FUNCTION(glReadBuffer)
 } 
 
 /**
+ * glReadPixels
+ */ 
+PHP_FUNCTION(glReadPixels)
+{
+    zend_long x;
+    zend_long y;
+    zend_long width;
+    zend_long height;
+    zend_long format;
+    zend_long type;
+    zval *pixels_zval;
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "llllllO", &x, &y, &width, &height, &format, &type, &pixels_zval, phpglfw_get_buffer_interface_ce()) == FAILURE) {
+        return;
+    }
+    if (Z_OBJCE_P(pixels_zval) == phpglfw_get_buffer_glubyte_ce()) {
+        phpglfw_buffer_glubyte_object *obj_ptr = phpglfw_buffer_glubyte_objectptr_from_zobj_p(Z_OBJ_P(pixels_zval));
+        cvector_reserve(obj_ptr->vec, width * height * 4);
+        glReadPixels(x, y, width, height, format, type, obj_ptr->vec);
+        cvector_set_size(obj_ptr->vec, width * height * 4);
+    } else {
+        zend_throw_error(NULL, "glReadPixels: Invalid or unsupported buffer object given.");
+    };
+} 
+
+/**
  * glGetBooleanv
  */ 
 PHP_FUNCTION(glGetBooleanv)

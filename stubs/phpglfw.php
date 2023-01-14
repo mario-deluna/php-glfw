@@ -2490,6 +2490,21 @@ namespace {
     function glReadBuffer(int $src) : void {};
  
     /**
+     * glReadPixels
+     * 
+     * @param int $x 
+     * @param int $y 
+     * @param int $width 
+     * @param int $height 
+     * @param int $format 
+     * @param int $type 
+     * @param \GL\Buffer\BufferInterface $pixels 
+     * 
+     * @return void
+     */ 
+    function glReadPixels(int $x, int $y, int $width, int $height, int $format, int $type, \GL\Buffer\BufferInterface $pixels) : void {};
+ 
+    /**
      * glGetBooleanv
      * 
      * @param int $pname 

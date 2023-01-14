@@ -2014,6 +2014,7 @@ namespace {
     function glPixelStoref(int $pname, float $param) : void {};
     function glPixelStorei(int $pname, int $param) : void {};
     function glReadBuffer(int $src) : void {};
+    function glReadPixels(int $x, int $y, int $width, int $height, int $format, int $type, \GL\Buffer\BufferInterface $pixels) : void {};
     function glGetBooleanv(int $pname, ?bool &...$data) : void {};
     function glGetDoublev(int $pname, ?bool &...$data) : void {};
     function glGetError() : int {};

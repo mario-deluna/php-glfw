@@ -1,5 +1,5 @@
 /* This is a generated file, edit the .stub.php file instead.
- * Stub hash: 7a76b0d69c0e6a43fc1795a826535c039e45209e */
+ * Stub hash: 317af0d3feca35119b601ce8e7e062883490a63b */
 
 ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_glCullFace, 0, 1, IS_VOID, 0)
 	ZEND_ARG_TYPE_INFO(0, mode, IS_LONG, 0)
@@ -152,6 +152,16 @@ ZEND_END_ARG_INFO()
 
 ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_glReadBuffer, 0, 1, IS_VOID, 0)
 	ZEND_ARG_TYPE_INFO(0, src, IS_LONG, 0)
+ZEND_END_ARG_INFO()
+
+ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_glReadPixels, 0, 7, IS_VOID, 0)
+	ZEND_ARG_TYPE_INFO(0, x, IS_LONG, 0)
+	ZEND_ARG_TYPE_INFO(0, y, IS_LONG, 0)
+	ZEND_ARG_TYPE_INFO(0, width, IS_LONG, 0)
+	ZEND_ARG_TYPE_INFO(0, height, IS_LONG, 0)
+	ZEND_ARG_TYPE_INFO(0, format, IS_LONG, 0)
+	ZEND_ARG_TYPE_INFO(0, type, IS_LONG, 0)
+	ZEND_ARG_OBJ_INFO(0, pixels, GL\\Buffer\\BufferInterface, 0)
 ZEND_END_ARG_INFO()
 
 ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_glGetBooleanv, 0, 1, IS_VOID, 0)
@@ -2809,6 +2819,7 @@ ZEND_FUNCTION(glDepthFunc);
 ZEND_FUNCTION(glPixelStoref);
 ZEND_FUNCTION(glPixelStorei);
 ZEND_FUNCTION(glReadBuffer);
+ZEND_FUNCTION(glReadPixels);
 ZEND_FUNCTION(glGetBooleanv);
 ZEND_FUNCTION(glGetDoublev);
 ZEND_FUNCTION(glGetError);
@@ -3550,6 +3561,7 @@ static const zend_function_entry ext_functions[] = {
 	ZEND_FE(glPixelStoref, arginfo_glPixelStoref)
 	ZEND_FE(glPixelStorei, arginfo_glPixelStorei)
 	ZEND_FE(glReadBuffer, arginfo_glReadBuffer)
+	ZEND_FE(glReadPixels, arginfo_glReadPixels)
 	ZEND_FE(glGetBooleanv, arginfo_glGetBooleanv)
 	ZEND_FE(glGetDoublev, arginfo_glGetDoublev)
 	ZEND_FE(glGetError, arginfo_glGetError)
