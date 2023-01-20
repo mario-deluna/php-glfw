@@ -1189,5 +1189,18 @@ void phpglfw_register_objparser_module(INIT_FUNC_ARGS)
     zend_string *property_mesh_indices_buffer = zend_string_init("indices", sizeof("indices") - 1, 1);
     zend_declare_typed_property(phpglfw_objparser_mesh_ce, property_mesh_indices_buffer, &property_mesh_indices_buffer_default_value, prop_access_flags, NULL, (zend_type) ZEND_TYPE_INIT_MASK(MAY_BE_NULL | MAY_BE_OBJECT));
     zend_string_release(property_mesh_indices_buffer);
-    
+
+    // mesh aabbMin prop (public readonly ?Vector3 $aabbMin)
+    zval property_mesh_aabb_min_default_value;
+    ZVAL_NULL(&property_mesh_aabb_min_default_value);
+    zend_string *property_mesh_aabb_min = zend_string_init("aabbMin", sizeof("aabbMin") - 1, 1);
+    zend_declare_typed_property(phpglfw_objparser_mesh_ce, property_mesh_aabb_min, &property_mesh_aabb_min_default_value, prop_access_flags, NULL, (zend_type) ZEND_TYPE_INIT_MASK(MAY_BE_NULL | MAY_BE_OBJECT));
+    zend_string_release(property_mesh_aabb_min);
+
+    // mesh aabbMax prop (public readonly ?Vector3 $aabbMax)
+    zval property_mesh_aabb_max_default_value;
+    ZVAL_NULL(&property_mesh_aabb_max_default_value);
+    zend_string *property_mesh_aabb_max = zend_string_init("aabbMax", sizeof("aabbMax") - 1, 1);
+    zend_declare_typed_property(phpglfw_objparser_mesh_ce, property_mesh_aabb_max, &property_mesh_aabb_max_default_value, prop_access_flags, NULL, (zend_type) ZEND_TYPE_INIT_MASK(MAY_BE_NULL | MAY_BE_OBJECT));
+    zend_string_release(property_mesh_aabb_max);
 }

@@ -82,8 +82,6 @@ class ObjFileParserTest extends \PHPUnit\Framework\TestCase
     {
         $obj = new ObjFileParser(__DIR__ . '/../resources/test.obj');
 
-        return; // TODO: fix this test on Linux!!!! There is some issue i did not catch yet.
-
         $meshes = $obj->getMeshes('p');
 
         $this->assertEqualsVector(-1.0, -1.0, -1.0, $meshes[0]->aabbMin);
