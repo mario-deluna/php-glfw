@@ -612,8 +612,8 @@ PHP_METHOD(GL_Geometry_ObjFileParser, getVertices)
         group.index_offset = Z_LVAL_P(index_offset_zval);
     }
 
-    vec3 aabb_min;
-    vec3 aabb_max;
+    vec3 aabb_min = {0.0f, 0.0f, 0.0f};
+    vec3 aabb_max = {0.0f, 0.0f, 0.0f};
     phpglfw_extract_vertexbuffer(intern, buffer_intern, &group, layout, layout_len, NULL, 0, &aabb_min[0], &aabb_max[0]);
 }
 
@@ -673,8 +673,8 @@ PHP_METHOD(GL_Geometry_ObjFileParser, getIndexedVertices)
     // extract a full buffer into temporary buffer
     phpglfw_buffer_glfloat_object *tempbuffer_intern = emalloc(sizeof(phpglfw_buffer_glfloat_object));
 
-    vec3 aabb_min;
-    vec3 aabb_max;
+    vec3 aabb_min = {0.0f, 0.0f, 0.0f};
+    vec3 aabb_max = {0.0f, 0.0f, 0.0f};
     phpglfw_extract_vertexbuffer(intern, tempbuffer_intern, &group, layout, layout_len, NULL, 0, &aabb_min[0], &aabb_max[0]);
 
     // calculate the row size of the vertex data
@@ -835,8 +835,8 @@ PHP_METHOD(GL_Geometry_ObjFileParser, getMeshes)
             object_init_ex(&vertices, phpglfw_get_buffer_glfloat_ce());
             phpglfw_buffer_glfloat_object *vertices_intern = phpglfw_buffer_glfloat_objectptr_from_zobj_p(Z_OBJ_P(&vertices));
             // extract
-            vec3 aabb_min;
-            vec3 aabb_max;
+            vec3 aabb_min = {0.0f, 0.0f, 0.0f};
+            vec3 aabb_max = {0.0f, 0.0f, 0.0f};
             phpglfw_extract_vertexbuffer(intern, vertices_intern, &group, layout, layout_len, indicies, cvector_size(indicies), &aabb_min[0], &aabb_max[0]);
             zend_update_property(phpglfw_objparser_mesh_ce, Z_OBJ_P(&mesh), "vertices", sizeof("vertices")-1, &vertices);
             zval_ptr_dtor(&vertices);
