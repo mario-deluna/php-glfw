@@ -1404,6 +1404,11 @@ PHP_FUNCTION(glReadPixels)
         cvector_reserve(obj_ptr->vec, width * height * channels_count);
         glReadPixels(x, y, width, height, format, type, obj_ptr->vec);
         cvector_set_size(obj_ptr->vec, width * height * channels_count);
+    } else if (Z_OBJCE_P(pixels_zval) == phpglfw_get_buffer_glfloat_ce()) {
+        phpglfw_buffer_glfloat_object *obj_ptr = phpglfw_buffer_glfloat_objectptr_from_zobj_p(Z_OBJ_P(pixels_zval));
+        cvector_reserve(obj_ptr->vec, width * height * channels_count);
+        glReadPixels(x, y, width, height, format, type, obj_ptr->vec);
+        cvector_set_size(obj_ptr->vec, width * height * channels_count);
     } else {
         zend_throw_error(NULL, "glReadPixels: Invalid or unsupported buffer object given.");
     };
