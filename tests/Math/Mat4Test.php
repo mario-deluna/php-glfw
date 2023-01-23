@@ -344,6 +344,19 @@ class Mat4Test extends \PHPUnit\Framework\TestCase
         $this->assertEqualsVector3(-0.353553, 1.06066, 5, $v2);
     }
 
+    public function testOperationMultiplyVector4() : void
+    {
+        $v = new Vec4(0.5, 1, 5, 1);
+        $m = new Mat4;
+
+        $m->translate(new Vec3(10, 0, 0));
+        $m->scale(new Vec3(5, 5, 5));
+        
+        $v2 = $m * $v;
+
+        $this->assertEqualsVector4(12.5, 5, 25, 1, $v2);
+    }
+
     public function testPerspective() : void
     {
         $m = new Mat4;

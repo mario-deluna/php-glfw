@@ -468,6 +468,22 @@ static int <?php echo $obj->getHandlerMethodName('do_op_ex'); ?>(zend_uchar opco
 
         return SUCCESS;
     }
+    // if left is matrix and right is vec4 (mul)
+    else if (
+        Z_TYPE_P(op1) == IS_OBJECT && Z_OBJCE_P(op1) == phpglfw_math_mat4_ce &&
+        Z_TYPE_P(op2) == IS_OBJECT && Z_OBJCE_P(op2) == phpglfw_math_vec4_ce &&
+        opcode == ZEND_MUL
+    ) {
+        object_init_ex(result, phpglfw_math_vec4_ce);
+        phpglfw_math_vec4_object *resobj = phpglfw_math_vec4_objectptr_from_zobj_p(Z_OBJ_P(result));
+
+        phpglfw_math_mat4_object *matobj = phpglfw_math_mat4_objectptr_from_zobj_p(Z_OBJ_P(op1));
+        phpglfw_math_vec4_object *vecobj = phpglfw_math_vec4_objectptr_from_zobj_p(Z_OBJ_P(op2));
+
+        mat4x4_mul_vec4(resobj->data, matobj->data, vecobj->data);
+
+        return SUCCESS;
+    }
     // if left is matrix and right is a quat (mul)
     // we convert the quat to a mat4 and then multiply
     else if (
