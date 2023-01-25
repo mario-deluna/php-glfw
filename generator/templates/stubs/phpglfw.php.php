@@ -242,12 +242,12 @@ namespace GL\Math
          * ```php
          * $cross = <?php echo $obj->name; ?>::cross($left, $right);
          * ```
-         * 
-         * @param <?php echo $obj->name; ?> $right The right vector.  
-         * @param <?php echo $obj->name; ?> $left The left vector.       
+         *  
+         * @param <?php echo $obj->name; ?> $left The left vector.   
+         * @param <?php echo $obj->name; ?> $right The right vector.     
          * @return <?php echo $obj->name; ?> The cross product of the left and right vectors.
          */
-        public static function cross(<?php echo $obj->name; ?> $right) : <?php echo $obj->name; ?> {}
+        public static function cross(<?php echo $obj->name; ?> $left, <?php echo $obj->name; ?> $right) : <?php echo $obj->name; ?> {}
 
         /**
          * Vec3 * Quat

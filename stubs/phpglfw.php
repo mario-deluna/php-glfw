@@ -419,12 +419,12 @@ namespace GL\Math
          * ```php
          * $cross = Vec3::cross($left, $right);
          * ```
-         * 
-         * @param Vec3 $right The right vector.  
-         * @param Vec3 $left The left vector.       
+         *  
+         * @param Vec3 $left The left vector.   
+         * @param Vec3 $right The right vector.     
          * @return Vec3 The cross product of the left and right vectors.
          */
-        public static function cross(Vec3 $right) : Vec3 {}
+        public static function cross(Vec3 $left, Vec3 $right) : Vec3 {}
 
         /**
          * Vec3 * Quat
