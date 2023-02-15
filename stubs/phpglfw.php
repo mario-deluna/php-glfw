@@ -622,6 +622,26 @@ namespace GL\Math
  
     class Quat 
     {
+        /**
+         * Virtual property for "w" (0)
+         */
+        public float $w;
+
+        /**
+         * Virtual property for "x" (1)
+         */
+        public float $x;
+
+        /**
+         * Virtual property for "y" (2)
+         */
+        public float $y;
+
+        /**
+         * Virtual property for "z" (3)
+         */
+        public float $z;
+
         
 
 

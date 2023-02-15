@@ -77,7 +77,7 @@ namespace GL\Math
     <?php foreach($mathObjects as $obj) : ?> 
     class <?php echo $obj->name; ?> 
     {
-<?php if ($obj->isVector()) : ?>
+<?php if ($obj->isVector() || $obj->isQuat()) : ?>
 <?php foreach($obj->getPropIt() as $i => $prop) : ?>
         /**
          * Virtual property for "<?php echo $prop; ?>" (<?php echo $i; ?>)
@@ -85,6 +85,8 @@ namespace GL\Math
         public float $<?php echo $prop; ?>;
 
 <?php endforeach; ?>
+<?php endif; ?>
+<?php if ($obj->isVector()) : ?>
 <?php foreach($obj->getAltPropIt() as $i => $prop) : ?>
         /**
          * Virtual property for "<?php echo $prop; ?>" (<?php echo $i; ?>)
