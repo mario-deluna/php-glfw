@@ -41,7 +41,7 @@ jobs:
       run: sudo make install && grep -qxF 'extension=glfw.so' /etc/php/${{ matrix.php-versions }}/cli/php.ini || echo 'extension=glfw.so' >> /etc/php/${{ matrix.php-versions }}/cli/php.ini
     
     - name: Install PHPUnit
-      run: composer require "phpunit/phpunit"
+      run: composer require "phpunit/phpunit:9.6.3"
       
     - name: Run PHPUnit 
       run: xvfb-run --auto-servernum php -dzend_extension=xdebug.so  -dxdebug.auto_trace=ON -dxdebug.trace_output_dir=trace ./vendor/bin/phpunit
