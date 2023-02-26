@@ -29,6 +29,9 @@
 
 #include "php.h"
 #include "Zend/zend_smart_str.h"
+#include "ext/standard/info.h"
+#include "ext/standard/php_var.h"
+#include "zend_smart_str_public.h"
 
 #if defined(DBL_MANT_DIG) && defined(DBL_MIN_EXP) && !defined(ZEND_DOUBLE_MAX_LENGTH)
 #define ZEND_DOUBLE_MAX_LENGTH (3 + DBL_MANT_DIG - DBL_MIN_EXP)
@@ -187,6 +190,119 @@ void <?php echo $obj->getHandlerMethodName('array_set'); ?>(zend_object *object,
         }
     }
 }
+
+<?php if ($obj->isMatrix()) : ?>
+static int <?php echo $obj->getHandlerMethodName('serialize'); ?>(zval *object, unsigned char **buffer, size_t *buf_len, zend_serialize_data *data)
+{
+    <?php echo $obj->getObjectName(); ?> *obj_ptr = <?php echo $obj->objectFromZObjFunctionName(); ?>(Z_OBJ_P(object));
+
+    smart_str buf = {0};
+    zval zv;
+    php_serialize_data_t serialize_data;
+
+    PHP_VAR_SERIALIZE_INIT(serialize_data);
+
+<?php for($i=0; $i<4; $i++) : ?>
+<?php for($y=0; $y<4; $y++) : ?>
+    ZVAL_DOUBLE(&zv, obj_ptr->data[<?php echo $i; ?>][<?php echo $y; ?>]);
+    php_var_serialize(&buf, &zv, &serialize_data);
+<?php endfor; ?>
+<?php endfor; ?>
+
+    PHP_VAR_SERIALIZE_DESTROY(serialize_data);
+    *buffer = (unsigned char *) estrndup(ZSTR_VAL(buf.s), ZSTR_LEN(buf.s));
+    *buf_len = ZSTR_LEN(buf.s);
+    zend_string_release_ex(buf.s, 0);
+
+    return SUCCESS;
+}
+
+int <?php echo $obj->getHandlerMethodName('unserialize'); ?>(zval *object, zend_class_entry *ce, const unsigned char *buf, size_t buf_len, zend_unserialize_data *data)
+{
+    const unsigned char *buf_ptr = buf;
+    const unsigned char *buf_end = buf + buf_len;
+    zval *zv;
+    php_unserialize_data_t unserialize_data;
+    zend_object *zobj;
+
+    PHP_VAR_UNSERIALIZE_INIT(unserialize_data);
+
+    object_init_ex(object, <?php echo $obj->getClassEntryName(); ?>);
+    <?php echo $obj->getObjectName(); ?> *obj = <?php echo $obj->objectFromZObjFunctionName(); ?>(Z_OBJ_P(object));
+
+    for (int i = 0; i < 4; i++) {
+        for (int y = 0; y < 4; y++) {
+            zv = var_tmp_var(&unserialize_data);
+            if (!php_var_unserialize(zv, &buf_ptr, buf_end, &unserialize_data) || Z_TYPE_P(zv) != IS_DOUBLE) {
+                zend_throw_error(NULL, "Could not unserialize matrix element", 0);
+                zend_object_std_dtor(&obj->std);
+                efree(obj);
+                PHP_VAR_UNSERIALIZE_DESTROY(unserialize_data);
+                return FAILURE;
+            }
+            obj->data[i][y] = Z_DVAL_P(zv);
+        }
+    }
+
+    PHP_VAR_UNSERIALIZE_DESTROY(unserialize_data);
+    return SUCCESS;
+}
+
+<?php else : ?>
+
+static int <?php echo $obj->getHandlerMethodName('serialize'); ?>(zval *object, unsigned char **buffer, size_t *buf_len, zend_serialize_data *data)
+{
+    <?php echo $obj->getObjectName(); ?> *obj_ptr = <?php echo $obj->objectFromZObjFunctionName(); ?>(Z_OBJ_P(object));
+
+    smart_str buf = {0};
+    zval zv;
+    php_serialize_data_t serialize_data;
+
+    PHP_VAR_SERIALIZE_INIT(serialize_data);
+
+<?php for($i=0; $i<$obj->size; $i++) : ?>
+    ZVAL_DOUBLE(&zv, obj_ptr->data[<?php echo $i; ?>]);
+    php_var_serialize(&buf, &zv, &serialize_data);
+<?php endfor; ?>
+
+    PHP_VAR_SERIALIZE_DESTROY(serialize_data);
+    *buffer = (unsigned char *) estrndup(ZSTR_VAL(buf.s), ZSTR_LEN(buf.s));
+    *buf_len = ZSTR_LEN(buf.s);
+    zend_string_release_ex(buf.s, 0);
+
+    return SUCCESS;
+}
+
+int <?php echo $obj->getHandlerMethodName('unserialize'); ?>(zval *object, zend_class_entry *ce, const unsigned char *buf, size_t buf_len, zend_unserialize_data *data)
+{
+    const unsigned char *buf_ptr = buf;
+    const unsigned char *buf_end = buf + buf_len;
+    zval *zv;
+    php_unserialize_data_t unserialize_data;
+    zend_object *zobj;
+
+    PHP_VAR_UNSERIALIZE_INIT(unserialize_data);
+
+    object_init_ex(object, <?php echo $obj->getClassEntryName(); ?>);
+    <?php echo $obj->getObjectName(); ?> *obj = <?php echo $obj->objectFromZObjFunctionName(); ?>(Z_OBJ_P(object));
+
+    for (int i = 0; i < <?php echo $obj->size; ?>; i++) {
+        zv = var_tmp_var(&unserialize_data);
+        if (!php_var_unserialize(zv, &buf_ptr, buf_end, &unserialize_data) || Z_TYPE_P(zv) != IS_DOUBLE) {
+            zend_throw_error(NULL, "Could not unserialize vector element", 0);
+            zend_object_std_dtor(&obj->std);
+            efree(obj);
+            PHP_VAR_UNSERIALIZE_DESTROY(unserialize_data);
+            return FAILURE;
+        }
+        obj->data[i] = Z_DVAL_P(zv);
+    }
+
+    PHP_VAR_UNSERIALIZE_DESTROY(unserialize_data);
+    return SUCCESS;
+}
+<?php endif; ?>
+
 
 <?php if ($obj->isVector()) : ?>
 /**
@@ -1680,6 +1796,8 @@ void phpglfw_register_math_module(INIT_FUNC_ARGS)
     INIT_CLASS_ENTRY(tmp_ce, <?php echo $obj->getFullNamespaceCString(); ?>, class_<?php echo $obj->getFullNamespaceConstString(); ?>_methods);
     <?php echo $obj->getClassEntryName(); ?> = zend_register_internal_class(&tmp_ce);
     <?php echo $obj->getClassEntryName(); ?>->create_object = <?php echo $obj->getHandlerMethodName('create'); ?>;
+    <?php echo $obj->getClassEntryName(); ?>->serialize = <?php echo $obj->getHandlerMethodName('serialize'); ?>;
+    <?php echo $obj->getClassEntryName(); ?>->unserialize = <?php echo $obj->getHandlerMethodName('unserialize'); ?>;
 
     memcpy(&<?php echo $obj->getHandlersVarName(); ?>, zend_get_std_object_handlers(), sizeof(<?php echo $obj->getHandlersVarName(); ?>));
     <?php echo $obj->getHandlersVarName(); ?>.get_debug_info = <?php echo $obj->getHandlerMethodName('debug_info'); ?>;
