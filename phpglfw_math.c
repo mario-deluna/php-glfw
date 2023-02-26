@@ -29,6 +29,9 @@
 
 #include "php.h"
 #include "Zend/zend_smart_str.h"
+#include "ext/standard/info.h"
+#include "ext/standard/php_var.h"
+#include "zend_smart_str_public.h"
 
 #if defined(DBL_MANT_DIG) && defined(DBL_MIN_EXP) && !defined(ZEND_DOUBLE_MAX_LENGTH)
 #define ZEND_DOUBLE_MAX_LENGTH (3 + DBL_MANT_DIG - DBL_MIN_EXP)
@@ -2992,6 +2995,57 @@ PHP_METHOD(GL_Math_GLM, normalize)
     }
 }
 
+static int phpglfw_math_vec2_serialize(zval *object, unsigned char **buffer, size_t *buf_len, zend_serialize_data *data)
+{
+    phpglfw_math_vec2_object *obj = phpglfw_math_vec2_objectptr_from_zobj_p(Z_OBJ_P(object));
+    smart_str buf = {0};
+    zval zv;
+    php_serialize_data_t serialize_data;
+
+    PHP_VAR_SERIALIZE_INIT(serialize_data);
+
+    ZVAL_DOUBLE(&zv, obj->data[0]);
+    php_var_serialize(&buf, &zv, &serialize_data);
+
+    ZVAL_DOUBLE(&zv, obj->data[1]);
+    php_var_serialize(&buf, &zv, &serialize_data);
+
+    PHP_VAR_SERIALIZE_DESTROY(serialize_data);
+    *buffer = (unsigned char *) estrndup(ZSTR_VAL(buf.s), ZSTR_LEN(buf.s));
+    *buf_len = ZSTR_LEN(buf.s);
+    zend_string_release_ex(buf.s, 0);
+
+    return SUCCESS;
+}
+
+int phpglfw_math_vec2_unserialize(zval *object, zend_class_entry *ce, const unsigned char *buf, size_t buf_len, zend_unserialize_data *data)
+{
+    const unsigned char *buf_ptr = buf;
+    const unsigned char *buf_end = buf + buf_len;
+    zval *zv;
+    php_unserialize_data_t unserialize_data;
+    zend_object *zobj;
+
+    PHP_VAR_UNSERIALIZE_INIT(unserialize_data);
+
+    object_init_ex(object, phpglfw_math_vec2_ce);
+    phpglfw_math_vec2_object *obj = phpglfw_math_vec2_objectptr_from_zobj_p(Z_OBJ_P(object));
+
+    for (int i = 0; i < 2; i++) {
+        zv = var_tmp_var(&unserialize_data);
+        if (!php_var_unserialize(zv, &buf_ptr, buf_end, &unserialize_data) || Z_TYPE_P(zv) != IS_DOUBLE) {
+            zend_throw_error(NULL, "Could not unserialize vector element", 0);
+            zend_object_std_dtor(&obj->std);
+            efree(obj);
+            PHP_VAR_UNSERIALIZE_DESTROY(unserialize_data);
+            return FAILURE;
+        }
+        obj->data[i] = Z_DVAL_P(zv);
+    }
+
+    PHP_VAR_UNSERIALIZE_DESTROY(unserialize_data);
+    return SUCCESS;
+}
 
 void phpglfw_register_math_module(INIT_FUNC_ARGS)
 {
@@ -2999,11 +3053,12 @@ void phpglfw_register_math_module(INIT_FUNC_ARGS)
 
     INIT_CLASS_ENTRY(tmp_ce, "GL\\Math\\GLM", class_GL_Math_GLM_methods);
     phpglfw_glm_ce = zend_register_internal_class(&tmp_ce);
-
  
     INIT_CLASS_ENTRY(tmp_ce, "GL\\Math\\Vec2", class_GL_Math_Vec2_methods);
     phpglfw_math_vec2_ce = zend_register_internal_class(&tmp_ce);
     phpglfw_math_vec2_ce->create_object = phpglfw_math_vec2_create_handler;
+    phpglfw_math_vec2_ce->serialize = phpglfw_math_vec2_serialize;
+    phpglfw_math_vec2_ce->unserialize = phpglfw_math_vec2_unserialize;
 
     memcpy(&phpglfw_math_vec2_handlers, zend_get_std_object_handlers(), sizeof(phpglfw_math_vec2_handlers));
     phpglfw_math_vec2_handlers.get_debug_info = phpglfw_math_vec2_debug_info_handler;
