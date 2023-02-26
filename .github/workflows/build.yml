@@ -41,7 +41,7 @@ jobs:
       run: sudo make install && grep -qxF 'extension=glfw.so' /etc/php/${{ matrix.php-versions }}/cli/php.ini || echo 'extension=glfw.so' >> /etc/php/${{ matrix.php-versions }}/cli/php.ini
     
     - name: Install PHPUnit
-      run: composer require "phpunit/phpunit"
+      run: composer require "phpunit/phpunit:9.6.3"
       
     - name: Run PHPUnit 
       run: xvfb-run --auto-servernum php -dzend_extension=xdebug.so  -dxdebug.auto_trace=ON -dxdebug.trace_output_dir=trace ./vendor/bin/phpunit
@@ -83,7 +83,7 @@ jobs:
       run: sudo make install && grep -qxF 'extension=glfw.so' /usr/local/etc/php/${{ matrix.php-versions }}/php.ini || echo 'extension=glfw.so' >> /usr/local/etc/php/${{ matrix.php-versions }}/php.ini
     
     - name: Install PHPUnit
-      run: composer require "phpunit/phpunit"
+      run: composer require "phpunit/phpunit:9.6.3"
     
     # On MacOS we currently exclude all tests requiring glfwinit to work.. 
     # Initializing it in the Github action results in a segmentation fault. 

@@ -28,7 +28,7 @@ jobs:
       run: php -r "copy('https://raw.githubusercontent.com/mario-deluna/php-glfw/master/install/macos-installer.php', 'phpglfw-installer.php');" && sudo php phpglfw-installer.php
 
     - name: Install PHPUnit
-      run: composer require "phpunit/phpunit"
+      run: composer require "phpunit/phpunit:9.6.3"
     
     - name: Run PHPUnit 
       run: php vendor/bin/phpunit --exclude-group=glfwinit
