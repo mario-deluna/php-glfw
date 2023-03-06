@@ -18,7 +18,7 @@ $gen = new ExtGenerator;
 $reader->parse($spec, __DIR__ . '/data/gl.xml', __DIR__ . '/data/glrefs.json');
 
 // import the gl spec into the generator
-$gen->import($spec, 'gl', '4.1', [
+$gen->import($spec, 'gl', '4.6', [
     'glShaderSource', // custom implementation
     'glBufferData', // custom implementation
     'glGetSynciv', // currently not supported
