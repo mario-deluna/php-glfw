@@ -265,6 +265,12 @@ class ExtGenerator
             $phpfunc->incomplete = false;
             $phpfunc->comment = $func->commentSummary;
 
+            // override the comment if an override is defined
+            $docOverridePath = GEN_PATH_DATA . '/fncdoc_override/' . $func->name . '.md';
+            if (file_exists($docOverridePath)) {
+                $phpfunc->comment = file_get_contents($docOverridePath);
+            }
+
             $sig = $func->name . '(' . implode(',', array_column($func->arguments, 'name')) . ')';
 
             // skip duplicated signitures 
@@ -460,11 +466,23 @@ class ExtGenerator
             copy(__DIR__ . '/../../stubs/phpglfw.php', __DIR__ . '/../../../../phpgl/ide-stubs/src/phpglfw.php');
         }
 
+        // create the GLSUPPORT.md file 
+        $supportFileBody = "# PHP-GLFW OpenGL Support\n\n";
+
         foreach($this->methods as $func) {
+
+            if ($func->incomplete) {
+                $supportFileBody .= sprintf("- [ ] `%s`\n", $func->name);
+            } else {
+                $supportFileBody .= sprintf("- [x] `%s`\n", $func->name);
+            }
+
             if ($func->incomplete) {
                 echo "Icomplete function: " . $func->name . "\n";
             }
         }
+
+        file_put_contents(__DIR__ . '/../../GLSUPPORT.md', $supportFileBody);
     }
 
     /**

@@ -274,6 +274,19 @@ namespace GL\Math
         public function __construct(<?php echo $obj->getPhpArgs(); ?>) {}
 
         /**
+         * Copys the current matrix
+         *
+         * Returns a new instance of the current matrix with the same values. This means that any modifications made to the returned matrix will not affect the current matrix. 
+         * 
+         * ```php
+         * $copy = $matrix->copy();
+         * ```
+         *
+         * @return <?php echo $obj->name; ?> The copy of the current matrix.
+         */
+        public function copy() : <?php echo $obj->name; ?> {}
+
+        /**
          * Constructs and returns a new matrix based on the given array of values
          * 
          * ```php
@@ -304,28 +317,224 @@ namespace GL\Math
 
         /**
          * Mat4 * Quat
+         * 
          * Multiplies the left matrix by the right quaternion
+         *
          * Note: **This method only exists because there is a bug with the order of operation in PHP.**
          */
         public static function multiplyQuat(<?php echo $obj->name; ?> $left, Quat $right) : <?php echo $obj->name; ?> {}
+        
+        /**
+         * Returns the row at the given index.
+         *
+         * Example usage:
+         *
+         * ```php
+         * $matrix = new Mat4([
+         *     [1.0, 2.0, 3.0, 4.0],
+         *     [5.0, 6.0, 7.0, 8.0],
+         *     [9.0, 10.0, 11.0, 12.0],
+         *     [13.0, 14.0, 15.0, 16.0]
+         * ]);
+         *
+         * // Get the first row
+         * $row = $matrix->row(0);
+         * // Expected result: Vec4(1.0, 2.0, 3.0, 4.0)
+         * ```
+         *
+         * @param int $index The index of the row to return.
+         * @return Vec4 The row at the given index.
+         */
+        public function row(int $index) : Vec4 {}
 
         /**
-         * Creates and returns a copy of the current matrix
+         * Sets the row at the given index to the given row
+         *
+         * Example usage:
+         * ```php
+         * $matrix = new Mat4();
+         * $row = new Vec4(1, 2, 3, 4);
+         * $matrix->setRow(0, $row);
+         * ```
+         *
+         * @param int $index The index of the row to set.
+         * @param Vec4 $row The row to set.
+         * @return void
          */
-        public function copy() : <?php echo $obj->name; ?> {}
-        public function row(int $index) : Vec4 {}
         public function setRow(int $index, Vec4 $row) : void {}
+
+        /**
+         * Returns the column at the given index.
+         *
+         * This method retrieves a column from the matrix at the specified index and returns it as a Vec4 object.
+         * 
+         * Example:
+         * ```php
+         * $matrix = new Mat4([
+         *     [1.0, 2.0, 3.0, 4.0],
+         *     [5.0, 6.0, 7.0, 8.0],
+         *     [9.0, 10.0, 11.0, 12.0],
+         *     [13.0, 14.0, 15.0, 16.0]
+         * ]);
+         * 
+         * $col = $matrix->col(0);
+         * 
+         * // Returns Vec4(1.0, 5.0, 9.0, 13.0)
+         * ```
+         *
+         * @param int $index The index of the column to return.
+         * @return Vec4 The column at the given index.
+         */
         public function col(int $index) : Vec4 {}
+
+        /**
+         * Sets the column at the given index to the given column
+         *
+         * ```php
+         * // Create a new matrix and set the second column
+         * $matrix = new Mat4();
+         * $col = new Vec4(1, 2, 3, 4);
+         * $matrix->setCol(1, $col);
+         * ```
+         *
+         * @param int $index The index of the column to set.
+         * @param Vec4 $col The column to set.
+         * @return void
+         */
         public function setCol(int $index, Vec4 $col) : void {}
+
+        /**
+         * Sets the matrix to a lookAt matrix
+         * 
+         * The `lookAt()` method sets the matrix to a lookAt matrix based on the camera's position and orientation. 
+         * It takes three parameters: `$eye`, `$center`, and `$up`, which are all instances of the `Vec3` class. 
+         * 
+         * The `$eye` parameter indicates the position of the camera, while `$center` indicates the point 
+         * in space to look at. The `$up` parameter specifies the up vector, which determines the orientation of the camera.
+         *
+         * Example usage:
+         *
+         * ```php
+         * // Create a new matrix
+         * $matrix = new Mat4();
+         *
+         * // Set the matrix to a lookAt matrix
+         * $matrix->lookAt(
+         *    new Vec3(0, 0, 5), // eye
+         *    new Vec3(0, 0, 0), // center
+         *    new Vec3(0, 1, 0)  // up
+         * );
+         * ``` 
+         *
+         * This will create a new matrix and set it to a lookAt matrix with the camera positioned at `(0, 0, 5)`, 
+         * looking at the origin `(0, 0, 0)`, with the up vector pointing in the positive y direction.
+         *
+         * @param Vec3 $eye The position of the camera.
+         * @param Vec3 $center The position to look at.
+         * @param Vec3 $up The up vector.
+         * @return void
+         */
         public function lookAt(Vec3 $eye, Vec3 $center, Vec3 $up) : void {}
+
+        /**
+         * Sets the matrix to a perspective matrix
+         *
+         * ```php
+         * $matrix->perspective($fov, $aspect, $near, $far);
+         * ```
+         *
+         * @param float $fov The field of view.
+         * @param float $aspect The aspect ratio.
+         * @param float $near The near plane.
+         * @param float $far The far plane.
+         * @return void
+         */
         public function perspective(float $fov, float $aspect, float $near, float $far) : void {}
+
+        /**
+         * Sets the matrix to an orthographic matrix
+         *
+         * ```php
+         * $matrix->ortho($left, $right, $bottom, $top, $near, $far);
+         * ```
+         *
+         * @param float $left The left plane.
+         * @param float $right The right plane.
+         * @param float $bottom The bottom plane.
+         * @param float $top The top plane.
+         * @param float $near The near plane.
+         * @param float $far The far plane.
+         * @return void
+         */
         public function ortho(float $left, float $right, float $bottom, float $top, float $near, float $far) : void {}
+
+        /**
+         * Tranposes the matrix
+         * 
+         * ```php
+         * $matrix->transpose();
+         * ```
+         *
+         * @return void
+         */
         public function transpose() : void {}
+
+        /**
+         * Inverts the current matrix
+         *
+         * ```php
+         * $matrix->inverse();
+         * ```
+         *
+         * @return void
+         */
         public function inverse() : void {}
+
+        /**
+         * Scale the matrix by the given vector
+         * 
+         * ```php
+         * $matrix->scale(new Vec3(2, 2, 2));
+         * ```
+         */
         public function scale(Vec3 $scale) : void {}
-        public function translate(Vec3 $translation) : void {}
+
+        /**
+         * Translates the matrix by the given vector
+         *
+         * ```php
+         * $matrix->translate(new Vec3(1, 1, 1));
+         * ```
+         *
+         * @param Vec3 $vector The vector to translate by.
+         * @return void
+         */
+        public function translate(Vec3 $vector) : void {}
+
+        /**
+         * Rotates the matrix by the given angle around the given axis
+         *
+         * ```php
+         * $matrix->rotate(GLM::radians(90), new Vec3(0, 1, 0));
+         * ```
+         *
+         * @param float $angle The angle to rotate by.
+         * @param Vec3 $axis The axis to rotate around.
+         * @return void
+         */
         public function rotate(float $angle, Vec3 $axis) : void {}
+
+        /**
+         * Retruns the determinant of the matrix
+         *
+         * ```php
+         * $det = $matrix->determinant();
+         * ```
+         *
+         * @return float The determinant of the matrix.
+         */
         public function determinant() : float {}
+
 <?php elseif($obj->isQuat()) : ?>
 
         /**
