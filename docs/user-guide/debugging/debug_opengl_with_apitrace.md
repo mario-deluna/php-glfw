@@ -1,32 +1,36 @@
 # Debug OpenGL calls with apitrace
 
-Every OpenGL developer will sooner or later end up in a situation where they only see a black screen or a crash and they have no idea what is going wrong.  In this case it is often VERY useful to record the OpenGL calls and replay them in a debugger. There are a bunch of tools that can do this, but the one I like the most is [apitrace](http://apitrace.github.io/). Mostly because it is pretty straight forward to use and it is available for **all major platforms**.
+Every OpenGL developer, at some point, will face the challenge of a black screen or a crash without a clear understanding of what went wrong. In these situations, recording and replaying OpenGL calls in a debugger can be invaluable. Several tools can help you achieve this, but one of the most popular is [apitrace](http://apitrace.github.io/). Apitrace stands out due to its simplicity, ease of use, and cross-platform compatibility, supporting all major operating systems.
 
-**Other tools**
+## Alternative Debugging Tools
 
- * [NVIDIA Nsight](https://developer.nvidia.com/nsight-visual-studio-edition)<br>
-   My absolute favorite, but it is only available for Windows. 
- * [RenderDoc](https://renderdoc.org/)
- * [Intel GPA](https://www.intel.com/content/www/us/en/developer/tools/graphics-performance-analyzers/overview.html)<br>
-    I have not used this one, I think it only works with intel chips, please correct me if I am wrong.
- * [glintercept](https://github.com/dtrebilco/glintercept)
- * [vogl](https://github.com/ValveSoftware/vogl)
+While apitrace is a great choice, other tools might be better suited to your specific needs or preferences. Here are some alternatives:
 
- ## Trace calls
+- [NVIDIA Nsight](https://developer.nvidia.com/nsight-visual-studio-edition): A fantastic tool, but limited to Windows. My personal favorite.
+- [RenderDoc](https://renderdoc.org/): A versatile, graphics debugging tool.
+- [Intel GPA](https://www.intel.com/content/www/us/en/developer/tools/graphics-performance-analyzers/overview.html): Tailored for Intel chips, it may not work with other chipsets.
+- [glintercept](https://github.com/dtrebilco/glintercept): An OpenGL function call interceptor for Windows.
+- [vogl](https://github.com/ValveSoftware/vogl): A powerful, open-source debugger created by Valve Software.
 
-Tracing a PHP OpenGL application is no different than tracing a C++ OpenGL application. 
+## Tracing OpenGL Calls
+
+When working with PHP-GLFW, tracing OpenGL calls is a straightforward process, similar to tracing calls in a C++ OpenGL application. To trace your PHP OpenGL application, use the following command:
 
 ```bash
 apitrace trace --api gl php my_php_application.php
 ```
 
-This will launch your application and create a file called `php.trace` in the current directory. This file contains all the OpenGL calls that were made during the execution of the PHP script.
+This command launches your application and generates a file named `php.trace` in the current directory. This file records all the OpenGL calls made during the PHP script's execution.
 
-## Inspect calls
+## Analyzing Traced Calls
 
-To inspect the calls you can use the `qapitrace` command. This will open a GUI that allows you to inspect the calls. 
+To examine the recorded calls, use the `qapitrace` command. This command opens a GUI that allows you to easily navigate and analyze the calls:
 
 ```bash
 qapitrace php.trace
 ```
+
+Through the `qapitrace` GUI, you can scrutinize the OpenGL calls, view their results, buffers, textures, states etc. This information can help you understand what's happening behind the scenes and improve the stability and performance of your PHP-GLFW applications.
+
+Happy debugging!
 

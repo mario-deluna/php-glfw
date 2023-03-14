@@ -9,6 +9,6 @@ We created a composer package you can include as a dev dependency to have full s
 composer require --dev phpgl/ide-stubs
 ```
 
-## Visual Studio Code
+<!-- ## Visual Studio Code
 
-## PHPStorm
+## PHPStorm -->
