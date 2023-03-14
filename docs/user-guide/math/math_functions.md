@@ -1,33 +1,30 @@
-# Math Functions 
+# Math Functions
 
-The PHP OpenGL extension PHP-GLFW provides a set of math functions that can be used to perform common mathematical operations required in computer graphics.
-The functions are implemented in C and are available in the `GL\Math` namespace. 
+The PHP OpenGL extension, PHP-GLFW, offers a collection of math functions designed to perform common mathematical operations required in computer graphics. These functions are implemented in C and are accessible within the `GL\Math` namespace.
 
-Something you might not have seen in PHP before is that these objects have overloaded operators. This means that you can use the `+` operator to add two vectors together, or the `*` operator to multiply a vector by a scalar.
+One unique aspect of these objects in PHP is the use of overloaded operators. This allows you to use the `+` operator for adding two vectors together or the `*` operator for multiplying a vector by a scalar.
 
-Also, these functions and classes are fast*, check out [Performance](#performance)
+These functions and classes are also fast. Learn more about their performance [here](#performance).
 
 !!! warning
 
-    There currently is a "bug" in the zend engine where multiplication operands are switched in 
-    some expressions. This is a problem when multiplying matrices as the order/sequence there is critical 
-    compared to normal multiplications...
+    There is currently an issue in the Zend Engine where multiplication operands are switched in certain expressions. This can be problematic when multiplying matrices, as the order is critical compared to regular multiplications.
 
-    To workaround this you have to set parenthesis to enforce the correct order.
-    
+    To work around this, use parentheses to enforce the correct order.
+
     [https://github.com/php/php-src/issues/9175](https://github.com/php/php-src/issues/9175)
 
 ## Vector Usage
 
-There are 3 vector classes available, [`Vec2`](/API/Math/Vec2.html), [`Vec3`](/API/Math/Vec3.html), [`Vec4`](/API/Math/Vec4.html).
+There are three vector classes available: [`Vec2`](/API/Math/Vec2.html), [`Vec3`](/API/Math/Vec3.html), and [`Vec4`](/API/Math/Vec4.html).
 
-The number in the class name indicates the number of components the vector has. 
+The number in the class name indicates the number of components the vector has:
 
- * [`Vec2`](/API/Math/Vec2.html) has 2 components. (`$x`, `$y`)
- * [`Vec3`](/API/Math/Vec3.html) has 3 components. (`$x`, `$y`, `$z`)
- * [`Vec4`](/API/Math/Vec4.html) has 4 components. (`$x`, `$y`, `$z`, `$w`)
+ * [`Vec2`](/API/Math/Vec2.html) has 2 components (`$x`, `$y`)
+ * [`Vec3`](/API/Math/Vec3.html) has 3 components (`$x`, `$y`, `$z`)
+ * [`Vec4`](/API/Math/Vec4.html) has 4 components (`$x`, `$y`, `$z`, `$w`)
 
-```php 
+```php
 use GL\Math\Vec3;
 
 $vec = new Vec3(1.0, 2.0, 3.0);
@@ -35,7 +32,7 @@ $vec = new Vec3(1.0, 2.0, 3.0);
 echo $vec; // prints vec3(1.0, 2.0, 3.0)
 ```
 
-You can access the components of the vector using the `$x`, `$y`, `$z`, `$w` properties.
+You can access the components of a vector using the `$x`, `$y`, `$z`, `$w` properties.
 
 ```php
 echo $vec->x; // prints 1.0
@@ -43,7 +40,7 @@ echo $vec->y; // prints 2.0
 echo $vec->z; // prints 3.0
 ```
 
-You can also set the components of the vector using the `$x`, `$y`, `$z`, `$w` properties.
+You can also set the components of a vector using the `$x`, `$y`, `$z`, `$w` properties.
 
 ```php
 $vec->x = 4.0;
@@ -51,7 +48,7 @@ $vec->y = 5.0;
 $vec->z = 6.0;
 ```
 
-Note the vector properties are **virtual**, meaning that they are not stored in the vector object as real php properties. This allows us to map them to multiple keys. For example, the `$x` property is mapped `$r` as well. This means the following code is valid:
+Vector properties are **virtual**, meaning they are not stored in the vector object as real PHP properties. This allows multiple keys to map to the same property. For example, the `$x` property is also mapped to `$r`. The following code is valid:
 
 ```php
 $vec->r = 42.0;
@@ -63,7 +60,7 @@ echo $vec->g; // prints 100.0
 
 ### Operators
 
-As noted above the vector classes have overloaded operators. This means that you can use the `+` operator to add two vectors together, or the `*` operator to multiply a vector with another vector or a scalar.
+Vector classes have overloaded operators, which means you can use the `+` operator to add two vectors together or the `*` operator to multiply a vector with another vector or a scalar.
 
 ```php
 $vec1 = new Vec3(1.0, 2.0, 3.0);
@@ -72,7 +69,7 @@ $vec2 = new Vec3(4.0, 5.0, 6.0);
 // addition
 echo $vec1 + $vec2; // vec3(5.0, 7.0, 9.0)
 
-// substration
+// subtraction
 echo $vec1 - $vec2; // vec3(-3.0, -3.0, -3.0)
 
 // multiplication
