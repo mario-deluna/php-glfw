@@ -29,7 +29,8 @@ _Currently supports **PHP8.0**, **8.1**, and **8.2**_
   + [PHPGL - Geometry](#phpgl---geometry)
   + [How are the bindings achieved?](#how-are-the-bindings-achieved)
 - [Documentation 📚](#documentation-)
-  + [Examples](#examples)
+- [Examples](#examples)
+  + [Game - PHP Towerdefense](#php-towerdense-game)
 - [Installation](#installation)
   + [MacOS](#macos)
   + [Linux](#linux)
@@ -122,11 +123,21 @@ PHP-GLFW parses the OpenGL specs to generate most of the C extension, instead of
 > 3. [User Guide](https://phpgl.net/user-guide/math/math_functions.html)
 > 4. [API Docs](https://phpgl.net/API/Buffer/ByteBuffer.html)
 
-### Examples
+## Examples
 
 [![glfw-previews](https://user-images.githubusercontent.com/956212/189208007-74064a7b-0e93-4d7f-b53e-e799a0641e54.png)](./examples#examples)
 
 Explore the [examples](./examples#examples) directory to dive into the code.
+
+### PHP-Towerdense Game
+
+We are currently developing a 3D game entirely built with PHP, leveraging the power of PHP-GLFW. The game, named PHP-TowerDefense, is open-source and serves as a showcase for the capabilities of PHP-GLFW. Although the game is in active development, it is not yet ready for release.
+
+<p align="center">
+ <img width="80%" alt="PHP-TowerDefense Screenshot" src="https://user-images.githubusercontent.com/956212/222989984-e1b2d431-26de-47f4-a17d-7800e5afb052.jpg">
+</p>
+Check out the game's repository on GitHub for more information and to follow its progress: https://github.com/phpgl/php-towerdefense
+
 
 ## Installation 
 
