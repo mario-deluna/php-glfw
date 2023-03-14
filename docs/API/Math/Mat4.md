@@ -129,7 +129,7 @@ function row(int $index) : \GL\Math\Vec4
 Example usage:
 
 ```php
-$matrix = new Mat4([
+$matrix = Mat4::fromArray([
     [1.0, 2.0, 3.0, 4.0],
     [5.0, 6.0, 7.0, 8.0],
     [9.0, 10.0, 11.0, 12.0],
@@ -189,7 +189,7 @@ This method retrieves a column from the matrix at the specified index and return
 
 Example:
 ```php
-$matrix = new Mat4([
+$matrix = Mat4::fromArray([
     [1.0, 2.0, 3.0, 4.0],
     [5.0, 6.0, 7.0, 8.0],
     [9.0, 10.0, 11.0, 12.0],
