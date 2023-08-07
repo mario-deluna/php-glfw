@@ -53,7 +53,7 @@ if test "$PHP_GLFW" != "no"; then
     # Build glfw
     cd vendor/glfw
     # cmake . -DGLFW_BUILD_TESTS=OFF -DGLFW_BUILD_EXAMPLES=OFF -DCMAKE_INSTALL_PREFIX=./ && make install
-    cmake . -DGLFW_BUILD_TESTS=OFF -DGLFW_BUILD_EXAMPLES=OFF -DBUILD_SHARED_LIBS=ON && sudo make install
+    cmake . -DGLFW_BUILD_TESTS=OFF -DGLFW_BUILD_EXAMPLES=OFF -DGLFW_BUILD_DOCS=OFF -DBUILD_SHARED_LIBS=ON && sudo make install
     if test "$build_linux" = "yes"; then
       sudo ldconfig 
     fi
