@@ -31,6 +31,7 @@ _Currently supports **PHP8.0**, **8.1**, and **8.2**_
 - [Documentation 📚](#documentation-)
 - [Examples](#examples)
   + [Game - PHP Towerdefense](#php-towerdense-game)
+  + [Game - FlappyPHPant](#flappyphpant)
 - [Installation](#installation)
   + [MacOS](#macos)
   + [Linux](#linux)
@@ -138,6 +139,14 @@ We are currently developing a 3D game entirely built with PHP, leveraging the po
 </p>
 Check out the game's repository on GitHub for more information and to follow its progress: https://github.com/phpgl/php-towerdefense
 
+
+### FlappyPHPant
+
+A very simple Flappy Bird-like game written in PHP.
+
+<p align="center">
+   <img width="640" src="https://github.com/phpgl/flappyphpant/assets/956212/9d32a533-73cb-40e6-b940-7976b765d658" alt="FlappyPHPant 2D PHP Game">
+</p>
 
 ## Installation 
 
