@@ -148,6 +148,8 @@ A very simple Flappy Bird-like game written in PHP.
    <img width="640" src="https://github.com/phpgl/flappyphpant/assets/956212/9d32a533-73cb-40e6-b940-7976b765d658" alt="FlappyPHPant 2D PHP Game">
 </p>
 
+https://github.com/phpgl/flappyphpant
+
 ## Installation 
 
 **Please refer to the comprehensive installation guide here: [Installation](https://phpgl.net/getting-started/installation/install-linux.html)**
