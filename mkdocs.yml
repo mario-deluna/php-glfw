@@ -18,6 +18,7 @@ nav:
     - Debugging: user-guide/debugging/
   - Classes / Functions & API : 'API/'
   - Examples: 'examples/'
+  - VISU Framework →: https://visu.phpgl.net
 plugins:
   - search
   - include_dir_to_nav
