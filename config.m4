@@ -142,11 +142,11 @@ if test "$PHP_GLFW" != "no"; then
   PHP_ADD_INCLUDE([$ext_srcdir/vendor/fastobj])
   PHP_ADD_INCLUDE([$GLFW_DIR/include])
 
-  PHP_INSTALL_HEADERS([ext/glfw], [*.h \
-        vendor/glad/include/*.h \
-        vendor/cvector/*.h \
-        vendor/stb/*.h \
-        vendor/fastobj/*.h])
+#   PHP_INSTALL_HEADERS([ext/glfw], [*.h \
+#         vendor/glad/include/*.h \
+#         vendor/cvector/*.h \
+#         vendor/stb/*.h \
+#         vendor/fastobj/*.h])
 
   PHP_ADD_BUILD_DIR($ext_builddir/src)
 
