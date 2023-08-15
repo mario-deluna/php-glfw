@@ -1,10 +1,8 @@
 dnl $Id$
 dnl config.m4 for extension glfw
 
-PHP_ARG_ENABLE([glfw],
-  [enable glfw],
-  [AS_HELP_STRING([--enable-glfw],
-    [Enable glfw support])], [no], [no])  
+PHP_ARG_ENABLE(glfw, whether to enable glfw support,
+[  --enable-glfw           Enable glfw support])
 
 PHP_ARG_WITH([glfw-dir],
   [dir of glfw],
@@ -142,11 +140,11 @@ if test "$PHP_GLFW" != "no"; then
   PHP_ADD_INCLUDE([$ext_srcdir/vendor/fastobj])
   PHP_ADD_INCLUDE([$GLFW_DIR/include])
 
-#   PHP_INSTALL_HEADERS([ext/glfw], [*.h \
-#         vendor/glad/include/*.h \
-#         vendor/cvector/*.h \
-#         vendor/stb/*.h \
-#         vendor/fastobj/*.h])
+  PHP_INSTALL_HEADERS([ext/glfw], [*.h \
+        vendor/glad/include/*.h \
+        vendor/cvector/*.h \
+        vendor/stb/*.h \
+        vendor/fastobj/*.h])
 
   PHP_ADD_BUILD_DIR($ext_builddir/src)
 
