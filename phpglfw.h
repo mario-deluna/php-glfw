@@ -23,7 +23,7 @@
  */
 #ifndef PHP_GLFW_H
 #define PHP_GLFW_H 1
-#define PHP_GLFW_VERSION "2.0"
+#define PHP_GLFW_VERSION "2.1.3"
 #define PHP_GLFW_EXTNAME "glfw"
 
 extern zend_module_entry glfw_module_entry;
