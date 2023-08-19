@@ -33,7 +33,7 @@ else
 fi
 
 check_for_glfw3() {
-  for i in /usr/local /usr /opt /opt/local; do
+  for i in /usr/local /usr /opt /opt/homebrew /opt/local; do
     if test -r "$i/include/GLFW/glfw3.h"; then
       GLFW_DIR=$i
       return 0
