@@ -150,6 +150,16 @@ A very simple Flappy Bird-like game written in PHP.
 
 https://github.com/phpgl/flappyphpant
 
+### php-pong
+
+Classic Pong game programmed with pure OpenGL wrapped in OOP code.
+
+<p align="center">
+   <img width="640" src="https://raw.githubusercontent.com/medilies/php-pong/main/screened.gif" alt="Classic Pong Game written in PHP">
+</p>
+
+https://github.com/medilies/php-pong
+
 ## Installation 
 
 **Please refer to the comprehensive installation guide here: [Installation](https://phpgl.net/getting-started/installation/install-linux.html)**
