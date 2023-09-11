@@ -231,6 +231,134 @@ void <?php echo $buffer->getHandlerMethodName('array_set'); ?>(zend_object *obje
         }
     }
 }
+/*
+static int <?php echo $buffer->getHandlerMethodName('serialize'); ?>(zval *object, unsigned char **buffer, size_t *buf_len, zend_serialize_data *data)
+{
+    <?php echo $buffer->getObjectName(); ?> *obj_ptr = <?php echo $buffer->objectFromZObjFunctionName(); ?>(Z_OBJ_P(object));
+
+    size_t item_count = cvector_size(obj_ptr->vec);
+    *buf_len = sizeof(size_t) + item_count * sizeof(<?php echo $buffer->type; ?>);
+    *buffer = emalloc(*buf_len);
+
+    memcpy(*buffer, &item_count, sizeof(size_t));
+    memcpy(*buffer + sizeof(size_t), obj_ptr->vec, item_count * sizeof(<?php echo $buffer->type; ?>));
+
+    return SUCCESS;
+}
+
+int <?php echo $buffer->getHandlerMethodName('unserialize'); ?>(zval *object, zend_class_entry *ce, const unsigned char *buf, size_t buf_len, zend_unserialize_data *data)
+{
+    const unsigned char *buf_ptr = buf;
+    size_t item_count;
+    <?php echo $buffer->getObjectName(); ?> *obj;
+
+    if (buf_len < sizeof(size_t)) {
+        zend_throw_error(NULL, "Buffer underflow during <?php echo $buffer->getObjectName(); ?> unserialization", 0);
+        return FAILURE;
+    }
+
+    memcpy(&item_count, buf_ptr, sizeof(size_t));
+    buf_ptr += sizeof(size_t);
+
+    if (buf_len < sizeof(size_t) + item_count * sizeof(<?php echo $buffer->type; ?>)) {
+        zend_throw_error(NULL, "Buffer underflow during <?php echo $buffer->getObjectName(); ?> unserialization", 0);
+        return FAILURE;
+    }
+
+    object_init_ex(object, <?php echo $buffer->getClassEntryName(); ?>);
+    obj = <?php echo $buffer->objectFromZObjFunctionName(); ?>(Z_OBJ_P(object));
+    //obj->vec = emalloc(item_count * sizeof(<?php echo $buffer->type; ?>));
+
+    cvector_reserve(obj->vec, item_count);
+    cvector_set_size(obj->vec, item_count); 
+
+    // copy the data
+    memcpy(obj->vec, buf_ptr, item_count * sizeof(<?php echo $buffer->type; ?>));
+
+    return SUCCESS;
+}*/
+
+static int <?php echo $buffer->getHandlerMethodName('serialize'); ?>(zval *object, unsigned char **buffer, size_t *buf_len, zend_serialize_data *data)
+{
+    <?php echo $buffer->getObjectName(); ?> *obj_ptr = <?php echo $buffer->objectFromZObjFunctionName(); ?>(Z_OBJ_P(object));
+
+    smart_str buf = {0};
+    smart_str_append_printf(&buf, "%zu:", cvector_size(obj_ptr->vec));
+
+    for (size_t i = 0; i < cvector_size(obj_ptr->vec); i++) {
+        <?php if ($buffer->type == "GLfloat" || $buffer->type == "GLhalf" || $buffer->type == "GLdouble"): ?>
+        smart_str_append_printf(&buf, "%f,", obj_ptr->vec[i]);
+        <?php elseif ($buffer->type == "GLint"): ?>
+        smart_str_append_printf(&buf, "%d,", obj_ptr->vec[i]);
+        <?php elseif ($buffer->type == "GLuint"): ?>
+        smart_str_append_printf(&buf, "%u,", obj_ptr->vec[i]);
+        <?php elseif ($buffer->type == "GLshort"): ?>
+        smart_str_append_printf(&buf, "%hd,", obj_ptr->vec[i]);
+        <?php elseif ($buffer->type == "GLushort"): ?>
+        smart_str_append_printf(&buf, "%hu,", obj_ptr->vec[i]);
+        <?php elseif ($buffer->type == "GLbyte"): ?>
+        smart_str_append_printf(&buf, "%hhd,", obj_ptr->vec[i]);
+        <?php elseif ($buffer->type == "GLubyte"): ?>
+        smart_str_append_printf(&buf, "%hhu,", obj_ptr->vec[i]);
+        <?php else: ?>
+        zend_throw_error(NULL, "Unknown buffer type for serialization.");
+        return FAILURE;
+        <?php endif; ?>
+    }
+
+    smart_str_0(&buf);
+    *buffer = (unsigned char *)estrndup(ZSTR_VAL(buf.s), ZSTR_LEN(buf.s));
+    *buf_len = ZSTR_LEN(buf.s);
+    smart_str_free(&buf);
+
+    return SUCCESS;
+}
+
+int <?php echo $buffer->getHandlerMethodName('unserialize'); ?>(zval *object, zend_class_entry *ce, const unsigned char *buf, size_t buf_len, zend_unserialize_data *data)
+{
+    <?php echo $buffer->getObjectName(); ?> *obj;
+
+    size_t item_count;
+    char *endptr, *token;
+    const char delimiter[] = ":";
+
+    token = strtok((char *)buf, delimiter);
+    if (!token) {
+        zend_throw_error(NULL, "Invalid format during <?php echo $buffer->getObjectName(); ?> unserialization");
+        return FAILURE;
+    }
+
+    item_count = strtoul(token, &endptr, 10);
+    if (*endptr != '\0') {
+        zend_throw_error(NULL, "Invalid item count during <?php echo $buffer->getObjectName(); ?> unserialization");
+        return FAILURE;
+    }
+
+    object_init_ex(object, <?php echo $buffer->getClassEntryName(); ?>);
+    obj = <?php echo $buffer->objectFromZObjFunctionName(); ?>(Z_OBJ_P(object));
+
+    cvector_reserve(obj->vec, item_count);
+    cvector_set_size(obj->vec, item_count); 
+
+    size_t index = 0;
+    while ((token = strtok(NULL, ",")) && index < item_count) {
+        <?php if ($buffer->type == "GLfloat" || $buffer->type == "GLhalf" || $buffer->type == "GLdouble"): ?>
+        obj->vec[index++] = atof(token);
+        <?php elseif ($buffer->type == "GLint" || $buffer->type == "GLuint" || $buffer->type == "GLshort" || $buffer->type == "GLushort" || $buffer->type == "GLbyte" || $buffer->type == "GLubyte"): ?>
+        obj->vec[index++] = strtol(token, NULL, 10);
+        <?php else: ?>
+        zend_throw_error(NULL, "Unknown buffer type for deserialization.");
+        return FAILURE;
+        <?php endif; ?>
+    }
+
+    if (index != item_count) {
+        zend_throw_error(NULL, "Mismatch in expected item count during <?php echo $buffer->getObjectName(); ?> unserialization");
+        return FAILURE;
+    }
+
+    return SUCCESS;
+}
 
 static HashTable *<?php echo $buffer->getHandlerMethodName('debug_info'); ?>(zend_object *object, int *is_temp)
 {
@@ -499,6 +627,8 @@ void phpglfw_register_buffer_module(INIT_FUNC_ARGS)
     INIT_CLASS_ENTRY(tmp_ce, <?php echo $buffer->getFullNamespaceCString(); ?>, class_<?php echo $buffer->getFullNamespaceConstString(); ?>_methods);
     <?php echo $buffer->getClassEntryName(); ?> = zend_register_internal_class(&tmp_ce);
     <?php echo $buffer->getClassEntryName(); ?>->create_object = <?php echo $buffer->getHandlerMethodName('create'); ?>;
+    <?php echo $buffer->getClassEntryName(); ?>->serialize = <?php echo $buffer->getHandlerMethodName('serialize'); ?>;
+    <?php echo $buffer->getClassEntryName(); ?>->unserialize = <?php echo $buffer->getHandlerMethodName('unserialize'); ?>;
     <?php echo $buffer->getClassEntryName(); ?>->get_iterator = <?php echo $buffer->getHandlerMethodName('get_iterator'); ?>;
 
 	zend_class_implements(<?php echo $buffer->getClassEntryName(); ?>, 1, phpglfw_buffer_interface_ce);

@@ -288,6 +288,110 @@ void phpglfw_buffer_glfloat_array_set_handler(zend_object *object, zval *offset,
         }
     }
 }
+/*
+static int phpglfw_buffer_glfloat_serialize_handler(zval *object, unsigned char **buffer, size_t *buf_len, zend_serialize_data *data)
+{
+    phpglfw_buffer_glfloat_object *obj_ptr = phpglfw_buffer_glfloat_objectptr_from_zobj_p(Z_OBJ_P(object));
+
+    size_t item_count = cvector_size(obj_ptr->vec);
+    *buf_len = sizeof(size_t) + item_count * sizeof(GLfloat);
+    *buffer = emalloc(*buf_len);
+
+    memcpy(*buffer, &item_count, sizeof(size_t));
+    memcpy(*buffer + sizeof(size_t), obj_ptr->vec, item_count * sizeof(GLfloat));
+
+    return SUCCESS;
+}
+
+int phpglfw_buffer_glfloat_unserialize_handler(zval *object, zend_class_entry *ce, const unsigned char *buf, size_t buf_len, zend_unserialize_data *data)
+{
+    const unsigned char *buf_ptr = buf;
+    size_t item_count;
+    phpglfw_buffer_glfloat_object *obj;
+
+    if (buf_len < sizeof(size_t)) {
+        zend_throw_error(NULL, "Buffer underflow during phpglfw_buffer_glfloat_object unserialization", 0);
+        return FAILURE;
+    }
+
+    memcpy(&item_count, buf_ptr, sizeof(size_t));
+    buf_ptr += sizeof(size_t);
+
+    if (buf_len < sizeof(size_t) + item_count * sizeof(GLfloat)) {
+        zend_throw_error(NULL, "Buffer underflow during phpglfw_buffer_glfloat_object unserialization", 0);
+        return FAILURE;
+    }
+
+    object_init_ex(object, phpglfw_buffer_glfloat_ce);
+    obj = phpglfw_buffer_glfloat_objectptr_from_zobj_p(Z_OBJ_P(object));
+    //obj->vec = emalloc(item_count * sizeof(GLfloat));
+
+    cvector_reserve(obj->vec, item_count);
+    cvector_set_size(obj->vec, item_count); 
+
+    // copy the data
+    memcpy(obj->vec, buf_ptr, item_count * sizeof(GLfloat));
+
+    return SUCCESS;
+}*/
+
+static int phpglfw_buffer_glfloat_serialize_handler(zval *object, unsigned char **buffer, size_t *buf_len, zend_serialize_data *data)
+{
+    phpglfw_buffer_glfloat_object *obj_ptr = phpglfw_buffer_glfloat_objectptr_from_zobj_p(Z_OBJ_P(object));
+
+    smart_str buf = {0};
+    smart_str_append_printf(&buf, "%zu:", cvector_size(obj_ptr->vec));
+
+    for (size_t i = 0; i < cvector_size(obj_ptr->vec); i++) {
+                smart_str_append_printf(&buf, "%f,", obj_ptr->vec[i]);
+            }
+
+    smart_str_0(&buf);
+    *buffer = (unsigned char *)estrndup(ZSTR_VAL(buf.s), ZSTR_LEN(buf.s));
+    *buf_len = ZSTR_LEN(buf.s);
+    smart_str_free(&buf);
+
+    return SUCCESS;
+}
+
+int phpglfw_buffer_glfloat_unserialize_handler(zval *object, zend_class_entry *ce, const unsigned char *buf, size_t buf_len, zend_unserialize_data *data)
+{
+    phpglfw_buffer_glfloat_object *obj;
+
+    size_t item_count;
+    char *endptr, *token;
+    const char delimiter[] = ":";
+
+    token = strtok((char *)buf, delimiter);
+    if (!token) {
+        zend_throw_error(NULL, "Invalid format during phpglfw_buffer_glfloat_object unserialization");
+        return FAILURE;
+    }
+
+    item_count = strtoul(token, &endptr, 10);
+    if (*endptr != '\0') {
+        zend_throw_error(NULL, "Invalid item count during phpglfw_buffer_glfloat_object unserialization");
+        return FAILURE;
+    }
+
+    object_init_ex(object, phpglfw_buffer_glfloat_ce);
+    obj = phpglfw_buffer_glfloat_objectptr_from_zobj_p(Z_OBJ_P(object));
+
+    cvector_reserve(obj->vec, item_count);
+    cvector_set_size(obj->vec, item_count); 
+
+    size_t index = 0;
+    while ((token = strtok(NULL, ",")) && index < item_count) {
+                obj->vec[index++] = atof(token);
+            }
+
+    if (index != item_count) {
+        zend_throw_error(NULL, "Mismatch in expected item count during phpglfw_buffer_glfloat_object unserialization");
+        return FAILURE;
+    }
+
+    return SUCCESS;
+}
 
 static HashTable *phpglfw_buffer_glfloat_debug_info_handler(zend_object *object, int *is_temp)
 {
@@ -711,6 +815,110 @@ void phpglfw_buffer_glhalf_array_set_handler(zend_object *object, zval *offset, 
         }
     }
 }
+/*
+static int phpglfw_buffer_glhalf_serialize_handler(zval *object, unsigned char **buffer, size_t *buf_len, zend_serialize_data *data)
+{
+    phpglfw_buffer_glhalf_object *obj_ptr = phpglfw_buffer_glhalf_objectptr_from_zobj_p(Z_OBJ_P(object));
+
+    size_t item_count = cvector_size(obj_ptr->vec);
+    *buf_len = sizeof(size_t) + item_count * sizeof(GLhalf);
+    *buffer = emalloc(*buf_len);
+
+    memcpy(*buffer, &item_count, sizeof(size_t));
+    memcpy(*buffer + sizeof(size_t), obj_ptr->vec, item_count * sizeof(GLhalf));
+
+    return SUCCESS;
+}
+
+int phpglfw_buffer_glhalf_unserialize_handler(zval *object, zend_class_entry *ce, const unsigned char *buf, size_t buf_len, zend_unserialize_data *data)
+{
+    const unsigned char *buf_ptr = buf;
+    size_t item_count;
+    phpglfw_buffer_glhalf_object *obj;
+
+    if (buf_len < sizeof(size_t)) {
+        zend_throw_error(NULL, "Buffer underflow during phpglfw_buffer_glhalf_object unserialization", 0);
+        return FAILURE;
+    }
+
+    memcpy(&item_count, buf_ptr, sizeof(size_t));
+    buf_ptr += sizeof(size_t);
+
+    if (buf_len < sizeof(size_t) + item_count * sizeof(GLhalf)) {
+        zend_throw_error(NULL, "Buffer underflow during phpglfw_buffer_glhalf_object unserialization", 0);
+        return FAILURE;
+    }
+
+    object_init_ex(object, phpglfw_buffer_glhalf_ce);
+    obj = phpglfw_buffer_glhalf_objectptr_from_zobj_p(Z_OBJ_P(object));
+    //obj->vec = emalloc(item_count * sizeof(GLhalf));
+
+    cvector_reserve(obj->vec, item_count);
+    cvector_set_size(obj->vec, item_count); 
+
+    // copy the data
+    memcpy(obj->vec, buf_ptr, item_count * sizeof(GLhalf));
+
+    return SUCCESS;
+}*/
+
+static int phpglfw_buffer_glhalf_serialize_handler(zval *object, unsigned char **buffer, size_t *buf_len, zend_serialize_data *data)
+{
+    phpglfw_buffer_glhalf_object *obj_ptr = phpglfw_buffer_glhalf_objectptr_from_zobj_p(Z_OBJ_P(object));
+
+    smart_str buf = {0};
+    smart_str_append_printf(&buf, "%zu:", cvector_size(obj_ptr->vec));
+
+    for (size_t i = 0; i < cvector_size(obj_ptr->vec); i++) {
+                smart_str_append_printf(&buf, "%f,", obj_ptr->vec[i]);
+            }
+
+    smart_str_0(&buf);
+    *buffer = (unsigned char *)estrndup(ZSTR_VAL(buf.s), ZSTR_LEN(buf.s));
+    *buf_len = ZSTR_LEN(buf.s);
+    smart_str_free(&buf);
+
+    return SUCCESS;
+}
+
+int phpglfw_buffer_glhalf_unserialize_handler(zval *object, zend_class_entry *ce, const unsigned char *buf, size_t buf_len, zend_unserialize_data *data)
+{
+    phpglfw_buffer_glhalf_object *obj;
+
+    size_t item_count;
+    char *endptr, *token;
+    const char delimiter[] = ":";
+
+    token = strtok((char *)buf, delimiter);
+    if (!token) {
+        zend_throw_error(NULL, "Invalid format during phpglfw_buffer_glhalf_object unserialization");
+        return FAILURE;
+    }
+
+    item_count = strtoul(token, &endptr, 10);
+    if (*endptr != '\0') {
+        zend_throw_error(NULL, "Invalid item count during phpglfw_buffer_glhalf_object unserialization");
+        return FAILURE;
+    }
+
+    object_init_ex(object, phpglfw_buffer_glhalf_ce);
+    obj = phpglfw_buffer_glhalf_objectptr_from_zobj_p(Z_OBJ_P(object));
+
+    cvector_reserve(obj->vec, item_count);
+    cvector_set_size(obj->vec, item_count); 
+
+    size_t index = 0;
+    while ((token = strtok(NULL, ",")) && index < item_count) {
+                obj->vec[index++] = atof(token);
+            }
+
+    if (index != item_count) {
+        zend_throw_error(NULL, "Mismatch in expected item count during phpglfw_buffer_glhalf_object unserialization");
+        return FAILURE;
+    }
+
+    return SUCCESS;
+}
 
 static HashTable *phpglfw_buffer_glhalf_debug_info_handler(zend_object *object, int *is_temp)
 {
@@ -1059,6 +1267,110 @@ void phpglfw_buffer_gldouble_array_set_handler(zend_object *object, zval *offset
             zend_throw_error(NULL, "Only a int offset '$buffer[int]' can be used with the GL\\Buffer\\BufferInterface object");
         }
     }
+}
+/*
+static int phpglfw_buffer_gldouble_serialize_handler(zval *object, unsigned char **buffer, size_t *buf_len, zend_serialize_data *data)
+{
+    phpglfw_buffer_gldouble_object *obj_ptr = phpglfw_buffer_gldouble_objectptr_from_zobj_p(Z_OBJ_P(object));
+
+    size_t item_count = cvector_size(obj_ptr->vec);
+    *buf_len = sizeof(size_t) + item_count * sizeof(GLdouble);
+    *buffer = emalloc(*buf_len);
+
+    memcpy(*buffer, &item_count, sizeof(size_t));
+    memcpy(*buffer + sizeof(size_t), obj_ptr->vec, item_count * sizeof(GLdouble));
+
+    return SUCCESS;
+}
+
+int phpglfw_buffer_gldouble_unserialize_handler(zval *object, zend_class_entry *ce, const unsigned char *buf, size_t buf_len, zend_unserialize_data *data)
+{
+    const unsigned char *buf_ptr = buf;
+    size_t item_count;
+    phpglfw_buffer_gldouble_object *obj;
+
+    if (buf_len < sizeof(size_t)) {
+        zend_throw_error(NULL, "Buffer underflow during phpglfw_buffer_gldouble_object unserialization", 0);
+        return FAILURE;
+    }
+
+    memcpy(&item_count, buf_ptr, sizeof(size_t));
+    buf_ptr += sizeof(size_t);
+
+    if (buf_len < sizeof(size_t) + item_count * sizeof(GLdouble)) {
+        zend_throw_error(NULL, "Buffer underflow during phpglfw_buffer_gldouble_object unserialization", 0);
+        return FAILURE;
+    }
+
+    object_init_ex(object, phpglfw_buffer_gldouble_ce);
+    obj = phpglfw_buffer_gldouble_objectptr_from_zobj_p(Z_OBJ_P(object));
+    //obj->vec = emalloc(item_count * sizeof(GLdouble));
+
+    cvector_reserve(obj->vec, item_count);
+    cvector_set_size(obj->vec, item_count); 
+
+    // copy the data
+    memcpy(obj->vec, buf_ptr, item_count * sizeof(GLdouble));
+
+    return SUCCESS;
+}*/
+
+static int phpglfw_buffer_gldouble_serialize_handler(zval *object, unsigned char **buffer, size_t *buf_len, zend_serialize_data *data)
+{
+    phpglfw_buffer_gldouble_object *obj_ptr = phpglfw_buffer_gldouble_objectptr_from_zobj_p(Z_OBJ_P(object));
+
+    smart_str buf = {0};
+    smart_str_append_printf(&buf, "%zu:", cvector_size(obj_ptr->vec));
+
+    for (size_t i = 0; i < cvector_size(obj_ptr->vec); i++) {
+                smart_str_append_printf(&buf, "%f,", obj_ptr->vec[i]);
+            }
+
+    smart_str_0(&buf);
+    *buffer = (unsigned char *)estrndup(ZSTR_VAL(buf.s), ZSTR_LEN(buf.s));
+    *buf_len = ZSTR_LEN(buf.s);
+    smart_str_free(&buf);
+
+    return SUCCESS;
+}
+
+int phpglfw_buffer_gldouble_unserialize_handler(zval *object, zend_class_entry *ce, const unsigned char *buf, size_t buf_len, zend_unserialize_data *data)
+{
+    phpglfw_buffer_gldouble_object *obj;
+
+    size_t item_count;
+    char *endptr, *token;
+    const char delimiter[] = ":";
+
+    token = strtok((char *)buf, delimiter);
+    if (!token) {
+        zend_throw_error(NULL, "Invalid format during phpglfw_buffer_gldouble_object unserialization");
+        return FAILURE;
+    }
+
+    item_count = strtoul(token, &endptr, 10);
+    if (*endptr != '\0') {
+        zend_throw_error(NULL, "Invalid item count during phpglfw_buffer_gldouble_object unserialization");
+        return FAILURE;
+    }
+
+    object_init_ex(object, phpglfw_buffer_gldouble_ce);
+    obj = phpglfw_buffer_gldouble_objectptr_from_zobj_p(Z_OBJ_P(object));
+
+    cvector_reserve(obj->vec, item_count);
+    cvector_set_size(obj->vec, item_count); 
+
+    size_t index = 0;
+    while ((token = strtok(NULL, ",")) && index < item_count) {
+                obj->vec[index++] = atof(token);
+            }
+
+    if (index != item_count) {
+        zend_throw_error(NULL, "Mismatch in expected item count during phpglfw_buffer_gldouble_object unserialization");
+        return FAILURE;
+    }
+
+    return SUCCESS;
 }
 
 static HashTable *phpglfw_buffer_gldouble_debug_info_handler(zend_object *object, int *is_temp)
@@ -1409,6 +1721,110 @@ void phpglfw_buffer_glint_array_set_handler(zend_object *object, zval *offset, z
         }
     }
 }
+/*
+static int phpglfw_buffer_glint_serialize_handler(zval *object, unsigned char **buffer, size_t *buf_len, zend_serialize_data *data)
+{
+    phpglfw_buffer_glint_object *obj_ptr = phpglfw_buffer_glint_objectptr_from_zobj_p(Z_OBJ_P(object));
+
+    size_t item_count = cvector_size(obj_ptr->vec);
+    *buf_len = sizeof(size_t) + item_count * sizeof(GLint);
+    *buffer = emalloc(*buf_len);
+
+    memcpy(*buffer, &item_count, sizeof(size_t));
+    memcpy(*buffer + sizeof(size_t), obj_ptr->vec, item_count * sizeof(GLint));
+
+    return SUCCESS;
+}
+
+int phpglfw_buffer_glint_unserialize_handler(zval *object, zend_class_entry *ce, const unsigned char *buf, size_t buf_len, zend_unserialize_data *data)
+{
+    const unsigned char *buf_ptr = buf;
+    size_t item_count;
+    phpglfw_buffer_glint_object *obj;
+
+    if (buf_len < sizeof(size_t)) {
+        zend_throw_error(NULL, "Buffer underflow during phpglfw_buffer_glint_object unserialization", 0);
+        return FAILURE;
+    }
+
+    memcpy(&item_count, buf_ptr, sizeof(size_t));
+    buf_ptr += sizeof(size_t);
+
+    if (buf_len < sizeof(size_t) + item_count * sizeof(GLint)) {
+        zend_throw_error(NULL, "Buffer underflow during phpglfw_buffer_glint_object unserialization", 0);
+        return FAILURE;
+    }
+
+    object_init_ex(object, phpglfw_buffer_glint_ce);
+    obj = phpglfw_buffer_glint_objectptr_from_zobj_p(Z_OBJ_P(object));
+    //obj->vec = emalloc(item_count * sizeof(GLint));
+
+    cvector_reserve(obj->vec, item_count);
+    cvector_set_size(obj->vec, item_count); 
+
+    // copy the data
+    memcpy(obj->vec, buf_ptr, item_count * sizeof(GLint));
+
+    return SUCCESS;
+}*/
+
+static int phpglfw_buffer_glint_serialize_handler(zval *object, unsigned char **buffer, size_t *buf_len, zend_serialize_data *data)
+{
+    phpglfw_buffer_glint_object *obj_ptr = phpglfw_buffer_glint_objectptr_from_zobj_p(Z_OBJ_P(object));
+
+    smart_str buf = {0};
+    smart_str_append_printf(&buf, "%zu:", cvector_size(obj_ptr->vec));
+
+    for (size_t i = 0; i < cvector_size(obj_ptr->vec); i++) {
+                smart_str_append_printf(&buf, "%d,", obj_ptr->vec[i]);
+            }
+
+    smart_str_0(&buf);
+    *buffer = (unsigned char *)estrndup(ZSTR_VAL(buf.s), ZSTR_LEN(buf.s));
+    *buf_len = ZSTR_LEN(buf.s);
+    smart_str_free(&buf);
+
+    return SUCCESS;
+}
+
+int phpglfw_buffer_glint_unserialize_handler(zval *object, zend_class_entry *ce, const unsigned char *buf, size_t buf_len, zend_unserialize_data *data)
+{
+    phpglfw_buffer_glint_object *obj;
+
+    size_t item_count;
+    char *endptr, *token;
+    const char delimiter[] = ":";
+
+    token = strtok((char *)buf, delimiter);
+    if (!token) {
+        zend_throw_error(NULL, "Invalid format during phpglfw_buffer_glint_object unserialization");
+        return FAILURE;
+    }
+
+    item_count = strtoul(token, &endptr, 10);
+    if (*endptr != '\0') {
+        zend_throw_error(NULL, "Invalid item count during phpglfw_buffer_glint_object unserialization");
+        return FAILURE;
+    }
+
+    object_init_ex(object, phpglfw_buffer_glint_ce);
+    obj = phpglfw_buffer_glint_objectptr_from_zobj_p(Z_OBJ_P(object));
+
+    cvector_reserve(obj->vec, item_count);
+    cvector_set_size(obj->vec, item_count); 
+
+    size_t index = 0;
+    while ((token = strtok(NULL, ",")) && index < item_count) {
+                obj->vec[index++] = strtol(token, NULL, 10);
+            }
+
+    if (index != item_count) {
+        zend_throw_error(NULL, "Mismatch in expected item count during phpglfw_buffer_glint_object unserialization");
+        return FAILURE;
+    }
+
+    return SUCCESS;
+}
 
 static HashTable *phpglfw_buffer_glint_debug_info_handler(zend_object *object, int *is_temp)
 {
@@ -1757,6 +2173,110 @@ void phpglfw_buffer_gluint_array_set_handler(zend_object *object, zval *offset, 
             zend_throw_error(NULL, "Only a int offset '$buffer[int]' can be used with the GL\\Buffer\\BufferInterface object");
         }
     }
+}
+/*
+static int phpglfw_buffer_gluint_serialize_handler(zval *object, unsigned char **buffer, size_t *buf_len, zend_serialize_data *data)
+{
+    phpglfw_buffer_gluint_object *obj_ptr = phpglfw_buffer_gluint_objectptr_from_zobj_p(Z_OBJ_P(object));
+
+    size_t item_count = cvector_size(obj_ptr->vec);
+    *buf_len = sizeof(size_t) + item_count * sizeof(GLuint);
+    *buffer = emalloc(*buf_len);
+
+    memcpy(*buffer, &item_count, sizeof(size_t));
+    memcpy(*buffer + sizeof(size_t), obj_ptr->vec, item_count * sizeof(GLuint));
+
+    return SUCCESS;
+}
+
+int phpglfw_buffer_gluint_unserialize_handler(zval *object, zend_class_entry *ce, const unsigned char *buf, size_t buf_len, zend_unserialize_data *data)
+{
+    const unsigned char *buf_ptr = buf;
+    size_t item_count;
+    phpglfw_buffer_gluint_object *obj;
+
+    if (buf_len < sizeof(size_t)) {
+        zend_throw_error(NULL, "Buffer underflow during phpglfw_buffer_gluint_object unserialization", 0);
+        return FAILURE;
+    }
+
+    memcpy(&item_count, buf_ptr, sizeof(size_t));
+    buf_ptr += sizeof(size_t);
+
+    if (buf_len < sizeof(size_t) + item_count * sizeof(GLuint)) {
+        zend_throw_error(NULL, "Buffer underflow during phpglfw_buffer_gluint_object unserialization", 0);
+        return FAILURE;
+    }
+
+    object_init_ex(object, phpglfw_buffer_gluint_ce);
+    obj = phpglfw_buffer_gluint_objectptr_from_zobj_p(Z_OBJ_P(object));
+    //obj->vec = emalloc(item_count * sizeof(GLuint));
+
+    cvector_reserve(obj->vec, item_count);
+    cvector_set_size(obj->vec, item_count); 
+
+    // copy the data
+    memcpy(obj->vec, buf_ptr, item_count * sizeof(GLuint));
+
+    return SUCCESS;
+}*/
+
+static int phpglfw_buffer_gluint_serialize_handler(zval *object, unsigned char **buffer, size_t *buf_len, zend_serialize_data *data)
+{
+    phpglfw_buffer_gluint_object *obj_ptr = phpglfw_buffer_gluint_objectptr_from_zobj_p(Z_OBJ_P(object));
+
+    smart_str buf = {0};
+    smart_str_append_printf(&buf, "%zu:", cvector_size(obj_ptr->vec));
+
+    for (size_t i = 0; i < cvector_size(obj_ptr->vec); i++) {
+                smart_str_append_printf(&buf, "%u,", obj_ptr->vec[i]);
+            }
+
+    smart_str_0(&buf);
+    *buffer = (unsigned char *)estrndup(ZSTR_VAL(buf.s), ZSTR_LEN(buf.s));
+    *buf_len = ZSTR_LEN(buf.s);
+    smart_str_free(&buf);
+
+    return SUCCESS;
+}
+
+int phpglfw_buffer_gluint_unserialize_handler(zval *object, zend_class_entry *ce, const unsigned char *buf, size_t buf_len, zend_unserialize_data *data)
+{
+    phpglfw_buffer_gluint_object *obj;
+
+    size_t item_count;
+    char *endptr, *token;
+    const char delimiter[] = ":";
+
+    token = strtok((char *)buf, delimiter);
+    if (!token) {
+        zend_throw_error(NULL, "Invalid format during phpglfw_buffer_gluint_object unserialization");
+        return FAILURE;
+    }
+
+    item_count = strtoul(token, &endptr, 10);
+    if (*endptr != '\0') {
+        zend_throw_error(NULL, "Invalid item count during phpglfw_buffer_gluint_object unserialization");
+        return FAILURE;
+    }
+
+    object_init_ex(object, phpglfw_buffer_gluint_ce);
+    obj = phpglfw_buffer_gluint_objectptr_from_zobj_p(Z_OBJ_P(object));
+
+    cvector_reserve(obj->vec, item_count);
+    cvector_set_size(obj->vec, item_count); 
+
+    size_t index = 0;
+    while ((token = strtok(NULL, ",")) && index < item_count) {
+                obj->vec[index++] = strtol(token, NULL, 10);
+            }
+
+    if (index != item_count) {
+        zend_throw_error(NULL, "Mismatch in expected item count during phpglfw_buffer_gluint_object unserialization");
+        return FAILURE;
+    }
+
+    return SUCCESS;
 }
 
 static HashTable *phpglfw_buffer_gluint_debug_info_handler(zend_object *object, int *is_temp)
@@ -2107,6 +2627,110 @@ void phpglfw_buffer_glshort_array_set_handler(zend_object *object, zval *offset,
         }
     }
 }
+/*
+static int phpglfw_buffer_glshort_serialize_handler(zval *object, unsigned char **buffer, size_t *buf_len, zend_serialize_data *data)
+{
+    phpglfw_buffer_glshort_object *obj_ptr = phpglfw_buffer_glshort_objectptr_from_zobj_p(Z_OBJ_P(object));
+
+    size_t item_count = cvector_size(obj_ptr->vec);
+    *buf_len = sizeof(size_t) + item_count * sizeof(GLshort);
+    *buffer = emalloc(*buf_len);
+
+    memcpy(*buffer, &item_count, sizeof(size_t));
+    memcpy(*buffer + sizeof(size_t), obj_ptr->vec, item_count * sizeof(GLshort));
+
+    return SUCCESS;
+}
+
+int phpglfw_buffer_glshort_unserialize_handler(zval *object, zend_class_entry *ce, const unsigned char *buf, size_t buf_len, zend_unserialize_data *data)
+{
+    const unsigned char *buf_ptr = buf;
+    size_t item_count;
+    phpglfw_buffer_glshort_object *obj;
+
+    if (buf_len < sizeof(size_t)) {
+        zend_throw_error(NULL, "Buffer underflow during phpglfw_buffer_glshort_object unserialization", 0);
+        return FAILURE;
+    }
+
+    memcpy(&item_count, buf_ptr, sizeof(size_t));
+    buf_ptr += sizeof(size_t);
+
+    if (buf_len < sizeof(size_t) + item_count * sizeof(GLshort)) {
+        zend_throw_error(NULL, "Buffer underflow during phpglfw_buffer_glshort_object unserialization", 0);
+        return FAILURE;
+    }
+
+    object_init_ex(object, phpglfw_buffer_glshort_ce);
+    obj = phpglfw_buffer_glshort_objectptr_from_zobj_p(Z_OBJ_P(object));
+    //obj->vec = emalloc(item_count * sizeof(GLshort));
+
+    cvector_reserve(obj->vec, item_count);
+    cvector_set_size(obj->vec, item_count); 
+
+    // copy the data
+    memcpy(obj->vec, buf_ptr, item_count * sizeof(GLshort));
+
+    return SUCCESS;
+}*/
+
+static int phpglfw_buffer_glshort_serialize_handler(zval *object, unsigned char **buffer, size_t *buf_len, zend_serialize_data *data)
+{
+    phpglfw_buffer_glshort_object *obj_ptr = phpglfw_buffer_glshort_objectptr_from_zobj_p(Z_OBJ_P(object));
+
+    smart_str buf = {0};
+    smart_str_append_printf(&buf, "%zu:", cvector_size(obj_ptr->vec));
+
+    for (size_t i = 0; i < cvector_size(obj_ptr->vec); i++) {
+                smart_str_append_printf(&buf, "%hd,", obj_ptr->vec[i]);
+            }
+
+    smart_str_0(&buf);
+    *buffer = (unsigned char *)estrndup(ZSTR_VAL(buf.s), ZSTR_LEN(buf.s));
+    *buf_len = ZSTR_LEN(buf.s);
+    smart_str_free(&buf);
+
+    return SUCCESS;
+}
+
+int phpglfw_buffer_glshort_unserialize_handler(zval *object, zend_class_entry *ce, const unsigned char *buf, size_t buf_len, zend_unserialize_data *data)
+{
+    phpglfw_buffer_glshort_object *obj;
+
+    size_t item_count;
+    char *endptr, *token;
+    const char delimiter[] = ":";
+
+    token = strtok((char *)buf, delimiter);
+    if (!token) {
+        zend_throw_error(NULL, "Invalid format during phpglfw_buffer_glshort_object unserialization");
+        return FAILURE;
+    }
+
+    item_count = strtoul(token, &endptr, 10);
+    if (*endptr != '\0') {
+        zend_throw_error(NULL, "Invalid item count during phpglfw_buffer_glshort_object unserialization");
+        return FAILURE;
+    }
+
+    object_init_ex(object, phpglfw_buffer_glshort_ce);
+    obj = phpglfw_buffer_glshort_objectptr_from_zobj_p(Z_OBJ_P(object));
+
+    cvector_reserve(obj->vec, item_count);
+    cvector_set_size(obj->vec, item_count); 
+
+    size_t index = 0;
+    while ((token = strtok(NULL, ",")) && index < item_count) {
+                obj->vec[index++] = strtol(token, NULL, 10);
+            }
+
+    if (index != item_count) {
+        zend_throw_error(NULL, "Mismatch in expected item count during phpglfw_buffer_glshort_object unserialization");
+        return FAILURE;
+    }
+
+    return SUCCESS;
+}
 
 static HashTable *phpglfw_buffer_glshort_debug_info_handler(zend_object *object, int *is_temp)
 {
@@ -2455,6 +3079,110 @@ void phpglfw_buffer_glushort_array_set_handler(zend_object *object, zval *offset
             zend_throw_error(NULL, "Only a int offset '$buffer[int]' can be used with the GL\\Buffer\\BufferInterface object");
         }
     }
+}
+/*
+static int phpglfw_buffer_glushort_serialize_handler(zval *object, unsigned char **buffer, size_t *buf_len, zend_serialize_data *data)
+{
+    phpglfw_buffer_glushort_object *obj_ptr = phpglfw_buffer_glushort_objectptr_from_zobj_p(Z_OBJ_P(object));
+
+    size_t item_count = cvector_size(obj_ptr->vec);
+    *buf_len = sizeof(size_t) + item_count * sizeof(GLushort);
+    *buffer = emalloc(*buf_len);
+
+    memcpy(*buffer, &item_count, sizeof(size_t));
+    memcpy(*buffer + sizeof(size_t), obj_ptr->vec, item_count * sizeof(GLushort));
+
+    return SUCCESS;
+}
+
+int phpglfw_buffer_glushort_unserialize_handler(zval *object, zend_class_entry *ce, const unsigned char *buf, size_t buf_len, zend_unserialize_data *data)
+{
+    const unsigned char *buf_ptr = buf;
+    size_t item_count;
+    phpglfw_buffer_glushort_object *obj;
+
+    if (buf_len < sizeof(size_t)) {
+        zend_throw_error(NULL, "Buffer underflow during phpglfw_buffer_glushort_object unserialization", 0);
+        return FAILURE;
+    }
+
+    memcpy(&item_count, buf_ptr, sizeof(size_t));
+    buf_ptr += sizeof(size_t);
+
+    if (buf_len < sizeof(size_t) + item_count * sizeof(GLushort)) {
+        zend_throw_error(NULL, "Buffer underflow during phpglfw_buffer_glushort_object unserialization", 0);
+        return FAILURE;
+    }
+
+    object_init_ex(object, phpglfw_buffer_glushort_ce);
+    obj = phpglfw_buffer_glushort_objectptr_from_zobj_p(Z_OBJ_P(object));
+    //obj->vec = emalloc(item_count * sizeof(GLushort));
+
+    cvector_reserve(obj->vec, item_count);
+    cvector_set_size(obj->vec, item_count); 
+
+    // copy the data
+    memcpy(obj->vec, buf_ptr, item_count * sizeof(GLushort));
+
+    return SUCCESS;
+}*/
+
+static int phpglfw_buffer_glushort_serialize_handler(zval *object, unsigned char **buffer, size_t *buf_len, zend_serialize_data *data)
+{
+    phpglfw_buffer_glushort_object *obj_ptr = phpglfw_buffer_glushort_objectptr_from_zobj_p(Z_OBJ_P(object));
+
+    smart_str buf = {0};
+    smart_str_append_printf(&buf, "%zu:", cvector_size(obj_ptr->vec));
+
+    for (size_t i = 0; i < cvector_size(obj_ptr->vec); i++) {
+                smart_str_append_printf(&buf, "%hu,", obj_ptr->vec[i]);
+            }
+
+    smart_str_0(&buf);
+    *buffer = (unsigned char *)estrndup(ZSTR_VAL(buf.s), ZSTR_LEN(buf.s));
+    *buf_len = ZSTR_LEN(buf.s);
+    smart_str_free(&buf);
+
+    return SUCCESS;
+}
+
+int phpglfw_buffer_glushort_unserialize_handler(zval *object, zend_class_entry *ce, const unsigned char *buf, size_t buf_len, zend_unserialize_data *data)
+{
+    phpglfw_buffer_glushort_object *obj;
+
+    size_t item_count;
+    char *endptr, *token;
+    const char delimiter[] = ":";
+
+    token = strtok((char *)buf, delimiter);
+    if (!token) {
+        zend_throw_error(NULL, "Invalid format during phpglfw_buffer_glushort_object unserialization");
+        return FAILURE;
+    }
+
+    item_count = strtoul(token, &endptr, 10);
+    if (*endptr != '\0') {
+        zend_throw_error(NULL, "Invalid item count during phpglfw_buffer_glushort_object unserialization");
+        return FAILURE;
+    }
+
+    object_init_ex(object, phpglfw_buffer_glushort_ce);
+    obj = phpglfw_buffer_glushort_objectptr_from_zobj_p(Z_OBJ_P(object));
+
+    cvector_reserve(obj->vec, item_count);
+    cvector_set_size(obj->vec, item_count); 
+
+    size_t index = 0;
+    while ((token = strtok(NULL, ",")) && index < item_count) {
+                obj->vec[index++] = strtol(token, NULL, 10);
+            }
+
+    if (index != item_count) {
+        zend_throw_error(NULL, "Mismatch in expected item count during phpglfw_buffer_glushort_object unserialization");
+        return FAILURE;
+    }
+
+    return SUCCESS;
 }
 
 static HashTable *phpglfw_buffer_glushort_debug_info_handler(zend_object *object, int *is_temp)
@@ -2805,6 +3533,110 @@ void phpglfw_buffer_glbyte_array_set_handler(zend_object *object, zval *offset, 
         }
     }
 }
+/*
+static int phpglfw_buffer_glbyte_serialize_handler(zval *object, unsigned char **buffer, size_t *buf_len, zend_serialize_data *data)
+{
+    phpglfw_buffer_glbyte_object *obj_ptr = phpglfw_buffer_glbyte_objectptr_from_zobj_p(Z_OBJ_P(object));
+
+    size_t item_count = cvector_size(obj_ptr->vec);
+    *buf_len = sizeof(size_t) + item_count * sizeof(GLbyte);
+    *buffer = emalloc(*buf_len);
+
+    memcpy(*buffer, &item_count, sizeof(size_t));
+    memcpy(*buffer + sizeof(size_t), obj_ptr->vec, item_count * sizeof(GLbyte));
+
+    return SUCCESS;
+}
+
+int phpglfw_buffer_glbyte_unserialize_handler(zval *object, zend_class_entry *ce, const unsigned char *buf, size_t buf_len, zend_unserialize_data *data)
+{
+    const unsigned char *buf_ptr = buf;
+    size_t item_count;
+    phpglfw_buffer_glbyte_object *obj;
+
+    if (buf_len < sizeof(size_t)) {
+        zend_throw_error(NULL, "Buffer underflow during phpglfw_buffer_glbyte_object unserialization", 0);
+        return FAILURE;
+    }
+
+    memcpy(&item_count, buf_ptr, sizeof(size_t));
+    buf_ptr += sizeof(size_t);
+
+    if (buf_len < sizeof(size_t) + item_count * sizeof(GLbyte)) {
+        zend_throw_error(NULL, "Buffer underflow during phpglfw_buffer_glbyte_object unserialization", 0);
+        return FAILURE;
+    }
+
+    object_init_ex(object, phpglfw_buffer_glbyte_ce);
+    obj = phpglfw_buffer_glbyte_objectptr_from_zobj_p(Z_OBJ_P(object));
+    //obj->vec = emalloc(item_count * sizeof(GLbyte));
+
+    cvector_reserve(obj->vec, item_count);
+    cvector_set_size(obj->vec, item_count); 
+
+    // copy the data
+    memcpy(obj->vec, buf_ptr, item_count * sizeof(GLbyte));
+
+    return SUCCESS;
+}*/
+
+static int phpglfw_buffer_glbyte_serialize_handler(zval *object, unsigned char **buffer, size_t *buf_len, zend_serialize_data *data)
+{
+    phpglfw_buffer_glbyte_object *obj_ptr = phpglfw_buffer_glbyte_objectptr_from_zobj_p(Z_OBJ_P(object));
+
+    smart_str buf = {0};
+    smart_str_append_printf(&buf, "%zu:", cvector_size(obj_ptr->vec));
+
+    for (size_t i = 0; i < cvector_size(obj_ptr->vec); i++) {
+                smart_str_append_printf(&buf, "%hhd,", obj_ptr->vec[i]);
+            }
+
+    smart_str_0(&buf);
+    *buffer = (unsigned char *)estrndup(ZSTR_VAL(buf.s), ZSTR_LEN(buf.s));
+    *buf_len = ZSTR_LEN(buf.s);
+    smart_str_free(&buf);
+
+    return SUCCESS;
+}
+
+int phpglfw_buffer_glbyte_unserialize_handler(zval *object, zend_class_entry *ce, const unsigned char *buf, size_t buf_len, zend_unserialize_data *data)
+{
+    phpglfw_buffer_glbyte_object *obj;
+
+    size_t item_count;
+    char *endptr, *token;
+    const char delimiter[] = ":";
+
+    token = strtok((char *)buf, delimiter);
+    if (!token) {
+        zend_throw_error(NULL, "Invalid format during phpglfw_buffer_glbyte_object unserialization");
+        return FAILURE;
+    }
+
+    item_count = strtoul(token, &endptr, 10);
+    if (*endptr != '\0') {
+        zend_throw_error(NULL, "Invalid item count during phpglfw_buffer_glbyte_object unserialization");
+        return FAILURE;
+    }
+
+    object_init_ex(object, phpglfw_buffer_glbyte_ce);
+    obj = phpglfw_buffer_glbyte_objectptr_from_zobj_p(Z_OBJ_P(object));
+
+    cvector_reserve(obj->vec, item_count);
+    cvector_set_size(obj->vec, item_count); 
+
+    size_t index = 0;
+    while ((token = strtok(NULL, ",")) && index < item_count) {
+                obj->vec[index++] = strtol(token, NULL, 10);
+            }
+
+    if (index != item_count) {
+        zend_throw_error(NULL, "Mismatch in expected item count during phpglfw_buffer_glbyte_object unserialization");
+        return FAILURE;
+    }
+
+    return SUCCESS;
+}
 
 static HashTable *phpglfw_buffer_glbyte_debug_info_handler(zend_object *object, int *is_temp)
 {
@@ -3154,6 +3986,110 @@ void phpglfw_buffer_glubyte_array_set_handler(zend_object *object, zval *offset,
         }
     }
 }
+/*
+static int phpglfw_buffer_glubyte_serialize_handler(zval *object, unsigned char **buffer, size_t *buf_len, zend_serialize_data *data)
+{
+    phpglfw_buffer_glubyte_object *obj_ptr = phpglfw_buffer_glubyte_objectptr_from_zobj_p(Z_OBJ_P(object));
+
+    size_t item_count = cvector_size(obj_ptr->vec);
+    *buf_len = sizeof(size_t) + item_count * sizeof(GLubyte);
+    *buffer = emalloc(*buf_len);
+
+    memcpy(*buffer, &item_count, sizeof(size_t));
+    memcpy(*buffer + sizeof(size_t), obj_ptr->vec, item_count * sizeof(GLubyte));
+
+    return SUCCESS;
+}
+
+int phpglfw_buffer_glubyte_unserialize_handler(zval *object, zend_class_entry *ce, const unsigned char *buf, size_t buf_len, zend_unserialize_data *data)
+{
+    const unsigned char *buf_ptr = buf;
+    size_t item_count;
+    phpglfw_buffer_glubyte_object *obj;
+
+    if (buf_len < sizeof(size_t)) {
+        zend_throw_error(NULL, "Buffer underflow during phpglfw_buffer_glubyte_object unserialization", 0);
+        return FAILURE;
+    }
+
+    memcpy(&item_count, buf_ptr, sizeof(size_t));
+    buf_ptr += sizeof(size_t);
+
+    if (buf_len < sizeof(size_t) + item_count * sizeof(GLubyte)) {
+        zend_throw_error(NULL, "Buffer underflow during phpglfw_buffer_glubyte_object unserialization", 0);
+        return FAILURE;
+    }
+
+    object_init_ex(object, phpglfw_buffer_glubyte_ce);
+    obj = phpglfw_buffer_glubyte_objectptr_from_zobj_p(Z_OBJ_P(object));
+    //obj->vec = emalloc(item_count * sizeof(GLubyte));
+
+    cvector_reserve(obj->vec, item_count);
+    cvector_set_size(obj->vec, item_count); 
+
+    // copy the data
+    memcpy(obj->vec, buf_ptr, item_count * sizeof(GLubyte));
+
+    return SUCCESS;
+}*/
+
+static int phpglfw_buffer_glubyte_serialize_handler(zval *object, unsigned char **buffer, size_t *buf_len, zend_serialize_data *data)
+{
+    phpglfw_buffer_glubyte_object *obj_ptr = phpglfw_buffer_glubyte_objectptr_from_zobj_p(Z_OBJ_P(object));
+
+    smart_str buf = {0};
+    smart_str_append_printf(&buf, "%zu:", cvector_size(obj_ptr->vec));
+
+    for (size_t i = 0; i < cvector_size(obj_ptr->vec); i++) {
+                smart_str_append_printf(&buf, "%hhu,", obj_ptr->vec[i]);
+            }
+
+    smart_str_0(&buf);
+    *buffer = (unsigned char *)estrndup(ZSTR_VAL(buf.s), ZSTR_LEN(buf.s));
+    *buf_len = ZSTR_LEN(buf.s);
+    smart_str_free(&buf);
+
+    return SUCCESS;
+}
+
+int phpglfw_buffer_glubyte_unserialize_handler(zval *object, zend_class_entry *ce, const unsigned char *buf, size_t buf_len, zend_unserialize_data *data)
+{
+    phpglfw_buffer_glubyte_object *obj;
+
+    size_t item_count;
+    char *endptr, *token;
+    const char delimiter[] = ":";
+
+    token = strtok((char *)buf, delimiter);
+    if (!token) {
+        zend_throw_error(NULL, "Invalid format during phpglfw_buffer_glubyte_object unserialization");
+        return FAILURE;
+    }
+
+    item_count = strtoul(token, &endptr, 10);
+    if (*endptr != '\0') {
+        zend_throw_error(NULL, "Invalid item count during phpglfw_buffer_glubyte_object unserialization");
+        return FAILURE;
+    }
+
+    object_init_ex(object, phpglfw_buffer_glubyte_ce);
+    obj = phpglfw_buffer_glubyte_objectptr_from_zobj_p(Z_OBJ_P(object));
+
+    cvector_reserve(obj->vec, item_count);
+    cvector_set_size(obj->vec, item_count); 
+
+    size_t index = 0;
+    while ((token = strtok(NULL, ",")) && index < item_count) {
+                obj->vec[index++] = strtol(token, NULL, 10);
+            }
+
+    if (index != item_count) {
+        zend_throw_error(NULL, "Mismatch in expected item count during phpglfw_buffer_glubyte_object unserialization");
+        return FAILURE;
+    }
+
+    return SUCCESS;
+}
 
 static HashTable *phpglfw_buffer_glubyte_debug_info_handler(zend_object *object, int *is_temp)
 {
@@ -3345,6 +4281,8 @@ void phpglfw_register_buffer_module(INIT_FUNC_ARGS)
     INIT_CLASS_ENTRY(tmp_ce, "GL\\Buffer\\FloatBuffer", class_GL_Buffer_FloatBuffer_methods);
     phpglfw_buffer_glfloat_ce = zend_register_internal_class(&tmp_ce);
     phpglfw_buffer_glfloat_ce->create_object = phpglfw_buffer_glfloat_create_handler;
+    phpglfw_buffer_glfloat_ce->serialize = phpglfw_buffer_glfloat_serialize_handler;
+    phpglfw_buffer_glfloat_ce->unserialize = phpglfw_buffer_glfloat_unserialize_handler;
     phpglfw_buffer_glfloat_ce->get_iterator = phpglfw_buffer_glfloat_get_iterator_handler;
 
 	zend_class_implements(phpglfw_buffer_glfloat_ce, 1, phpglfw_buffer_interface_ce);
@@ -3360,6 +4298,8 @@ void phpglfw_register_buffer_module(INIT_FUNC_ARGS)
     INIT_CLASS_ENTRY(tmp_ce, "GL\\Buffer\\HFloatBuffer", class_GL_Buffer_HFloatBuffer_methods);
     phpglfw_buffer_glhalf_ce = zend_register_internal_class(&tmp_ce);
     phpglfw_buffer_glhalf_ce->create_object = phpglfw_buffer_glhalf_create_handler;
+    phpglfw_buffer_glhalf_ce->serialize = phpglfw_buffer_glhalf_serialize_handler;
+    phpglfw_buffer_glhalf_ce->unserialize = phpglfw_buffer_glhalf_unserialize_handler;
     phpglfw_buffer_glhalf_ce->get_iterator = phpglfw_buffer_glhalf_get_iterator_handler;
 
 	zend_class_implements(phpglfw_buffer_glhalf_ce, 1, phpglfw_buffer_interface_ce);
@@ -3375,6 +4315,8 @@ void phpglfw_register_buffer_module(INIT_FUNC_ARGS)
     INIT_CLASS_ENTRY(tmp_ce, "GL\\Buffer\\DoubleBuffer", class_GL_Buffer_DoubleBuffer_methods);
     phpglfw_buffer_gldouble_ce = zend_register_internal_class(&tmp_ce);
     phpglfw_buffer_gldouble_ce->create_object = phpglfw_buffer_gldouble_create_handler;
+    phpglfw_buffer_gldouble_ce->serialize = phpglfw_buffer_gldouble_serialize_handler;
+    phpglfw_buffer_gldouble_ce->unserialize = phpglfw_buffer_gldouble_unserialize_handler;
     phpglfw_buffer_gldouble_ce->get_iterator = phpglfw_buffer_gldouble_get_iterator_handler;
 
 	zend_class_implements(phpglfw_buffer_gldouble_ce, 1, phpglfw_buffer_interface_ce);
@@ -3390,6 +4332,8 @@ void phpglfw_register_buffer_module(INIT_FUNC_ARGS)
     INIT_CLASS_ENTRY(tmp_ce, "GL\\Buffer\\IntBuffer", class_GL_Buffer_IntBuffer_methods);
     phpglfw_buffer_glint_ce = zend_register_internal_class(&tmp_ce);
     phpglfw_buffer_glint_ce->create_object = phpglfw_buffer_glint_create_handler;
+    phpglfw_buffer_glint_ce->serialize = phpglfw_buffer_glint_serialize_handler;
+    phpglfw_buffer_glint_ce->unserialize = phpglfw_buffer_glint_unserialize_handler;
     phpglfw_buffer_glint_ce->get_iterator = phpglfw_buffer_glint_get_iterator_handler;
 
 	zend_class_implements(phpglfw_buffer_glint_ce, 1, phpglfw_buffer_interface_ce);
@@ -3405,6 +4349,8 @@ void phpglfw_register_buffer_module(INIT_FUNC_ARGS)
     INIT_CLASS_ENTRY(tmp_ce, "GL\\Buffer\\UIntBuffer", class_GL_Buffer_UIntBuffer_methods);
     phpglfw_buffer_gluint_ce = zend_register_internal_class(&tmp_ce);
     phpglfw_buffer_gluint_ce->create_object = phpglfw_buffer_gluint_create_handler;
+    phpglfw_buffer_gluint_ce->serialize = phpglfw_buffer_gluint_serialize_handler;
+    phpglfw_buffer_gluint_ce->unserialize = phpglfw_buffer_gluint_unserialize_handler;
     phpglfw_buffer_gluint_ce->get_iterator = phpglfw_buffer_gluint_get_iterator_handler;
 
 	zend_class_implements(phpglfw_buffer_gluint_ce, 1, phpglfw_buffer_interface_ce);
@@ -3420,6 +4366,8 @@ void phpglfw_register_buffer_module(INIT_FUNC_ARGS)
     INIT_CLASS_ENTRY(tmp_ce, "GL\\Buffer\\ShortBuffer", class_GL_Buffer_ShortBuffer_methods);
     phpglfw_buffer_glshort_ce = zend_register_internal_class(&tmp_ce);
     phpglfw_buffer_glshort_ce->create_object = phpglfw_buffer_glshort_create_handler;
+    phpglfw_buffer_glshort_ce->serialize = phpglfw_buffer_glshort_serialize_handler;
+    phpglfw_buffer_glshort_ce->unserialize = phpglfw_buffer_glshort_unserialize_handler;
     phpglfw_buffer_glshort_ce->get_iterator = phpglfw_buffer_glshort_get_iterator_handler;
 
 	zend_class_implements(phpglfw_buffer_glshort_ce, 1, phpglfw_buffer_interface_ce);
@@ -3435,6 +4383,8 @@ void phpglfw_register_buffer_module(INIT_FUNC_ARGS)
     INIT_CLASS_ENTRY(tmp_ce, "GL\\Buffer\\UShortBuffer", class_GL_Buffer_UShortBuffer_methods);
     phpglfw_buffer_glushort_ce = zend_register_internal_class(&tmp_ce);
     phpglfw_buffer_glushort_ce->create_object = phpglfw_buffer_glushort_create_handler;
+    phpglfw_buffer_glushort_ce->serialize = phpglfw_buffer_glushort_serialize_handler;
+    phpglfw_buffer_glushort_ce->unserialize = phpglfw_buffer_glushort_unserialize_handler;
     phpglfw_buffer_glushort_ce->get_iterator = phpglfw_buffer_glushort_get_iterator_handler;
 
 	zend_class_implements(phpglfw_buffer_glushort_ce, 1, phpglfw_buffer_interface_ce);
@@ -3450,6 +4400,8 @@ void phpglfw_register_buffer_module(INIT_FUNC_ARGS)
     INIT_CLASS_ENTRY(tmp_ce, "GL\\Buffer\\ByteBuffer", class_GL_Buffer_ByteBuffer_methods);
     phpglfw_buffer_glbyte_ce = zend_register_internal_class(&tmp_ce);
     phpglfw_buffer_glbyte_ce->create_object = phpglfw_buffer_glbyte_create_handler;
+    phpglfw_buffer_glbyte_ce->serialize = phpglfw_buffer_glbyte_serialize_handler;
+    phpglfw_buffer_glbyte_ce->unserialize = phpglfw_buffer_glbyte_unserialize_handler;
     phpglfw_buffer_glbyte_ce->get_iterator = phpglfw_buffer_glbyte_get_iterator_handler;
 
 	zend_class_implements(phpglfw_buffer_glbyte_ce, 1, phpglfw_buffer_interface_ce);
@@ -3465,6 +4417,8 @@ void phpglfw_register_buffer_module(INIT_FUNC_ARGS)
     INIT_CLASS_ENTRY(tmp_ce, "GL\\Buffer\\UByteBuffer", class_GL_Buffer_UByteBuffer_methods);
     phpglfw_buffer_glubyte_ce = zend_register_internal_class(&tmp_ce);
     phpglfw_buffer_glubyte_ce->create_object = phpglfw_buffer_glubyte_create_handler;
+    phpglfw_buffer_glubyte_ce->serialize = phpglfw_buffer_glubyte_serialize_handler;
+    phpglfw_buffer_glubyte_ce->unserialize = phpglfw_buffer_glubyte_unserialize_handler;
     phpglfw_buffer_glubyte_ce->get_iterator = phpglfw_buffer_glubyte_get_iterator_handler;
 
 	zend_class_implements(phpglfw_buffer_glubyte_ce, 1, phpglfw_buffer_interface_ce);
