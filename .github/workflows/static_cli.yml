@@ -1,0 +1,43 @@
+name: Static CLI build
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        required: true
+        description: php version to compile
+        default: '8.2'
+        type: choice
+        options:
+          - '8.2'
+jobs:
+  build:
+    name: build ${{ inputs.version }} on macOS x86_64
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      # Install macOS missing packages and mark os suffix
+      - run: |
+          brew install automake gzip
+          echo "SPC_BUILD_OS=macos" >> $GITHUB_ENV
+
+      # Cache composer dependencies
+      - id: cache-static-php-cli
+        uses: actions/cache@v3
+        with:
+          path: /tmp/static-php-cli
+          key: cache-static-php-cli
+
+      - name: Download static-php-cli
+        if: steps.cache-static-php-cli.outputs.cache-hit != 'true'
+        run: |
+          # Clone only the specific commit to save time and space
+          git clone --depth 1 --branch main https://github.com/crazywhalecc/static-php-cli.git /tmp/static-php-cli
+          cd /tmp/static-php-cli
+          git checkout 4e99211bc37ae37aae6ee7918fc7669be505bc9a
+          
+          # Install composer dependencies
+          composer install --no-dev --no-interaction --no-progress --no-suggest --no-scripts --prefer-dist --optimize-autoloader
+        
+      
