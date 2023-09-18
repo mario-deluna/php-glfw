@@ -3,15 +3,6 @@ name: Static CLI build
 on:
   push:
     branches: [ '*' ]
-  workflow_dispatch:
-    inputs:
-      version:
-        required: true
-        description: php version to compile
-        default: '8.2'
-        type: choice
-        options:
-          - '8.2'
 jobs:
   build:
     name: build ${{ inputs.version }} on macOS x86_64
