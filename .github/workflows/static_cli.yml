@@ -43,7 +43,7 @@ jobs:
       - id: cache-download
         uses: actions/cache@v3
         with:
-          path: downloads
+          path: /tmp/static-php-cli/downloads
           key: php-${{ matrix.php-versions }}-dependencies
 
       - if: steps.cache-download.outputs.cache-hit != 'true'
