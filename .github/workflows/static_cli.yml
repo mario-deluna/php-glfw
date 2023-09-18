@@ -15,7 +15,7 @@ on:
     branches: [ '*' ]
   pull_request:
     branches: [ '*' ]
-    
+
 jobs:
   build:
     name: build ${{ inputs.version }} on macOS x86_64
@@ -54,7 +54,7 @@ jobs:
           key: php-${{ inputs.version }}-dependencies
 
       - if: steps.cache-download.outputs.cache-hit != 'true'
-        run: ./bin/spc download --with-php=${{ inputs.version }} --all
+        run: cd /tmp/static-php-cli && ./bin/spc download --with-php=${{ inputs.version }} --all
 
       # Run build command
-      - run: ./bin/spc build "curl,glfw,mbstring,opcache,zip" --build-cli
+      - run: cd /tmp/static-php-cli && ./bin/spc build "curl,glfw,mbstring,opcache,zip" --build-cli
