@@ -44,3 +44,15 @@ jobs:
 
       # Run build command
       - run: cd /tmp/static-php-cli && ./bin/spc build "curl,glfw,mbstring,zip" --build-cli --debug
+
+      # Zip the buildroot directory
+      - name: Create Zip of buildroot directory
+        run: |
+          cd /tmp/static-php-cli
+          zip -r buildroot.zip buildroot
+
+      # Upload artifacts zip /tmp/static-php-cli/buildroot.zip
+      - uses: actions/upload-artifact@v2
+        with:
+          name: php-${{ matrix.php-versions }}-macos-x86_64
+          path: /tmp/static-php-cli/buildroot.zip
