@@ -39,14 +39,7 @@ jobs:
           # Install composer dependencies
           composer install --no-dev --no-interaction --no-progress --no-suggest --no-scripts --prefer-dist --optimize-autoloader
         
-      # Cache downloaded source
-      - id: cache-download
-        uses: actions/cache@v3
-        with:
-          path: /tmp/static-php-cli/downloads
-          key: php-${{ matrix.php-versions }}-dependencies
-
-      - if: steps.cache-download.outputs.cache-hit != 'true'
+      - if: steps.cache-static-php-cli.outputs.cache-hit != 'true'
         run: cd /tmp/static-php-cli && ./bin/spc download --with-php=${{ matrix.php-versions }} --all
 
       # Run build command
