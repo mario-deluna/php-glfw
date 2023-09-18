@@ -10,9 +10,12 @@ on:
         type: choice
         options:
           - '8.2'
+
   push:
     branches: [ '*' ]
-
+  pull_request:
+    branches: [ '*' ]
+    
 jobs:
   build:
     name: build ${{ inputs.version }} on macOS x86_64
