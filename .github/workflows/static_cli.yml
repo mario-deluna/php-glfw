@@ -1,8 +1,18 @@
 name: Static CLI build
 
 on:
+  workflow_dispatch:
+    inputs:
+      version:
+        required: true
+        description: php version to compile
+        default: '8.2'
+        type: choice
+        options:
+          - '8.2'
   push:
     branches: [ '*' ]
+
 jobs:
   build:
     name: build ${{ inputs.version }} on macOS x86_64
@@ -33,4 +43,15 @@ jobs:
           # Install composer dependencies
           composer install --no-dev --no-interaction --no-progress --no-suggest --no-scripts --prefer-dist --optimize-autoloader
         
-      
+      # Cache downloaded source
+      - id: cache-download
+        uses: actions/cache@v3
+        with:
+          path: downloads
+          key: php-${{ inputs.version }}-dependencies
+
+      - if: steps.cache-download.outputs.cache-hit != 'true'
+        run: ./bin/spc download --with-php=${{ inputs.version }} --all
+
+      # Run build command
+      - run: ./bin/spc build "curl,glfw,mbstring,opcache,zip" --build-cli
