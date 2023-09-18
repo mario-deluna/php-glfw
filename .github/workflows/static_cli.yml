@@ -43,4 +43,4 @@ jobs:
         run: cd /tmp/static-php-cli && ./bin/spc download --with-php=${{ matrix.php-versions }} --all
 
       # Run build command
-      - run: cd /tmp/static-php-cli && ./bin/spc build "curl,glfw,mbstring,opcache,zip" --build-cli
+      - run: cd /tmp/static-php-cli && ./bin/spc build "curl,glfw,mbstring,opcache,zip" --build-cli --debug
