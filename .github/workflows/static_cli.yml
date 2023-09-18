@@ -1,6 +1,8 @@
 name: Static CLI build
 
 on:
+  push:
+    branches: [ '*' ]
   workflow_dispatch:
     inputs:
       version:
