@@ -19,7 +19,12 @@ jobs:
       # Install macOS missing packages and mark os suffix
       - run: |
           brew install automake gzip
-          echo "SPC_BUILD_OS=macos" >> $GITHUB_ENV
+
+      - name: Paths
+        run: |
+          echo "ARTIFACT_NAME=php-${{ matrix.php-versions }}-glfw-cli-macos-x86_64" >> $GITHUB_ENV
+          echo "ARTIFACT_DIR=/tmp/php-${{ matrix.php-versions }}-glfw-cli-macos-x86_64" >> $GITHUB_ENV
+          echo "STATIC_CLI_DIR=/tmp/static-php-cli" >> $GITHUB_ENV
 
       # Cache composer dependencies
       - id: cache-static-php-cli
@@ -45,14 +50,27 @@ jobs:
       # Run build command
       - run: cd /tmp/static-php-cli && ./bin/spc build "curl,glfw,mbstring,zip" --build-cli --debug
 
-      # Zip the buildroot directory
-      - name: Create Zip of buildroot directory
+      # create a new directory where we store the copy of data 
+      # we are interested in for the artifact
+      - name: Create buildroot directory
         run: |
-          cd /tmp/static-php-cli
-          zip -r buildroot.zip buildroot
+          mkdir -p $ARTIFACT_DIR
+          mkdir -p $ARTIFACT_DIR/bin
+          cp -r $STATIC_CLI_DIR/bin/php $ARTIFACT_DIR/bin/php
+          cp -r $STATIC_CLI_DIR/license $ARTIFACT_DIR/license
+          cp -r $STATIC_CLI_DIR/build-extensions.json $ARTIFACT_DIR/build-extensions.json
+          cp -r $STATIC_CLI_DIR/build-libraries.json $ARTIFACT_DIR/build-libraries.json
 
-      # Upload artifacts zip /tmp/static-php-cli/buildroot.zip
-      - uses: actions/upload-artifact@v2
+      # Zip the artifact into the artifact dir
+      - name: Create a zip archive
+        run: |
+          cd $ARTIFACT_DIR
+          zip -r $ARTIFACT_NAME.zip .
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v2
         with:
-          name: php-${{ matrix.php-versions }}-macos-x86_64
-          path: /tmp/static-php-cli/buildroot.zip
+          name: ${{ env.ARTIFACT_NAME }}
+          path: ${{ env.ARTIFACT_DIR }}/${{ env.ARTIFACT_NAME }}.zip
+
+          
