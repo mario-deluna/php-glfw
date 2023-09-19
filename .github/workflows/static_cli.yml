@@ -46,20 +46,24 @@ jobs:
         
       - if: steps.cache-static-php-cli.outputs.cache-hit != 'true'
         run: cd /tmp/static-php-cli && ./bin/spc download --with-php=${{ matrix.php-versions }} --all
+  
+      - name: Copy the current workspace aka php-glfw version to the static-php-cli
+        run: |
+          cp -r . /tmp/static-php-cli/downloads/ext-glfw
 
       # Run build command
       - run: cd /tmp/static-php-cli && ./bin/spc build "curl,glfw,mbstring,zip" --build-cli --debug
 
       # create a new directory where we store the copy of data 
       # we are interested in for the artifact
-      - name: Create buildroot directory
+      - name: Create artifact directory
         run: |
           mkdir -p $ARTIFACT_DIR
           mkdir -p $ARTIFACT_DIR/bin
-          cp -r $STATIC_CLI_DIR/bin/php $ARTIFACT_DIR/bin/php
-          cp -r $STATIC_CLI_DIR/license $ARTIFACT_DIR/license
-          cp -r $STATIC_CLI_DIR/build-extensions.json $ARTIFACT_DIR/build-extensions.json
-          cp -r $STATIC_CLI_DIR/build-libraries.json $ARTIFACT_DIR/build-libraries.json
+          cp -r $STATIC_CLI_DIR/buildroot/bin/php $ARTIFACT_DIR/bin/php
+          cp -r $STATIC_CLI_DIR/buildroot/license $ARTIFACT_DIR/license
+          cp -r $STATIC_CLI_DIR/buildroot/build-extensions.json $ARTIFACT_DIR/build-extensions.json
+          cp -r $STATIC_CLI_DIR/buildroot/build-libraries.json $ARTIFACT_DIR/build-libraries.json
 
       # Zip the artifact into the artifact dir
       - name: Create a zip archive
