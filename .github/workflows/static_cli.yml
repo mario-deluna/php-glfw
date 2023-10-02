@@ -1,19 +1,29 @@
 name: Static CLI build
 
-on:
-  push:
-    branches: [ '*' ]
+on: 
+  workflow_dispatch:  
+  release:
+    types: [published]
+    
 jobs:
   build:
-    name: build ${{ inputs.version }} on macOS x86_64
+    name: build ${{ matrix.php-versions }} on macOS x86_64
     runs-on: macos-latest
+    strategy:
+      matrix:
+        php-versions: ['8.2']
     steps:
       - uses: actions/checkout@v3
 
       # Install macOS missing packages and mark os suffix
       - run: |
           brew install automake gzip
-          echo "SPC_BUILD_OS=macos" >> $GITHUB_ENV
+
+      - name: Paths
+        run: |
+          echo "ARTIFACT_NAME=php-${{ matrix.php-versions }}-glfw-cli-macos-x86_64" >> $GITHUB_ENV
+          echo "ARTIFACT_DIR=/tmp/php-${{ matrix.php-versions }}-glfw-cli-macos-x86_64" >> $GITHUB_ENV
+          echo "STATIC_CLI_DIR=/tmp/static-php-cli" >> $GITHUB_ENV
 
       # Cache composer dependencies
       - id: cache-static-php-cli
@@ -33,4 +43,37 @@ jobs:
           # Install composer dependencies
           composer install --no-dev --no-interaction --no-progress --no-suggest --no-scripts --prefer-dist --optimize-autoloader
         
-      
+      - if: steps.cache-static-php-cli.outputs.cache-hit != 'true'
+        run: cd /tmp/static-php-cli && ./bin/spc download --with-php=${{ matrix.php-versions }} --all
+  
+      - name: Copy the current workspace aka php-glfw version to the static-php-cli
+        run: |
+          cp -r . /tmp/static-php-cli/downloads/ext-glfw
+
+      # Run build command
+      - run: cd /tmp/static-php-cli && ./bin/spc build "curl,glfw,mbstring,zip" --build-cli --debug
+
+      # create a new directory where we store the copy of data 
+      # we are interested in for the artifact
+      - name: Create artifact directory
+        run: |
+          mkdir -p $ARTIFACT_DIR
+          mkdir -p $ARTIFACT_DIR/bin
+          cp -r $STATIC_CLI_DIR/buildroot/bin/php $ARTIFACT_DIR/bin/php
+          cp -r $STATIC_CLI_DIR/buildroot/license $ARTIFACT_DIR/license
+          cp -r $STATIC_CLI_DIR/buildroot/build-extensions.json $ARTIFACT_DIR/build-extensions.json
+          cp -r $STATIC_CLI_DIR/buildroot/build-libraries.json $ARTIFACT_DIR/build-libraries.json
+
+      # Zip the artifact into the artifact dir
+      - name: Create a zip archive
+        run: |
+          cd $ARTIFACT_DIR
+          zip -r $ARTIFACT_NAME.zip .
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: ${{ env.ARTIFACT_NAME }}
+          path: ${{ env.ARTIFACT_DIR }}/${{ env.ARTIFACT_NAME }}.zip
+
+          
