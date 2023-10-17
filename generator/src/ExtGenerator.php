@@ -450,6 +450,7 @@ class ExtGenerator
         $this->buildFunctionsBody();
         $this->buildGLBufferHeaderAndBody();
         $this->buildGLMathHeaderAndBody();
+        $this->buildGLVGHeaderAndBody();
         $this->buildStubs();
 
         // docs 
@@ -564,6 +565,18 @@ class ExtGenerator
         ]);
         $this->generateTemplate('phpglfw_math.c', [
             'objects' => $mobjarr,
+        ]);
+    }
+
+
+    /**
+     * Builds the "phpglfw_vg" files
+     */
+    private function buildGLVGHeaderAndBody() : void
+    {
+        $this->generateTemplate('phpglfw_vg.h', [
+        ]);
+        $this->generateTemplate('phpglfw_vg.c', [
         ]);
     }
 

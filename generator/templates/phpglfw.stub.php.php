@@ -171,6 +171,21 @@ namespace GL\Buffer
 <?php endforeach; ?>
 };
 
+namespace GL\VectorGraphics
+{
+    class VGContext {
+        public function __construct(int $flags) {}
+        public function beginFrame() : void {}
+        public function endFrame() : void {}
+        public function beginPath() : void {}
+        public function fillColor(int $r, int $g, int $b, int $a) : void {}
+        public function rect(float $x, float $y, float $width, float $height) : void {}
+        public function fill() : void {}
+        public function stroke() : void {}
+        public function strokeColor(int $r, int $g, int $b, int $a) : void {}
+    }
+};
+
 namespace {
     /**
      * Constants

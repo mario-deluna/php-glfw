@@ -124,8 +124,17 @@ if test "$PHP_GLFW" != "no"; then
     phpglfw_buffer.c \
     phpglfw_texture.c \
     phpglfw_objparser.c \
+    phpglfw_vg.c \
     vendor/fastobj/fast_obj.c \
-    vendor/glad/src/glad.c"
+    vendor/glad/src/glad.c \
+    vendor/nanovg/src/nanovg.c"
+
+  # we already use stb libs in phpglfw so we need to stop nanovg from implementing them
+  GLFWPLATTFORMARGS="-DNVG_NO_STB=1 $GLFWPLATTFORMARGS"
+
+  # the generated arginfo file has unicode issues because we have classes like "\\UInt"
+  # im just going to supress those warnings for now, please don't judge me
+  GLFWPLATTFORMARGS="-Wno-unicode $GLFWPLATTFORMARGS"
 
   PHP_ADD_LIBRARY_WITH_PATH(glfw, [$GLFW_DIR/lib], GLFW_SHARED_LIBADD)
   AC_DEFINE(HAVE_GLFW, 1, [Whether you have glfw])
@@ -138,13 +147,15 @@ if test "$PHP_GLFW" != "no"; then
   PHP_ADD_INCLUDE([$ext_srcdir/vendor/cvector])
   PHP_ADD_INCLUDE([$ext_srcdir/vendor/stb])
   PHP_ADD_INCLUDE([$ext_srcdir/vendor/fastobj])
+  PHP_ADD_INCLUDE([$ext_srcdir/vendor/nanovg/src])
   PHP_ADD_INCLUDE([$GLFW_DIR/include])
 
   PHP_INSTALL_HEADERS([ext/glfw], [*.h \
         vendor/glad/include/*.h \
         vendor/cvector/*.h \
         vendor/stb/*.h \
-        vendor/fastobj/*.h])
+        vendor/fastobj/*.h \
+        vendor/nanovg/src/*.h])
 
   PHP_ADD_BUILD_DIR($ext_builddir/src)
 

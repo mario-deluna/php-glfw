@@ -1,5 +1,5 @@
 /* This is a generated file, edit the .stub.php file instead.
- * Stub hash: 317af0d3feca35119b601ce8e7e062883490a63b */
+ * Stub hash: b0ce235cc2753c86ecba5ab75419cff39e9f68e9 */
 
 ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_glCullFace, 0, 1, IS_VOID, 0)
 	ZEND_ARG_TYPE_INFO(0, mode, IS_LONG, 0)
@@ -709,17 +709,17 @@ ZEND_END_ARG_INFO()
 
 ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_glVertexAttrib4Nubv, 0, 2, IS_VOID, 0)
 	ZEND_ARG_TYPE_INFO(0, index, IS_LONG, 0)
-	ZEND_ARG_OBJ_TYPE_MASK(0, v, GL\\Buffer\\UbyteBuffer, MAY_BE_ARRAY, NULL)
+	ZEND_ARG_OBJ_TYPE_MASK(0, v, GL\\Buffer\\\125byteBuffer, MAY_BE_ARRAY, NULL)
 ZEND_END_ARG_INFO()
 
 ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_glVertexAttrib4Nuiv, 0, 2, IS_VOID, 0)
 	ZEND_ARG_TYPE_INFO(0, index, IS_LONG, 0)
-	ZEND_ARG_OBJ_TYPE_MASK(0, v, GL\\Buffer\\UIntBuffer, MAY_BE_ARRAY, NULL)
+	ZEND_ARG_OBJ_TYPE_MASK(0, v, GL\\Buffer\\\125IntBuffer, MAY_BE_ARRAY, NULL)
 ZEND_END_ARG_INFO()
 
 ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_glVertexAttrib4Nusv, 0, 2, IS_VOID, 0)
 	ZEND_ARG_TYPE_INFO(0, index, IS_LONG, 0)
-	ZEND_ARG_OBJ_TYPE_MASK(0, v, GL\\Buffer\\UShortBuffer, MAY_BE_ARRAY, NULL)
+	ZEND_ARG_OBJ_TYPE_MASK(0, v, GL\\Buffer\\\125ShortBuffer, MAY_BE_ARRAY, NULL)
 ZEND_END_ARG_INFO()
 
 #define arginfo_glVertexAttrib4bv arginfo_glVertexAttrib4Nbv
@@ -895,7 +895,7 @@ ZEND_END_ARG_INFO()
 
 ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_glUniform1uiv, 0, 2, IS_VOID, 0)
 	ZEND_ARG_TYPE_INFO(0, location, IS_LONG, 0)
-	ZEND_ARG_OBJ_TYPE_MASK(0, value, GL\\Buffer\\UIntBuffer, MAY_BE_ARRAY, NULL)
+	ZEND_ARG_OBJ_TYPE_MASK(0, value, GL\\Buffer\\\125IntBuffer, MAY_BE_ARRAY, NULL)
 ZEND_END_ARG_INFO()
 
 #define arginfo_glUniform2uiv arginfo_glUniform1uiv
@@ -909,7 +909,7 @@ ZEND_END_ARG_INFO()
 ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_glTexParameterIuiv, 0, 3, IS_VOID, 0)
 	ZEND_ARG_TYPE_INFO(0, target, IS_LONG, 0)
 	ZEND_ARG_TYPE_INFO(0, pname, IS_LONG, 0)
-	ZEND_ARG_OBJ_TYPE_MASK(0, params, GL\\Buffer\\UIntBuffer, MAY_BE_ARRAY, NULL)
+	ZEND_ARG_OBJ_TYPE_MASK(0, params, GL\\Buffer\\\125IntBuffer, MAY_BE_ARRAY, NULL)
 ZEND_END_ARG_INFO()
 
 #define arginfo_glGetTexParameterIiv arginfo_glGetTexParameterfv
@@ -925,7 +925,7 @@ ZEND_END_ARG_INFO()
 ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_glClearBufferuiv, 0, 3, IS_VOID, 0)
 	ZEND_ARG_TYPE_INFO(0, buffer, IS_LONG, 0)
 	ZEND_ARG_TYPE_INFO(0, drawbuffer, IS_LONG, 0)
-	ZEND_ARG_OBJ_TYPE_MASK(0, value, GL\\Buffer\\UIntBuffer, MAY_BE_ARRAY, NULL)
+	ZEND_ARG_OBJ_TYPE_MASK(0, value, GL\\Buffer\\\125IntBuffer, MAY_BE_ARRAY, NULL)
 ZEND_END_ARG_INFO()
 
 ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_glClearBufferfv, 0, 3, IS_VOID, 0)
@@ -1239,7 +1239,7 @@ ZEND_END_ARG_INFO()
 ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_glSamplerParameterIuiv, 0, 3, IS_VOID, 0)
 	ZEND_ARG_TYPE_INFO(0, sampler, IS_LONG, 0)
 	ZEND_ARG_TYPE_INFO(0, pname, IS_LONG, 0)
-	ZEND_ARG_OBJ_TYPE_MASK(0, param, GL\\Buffer\\UIntBuffer, MAY_BE_ARRAY, NULL)
+	ZEND_ARG_OBJ_TYPE_MASK(0, param, GL\\Buffer\\\125IntBuffer, MAY_BE_ARRAY, NULL)
 ZEND_END_ARG_INFO()
 
 ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_glGetSamplerParameteriv, 0, 3, IS_VOID, 0)
@@ -1283,7 +1283,7 @@ ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_glVertexAttribP1uiv, 0, 4, IS_VO
 	ZEND_ARG_TYPE_INFO(0, index, IS_LONG, 0)
 	ZEND_ARG_TYPE_INFO(0, type, IS_LONG, 0)
 	ZEND_ARG_TYPE_INFO(0, normalized, _IS_BOOL, 0)
-	ZEND_ARG_OBJ_TYPE_MASK(0, value, GL\\Buffer\\UIntBuffer, MAY_BE_ARRAY, NULL)
+	ZEND_ARG_OBJ_TYPE_MASK(0, value, GL\\Buffer\\\125IntBuffer, MAY_BE_ARRAY, NULL)
 ZEND_END_ARG_INFO()
 
 #define arginfo_glVertexAttribP2ui arginfo_glVertexAttribP1ui
@@ -1305,7 +1305,7 @@ ZEND_END_ARG_INFO()
 
 ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_glVertexP2uiv, 0, 2, IS_VOID, 0)
 	ZEND_ARG_TYPE_INFO(0, type, IS_LONG, 0)
-	ZEND_ARG_OBJ_TYPE_MASK(0, value, GL\\Buffer\\UIntBuffer, MAY_BE_ARRAY, NULL)
+	ZEND_ARG_OBJ_TYPE_MASK(0, value, GL\\Buffer\\\125IntBuffer, MAY_BE_ARRAY, NULL)
 ZEND_END_ARG_INFO()
 
 #define arginfo_glVertexP3ui arginfo_glVertexP2ui
@@ -1323,7 +1323,7 @@ ZEND_END_ARG_INFO()
 
 ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_glTexCoordP1uiv, 0, 2, IS_VOID, 0)
 	ZEND_ARG_TYPE_INFO(0, type, IS_LONG, 0)
-	ZEND_ARG_OBJ_TYPE_MASK(0, coords, GL\\Buffer\\UIntBuffer, MAY_BE_ARRAY, NULL)
+	ZEND_ARG_OBJ_TYPE_MASK(0, coords, GL\\Buffer\\\125IntBuffer, MAY_BE_ARRAY, NULL)
 ZEND_END_ARG_INFO()
 
 #define arginfo_glTexCoordP2ui arginfo_glTexCoordP1ui
@@ -1347,7 +1347,7 @@ ZEND_END_ARG_INFO()
 ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_glMultiTexCoordP1uiv, 0, 3, IS_VOID, 0)
 	ZEND_ARG_TYPE_INFO(0, texture, IS_LONG, 0)
 	ZEND_ARG_TYPE_INFO(0, type, IS_LONG, 0)
-	ZEND_ARG_OBJ_TYPE_MASK(0, coords, GL\\Buffer\\UIntBuffer, MAY_BE_ARRAY, NULL)
+	ZEND_ARG_OBJ_TYPE_MASK(0, coords, GL\\Buffer\\\125IntBuffer, MAY_BE_ARRAY, NULL)
 ZEND_END_ARG_INFO()
 
 #define arginfo_glMultiTexCoordP2ui arginfo_glMultiTexCoordP1ui
@@ -1373,7 +1373,7 @@ ZEND_END_ARG_INFO()
 
 ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_glColorP3uiv, 0, 2, IS_VOID, 0)
 	ZEND_ARG_TYPE_INFO(0, type, IS_LONG, 0)
-	ZEND_ARG_OBJ_TYPE_MASK(0, color, GL\\Buffer\\UIntBuffer, MAY_BE_ARRAY, NULL)
+	ZEND_ARG_OBJ_TYPE_MASK(0, color, GL\\Buffer\\\125IntBuffer, MAY_BE_ARRAY, NULL)
 ZEND_END_ARG_INFO()
 
 #define arginfo_glColorP4ui arginfo_glColorP3ui
@@ -1492,7 +1492,7 @@ ZEND_END_ARG_INFO()
 
 ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_glUniformSubroutinesuiv, 0, 2, IS_VOID, 0)
 	ZEND_ARG_TYPE_INFO(0, shadertype, IS_LONG, 0)
-	ZEND_ARG_OBJ_TYPE_MASK(0, indices, GL\\Buffer\\UIntBuffer, MAY_BE_ARRAY, NULL)
+	ZEND_ARG_OBJ_TYPE_MASK(0, indices, GL\\Buffer\\\125IntBuffer, MAY_BE_ARRAY, NULL)
 ZEND_END_ARG_INFO()
 
 ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_glGetUniformSubroutineuiv, 0, 3, IS_VOID, 0)
@@ -1649,7 +1649,7 @@ ZEND_END_ARG_INFO()
 ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_glProgramUniform1uiv, 0, 3, IS_VOID, 0)
 	ZEND_ARG_TYPE_INFO(0, program, IS_LONG, 0)
 	ZEND_ARG_TYPE_INFO(0, location, IS_LONG, 0)
-	ZEND_ARG_OBJ_TYPE_MASK(0, value, GL\\Buffer\\UIntBuffer, MAY_BE_ARRAY, NULL)
+	ZEND_ARG_OBJ_TYPE_MASK(0, value, GL\\Buffer\\\125IntBuffer, MAY_BE_ARRAY, NULL)
 ZEND_END_ARG_INFO()
 
 ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_glProgramUniform2i, 0, 4, IS_VOID, 0)
@@ -2259,7 +2259,7 @@ ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(arginfo_class_GL_Texture_Texture2D_fromDi
 	ZEND_ARG_TYPE_INFO(0, path, IS_STRING, 0)
 ZEND_END_ARG_INFO()
 
-ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(arginfo_class_GL_Texture_Texture2D_buffer, 0, 0, GL\\Buffer\\UByteBuffer, 0)
+ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(arginfo_class_GL_Texture_Texture2D_buffer, 0, 0, GL\\Buffer\\\125ByteBuffer, 0)
 ZEND_END_ARG_INFO()
 
 #define arginfo_class_GL_Texture_Texture2D_width arginfo_glGetError
@@ -2785,6 +2785,36 @@ ZEND_END_ARG_INFO()
 #define arginfo_class_GL_Buffer_UByteBuffer_capacity arginfo_glGetError
 
 #define arginfo_class_GL_Buffer_UByteBuffer_reserve arginfo_class_GL_Buffer_BufferInterface_reserve
+
+ZEND_BEGIN_ARG_INFO_EX(arginfo_class_GL_VectorGraphics_VGContext___construct, 0, 0, 1)
+	ZEND_ARG_TYPE_INFO(0, flags, IS_LONG, 0)
+ZEND_END_ARG_INFO()
+
+#define arginfo_class_GL_VectorGraphics_VGContext_beginFrame arginfo_glFinish
+
+#define arginfo_class_GL_VectorGraphics_VGContext_endFrame arginfo_glFinish
+
+#define arginfo_class_GL_VectorGraphics_VGContext_beginPath arginfo_glFinish
+
+ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_class_GL_VectorGraphics_VGContext_fillColor, 0, 4, IS_VOID, 0)
+	ZEND_ARG_TYPE_INFO(0, r, IS_LONG, 0)
+	ZEND_ARG_TYPE_INFO(0, g, IS_LONG, 0)
+	ZEND_ARG_TYPE_INFO(0, b, IS_LONG, 0)
+	ZEND_ARG_TYPE_INFO(0, a, IS_LONG, 0)
+ZEND_END_ARG_INFO()
+
+ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_class_GL_VectorGraphics_VGContext_rect, 0, 4, IS_VOID, 0)
+	ZEND_ARG_TYPE_INFO(0, x, IS_DOUBLE, 0)
+	ZEND_ARG_TYPE_INFO(0, y, IS_DOUBLE, 0)
+	ZEND_ARG_TYPE_INFO(0, width, IS_DOUBLE, 0)
+	ZEND_ARG_TYPE_INFO(0, height, IS_DOUBLE, 0)
+ZEND_END_ARG_INFO()
+
+#define arginfo_class_GL_VectorGraphics_VGContext_fill arginfo_glFinish
+
+#define arginfo_class_GL_VectorGraphics_VGContext_stroke arginfo_glFinish
+
+#define arginfo_class_GL_VectorGraphics_VGContext_strokeColor arginfo_class_GL_VectorGraphics_VGContext_fillColor
 
 
 ZEND_FUNCTION(glCullFace);
@@ -3526,6 +3556,15 @@ ZEND_METHOD(GL_Buffer_UByteBuffer, clear);
 ZEND_METHOD(GL_Buffer_UByteBuffer, size);
 ZEND_METHOD(GL_Buffer_UByteBuffer, capacity);
 ZEND_METHOD(GL_Buffer_UByteBuffer, reserve);
+ZEND_METHOD(GL_VectorGraphics_VGContext, __construct);
+ZEND_METHOD(GL_VectorGraphics_VGContext, beginFrame);
+ZEND_METHOD(GL_VectorGraphics_VGContext, endFrame);
+ZEND_METHOD(GL_VectorGraphics_VGContext, beginPath);
+ZEND_METHOD(GL_VectorGraphics_VGContext, fillColor);
+ZEND_METHOD(GL_VectorGraphics_VGContext, rect);
+ZEND_METHOD(GL_VectorGraphics_VGContext, fill);
+ZEND_METHOD(GL_VectorGraphics_VGContext, stroke);
+ZEND_METHOD(GL_VectorGraphics_VGContext, strokeColor);
 
 
 static const zend_function_entry ext_functions[] = {
@@ -4388,5 +4427,19 @@ static const zend_function_entry class_GL_Buffer_UByteBuffer_methods[] = {
 	ZEND_ME(GL_Buffer_UByteBuffer, size, arginfo_class_GL_Buffer_UByteBuffer_size, ZEND_ACC_PUBLIC)
 	ZEND_ME(GL_Buffer_UByteBuffer, capacity, arginfo_class_GL_Buffer_UByteBuffer_capacity, ZEND_ACC_PUBLIC)
 	ZEND_ME(GL_Buffer_UByteBuffer, reserve, arginfo_class_GL_Buffer_UByteBuffer_reserve, ZEND_ACC_PUBLIC)
+	ZEND_FE_END
+};
+
+
+static const zend_function_entry class_GL_VectorGraphics_VGContext_methods[] = {
+	ZEND_ME(GL_VectorGraphics_VGContext, __construct, arginfo_class_GL_VectorGraphics_VGContext___construct, ZEND_ACC_PUBLIC)
+	ZEND_ME(GL_VectorGraphics_VGContext, beginFrame, arginfo_class_GL_VectorGraphics_VGContext_beginFrame, ZEND_ACC_PUBLIC)
+	ZEND_ME(GL_VectorGraphics_VGContext, endFrame, arginfo_class_GL_VectorGraphics_VGContext_endFrame, ZEND_ACC_PUBLIC)
+	ZEND_ME(GL_VectorGraphics_VGContext, beginPath, arginfo_class_GL_VectorGraphics_VGContext_beginPath, ZEND_ACC_PUBLIC)
+	ZEND_ME(GL_VectorGraphics_VGContext, fillColor, arginfo_class_GL_VectorGraphics_VGContext_fillColor, ZEND_ACC_PUBLIC)
+	ZEND_ME(GL_VectorGraphics_VGContext, rect, arginfo_class_GL_VectorGraphics_VGContext_rect, ZEND_ACC_PUBLIC)
+	ZEND_ME(GL_VectorGraphics_VGContext, fill, arginfo_class_GL_VectorGraphics_VGContext_fill, ZEND_ACC_PUBLIC)
+	ZEND_ME(GL_VectorGraphics_VGContext, stroke, arginfo_class_GL_VectorGraphics_VGContext_stroke, ZEND_ACC_PUBLIC)
+	ZEND_ME(GL_VectorGraphics_VGContext, strokeColor, arginfo_class_GL_VectorGraphics_VGContext_strokeColor, ZEND_ACC_PUBLIC)
 	ZEND_FE_END
 };
