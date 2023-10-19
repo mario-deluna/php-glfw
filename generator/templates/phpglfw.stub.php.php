@@ -173,16 +173,24 @@ namespace GL\Buffer
 
 namespace GL\VectorGraphics
 {
+    class VGColor {
+        //public static function rgb(float $r, float $g, float $b) : VGColor {}
+        //public static function rgba(float $r, float $g, float $b, float $a) : VGColor {}
+        //public static function irgb(int $r, int $g, int $b) : VGColor {}
+        //public static function irgba(int $r, int $g, int $b, int $a) : VGColor {}
+        //public static function fromVec4(GL\Math\Vec4 $vec) : VGColor {}
+        //public static function fromVec3(GL\Math\Vec3 $vec) : VGColor {}
+
+        public function __construct(float $r, float $g, float $b, float $a) {}
+    }
+
     class VGContext {
         public function __construct(int $flags) {}
-        public function beginFrame() : void {}
-        public function endFrame() : void {}
-        public function beginPath() : void {}
-        public function fillColor(int $r, int $g, int $b, int $a) : void {}
-        public function rect(float $x, float $y, float $width, float $height) : void {}
-        public function fill() : void {}
-        public function stroke() : void {}
-        public function strokeColor(int $r, int $g, int $b, int $a) : void {}
+        public function fillColori(int $r, int $g, int $b, int $a) : void {}
+        public function strokeColori(int $r, int $g, int $b, int $a) : void {}
+<?php foreach($vgContextFunctions as $func) : ?>
+        public <?php echo $func->getPHPStub(); ?>
+<?php endforeach; ?> 
     }
 };
 

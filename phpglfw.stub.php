@@ -313,16 +313,79 @@ namespace GL\Buffer
 
 namespace GL\VectorGraphics
 {
+    class VGColor {
+        //public static function rgb(float $r, float $g, float $b) : VGColor {}
+        //public static function rgba(float $r, float $g, float $b, float $a) : VGColor {}
+        //public static function irgb(int $r, int $g, int $b) : VGColor {}
+        //public static function irgba(int $r, int $g, int $b, int $a) : VGColor {}
+        //public static function fromVec4(GL\Math\Vec4 $vec) : VGColor {}
+        //public static function fromVec3(GL\Math\Vec3 $vec) : VGColor {}
+
+        public function __construct(float $r, float $g, float $b, float $a) {}
+    }
+
     class VGContext {
         public function __construct(int $flags) {}
-        public function beginFrame() : void {}
+        public function fillColori(int $r, int $g, int $b, int $a) : void {}
+        public function strokeColori(int $r, int $g, int $b, int $a) : void {}
+        public function beginFrame(float $windowWidth, float $windowHeight, float $devicePixelRatio) : void {}
+        public function cancelFrame() : void {}
         public function endFrame() : void {}
+        public function globalCompositeOperation(int $op) : void {}
+        public function globalCompositeBlendFunc(int $sfactor, int $dfactor) : void {}
+        public function globalCompositeBlendFuncSeparate(int $srcRGB, int $dstRGB, int $srcAlpha, int $dstAlpha) : void {}
+        public function save() : void {}
+        public function restore() : void {}
+        public function reset() : void {}
+        public function shapeAntiAlias(int $enabled) : void {}
+        public function strokeColor(\GL\VectorGraphics\VGColor $color) : void {}
+        public function fillColor(\GL\VectorGraphics\VGColor $color) : void {}
+        public function miterLimit(float $limit) : void {}
+        public function strokeWidth(float $size) : void {}
+        public function lineCap(int $cap) : void {}
+        public function lineJoin(int $join) : void {}
+        public function globalAlpha(float $alpha) : void {}
+        public function resetTransform() : void {}
+        public function transform(float $a, float $b, float $c, float $d, float $e, float $f) : void {}
+        public function translate(float $x, float $y) : void {}
+        public function rotate(float $angle) : void {}
+        public function skewX(float $angle) : void {}
+        public function skewY(float $angle) : void {}
+        public function scale(float $x, float $y) : void {}
+        public function currentTransform(float &$xform) : void {}
+        public function imageSize(int $image, int &$w, int &$h) : void {}
+        public function deleteImage(int $image) : void {}
+        public function scissor(float $x, float $y, float $w, float $h) : void {}
+        public function intersectScissor(float $x, float $y, float $w, float $h) : void {}
+        public function resetScissor() : void {}
         public function beginPath() : void {}
-        public function fillColor(int $r, int $g, int $b, int $a) : void {}
-        public function rect(float $x, float $y, float $width, float $height) : void {}
+        public function moveTo(float $x, float $y) : void {}
+        public function lineTo(float $x, float $y) : void {}
+        public function bezierTo(float $c1x, float $c1y, float $c2x, float $c2y, float $x, float $y) : void {}
+        public function quadTo(float $cx, float $cy, float $x, float $y) : void {}
+        public function arcTo(float $x1, float $y1, float $x2, float $y2, float $radius) : void {}
+        public function closePath() : void {}
+        public function pathWinding(int $dir) : void {}
+        public function arc(float $cx, float $cy, float $r, float $a0, float $a1, int $dir) : void {}
+        public function rect(float $x, float $y, float $w, float $h) : void {}
+        public function roundedRect(float $x, float $y, float $w, float $h, float $r) : void {}
+        public function roundedRectVarying(float $x, float $y, float $w, float $h, float $radTopLeft, float $radTopRight, float $radBottomRight, float $radBottomLeft) : void {}
+        public function ellipse(float $cx, float $cy, float $rx, float $ry) : void {}
+        public function circle(float $cx, float $cy, float $r) : void {}
         public function fill() : void {}
         public function stroke() : void {}
-        public function strokeColor(int $r, int $g, int $b, int $a) : void {}
+        public function addFallbackFontId(int $baseFont, int $fallbackFont) : int {}
+        public function resetFallbackFontsId(int $baseFont) : void {}
+        public function fontSize(float $size) : void {}
+        public function fontBlur(float $blur) : void {}
+        public function textLetterSpacing(float $spacing) : void {}
+        public function textLineHeight(float $lineHeight) : void {}
+        public function textAlign(int $align) : void {}
+        public function fontFaceId(int $font) : void {}
+        public function textMetrics(float &$ascender, float &$descender, float &$lineh) : void {}
+        public function deleteInternal() : void {}
+        public function debugDumpPathCache() : void {}
+ 
     }
 };
 
@@ -1997,555 +2060,555 @@ namespace {
      * Functions
      * ----------------------------------------------------------------------------
      */
-    function glCullFace(int $mode) : void {};
-    function glFrontFace(int $mode) : void {};
-    function glHint(int $target, int $mode) : void {};
-    function glLineWidth(float $width) : void {};
-    function glPointSize(float $size) : void {};
-    function glPolygonMode(int $face, int $mode) : void {};
-    function glScissor(int $x, int $y, int $width, int $height) : void {};
-    function glTexParameterf(int $target, int $pname, float $param) : void {};
-    function glTexParameterfv(int $target, int $pname, \GL\Buffer\FloatBuffer|array $params) : void {};
-    function glTexParameteri(int $target, int $pname, int $param) : void {};
-    function glTexParameteriv(int $target, int $pname, \GL\Buffer\IntBuffer|array $params) : void {};
-    function glTexImage2D(int $target, int $level, int $internalformat, int $width, int $height, int $border, int $format, int $type, ?\GL\Buffer\BufferInterface $data) : void {};
-    function glDrawBuffer(int $buf) : void {};
-    function glClear(int $mask) : void {};
-    function glClearColor(float $red, float $green, float $blue, float $alpha) : void {};
-    function glClearStencil(int $s) : void {};
-    function glClearDepth(float $depth) : void {};
-    function glStencilMask(int $mask) : void {};
-    function glColorMask(bool $red, bool $green, bool $blue, bool $alpha) : void {};
-    function glDepthMask(bool $flag) : void {};
-    function glDisable(int $cap) : void {};
-    function glEnable(int $cap) : void {};
-    function glFinish() : void {};
-    function glFlush() : void {};
-    function glBlendFunc(int $sfactor, int $dfactor) : void {};
-    function glLogicOp(int $opcode) : void {};
-    function glStencilFunc(int $func, int $ref, int $mask) : void {};
-    function glStencilOp(int $fail, int $zfail, int $zpass) : void {};
-    function glDepthFunc(int $func) : void {};
-    function glPixelStoref(int $pname, float $param) : void {};
-    function glPixelStorei(int $pname, int $param) : void {};
-    function glReadBuffer(int $src) : void {};
-    function glReadPixels(int $x, int $y, int $width, int $height, int $format, int $type, \GL\Buffer\BufferInterface $pixels) : void {};
-    function glGetBooleanv(int $pname, ?bool &...$data) : void {};
-    function glGetDoublev(int $pname, ?bool &...$data) : void {};
-    function glGetError() : int {};
-    function glGetFloatv(int $pname, ?bool &...$data) : void {};
-    function glGetIntegerv(int $pname, ?bool &...$data) : void {};
-    function glGetString(int $name) : string {};
-    function glGetTexParameterfv(int $target, int $pname, ?bool &...$params) : void {};
-    function glGetTexParameteriv(int $target, int $pname, ?bool &...$params) : void {};
-    function glGetTexLevelParameterfv(int $target, int $level, int $pname, float &$params) : void {};
-    function glGetTexLevelParameteriv(int $target, int $level, int $pname, int &$params) : void {};
-    function glIsEnabled(int $cap) : bool {};
-    function glDepthRange(float $n, float $f) : void {};
-    function glViewport(int $x, int $y, int $width, int $height) : void {};
-    function glDrawArrays(int $mode, int $first, int $count) : void {};
-    function glPolygonOffset(float $factor, float $units) : void {};
-    function glCopyTexImage1D(int $target, int $level, int $internalformat, int $x, int $y, int $width, int $border) : void {};
-    function glCopyTexImage2D(int $target, int $level, int $internalformat, int $x, int $y, int $width, int $height, int $border) : void {};
-    function glCopyTexSubImage1D(int $target, int $level, int $xoffset, int $x, int $y, int $width) : void {};
-    function glCopyTexSubImage2D(int $target, int $level, int $xoffset, int $yoffset, int $x, int $y, int $width, int $height) : void {};
-    function glBindTexture(int $target, int $texture) : void {};
-    function glDeleteTextures(int $n, ?int ...$textures) : void {};
-    function glGenTextures(int $n, ?int &...$textures) : void {};
-    function glIsTexture(int $texture) : bool {};
-    function glCopyTexSubImage3D(int $target, int $level, int $xoffset, int $yoffset, int $zoffset, int $x, int $y, int $width, int $height) : void {};
-    function glActiveTexture(int $texture) : void {};
-    function glSampleCoverage(float $value, bool $invert) : void {};
-    function glBlendFuncSeparate(int $sfactorRGB, int $dfactorRGB, int $sfactorAlpha, int $dfactorAlpha) : void {};
-    function glPointParameterf(int $pname, float $param) : void {};
-    function glPointParameterfv(int $pname, \GL\Buffer\FloatBuffer|array $params) : void {};
-    function glPointParameteri(int $pname, int $param) : void {};
-    function glPointParameteriv(int $pname, \GL\Buffer\IntBuffer|array $params) : void {};
-    function glBlendColor(float $red, float $green, float $blue, float $alpha) : void {};
-    function glBlendEquation(int $mode) : void {};
-    function glGenQueries(int $n, ?int &...$ids) : void {};
-    function glDeleteQueries(int $n, ?int ...$ids) : void {};
-    function glIsQuery(int $id) : bool {};
-    function glBeginQuery(int $target, int $id) : void {};
-    function glEndQuery(int $target) : void {};
-    function glGetQueryiv(int $target, int $pname, int &$params) : void {};
-    function glGetQueryObjectiv(int $id, int $pname, int &$params) : void {};
-    function glGetQueryObjectuiv(int $id, int $pname, int &$params) : void {};
-    function glBindBuffer(int $target, int $buffer) : void {};
-    function glDeleteBuffers(int $n, ?int ...$buffers) : void {};
-    function glGenBuffers(int $n, ?int &...$buffers) : void {};
-    function glIsBuffer(int $buffer) : bool {};
-    function glUnmapBuffer(int $target) : bool {};
-    function glGetBufferParameteriv(int $target, int $pname, int &$params) : void {};
-    function glBlendEquationSeparate(int $modeRGB, int $modeAlpha) : void {};
-    function glDrawBuffers(int $n, ?int ...$bufs) : void {};
-    function glStencilOpSeparate(int $face, int $sfail, int $dpfail, int $dppass) : void {};
-    function glStencilFuncSeparate(int $face, int $func, int $ref, int $mask) : void {};
-    function glStencilMaskSeparate(int $face, int $mask) : void {};
-    function glAttachShader(int $program, int $shader) : void {};
-    function glBindAttribLocation(int $program, int $index, string $name) : void {};
-    function glCompileShader(int $shader) : void {};
-    function glCreateProgram() : int {};
-    function glCreateShader(int $type) : int {};
-    function glDeleteProgram(int $program) : void {};
-    function glDeleteShader(int $shader) : void {};
-    function glDetachShader(int $program, int $shader) : void {};
-    function glDisableVertexAttribArray(int $index) : void {};
-    function glEnableVertexAttribArray(int $index) : void {};
-    function glGetAttachedShaders(int $program, int $maxCount, int &$count, int &$shaders) : void {};
-    function glGetAttribLocation(int $program, string $name) : int {};
-    function glGetProgramiv(int $program, int $pname, int &$params) : void {};
-    function glGetProgramInfoLog(int $program, int $bufSize) : string {};
-    function glGetShaderiv(int $shader, int $pname, int &$params) : void {};
-    function glGetShaderInfoLog(int $shader, int $bufSize) : string {};
-    function glGetUniformLocation(int $program, string $name) : int {};
-    function glGetUniformfv(int $program, int $location, float &$params) : void {};
-    function glGetUniformiv(int $program, int $location, int &$params) : void {};
-    function glGetVertexAttribdv(int $index, int $pname, float &$params) : void {};
-    function glGetVertexAttribfv(int $index, int $pname, float &$params) : void {};
-    function glGetVertexAttribiv(int $index, int $pname, int &$params) : void {};
-    function glIsProgram(int $program) : bool {};
-    function glIsShader(int $shader) : bool {};
-    function glLinkProgram(int $program) : void {};
-    function glUseProgram(int $program) : void {};
-    function glUniform1f(int $location, float $v0) : void {};
-    function glUniform2f(int $location, float $v0, float $v1) : void {};
-    function glUniform3f(int $location, float $v0, float $v1, float $v2) : void {};
-    function glUniform4f(int $location, float $v0, float $v1, float $v2, float $v3) : void {};
-    function glUniform1i(int $location, int $v0) : void {};
-    function glUniform2i(int $location, int $v0, int $v1) : void {};
-    function glUniform3i(int $location, int $v0, int $v1, int $v2) : void {};
-    function glUniform4i(int $location, int $v0, int $v1, int $v2, int $v3) : void {};
-    function glUniform1fv(int $location, \GL\Buffer\FloatBuffer|array $value) : void {};
-    function glUniform2fv(int $location, \GL\Buffer\FloatBuffer|array $value) : void {};
-    function glUniform3fv(int $location, \GL\Buffer\FloatBuffer|array $value) : void {};
-    function glUniform4fv(int $location, \GL\Buffer\FloatBuffer|array $value) : void {};
-    function glUniform1iv(int $location, \GL\Buffer\IntBuffer|array $value) : void {};
-    function glUniform2iv(int $location, \GL\Buffer\IntBuffer|array $value) : void {};
-    function glUniform3iv(int $location, \GL\Buffer\IntBuffer|array $value) : void {};
-    function glUniform4iv(int $location, \GL\Buffer\IntBuffer|array $value) : void {};
-    function glUniformMatrix2fv(int $location, bool $transpose, \GL\Buffer\FloatBuffer|array $value) : void {};
-    function glUniformMatrix3fv(int $location, bool $transpose, \GL\Buffer\FloatBuffer|array $value) : void {};
-    function glUniformMatrix4fv(int $location, bool $transpose, \GL\Buffer\FloatBuffer|array $value) : void {};
-    function glValidateProgram(int $program) : void {};
-    function glVertexAttrib1d(int $index, float $x) : void {};
-    function glVertexAttrib1dv(int $index, \GL\Buffer\DoubleBuffer|array $v) : void {};
-    function glVertexAttrib1f(int $index, float $x) : void {};
-    function glVertexAttrib1fv(int $index, \GL\Buffer\FloatBuffer|array $v) : void {};
-    function glVertexAttrib1s(int $index, int $x) : void {};
-    function glVertexAttrib1sv(int $index, \GL\Buffer\ShortBuffer|array $v) : void {};
-    function glVertexAttrib2d(int $index, float $x, float $y) : void {};
-    function glVertexAttrib2dv(int $index, \GL\Buffer\DoubleBuffer|array $v) : void {};
-    function glVertexAttrib2f(int $index, float $x, float $y) : void {};
-    function glVertexAttrib2fv(int $index, \GL\Buffer\FloatBuffer|array $v) : void {};
-    function glVertexAttrib2s(int $index, int $x, int $y) : void {};
-    function glVertexAttrib2sv(int $index, \GL\Buffer\ShortBuffer|array $v) : void {};
-    function glVertexAttrib3d(int $index, float $x, float $y, float $z) : void {};
-    function glVertexAttrib3dv(int $index, \GL\Buffer\DoubleBuffer|array $v) : void {};
-    function glVertexAttrib3f(int $index, float $x, float $y, float $z) : void {};
-    function glVertexAttrib3fv(int $index, \GL\Buffer\FloatBuffer|array $v) : void {};
-    function glVertexAttrib3s(int $index, int $x, int $y, int $z) : void {};
-    function glVertexAttrib3sv(int $index, \GL\Buffer\ShortBuffer|array $v) : void {};
-    function glVertexAttrib4Nbv(int $index, \GL\Buffer\ByteBuffer|array $v) : void {};
-    function glVertexAttrib4Niv(int $index, \GL\Buffer\IntBuffer|array $v) : void {};
-    function glVertexAttrib4Nsv(int $index, \GL\Buffer\ShortBuffer|array $v) : void {};
-    function glVertexAttrib4Nub(int $index, int $x, int $y, int $z, int $w) : void {};
-    function glVertexAttrib4Nubv(int $index, \GL\Buffer\UbyteBuffer|array $v) : void {};
-    function glVertexAttrib4Nuiv(int $index, \GL\Buffer\UIntBuffer|array $v) : void {};
-    function glVertexAttrib4Nusv(int $index, \GL\Buffer\UShortBuffer|array $v) : void {};
-    function glVertexAttrib4bv(int $index, \GL\Buffer\ByteBuffer|array $v) : void {};
-    function glVertexAttrib4d(int $index, float $x, float $y, float $z, float $w) : void {};
-    function glVertexAttrib4dv(int $index, \GL\Buffer\DoubleBuffer|array $v) : void {};
-    function glVertexAttrib4f(int $index, float $x, float $y, float $z, float $w) : void {};
-    function glVertexAttrib4fv(int $index, \GL\Buffer\FloatBuffer|array $v) : void {};
-    function glVertexAttrib4iv(int $index, \GL\Buffer\IntBuffer|array $v) : void {};
-    function glVertexAttrib4s(int $index, int $x, int $y, int $z, int $w) : void {};
-    function glVertexAttrib4sv(int $index, \GL\Buffer\ShortBuffer|array $v) : void {};
-    function glVertexAttrib4ubv(int $index, \GL\Buffer\UbyteBuffer|array $v) : void {};
-    function glVertexAttrib4uiv(int $index, \GL\Buffer\UIntBuffer|array $v) : void {};
-    function glVertexAttrib4usv(int $index, \GL\Buffer\UShortBuffer|array $v) : void {};
-    function glVertexAttribPointer(int $index, int $size, int $type, bool $normalized, int $stride, int $offset) : void {};
-    function glUniformMatrix2x3fv(int $location, bool $transpose, \GL\Buffer\FloatBuffer|array $value) : void {};
-    function glUniformMatrix3x2fv(int $location, bool $transpose, \GL\Buffer\FloatBuffer|array $value) : void {};
-    function glUniformMatrix2x4fv(int $location, bool $transpose, \GL\Buffer\FloatBuffer|array $value) : void {};
-    function glUniformMatrix4x2fv(int $location, bool $transpose, \GL\Buffer\FloatBuffer|array $value) : void {};
-    function glUniformMatrix3x4fv(int $location, bool $transpose, \GL\Buffer\FloatBuffer|array $value) : void {};
-    function glUniformMatrix4x3fv(int $location, bool $transpose, \GL\Buffer\FloatBuffer|array $value) : void {};
-    function glColorMaski(int $index, bool $r, bool $g, bool $b, bool $a) : void {};
-    function glGetBooleani_v(int $target, int $index, ?bool &...$data) : void {};
-    function glGetIntegeri_v(int $target, int $index, ?bool &...$data) : void {};
-    function glEnablei(int $target, int $index) : void {};
-    function glDisablei(int $target, int $index) : void {};
-    function glIsEnabledi(int $target, int $index) : bool {};
-    function glBeginTransformFeedback(int $primitiveMode) : void {};
-    function glEndTransformFeedback() : void {};
-    function glBindBufferRange(int $target, int $index, int $buffer, int $offset, int $size) : void {};
-    function glBindBufferBase(int $target, int $index, int $buffer) : void {};
-    function glClampColor(int $target, int $clamp) : void {};
-    function glBeginConditionalRender(int $id, int $mode) : void {};
-    function glEndConditionalRender() : void {};
-    function glGetVertexAttribIiv(int $index, int $pname, int &$params) : void {};
-    function glGetVertexAttribIuiv(int $index, int $pname, int &$params) : void {};
-    function glVertexAttribI1i(int $index, int $x) : void {};
-    function glVertexAttribI2i(int $index, int $x, int $y) : void {};
-    function glVertexAttribI3i(int $index, int $x, int $y, int $z) : void {};
-    function glVertexAttribI4i(int $index, int $x, int $y, int $z, int $w) : void {};
-    function glVertexAttribI1ui(int $index, int $x) : void {};
-    function glVertexAttribI2ui(int $index, int $x, int $y) : void {};
-    function glVertexAttribI3ui(int $index, int $x, int $y, int $z) : void {};
-    function glVertexAttribI4ui(int $index, int $x, int $y, int $z, int $w) : void {};
-    function glVertexAttribI1iv(int $index, \GL\Buffer\IntBuffer|array $v) : void {};
-    function glVertexAttribI2iv(int $index, \GL\Buffer\IntBuffer|array $v) : void {};
-    function glVertexAttribI3iv(int $index, \GL\Buffer\IntBuffer|array $v) : void {};
-    function glVertexAttribI4iv(int $index, \GL\Buffer\IntBuffer|array $v) : void {};
-    function glVertexAttribI1uiv(int $index, \GL\Buffer\UIntBuffer|array $v) : void {};
-    function glVertexAttribI2uiv(int $index, \GL\Buffer\UIntBuffer|array $v) : void {};
-    function glVertexAttribI3uiv(int $index, \GL\Buffer\UIntBuffer|array $v) : void {};
-    function glVertexAttribI4uiv(int $index, \GL\Buffer\UIntBuffer|array $v) : void {};
-    function glVertexAttribI4bv(int $index, \GL\Buffer\ByteBuffer|array $v) : void {};
-    function glVertexAttribI4sv(int $index, \GL\Buffer\ShortBuffer|array $v) : void {};
-    function glVertexAttribI4ubv(int $index, \GL\Buffer\UbyteBuffer|array $v) : void {};
-    function glVertexAttribI4usv(int $index, \GL\Buffer\UShortBuffer|array $v) : void {};
-    function glGetUniformuiv(int $program, int $location, int &$params) : void {};
-    function glBindFragDataLocation(int $program, int $color, string $name) : void {};
-    function glGetFragDataLocation(int $program, string $name) : int {};
-    function glUniform1ui(int $location, int $v0) : void {};
-    function glUniform2ui(int $location, int $v0, int $v1) : void {};
-    function glUniform3ui(int $location, int $v0, int $v1, int $v2) : void {};
-    function glUniform4ui(int $location, int $v0, int $v1, int $v2, int $v3) : void {};
-    function glUniform1uiv(int $location, \GL\Buffer\UIntBuffer|array $value) : void {};
-    function glUniform2uiv(int $location, \GL\Buffer\UIntBuffer|array $value) : void {};
-    function glUniform3uiv(int $location, \GL\Buffer\UIntBuffer|array $value) : void {};
-    function glUniform4uiv(int $location, \GL\Buffer\UIntBuffer|array $value) : void {};
-    function glTexParameterIiv(int $target, int $pname, \GL\Buffer\IntBuffer|array $params) : void {};
-    function glTexParameterIuiv(int $target, int $pname, \GL\Buffer\UIntBuffer|array $params) : void {};
-    function glGetTexParameterIiv(int $target, int $pname, ?bool &...$params) : void {};
-    function glGetTexParameterIuiv(int $target, int $pname, ?bool &...$params) : void {};
-    function glClearBufferiv(int $buffer, int $drawbuffer, \GL\Buffer\IntBuffer|array $value) : void {};
-    function glClearBufferuiv(int $buffer, int $drawbuffer, \GL\Buffer\UIntBuffer|array $value) : void {};
-    function glClearBufferfv(int $buffer, int $drawbuffer, \GL\Buffer\FloatBuffer|array $value) : void {};
-    function glClearBufferfi(int $buffer, int $drawbuffer, float $depth, int $stencil) : void {};
-    function glGetStringi(int $name, int $index) : string {};
-    function glIsRenderbuffer(int $renderbuffer) : bool {};
-    function glBindRenderbuffer(int $target, int $renderbuffer) : void {};
-    function glDeleteRenderbuffers(int $n, ?int ...$renderbuffers) : void {};
-    function glGenRenderbuffers(int $n, ?int &...$renderbuffers) : void {};
-    function glRenderbufferStorage(int $target, int $internalformat, int $width, int $height) : void {};
-    function glGetRenderbufferParameteriv(int $target, int $pname, int &$params) : void {};
-    function glIsFramebuffer(int $framebuffer) : bool {};
-    function glBindFramebuffer(int $target, int $framebuffer) : void {};
-    function glDeleteFramebuffers(int $n, ?int ...$framebuffers) : void {};
-    function glGenFramebuffers(int $n, ?int &...$framebuffers) : void {};
-    function glCheckFramebufferStatus(int $target) : int {};
-    function glFramebufferTexture1D(int $target, int $attachment, int $textarget, int $texture, int $level) : void {};
-    function glFramebufferTexture2D(int $target, int $attachment, int $textarget, int $texture, int $level) : void {};
-    function glFramebufferTexture3D(int $target, int $attachment, int $textarget, int $texture, int $level, int $zoffset) : void {};
-    function glFramebufferRenderbuffer(int $target, int $attachment, int $renderbuffertarget, int $renderbuffer) : void {};
-    function glGetFramebufferAttachmentParameteriv(int $target, int $attachment, int $pname, int &$params) : void {};
-    function glGenerateMipmap(int $target) : void {};
-    function glBlitFramebuffer(int $srcX0, int $srcY0, int $srcX1, int $srcY1, int $dstX0, int $dstY0, int $dstX1, int $dstY1, int $mask, int $filter) : void {};
-    function glRenderbufferStorageMultisample(int $target, int $samples, int $internalformat, int $width, int $height) : void {};
-    function glFramebufferTextureLayer(int $target, int $attachment, int $texture, int $level, int $layer) : void {};
-    function glFlushMappedBufferRange(int $target, int $offset, int $length) : void {};
-    function glBindVertexArray(int $array) : void {};
-    function glDeleteVertexArrays(int $n, ?int ...$arrays) : void {};
-    function glGenVertexArrays(int $n, ?int &...$arrays) : void {};
-    function glIsVertexArray(int $array) : bool {};
-    function glDrawArraysInstanced(int $mode, int $first, int $count, int $instancecount) : void {};
-    function glTexBuffer(int $target, int $internalformat, int $buffer) : void {};
-    function glPrimitiveRestartIndex(int $index) : void {};
-    function glCopyBufferSubData(int $readTarget, int $writeTarget, int $readOffset, int $writeOffset, int $size) : void {};
-    function glGetUniformBlockIndex(int $program, string $uniformBlockName) : int {};
-    function glGetActiveUniformBlockiv(int $program, int $uniformBlockIndex, int $pname, int &$params) : void {};
-    function glUniformBlockBinding(int $program, int $uniformBlockIndex, int $uniformBlockBinding) : void {};
-    function glProvokingVertex(int $mode) : void {};
-    function glIsSync(int $sync) : bool {};
-    function glGetInteger64v(int $pname, int &$data) : void {};
-    function glGetInteger64i_v(int $target, int $index, int &$data) : void {};
-    function glGetBufferParameteri64v(int $target, int $pname, int &$params) : void {};
-    function glFramebufferTexture(int $target, int $attachment, int $texture, int $level) : void {};
-    function glTexImage2DMultisample(int $target, int $samples, int $internalformat, int $width, int $height, bool $fixedsamplelocations) : void {};
-    function glTexImage3DMultisample(int $target, int $samples, int $internalformat, int $width, int $height, int $depth, bool $fixedsamplelocations) : void {};
-    function glGetMultisamplefv(int $pname, int $index, float &$val) : void {};
-    function glSampleMaski(int $maskNumber, int $mask) : void {};
-    function glBindFragDataLocationIndexed(int $program, int $colorNumber, int $index, string $name) : void {};
-    function glGetFragDataIndex(int $program, string $name) : int {};
-    function glGenSamplers(int $count, ?int &...$samplers) : void {};
-    function glDeleteSamplers(int $count, ?int ...$samplers) : void {};
-    function glIsSampler(int $sampler) : bool {};
-    function glBindSampler(int $unit, int $sampler) : void {};
-    function glSamplerParameteri(int $sampler, int $pname, int $param) : void {};
-    function glSamplerParameteriv(int $sampler, int $pname, \GL\Buffer\IntBuffer|array $param) : void {};
-    function glSamplerParameterf(int $sampler, int $pname, float $param) : void {};
-    function glSamplerParameterfv(int $sampler, int $pname, \GL\Buffer\FloatBuffer|array $param) : void {};
-    function glSamplerParameterIiv(int $sampler, int $pname, \GL\Buffer\IntBuffer|array $param) : void {};
-    function glSamplerParameterIuiv(int $sampler, int $pname, \GL\Buffer\UIntBuffer|array $param) : void {};
-    function glGetSamplerParameteriv(int $sampler, int $pname, int &$params) : void {};
-    function glGetSamplerParameterIiv(int $sampler, int $pname, int &$params) : void {};
-    function glGetSamplerParameterfv(int $sampler, int $pname, float &$params) : void {};
-    function glGetSamplerParameterIuiv(int $sampler, int $pname, int &$params) : void {};
-    function glQueryCounter(int $id, int $target) : void {};
-    function glGetQueryObjecti64v(int $id, int $pname, int &$params) : void {};
-    function glGetQueryObjectui64v(int $id, int $pname, int &$params) : void {};
-    function glVertexAttribDivisor(int $index, int $divisor) : void {};
-    function glVertexAttribP1ui(int $index, int $type, bool $normalized, int $value) : void {};
-    function glVertexAttribP1uiv(int $index, int $type, bool $normalized, \GL\Buffer\UIntBuffer|array $value) : void {};
-    function glVertexAttribP2ui(int $index, int $type, bool $normalized, int $value) : void {};
-    function glVertexAttribP2uiv(int $index, int $type, bool $normalized, \GL\Buffer\UIntBuffer|array $value) : void {};
-    function glVertexAttribP3ui(int $index, int $type, bool $normalized, int $value) : void {};
-    function glVertexAttribP3uiv(int $index, int $type, bool $normalized, \GL\Buffer\UIntBuffer|array $value) : void {};
-    function glVertexAttribP4ui(int $index, int $type, bool $normalized, int $value) : void {};
-    function glVertexAttribP4uiv(int $index, int $type, bool $normalized, \GL\Buffer\UIntBuffer|array $value) : void {};
-    function glVertexP2ui(int $type, int $value) : void {};
-    function glVertexP2uiv(int $type, \GL\Buffer\UIntBuffer|array $value) : void {};
-    function glVertexP3ui(int $type, int $value) : void {};
-    function glVertexP3uiv(int $type, \GL\Buffer\UIntBuffer|array $value) : void {};
-    function glVertexP4ui(int $type, int $value) : void {};
-    function glVertexP4uiv(int $type, \GL\Buffer\UIntBuffer|array $value) : void {};
-    function glTexCoordP1ui(int $type, int $coords) : void {};
-    function glTexCoordP1uiv(int $type, \GL\Buffer\UIntBuffer|array $coords) : void {};
-    function glTexCoordP2ui(int $type, int $coords) : void {};
-    function glTexCoordP2uiv(int $type, \GL\Buffer\UIntBuffer|array $coords) : void {};
-    function glTexCoordP3ui(int $type, int $coords) : void {};
-    function glTexCoordP3uiv(int $type, \GL\Buffer\UIntBuffer|array $coords) : void {};
-    function glTexCoordP4ui(int $type, int $coords) : void {};
-    function glTexCoordP4uiv(int $type, \GL\Buffer\UIntBuffer|array $coords) : void {};
-    function glMultiTexCoordP1ui(int $texture, int $type, int $coords) : void {};
-    function glMultiTexCoordP1uiv(int $texture, int $type, \GL\Buffer\UIntBuffer|array $coords) : void {};
-    function glMultiTexCoordP2ui(int $texture, int $type, int $coords) : void {};
-    function glMultiTexCoordP2uiv(int $texture, int $type, \GL\Buffer\UIntBuffer|array $coords) : void {};
-    function glMultiTexCoordP3ui(int $texture, int $type, int $coords) : void {};
-    function glMultiTexCoordP3uiv(int $texture, int $type, \GL\Buffer\UIntBuffer|array $coords) : void {};
-    function glMultiTexCoordP4ui(int $texture, int $type, int $coords) : void {};
-    function glMultiTexCoordP4uiv(int $texture, int $type, \GL\Buffer\UIntBuffer|array $coords) : void {};
-    function glNormalP3ui(int $type, int $coords) : void {};
-    function glNormalP3uiv(int $type, \GL\Buffer\UIntBuffer|array $coords) : void {};
-    function glColorP3ui(int $type, int $color) : void {};
-    function glColorP3uiv(int $type, \GL\Buffer\UIntBuffer|array $color) : void {};
-    function glColorP4ui(int $type, int $color) : void {};
-    function glColorP4uiv(int $type, \GL\Buffer\UIntBuffer|array $color) : void {};
-    function glSecondaryColorP3ui(int $type, int $color) : void {};
-    function glSecondaryColorP3uiv(int $type, \GL\Buffer\UIntBuffer|array $color) : void {};
-    function glMinSampleShading(float $value) : void {};
-    function glBlendEquationi(int $buf, int $mode) : void {};
-    function glBlendEquationSeparatei(int $buf, int $modeRGB, int $modeAlpha) : void {};
-    function glBlendFunci(int $buf, int $src, int $dst) : void {};
-    function glBlendFuncSeparatei(int $buf, int $srcRGB, int $dstRGB, int $srcAlpha, int $dstAlpha) : void {};
-    function glUniform1d(int $location, float $x) : void {};
-    function glUniform2d(int $location, float $x, float $y) : void {};
-    function glUniform3d(int $location, float $x, float $y, float $z) : void {};
-    function glUniform4d(int $location, float $x, float $y, float $z, float $w) : void {};
-    function glUniform1dv(int $location, \GL\Buffer\DoubleBuffer|array $value) : void {};
-    function glUniform2dv(int $location, \GL\Buffer\DoubleBuffer|array $value) : void {};
-    function glUniform3dv(int $location, \GL\Buffer\DoubleBuffer|array $value) : void {};
-    function glUniform4dv(int $location, \GL\Buffer\DoubleBuffer|array $value) : void {};
-    function glUniformMatrix2dv(int $location, bool $transpose, \GL\Buffer\DoubleBuffer|array $value) : void {};
-    function glUniformMatrix3dv(int $location, bool $transpose, \GL\Buffer\DoubleBuffer|array $value) : void {};
-    function glUniformMatrix4dv(int $location, bool $transpose, \GL\Buffer\DoubleBuffer|array $value) : void {};
-    function glUniformMatrix2x3dv(int $location, bool $transpose, \GL\Buffer\DoubleBuffer|array $value) : void {};
-    function glUniformMatrix2x4dv(int $location, bool $transpose, \GL\Buffer\DoubleBuffer|array $value) : void {};
-    function glUniformMatrix3x2dv(int $location, bool $transpose, \GL\Buffer\DoubleBuffer|array $value) : void {};
-    function glUniformMatrix3x4dv(int $location, bool $transpose, \GL\Buffer\DoubleBuffer|array $value) : void {};
-    function glUniformMatrix4x2dv(int $location, bool $transpose, \GL\Buffer\DoubleBuffer|array $value) : void {};
-    function glUniformMatrix4x3dv(int $location, bool $transpose, \GL\Buffer\DoubleBuffer|array $value) : void {};
-    function glGetUniformdv(int $program, int $location, float &$params) : void {};
-    function glGetSubroutineUniformLocation(int $program, int $shadertype, string $name) : int {};
-    function glGetSubroutineIndex(int $program, int $shadertype, string $name) : int {};
-    function glGetActiveSubroutineUniformiv(int $program, int $shadertype, int $index, int $pname, int &$values) : void {};
-    function glUniformSubroutinesuiv(int $shadertype, \GL\Buffer\UIntBuffer|array $indices) : void {};
-    function glGetUniformSubroutineuiv(int $shadertype, int $location, int &$params) : void {};
-    function glGetProgramStageiv(int $program, int $shadertype, int $pname, int &$values) : void {};
-    function glPatchParameteri(int $pname, int $value) : void {};
-    function glPatchParameterfv(int $pname, \GL\Buffer\FloatBuffer|array $values) : void {};
-    function glBindTransformFeedback(int $target, int $id) : void {};
-    function glDeleteTransformFeedbacks(int $n, ?int ...$ids) : void {};
-    function glGenTransformFeedbacks(int $n, ?int &...$ids) : void {};
-    function glIsTransformFeedback(int $id) : bool {};
-    function glPauseTransformFeedback() : void {};
-    function glResumeTransformFeedback() : void {};
-    function glDrawTransformFeedback(int $mode, int $id) : void {};
-    function glDrawTransformFeedbackStream(int $mode, int $id, int $stream) : void {};
-    function glBeginQueryIndexed(int $target, int $index, int $id) : void {};
-    function glEndQueryIndexed(int $target, int $index) : void {};
-    function glGetQueryIndexediv(int $target, int $index, int $pname, int &$params) : void {};
-    function glReleaseShaderCompiler() : void {};
-    function glGetShaderPrecisionFormat(int $shadertype, int $precisiontype, int &$range, int &$precision) : void {};
-    function glDepthRangef(float $n, float $f) : void {};
-    function glClearDepthf(float $d) : void {};
-    function glProgramParameteri(int $program, int $pname, int $value) : void {};
-    function glUseProgramStages(int $pipeline, int $stages, int $program) : void {};
-    function glActiveShaderProgram(int $pipeline, int $program) : void {};
-    function glBindProgramPipeline(int $pipeline) : void {};
-    function glDeleteProgramPipelines(int $n, ?int ...$pipelines) : void {};
-    function glGenProgramPipelines(int $n, ?int &...$pipelines) : void {};
-    function glIsProgramPipeline(int $pipeline) : bool {};
-    function glGetProgramPipelineiv(int $pipeline, int $pname, int &$params) : void {};
-    function glProgramUniform1i(int $program, int $location, int $v0) : void {};
-    function glProgramUniform1iv(int $program, int $location, \GL\Buffer\IntBuffer|array $value) : void {};
-    function glProgramUniform1f(int $program, int $location, float $v0) : void {};
-    function glProgramUniform1fv(int $program, int $location, \GL\Buffer\FloatBuffer|array $value) : void {};
-    function glProgramUniform1d(int $program, int $location, float $v0) : void {};
-    function glProgramUniform1dv(int $program, int $location, \GL\Buffer\DoubleBuffer|array $value) : void {};
-    function glProgramUniform1ui(int $program, int $location, int $v0) : void {};
-    function glProgramUniform1uiv(int $program, int $location, \GL\Buffer\UIntBuffer|array $value) : void {};
-    function glProgramUniform2i(int $program, int $location, int $v0, int $v1) : void {};
-    function glProgramUniform2iv(int $program, int $location, \GL\Buffer\IntBuffer|array $value) : void {};
-    function glProgramUniform2f(int $program, int $location, float $v0, float $v1) : void {};
-    function glProgramUniform2fv(int $program, int $location, \GL\Buffer\FloatBuffer|array $value) : void {};
-    function glProgramUniform2d(int $program, int $location, float $v0, float $v1) : void {};
-    function glProgramUniform2dv(int $program, int $location, \GL\Buffer\DoubleBuffer|array $value) : void {};
-    function glProgramUniform2ui(int $program, int $location, int $v0, int $v1) : void {};
-    function glProgramUniform2uiv(int $program, int $location, \GL\Buffer\UIntBuffer|array $value) : void {};
-    function glProgramUniform3i(int $program, int $location, int $v0, int $v1, int $v2) : void {};
-    function glProgramUniform3iv(int $program, int $location, \GL\Buffer\IntBuffer|array $value) : void {};
-    function glProgramUniform3f(int $program, int $location, float $v0, float $v1, float $v2) : void {};
-    function glProgramUniform3fv(int $program, int $location, \GL\Buffer\FloatBuffer|array $value) : void {};
-    function glProgramUniform3d(int $program, int $location, float $v0, float $v1, float $v2) : void {};
-    function glProgramUniform3dv(int $program, int $location, \GL\Buffer\DoubleBuffer|array $value) : void {};
-    function glProgramUniform3ui(int $program, int $location, int $v0, int $v1, int $v2) : void {};
-    function glProgramUniform3uiv(int $program, int $location, \GL\Buffer\UIntBuffer|array $value) : void {};
-    function glProgramUniform4i(int $program, int $location, int $v0, int $v1, int $v2, int $v3) : void {};
-    function glProgramUniform4iv(int $program, int $location, \GL\Buffer\IntBuffer|array $value) : void {};
-    function glProgramUniform4f(int $program, int $location, float $v0, float $v1, float $v2, float $v3) : void {};
-    function glProgramUniform4fv(int $program, int $location, \GL\Buffer\FloatBuffer|array $value) : void {};
-    function glProgramUniform4d(int $program, int $location, float $v0, float $v1, float $v2, float $v3) : void {};
-    function glProgramUniform4dv(int $program, int $location, \GL\Buffer\DoubleBuffer|array $value) : void {};
-    function glProgramUniform4ui(int $program, int $location, int $v0, int $v1, int $v2, int $v3) : void {};
-    function glProgramUniform4uiv(int $program, int $location, \GL\Buffer\UIntBuffer|array $value) : void {};
-    function glProgramUniformMatrix2fv(int $program, int $location, bool $transpose, \GL\Buffer\FloatBuffer|array $value) : void {};
-    function glProgramUniformMatrix3fv(int $program, int $location, bool $transpose, \GL\Buffer\FloatBuffer|array $value) : void {};
-    function glProgramUniformMatrix4fv(int $program, int $location, bool $transpose, \GL\Buffer\FloatBuffer|array $value) : void {};
-    function glProgramUniformMatrix2dv(int $program, int $location, bool $transpose, \GL\Buffer\DoubleBuffer|array $value) : void {};
-    function glProgramUniformMatrix3dv(int $program, int $location, bool $transpose, \GL\Buffer\DoubleBuffer|array $value) : void {};
-    function glProgramUniformMatrix4dv(int $program, int $location, bool $transpose, \GL\Buffer\DoubleBuffer|array $value) : void {};
-    function glProgramUniformMatrix2x3fv(int $program, int $location, bool $transpose, \GL\Buffer\FloatBuffer|array $value) : void {};
-    function glProgramUniformMatrix3x2fv(int $program, int $location, bool $transpose, \GL\Buffer\FloatBuffer|array $value) : void {};
-    function glProgramUniformMatrix2x4fv(int $program, int $location, bool $transpose, \GL\Buffer\FloatBuffer|array $value) : void {};
-    function glProgramUniformMatrix4x2fv(int $program, int $location, bool $transpose, \GL\Buffer\FloatBuffer|array $value) : void {};
-    function glProgramUniformMatrix3x4fv(int $program, int $location, bool $transpose, \GL\Buffer\FloatBuffer|array $value) : void {};
-    function glProgramUniformMatrix4x3fv(int $program, int $location, bool $transpose, \GL\Buffer\FloatBuffer|array $value) : void {};
-    function glProgramUniformMatrix2x3dv(int $program, int $location, bool $transpose, \GL\Buffer\DoubleBuffer|array $value) : void {};
-    function glProgramUniformMatrix3x2dv(int $program, int $location, bool $transpose, \GL\Buffer\DoubleBuffer|array $value) : void {};
-    function glProgramUniformMatrix2x4dv(int $program, int $location, bool $transpose, \GL\Buffer\DoubleBuffer|array $value) : void {};
-    function glProgramUniformMatrix4x2dv(int $program, int $location, bool $transpose, \GL\Buffer\DoubleBuffer|array $value) : void {};
-    function glProgramUniformMatrix3x4dv(int $program, int $location, bool $transpose, \GL\Buffer\DoubleBuffer|array $value) : void {};
-    function glProgramUniformMatrix4x3dv(int $program, int $location, bool $transpose, \GL\Buffer\DoubleBuffer|array $value) : void {};
-    function glValidateProgramPipeline(int $pipeline) : void {};
-    function glVertexAttribL1d(int $index, float $x) : void {};
-    function glVertexAttribL2d(int $index, float $x, float $y) : void {};
-    function glVertexAttribL3d(int $index, float $x, float $y, float $z) : void {};
-    function glVertexAttribL4d(int $index, float $x, float $y, float $z, float $w) : void {};
-    function glVertexAttribL1dv(int $index, \GL\Buffer\DoubleBuffer|array $v) : void {};
-    function glVertexAttribL2dv(int $index, \GL\Buffer\DoubleBuffer|array $v) : void {};
-    function glVertexAttribL3dv(int $index, \GL\Buffer\DoubleBuffer|array $v) : void {};
-    function glVertexAttribL4dv(int $index, \GL\Buffer\DoubleBuffer|array $v) : void {};
-    function glGetVertexAttribLdv(int $index, int $pname, float &$params) : void {};
-    function glViewportArrayv(int $first, \GL\Buffer\FloatBuffer|array $v) : void {};
-    function glViewportIndexedf(int $index, float $x, float $y, float $w, float $h) : void {};
-    function glViewportIndexedfv(int $index, \GL\Buffer\FloatBuffer|array $v) : void {};
-    function glScissorArrayv(int $first, \GL\Buffer\IntBuffer|array $v) : void {};
-    function glScissorIndexed(int $index, int $left, int $bottom, int $width, int $height) : void {};
-    function glScissorIndexedv(int $index, \GL\Buffer\IntBuffer|array $v) : void {};
-    function glDepthRangeArrayv(int $first, \GL\Buffer\DoubleBuffer|array $v) : void {};
-    function glDepthRangeIndexed(int $index, float $n, float $f) : void {};
-    function glGetFloati_v(int $target, int $index, ?bool &...$data) : void {};
-    function glGetDoublei_v(int $target, int $index, ?bool &...$data) : void {};
-    function glfwInit() : int {};
-    function glfwTerminate() : void {};
-    function glfwInitHint(int $hint, int $value) : void {};
-    function glfwGetVersion(int &$major, int &$minor, int &$rev) : void {};
-    function glfwGetVersionString() : string {};
-    function glfwGetPrimaryMonitor() : GLFWmonitor {};
-    function glfwGetMonitorPos(GLFWmonitor $monitor, int &$xpos, int &$ypos) : void {};
-    function glfwGetMonitorWorkarea(GLFWmonitor $monitor, int &$xpos, int &$ypos, int &$width, int &$height) : void {};
-    function glfwGetMonitorPhysicalSize(GLFWmonitor $monitor, int &$widthMM, int &$heightMM) : void {};
-    function glfwGetMonitorContentScale(GLFWmonitor $monitor, float &$xscale, float &$yscale) : void {};
-    function glfwGetMonitorName(GLFWmonitor $monitor) : string {};
-    function glfwSetGamma(GLFWmonitor $monitor, float $gamma) : void {};
-    function glfwDefaultWindowHints() : void {};
-    function glfwWindowHint(int $hint, int $value) : void {};
-    function glfwWindowHintString(int $hint, string $value) : void {};
-    function glfwCreateWindow(int $width, int $height, string $title, ?GLFWmonitor $monitor = NULL, ?GLFWwindow $share = NULL) : GLFWwindow {};
-    function glfwDestroyWindow(GLFWwindow $window) : void {};
-    function glfwWindowShouldClose(GLFWwindow $window) : int {};
-    function glfwSetWindowShouldClose(GLFWwindow $window, int $value) : void {};
-    function glfwSetWindowTitle(GLFWwindow $window, string $title) : void {};
-    function glfwGetWindowPos(GLFWwindow $window, int &$xpos, int &$ypos) : void {};
-    function glfwSetWindowPos(GLFWwindow $window, int $xpos, int $ypos) : void {};
-    function glfwGetWindowSize(GLFWwindow $window, int &$width, int &$height) : void {};
-    function glfwSetWindowSizeLimits(GLFWwindow $window, int $minwidth, int $minheight, int $maxwidth, int $maxheight) : void {};
-    function glfwSetWindowAspectRatio(GLFWwindow $window, int $numer, int $denom) : void {};
-    function glfwSetWindowSize(GLFWwindow $window, int $width, int $height) : void {};
-    function glfwGetFramebufferSize(GLFWwindow $window, int &$width, int &$height) : void {};
-    function glfwGetWindowFrameSize(GLFWwindow $window, int &$left, int &$top, int &$right, int &$bottom) : void {};
-    function glfwGetWindowContentScale(GLFWwindow $window, float &$xscale, float &$yscale) : void {};
-    function glfwGetWindowOpacity(GLFWwindow $window) : float {};
-    function glfwSetWindowOpacity(GLFWwindow $window, float $opacity) : void {};
-    function glfwIconifyWindow(GLFWwindow $window) : void {};
-    function glfwRestoreWindow(GLFWwindow $window) : void {};
-    function glfwMaximizeWindow(GLFWwindow $window) : void {};
-    function glfwShowWindow(GLFWwindow $window) : void {};
-    function glfwHideWindow(GLFWwindow $window) : void {};
-    function glfwFocusWindow(GLFWwindow $window) : void {};
-    function glfwRequestWindowAttention(GLFWwindow $window) : void {};
-    function glfwGetWindowMonitor(GLFWwindow $window) : GLFWmonitor {};
-    function glfwSetWindowMonitor(GLFWwindow $window, GLFWmonitor $monitor, int $xpos, int $ypos, int $width, int $height, int $refreshRate) : void {};
-    function glfwGetWindowAttrib(GLFWwindow $window, int $attrib) : int {};
-    function glfwSetWindowAttrib(GLFWwindow $window, int $attrib, int $value) : void {};
-    function glfwSetWindowPosCallback(GLFWwindow $window, callable $callback) : void {};
-    function glfwSetWindowSizeCallback(GLFWwindow $window, callable $callback) : void {};
-    function glfwSetWindowCloseCallback(GLFWwindow $window, callable $callback) : void {};
-    function glfwSetWindowRefreshCallback(GLFWwindow $window, callable $callback) : void {};
-    function glfwSetWindowFocusCallback(GLFWwindow $window, callable $callback) : void {};
-    function glfwSetWindowIconifyCallback(GLFWwindow $window, callable $callback) : void {};
-    function glfwSetWindowMaximizeCallback(GLFWwindow $window, callable $callback) : void {};
-    function glfwSetFramebufferSizeCallback(GLFWwindow $window, callable $callback) : void {};
-    function glfwSetWindowContentScaleCallback(GLFWwindow $window, callable $callback) : void {};
-    function glfwPollEvents() : void {};
-    function glfwWaitEvents() : void {};
-    function glfwWaitEventsTimeout(float $timeout) : void {};
-    function glfwPostEmptyEvent() : void {};
-    function glfwGetInputMode(GLFWwindow $window, int $mode) : int {};
-    function glfwSetInputMode(GLFWwindow $window, int $mode, int $value) : void {};
-    function glfwRawMouseMotionSupported() : int {};
-    function glfwGetKeyName(int $key, int $scancode) : string {};
-    function glfwGetKeyScancode(int $key) : int {};
-    function glfwGetKey(GLFWwindow $window, int $key) : int {};
-    function glfwGetMouseButton(GLFWwindow $window, int $button) : int {};
-    function glfwGetCursorPos(GLFWwindow $window, float &$xpos, float &$ypos) : void {};
-    function glfwSetCursorPos(GLFWwindow $window, float $xpos, float $ypos) : void {};
-    function glfwCreateStandardCursor(int $shape) : GLFWcursor {};
-    function glfwDestroyCursor(GLFWcursor $cursor) : void {};
-    function glfwSetCursor(GLFWwindow $window, GLFWcursor $cursor) : void {};
-    function glfwSetKeyCallback(GLFWwindow $window, callable $callback) : void {};
-    function glfwSetCharCallback(GLFWwindow $window, callable $callback) : void {};
-    function glfwSetCharModsCallback(GLFWwindow $window, callable $callback) : void {};
-    function glfwSetMouseButtonCallback(GLFWwindow $window, callable $callback) : void {};
-    function glfwSetCursorPosCallback(GLFWwindow $window, callable $callback) : void {};
-    function glfwSetCursorEnterCallback(GLFWwindow $window, callable $callback) : void {};
-    function glfwSetScrollCallback(GLFWwindow $window, callable $callback) : void {};
-    function glfwSetDropCallback(GLFWwindow $window, callable $callback) : void {};
-    function glfwJoystickPresent(int $jid) : int {};
-    function glfwGetJoystickName(int $jid) : string {};
-    function glfwGetJoystickGUID(int $jid) : string {};
-    function glfwJoystickIsGamepad(int $jid) : int {};
-    function glfwUpdateGamepadMappings(string $string) : int {};
-    function glfwGetGamepadName(int $jid) : string {};
-    function glfwSetClipboardString(GLFWwindow $window, string $string) : void {};
-    function glfwGetClipboardString(GLFWwindow $window) : string {};
-    function glfwGetTime() : float {};
-    function glfwSetTime(float $time) : void {};
-    function glfwMakeContextCurrent(GLFWwindow $window) : void {};
-    function glfwGetCurrentContext() : GLFWwindow {};
-    function glfwSwapBuffers(GLFWwindow $window) : void {};
-    function glfwSwapInterval(int $interval) : void {};
-    function glfwExtensionSupported(string $extension) : int {};
-    function glfwVulkanSupported() : int {};
-    function glShaderSource(int $shader, string $source) : void {};
-    function glBufferData(int $target, \GL\Buffer\BufferInterface $buffer, int $usage) : void {};
-    function glUniformMatrix4f(int $location, bool $transpose, \GL\Math\Mat4 $matrix) : void {};
-    function glUniformVec2f(int $location, \GL\Math\Vec2 $vec) : void {};
-    function glUniformVec3f(int $location, \GL\Math\Vec3 $vec) : void {};
-    function glUniformVec4f(int $location, \GL\Math\Vec4 $vec) : void {};
+    function glCullFace(int $mode) : void {}
+    function glFrontFace(int $mode) : void {}
+    function glHint(int $target, int $mode) : void {}
+    function glLineWidth(float $width) : void {}
+    function glPointSize(float $size) : void {}
+    function glPolygonMode(int $face, int $mode) : void {}
+    function glScissor(int $x, int $y, int $width, int $height) : void {}
+    function glTexParameterf(int $target, int $pname, float $param) : void {}
+    function glTexParameterfv(int $target, int $pname, \GL\Buffer\FloatBuffer|array $params) : void {}
+    function glTexParameteri(int $target, int $pname, int $param) : void {}
+    function glTexParameteriv(int $target, int $pname, \GL\Buffer\IntBuffer|array $params) : void {}
+    function glTexImage2D(int $target, int $level, int $internalformat, int $width, int $height, int $border, int $format, int $type, ?\GL\Buffer\BufferInterface $data) : void {}
+    function glDrawBuffer(int $buf) : void {}
+    function glClear(int $mask) : void {}
+    function glClearColor(float $red, float $green, float $blue, float $alpha) : void {}
+    function glClearStencil(int $s) : void {}
+    function glClearDepth(float $depth) : void {}
+    function glStencilMask(int $mask) : void {}
+    function glColorMask(bool $red, bool $green, bool $blue, bool $alpha) : void {}
+    function glDepthMask(bool $flag) : void {}
+    function glDisable(int $cap) : void {}
+    function glEnable(int $cap) : void {}
+    function glFinish() : void {}
+    function glFlush() : void {}
+    function glBlendFunc(int $sfactor, int $dfactor) : void {}
+    function glLogicOp(int $opcode) : void {}
+    function glStencilFunc(int $func, int $ref, int $mask) : void {}
+    function glStencilOp(int $fail, int $zfail, int $zpass) : void {}
+    function glDepthFunc(int $func) : void {}
+    function glPixelStoref(int $pname, float $param) : void {}
+    function glPixelStorei(int $pname, int $param) : void {}
+    function glReadBuffer(int $src) : void {}
+    function glReadPixels(int $x, int $y, int $width, int $height, int $format, int $type, \GL\Buffer\BufferInterface $pixels) : void {}
+    function glGetBooleanv(int $pname, ?bool &...$data) : void {}
+    function glGetDoublev(int $pname, ?bool &...$data) : void {}
+    function glGetError() : int {}
+    function glGetFloatv(int $pname, ?bool &...$data) : void {}
+    function glGetIntegerv(int $pname, ?bool &...$data) : void {}
+    function glGetString(int $name) : string {}
+    function glGetTexParameterfv(int $target, int $pname, ?bool &...$params) : void {}
+    function glGetTexParameteriv(int $target, int $pname, ?bool &...$params) : void {}
+    function glGetTexLevelParameterfv(int $target, int $level, int $pname, float &$params) : void {}
+    function glGetTexLevelParameteriv(int $target, int $level, int $pname, int &$params) : void {}
+    function glIsEnabled(int $cap) : bool {}
+    function glDepthRange(float $n, float $f) : void {}
+    function glViewport(int $x, int $y, int $width, int $height) : void {}
+    function glDrawArrays(int $mode, int $first, int $count) : void {}
+    function glPolygonOffset(float $factor, float $units) : void {}
+    function glCopyTexImage1D(int $target, int $level, int $internalformat, int $x, int $y, int $width, int $border) : void {}
+    function glCopyTexImage2D(int $target, int $level, int $internalformat, int $x, int $y, int $width, int $height, int $border) : void {}
+    function glCopyTexSubImage1D(int $target, int $level, int $xoffset, int $x, int $y, int $width) : void {}
+    function glCopyTexSubImage2D(int $target, int $level, int $xoffset, int $yoffset, int $x, int $y, int $width, int $height) : void {}
+    function glBindTexture(int $target, int $texture) : void {}
+    function glDeleteTextures(int $n, ?int ...$textures) : void {}
+    function glGenTextures(int $n, ?int &...$textures) : void {}
+    function glIsTexture(int $texture) : bool {}
+    function glCopyTexSubImage3D(int $target, int $level, int $xoffset, int $yoffset, int $zoffset, int $x, int $y, int $width, int $height) : void {}
+    function glActiveTexture(int $texture) : void {}
+    function glSampleCoverage(float $value, bool $invert) : void {}
+    function glBlendFuncSeparate(int $sfactorRGB, int $dfactorRGB, int $sfactorAlpha, int $dfactorAlpha) : void {}
+    function glPointParameterf(int $pname, float $param) : void {}
+    function glPointParameterfv(int $pname, \GL\Buffer\FloatBuffer|array $params) : void {}
+    function glPointParameteri(int $pname, int $param) : void {}
+    function glPointParameteriv(int $pname, \GL\Buffer\IntBuffer|array $params) : void {}
+    function glBlendColor(float $red, float $green, float $blue, float $alpha) : void {}
+    function glBlendEquation(int $mode) : void {}
+    function glGenQueries(int $n, ?int &...$ids) : void {}
+    function glDeleteQueries(int $n, ?int ...$ids) : void {}
+    function glIsQuery(int $id) : bool {}
+    function glBeginQuery(int $target, int $id) : void {}
+    function glEndQuery(int $target) : void {}
+    function glGetQueryiv(int $target, int $pname, int &$params) : void {}
+    function glGetQueryObjectiv(int $id, int $pname, int &$params) : void {}
+    function glGetQueryObjectuiv(int $id, int $pname, int &$params) : void {}
+    function glBindBuffer(int $target, int $buffer) : void {}
+    function glDeleteBuffers(int $n, ?int ...$buffers) : void {}
+    function glGenBuffers(int $n, ?int &...$buffers) : void {}
+    function glIsBuffer(int $buffer) : bool {}
+    function glUnmapBuffer(int $target) : bool {}
+    function glGetBufferParameteriv(int $target, int $pname, int &$params) : void {}
+    function glBlendEquationSeparate(int $modeRGB, int $modeAlpha) : void {}
+    function glDrawBuffers(int $n, ?int ...$bufs) : void {}
+    function glStencilOpSeparate(int $face, int $sfail, int $dpfail, int $dppass) : void {}
+    function glStencilFuncSeparate(int $face, int $func, int $ref, int $mask) : void {}
+    function glStencilMaskSeparate(int $face, int $mask) : void {}
+    function glAttachShader(int $program, int $shader) : void {}
+    function glBindAttribLocation(int $program, int $index, string $name) : void {}
+    function glCompileShader(int $shader) : void {}
+    function glCreateProgram() : int {}
+    function glCreateShader(int $type) : int {}
+    function glDeleteProgram(int $program) : void {}
+    function glDeleteShader(int $shader) : void {}
+    function glDetachShader(int $program, int $shader) : void {}
+    function glDisableVertexAttribArray(int $index) : void {}
+    function glEnableVertexAttribArray(int $index) : void {}
+    function glGetAttachedShaders(int $program, int $maxCount, int &$count, int &$shaders) : void {}
+    function glGetAttribLocation(int $program, string $name) : int {}
+    function glGetProgramiv(int $program, int $pname, int &$params) : void {}
+    function glGetProgramInfoLog(int $program, int $bufSize) : string {}
+    function glGetShaderiv(int $shader, int $pname, int &$params) : void {}
+    function glGetShaderInfoLog(int $shader, int $bufSize) : string {}
+    function glGetUniformLocation(int $program, string $name) : int {}
+    function glGetUniformfv(int $program, int $location, float &$params) : void {}
+    function glGetUniformiv(int $program, int $location, int &$params) : void {}
+    function glGetVertexAttribdv(int $index, int $pname, float &$params) : void {}
+    function glGetVertexAttribfv(int $index, int $pname, float &$params) : void {}
+    function glGetVertexAttribiv(int $index, int $pname, int &$params) : void {}
+    function glIsProgram(int $program) : bool {}
+    function glIsShader(int $shader) : bool {}
+    function glLinkProgram(int $program) : void {}
+    function glUseProgram(int $program) : void {}
+    function glUniform1f(int $location, float $v0) : void {}
+    function glUniform2f(int $location, float $v0, float $v1) : void {}
+    function glUniform3f(int $location, float $v0, float $v1, float $v2) : void {}
+    function glUniform4f(int $location, float $v0, float $v1, float $v2, float $v3) : void {}
+    function glUniform1i(int $location, int $v0) : void {}
+    function glUniform2i(int $location, int $v0, int $v1) : void {}
+    function glUniform3i(int $location, int $v0, int $v1, int $v2) : void {}
+    function glUniform4i(int $location, int $v0, int $v1, int $v2, int $v3) : void {}
+    function glUniform1fv(int $location, \GL\Buffer\FloatBuffer|array $value) : void {}
+    function glUniform2fv(int $location, \GL\Buffer\FloatBuffer|array $value) : void {}
+    function glUniform3fv(int $location, \GL\Buffer\FloatBuffer|array $value) : void {}
+    function glUniform4fv(int $location, \GL\Buffer\FloatBuffer|array $value) : void {}
+    function glUniform1iv(int $location, \GL\Buffer\IntBuffer|array $value) : void {}
+    function glUniform2iv(int $location, \GL\Buffer\IntBuffer|array $value) : void {}
+    function glUniform3iv(int $location, \GL\Buffer\IntBuffer|array $value) : void {}
+    function glUniform4iv(int $location, \GL\Buffer\IntBuffer|array $value) : void {}
+    function glUniformMatrix2fv(int $location, bool $transpose, \GL\Buffer\FloatBuffer|array $value) : void {}
+    function glUniformMatrix3fv(int $location, bool $transpose, \GL\Buffer\FloatBuffer|array $value) : void {}
+    function glUniformMatrix4fv(int $location, bool $transpose, \GL\Buffer\FloatBuffer|array $value) : void {}
+    function glValidateProgram(int $program) : void {}
+    function glVertexAttrib1d(int $index, float $x) : void {}
+    function glVertexAttrib1dv(int $index, \GL\Buffer\DoubleBuffer|array $v) : void {}
+    function glVertexAttrib1f(int $index, float $x) : void {}
+    function glVertexAttrib1fv(int $index, \GL\Buffer\FloatBuffer|array $v) : void {}
+    function glVertexAttrib1s(int $index, int $x) : void {}
+    function glVertexAttrib1sv(int $index, \GL\Buffer\ShortBuffer|array $v) : void {}
+    function glVertexAttrib2d(int $index, float $x, float $y) : void {}
+    function glVertexAttrib2dv(int $index, \GL\Buffer\DoubleBuffer|array $v) : void {}
+    function glVertexAttrib2f(int $index, float $x, float $y) : void {}
+    function glVertexAttrib2fv(int $index, \GL\Buffer\FloatBuffer|array $v) : void {}
+    function glVertexAttrib2s(int $index, int $x, int $y) : void {}
+    function glVertexAttrib2sv(int $index, \GL\Buffer\ShortBuffer|array $v) : void {}
+    function glVertexAttrib3d(int $index, float $x, float $y, float $z) : void {}
+    function glVertexAttrib3dv(int $index, \GL\Buffer\DoubleBuffer|array $v) : void {}
+    function glVertexAttrib3f(int $index, float $x, float $y, float $z) : void {}
+    function glVertexAttrib3fv(int $index, \GL\Buffer\FloatBuffer|array $v) : void {}
+    function glVertexAttrib3s(int $index, int $x, int $y, int $z) : void {}
+    function glVertexAttrib3sv(int $index, \GL\Buffer\ShortBuffer|array $v) : void {}
+    function glVertexAttrib4Nbv(int $index, \GL\Buffer\ByteBuffer|array $v) : void {}
+    function glVertexAttrib4Niv(int $index, \GL\Buffer\IntBuffer|array $v) : void {}
+    function glVertexAttrib4Nsv(int $index, \GL\Buffer\ShortBuffer|array $v) : void {}
+    function glVertexAttrib4Nub(int $index, int $x, int $y, int $z, int $w) : void {}
+    function glVertexAttrib4Nubv(int $index, \GL\Buffer\UbyteBuffer|array $v) : void {}
+    function glVertexAttrib4Nuiv(int $index, \GL\Buffer\UIntBuffer|array $v) : void {}
+    function glVertexAttrib4Nusv(int $index, \GL\Buffer\UShortBuffer|array $v) : void {}
+    function glVertexAttrib4bv(int $index, \GL\Buffer\ByteBuffer|array $v) : void {}
+    function glVertexAttrib4d(int $index, float $x, float $y, float $z, float $w) : void {}
+    function glVertexAttrib4dv(int $index, \GL\Buffer\DoubleBuffer|array $v) : void {}
+    function glVertexAttrib4f(int $index, float $x, float $y, float $z, float $w) : void {}
+    function glVertexAttrib4fv(int $index, \GL\Buffer\FloatBuffer|array $v) : void {}
+    function glVertexAttrib4iv(int $index, \GL\Buffer\IntBuffer|array $v) : void {}
+    function glVertexAttrib4s(int $index, int $x, int $y, int $z, int $w) : void {}
+    function glVertexAttrib4sv(int $index, \GL\Buffer\ShortBuffer|array $v) : void {}
+    function glVertexAttrib4ubv(int $index, \GL\Buffer\UbyteBuffer|array $v) : void {}
+    function glVertexAttrib4uiv(int $index, \GL\Buffer\UIntBuffer|array $v) : void {}
+    function glVertexAttrib4usv(int $index, \GL\Buffer\UShortBuffer|array $v) : void {}
+    function glVertexAttribPointer(int $index, int $size, int $type, bool $normalized, int $stride, int $offset) : void {}
+    function glUniformMatrix2x3fv(int $location, bool $transpose, \GL\Buffer\FloatBuffer|array $value) : void {}
+    function glUniformMatrix3x2fv(int $location, bool $transpose, \GL\Buffer\FloatBuffer|array $value) : void {}
+    function glUniformMatrix2x4fv(int $location, bool $transpose, \GL\Buffer\FloatBuffer|array $value) : void {}
+    function glUniformMatrix4x2fv(int $location, bool $transpose, \GL\Buffer\FloatBuffer|array $value) : void {}
+    function glUniformMatrix3x4fv(int $location, bool $transpose, \GL\Buffer\FloatBuffer|array $value) : void {}
+    function glUniformMatrix4x3fv(int $location, bool $transpose, \GL\Buffer\FloatBuffer|array $value) : void {}
+    function glColorMaski(int $index, bool $r, bool $g, bool $b, bool $a) : void {}
+    function glGetBooleani_v(int $target, int $index, ?bool &...$data) : void {}
+    function glGetIntegeri_v(int $target, int $index, ?bool &...$data) : void {}
+    function glEnablei(int $target, int $index) : void {}
+    function glDisablei(int $target, int $index) : void {}
+    function glIsEnabledi(int $target, int $index) : bool {}
+    function glBeginTransformFeedback(int $primitiveMode) : void {}
+    function glEndTransformFeedback() : void {}
+    function glBindBufferRange(int $target, int $index, int $buffer, int $offset, int $size) : void {}
+    function glBindBufferBase(int $target, int $index, int $buffer) : void {}
+    function glClampColor(int $target, int $clamp) : void {}
+    function glBeginConditionalRender(int $id, int $mode) : void {}
+    function glEndConditionalRender() : void {}
+    function glGetVertexAttribIiv(int $index, int $pname, int &$params) : void {}
+    function glGetVertexAttribIuiv(int $index, int $pname, int &$params) : void {}
+    function glVertexAttribI1i(int $index, int $x) : void {}
+    function glVertexAttribI2i(int $index, int $x, int $y) : void {}
+    function glVertexAttribI3i(int $index, int $x, int $y, int $z) : void {}
+    function glVertexAttribI4i(int $index, int $x, int $y, int $z, int $w) : void {}
+    function glVertexAttribI1ui(int $index, int $x) : void {}
+    function glVertexAttribI2ui(int $index, int $x, int $y) : void {}
+    function glVertexAttribI3ui(int $index, int $x, int $y, int $z) : void {}
+    function glVertexAttribI4ui(int $index, int $x, int $y, int $z, int $w) : void {}
+    function glVertexAttribI1iv(int $index, \GL\Buffer\IntBuffer|array $v) : void {}
+    function glVertexAttribI2iv(int $index, \GL\Buffer\IntBuffer|array $v) : void {}
+    function glVertexAttribI3iv(int $index, \GL\Buffer\IntBuffer|array $v) : void {}
+    function glVertexAttribI4iv(int $index, \GL\Buffer\IntBuffer|array $v) : void {}
+    function glVertexAttribI1uiv(int $index, \GL\Buffer\UIntBuffer|array $v) : void {}
+    function glVertexAttribI2uiv(int $index, \GL\Buffer\UIntBuffer|array $v) : void {}
+    function glVertexAttribI3uiv(int $index, \GL\Buffer\UIntBuffer|array $v) : void {}
+    function glVertexAttribI4uiv(int $index, \GL\Buffer\UIntBuffer|array $v) : void {}
+    function glVertexAttribI4bv(int $index, \GL\Buffer\ByteBuffer|array $v) : void {}
+    function glVertexAttribI4sv(int $index, \GL\Buffer\ShortBuffer|array $v) : void {}
+    function glVertexAttribI4ubv(int $index, \GL\Buffer\UbyteBuffer|array $v) : void {}
+    function glVertexAttribI4usv(int $index, \GL\Buffer\UShortBuffer|array $v) : void {}
+    function glGetUniformuiv(int $program, int $location, int &$params) : void {}
+    function glBindFragDataLocation(int $program, int $color, string $name) : void {}
+    function glGetFragDataLocation(int $program, string $name) : int {}
+    function glUniform1ui(int $location, int $v0) : void {}
+    function glUniform2ui(int $location, int $v0, int $v1) : void {}
+    function glUniform3ui(int $location, int $v0, int $v1, int $v2) : void {}
+    function glUniform4ui(int $location, int $v0, int $v1, int $v2, int $v3) : void {}
+    function glUniform1uiv(int $location, \GL\Buffer\UIntBuffer|array $value) : void {}
+    function glUniform2uiv(int $location, \GL\Buffer\UIntBuffer|array $value) : void {}
+    function glUniform3uiv(int $location, \GL\Buffer\UIntBuffer|array $value) : void {}
+    function glUniform4uiv(int $location, \GL\Buffer\UIntBuffer|array $value) : void {}
+    function glTexParameterIiv(int $target, int $pname, \GL\Buffer\IntBuffer|array $params) : void {}
+    function glTexParameterIuiv(int $target, int $pname, \GL\Buffer\UIntBuffer|array $params) : void {}
+    function glGetTexParameterIiv(int $target, int $pname, ?bool &...$params) : void {}
+    function glGetTexParameterIuiv(int $target, int $pname, ?bool &...$params) : void {}
+    function glClearBufferiv(int $buffer, int $drawbuffer, \GL\Buffer\IntBuffer|array $value) : void {}
+    function glClearBufferuiv(int $buffer, int $drawbuffer, \GL\Buffer\UIntBuffer|array $value) : void {}
+    function glClearBufferfv(int $buffer, int $drawbuffer, \GL\Buffer\FloatBuffer|array $value) : void {}
+    function glClearBufferfi(int $buffer, int $drawbuffer, float $depth, int $stencil) : void {}
+    function glGetStringi(int $name, int $index) : string {}
+    function glIsRenderbuffer(int $renderbuffer) : bool {}
+    function glBindRenderbuffer(int $target, int $renderbuffer) : void {}
+    function glDeleteRenderbuffers(int $n, ?int ...$renderbuffers) : void {}
+    function glGenRenderbuffers(int $n, ?int &...$renderbuffers) : void {}
+    function glRenderbufferStorage(int $target, int $internalformat, int $width, int $height) : void {}
+    function glGetRenderbufferParameteriv(int $target, int $pname, int &$params) : void {}
+    function glIsFramebuffer(int $framebuffer) : bool {}
+    function glBindFramebuffer(int $target, int $framebuffer) : void {}
+    function glDeleteFramebuffers(int $n, ?int ...$framebuffers) : void {}
+    function glGenFramebuffers(int $n, ?int &...$framebuffers) : void {}
+    function glCheckFramebufferStatus(int $target) : int {}
+    function glFramebufferTexture1D(int $target, int $attachment, int $textarget, int $texture, int $level) : void {}
+    function glFramebufferTexture2D(int $target, int $attachment, int $textarget, int $texture, int $level) : void {}
+    function glFramebufferTexture3D(int $target, int $attachment, int $textarget, int $texture, int $level, int $zoffset) : void {}
+    function glFramebufferRenderbuffer(int $target, int $attachment, int $renderbuffertarget, int $renderbuffer) : void {}
+    function glGetFramebufferAttachmentParameteriv(int $target, int $attachment, int $pname, int &$params) : void {}
+    function glGenerateMipmap(int $target) : void {}
+    function glBlitFramebuffer(int $srcX0, int $srcY0, int $srcX1, int $srcY1, int $dstX0, int $dstY0, int $dstX1, int $dstY1, int $mask, int $filter) : void {}
+    function glRenderbufferStorageMultisample(int $target, int $samples, int $internalformat, int $width, int $height) : void {}
+    function glFramebufferTextureLayer(int $target, int $attachment, int $texture, int $level, int $layer) : void {}
+    function glFlushMappedBufferRange(int $target, int $offset, int $length) : void {}
+    function glBindVertexArray(int $array) : void {}
+    function glDeleteVertexArrays(int $n, ?int ...$arrays) : void {}
+    function glGenVertexArrays(int $n, ?int &...$arrays) : void {}
+    function glIsVertexArray(int $array) : bool {}
+    function glDrawArraysInstanced(int $mode, int $first, int $count, int $instancecount) : void {}
+    function glTexBuffer(int $target, int $internalformat, int $buffer) : void {}
+    function glPrimitiveRestartIndex(int $index) : void {}
+    function glCopyBufferSubData(int $readTarget, int $writeTarget, int $readOffset, int $writeOffset, int $size) : void {}
+    function glGetUniformBlockIndex(int $program, string $uniformBlockName) : int {}
+    function glGetActiveUniformBlockiv(int $program, int $uniformBlockIndex, int $pname, int &$params) : void {}
+    function glUniformBlockBinding(int $program, int $uniformBlockIndex, int $uniformBlockBinding) : void {}
+    function glProvokingVertex(int $mode) : void {}
+    function glIsSync(int $sync) : bool {}
+    function glGetInteger64v(int $pname, int &$data) : void {}
+    function glGetInteger64i_v(int $target, int $index, int &$data) : void {}
+    function glGetBufferParameteri64v(int $target, int $pname, int &$params) : void {}
+    function glFramebufferTexture(int $target, int $attachment, int $texture, int $level) : void {}
+    function glTexImage2DMultisample(int $target, int $samples, int $internalformat, int $width, int $height, bool $fixedsamplelocations) : void {}
+    function glTexImage3DMultisample(int $target, int $samples, int $internalformat, int $width, int $height, int $depth, bool $fixedsamplelocations) : void {}
+    function glGetMultisamplefv(int $pname, int $index, float &$val) : void {}
+    function glSampleMaski(int $maskNumber, int $mask) : void {}
+    function glBindFragDataLocationIndexed(int $program, int $colorNumber, int $index, string $name) : void {}
+    function glGetFragDataIndex(int $program, string $name) : int {}
+    function glGenSamplers(int $count, ?int &...$samplers) : void {}
+    function glDeleteSamplers(int $count, ?int ...$samplers) : void {}
+    function glIsSampler(int $sampler) : bool {}
+    function glBindSampler(int $unit, int $sampler) : void {}
+    function glSamplerParameteri(int $sampler, int $pname, int $param) : void {}
+    function glSamplerParameteriv(int $sampler, int $pname, \GL\Buffer\IntBuffer|array $param) : void {}
+    function glSamplerParameterf(int $sampler, int $pname, float $param) : void {}
+    function glSamplerParameterfv(int $sampler, int $pname, \GL\Buffer\FloatBuffer|array $param) : void {}
+    function glSamplerParameterIiv(int $sampler, int $pname, \GL\Buffer\IntBuffer|array $param) : void {}
+    function glSamplerParameterIuiv(int $sampler, int $pname, \GL\Buffer\UIntBuffer|array $param) : void {}
+    function glGetSamplerParameteriv(int $sampler, int $pname, int &$params) : void {}
+    function glGetSamplerParameterIiv(int $sampler, int $pname, int &$params) : void {}
+    function glGetSamplerParameterfv(int $sampler, int $pname, float &$params) : void {}
+    function glGetSamplerParameterIuiv(int $sampler, int $pname, int &$params) : void {}
+    function glQueryCounter(int $id, int $target) : void {}
+    function glGetQueryObjecti64v(int $id, int $pname, int &$params) : void {}
+    function glGetQueryObjectui64v(int $id, int $pname, int &$params) : void {}
+    function glVertexAttribDivisor(int $index, int $divisor) : void {}
+    function glVertexAttribP1ui(int $index, int $type, bool $normalized, int $value) : void {}
+    function glVertexAttribP1uiv(int $index, int $type, bool $normalized, \GL\Buffer\UIntBuffer|array $value) : void {}
+    function glVertexAttribP2ui(int $index, int $type, bool $normalized, int $value) : void {}
+    function glVertexAttribP2uiv(int $index, int $type, bool $normalized, \GL\Buffer\UIntBuffer|array $value) : void {}
+    function glVertexAttribP3ui(int $index, int $type, bool $normalized, int $value) : void {}
+    function glVertexAttribP3uiv(int $index, int $type, bool $normalized, \GL\Buffer\UIntBuffer|array $value) : void {}
+    function glVertexAttribP4ui(int $index, int $type, bool $normalized, int $value) : void {}
+    function glVertexAttribP4uiv(int $index, int $type, bool $normalized, \GL\Buffer\UIntBuffer|array $value) : void {}
+    function glVertexP2ui(int $type, int $value) : void {}
+    function glVertexP2uiv(int $type, \GL\Buffer\UIntBuffer|array $value) : void {}
+    function glVertexP3ui(int $type, int $value) : void {}
+    function glVertexP3uiv(int $type, \GL\Buffer\UIntBuffer|array $value) : void {}
+    function glVertexP4ui(int $type, int $value) : void {}
+    function glVertexP4uiv(int $type, \GL\Buffer\UIntBuffer|array $value) : void {}
+    function glTexCoordP1ui(int $type, int $coords) : void {}
+    function glTexCoordP1uiv(int $type, \GL\Buffer\UIntBuffer|array $coords) : void {}
+    function glTexCoordP2ui(int $type, int $coords) : void {}
+    function glTexCoordP2uiv(int $type, \GL\Buffer\UIntBuffer|array $coords) : void {}
+    function glTexCoordP3ui(int $type, int $coords) : void {}
+    function glTexCoordP3uiv(int $type, \GL\Buffer\UIntBuffer|array $coords) : void {}
+    function glTexCoordP4ui(int $type, int $coords) : void {}
+    function glTexCoordP4uiv(int $type, \GL\Buffer\UIntBuffer|array $coords) : void {}
+    function glMultiTexCoordP1ui(int $texture, int $type, int $coords) : void {}
+    function glMultiTexCoordP1uiv(int $texture, int $type, \GL\Buffer\UIntBuffer|array $coords) : void {}
+    function glMultiTexCoordP2ui(int $texture, int $type, int $coords) : void {}
+    function glMultiTexCoordP2uiv(int $texture, int $type, \GL\Buffer\UIntBuffer|array $coords) : void {}
+    function glMultiTexCoordP3ui(int $texture, int $type, int $coords) : void {}
+    function glMultiTexCoordP3uiv(int $texture, int $type, \GL\Buffer\UIntBuffer|array $coords) : void {}
+    function glMultiTexCoordP4ui(int $texture, int $type, int $coords) : void {}
+    function glMultiTexCoordP4uiv(int $texture, int $type, \GL\Buffer\UIntBuffer|array $coords) : void {}
+    function glNormalP3ui(int $type, int $coords) : void {}
+    function glNormalP3uiv(int $type, \GL\Buffer\UIntBuffer|array $coords) : void {}
+    function glColorP3ui(int $type, int $color) : void {}
+    function glColorP3uiv(int $type, \GL\Buffer\UIntBuffer|array $color) : void {}
+    function glColorP4ui(int $type, int $color) : void {}
+    function glColorP4uiv(int $type, \GL\Buffer\UIntBuffer|array $color) : void {}
+    function glSecondaryColorP3ui(int $type, int $color) : void {}
+    function glSecondaryColorP3uiv(int $type, \GL\Buffer\UIntBuffer|array $color) : void {}
+    function glMinSampleShading(float $value) : void {}
+    function glBlendEquationi(int $buf, int $mode) : void {}
+    function glBlendEquationSeparatei(int $buf, int $modeRGB, int $modeAlpha) : void {}
+    function glBlendFunci(int $buf, int $src, int $dst) : void {}
+    function glBlendFuncSeparatei(int $buf, int $srcRGB, int $dstRGB, int $srcAlpha, int $dstAlpha) : void {}
+    function glUniform1d(int $location, float $x) : void {}
+    function glUniform2d(int $location, float $x, float $y) : void {}
+    function glUniform3d(int $location, float $x, float $y, float $z) : void {}
+    function glUniform4d(int $location, float $x, float $y, float $z, float $w) : void {}
+    function glUniform1dv(int $location, \GL\Buffer\DoubleBuffer|array $value) : void {}
+    function glUniform2dv(int $location, \GL\Buffer\DoubleBuffer|array $value) : void {}
+    function glUniform3dv(int $location, \GL\Buffer\DoubleBuffer|array $value) : void {}
+    function glUniform4dv(int $location, \GL\Buffer\DoubleBuffer|array $value) : void {}
+    function glUniformMatrix2dv(int $location, bool $transpose, \GL\Buffer\DoubleBuffer|array $value) : void {}
+    function glUniformMatrix3dv(int $location, bool $transpose, \GL\Buffer\DoubleBuffer|array $value) : void {}
+    function glUniformMatrix4dv(int $location, bool $transpose, \GL\Buffer\DoubleBuffer|array $value) : void {}
+    function glUniformMatrix2x3dv(int $location, bool $transpose, \GL\Buffer\DoubleBuffer|array $value) : void {}
+    function glUniformMatrix2x4dv(int $location, bool $transpose, \GL\Buffer\DoubleBuffer|array $value) : void {}
+    function glUniformMatrix3x2dv(int $location, bool $transpose, \GL\Buffer\DoubleBuffer|array $value) : void {}
+    function glUniformMatrix3x4dv(int $location, bool $transpose, \GL\Buffer\DoubleBuffer|array $value) : void {}
+    function glUniformMatrix4x2dv(int $location, bool $transpose, \GL\Buffer\DoubleBuffer|array $value) : void {}
+    function glUniformMatrix4x3dv(int $location, bool $transpose, \GL\Buffer\DoubleBuffer|array $value) : void {}
+    function glGetUniformdv(int $program, int $location, float &$params) : void {}
+    function glGetSubroutineUniformLocation(int $program, int $shadertype, string $name) : int {}
+    function glGetSubroutineIndex(int $program, int $shadertype, string $name) : int {}
+    function glGetActiveSubroutineUniformiv(int $program, int $shadertype, int $index, int $pname, int &$values) : void {}
+    function glUniformSubroutinesuiv(int $shadertype, \GL\Buffer\UIntBuffer|array $indices) : void {}
+    function glGetUniformSubroutineuiv(int $shadertype, int $location, int &$params) : void {}
+    function glGetProgramStageiv(int $program, int $shadertype, int $pname, int &$values) : void {}
+    function glPatchParameteri(int $pname, int $value) : void {}
+    function glPatchParameterfv(int $pname, \GL\Buffer\FloatBuffer|array $values) : void {}
+    function glBindTransformFeedback(int $target, int $id) : void {}
+    function glDeleteTransformFeedbacks(int $n, ?int ...$ids) : void {}
+    function glGenTransformFeedbacks(int $n, ?int &...$ids) : void {}
+    function glIsTransformFeedback(int $id) : bool {}
+    function glPauseTransformFeedback() : void {}
+    function glResumeTransformFeedback() : void {}
+    function glDrawTransformFeedback(int $mode, int $id) : void {}
+    function glDrawTransformFeedbackStream(int $mode, int $id, int $stream) : void {}
+    function glBeginQueryIndexed(int $target, int $index, int $id) : void {}
+    function glEndQueryIndexed(int $target, int $index) : void {}
+    function glGetQueryIndexediv(int $target, int $index, int $pname, int &$params) : void {}
+    function glReleaseShaderCompiler() : void {}
+    function glGetShaderPrecisionFormat(int $shadertype, int $precisiontype, int &$range, int &$precision) : void {}
+    function glDepthRangef(float $n, float $f) : void {}
+    function glClearDepthf(float $d) : void {}
+    function glProgramParameteri(int $program, int $pname, int $value) : void {}
+    function glUseProgramStages(int $pipeline, int $stages, int $program) : void {}
+    function glActiveShaderProgram(int $pipeline, int $program) : void {}
+    function glBindProgramPipeline(int $pipeline) : void {}
+    function glDeleteProgramPipelines(int $n, ?int ...$pipelines) : void {}
+    function glGenProgramPipelines(int $n, ?int &...$pipelines) : void {}
+    function glIsProgramPipeline(int $pipeline) : bool {}
+    function glGetProgramPipelineiv(int $pipeline, int $pname, int &$params) : void {}
+    function glProgramUniform1i(int $program, int $location, int $v0) : void {}
+    function glProgramUniform1iv(int $program, int $location, \GL\Buffer\IntBuffer|array $value) : void {}
+    function glProgramUniform1f(int $program, int $location, float $v0) : void {}
+    function glProgramUniform1fv(int $program, int $location, \GL\Buffer\FloatBuffer|array $value) : void {}
+    function glProgramUniform1d(int $program, int $location, float $v0) : void {}
+    function glProgramUniform1dv(int $program, int $location, \GL\Buffer\DoubleBuffer|array $value) : void {}
+    function glProgramUniform1ui(int $program, int $location, int $v0) : void {}
+    function glProgramUniform1uiv(int $program, int $location, \GL\Buffer\UIntBuffer|array $value) : void {}
+    function glProgramUniform2i(int $program, int $location, int $v0, int $v1) : void {}
+    function glProgramUniform2iv(int $program, int $location, \GL\Buffer\IntBuffer|array $value) : void {}
+    function glProgramUniform2f(int $program, int $location, float $v0, float $v1) : void {}
+    function glProgramUniform2fv(int $program, int $location, \GL\Buffer\FloatBuffer|array $value) : void {}
+    function glProgramUniform2d(int $program, int $location, float $v0, float $v1) : void {}
+    function glProgramUniform2dv(int $program, int $location, \GL\Buffer\DoubleBuffer|array $value) : void {}
+    function glProgramUniform2ui(int $program, int $location, int $v0, int $v1) : void {}
+    function glProgramUniform2uiv(int $program, int $location, \GL\Buffer\UIntBuffer|array $value) : void {}
+    function glProgramUniform3i(int $program, int $location, int $v0, int $v1, int $v2) : void {}
+    function glProgramUniform3iv(int $program, int $location, \GL\Buffer\IntBuffer|array $value) : void {}
+    function glProgramUniform3f(int $program, int $location, float $v0, float $v1, float $v2) : void {}
+    function glProgramUniform3fv(int $program, int $location, \GL\Buffer\FloatBuffer|array $value) : void {}
+    function glProgramUniform3d(int $program, int $location, float $v0, float $v1, float $v2) : void {}
+    function glProgramUniform3dv(int $program, int $location, \GL\Buffer\DoubleBuffer|array $value) : void {}
+    function glProgramUniform3ui(int $program, int $location, int $v0, int $v1, int $v2) : void {}
+    function glProgramUniform3uiv(int $program, int $location, \GL\Buffer\UIntBuffer|array $value) : void {}
+    function glProgramUniform4i(int $program, int $location, int $v0, int $v1, int $v2, int $v3) : void {}
+    function glProgramUniform4iv(int $program, int $location, \GL\Buffer\IntBuffer|array $value) : void {}
+    function glProgramUniform4f(int $program, int $location, float $v0, float $v1, float $v2, float $v3) : void {}
+    function glProgramUniform4fv(int $program, int $location, \GL\Buffer\FloatBuffer|array $value) : void {}
+    function glProgramUniform4d(int $program, int $location, float $v0, float $v1, float $v2, float $v3) : void {}
+    function glProgramUniform4dv(int $program, int $location, \GL\Buffer\DoubleBuffer|array $value) : void {}
+    function glProgramUniform4ui(int $program, int $location, int $v0, int $v1, int $v2, int $v3) : void {}
+    function glProgramUniform4uiv(int $program, int $location, \GL\Buffer\UIntBuffer|array $value) : void {}
+    function glProgramUniformMatrix2fv(int $program, int $location, bool $transpose, \GL\Buffer\FloatBuffer|array $value) : void {}
+    function glProgramUniformMatrix3fv(int $program, int $location, bool $transpose, \GL\Buffer\FloatBuffer|array $value) : void {}
+    function glProgramUniformMatrix4fv(int $program, int $location, bool $transpose, \GL\Buffer\FloatBuffer|array $value) : void {}
+    function glProgramUniformMatrix2dv(int $program, int $location, bool $transpose, \GL\Buffer\DoubleBuffer|array $value) : void {}
+    function glProgramUniformMatrix3dv(int $program, int $location, bool $transpose, \GL\Buffer\DoubleBuffer|array $value) : void {}
+    function glProgramUniformMatrix4dv(int $program, int $location, bool $transpose, \GL\Buffer\DoubleBuffer|array $value) : void {}
+    function glProgramUniformMatrix2x3fv(int $program, int $location, bool $transpose, \GL\Buffer\FloatBuffer|array $value) : void {}
+    function glProgramUniformMatrix3x2fv(int $program, int $location, bool $transpose, \GL\Buffer\FloatBuffer|array $value) : void {}
+    function glProgramUniformMatrix2x4fv(int $program, int $location, bool $transpose, \GL\Buffer\FloatBuffer|array $value) : void {}
+    function glProgramUniformMatrix4x2fv(int $program, int $location, bool $transpose, \GL\Buffer\FloatBuffer|array $value) : void {}
+    function glProgramUniformMatrix3x4fv(int $program, int $location, bool $transpose, \GL\Buffer\FloatBuffer|array $value) : void {}
+    function glProgramUniformMatrix4x3fv(int $program, int $location, bool $transpose, \GL\Buffer\FloatBuffer|array $value) : void {}
+    function glProgramUniformMatrix2x3dv(int $program, int $location, bool $transpose, \GL\Buffer\DoubleBuffer|array $value) : void {}
+    function glProgramUniformMatrix3x2dv(int $program, int $location, bool $transpose, \GL\Buffer\DoubleBuffer|array $value) : void {}
+    function glProgramUniformMatrix2x4dv(int $program, int $location, bool $transpose, \GL\Buffer\DoubleBuffer|array $value) : void {}
+    function glProgramUniformMatrix4x2dv(int $program, int $location, bool $transpose, \GL\Buffer\DoubleBuffer|array $value) : void {}
+    function glProgramUniformMatrix3x4dv(int $program, int $location, bool $transpose, \GL\Buffer\DoubleBuffer|array $value) : void {}
+    function glProgramUniformMatrix4x3dv(int $program, int $location, bool $transpose, \GL\Buffer\DoubleBuffer|array $value) : void {}
+    function glValidateProgramPipeline(int $pipeline) : void {}
+    function glVertexAttribL1d(int $index, float $x) : void {}
+    function glVertexAttribL2d(int $index, float $x, float $y) : void {}
+    function glVertexAttribL3d(int $index, float $x, float $y, float $z) : void {}
+    function glVertexAttribL4d(int $index, float $x, float $y, float $z, float $w) : void {}
+    function glVertexAttribL1dv(int $index, \GL\Buffer\DoubleBuffer|array $v) : void {}
+    function glVertexAttribL2dv(int $index, \GL\Buffer\DoubleBuffer|array $v) : void {}
+    function glVertexAttribL3dv(int $index, \GL\Buffer\DoubleBuffer|array $v) : void {}
+    function glVertexAttribL4dv(int $index, \GL\Buffer\DoubleBuffer|array $v) : void {}
+    function glGetVertexAttribLdv(int $index, int $pname, float &$params) : void {}
+    function glViewportArrayv(int $first, \GL\Buffer\FloatBuffer|array $v) : void {}
+    function glViewportIndexedf(int $index, float $x, float $y, float $w, float $h) : void {}
+    function glViewportIndexedfv(int $index, \GL\Buffer\FloatBuffer|array $v) : void {}
+    function glScissorArrayv(int $first, \GL\Buffer\IntBuffer|array $v) : void {}
+    function glScissorIndexed(int $index, int $left, int $bottom, int $width, int $height) : void {}
+    function glScissorIndexedv(int $index, \GL\Buffer\IntBuffer|array $v) : void {}
+    function glDepthRangeArrayv(int $first, \GL\Buffer\DoubleBuffer|array $v) : void {}
+    function glDepthRangeIndexed(int $index, float $n, float $f) : void {}
+    function glGetFloati_v(int $target, int $index, ?bool &...$data) : void {}
+    function glGetDoublei_v(int $target, int $index, ?bool &...$data) : void {}
+    function glfwInit() : int {}
+    function glfwTerminate() : void {}
+    function glfwInitHint(int $hint, int $value) : void {}
+    function glfwGetVersion(int &$major, int &$minor, int &$rev) : void {}
+    function glfwGetVersionString() : string {}
+    function glfwGetPrimaryMonitor() : GLFWmonitor {}
+    function glfwGetMonitorPos(GLFWmonitor $monitor, int &$xpos, int &$ypos) : void {}
+    function glfwGetMonitorWorkarea(GLFWmonitor $monitor, int &$xpos, int &$ypos, int &$width, int &$height) : void {}
+    function glfwGetMonitorPhysicalSize(GLFWmonitor $monitor, int &$widthMM, int &$heightMM) : void {}
+    function glfwGetMonitorContentScale(GLFWmonitor $monitor, float &$xscale, float &$yscale) : void {}
+    function glfwGetMonitorName(GLFWmonitor $monitor) : string {}
+    function glfwSetGamma(GLFWmonitor $monitor, float $gamma) : void {}
+    function glfwDefaultWindowHints() : void {}
+    function glfwWindowHint(int $hint, int $value) : void {}
+    function glfwWindowHintString(int $hint, string $value) : void {}
+    function glfwCreateWindow(int $width, int $height, string $title, ?GLFWmonitor $monitor = NULL, ?GLFWwindow $share = NULL) : GLFWwindow {}
+    function glfwDestroyWindow(GLFWwindow $window) : void {}
+    function glfwWindowShouldClose(GLFWwindow $window) : int {}
+    function glfwSetWindowShouldClose(GLFWwindow $window, int $value) : void {}
+    function glfwSetWindowTitle(GLFWwindow $window, string $title) : void {}
+    function glfwGetWindowPos(GLFWwindow $window, int &$xpos, int &$ypos) : void {}
+    function glfwSetWindowPos(GLFWwindow $window, int $xpos, int $ypos) : void {}
+    function glfwGetWindowSize(GLFWwindow $window, int &$width, int &$height) : void {}
+    function glfwSetWindowSizeLimits(GLFWwindow $window, int $minwidth, int $minheight, int $maxwidth, int $maxheight) : void {}
+    function glfwSetWindowAspectRatio(GLFWwindow $window, int $numer, int $denom) : void {}
+    function glfwSetWindowSize(GLFWwindow $window, int $width, int $height) : void {}
+    function glfwGetFramebufferSize(GLFWwindow $window, int &$width, int &$height) : void {}
+    function glfwGetWindowFrameSize(GLFWwindow $window, int &$left, int &$top, int &$right, int &$bottom) : void {}
+    function glfwGetWindowContentScale(GLFWwindow $window, float &$xscale, float &$yscale) : void {}
+    function glfwGetWindowOpacity(GLFWwindow $window) : float {}
+    function glfwSetWindowOpacity(GLFWwindow $window, float $opacity) : void {}
+    function glfwIconifyWindow(GLFWwindow $window) : void {}
+    function glfwRestoreWindow(GLFWwindow $window) : void {}
+    function glfwMaximizeWindow(GLFWwindow $window) : void {}
+    function glfwShowWindow(GLFWwindow $window) : void {}
+    function glfwHideWindow(GLFWwindow $window) : void {}
+    function glfwFocusWindow(GLFWwindow $window) : void {}
+    function glfwRequestWindowAttention(GLFWwindow $window) : void {}
+    function glfwGetWindowMonitor(GLFWwindow $window) : GLFWmonitor {}
+    function glfwSetWindowMonitor(GLFWwindow $window, GLFWmonitor $monitor, int $xpos, int $ypos, int $width, int $height, int $refreshRate) : void {}
+    function glfwGetWindowAttrib(GLFWwindow $window, int $attrib) : int {}
+    function glfwSetWindowAttrib(GLFWwindow $window, int $attrib, int $value) : void {}
+    function glfwSetWindowPosCallback(GLFWwindow $window, callable $callback) : void {}
+    function glfwSetWindowSizeCallback(GLFWwindow $window, callable $callback) : void {}
+    function glfwSetWindowCloseCallback(GLFWwindow $window, callable $callback) : void {}
+    function glfwSetWindowRefreshCallback(GLFWwindow $window, callable $callback) : void {}
+    function glfwSetWindowFocusCallback(GLFWwindow $window, callable $callback) : void {}
+    function glfwSetWindowIconifyCallback(GLFWwindow $window, callable $callback) : void {}
+    function glfwSetWindowMaximizeCallback(GLFWwindow $window, callable $callback) : void {}
+    function glfwSetFramebufferSizeCallback(GLFWwindow $window, callable $callback) : void {}
+    function glfwSetWindowContentScaleCallback(GLFWwindow $window, callable $callback) : void {}
+    function glfwPollEvents() : void {}
+    function glfwWaitEvents() : void {}
+    function glfwWaitEventsTimeout(float $timeout) : void {}
+    function glfwPostEmptyEvent() : void {}
+    function glfwGetInputMode(GLFWwindow $window, int $mode) : int {}
+    function glfwSetInputMode(GLFWwindow $window, int $mode, int $value) : void {}
+    function glfwRawMouseMotionSupported() : int {}
+    function glfwGetKeyName(int $key, int $scancode) : string {}
+    function glfwGetKeyScancode(int $key) : int {}
+    function glfwGetKey(GLFWwindow $window, int $key) : int {}
+    function glfwGetMouseButton(GLFWwindow $window, int $button) : int {}
+    function glfwGetCursorPos(GLFWwindow $window, float &$xpos, float &$ypos) : void {}
+    function glfwSetCursorPos(GLFWwindow $window, float $xpos, float $ypos) : void {}
+    function glfwCreateStandardCursor(int $shape) : GLFWcursor {}
+    function glfwDestroyCursor(GLFWcursor $cursor) : void {}
+    function glfwSetCursor(GLFWwindow $window, GLFWcursor $cursor) : void {}
+    function glfwSetKeyCallback(GLFWwindow $window, callable $callback) : void {}
+    function glfwSetCharCallback(GLFWwindow $window, callable $callback) : void {}
+    function glfwSetCharModsCallback(GLFWwindow $window, callable $callback) : void {}
+    function glfwSetMouseButtonCallback(GLFWwindow $window, callable $callback) : void {}
+    function glfwSetCursorPosCallback(GLFWwindow $window, callable $callback) : void {}
+    function glfwSetCursorEnterCallback(GLFWwindow $window, callable $callback) : void {}
+    function glfwSetScrollCallback(GLFWwindow $window, callable $callback) : void {}
+    function glfwSetDropCallback(GLFWwindow $window, callable $callback) : void {}
+    function glfwJoystickPresent(int $jid) : int {}
+    function glfwGetJoystickName(int $jid) : string {}
+    function glfwGetJoystickGUID(int $jid) : string {}
+    function glfwJoystickIsGamepad(int $jid) : int {}
+    function glfwUpdateGamepadMappings(string $string) : int {}
+    function glfwGetGamepadName(int $jid) : string {}
+    function glfwSetClipboardString(GLFWwindow $window, string $string) : void {}
+    function glfwGetClipboardString(GLFWwindow $window) : string {}
+    function glfwGetTime() : float {}
+    function glfwSetTime(float $time) : void {}
+    function glfwMakeContextCurrent(GLFWwindow $window) : void {}
+    function glfwGetCurrentContext() : GLFWwindow {}
+    function glfwSwapBuffers(GLFWwindow $window) : void {}
+    function glfwSwapInterval(int $interval) : void {}
+    function glfwExtensionSupported(string $extension) : int {}
+    function glfwVulkanSupported() : int {}
+    function glShaderSource(int $shader, string $source) : void {}
+    function glBufferData(int $target, \GL\Buffer\BufferInterface $buffer, int $usage) : void {}
+    function glUniformMatrix4f(int $location, bool $transpose, \GL\Math\Mat4 $matrix) : void {}
+    function glUniformVec2f(int $location, \GL\Math\Vec2 $vec) : void {}
+    function glUniformVec3f(int $location, \GL\Math\Vec3 $vec) : void {}
+    function glUniformVec4f(int $location, \GL\Math\Vec4 $vec) : void {}
  
 }

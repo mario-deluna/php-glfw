@@ -1,5 +1,5 @@
 /* This is a generated file, edit the .stub.php file instead.
- * Stub hash: b0ce235cc2753c86ecba5ab75419cff39e9f68e9 */
+ * Stub hash: f1356220b520a481931ece21b543a2a85599619a */
 
 ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_glCullFace, 0, 1, IS_VOID, 0)
 	ZEND_ARG_TYPE_INFO(0, mode, IS_LONG, 0)
@@ -2786,35 +2786,255 @@ ZEND_END_ARG_INFO()
 
 #define arginfo_class_GL_Buffer_UByteBuffer_reserve arginfo_class_GL_Buffer_BufferInterface_reserve
 
+ZEND_BEGIN_ARG_INFO_EX(arginfo_class_GL_VectorGraphics_VGColor___construct, 0, 0, 4)
+	ZEND_ARG_TYPE_INFO(0, r, IS_DOUBLE, 0)
+	ZEND_ARG_TYPE_INFO(0, g, IS_DOUBLE, 0)
+	ZEND_ARG_TYPE_INFO(0, b, IS_DOUBLE, 0)
+	ZEND_ARG_TYPE_INFO(0, a, IS_DOUBLE, 0)
+ZEND_END_ARG_INFO()
+
 ZEND_BEGIN_ARG_INFO_EX(arginfo_class_GL_VectorGraphics_VGContext___construct, 0, 0, 1)
 	ZEND_ARG_TYPE_INFO(0, flags, IS_LONG, 0)
 ZEND_END_ARG_INFO()
 
-#define arginfo_class_GL_VectorGraphics_VGContext_beginFrame arginfo_glFinish
-
-#define arginfo_class_GL_VectorGraphics_VGContext_endFrame arginfo_glFinish
-
-#define arginfo_class_GL_VectorGraphics_VGContext_beginPath arginfo_glFinish
-
-ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_class_GL_VectorGraphics_VGContext_fillColor, 0, 4, IS_VOID, 0)
+ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_class_GL_VectorGraphics_VGContext_fillColori, 0, 4, IS_VOID, 0)
 	ZEND_ARG_TYPE_INFO(0, r, IS_LONG, 0)
 	ZEND_ARG_TYPE_INFO(0, g, IS_LONG, 0)
 	ZEND_ARG_TYPE_INFO(0, b, IS_LONG, 0)
 	ZEND_ARG_TYPE_INFO(0, a, IS_LONG, 0)
 ZEND_END_ARG_INFO()
 
-ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_class_GL_VectorGraphics_VGContext_rect, 0, 4, IS_VOID, 0)
+#define arginfo_class_GL_VectorGraphics_VGContext_strokeColori arginfo_class_GL_VectorGraphics_VGContext_fillColori
+
+ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_class_GL_VectorGraphics_VGContext_beginFrame, 0, 3, IS_VOID, 0)
+	ZEND_ARG_TYPE_INFO(0, windowWidth, IS_DOUBLE, 0)
+	ZEND_ARG_TYPE_INFO(0, windowHeight, IS_DOUBLE, 0)
+	ZEND_ARG_TYPE_INFO(0, devicePixelRatio, IS_DOUBLE, 0)
+ZEND_END_ARG_INFO()
+
+#define arginfo_class_GL_VectorGraphics_VGContext_cancelFrame arginfo_glFinish
+
+#define arginfo_class_GL_VectorGraphics_VGContext_endFrame arginfo_glFinish
+
+ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_class_GL_VectorGraphics_VGContext_globalCompositeOperation, 0, 1, IS_VOID, 0)
+	ZEND_ARG_TYPE_INFO(0, op, IS_LONG, 0)
+ZEND_END_ARG_INFO()
+
+#define arginfo_class_GL_VectorGraphics_VGContext_globalCompositeBlendFunc arginfo_glBlendFunc
+
+ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_class_GL_VectorGraphics_VGContext_globalCompositeBlendFuncSeparate, 0, 4, IS_VOID, 0)
+	ZEND_ARG_TYPE_INFO(0, srcRGB, IS_LONG, 0)
+	ZEND_ARG_TYPE_INFO(0, dstRGB, IS_LONG, 0)
+	ZEND_ARG_TYPE_INFO(0, srcAlpha, IS_LONG, 0)
+	ZEND_ARG_TYPE_INFO(0, dstAlpha, IS_LONG, 0)
+ZEND_END_ARG_INFO()
+
+#define arginfo_class_GL_VectorGraphics_VGContext_save arginfo_glFinish
+
+#define arginfo_class_GL_VectorGraphics_VGContext_restore arginfo_glFinish
+
+#define arginfo_class_GL_VectorGraphics_VGContext_reset arginfo_glFinish
+
+ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_class_GL_VectorGraphics_VGContext_shapeAntiAlias, 0, 1, IS_VOID, 0)
+	ZEND_ARG_TYPE_INFO(0, enabled, IS_LONG, 0)
+ZEND_END_ARG_INFO()
+
+ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_class_GL_VectorGraphics_VGContext_strokeColor, 0, 1, IS_VOID, 0)
+	ZEND_ARG_OBJ_INFO(0, color, GL\\VectorGraphics\\VGColor, 0)
+ZEND_END_ARG_INFO()
+
+#define arginfo_class_GL_VectorGraphics_VGContext_fillColor arginfo_class_GL_VectorGraphics_VGContext_strokeColor
+
+ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_class_GL_VectorGraphics_VGContext_miterLimit, 0, 1, IS_VOID, 0)
+	ZEND_ARG_TYPE_INFO(0, limit, IS_DOUBLE, 0)
+ZEND_END_ARG_INFO()
+
+#define arginfo_class_GL_VectorGraphics_VGContext_strokeWidth arginfo_glPointSize
+
+#define arginfo_class_GL_VectorGraphics_VGContext_lineCap arginfo_glDisable
+
+ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_class_GL_VectorGraphics_VGContext_lineJoin, 0, 1, IS_VOID, 0)
+	ZEND_ARG_TYPE_INFO(0, join, IS_LONG, 0)
+ZEND_END_ARG_INFO()
+
+ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_class_GL_VectorGraphics_VGContext_globalAlpha, 0, 1, IS_VOID, 0)
+	ZEND_ARG_TYPE_INFO(0, alpha, IS_DOUBLE, 0)
+ZEND_END_ARG_INFO()
+
+#define arginfo_class_GL_VectorGraphics_VGContext_resetTransform arginfo_glFinish
+
+ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_class_GL_VectorGraphics_VGContext_transform, 0, 6, IS_VOID, 0)
+	ZEND_ARG_TYPE_INFO(0, a, IS_DOUBLE, 0)
+	ZEND_ARG_TYPE_INFO(0, b, IS_DOUBLE, 0)
+	ZEND_ARG_TYPE_INFO(0, c, IS_DOUBLE, 0)
+	ZEND_ARG_TYPE_INFO(0, d, IS_DOUBLE, 0)
+	ZEND_ARG_TYPE_INFO(0, e, IS_DOUBLE, 0)
+	ZEND_ARG_TYPE_INFO(0, f, IS_DOUBLE, 0)
+ZEND_END_ARG_INFO()
+
+ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_class_GL_VectorGraphics_VGContext_translate, 0, 2, IS_VOID, 0)
 	ZEND_ARG_TYPE_INFO(0, x, IS_DOUBLE, 0)
 	ZEND_ARG_TYPE_INFO(0, y, IS_DOUBLE, 0)
-	ZEND_ARG_TYPE_INFO(0, width, IS_DOUBLE, 0)
-	ZEND_ARG_TYPE_INFO(0, height, IS_DOUBLE, 0)
+ZEND_END_ARG_INFO()
+
+ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_class_GL_VectorGraphics_VGContext_rotate, 0, 1, IS_VOID, 0)
+	ZEND_ARG_TYPE_INFO(0, angle, IS_DOUBLE, 0)
+ZEND_END_ARG_INFO()
+
+#define arginfo_class_GL_VectorGraphics_VGContext_skewX arginfo_class_GL_VectorGraphics_VGContext_rotate
+
+#define arginfo_class_GL_VectorGraphics_VGContext_skewY arginfo_class_GL_VectorGraphics_VGContext_rotate
+
+#define arginfo_class_GL_VectorGraphics_VGContext_scale arginfo_class_GL_VectorGraphics_VGContext_translate
+
+ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_class_GL_VectorGraphics_VGContext_currentTransform, 0, 1, IS_VOID, 0)
+	ZEND_ARG_TYPE_INFO(1, xform, IS_DOUBLE, 0)
+ZEND_END_ARG_INFO()
+
+ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_class_GL_VectorGraphics_VGContext_imageSize, 0, 3, IS_VOID, 0)
+	ZEND_ARG_TYPE_INFO(0, image, IS_LONG, 0)
+	ZEND_ARG_TYPE_INFO(1, w, IS_LONG, 0)
+	ZEND_ARG_TYPE_INFO(1, h, IS_LONG, 0)
+ZEND_END_ARG_INFO()
+
+ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_class_GL_VectorGraphics_VGContext_deleteImage, 0, 1, IS_VOID, 0)
+	ZEND_ARG_TYPE_INFO(0, image, IS_LONG, 0)
+ZEND_END_ARG_INFO()
+
+ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_class_GL_VectorGraphics_VGContext_scissor, 0, 4, IS_VOID, 0)
+	ZEND_ARG_TYPE_INFO(0, x, IS_DOUBLE, 0)
+	ZEND_ARG_TYPE_INFO(0, y, IS_DOUBLE, 0)
+	ZEND_ARG_TYPE_INFO(0, w, IS_DOUBLE, 0)
+	ZEND_ARG_TYPE_INFO(0, h, IS_DOUBLE, 0)
+ZEND_END_ARG_INFO()
+
+#define arginfo_class_GL_VectorGraphics_VGContext_intersectScissor arginfo_class_GL_VectorGraphics_VGContext_scissor
+
+#define arginfo_class_GL_VectorGraphics_VGContext_resetScissor arginfo_glFinish
+
+#define arginfo_class_GL_VectorGraphics_VGContext_beginPath arginfo_glFinish
+
+#define arginfo_class_GL_VectorGraphics_VGContext_moveTo arginfo_class_GL_VectorGraphics_VGContext_translate
+
+#define arginfo_class_GL_VectorGraphics_VGContext_lineTo arginfo_class_GL_VectorGraphics_VGContext_translate
+
+ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_class_GL_VectorGraphics_VGContext_bezierTo, 0, 6, IS_VOID, 0)
+	ZEND_ARG_TYPE_INFO(0, c1x, IS_DOUBLE, 0)
+	ZEND_ARG_TYPE_INFO(0, c1y, IS_DOUBLE, 0)
+	ZEND_ARG_TYPE_INFO(0, c2x, IS_DOUBLE, 0)
+	ZEND_ARG_TYPE_INFO(0, c2y, IS_DOUBLE, 0)
+	ZEND_ARG_TYPE_INFO(0, x, IS_DOUBLE, 0)
+	ZEND_ARG_TYPE_INFO(0, y, IS_DOUBLE, 0)
+ZEND_END_ARG_INFO()
+
+ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_class_GL_VectorGraphics_VGContext_quadTo, 0, 4, IS_VOID, 0)
+	ZEND_ARG_TYPE_INFO(0, cx, IS_DOUBLE, 0)
+	ZEND_ARG_TYPE_INFO(0, cy, IS_DOUBLE, 0)
+	ZEND_ARG_TYPE_INFO(0, x, IS_DOUBLE, 0)
+	ZEND_ARG_TYPE_INFO(0, y, IS_DOUBLE, 0)
+ZEND_END_ARG_INFO()
+
+ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_class_GL_VectorGraphics_VGContext_arcTo, 0, 5, IS_VOID, 0)
+	ZEND_ARG_TYPE_INFO(0, x1, IS_DOUBLE, 0)
+	ZEND_ARG_TYPE_INFO(0, y1, IS_DOUBLE, 0)
+	ZEND_ARG_TYPE_INFO(0, x2, IS_DOUBLE, 0)
+	ZEND_ARG_TYPE_INFO(0, y2, IS_DOUBLE, 0)
+	ZEND_ARG_TYPE_INFO(0, radius, IS_DOUBLE, 0)
+ZEND_END_ARG_INFO()
+
+#define arginfo_class_GL_VectorGraphics_VGContext_closePath arginfo_glFinish
+
+ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_class_GL_VectorGraphics_VGContext_pathWinding, 0, 1, IS_VOID, 0)
+	ZEND_ARG_TYPE_INFO(0, dir, IS_LONG, 0)
+ZEND_END_ARG_INFO()
+
+ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_class_GL_VectorGraphics_VGContext_arc, 0, 6, IS_VOID, 0)
+	ZEND_ARG_TYPE_INFO(0, cx, IS_DOUBLE, 0)
+	ZEND_ARG_TYPE_INFO(0, cy, IS_DOUBLE, 0)
+	ZEND_ARG_TYPE_INFO(0, r, IS_DOUBLE, 0)
+	ZEND_ARG_TYPE_INFO(0, a0, IS_DOUBLE, 0)
+	ZEND_ARG_TYPE_INFO(0, a1, IS_DOUBLE, 0)
+	ZEND_ARG_TYPE_INFO(0, dir, IS_LONG, 0)
+ZEND_END_ARG_INFO()
+
+#define arginfo_class_GL_VectorGraphics_VGContext_rect arginfo_class_GL_VectorGraphics_VGContext_scissor
+
+ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_class_GL_VectorGraphics_VGContext_roundedRect, 0, 5, IS_VOID, 0)
+	ZEND_ARG_TYPE_INFO(0, x, IS_DOUBLE, 0)
+	ZEND_ARG_TYPE_INFO(0, y, IS_DOUBLE, 0)
+	ZEND_ARG_TYPE_INFO(0, w, IS_DOUBLE, 0)
+	ZEND_ARG_TYPE_INFO(0, h, IS_DOUBLE, 0)
+	ZEND_ARG_TYPE_INFO(0, r, IS_DOUBLE, 0)
+ZEND_END_ARG_INFO()
+
+ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_class_GL_VectorGraphics_VGContext_roundedRectVarying, 0, 8, IS_VOID, 0)
+	ZEND_ARG_TYPE_INFO(0, x, IS_DOUBLE, 0)
+	ZEND_ARG_TYPE_INFO(0, y, IS_DOUBLE, 0)
+	ZEND_ARG_TYPE_INFO(0, w, IS_DOUBLE, 0)
+	ZEND_ARG_TYPE_INFO(0, h, IS_DOUBLE, 0)
+	ZEND_ARG_TYPE_INFO(0, radTopLeft, IS_DOUBLE, 0)
+	ZEND_ARG_TYPE_INFO(0, radTopRight, IS_DOUBLE, 0)
+	ZEND_ARG_TYPE_INFO(0, radBottomRight, IS_DOUBLE, 0)
+	ZEND_ARG_TYPE_INFO(0, radBottomLeft, IS_DOUBLE, 0)
+ZEND_END_ARG_INFO()
+
+ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_class_GL_VectorGraphics_VGContext_ellipse, 0, 4, IS_VOID, 0)
+	ZEND_ARG_TYPE_INFO(0, cx, IS_DOUBLE, 0)
+	ZEND_ARG_TYPE_INFO(0, cy, IS_DOUBLE, 0)
+	ZEND_ARG_TYPE_INFO(0, rx, IS_DOUBLE, 0)
+	ZEND_ARG_TYPE_INFO(0, ry, IS_DOUBLE, 0)
+ZEND_END_ARG_INFO()
+
+ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_class_GL_VectorGraphics_VGContext_circle, 0, 3, IS_VOID, 0)
+	ZEND_ARG_TYPE_INFO(0, cx, IS_DOUBLE, 0)
+	ZEND_ARG_TYPE_INFO(0, cy, IS_DOUBLE, 0)
+	ZEND_ARG_TYPE_INFO(0, r, IS_DOUBLE, 0)
 ZEND_END_ARG_INFO()
 
 #define arginfo_class_GL_VectorGraphics_VGContext_fill arginfo_glFinish
 
 #define arginfo_class_GL_VectorGraphics_VGContext_stroke arginfo_glFinish
 
-#define arginfo_class_GL_VectorGraphics_VGContext_strokeColor arginfo_class_GL_VectorGraphics_VGContext_fillColor
+ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_class_GL_VectorGraphics_VGContext_addFallbackFontId, 0, 2, IS_LONG, 0)
+	ZEND_ARG_TYPE_INFO(0, baseFont, IS_LONG, 0)
+	ZEND_ARG_TYPE_INFO(0, fallbackFont, IS_LONG, 0)
+ZEND_END_ARG_INFO()
+
+ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_class_GL_VectorGraphics_VGContext_resetFallbackFontsId, 0, 1, IS_VOID, 0)
+	ZEND_ARG_TYPE_INFO(0, baseFont, IS_LONG, 0)
+ZEND_END_ARG_INFO()
+
+#define arginfo_class_GL_VectorGraphics_VGContext_fontSize arginfo_glPointSize
+
+ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_class_GL_VectorGraphics_VGContext_fontBlur, 0, 1, IS_VOID, 0)
+	ZEND_ARG_TYPE_INFO(0, blur, IS_DOUBLE, 0)
+ZEND_END_ARG_INFO()
+
+ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_class_GL_VectorGraphics_VGContext_textLetterSpacing, 0, 1, IS_VOID, 0)
+	ZEND_ARG_TYPE_INFO(0, spacing, IS_DOUBLE, 0)
+ZEND_END_ARG_INFO()
+
+ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_class_GL_VectorGraphics_VGContext_textLineHeight, 0, 1, IS_VOID, 0)
+	ZEND_ARG_TYPE_INFO(0, lineHeight, IS_DOUBLE, 0)
+ZEND_END_ARG_INFO()
+
+ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_class_GL_VectorGraphics_VGContext_textAlign, 0, 1, IS_VOID, 0)
+	ZEND_ARG_TYPE_INFO(0, align, IS_LONG, 0)
+ZEND_END_ARG_INFO()
+
+ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_class_GL_VectorGraphics_VGContext_fontFaceId, 0, 1, IS_VOID, 0)
+	ZEND_ARG_TYPE_INFO(0, font, IS_LONG, 0)
+ZEND_END_ARG_INFO()
+
+ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_class_GL_VectorGraphics_VGContext_textMetrics, 0, 3, IS_VOID, 0)
+	ZEND_ARG_TYPE_INFO(1, ascender, IS_DOUBLE, 0)
+	ZEND_ARG_TYPE_INFO(1, descender, IS_DOUBLE, 0)
+	ZEND_ARG_TYPE_INFO(1, lineh, IS_DOUBLE, 0)
+ZEND_END_ARG_INFO()
+
+#define arginfo_class_GL_VectorGraphics_VGContext_deleteInternal arginfo_glFinish
+
+#define arginfo_class_GL_VectorGraphics_VGContext_debugDumpPathCache arginfo_glFinish
 
 
 ZEND_FUNCTION(glCullFace);
@@ -3556,15 +3776,67 @@ ZEND_METHOD(GL_Buffer_UByteBuffer, clear);
 ZEND_METHOD(GL_Buffer_UByteBuffer, size);
 ZEND_METHOD(GL_Buffer_UByteBuffer, capacity);
 ZEND_METHOD(GL_Buffer_UByteBuffer, reserve);
+ZEND_METHOD(GL_VectorGraphics_VGColor, __construct);
 ZEND_METHOD(GL_VectorGraphics_VGContext, __construct);
+ZEND_METHOD(GL_VectorGraphics_VGContext, fillColori);
+ZEND_METHOD(GL_VectorGraphics_VGContext, strokeColori);
 ZEND_METHOD(GL_VectorGraphics_VGContext, beginFrame);
+ZEND_METHOD(GL_VectorGraphics_VGContext, cancelFrame);
 ZEND_METHOD(GL_VectorGraphics_VGContext, endFrame);
-ZEND_METHOD(GL_VectorGraphics_VGContext, beginPath);
+ZEND_METHOD(GL_VectorGraphics_VGContext, globalCompositeOperation);
+ZEND_METHOD(GL_VectorGraphics_VGContext, globalCompositeBlendFunc);
+ZEND_METHOD(GL_VectorGraphics_VGContext, globalCompositeBlendFuncSeparate);
+ZEND_METHOD(GL_VectorGraphics_VGContext, save);
+ZEND_METHOD(GL_VectorGraphics_VGContext, restore);
+ZEND_METHOD(GL_VectorGraphics_VGContext, reset);
+ZEND_METHOD(GL_VectorGraphics_VGContext, shapeAntiAlias);
+ZEND_METHOD(GL_VectorGraphics_VGContext, strokeColor);
 ZEND_METHOD(GL_VectorGraphics_VGContext, fillColor);
+ZEND_METHOD(GL_VectorGraphics_VGContext, miterLimit);
+ZEND_METHOD(GL_VectorGraphics_VGContext, strokeWidth);
+ZEND_METHOD(GL_VectorGraphics_VGContext, lineCap);
+ZEND_METHOD(GL_VectorGraphics_VGContext, lineJoin);
+ZEND_METHOD(GL_VectorGraphics_VGContext, globalAlpha);
+ZEND_METHOD(GL_VectorGraphics_VGContext, resetTransform);
+ZEND_METHOD(GL_VectorGraphics_VGContext, transform);
+ZEND_METHOD(GL_VectorGraphics_VGContext, translate);
+ZEND_METHOD(GL_VectorGraphics_VGContext, rotate);
+ZEND_METHOD(GL_VectorGraphics_VGContext, skewX);
+ZEND_METHOD(GL_VectorGraphics_VGContext, skewY);
+ZEND_METHOD(GL_VectorGraphics_VGContext, scale);
+ZEND_METHOD(GL_VectorGraphics_VGContext, currentTransform);
+ZEND_METHOD(GL_VectorGraphics_VGContext, imageSize);
+ZEND_METHOD(GL_VectorGraphics_VGContext, deleteImage);
+ZEND_METHOD(GL_VectorGraphics_VGContext, scissor);
+ZEND_METHOD(GL_VectorGraphics_VGContext, intersectScissor);
+ZEND_METHOD(GL_VectorGraphics_VGContext, resetScissor);
+ZEND_METHOD(GL_VectorGraphics_VGContext, beginPath);
+ZEND_METHOD(GL_VectorGraphics_VGContext, moveTo);
+ZEND_METHOD(GL_VectorGraphics_VGContext, lineTo);
+ZEND_METHOD(GL_VectorGraphics_VGContext, bezierTo);
+ZEND_METHOD(GL_VectorGraphics_VGContext, quadTo);
+ZEND_METHOD(GL_VectorGraphics_VGContext, arcTo);
+ZEND_METHOD(GL_VectorGraphics_VGContext, closePath);
+ZEND_METHOD(GL_VectorGraphics_VGContext, pathWinding);
+ZEND_METHOD(GL_VectorGraphics_VGContext, arc);
 ZEND_METHOD(GL_VectorGraphics_VGContext, rect);
+ZEND_METHOD(GL_VectorGraphics_VGContext, roundedRect);
+ZEND_METHOD(GL_VectorGraphics_VGContext, roundedRectVarying);
+ZEND_METHOD(GL_VectorGraphics_VGContext, ellipse);
+ZEND_METHOD(GL_VectorGraphics_VGContext, circle);
 ZEND_METHOD(GL_VectorGraphics_VGContext, fill);
 ZEND_METHOD(GL_VectorGraphics_VGContext, stroke);
-ZEND_METHOD(GL_VectorGraphics_VGContext, strokeColor);
+ZEND_METHOD(GL_VectorGraphics_VGContext, addFallbackFontId);
+ZEND_METHOD(GL_VectorGraphics_VGContext, resetFallbackFontsId);
+ZEND_METHOD(GL_VectorGraphics_VGContext, fontSize);
+ZEND_METHOD(GL_VectorGraphics_VGContext, fontBlur);
+ZEND_METHOD(GL_VectorGraphics_VGContext, textLetterSpacing);
+ZEND_METHOD(GL_VectorGraphics_VGContext, textLineHeight);
+ZEND_METHOD(GL_VectorGraphics_VGContext, textAlign);
+ZEND_METHOD(GL_VectorGraphics_VGContext, fontFaceId);
+ZEND_METHOD(GL_VectorGraphics_VGContext, textMetrics);
+ZEND_METHOD(GL_VectorGraphics_VGContext, deleteInternal);
+ZEND_METHOD(GL_VectorGraphics_VGContext, debugDumpPathCache);
 
 
 static const zend_function_entry ext_functions[] = {
@@ -4431,15 +4703,72 @@ static const zend_function_entry class_GL_Buffer_UByteBuffer_methods[] = {
 };
 
 
+static const zend_function_entry class_GL_VectorGraphics_VGColor_methods[] = {
+	ZEND_ME(GL_VectorGraphics_VGColor, __construct, arginfo_class_GL_VectorGraphics_VGColor___construct, ZEND_ACC_PUBLIC)
+	ZEND_FE_END
+};
+
+
 static const zend_function_entry class_GL_VectorGraphics_VGContext_methods[] = {
 	ZEND_ME(GL_VectorGraphics_VGContext, __construct, arginfo_class_GL_VectorGraphics_VGContext___construct, ZEND_ACC_PUBLIC)
+	ZEND_ME(GL_VectorGraphics_VGContext, fillColori, arginfo_class_GL_VectorGraphics_VGContext_fillColori, ZEND_ACC_PUBLIC)
+	ZEND_ME(GL_VectorGraphics_VGContext, strokeColori, arginfo_class_GL_VectorGraphics_VGContext_strokeColori, ZEND_ACC_PUBLIC)
 	ZEND_ME(GL_VectorGraphics_VGContext, beginFrame, arginfo_class_GL_VectorGraphics_VGContext_beginFrame, ZEND_ACC_PUBLIC)
+	ZEND_ME(GL_VectorGraphics_VGContext, cancelFrame, arginfo_class_GL_VectorGraphics_VGContext_cancelFrame, ZEND_ACC_PUBLIC)
 	ZEND_ME(GL_VectorGraphics_VGContext, endFrame, arginfo_class_GL_VectorGraphics_VGContext_endFrame, ZEND_ACC_PUBLIC)
-	ZEND_ME(GL_VectorGraphics_VGContext, beginPath, arginfo_class_GL_VectorGraphics_VGContext_beginPath, ZEND_ACC_PUBLIC)
+	ZEND_ME(GL_VectorGraphics_VGContext, globalCompositeOperation, arginfo_class_GL_VectorGraphics_VGContext_globalCompositeOperation, ZEND_ACC_PUBLIC)
+	ZEND_ME(GL_VectorGraphics_VGContext, globalCompositeBlendFunc, arginfo_class_GL_VectorGraphics_VGContext_globalCompositeBlendFunc, ZEND_ACC_PUBLIC)
+	ZEND_ME(GL_VectorGraphics_VGContext, globalCompositeBlendFuncSeparate, arginfo_class_GL_VectorGraphics_VGContext_globalCompositeBlendFuncSeparate, ZEND_ACC_PUBLIC)
+	ZEND_ME(GL_VectorGraphics_VGContext, save, arginfo_class_GL_VectorGraphics_VGContext_save, ZEND_ACC_PUBLIC)
+	ZEND_ME(GL_VectorGraphics_VGContext, restore, arginfo_class_GL_VectorGraphics_VGContext_restore, ZEND_ACC_PUBLIC)
+	ZEND_ME(GL_VectorGraphics_VGContext, reset, arginfo_class_GL_VectorGraphics_VGContext_reset, ZEND_ACC_PUBLIC)
+	ZEND_ME(GL_VectorGraphics_VGContext, shapeAntiAlias, arginfo_class_GL_VectorGraphics_VGContext_shapeAntiAlias, ZEND_ACC_PUBLIC)
+	ZEND_ME(GL_VectorGraphics_VGContext, strokeColor, arginfo_class_GL_VectorGraphics_VGContext_strokeColor, ZEND_ACC_PUBLIC)
 	ZEND_ME(GL_VectorGraphics_VGContext, fillColor, arginfo_class_GL_VectorGraphics_VGContext_fillColor, ZEND_ACC_PUBLIC)
+	ZEND_ME(GL_VectorGraphics_VGContext, miterLimit, arginfo_class_GL_VectorGraphics_VGContext_miterLimit, ZEND_ACC_PUBLIC)
+	ZEND_ME(GL_VectorGraphics_VGContext, strokeWidth, arginfo_class_GL_VectorGraphics_VGContext_strokeWidth, ZEND_ACC_PUBLIC)
+	ZEND_ME(GL_VectorGraphics_VGContext, lineCap, arginfo_class_GL_VectorGraphics_VGContext_lineCap, ZEND_ACC_PUBLIC)
+	ZEND_ME(GL_VectorGraphics_VGContext, lineJoin, arginfo_class_GL_VectorGraphics_VGContext_lineJoin, ZEND_ACC_PUBLIC)
+	ZEND_ME(GL_VectorGraphics_VGContext, globalAlpha, arginfo_class_GL_VectorGraphics_VGContext_globalAlpha, ZEND_ACC_PUBLIC)
+	ZEND_ME(GL_VectorGraphics_VGContext, resetTransform, arginfo_class_GL_VectorGraphics_VGContext_resetTransform, ZEND_ACC_PUBLIC)
+	ZEND_ME(GL_VectorGraphics_VGContext, transform, arginfo_class_GL_VectorGraphics_VGContext_transform, ZEND_ACC_PUBLIC)
+	ZEND_ME(GL_VectorGraphics_VGContext, translate, arginfo_class_GL_VectorGraphics_VGContext_translate, ZEND_ACC_PUBLIC)
+	ZEND_ME(GL_VectorGraphics_VGContext, rotate, arginfo_class_GL_VectorGraphics_VGContext_rotate, ZEND_ACC_PUBLIC)
+	ZEND_ME(GL_VectorGraphics_VGContext, skewX, arginfo_class_GL_VectorGraphics_VGContext_skewX, ZEND_ACC_PUBLIC)
+	ZEND_ME(GL_VectorGraphics_VGContext, skewY, arginfo_class_GL_VectorGraphics_VGContext_skewY, ZEND_ACC_PUBLIC)
+	ZEND_ME(GL_VectorGraphics_VGContext, scale, arginfo_class_GL_VectorGraphics_VGContext_scale, ZEND_ACC_PUBLIC)
+	ZEND_ME(GL_VectorGraphics_VGContext, currentTransform, arginfo_class_GL_VectorGraphics_VGContext_currentTransform, ZEND_ACC_PUBLIC)
+	ZEND_ME(GL_VectorGraphics_VGContext, imageSize, arginfo_class_GL_VectorGraphics_VGContext_imageSize, ZEND_ACC_PUBLIC)
+	ZEND_ME(GL_VectorGraphics_VGContext, deleteImage, arginfo_class_GL_VectorGraphics_VGContext_deleteImage, ZEND_ACC_PUBLIC)
+	ZEND_ME(GL_VectorGraphics_VGContext, scissor, arginfo_class_GL_VectorGraphics_VGContext_scissor, ZEND_ACC_PUBLIC)
+	ZEND_ME(GL_VectorGraphics_VGContext, intersectScissor, arginfo_class_GL_VectorGraphics_VGContext_intersectScissor, ZEND_ACC_PUBLIC)
+	ZEND_ME(GL_VectorGraphics_VGContext, resetScissor, arginfo_class_GL_VectorGraphics_VGContext_resetScissor, ZEND_ACC_PUBLIC)
+	ZEND_ME(GL_VectorGraphics_VGContext, beginPath, arginfo_class_GL_VectorGraphics_VGContext_beginPath, ZEND_ACC_PUBLIC)
+	ZEND_ME(GL_VectorGraphics_VGContext, moveTo, arginfo_class_GL_VectorGraphics_VGContext_moveTo, ZEND_ACC_PUBLIC)
+	ZEND_ME(GL_VectorGraphics_VGContext, lineTo, arginfo_class_GL_VectorGraphics_VGContext_lineTo, ZEND_ACC_PUBLIC)
+	ZEND_ME(GL_VectorGraphics_VGContext, bezierTo, arginfo_class_GL_VectorGraphics_VGContext_bezierTo, ZEND_ACC_PUBLIC)
+	ZEND_ME(GL_VectorGraphics_VGContext, quadTo, arginfo_class_GL_VectorGraphics_VGContext_quadTo, ZEND_ACC_PUBLIC)
+	ZEND_ME(GL_VectorGraphics_VGContext, arcTo, arginfo_class_GL_VectorGraphics_VGContext_arcTo, ZEND_ACC_PUBLIC)
+	ZEND_ME(GL_VectorGraphics_VGContext, closePath, arginfo_class_GL_VectorGraphics_VGContext_closePath, ZEND_ACC_PUBLIC)
+	ZEND_ME(GL_VectorGraphics_VGContext, pathWinding, arginfo_class_GL_VectorGraphics_VGContext_pathWinding, ZEND_ACC_PUBLIC)
+	ZEND_ME(GL_VectorGraphics_VGContext, arc, arginfo_class_GL_VectorGraphics_VGContext_arc, ZEND_ACC_PUBLIC)
 	ZEND_ME(GL_VectorGraphics_VGContext, rect, arginfo_class_GL_VectorGraphics_VGContext_rect, ZEND_ACC_PUBLIC)
+	ZEND_ME(GL_VectorGraphics_VGContext, roundedRect, arginfo_class_GL_VectorGraphics_VGContext_roundedRect, ZEND_ACC_PUBLIC)
+	ZEND_ME(GL_VectorGraphics_VGContext, roundedRectVarying, arginfo_class_GL_VectorGraphics_VGContext_roundedRectVarying, ZEND_ACC_PUBLIC)
+	ZEND_ME(GL_VectorGraphics_VGContext, ellipse, arginfo_class_GL_VectorGraphics_VGContext_ellipse, ZEND_ACC_PUBLIC)
+	ZEND_ME(GL_VectorGraphics_VGContext, circle, arginfo_class_GL_VectorGraphics_VGContext_circle, ZEND_ACC_PUBLIC)
 	ZEND_ME(GL_VectorGraphics_VGContext, fill, arginfo_class_GL_VectorGraphics_VGContext_fill, ZEND_ACC_PUBLIC)
 	ZEND_ME(GL_VectorGraphics_VGContext, stroke, arginfo_class_GL_VectorGraphics_VGContext_stroke, ZEND_ACC_PUBLIC)
-	ZEND_ME(GL_VectorGraphics_VGContext, strokeColor, arginfo_class_GL_VectorGraphics_VGContext_strokeColor, ZEND_ACC_PUBLIC)
+	ZEND_ME(GL_VectorGraphics_VGContext, addFallbackFontId, arginfo_class_GL_VectorGraphics_VGContext_addFallbackFontId, ZEND_ACC_PUBLIC)
+	ZEND_ME(GL_VectorGraphics_VGContext, resetFallbackFontsId, arginfo_class_GL_VectorGraphics_VGContext_resetFallbackFontsId, ZEND_ACC_PUBLIC)
+	ZEND_ME(GL_VectorGraphics_VGContext, fontSize, arginfo_class_GL_VectorGraphics_VGContext_fontSize, ZEND_ACC_PUBLIC)
+	ZEND_ME(GL_VectorGraphics_VGContext, fontBlur, arginfo_class_GL_VectorGraphics_VGContext_fontBlur, ZEND_ACC_PUBLIC)
+	ZEND_ME(GL_VectorGraphics_VGContext, textLetterSpacing, arginfo_class_GL_VectorGraphics_VGContext_textLetterSpacing, ZEND_ACC_PUBLIC)
+	ZEND_ME(GL_VectorGraphics_VGContext, textLineHeight, arginfo_class_GL_VectorGraphics_VGContext_textLineHeight, ZEND_ACC_PUBLIC)
+	ZEND_ME(GL_VectorGraphics_VGContext, textAlign, arginfo_class_GL_VectorGraphics_VGContext_textAlign, ZEND_ACC_PUBLIC)
+	ZEND_ME(GL_VectorGraphics_VGContext, fontFaceId, arginfo_class_GL_VectorGraphics_VGContext_fontFaceId, ZEND_ACC_PUBLIC)
+	ZEND_ME(GL_VectorGraphics_VGContext, textMetrics, arginfo_class_GL_VectorGraphics_VGContext_textMetrics, ZEND_ACC_PUBLIC)
+	ZEND_ME(GL_VectorGraphics_VGContext, deleteInternal, arginfo_class_GL_VectorGraphics_VGContext_deleteInternal, ZEND_ACC_PUBLIC)
+	ZEND_ME(GL_VectorGraphics_VGContext, debugDumpPathCache, arginfo_class_GL_VectorGraphics_VGContext_debugDumpPathCache, ZEND_ACC_PUBLIC)
 	ZEND_FE_END
 };

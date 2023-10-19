@@ -36,6 +36,13 @@ class ExtGenerator
     public array $phpglfwBuffers = [];
 
     /**
+     * Array of VGContext functions
+     * 
+     * @var array<ExtFunction>
+     */
+    public array $vgContextFunctions = [];
+
+    /**
      * Map of GLTypes to extension type
      *
      * @var array<string, string>
@@ -575,8 +582,10 @@ class ExtGenerator
     private function buildGLVGHeaderAndBody() : void
     {
         $this->generateTemplate('phpglfw_vg.h', [
+            'ctxfunctions' => $this->vgContextFunctions,
         ]);
         $this->generateTemplate('phpglfw_vg.c', [
+            'ctxfunctions' => $this->vgContextFunctions,
         ]);
     }
 
@@ -594,6 +603,7 @@ class ExtGenerator
             'buffers' => $this->phpglfwBuffers,
             'constants' => $this->constants,
             'functions' => $this->getCompleteFunctions(),
+            'vgContextFunctions' => $this->vgContextFunctions,
             '__buffer_prefix' => '<?php ' . PHP_EOL
         ]);
 

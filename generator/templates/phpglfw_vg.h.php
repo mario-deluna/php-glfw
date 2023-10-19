@@ -30,16 +30,30 @@
 #include "nanovg.h"
 
 /**
- * object structs
+ * NanoVG object wrappers
  */
 typedef struct _phpglfw_vgcontext_object {
     NVGcontext* nvgctx;
     zend_object std;
 } phpglfw_vgcontext_object; 
 
-zend_class_entry *phpglfw_get_vg_vgcontext_ce(); 
+typedef struct _phpglfw_vgpaint_object {
+    NVGpaint nvgpaint;
+    zend_object std;
+} phpglfw_vgpaint_object;
 
-phpglfw_vgcontext_object* phpglfw_vgcontext_res_objectptr_from_zobj_p(zend_object* obj);
+typedef struct _phpglfw_vgcolor_object {
+    NVGcolor nvgcolor;
+    zend_object std;
+} phpglfw_vgcolor_object;
+
+zend_class_entry *phpglfw_get_vg_vgcontext_ce();
+zend_class_entry *phpglfw_get_vg_vgpaint_ce();
+zend_class_entry *phpglfw_get_vg_vgcolor_ce(); 
+
+phpglfw_vgcontext_object* phpglfw_vgcontext_objectptr_from_zobj_p(zend_object* obj);
+phpglfw_vgpaint_object* phpglfw_vgpaint_objectptr_from_zobj_p(zend_object* obj);
+phpglfw_vgcolor_object* phpglfw_vgcolor_objectptr_from_zobj_p(zend_object* obj);
 
 void phpglfw_register_vg_module(INIT_FUNC_ARGS);
 

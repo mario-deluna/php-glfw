@@ -32,6 +32,10 @@ $gen->import($spec, 'gl', '4.1', [
 $glfwparser = new GLFWHeaderParser;
 $glfwparser->process(GEN_PATH_EXT . '/vendor/glfw/include/GLFW/glfw3.h', $gen);
 
+// VectorGraphics import 
+$nanovg = new NVGParser();
+$nanovg->process(GEN_PATH_EXT . '/vendor/nanovg/src/nanovg.h', $gen);
+
 // generate buffer classes for gl data types
 // 'GLbyte' => 'BYTE',
 // 'GLubyte' => 'UNSIGNED_BYTE',
@@ -72,6 +76,7 @@ $gen->adjust(PHPGlfwAdjustments\GLVectorSetterFunctionAdjustment::class);
 $gen->adjust(PHPGlfwAdjustments\GLGetShaderInfoLogAdjustment::class);
 $gen->adjust(PHPGlfwAdjustments\GLReadPixelsAdjustment::class);
 $gen->adjust(PHPGlfwAdjustments\BooleanConstAdjustment::class);
+
 
 
 // build the extension
