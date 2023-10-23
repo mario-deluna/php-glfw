@@ -1,5 +1,5 @@
 /* This is a generated file, edit the .stub.php file instead.
- * Stub hash: f1356220b520a481931ece21b543a2a85599619a */
+ * Stub hash: f4ff49863da14488691f043a89b1c3f92ad588f5 */
 
 ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_glCullFace, 0, 1, IS_VOID, 0)
 	ZEND_ARG_TYPE_INFO(0, mode, IS_LONG, 0)
@@ -2793,6 +2793,10 @@ ZEND_BEGIN_ARG_INFO_EX(arginfo_class_GL_VectorGraphics_VGColor___construct, 0, 0
 	ZEND_ARG_TYPE_INFO(0, a, IS_DOUBLE, 0)
 ZEND_END_ARG_INFO()
 
+ZEND_BEGIN_ARG_INFO_EX(arginfo_class_GL_VectorGraphics_VGImage___construct, 0, 0, 1)
+	ZEND_ARG_OBJ_INFO(0, texture, GL\\VectorGraphics\\GL\\Texture\\Texture2D, 0)
+ZEND_END_ARG_INFO()
+
 ZEND_BEGIN_ARG_INFO_EX(arginfo_class_GL_VectorGraphics_VGContext___construct, 0, 0, 1)
 	ZEND_ARG_TYPE_INFO(0, flags, IS_LONG, 0)
 ZEND_END_ARG_INFO()
@@ -2805,6 +2809,41 @@ ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_class_GL_VectorGraphics_VGContex
 ZEND_END_ARG_INFO()
 
 #define arginfo_class_GL_VectorGraphics_VGContext_strokeColori arginfo_class_GL_VectorGraphics_VGContext_fillColori
+
+ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_class_GL_VectorGraphics_VGContext_fillColorVec4, 0, 1, IS_VOID, 0)
+	ZEND_ARG_OBJ_INFO(0, vec, GL\\VectorGraphics\\GL\\Math\\Vec4, 0)
+ZEND_END_ARG_INFO()
+
+#define arginfo_class_GL_VectorGraphics_VGContext_strokeColorVec4 arginfo_class_GL_VectorGraphics_VGContext_fillColorVec4
+
+ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(arginfo_class_GL_VectorGraphics_VGContext_linearGradient, 0, 6, GL\\VectorGraphics\\VGPaint, 0)
+	ZEND_ARG_TYPE_INFO(0, sx, IS_DOUBLE, 0)
+	ZEND_ARG_TYPE_INFO(0, sy, IS_DOUBLE, 0)
+	ZEND_ARG_TYPE_INFO(0, ex, IS_DOUBLE, 0)
+	ZEND_ARG_TYPE_INFO(0, ey, IS_DOUBLE, 0)
+	ZEND_ARG_OBJ_INFO(0, icol, GL\\VectorGraphics\\VGColor, 0)
+	ZEND_ARG_OBJ_INFO(0, ocol, GL\\VectorGraphics\\VGColor, 0)
+ZEND_END_ARG_INFO()
+
+ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(arginfo_class_GL_VectorGraphics_VGContext_boxGradient, 0, 8, GL\\VectorGraphics\\VGPaint, 0)
+	ZEND_ARG_TYPE_INFO(0, x, IS_DOUBLE, 0)
+	ZEND_ARG_TYPE_INFO(0, y, IS_DOUBLE, 0)
+	ZEND_ARG_TYPE_INFO(0, w, IS_DOUBLE, 0)
+	ZEND_ARG_TYPE_INFO(0, h, IS_DOUBLE, 0)
+	ZEND_ARG_TYPE_INFO(0, r, IS_DOUBLE, 0)
+	ZEND_ARG_TYPE_INFO(0, f, IS_DOUBLE, 0)
+	ZEND_ARG_OBJ_INFO(0, icol, GL\\VectorGraphics\\VGColor, 0)
+	ZEND_ARG_OBJ_INFO(0, ocol, GL\\VectorGraphics\\VGColor, 0)
+ZEND_END_ARG_INFO()
+
+ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(arginfo_class_GL_VectorGraphics_VGContext_radialGradient, 0, 6, GL\\VectorGraphics\\VGPaint, 0)
+	ZEND_ARG_TYPE_INFO(0, cx, IS_DOUBLE, 0)
+	ZEND_ARG_TYPE_INFO(0, cy, IS_DOUBLE, 0)
+	ZEND_ARG_TYPE_INFO(0, inr, IS_DOUBLE, 0)
+	ZEND_ARG_TYPE_INFO(0, outr, IS_DOUBLE, 0)
+	ZEND_ARG_OBJ_INFO(0, icol, GL\\VectorGraphics\\VGColor, 0)
+	ZEND_ARG_OBJ_INFO(0, ocol, GL\\VectorGraphics\\VGColor, 0)
+ZEND_END_ARG_INFO()
 
 ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_class_GL_VectorGraphics_VGContext_beginFrame, 0, 3, IS_VOID, 0)
 	ZEND_ARG_TYPE_INFO(0, windowWidth, IS_DOUBLE, 0)
@@ -2843,7 +2882,13 @@ ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_class_GL_VectorGraphics_VGContex
 	ZEND_ARG_OBJ_INFO(0, color, GL\\VectorGraphics\\VGColor, 0)
 ZEND_END_ARG_INFO()
 
+ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_class_GL_VectorGraphics_VGContext_strokePaint, 0, 1, IS_VOID, 0)
+	ZEND_ARG_OBJ_INFO(0, paint, GL\\VectorGraphics\\VGPaint, 0)
+ZEND_END_ARG_INFO()
+
 #define arginfo_class_GL_VectorGraphics_VGContext_fillColor arginfo_class_GL_VectorGraphics_VGContext_strokeColor
+
+#define arginfo_class_GL_VectorGraphics_VGContext_fillPaint arginfo_class_GL_VectorGraphics_VGContext_strokePaint
 
 ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_class_GL_VectorGraphics_VGContext_miterLimit, 0, 1, IS_VOID, 0)
 	ZEND_ARG_TYPE_INFO(0, limit, IS_DOUBLE, 0)
@@ -3777,9 +3822,15 @@ ZEND_METHOD(GL_Buffer_UByteBuffer, size);
 ZEND_METHOD(GL_Buffer_UByteBuffer, capacity);
 ZEND_METHOD(GL_Buffer_UByteBuffer, reserve);
 ZEND_METHOD(GL_VectorGraphics_VGColor, __construct);
+ZEND_METHOD(GL_VectorGraphics_VGImage, __construct);
 ZEND_METHOD(GL_VectorGraphics_VGContext, __construct);
 ZEND_METHOD(GL_VectorGraphics_VGContext, fillColori);
 ZEND_METHOD(GL_VectorGraphics_VGContext, strokeColori);
+ZEND_METHOD(GL_VectorGraphics_VGContext, fillColorVec4);
+ZEND_METHOD(GL_VectorGraphics_VGContext, strokeColorVec4);
+ZEND_METHOD(GL_VectorGraphics_VGContext, linearGradient);
+ZEND_METHOD(GL_VectorGraphics_VGContext, boxGradient);
+ZEND_METHOD(GL_VectorGraphics_VGContext, radialGradient);
 ZEND_METHOD(GL_VectorGraphics_VGContext, beginFrame);
 ZEND_METHOD(GL_VectorGraphics_VGContext, cancelFrame);
 ZEND_METHOD(GL_VectorGraphics_VGContext, endFrame);
@@ -3791,7 +3842,9 @@ ZEND_METHOD(GL_VectorGraphics_VGContext, restore);
 ZEND_METHOD(GL_VectorGraphics_VGContext, reset);
 ZEND_METHOD(GL_VectorGraphics_VGContext, shapeAntiAlias);
 ZEND_METHOD(GL_VectorGraphics_VGContext, strokeColor);
+ZEND_METHOD(GL_VectorGraphics_VGContext, strokePaint);
 ZEND_METHOD(GL_VectorGraphics_VGContext, fillColor);
+ZEND_METHOD(GL_VectorGraphics_VGContext, fillPaint);
 ZEND_METHOD(GL_VectorGraphics_VGContext, miterLimit);
 ZEND_METHOD(GL_VectorGraphics_VGContext, strokeWidth);
 ZEND_METHOD(GL_VectorGraphics_VGContext, lineCap);
@@ -4709,10 +4762,26 @@ static const zend_function_entry class_GL_VectorGraphics_VGColor_methods[] = {
 };
 
 
+static const zend_function_entry class_GL_VectorGraphics_VGPaint_methods[] = {
+	ZEND_FE_END
+};
+
+
+static const zend_function_entry class_GL_VectorGraphics_VGImage_methods[] = {
+	ZEND_ME(GL_VectorGraphics_VGImage, __construct, arginfo_class_GL_VectorGraphics_VGImage___construct, ZEND_ACC_PUBLIC)
+	ZEND_FE_END
+};
+
+
 static const zend_function_entry class_GL_VectorGraphics_VGContext_methods[] = {
 	ZEND_ME(GL_VectorGraphics_VGContext, __construct, arginfo_class_GL_VectorGraphics_VGContext___construct, ZEND_ACC_PUBLIC)
 	ZEND_ME(GL_VectorGraphics_VGContext, fillColori, arginfo_class_GL_VectorGraphics_VGContext_fillColori, ZEND_ACC_PUBLIC)
 	ZEND_ME(GL_VectorGraphics_VGContext, strokeColori, arginfo_class_GL_VectorGraphics_VGContext_strokeColori, ZEND_ACC_PUBLIC)
+	ZEND_ME(GL_VectorGraphics_VGContext, fillColorVec4, arginfo_class_GL_VectorGraphics_VGContext_fillColorVec4, ZEND_ACC_PUBLIC)
+	ZEND_ME(GL_VectorGraphics_VGContext, strokeColorVec4, arginfo_class_GL_VectorGraphics_VGContext_strokeColorVec4, ZEND_ACC_PUBLIC)
+	ZEND_ME(GL_VectorGraphics_VGContext, linearGradient, arginfo_class_GL_VectorGraphics_VGContext_linearGradient, ZEND_ACC_PUBLIC)
+	ZEND_ME(GL_VectorGraphics_VGContext, boxGradient, arginfo_class_GL_VectorGraphics_VGContext_boxGradient, ZEND_ACC_PUBLIC)
+	ZEND_ME(GL_VectorGraphics_VGContext, radialGradient, arginfo_class_GL_VectorGraphics_VGContext_radialGradient, ZEND_ACC_PUBLIC)
 	ZEND_ME(GL_VectorGraphics_VGContext, beginFrame, arginfo_class_GL_VectorGraphics_VGContext_beginFrame, ZEND_ACC_PUBLIC)
 	ZEND_ME(GL_VectorGraphics_VGContext, cancelFrame, arginfo_class_GL_VectorGraphics_VGContext_cancelFrame, ZEND_ACC_PUBLIC)
 	ZEND_ME(GL_VectorGraphics_VGContext, endFrame, arginfo_class_GL_VectorGraphics_VGContext_endFrame, ZEND_ACC_PUBLIC)
@@ -4724,7 +4793,9 @@ static const zend_function_entry class_GL_VectorGraphics_VGContext_methods[] = {
 	ZEND_ME(GL_VectorGraphics_VGContext, reset, arginfo_class_GL_VectorGraphics_VGContext_reset, ZEND_ACC_PUBLIC)
 	ZEND_ME(GL_VectorGraphics_VGContext, shapeAntiAlias, arginfo_class_GL_VectorGraphics_VGContext_shapeAntiAlias, ZEND_ACC_PUBLIC)
 	ZEND_ME(GL_VectorGraphics_VGContext, strokeColor, arginfo_class_GL_VectorGraphics_VGContext_strokeColor, ZEND_ACC_PUBLIC)
+	ZEND_ME(GL_VectorGraphics_VGContext, strokePaint, arginfo_class_GL_VectorGraphics_VGContext_strokePaint, ZEND_ACC_PUBLIC)
 	ZEND_ME(GL_VectorGraphics_VGContext, fillColor, arginfo_class_GL_VectorGraphics_VGContext_fillColor, ZEND_ACC_PUBLIC)
+	ZEND_ME(GL_VectorGraphics_VGContext, fillPaint, arginfo_class_GL_VectorGraphics_VGContext_fillPaint, ZEND_ACC_PUBLIC)
 	ZEND_ME(GL_VectorGraphics_VGContext, miterLimit, arginfo_class_GL_VectorGraphics_VGContext_miterLimit, ZEND_ACC_PUBLIC)
 	ZEND_ME(GL_VectorGraphics_VGContext, strokeWidth, arginfo_class_GL_VectorGraphics_VGContext_strokeWidth, ZEND_ACC_PUBLIC)
 	ZEND_ME(GL_VectorGraphics_VGContext, lineCap, arginfo_class_GL_VectorGraphics_VGContext_lineCap, ZEND_ACC_PUBLIC)

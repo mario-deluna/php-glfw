@@ -97,6 +97,23 @@ class NVGParser
                     };
                     $phpfunc->arguments[] = $phparg;
                 }
+                elseif ($rawArgType === 'NVGpaint') {
+                    $phparg = new class($sourceArg['name'], ExtType::T_CE) extends CEObjectArgument {
+                        public function getClassEntryPointer() : string {
+                            return 'phpglfw_get_vg_vgpaint_ce()';
+                        }
+
+                        public function getUsePrepCode() : string 
+                        {
+                            return 'NVGpaint ' .$this->getUsableVariable(). ' = phpglfw_vgpaint_objectptr_from_zobj_p(Z_OBJ_P(paint_zval))->nvgpaint;';
+                        }
+            
+                        public function getPHPClassName() : string {
+                            return "\\GL\\VectorGraphics\\VGPaint";
+                        }
+                    };
+                    $phpfunc->arguments[] = $phparg;
+                }
                 else {
                     $phpfunc->incomplete = true;
                 }

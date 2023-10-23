@@ -183,11 +183,26 @@ namespace GL\VectorGraphics
 
         public function __construct(float $r, float $g, float $b, float $a) {}
     }
+    
+    class VGPaint {
+    }
+
+    class VGImage {
+        public function __construct(GL\Texture\Texture2D $texture) {}
+    }
 
     class VGContext {
         public function __construct(int $flags) {}
         public function fillColori(int $r, int $g, int $b, int $a) : void {}
         public function strokeColori(int $r, int $g, int $b, int $a) : void {}
+        public function fillColorVec4(GL\Math\Vec4 $vec) : void {}
+        public function strokeColorVec4(GL\Math\Vec4 $vec) : void {}
+
+        public function linearGradient(float $sx, float $sy, float $ex, float $ey, VGColor $icol, VGColor $ocol) : VGPaint {}
+        public function boxGradient(float $x, float $y, float $w, float $h, float $r, float $f, VGColor $icol, VGColor $ocol) : VGPaint {}
+        public function radialGradient(float $cx, float $cy, float $inr, float $outr, VGColor $icol, VGColor $ocol) : VGPaint {}
+        //public function imagePattern(float $cx, float $cy, float $w, float $h, float $angle, float $alpha) : VGPaint {}
+
 <?php foreach($vgContextFunctions as $func) : ?>
         public <?php echo $func->getPHPStub(); ?>
 <?php endforeach; ?> 

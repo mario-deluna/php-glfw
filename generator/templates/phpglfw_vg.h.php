@@ -42,6 +42,11 @@ typedef struct _phpglfw_vgpaint_object {
     zend_object std;
 } phpglfw_vgpaint_object;
 
+typedef struct _phpglfw_vgimage_object {
+    int nvgimage_handle;
+    zend_object std;
+} phpglfw_vgimage_object;
+
 typedef struct _phpglfw_vgcolor_object {
     NVGcolor nvgcolor;
     zend_object std;
@@ -49,10 +54,12 @@ typedef struct _phpglfw_vgcolor_object {
 
 zend_class_entry *phpglfw_get_vg_vgcontext_ce();
 zend_class_entry *phpglfw_get_vg_vgpaint_ce();
+zend_class_entry *phpglfw_get_vg_vgimage_ce();
 zend_class_entry *phpglfw_get_vg_vgcolor_ce(); 
 
 phpglfw_vgcontext_object* phpglfw_vgcontext_objectptr_from_zobj_p(zend_object* obj);
 phpglfw_vgpaint_object* phpglfw_vgpaint_objectptr_from_zobj_p(zend_object* obj);
+phpglfw_vgimage_object* phpglfw_vgimage_objectptr_from_zobj_p(zend_object* obj);
 phpglfw_vgcolor_object* phpglfw_vgcolor_objectptr_from_zobj_p(zend_object* obj);
 
 void phpglfw_register_vg_module(INIT_FUNC_ARGS);
