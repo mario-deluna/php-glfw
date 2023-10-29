@@ -2234,6 +2234,114 @@ namespace GL\Texture
     }
 }
 
+namespace GL\VectorGraphics
+{
+    class VGColor {
+        //public static function rgb(float $r, float $g, float $b) : VGColor {}
+        //public static function rgba(float $r, float $g, float $b, float $a) : VGColor {}
+        //public static function irgb(int $r, int $g, int $b) : VGColor {}
+        //public static function irgba(int $r, int $g, int $b, int $a) : VGColor {}
+        //public static function fromVec4(\GL\Math\Vec4 $vec) : VGColor {}
+        //public static function fromVec3(\GL\Math\Vec3 $vec) : VGColor {}
+
+        public function __construct(float $r, float $g, float $b, float $a) {}
+    }
+    
+    class VGPaint {
+    }
+
+    class VGImage {
+        public const REPEAT_NONE = 0;
+        public const REPEAT_X = 1;
+        public const REPEAT_Y = 2;
+        public const REPEAT_XY = 3;
+
+        public const FILTER_LINEAR = 0;
+        public const FILTER_NEAREST = 1;
+
+        public function makePaint(float $cx, float $cy, float $w, float $h, float $angle = 0.0, float $alpha = 1.0) : VGPaint {}
+    }
+
+    class VGContext {
+        public function __construct(int $flags) {}
+        public function fillColori(int $r, int $g, int $b, int $a) : void {}
+        public function strokeColori(int $r, int $g, int $b, int $a) : void {}
+        public function fillColorVec4(\GL\Math\Vec4 $vec) : void {}
+        public function strokeColorVec4(\GL\Math\Vec4 $vec) : void {}
+
+        public function imageFromTexture(
+            \GL\Texture\Texture2D $texture,
+            int $repeatMode = VGImage::REPEAT_NONE,
+            int $filterMode = VGImage::FILTER_LINEAR
+        ) : VGImage {}
+
+        public function linearGradient(float $sx, float $sy, float $ex, float $ey, VGColor $icol, VGColor $ocol) : VGPaint {}
+        public function boxGradient(float $x, float $y, float $w, float $h, float $r, float $f, VGColor $icol, VGColor $ocol) : VGPaint {}
+        public function radialGradient(float $cx, float $cy, float $inr, float $outr, VGColor $icol, VGColor $ocol) : VGPaint {}
+        //public function imagePattern(float $cx, float $cy, float $w, float $h, float $angle, float $alpha) : VGPaint {}
+
+        public function beginFrame(float $windowWidth, float $windowHeight, float $devicePixelRatio) : void {}
+        public function cancelFrame() : void {}
+        public function endFrame() : void {}
+        public function globalCompositeOperation(int $op) : void {}
+        public function globalCompositeBlendFunc(int $sfactor, int $dfactor) : void {}
+        public function globalCompositeBlendFuncSeparate(int $srcRGB, int $dstRGB, int $srcAlpha, int $dstAlpha) : void {}
+        public function save() : void {}
+        public function restore() : void {}
+        public function reset() : void {}
+        public function shapeAntiAlias(int $enabled) : void {}
+        public function strokeColor(\GL\VectorGraphics\VGColor $color) : void {}
+        public function strokePaint(\GL\VectorGraphics\VGPaint $paint) : void {}
+        public function fillColor(\GL\VectorGraphics\VGColor $color) : void {}
+        public function fillPaint(\GL\VectorGraphics\VGPaint $paint) : void {}
+        public function miterLimit(float $limit) : void {}
+        public function strokeWidth(float $size) : void {}
+        public function lineCap(int $cap) : void {}
+        public function lineJoin(int $join) : void {}
+        public function globalAlpha(float $alpha) : void {}
+        public function resetTransform() : void {}
+        public function transform(float $a, float $b, float $c, float $d, float $e, float $f) : void {}
+        public function translate(float $x, float $y) : void {}
+        public function rotate(float $angle) : void {}
+        public function skewX(float $angle) : void {}
+        public function skewY(float $angle) : void {}
+        public function scale(float $x, float $y) : void {}
+        public function currentTransform(float &$xform) : void {}
+        public function imageSize(int $image, int &$w, int &$h) : void {}
+        public function deleteImage(int $image) : void {}
+        public function scissor(float $x, float $y, float $w, float $h) : void {}
+        public function intersectScissor(float $x, float $y, float $w, float $h) : void {}
+        public function resetScissor() : void {}
+        public function beginPath() : void {}
+        public function moveTo(float $x, float $y) : void {}
+        public function lineTo(float $x, float $y) : void {}
+        public function bezierTo(float $c1x, float $c1y, float $c2x, float $c2y, float $x, float $y) : void {}
+        public function quadTo(float $cx, float $cy, float $x, float $y) : void {}
+        public function arcTo(float $x1, float $y1, float $x2, float $y2, float $radius) : void {}
+        public function closePath() : void {}
+        public function pathWinding(int $dir) : void {}
+        public function arc(float $cx, float $cy, float $r, float $a0, float $a1, int $dir) : void {}
+        public function rect(float $x, float $y, float $w, float $h) : void {}
+        public function roundedRect(float $x, float $y, float $w, float $h, float $r) : void {}
+        public function roundedRectVarying(float $x, float $y, float $w, float $h, float $radTopLeft, float $radTopRight, float $radBottomRight, float $radBottomLeft) : void {}
+        public function ellipse(float $cx, float $cy, float $rx, float $ry) : void {}
+        public function circle(float $cx, float $cy, float $r) : void {}
+        public function fill() : void {}
+        public function stroke() : void {}
+        public function addFallbackFontId(int $baseFont, int $fallbackFont) : int {}
+        public function resetFallbackFontsId(int $baseFont) : void {}
+        public function fontSize(float $size) : void {}
+        public function fontBlur(float $blur) : void {}
+        public function textLetterSpacing(float $spacing) : void {}
+        public function textLineHeight(float $lineHeight) : void {}
+        public function textAlign(int $align) : void {}
+        public function fontFaceId(int $font) : void {}
+        public function textMetrics(float &$ascender, float &$descender, float &$lineh) : void {}
+        public function deleteInternal() : void {}
+        public function debugDumpPathCache() : void {}
+ 
+    }
+}
 
 namespace {
     /**

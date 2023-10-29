@@ -52,6 +52,18 @@ typedef struct _phpglfw_vgcolor_object {
     zend_object std;
 } phpglfw_vgcolor_object;
 
+enum {
+    PHPGLFW_VG_REPEAT_NONE = 1<<0,
+    PHPGLFW_VG_REPEAT_X = 1<<1,
+    PHPGLFW_VG_REPEAT_Y = 1<<2,
+    PHPGLFW_VG_REPEAT_XY = PHPGLFW_VG_REPEAT_X | PHPGLFW_VG_REPEAT_Y,
+};
+
+enum {
+    PHPGLFW_VG_FILTER_LINEAR = 1<<0,
+    PHPGLFW_VG_FILTER_NEAREST = 1<<1,
+};
+
 zend_class_entry *phpglfw_get_vg_vgcontext_ce();
 zend_class_entry *phpglfw_get_vg_vgpaint_ce();
 zend_class_entry *phpglfw_get_vg_vgimage_ce();

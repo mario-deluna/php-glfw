@@ -26,6 +26,7 @@
 #include "phpglfw_vg.h"
 #include "phpglfw_texture.h"
 #include "phpglfw_math.h"
+#include "phpglfw_buffer.h"
 
 #include "phpglfw_arginfo.h"
 
@@ -233,16 +234,21 @@ static void phpglfw_vgimage_free_handler(zend_object *object)
     zend_object_std_dtor(&intern->std);
 }
 
-PHP_METHOD(GL_VectorGraphics_VGImage, __construct)
+PHP_METHOD(GL_VectorGraphics_VGImage, makePaint)
 {
-    zval *texture;
-    if (zend_parse_parameters(ZEND_NUM_ARGS() , "O", &texture, phpglfw_get_texture_texture2d_ce()) == FAILURE) {
+    double cx, cy, w, h, angle = 0.0, alpha = 1.0;
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "dddd|dd", &cx, &cy, &w, &h, &angle, &alpha) == FAILURE) {
         RETURN_THROWS();
     }
 
-    phpglfw_texture2d_object *texture_ptr = phpglfw_texture2d_objectptr_from_zobj_p(Z_OBJ_P(texture));
     phpglfw_vgimage_object *intern = phpglfw_vgimage_objectptr_from_zobj_p(Z_OBJ_P(getThis()));
+
+    object_init_ex(return_value, phpglfw_get_vg_vgpaint_ce());
+    phpglfw_vgpaint_object *paint = phpglfw_vgpaint_objectptr_from_zobj_p(Z_OBJ_P(return_value));
+    // nvgImagePattern doesnt actually require the nvcontext so we can pass NULL
+    paint->nvgpaint = nvgImagePattern(NULL, cx, cy, w, h, angle, intern->nvgimage_handle, alpha);
 }
+
 
 /**
  * VGContext
@@ -328,6 +334,44 @@ PHP_METHOD(GL_VectorGraphics_VGContext, radialGradient)
     paint->nvgpaint = nvgRadialGradient(intern->nvgctx, cx, cy, inr, outr, icol_ptr->nvgcolor, ocol_ptr->nvgcolor);
 }
 
+PHP_METHOD(GL_VectorGraphics_VGContext, imageFromTexture)
+{
+    zval *texture;
+    zend_long repeat = PHPGLFW_VG_REPEAT_NONE;
+    zend_long filter = PHPGLFW_VG_FILTER_LINEAR;
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "O|ll", &texture, phpglfw_get_texture_texture2d_ce(), &repeat, &filter) == FAILURE) {
+        RETURN_THROWS();
+    }
+
+    phpglfw_texture2d_object *texture_ptr = phpglfw_texture2d_objectptr_from_zobj_p(Z_OBJ_P(texture));
+    phpglfw_buffer_glubyte_object *buffer = phpglfw_buffer_glubyte_objectptr_from_zobj_p(Z_OBJ_P(&texture_ptr->buffer_zval));
+    phpglfw_vgcontext_object *intern = phpglfw_vgcontext_objectptr_from_zobj_p(Z_OBJ_P(getThis()));
+
+    object_init_ex(return_value, phpglfw_get_vg_vgimage_ce());
+    phpglfw_vgimage_object *image = phpglfw_vgimage_objectptr_from_zobj_p(Z_OBJ_P(return_value));
+    
+    // ensure the texture has 4 channels
+    if (texture_ptr->channels != 4) {
+        zend_throw_error(NULL, "The texture for the VGImage must have 4 channels");
+    }
+
+    // build the NVGimageFlags
+    int image_flags = 0;
+    if (repeat == PHPGLFW_VG_REPEAT_X) {
+        image_flags |= NVG_IMAGE_REPEATX;
+    } else if (repeat == PHPGLFW_VG_REPEAT_Y) {
+        image_flags |= NVG_IMAGE_REPEATY;
+    } else if (repeat == PHPGLFW_VG_REPEAT_XY) {
+        image_flags |= NVG_IMAGE_REPEATX | NVG_IMAGE_REPEATY;
+    }
+
+    // apply nearest filtering (default is linear)
+    if (filter == PHPGLFW_VG_FILTER_NEAREST) {
+        image_flags |= NVG_IMAGE_NEAREST;
+    }
+
+    image->nvgimage_handle = nvgCreateImageRGBA(intern->nvgctx, texture_ptr->width, texture_ptr->height, image_flags, buffer->vec);
+}
 
 PHP_METHOD(GL_VectorGraphics_VGContext, __construct)
 {
@@ -1222,6 +1266,15 @@ void phpglfw_register_vg_module(INIT_FUNC_ARGS)
     memcpy(&phpglfw_vgimage_handlers, &std_object_handlers, sizeof(zend_object_handlers));
     phpglfw_vgimage_handlers.offset = XtOffsetOf(phpglfw_vgimage_object, std);
     phpglfw_vgimage_handlers.free_obj = phpglfw_vgimage_free_handler;
+
+    zend_declare_class_constant_long(phpglfw_vgimage_ce, "REPEAT_NONE", strlen("REPEAT_NONE"), PHPGLFW_VG_REPEAT_NONE);
+    zend_declare_class_constant_long(phpglfw_vgimage_ce, "REPEAT_X", strlen("REPEAT_X"), PHPGLFW_VG_REPEAT_X);
+    zend_declare_class_constant_long(phpglfw_vgimage_ce, "REPEAT_Y", strlen("REPEAT_Y"), PHPGLFW_VG_REPEAT_Y);
+    zend_declare_class_constant_long(phpglfw_vgimage_ce, "REPEAT_XY", strlen("REPEAT_XY"), PHPGLFW_VG_REPEAT_XY);
+
+    zend_declare_class_constant_long(phpglfw_vgimage_ce, "FILTER_LINEAR", strlen("FILTER_LINEAR"), PHPGLFW_VG_FILTER_LINEAR);
+    zend_declare_class_constant_long(phpglfw_vgimage_ce, "FILTER_NEAREST", strlen("FILTER_NEAREST"), PHPGLFW_VG_FILTER_NEAREST);
+
 
     // initialize and register the VectorGraphics Paint class
     INIT_CLASS_ENTRY(tmp_ce, "GL\\VectorGraphics\\VGPaint", class_GL_VectorGraphics_VGPaint_methods);

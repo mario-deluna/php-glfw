@@ -96,21 +96,34 @@ PHP_METHOD(GL_Texture_Texture2D, fromDisk)
 {
     const char *path;
     size_t path_size;
-    if (zend_parse_parameters(ZEND_NUM_ARGS() , "s", &path, &path_size) == FAILURE) {
+    zend_long force_channels = 0;
+    bool flip_vertically = 1;
+    if (zend_parse_parameters(ZEND_NUM_ARGS(), "s|lb", &path, &path_size, &force_channels, &flip_vertically) == FAILURE) {
         RETURN_THROWS();
+    }
+
+    if (force_channels > 4) {
+        zend_throw_error(NULL, "Invalid number of channels. Must be between 1 and 4.");
+        return;
     }
 
     object_init_ex(return_value, phpglfw_get_texture_texture2d_ce());
     phpglfw_texture2d_object *intern = phpglfw_texture2d_objectptr_from_zobj_p(Z_OBJ_P(return_value));
     phpglfw_buffer_glubyte_object *buffer = phpglfw_buffer_glubyte_objectptr_from_zobj_p(Z_OBJ_P(&intern->buffer_zval));
 
-    stbi_set_flip_vertically_on_load(1);
+    stbi_set_flip_vertically_on_load(flip_vertically); 
 
-    unsigned char *data = stbi_load(path, &intern->width, &intern->height, &intern->channels, 0);
+    unsigned char *data = stbi_load(path, &intern->width, &intern->height, &intern->channels, force_channels);
     size_t buffersize;
     if (data == NULL) {
         zend_throw_error(NULL, "Failed to load image from disk '%s'.", path);
         return;
+    }
+
+    // in our case we overwrite the channels with the forced channels
+    // because from userland we care about the final resulting buffer
+    if (force_channels > 0) {
+        intern->channels = force_channels;
     }
 
     buffersize = intern->width * intern->height * intern->channels;

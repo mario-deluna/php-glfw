@@ -58,7 +58,7 @@ namespace GL\Geometry\ObjFileParser
 namespace GL\Texture
 {
     class Texture2D {
-        public static function fromDisk(string $path) : Texture2D {}
+        public static function fromDisk(string $path, int $requestedChannelCount = 0, bool $flipVertically = true) : Texture2D {}
         public function buffer() : \GL\Buffer\UByteBuffer {}
         public function width() : int {}
         public function height() : int {}
@@ -318,25 +318,40 @@ namespace GL\VectorGraphics
         //public static function rgba(float $r, float $g, float $b, float $a) : VGColor {}
         //public static function irgb(int $r, int $g, int $b) : VGColor {}
         //public static function irgba(int $r, int $g, int $b, int $a) : VGColor {}
-        //public static function fromVec4(GL\Math\Vec4 $vec) : VGColor {}
-        //public static function fromVec3(GL\Math\Vec3 $vec) : VGColor {}
+        //public static function fromVec4(\GL\Math\Vec4 $vec) : VGColor {}
+        //public static function fromVec3(\GL\Math\Vec3 $vec) : VGColor {}
 
         public function __construct(float $r, float $g, float $b, float $a) {}
     }
     
     class VGPaint {
+        //public static function fromImage(VGImage $image, float $cx, float $cy, float $w, float $h, float $angle, float $alpha = 1.0) : VGPaint {}
     }
 
     class VGImage {
-        public function __construct(GL\Texture\Texture2D $texture) {}
+        // public const REPEAT_NONE = 0;
+        // public const REPEAT_X = 1;
+        // public const REPEAT_Y = 2;
+        // public const REPEAT_XY = 3;
+
+        // public const FILTER_LINEAR = 0;
+        // public const FILTER_NEAREST = 1;
+
+        public function makePaint(float $cx, float $cy, float $w, float $h, float $angle = 0.0, float $alpha = 1.0) : VGPaint {}
     }
 
     class VGContext {
         public function __construct(int $flags) {}
         public function fillColori(int $r, int $g, int $b, int $a) : void {}
         public function strokeColori(int $r, int $g, int $b, int $a) : void {}
-        public function fillColorVec4(GL\Math\Vec4 $vec) : void {}
-        public function strokeColorVec4(GL\Math\Vec4 $vec) : void {}
+        public function fillColorVec4(\GL\Math\Vec4 $vec) : void {}
+        public function strokeColorVec4(\GL\Math\Vec4 $vec) : void {}
+
+        public function imageFromTexture(
+            \GL\Texture\Texture2D $texture,
+            int $repeatMode = VGImage::REPEAT_NONE,
+            int $filterMode = VGImage::FILTER_LINEAR
+        ) : VGImage {}
 
         public function linearGradient(float $sx, float $sy, float $ex, float $ey, VGColor $icol, VGColor $ocol) : VGPaint {}
         public function boxGradient(float $x, float $y, float $w, float $h, float $r, float $f, VGColor $icol, VGColor $ocol) : VGPaint {}

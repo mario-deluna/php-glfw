@@ -615,6 +615,7 @@ class ExtGenerator
             'buffers' => $this->phpglfwBuffers,
             'constants' => $this->constants,
             'functions' => $this->getCompleteFunctions(),
+            'vgContextFunctions' => $this->vgContextFunctions,
             '__buffer_prefix' => '<?php ' . PHP_EOL
         ], false));
     }
