@@ -33,6 +33,7 @@
 #include "zend_interfaces.h"
 
 #include "linmath.h"
+#include "cvector.h"
 
 #define pglmax(a,b) ((a) > (b) ? (a) : (b))
 #define pglmin(a,b) ((a) < (b) ? (a) : (b))
@@ -281,53 +282,51 @@ int <?php echo $buffer->getHandlerMethodName('unserialize'); ?>(zval *object, ze
 static int <?php echo $buffer->getHandlerMethodName('serialize'); ?>(zval *object, unsigned char **buffer, size_t *buf_len, zend_serialize_data *data)
 {
     <?php echo $buffer->getObjectName(); ?> *obj_ptr = <?php echo $buffer->objectFromZObjFunctionName(); ?>(Z_OBJ_P(object));
+    size_t num_elements = cvector_size(obj_ptr->vec);
 
-    smart_str buf = {0};
-    smart_str_append_printf(&buf, "%zu:", cvector_size(obj_ptr->vec));
 
-    for (size_t i = 0; i < cvector_size(obj_ptr->vec); i++) {
-        <?php if ($buffer->type == "GLfloat" || $buffer->type == "GLhalf" || $buffer->type == "GLdouble"): ?>
-        smart_str_append_printf(&buf, "%f,", obj_ptr->vec[i]);
-        <?php elseif ($buffer->type == "GLint"): ?>
-        smart_str_append_printf(&buf, "%d,", obj_ptr->vec[i]);
-        <?php elseif ($buffer->type == "GLuint"): ?>
-        smart_str_append_printf(&buf, "%u,", obj_ptr->vec[i]);
-        <?php elseif ($buffer->type == "GLshort"): ?>
-        smart_str_append_printf(&buf, "%hd,", obj_ptr->vec[i]);
-        <?php elseif ($buffer->type == "GLushort"): ?>
-        smart_str_append_printf(&buf, "%hu,", obj_ptr->vec[i]);
-        <?php elseif ($buffer->type == "GLbyte"): ?>
-        smart_str_append_printf(&buf, "%hhd,", obj_ptr->vec[i]);
-        <?php elseif ($buffer->type == "GLubyte"): ?>
-        smart_str_append_printf(&buf, "%hhu,", obj_ptr->vec[i]);
-        <?php else: ?>
-        zend_throw_error(NULL, "Unknown buffer type for serialization.");
+    size_t required_size = snprintf(NULL, 0, "%zu:", num_elements);
+
+    required_size += num_elements * snprintf(NULL, 0, "<?php echo $buffer->getPrintfFormat(); ?> ", 0);
+
+    char *buf = emalloc(required_size + 1); // + null byte
+    if (!buf) {
         return FAILURE;
-        <?php endif; ?>
     }
 
-    smart_str_0(&buf);
-    *buffer = (unsigned char *)estrndup(ZSTR_VAL(buf.s), ZSTR_LEN(buf.s));
-    *buf_len = ZSTR_LEN(buf.s);
-    smart_str_free(&buf);
+    size_t offset = sprintf(buf, "%zu:", num_elements);
+    for (size_t i = 0; i < num_elements; i++) {
+        offset += sprintf(buf + offset, "<?php echo $buffer->getPrintfFormat(); ?> ", obj_ptr->vec[i]);
+    }
+
+    *buffer = (unsigned char *)estrndup(buf, required_size);
+    *buf_len = required_size;
+    efree(buf);
 
     return SUCCESS;
 }
 
-int <?php echo $buffer->getHandlerMethodName('unserialize'); ?>(zval *object, zend_class_entry *ce, const unsigned char *buf, size_t buf_len, zend_unserialize_data *data)
+static int <?php echo $buffer->getHandlerMethodName('unserialize'); ?>(zval *object, zend_class_entry *ce, const unsigned char *buf, size_t buf_len, zend_unserialize_data *data)
 {
     <?php echo $buffer->getObjectName(); ?> *obj;
 
     size_t item_count;
     char *endptr, *token;
-    const char delimiter[] = ":";
 
-    token = strtok((char *)buf, delimiter);
+    // print the buffer for debugging and the raw buffer as a normal string
+    printf("Raw Buffer: ");
+    for (size_t i = 0; i < buf_len; i++) {
+        printf("%c", buf[i]);
+    }
+    printf("\n");
+
+    token = strtok((char *)buf, ":");
     if (!token) {
         zend_throw_error(NULL, "Invalid format during <?php echo $buffer->getObjectName(); ?> unserialization");
         return FAILURE;
     }
 
+    printf("Token: %s\n", token);
     item_count = strtoul(token, &endptr, 10);
     if (*endptr != '\0') {
         zend_throw_error(NULL, "Invalid item count during <?php echo $buffer->getObjectName(); ?> unserialization");
@@ -341,19 +340,19 @@ int <?php echo $buffer->getHandlerMethodName('unserialize'); ?>(zval *object, ze
     cvector_set_size(obj->vec, item_count); 
 
     size_t index = 0;
-    while ((token = strtok(NULL, ",")) && index < item_count) {
-        <?php if ($buffer->type == "GLfloat" || $buffer->type == "GLhalf" || $buffer->type == "GLdouble"): ?>
+    while ((token = strtok(NULL, " ")) && index < item_count) {
+        /*<?php if ($buffer->type == "GLfloat" || $buffer->type == "GLhalf" || $buffer->type == "GLdouble"): ?>
         obj->vec[index++] = atof(token);
         <?php elseif ($buffer->type == "GLint" || $buffer->type == "GLuint" || $buffer->type == "GLshort" || $buffer->type == "GLushort" || $buffer->type == "GLbyte" || $buffer->type == "GLubyte"): ?>
         obj->vec[index++] = strtol(token, NULL, 10);
         <?php else: ?>
         zend_throw_error(NULL, "Unknown buffer type for deserialization.");
         return FAILURE;
-        <?php endif; ?>
+        <?php endif; ?>*/
     }
 
     if (index != item_count) {
-        zend_throw_error(NULL, "Mismatch in expected item count during <?php echo $buffer->getObjectName(); ?> unserialization");
+        zend_throw_error(NULL, "Mismatch in expected item count during <?php echo $buffer->getObjectName(); ?> unserialization. Expected: %zu, Found: %zu", item_count, index);
         return FAILURE;
     }
 

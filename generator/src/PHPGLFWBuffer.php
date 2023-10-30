@@ -104,4 +104,28 @@ class PHPGLFWBuffer
     {
         return ExtType::getPHPType($this->phpType);
     }
+
+    public function getPrintfFormat() : string
+    {
+        switch($this->type) {
+            case "GLfloat":
+            case "GLhalf":
+            case "GLdouble":
+                return "%f";
+            case "GLint":
+                return "%d";
+            case "GLuint":
+                return "%u";
+            case "GLshort":
+                return "%hd";
+            case "GLushort":
+                return "%hu";
+            case "GLbyte":
+                return "%hhd";
+            case "GLubyte":
+                return "%hhu";
+            default:
+                throw new \Exception("Unknown type {$this->type} for printf format");
+        }
+    }
 }
