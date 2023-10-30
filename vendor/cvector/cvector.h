@@ -163,6 +163,23 @@
     } while (0)
 
 /**
+ * @brief cvector_push_back_array - adds an array of elements to the end of the vector
+ * @param vec - the vector
+ * @param array - the array to add
+ * @param count - the count of elements to add
+ * @return void
+ */
+#define cvector_push_back_array(vec, array, count)                               \
+    do {                                                                         \
+        size_t cv_cap__ = cvector_capacity(vec);                                 \
+        if (cv_cap__ <= cvector_size(vec) + (count)) {                           \
+            cvector_grow((vec), cvector_compute_next_grow(cvector_size(vec) + (count))); \
+        }                                                                        \
+        memcpy((vec) + cvector_size(vec), (array), sizeof(*(vec)) * (count));    \
+        cvector_set_size((vec), cvector_size(vec) + (count));                    \
+    } while (0)
+
+/**
  * @brief cvector_fill - sets all elements to the given value
  * @param vec - the vector
  * @param count - the count of values to write

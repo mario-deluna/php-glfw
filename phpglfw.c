@@ -57,12 +57,24 @@ zend_module_entry glfw_module_entry = {
 ZEND_GET_MODULE(glfw)
 #endif
 
+ZEND_BEGIN_MODULE_GLOBALS(glfw)
+    bool buffer_serialize_hex_float;
+ZEND_END_MODULE_GLOBALS(glfw)
+
+ZEND_DECLARE_MODULE_GLOBALS(glfw)
+
+PHP_INI_BEGIN()
+    STD_PHP_INI_ENTRY("glfw.buffer_serialize_hex_float", "false", PHP_INI_ALL, OnUpdateBool, buffer_serialize_hex_float, zend_glfw_globals, glfw_globals)
+PHP_INI_END()
+
 /**
  * MINIT
  * --------------------------------
  */
 PHP_MINIT_FUNCTION(glfw)
 {   
+    REGISTER_INI_ENTRIES();
+
     // register constants
     phpglfw_register_constants(INIT_FUNC_ARGS_PASSTHRU);
 

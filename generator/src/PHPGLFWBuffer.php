@@ -109,9 +109,9 @@ class PHPGLFWBuffer
     {
         switch($this->type) {
             case "GLfloat":
-            case "GLhalf":
+                return '%.9g';
             case "GLdouble":
-                return "%f";
+                return "%.17g";
             case "GLint":
                 return "%d";
             case "GLuint":
@@ -119,6 +119,7 @@ class PHPGLFWBuffer
             case "GLshort":
                 return "%hd";
             case "GLushort":
+            case "GLhalf":
                 return "%hu";
             case "GLbyte":
                 return "%hhd";
@@ -127,5 +128,34 @@ class PHPGLFWBuffer
             default:
                 throw new \Exception("Unknown type {$this->type} for printf format");
         }
+    }
+
+    public function getPrintfHexFormat() : string
+    {
+        switch($this->type) {
+            case "GLfloat":
+            case "GLdouble":
+                return "%a";
+            case "GLint":
+                return "%d";
+            case "GLuint":
+                return "%u";
+            case "GLshort":
+                return "%hd";
+            case "GLushort":
+            case "GLhalf":
+                return "%hu";
+            case "GLbyte":
+                return "%hhd";
+            case "GLubyte":
+                return "%hhu";
+            default:
+                throw new \Exception("Unknown type {$this->type} for printf format");
+        }
+    }
+
+    public function isPrintfSameInHex() : bool
+    {
+        return $this->getPrintfFormat() === $this->getPrintfHexFormat();
     }
 }

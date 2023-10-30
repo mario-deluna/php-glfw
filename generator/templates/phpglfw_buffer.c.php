@@ -281,27 +281,55 @@ int <?php echo $buffer->getHandlerMethodName('unserialize'); ?>(zval *object, ze
 
 static int <?php echo $buffer->getHandlerMethodName('serialize'); ?>(zval *object, unsigned char **buffer, size_t *buf_len, zend_serialize_data *data)
 {
+<?php if (!$buffer->isPrintfSameInHex()) : ?>
+    bool serialize_hex_float = INI_BOOL("glfw.buffer_serialize_hex_float");
+<?php endif; ?>
     <?php echo $buffer->getObjectName(); ?> *obj_ptr = <?php echo $buffer->objectFromZObjFunctionName(); ?>(Z_OBJ_P(object));
     size_t num_elements = cvector_size(obj_ptr->vec);
 
+    // I want the standard serialization format to be human readable and easaly reconstructable
+    // which is why I use a simple format of: <num_elements>:<element1> <element2> <element3> ...
+    // More efficent serialization formats should be added as seperate, deticated functions
+    cvector_vector_type(char) buffer_string = NULL;
 
-    size_t required_size = snprintf(NULL, 0, "%zu:", num_elements);
+    // used to temporarly store the string representation of each element
+    // honestly I could not find a proper description of the maximum length of a double represented as 
+    // string, after spending an hour down that rabbit hole I decided to just use a buffer of 256 bytes
+    char tmp[256]; 
 
-    required_size += num_elements * snprintf(NULL, 0, "<?php echo $buffer->getPrintfFormat(); ?> ", 0);
+    // reserve some space for the string, its going to be more 
+    // at the end but saves the first few reallocs
+    cvector_reserve(buffer_string, num_elements * sizeof(<?php echo $buffer->type; ?>));
 
-    char *buf = emalloc(required_size + 1); // + null byte
-    if (!buf) {
-        return FAILURE;
+    // write the number of elements
+    int offset = sprintf(tmp, "%zu:", num_elements);
+    cvector_push_back_array(buffer_string, tmp, offset);
+
+    // write each element
+<?php if (!$buffer->isPrintfSameInHex()) : ?>
+    if (serialize_hex_float) {
+        for (size_t i = 0; i < num_elements; i++) {
+            offset = sprintf(tmp, "<?php echo $buffer->getPrintfHexFormat(); ?> ", obj_ptr->vec[i]);
+            cvector_push_back_array(buffer_string, tmp, offset);
+        }
+    } else {
+<?php endif; ?>
+        for (size_t i = 0; i < num_elements; i++) {
+            offset = sprintf(tmp, "<?php echo $buffer->getPrintfFormat(); ?> ", obj_ptr->vec[i]);
+            cvector_push_back_array(buffer_string, tmp, offset);
+        }
+<?php if (!$buffer->isPrintfSameInHex()) : ?>
     }
+<?php endif; ?>
 
-    size_t offset = sprintf(buf, "%zu:", num_elements);
-    for (size_t i = 0; i < num_elements; i++) {
-        offset += sprintf(buf + offset, "<?php echo $buffer->getPrintfFormat(); ?> ", obj_ptr->vec[i]);
-    }
+    // trim away the trailing space
+    cvector_pop_back(buffer_string);
 
-    *buffer = (unsigned char *)estrndup(buf, required_size);
-    *buf_len = required_size;
-    efree(buf);
+    size_t total_size = cvector_size(buffer_string);
+
+    *buffer = (unsigned char *)estrndup(buffer_string, total_size);
+    *buf_len = total_size;
+    // efree(buf);
 
     return SUCCESS;
 }
@@ -310,49 +338,47 @@ static int <?php echo $buffer->getHandlerMethodName('unserialize'); ?>(zval *obj
 {
     <?php echo $buffer->getObjectName(); ?> *obj;
 
-    size_t item_count;
+    size_t exp_item_count, item_count;
     char *endptr, *token;
+    
+    // prints the buffer for debugging
+    // for (size_t i = 0; i < buf_len; i++) {
+    //     printf("%c", buf[i]);
+    // }
+    // printf("\n");
 
-    // print the buffer for debugging and the raw buffer as a normal string
-    printf("Raw Buffer: ");
-    for (size_t i = 0; i < buf_len; i++) {
-        printf("%c", buf[i]);
-    }
-    printf("\n");
-
-    token = strtok((char *)buf, ":");
-    if (!token) {
-        zend_throw_error(NULL, "Invalid format during <?php echo $buffer->getObjectName(); ?> unserialization");
+    // read the number of elements
+    exp_item_count = item_count = strtoul((char *)buf, &endptr, 10);
+    if (endptr == (char *)buf || *endptr != ':') {
+        // Failed to parse the number of elements
+        zend_throw_error(NULL, "Invalid format during <?php echo $buffer->getObjectName(); ?> unserialization, could not parse the number of elements.");
         return FAILURE;
     }
 
-    printf("Token: %s\n", token);
-    item_count = strtoul(token, &endptr, 10);
-    if (*endptr != '\0') {
-        zend_throw_error(NULL, "Invalid item count during <?php echo $buffer->getObjectName(); ?> unserialization");
-        return FAILURE;
-    }
+    // skip the ':'
+    endptr++;
 
+    // make the object
     object_init_ex(object, <?php echo $buffer->getClassEntryName(); ?>);
     obj = <?php echo $buffer->objectFromZObjFunctionName(); ?>(Z_OBJ_P(object));
 
-    cvector_reserve(obj->vec, item_count);
-    cvector_set_size(obj->vec, item_count); 
+    cvector_reserve(obj->vec, exp_item_count); 
 
-    size_t index = 0;
-    while ((token = strtok(NULL, " ")) && index < item_count) {
-        /*<?php if ($buffer->type == "GLfloat" || $buffer->type == "GLhalf" || $buffer->type == "GLdouble"): ?>
-        obj->vec[index++] = atof(token);
+    // read the elements, check if our endptr is still valid and we have not reached the end of the buffer
+    while ((token = strtok(endptr, " ")) && item_count > 0 && endptr < (char *)buf + buf_len) {
+        <?php if ($buffer->type == "GLfloat" || $buffer->type == "GLhalf" || $buffer->type == "GLdouble"): ?>
+        cvector_push_back(obj->vec, atof(token));
         <?php elseif ($buffer->type == "GLint" || $buffer->type == "GLuint" || $buffer->type == "GLshort" || $buffer->type == "GLushort" || $buffer->type == "GLbyte" || $buffer->type == "GLubyte"): ?>
-        obj->vec[index++] = strtol(token, NULL, 10);
+        cvector_push_back(obj->vec, strtol(token, NULL, 10));
         <?php else: ?>
         zend_throw_error(NULL, "Unknown buffer type for deserialization.");
         return FAILURE;
-        <?php endif; ?>*/
+        <?php endif; ?>
+        item_count--;
     }
 
-    if (index != item_count) {
-        zend_throw_error(NULL, "Mismatch in expected item count during <?php echo $buffer->getObjectName(); ?> unserialization. Expected: %zu, Found: %zu", item_count, index);
+    if (cvector_size(obj->vec) != exp_item_count) {
+        zend_throw_error(NULL, "Mismatch in expected item count during <?php echo $buffer->getObjectName(); ?> unserialization. Expected: %zu, Found: %zu", exp_item_count, cvector_size(obj->vec));
         return FAILURE;
     }
 
