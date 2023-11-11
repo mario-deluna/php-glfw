@@ -11,9 +11,9 @@ if (PHP_GLFW != "no") {
 		CHECK_HEADER_ADD_INCLUDE("stb_image.h", "CFLAGS_GLFW", configure_module_dirname + "\\vendor\\stb;" + PHP_EXTRA_INCLUDES) &&
 		CHECK_HEADER_ADD_INCLUDE("fast_obj.h", "CFLAGS_GLFW", configure_module_dirname + "\\vendor\\fastobj;" + PHP_EXTRA_INCLUDES) &&
         CHECK_HEADER_ADD_INCLUDE("nanovg.h", "CFLAGS_GLFW", configure_module_dirname + "\\vendor\\nanovg\\src;" + PHP_EXTRA_INCLUDES) &&
-        CHECK_HEADER_ADD_INCLUDE("nanovg_gl.h", "CFLAGS_GLFW", configure_module_dirname + "\\src;" + PHP_EXTRA_INCLUDES) &&
-        CHECK_HEADER_ADD_INCLUDE("nanovg_gl_utils.h", "CFLAGS_GLFW", configure_module_dirname + "\\src;" + PHP_EXTRA_INCLUDES) &&
-        CHECK_HEADER_ADD_INCLUDE("stb_truetype.h", "CFLAGS_GLFW", configure_module_dirname + "\\src;" + PHP_EXTRA_INCLUDES)
+        CHECK_HEADER_ADD_INCLUDE("nanovg_gl.h", "CFLAGS_GLFW", configure_module_dirname + "\\vendor\\nanovg\\src;" + PHP_EXTRA_INCLUDES) &&
+        CHECK_HEADER_ADD_INCLUDE("nanovg_gl_utils.h", "CFLAGS_GLFW", configure_module_dirname + "\\vendor\\nanovg\\src;" + PHP_EXTRA_INCLUDES) &&
+        CHECK_HEADER_ADD_INCLUDE("stb_truetype.h", "CFLAGS_GLFW", configure_module_dirname + "\\vendor\\nanovg\\src;" + PHP_EXTRA_INCLUDES)
 	) {
 
 		var sources = "phpglfw.c phpglfw_constants.c phpglfw_functions.c phpglfw_math.c phpglfw_buffer.c phpglfw_texture.c phpglfw_objparser.c phpglfw_vg.c";
