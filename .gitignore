@@ -39,7 +39,6 @@ generator/data/glrefs
 *.cache
 Vagrantfile
 .vagrant
-composer.json
 composer.lock
 CMakeFiles/
 vendor/glfw/install_manifest.txt
@@ -50,3 +49,4 @@ vendor/glfw/src/glfw3.pc
 vendor/glfw/src/glfw3*.cmake
 vendor/glfw/src/glfw_config.h
 vendor/glfw/src/libglfw*.dylib
+/vendor/
