@@ -41,7 +41,7 @@ zend_class_entry *phpglfw_get_texture_texture2d_ce() {
     return phpglfw_texture2d_ce;
 }
 
-zend_always_inline phpglfw_texture2d_object* phpglfw_texture2d_objectptr_from_zobj_p(zend_object* obj)
+phpglfw_texture2d_object* phpglfw_texture2d_objectptr_from_zobj_p(zend_object* obj)
 {
     return (phpglfw_texture2d_object *) ((char *) (obj) - XtOffsetOf(phpglfw_texture2d_object, std));
 }
