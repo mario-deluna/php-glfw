@@ -26,8 +26,10 @@
 #ifndef PHP_GLFW_CONSTANTS_H
 #define PHP_GLFW_CONSTANTS_H 1
 
+#ifndef _GLFW_WIN32
 #ifdef _WIN32
 #define _GLFW_WIN32
+#endif
 #endif
 
 #include <zend_API.h>
