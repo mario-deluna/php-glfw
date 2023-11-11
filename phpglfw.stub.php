@@ -217,9 +217,9 @@ namespace GL\Buffer
     class HFloatBuffer implements BufferInterface {
         public function __construct(?array $initalData = null) {}
         public function __toString() : string {}
-        public function push(float $value) : void {}
+        public function push(int $value) : void {}
         public function pushArray(array $values) : void {}
-        public function fill(int $count, float $value) : void {}
+        public function fill(int $count, int $value) : void {}
         public function clear() : void {}
         public function size() : int {}
         public function capacity() : int {}

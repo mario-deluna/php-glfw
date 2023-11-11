@@ -47,7 +47,7 @@ $nanovg->process(GEN_PATH_EXT . '/vendor/nanovg/src/nanovg.h', $gen);
 // 'GLhalf' => 'HALF_FLOAT',
 // 'GLdouble' => 'DOUBLE',
 $gen->phpglfwBuffers[] = new PHPGLFWBuffer('FloatBuffer', 'GLfloat', ExtType::T_DOUBLE);
-$gen->phpglfwBuffers[] = new PHPGLFWBuffer('HFloatBuffer', 'GLhalf', ExtType::T_DOUBLE);
+$gen->phpglfwBuffers[] = new PHPGLFWBuffer('HFloatBuffer', 'GLhalf', ExtType::T_LONG); // we currenly have no way to handle 16bit floats, so we consider them like the "GLhalf" as a unsigned short
 $gen->phpglfwBuffers[] = new PHPGLFWBuffer('DoubleBuffer', 'GLdouble', ExtType::T_DOUBLE);
 $gen->phpglfwBuffers[] = new PHPGLFWBuffer('IntBuffer', 'GLint', ExtType::T_LONG);
 $gen->phpglfwBuffers[] = new PHPGLFWBuffer('UIntBuffer', 'GLuint', ExtType::T_LONG);

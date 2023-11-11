@@ -1234,24 +1234,24 @@ namespace GL\Buffer
         /**
          * Constructs a new HFloatBuffer, internally (GLhalf)
          * 
-         * @param null|array<float> $intialData Inital data to be pushed into the buffer.
+         * @param null|array<int> $intialData Inital data to be pushed into the buffer.
          */
         public function __construct(?array $initalData = null) {}
         public function __toString() : string {}
 
         /**
-         * pushes a value into the buffer, this is exactly the same as when you would write `$buffer[] = 3.14`.
+         * pushes a value into the buffer, this is exactly the same as when you would write `$buffer[] = 123`.
          *
-         * @param float $value The value to be pushed into the buffer.
+         * @param int $value The value to be pushed into the buffer.
          *
          * @return void 
          */
-        public function push(float $value) : void {}
+        public function push(int $value) : void {}
 
         /**
          * pushes an array of values into the buffer. This works the same as when you pass inital data to the constructor.
          *
-         * @param array<float> $values The values to be pushed into the buffer.
+         * @param array<int> $values The values to be pushed into the buffer.
          *
          * @return void
          */
@@ -1262,11 +1262,11 @@ namespace GL\Buffer
          * Fills the buffer with $count amount of values. The second argument is the value that is filled in.
          *
          * @param int $count The number of elements to fill.
-         * @param float $value The value that will be filled in.
+         * @param int $value The value that will be filled in.
          *
          * @return void 
          */
-        public function fill(int $count, float $value) : void {}
+        public function fill(int $count, int $value) : void {}
         
         /**
          * Reserves the $size amount of space. Values are still undefined.

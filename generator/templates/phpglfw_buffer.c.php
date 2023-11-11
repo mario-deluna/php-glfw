@@ -339,7 +339,7 @@ static int <?php echo $buffer->getHandlerMethodName('unserialize'); ?>(zval *obj
     <?php echo $buffer->getObjectName(); ?> *obj;
 
     size_t exp_item_count, item_count;
-    char *endptr, *token;
+    char *endptr, *token, *tmp_copy;
     
     // prints the buffer for debugging
     // for (size_t i = 0; i < buf_len; i++) {
@@ -358,6 +358,12 @@ static int <?php echo $buffer->getHandlerMethodName('unserialize'); ?>(zval *obj
     // skip the ':'
     endptr++;
 
+    // create a copy of the buffer, we are going to modify it
+    // @TODO: when using `strtok` we are modifying the entire buffer,
+    // which will cause an issue when we are using the same buffer for multiple elements
+    // This copy for sure can be avoided, but im going to tackle that in the future
+    tmp_copy = estrndup(endptr, buf_len - (endptr - (char *)buf));
+
     // make the object
     object_init_ex(object, <?php echo $buffer->getClassEntryName(); ?>);
     obj = <?php echo $buffer->objectFromZObjFunctionName(); ?>(Z_OBJ_P(object));
@@ -365,15 +371,17 @@ static int <?php echo $buffer->getHandlerMethodName('unserialize'); ?>(zval *obj
     cvector_reserve(obj->vec, exp_item_count); 
 
     // read the elements, check if our endptr is still valid and we have not reached the end of the buffer
-    while ((token = strtok(endptr, " ")) && item_count > 0 && endptr < (char *)buf + buf_len) {
-        <?php if ($buffer->type == "GLfloat" || $buffer->type == "GLhalf" || $buffer->type == "GLdouble"): ?>
+    token = strtok(tmp_copy, " ");
+    while (token != NULL && item_count > 0) {
+        <?php if ($buffer->type == "GLfloat" || $buffer->type == "GLdouble"): ?>
         cvector_push_back(obj->vec, atof(token));
-        <?php elseif ($buffer->type == "GLint" || $buffer->type == "GLuint" || $buffer->type == "GLshort" || $buffer->type == "GLushort" || $buffer->type == "GLbyte" || $buffer->type == "GLubyte"): ?>
+        <?php elseif ($buffer->type == "GLint" || $buffer->type == "GLuint" || $buffer->type == "GLshort" || $buffer->type == "GLushort" || $buffer->type == "GLhalf" || $buffer->type == "GLbyte" || $buffer->type == "GLubyte"): ?>
         cvector_push_back(obj->vec, strtol(token, NULL, 10));
         <?php else: ?>
         zend_throw_error(NULL, "Unknown buffer type for deserialization.");
         return FAILURE;
         <?php endif; ?>
+        token = strtok(NULL, " ");
         item_count--;
     }
 

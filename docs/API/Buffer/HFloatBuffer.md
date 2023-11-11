@@ -1,6 +1,6 @@
 # HFloatBuffer
 The class `GL\Buffer\HFloatBuffer` comes with the PHP-GLFW extension to more efficiently 
-handle large arrays of `GLhalf` values (`float` in php).
+handle large arrays of `GLhalf` values (`int` in php).
 
 **Don't confuse these objects with actual GPU buffers.**
 
@@ -27,16 +27,16 @@ use GL\Buffer\HFloatBuffer;
 $buffer = new HFloatBuffer;
 
 // values can be pushed into the array using subscript
-$buffer[] = 42.69;
-$buffer[] = 3.14;
+$buffer[] = 42;
+$buffer[] = 123;
 
 // values can be accessed like an array
-echo $buffer[0]; // 42.69 
+echo $buffer[0]; // 42 
 
 // values can be modifed like an array
 // just make sure the used index actually exists, 
 // it will NOT be created implicitly!
-$buffer[0] = 1.23;
+$buffer[0] = 8;
 
 // dumping the buffer will display the first 127 value
 var_dump($buffer);
@@ -57,7 +57,7 @@ your array contains invalid values.
 
 ```php
 $buffer = new HFloatBuffer([
-    42.69, 3.14, 1.23 
+    42, 123, 8 
 ]);
 ```
 
@@ -67,15 +67,15 @@ The `HFloatBuffer` class exposes the following methods to userland.
 
 ### `push`
 
-pushes a value into the buffer, this is exactly the same as when you would write `$buffer[] = 3.14`.
+pushes a value into the buffer, this is exactly the same as when you would write `$buffer[] = 123`.
 
 ```php
-function push(float $value) : void
+function push(int $value) : void
 ```
 
 arguments
 
-:    1. `float` `$value` The value to be pushed into the buffer.
+:    1. `int` `$value` The value to be pushed into the buffer.
 
 returns
 
@@ -94,7 +94,7 @@ function pushArray(array $values) : void
 
 arguments
 
-:    1. `float[]` `$values` The values to be pushed into the buffer.
+:    1. `int[]` `$values` The values to be pushed into the buffer.
 
 returns
 
@@ -108,13 +108,13 @@ returns
 Fills the buffer with `$count` amount of values. The second argument is the value that is filled in.
 
 ```php
-function fill(int $count, float $value) : void
+function fill(int $count, int $value) : void
 ```
 
 arguments
 
 :   1. `int $count` The number of elements to fill.
-    2. `float $value` That value that will be filled in.
+    2. `int $value` That value that will be filled in.
 
 returns 
 

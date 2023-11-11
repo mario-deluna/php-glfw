@@ -1,5 +1,5 @@
 /* This is a generated file, edit the .stub.php file instead.
- * Stub hash: 5534d8a667da4be66ea9c03ef9a48c4f6eacc0b4 */
+ * Stub hash: 6d737f2c1a2752aa1b7120b6e4585c4de706881a */
 
 ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_glCullFace, 0, 1, IS_VOID, 0)
 	ZEND_ARG_TYPE_INFO(0, mode, IS_LONG, 0)
@@ -2643,11 +2643,16 @@ ZEND_END_ARG_INFO()
 
 #define arginfo_class_GL_Buffer_HFloatBuffer___toString arginfo_glfwGetVersionString
 
-#define arginfo_class_GL_Buffer_HFloatBuffer_push arginfo_glMinSampleShading
+ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_class_GL_Buffer_HFloatBuffer_push, 0, 1, IS_VOID, 0)
+	ZEND_ARG_TYPE_INFO(0, value, IS_LONG, 0)
+ZEND_END_ARG_INFO()
 
 #define arginfo_class_GL_Buffer_HFloatBuffer_pushArray arginfo_class_GL_Buffer_FloatBuffer_pushArray
 
-#define arginfo_class_GL_Buffer_HFloatBuffer_fill arginfo_class_GL_Buffer_FloatBuffer_fill
+ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_class_GL_Buffer_HFloatBuffer_fill, 0, 2, IS_VOID, 0)
+	ZEND_ARG_TYPE_INFO(0, count, IS_LONG, 0)
+	ZEND_ARG_TYPE_INFO(0, value, IS_LONG, 0)
+ZEND_END_ARG_INFO()
 
 #define arginfo_class_GL_Buffer_HFloatBuffer_clear arginfo_glFinish
 
@@ -2679,16 +2684,11 @@ ZEND_END_ARG_INFO()
 
 #define arginfo_class_GL_Buffer_IntBuffer___toString arginfo_glfwGetVersionString
 
-ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_class_GL_Buffer_IntBuffer_push, 0, 1, IS_VOID, 0)
-	ZEND_ARG_TYPE_INFO(0, value, IS_LONG, 0)
-ZEND_END_ARG_INFO()
+#define arginfo_class_GL_Buffer_IntBuffer_push arginfo_class_GL_Buffer_HFloatBuffer_push
 
 #define arginfo_class_GL_Buffer_IntBuffer_pushArray arginfo_class_GL_Buffer_FloatBuffer_pushArray
 
-ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_class_GL_Buffer_IntBuffer_fill, 0, 2, IS_VOID, 0)
-	ZEND_ARG_TYPE_INFO(0, count, IS_LONG, 0)
-	ZEND_ARG_TYPE_INFO(0, value, IS_LONG, 0)
-ZEND_END_ARG_INFO()
+#define arginfo_class_GL_Buffer_IntBuffer_fill arginfo_class_GL_Buffer_HFloatBuffer_fill
 
 #define arginfo_class_GL_Buffer_IntBuffer_clear arginfo_glFinish
 
@@ -2702,11 +2702,11 @@ ZEND_END_ARG_INFO()
 
 #define arginfo_class_GL_Buffer_UIntBuffer___toString arginfo_glfwGetVersionString
 
-#define arginfo_class_GL_Buffer_UIntBuffer_push arginfo_class_GL_Buffer_IntBuffer_push
+#define arginfo_class_GL_Buffer_UIntBuffer_push arginfo_class_GL_Buffer_HFloatBuffer_push
 
 #define arginfo_class_GL_Buffer_UIntBuffer_pushArray arginfo_class_GL_Buffer_FloatBuffer_pushArray
 
-#define arginfo_class_GL_Buffer_UIntBuffer_fill arginfo_class_GL_Buffer_IntBuffer_fill
+#define arginfo_class_GL_Buffer_UIntBuffer_fill arginfo_class_GL_Buffer_HFloatBuffer_fill
 
 #define arginfo_class_GL_Buffer_UIntBuffer_clear arginfo_glFinish
 
@@ -2720,11 +2720,11 @@ ZEND_END_ARG_INFO()
 
 #define arginfo_class_GL_Buffer_ShortBuffer___toString arginfo_glfwGetVersionString
 
-#define arginfo_class_GL_Buffer_ShortBuffer_push arginfo_class_GL_Buffer_IntBuffer_push
+#define arginfo_class_GL_Buffer_ShortBuffer_push arginfo_class_GL_Buffer_HFloatBuffer_push
 
 #define arginfo_class_GL_Buffer_ShortBuffer_pushArray arginfo_class_GL_Buffer_FloatBuffer_pushArray
 
-#define arginfo_class_GL_Buffer_ShortBuffer_fill arginfo_class_GL_Buffer_IntBuffer_fill
+#define arginfo_class_GL_Buffer_ShortBuffer_fill arginfo_class_GL_Buffer_HFloatBuffer_fill
 
 #define arginfo_class_GL_Buffer_ShortBuffer_clear arginfo_glFinish
 
@@ -2738,11 +2738,11 @@ ZEND_END_ARG_INFO()
 
 #define arginfo_class_GL_Buffer_UShortBuffer___toString arginfo_glfwGetVersionString
 
-#define arginfo_class_GL_Buffer_UShortBuffer_push arginfo_class_GL_Buffer_IntBuffer_push
+#define arginfo_class_GL_Buffer_UShortBuffer_push arginfo_class_GL_Buffer_HFloatBuffer_push
 
 #define arginfo_class_GL_Buffer_UShortBuffer_pushArray arginfo_class_GL_Buffer_FloatBuffer_pushArray
 
-#define arginfo_class_GL_Buffer_UShortBuffer_fill arginfo_class_GL_Buffer_IntBuffer_fill
+#define arginfo_class_GL_Buffer_UShortBuffer_fill arginfo_class_GL_Buffer_HFloatBuffer_fill
 
 #define arginfo_class_GL_Buffer_UShortBuffer_clear arginfo_glFinish
 
@@ -2756,11 +2756,11 @@ ZEND_END_ARG_INFO()
 
 #define arginfo_class_GL_Buffer_ByteBuffer___toString arginfo_glfwGetVersionString
 
-#define arginfo_class_GL_Buffer_ByteBuffer_push arginfo_class_GL_Buffer_IntBuffer_push
+#define arginfo_class_GL_Buffer_ByteBuffer_push arginfo_class_GL_Buffer_HFloatBuffer_push
 
 #define arginfo_class_GL_Buffer_ByteBuffer_pushArray arginfo_class_GL_Buffer_FloatBuffer_pushArray
 
-#define arginfo_class_GL_Buffer_ByteBuffer_fill arginfo_class_GL_Buffer_IntBuffer_fill
+#define arginfo_class_GL_Buffer_ByteBuffer_fill arginfo_class_GL_Buffer_HFloatBuffer_fill
 
 #define arginfo_class_GL_Buffer_ByteBuffer_clear arginfo_glFinish
 
@@ -2774,11 +2774,11 @@ ZEND_END_ARG_INFO()
 
 #define arginfo_class_GL_Buffer_UByteBuffer___toString arginfo_glfwGetVersionString
 
-#define arginfo_class_GL_Buffer_UByteBuffer_push arginfo_class_GL_Buffer_IntBuffer_push
+#define arginfo_class_GL_Buffer_UByteBuffer_push arginfo_class_GL_Buffer_HFloatBuffer_push
 
 #define arginfo_class_GL_Buffer_UByteBuffer_pushArray arginfo_class_GL_Buffer_FloatBuffer_pushArray
 
-#define arginfo_class_GL_Buffer_UByteBuffer_fill arginfo_class_GL_Buffer_IntBuffer_fill
+#define arginfo_class_GL_Buffer_UByteBuffer_fill arginfo_class_GL_Buffer_HFloatBuffer_fill
 
 #define arginfo_class_GL_Buffer_UByteBuffer_clear arginfo_glFinish
 
