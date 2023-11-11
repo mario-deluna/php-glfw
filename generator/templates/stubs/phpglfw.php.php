@@ -1318,7 +1318,12 @@ namespace GL\VectorGraphics
     }
 
     class VGContext {
-        public function __construct(int $flags) {}
+        public const ANTIALIAS = 1;
+        public const STENCIL_STROKES = 2;
+        public const DEBUG = 4;
+
+        public function __construct(int $flags = 0) {}
+
         public function fillColori(int $r, int $g, int $b, int $a) : void {}
         public function strokeColori(int $r, int $g, int $b, int $a) : void {}
         public function fillColorVec4(\GL\Math\Vec4 $vec) : void {}

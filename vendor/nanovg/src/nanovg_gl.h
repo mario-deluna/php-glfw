@@ -18,6 +18,8 @@
 #ifndef NANOVG_GL_H
 #define NANOVG_GL_H
 
+#include "php.h"
+
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -404,7 +406,8 @@ static void glnvg__dumpShaderError(GLuint shader, const char* name, const char* 
 	glGetShaderInfoLog(shader, 512, &len, str);
 	if (len > 512) len = 512;
 	str[len] = '\0';
-	printf("Shader %s/%s error:\n%s\n", name, type, str);
+	// printf("Shader %s/%s error:\n%s\n", name, type, str);
+    zend_throw_error(NULL, "GL\\VectorGraphics\\VGContext: Shader %s/%s error:\n%s\n", name, type, str);
 }
 
 static void glnvg__dumpProgramError(GLuint prog, const char* name)
@@ -414,7 +417,8 @@ static void glnvg__dumpProgramError(GLuint prog, const char* name)
 	glGetProgramInfoLog(prog, 512, &len, str);
 	if (len > 512) len = 512;
 	str[len] = '\0';
-	printf("Program %s error:\n%s\n", name, str);
+	// printf("Program %s error:\n%s\n", name, str);
+    zend_throw_error(NULL, "GL\\VectorGraphics\\VGContext: Program %s error:\n%s\n", name, str);
 }
 
 static void glnvg__checkError(GLNVGcontext* gl, const char* str)
@@ -423,7 +427,8 @@ static void glnvg__checkError(GLNVGcontext* gl, const char* str)
 	if ((gl->flags & NVG_DEBUG) == 0) return;
 	err = glGetError();
 	if (err != GL_NO_ERROR) {
-		printf("Error %08x after %s\n", err, str);
+		// printf("Error %08x after %s\n", err, str);
+        zend_throw_error(NULL, "GL\\VectorGraphics\\VGContext: Error %08x after %s\n", err, str);
 		return;
 	}
 }

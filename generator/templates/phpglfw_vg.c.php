@@ -378,7 +378,20 @@ PHP_METHOD(GL_VectorGraphics_VGContext, __construct)
     zval *obj;
     obj = getThis();
     phpglfw_vgcontext_object *intern = phpglfw_vgcontext_objectptr_from_zobj_p(Z_OBJ_P(obj));
-    intern->nvgctx = nvgCreateGL3(NVG_ANTIALIAS | NVG_STENCIL_STROKES | NVG_DEBUG);
+
+    // parse the flags from the constructor
+    int flags = 0;
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "|l", &flags) == FAILURE) {
+        RETURN_THROWS();
+    }
+
+    // quick sanity check for the flags
+    if (flags > (NVG_ANTIALIAS | NVG_STENCIL_STROKES | NVG_DEBUG)) {
+        zend_throw_error(NULL, "Invalid flags for VGContext, must be a combination of VGContext::ANTIALIAS, VGContext::STENCIL_STROKES and VGContext::DEBUG");
+        return;
+    }
+
+    intern->nvgctx = nvgCreateGL3(flags);
 }
 
 <?php foreach($ctxfunctions as $func): ?>
@@ -452,6 +465,11 @@ void phpglfw_register_vg_module(INIT_FUNC_ARGS)
     memcpy(&phpglfw_vgcontext_handlers, &std_object_handlers, sizeof(zend_object_handlers));
     phpglfw_vgcontext_handlers.offset = XtOffsetOf(phpglfw_vgcontext_object, std);
     phpglfw_vgcontext_handlers.free_obj = phpglfw_vgcontext_free_handler;
+
+    // register the VGContext constants
+    zend_declare_class_constant_long(phpglfw_vgcontext_ce, "ANTIALIAS", strlen("ANTIALIAS"), NVG_ANTIALIAS);
+    zend_declare_class_constant_long(phpglfw_vgcontext_ce, "STENCIL_STROKES", strlen("STENCIL_STROKES"), NVG_STENCIL_STROKES);
+    zend_declare_class_constant_long(phpglfw_vgcontext_ce, "DEBUG", strlen("DEBUG"), NVG_DEBUG);
 
     // initialize and register the VectorGraphics Color class
     INIT_CLASS_ENTRY(tmp_ce, "GL\\VectorGraphics\\VGColor", class_GL_VectorGraphics_VGColor_methods);
