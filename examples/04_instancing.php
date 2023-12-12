@@ -82,7 +82,7 @@ glVertexAttribDivisor(5, 1);
 
 glBindVertexArray(0);
 
-$texture = ExampleHelper::loadTexture(__DIR__ . '/phplogo.png');
+$texture = ExampleHelper::loadTexture(__DIR__ . '/phpglfwlogo.png');
 
 // set the shader uniform to point 
 // the texture unit to our texture
