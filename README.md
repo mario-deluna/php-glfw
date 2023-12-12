@@ -1,5 +1,5 @@
 <p align="center">
- <img width="100px" src="https://raw.githubusercontent.com/mario-deluna/php-glfw/v2/docs/logo_phpglfw_s.png">
+ <img width="500px" src="https://raw.githubusercontent.com/phpgl/docs-assets/master/php-glfw/logos/logo_with_text.svg">
 </p>
 
 # PHP-GLFW
