@@ -24,7 +24,7 @@ jobs:
       uses: shivammathur/setup-php@v2
       with:
         php-version: ${{ matrix.php-versions }}
-        extensions: :glfw
+        extensions: :glfw, dom
         coverage: xdebug
         tools: cs2pr
         
