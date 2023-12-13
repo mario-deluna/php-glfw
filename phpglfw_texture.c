@@ -195,6 +195,13 @@ void phpglfw_register_texture_module(INIT_FUNC_ARGS)
     phpglfw_texture2d_ce = zend_register_internal_class(&tmp_ce);
     phpglfw_texture2d_ce->create_object =  phpglfw_texture2d_create_handler;
 
+    zend_declare_class_constant_long(phpglfw_texture2d_ce, "CHANNEL_R", strlen("CHANNEL_R"), 1);
+    zend_declare_class_constant_long(phpglfw_texture2d_ce, "CHANNEL_GRAY", strlen("CHANNEL_GRAY"), 1);
+    zend_declare_class_constant_long(phpglfw_texture2d_ce, "CHANNEL_RG", strlen("CHANNEL_RG"), 2);
+    zend_declare_class_constant_long(phpglfw_texture2d_ce, "CHANNEL_GRAY_ALPHA", strlen("CHANNEL_GRAY_ALPHA"), 2);
+    zend_declare_class_constant_long(phpglfw_texture2d_ce, "CHANNEL_RGB", strlen("CHANNEL_RGB"), 3);
+    zend_declare_class_constant_long(phpglfw_texture2d_ce, "CHANNEL_RGBA", strlen("CHANNEL_RGBA"), 4);
+
     memcpy(&phpglfw_texture2d_handlers, &std_object_handlers, sizeof(zend_object_handlers));
     phpglfw_texture2d_handlers.offset = XtOffsetOf(phpglfw_texture2d_object, std);
     phpglfw_texture2d_handlers.free_obj = phpglfw_texture2d_free_handler;

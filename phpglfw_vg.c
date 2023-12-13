@@ -249,6 +249,19 @@ PHP_METHOD(GL_VectorGraphics_VGImage, makePaint)
     paint->nvgpaint = nvgImagePattern(NULL, cx, cy, w, h, angle, intern->nvgimage_handle, alpha);
 }
 
+PHP_METHOD(GL_VectorGraphics_VGImage, makePaintCentered)
+{
+    double cx, cy, w, h, angle = 0.0, alpha = 1.0;
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "dddd|dd", &cx, &cy, &w, &h, &angle, &alpha) == FAILURE) {
+        RETURN_THROWS();
+    }
+
+    phpglfw_vgimage_object *intern = phpglfw_vgimage_objectptr_from_zobj_p(Z_OBJ_P(getThis()));
+
+    object_init_ex(return_value, phpglfw_get_vg_vgpaint_ce());
+    phpglfw_vgpaint_object *paint = phpglfw_vgpaint_objectptr_from_zobj_p(Z_OBJ_P(return_value));
+    paint->nvgpaint = nvgImagePatternCentered(NULL, cx, cy, w, h, angle, intern->nvgimage_handle, alpha);
+}
 
 /**
  * VGContext

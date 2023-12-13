@@ -16,6 +16,10 @@
 // 3. This notice may not be removed or altered from any source distribution.
 //
 
+// Note: Do not just UPDATE this file with upstream changes. 
+//       I've made some changes to nanovg required by PHP-glfw..
+// - Blame: Mario Döring
+
 #include <stdlib.h>
 #include <stdio.h>
 #include <math.h>
@@ -533,11 +537,23 @@ void nvgTransformTranslate(float* t, float tx, float ty)
 	t[4] = tx; t[5] = ty;
 }
 
+void nvgApplyTranslation(float* t, float tx, float ty) {
+    t[4] += t[0] * tx + t[2] * ty;
+    t[5] += t[1] * tx + t[3] * ty;
+}
+
 void nvgTransformScale(float* t, float sx, float sy)
 {
 	t[0] = sx; t[1] = 0.0f;
 	t[2] = 0.0f; t[3] = sy;
 	t[4] = 0.0f; t[5] = 0.0f;
+}
+
+void nvgApplyScaling(float* t, float sx, float sy) {
+    t[0] *= sx;
+    t[1] *= sx;
+    t[2] *= sy;
+    t[3] *= sy;
 }
 
 void nvgTransformRotate(float* t, float a)
@@ -546,6 +562,26 @@ void nvgTransformRotate(float* t, float a)
 	t[0] = cs; t[1] = sn;
 	t[2] = -sn; t[3] = cs;
 	t[4] = 0.0f; t[5] = 0.0f;
+}
+
+void nvgApplyRotation(float* t, float a) {
+    float cs = nvg__cosf(a), sn = nvg__sinf(a);
+    float t0 = t[0] * cs + t[2] * sn;
+    float t1 = t[1] * cs + t[3] * sn;
+    t[2] = t[0] * -sn + t[2] * cs;
+    t[3] = t[1] * -sn + t[3] * cs;
+    t[0] = t0;
+    t[1] = t1;
+}
+
+void nvgTransformRotateDirect(float* t, float a) {
+    float cs = nvg__cosf(a), sn = nvg__sinf(a);
+    float t0 = t[0], t1 = t[1], t2 = t[2], t3 = t[3];
+
+    t[0] = cs * t0 - sn * t2;
+    t[1] = cs * t1 - sn * t3;
+    t[2] = sn * t0 + cs * t2;
+    t[3] = sn * t1 + cs * t3;
 }
 
 void nvgTransformSkewX(float* t, float a)
@@ -959,6 +995,77 @@ NVGpaint nvgImagePattern(NVGcontext* ctx,
 	p.innerColor = p.outerColor = nvgRGBAf(1,1,1,alpha);
 
 	return p;
+}
+
+NVGpaint nvgImagePatternCentered(NVGcontext* ctx, float cx, float cy, float w, float h,
+						 float angle, int image, float alpha)
+{
+    NVGpaint p;
+    NVG_NOTUSED(ctx);
+    memset(&p, 0, sizeof(p));
+
+    nvgTransformIdentity(p.xform);
+    nvgApplyTranslation(p.xform, cx, cy);
+    nvgApplyRotation(p.xform, angle);
+    nvgApplyTranslation(p.xform, -w/2, -h/2);
+
+    p.extent[0] = w;
+    p.extent[1] = h;
+
+    p.image = image;
+
+    p.innerColor = p.outerColor = nvgRGBAf(1,1,1,alpha);
+
+    return p;
+}
+
+NVGpaint nvgImagePatternWithOrigin(NVGcontext* ctx,
+                                   float originX, float originY,
+                                   float x, float y, float w, float h, float angle,
+                                   int image, float alpha)
+{
+    NVGpaint p;
+    NVG_NOTUSED(ctx);
+    memset(&p, 0, sizeof(p));
+
+    // nvgTransformTranslate(p.xform, originX, originY);
+    // nvgTransformRotate(p.xform, angle);
+    // // nvgTransformTranslate(p.xform, -originX, -originY);
+
+    p.xform[4] = x;
+    p.xform[5] = y;
+
+    p.extent[0] = w;
+    p.extent[1] = h;
+
+    p.image = image;
+
+    p.innerColor = p.outerColor = nvgRGBAf(1, 1, 1, alpha);
+
+    return p;
+}
+
+float drawImage(NVGcontext* vg, int image, float alpha,
+		float sx, float sy, float sw, float sh, // sprite location on texture
+		float x, float y, float w, float h) // position and size of the sprite rectangle on screen
+{
+	float ax, ay;
+	int iw,ih;
+	NVGpaint img;
+	
+	nvgImageSize(vg, image, &iw, &ih);
+
+	// Aspect ration of pixel in x an y dimensions. This allows us to scale
+	// the sprite to fill the whole rectangle.
+	ax = w / sw;
+	ay = h / sh;
+
+	img = nvgImagePattern(vg, x - sx*ax, y - sy*ay, (float)iw*ax, (float)ih*ay,
+				0, image, alpha);
+	nvgBeginPath(vg);
+	nvgRect(vg, x,y, w,h);
+	nvgFillPaint(vg, img);
+	nvgFill(vg);
 }
 
 // Scissoring

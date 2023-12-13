@@ -1,5 +1,5 @@
 /* This is a generated file, edit the .stub.php file instead.
- * Stub hash: bcc25cd06ebd951f74adf6c91ceacd577c9d96aa */
+ * Stub hash: 995f771f3c3ac46753a9206dcd829b83aa20fec7 */
 
 ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_glCullFace, 0, 1, IS_VOID, 0)
 	ZEND_ARG_TYPE_INFO(0, mode, IS_LONG, 0)
@@ -2796,6 +2796,15 @@ ZEND_BEGIN_ARG_INFO_EX(arginfo_class_GL_VectorGraphics_VGColor___construct, 0, 0
 ZEND_END_ARG_INFO()
 
 ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(arginfo_class_GL_VectorGraphics_VGImage_makePaint, 0, 4, GL\\VectorGraphics\\VGPaint, 0)
+	ZEND_ARG_TYPE_INFO(0, x, IS_DOUBLE, 0)
+	ZEND_ARG_TYPE_INFO(0, y, IS_DOUBLE, 0)
+	ZEND_ARG_TYPE_INFO(0, w, IS_DOUBLE, 0)
+	ZEND_ARG_TYPE_INFO(0, h, IS_DOUBLE, 0)
+	ZEND_ARG_TYPE_INFO_WITH_DEFAULT_VALUE(0, angle, IS_DOUBLE, 0, "0.0")
+	ZEND_ARG_TYPE_INFO_WITH_DEFAULT_VALUE(0, alpha, IS_DOUBLE, 0, "1.0")
+ZEND_END_ARG_INFO()
+
+ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(arginfo_class_GL_VectorGraphics_VGImage_makePaintCentered, 0, 4, GL\\VectorGraphics\\VGPaint, 0)
 	ZEND_ARG_TYPE_INFO(0, cx, IS_DOUBLE, 0)
 	ZEND_ARG_TYPE_INFO(0, cy, IS_DOUBLE, 0)
 	ZEND_ARG_TYPE_INFO(0, w, IS_DOUBLE, 0)
@@ -3836,6 +3845,7 @@ ZEND_METHOD(GL_Buffer_UByteBuffer, capacity);
 ZEND_METHOD(GL_Buffer_UByteBuffer, reserve);
 ZEND_METHOD(GL_VectorGraphics_VGColor, __construct);
 ZEND_METHOD(GL_VectorGraphics_VGImage, makePaint);
+ZEND_METHOD(GL_VectorGraphics_VGImage, makePaintCentered);
 ZEND_METHOD(GL_VectorGraphics_VGContext, __construct);
 ZEND_METHOD(GL_VectorGraphics_VGContext, fillColori);
 ZEND_METHOD(GL_VectorGraphics_VGContext, strokeColori);
@@ -4783,6 +4793,7 @@ static const zend_function_entry class_GL_VectorGraphics_VGPaint_methods[] = {
 
 static const zend_function_entry class_GL_VectorGraphics_VGImage_methods[] = {
 	ZEND_ME(GL_VectorGraphics_VGImage, makePaint, arginfo_class_GL_VectorGraphics_VGImage_makePaint, ZEND_ACC_PUBLIC)
+	ZEND_ME(GL_VectorGraphics_VGImage, makePaintCentered, arginfo_class_GL_VectorGraphics_VGImage_makePaintCentered, ZEND_ACC_PUBLIC)
 	ZEND_FE_END
 };
 

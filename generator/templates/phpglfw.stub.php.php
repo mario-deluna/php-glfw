@@ -57,6 +57,13 @@ namespace GL\Geometry\ObjFileParser
 namespace GL\Texture
 {
     class Texture2D {
+        // public const CHANNEL_R = 1;
+        // public const CHANNEL_GRAY = 1;
+        // public const CHANNEL_RG = 2;
+        // public const CHANNEL_GRAY_ALPHA = 2;
+        // public const CHANNEL_RGB = 3;
+        // public const CHANNEL_RGBA = 4;
+
         public static function fromDisk(string $path, int $requestedChannelCount = 0, bool $flipVertically = true) : Texture2D {}
         public function buffer() : \GL\Buffer\UByteBuffer {}
         public function width() : int {}
@@ -197,7 +204,9 @@ namespace GL\VectorGraphics
         // public const FILTER_LINEAR = 0;
         // public const FILTER_NEAREST = 1;
 
-        public function makePaint(float $cx, float $cy, float $w, float $h, float $angle = 0.0, float $alpha = 1.0) : VGPaint {}
+        public function makePaint(float $x, float $y, float $w, float $h, float $angle = 0.0, float $alpha = 1.0) : VGPaint {}
+        public function makePaintCentered(float $cx, float $cy, float $w, float $h, float $angle = 0.0, float $alpha = 1.0) : VGPaint {}
+        //public function makePaintAABB(float $minx, float $miny, float $maxx, float $maxy, float $angle = 0.0, float $alpha = 1.0) : VGPaint {}
     }
 
     class VGContext {

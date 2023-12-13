@@ -16,6 +16,11 @@
 // 3. This notice may not be removed or altered from any source distribution.
 //
 
+// Note: Do not just UPDATE this file with upstream changes. 
+//       I've made some changes to nanovg required by PHP-glfw..
+// - Blame: Mario Döring
+
+
 #ifndef NANOVG_H
 #define NANOVG_H
 
@@ -419,6 +424,14 @@ NVGpaint nvgRadialGradient(NVGcontext* ctx, float cx, float cy, float inr, float
 // The gradient is transformed by the current transform when it is passed to nvgFillPaint() or nvgStrokePaint().
 NVGpaint nvgImagePattern(NVGcontext* ctx, float ox, float oy, float ex, float ey,
 						 float angle, int image, float alpha);
+
+NVGpaint nvgImagePatternCentered(NVGcontext* ctx, float cx, float cy, float w, float h,
+						 float angle, int image, float alpha);
+
+NVGpaint nvgImagePatternWithOrigin(NVGcontext* ctx,
+                                   float originX, float originY,
+                                   float x, float y, float w, float h, float angle,
+                                   int image, float alpha);
 
 //
 // Scissoring
