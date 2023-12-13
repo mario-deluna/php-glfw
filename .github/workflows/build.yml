@@ -19,6 +19,15 @@ jobs:
     
     steps:
     - uses: actions/checkout@v3
+
+    - name: INI Workaround for PHP 8.1
+      if: ${{ matrix.php-versions == '8.1' }}
+      # Somehow under PHP 8.1 the ini file is not found
+      # so we just create it manually for now
+      run: |
+        sudo mkdir -p /etc/php/${{ matrix.php-versions }}/cli
+        sudo touch /etc/php/${{ matrix.php-versions }}/cli/php.ini
+        sudo chmod 777 /etc/php/${{ matrix.php-versions }}/cli/php.ini
       
     - name: Setup PHP
       uses: shivammathur/setup-php@v2
