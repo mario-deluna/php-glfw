@@ -44,7 +44,8 @@ jobs:
       run: |
         composer require "phpunit/phpunit:9.6.3" \
           --ignore-platform-req=ext-dom \
-          --ignore-platform-req=ext-mbstring
+          --ignore-platform-req=ext-mbstring \
+          --ignore-platform-req=ext-xml
       
     - name: Run PHPUnit 
       run: xvfb-run --auto-servernum php -dzend_extension=xdebug.so  -dxdebug.auto_trace=ON -dxdebug.trace_output_dir=trace ./vendor/bin/phpunit
