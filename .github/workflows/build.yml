@@ -26,7 +26,7 @@ jobs:
         php-version: ${{ matrix.php-versions }}
         extensions: :glfw, dom, xml, mbstring, zip
         coverage: xdebug
-        tools: cs2pr
+        tools: cs2pr phpunit
         
     - name: Install dependenies
       run: sudo apt-get update && sudo apt-get install -y php-dev build-essential cmake ${{ matrix.preinstalled-glfw }} xvfb libxrandr-dev libxinerama-dev libxcursor-dev libxi-dev gdb
@@ -38,14 +38,16 @@ jobs:
       run: sudo phpize && ./configure --enable-glfw && make -j$(nproc)
     
     - name: Install PHP-GLFW
-      run: sudo make install && grep -qxF 'extension=glfw.so' /etc/php/${{ matrix.php-versions }}/cli/php.ini || echo 'extension=glfw.so' >> /etc/php/${{ matrix.php-versions }}/cli/php.ini
-    
+      run: | 
+        sudo make install && \
+        grep -qxF 'extension=glfw.so' /etc/php/${{ matrix.php-versions }}/cli/php.ini || \
+        echo 'extension=glfw.so' >> /etc/php/${{ matrix.php-versions }}/cli/php.ini && \
+        echo /etc/php/${{ matrix.php-versions }}/cli/php.ini
+
     - name: Install PHPUnit
       run: |
         composer require "phpunit/phpunit:9.6.3" \
-          --ignore-platform-req=ext-dom \
-          --ignore-platform-req=ext-mbstring \
-          --ignore-platform-req=ext-xml
+           --ignore-platform-reqs
       
     - name: Run PHPUnit 
       run: xvfb-run --auto-servernum php -dzend_extension=xdebug.so  -dxdebug.auto_trace=ON -dxdebug.trace_output_dir=trace ./vendor/bin/phpunit
