@@ -3,6 +3,7 @@
 use GL\Buffer\FloatBuffer;
 use GL\Geometry\ObjFileParser;
 use GL\Texture\Texture2D;
+use GL\VectorGraphics\VGContext;
 
 /**
  * To reduce the amount of boilerplate for each example this file contains
@@ -237,5 +238,164 @@ class ExampleHelper
         $mesh = new \GL\Geometry\ObjFileParser(__DIR__ . '/ship_light.obj');
 
         return $mesh;
+    }
+
+    private static ?int $vgFontHandle = null;
+
+    /**
+     * Draws a colored function call text to the screen.
+     * This is used to directly visualize what impact what parameter has on the result.
+     * 
+     * @param VGContext $vg 
+     * @param string $functionCall 
+     * @return void 
+     */
+    public static function drawFuncLabel(VGContext $vg, float $x, float $y, string $functionCall) 
+    {
+        if (self::$vgFontHandle === null) {
+            self::$vgFontHandle = $vg->createFont('inconsolata', __DIR__ . '/font/inconsolata/Inconsolata-Regular.ttf');
+        }
+
+        // frist we need to parse the function call into its components
+        $matches = [];
+        preg_match('/([a-zA-Z0-9]+)\((.*)\)/', $functionCall, $matches);
+
+        [$functionName, $params] = [$matches[1], $matches[2]];
+        $params = explode(',', $params);
+        $params = array_map('trim', $params);
+        
+        $vg->resetTransform();
+        $vg->fontSize(20);
+        $vg->fontFaceId(self::$vgFontHandle);
+        $vg->beginPath();
+
+        // first draw the function name
+        $vg->fillColori(220, 220, 170, 255);
+        $x = $vg->text($x, $y, $functionName);
+        
+        // open bracket
+        $vg->fillColori(22, 159, 255, 255);
+        $x = $vg->text($x, $y, '(');
+
+        // now draw the parameters
+        $paramCount = count($params);
+        foreach($params as $i => $param) {
+
+            // check if the param string is a float
+            // if so parse it and format it to 2 decimal places
+            if (is_numeric($param)) {
+                $vg->fillColori(181, 206, 168, 255);
+                if (strpos($param, '.') !== false) {
+                    $param = number_format((float) $param, 2);
+                } else {
+                    $param = number_format((int) $param, 2);
+                }
+            } else {
+                $vg->fillColori(206, 145, 120, 255);
+            }
+
+            $x = $vg->text($x, $y, $param);
+
+            if ($i + 1 < $paramCount) {
+                $vg->fillColori(212, 212, 212, 255);
+                $x = $vg->text($x, $y, ', ');
+            }
+        }
+
+        // close bracket
+        $vg->fillColori(22, 159, 255, 255);
+        $x = $vg->text($x, $y, ')');
+        $vg->fill();
+    }
+    
+    /**
+     * Draws an array of function call labels to the screen.
+     * 
+     * @param VGContext $vg
+     * @param float $x
+     * @param float $y
+     * @param array<string> $functionCalls
+     */
+    public static function drawFuncLabels(VGContext $vg, float $x, float $y, array $functionCalls) : void
+    {
+        foreach($functionCalls as $functionCall) {
+            self::drawFuncLabel($vg, $x, $y, $functionCall);
+            $y += 30;
+        }
+    }
+
+    /**
+     * Draws a grid representing the coordinate system.
+     * 
+     * @param VGContext $vg
+     * @param float $resolution
+     */
+    public static function drawGrid(VGContext $vg, float $resolution = 100.0, float $offsetX = 0.0, float $offsetY = 0.0) : void
+    {
+        $vg->beginPath();
+
+        $maxX = self::WIN_WIDTH;
+        $maxY = self::WIN_HEIGHT;
+
+        // $x = 0;
+        // while ($x < self::WIN_WIDTH) {
+        //     $vg->moveTo($x, 0);
+        //     $vg->lineTo($x, self::WIN_HEIGHT);
+        //     $x += $resolution;
+        // }
+
+        // $y = 0;
+        // while ($y < self::WIN_HEIGHT) {
+        //     $vg->moveTo(0, $y);
+        //     $vg->lineTo(self::WIN_WIDTH, $y);
+        //     $y += $resolution;
+        // }
+
+        // properly handle offset values
+        // because this is a continues grid, pretty much need to just calculate the offset
+        // inside the resolution meaning 150 % 100 = 50, so we need to offset by 50 etc.
+        $offsetX = $offsetX % $resolution;
+        $offsetY = $offsetY % $resolution;
+
+        $x = -$offsetX;
+        while ($x < $maxX) {
+            $vg->moveTo($x, 0);
+            $vg->lineTo($x, $maxY);
+            $x += $resolution;
+        }
+
+        $y = -$offsetY;
+        while ($y < $maxY) {
+            $vg->moveTo(0, $y);
+            $vg->lineTo($maxX, $y);
+            $y += $resolution;
+        }
+        
+        $vg->stroke();
+    }
+
+    /**
+     * Draws a grid representing the coordinate system.
+     * 
+     * @param VGContext $vg
+     * @param float $resolution
+     */
+    public static function drawCoordSys(VGContext $vg) : void
+    {
+        $vg->resetTransform();
+        $vg->translate(sin(glfwGetTime()) * 200, 0);
+
+        // first store the current state
+        $vg->save();
+
+        // high res grid first
+        $vg->strokeColori(20, 20, 20, 255);
+        $vg->strokeWidth(1.0);
+        self::drawGrid($vg, 10.0);
+
+        // low res grid
+        $vg->strokeColori(50, 50, 50, 255);
+        $vg->strokeWidth(2.0);
+        self::drawGrid($vg, 100.0);
     }
 }

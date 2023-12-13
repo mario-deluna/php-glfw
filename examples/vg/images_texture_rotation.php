@@ -29,8 +29,14 @@ while (!glfwWindowShouldClose($window))
     // note how we are clearing both the DEPTH and COLOR buffers.
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
+    $contentScaleX;
+    $contentScaleY;
+    glfwGetWindowContentScale($window, $contentScaleX, $contentScaleY);
+
     // begin a new frame using the window size as the viewport size
-    $vg->beginFrame(ExampleHelper::WIN_WIDTH, ExampleHelper::WIN_HEIGHT, 1);
+    $vg->beginFrame(ExampleHelper::WIN_WIDTH, ExampleHelper::WIN_HEIGHT, $contentScaleX);
+
+    ExampleHelper::drawCoordSys($vg);
 
     $screenCenterX = ExampleHelper::WIN_WIDTH / 2;
     $screenCenterY = ExampleHelper::WIN_HEIGHT / 2;
@@ -52,6 +58,14 @@ while (!glfwWindowShouldClose($window))
     $paint = $phpglLogo->makePaintCentered(0, 0, 100, 100, glfwGetTime(), 1.0);
     $vg->fillPaint($paint);
     $vg->fill();
+
+    // draw a label of the actual values
+    ExampleHelper::drawFuncLabels($vg, 50, 50, [
+        "translate($screenCenterX, $screenCenterY)",
+        "rotate(" . glfwGetTime() * 0.3 . ")",
+        "rect(-100, -100, 200, 200)",
+        "fillPaint(0, 0, 100, 100, " . glfwGetTime() . ", 1.0)",
+    ]);
 
     // end the frame will dispatch all the draw commands to the GPU
     $vg->endFrame();

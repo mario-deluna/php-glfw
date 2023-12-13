@@ -419,14 +419,24 @@ namespace GL\VectorGraphics
         public function circle(float $cx, float $cy, float $r) : void {}
         public function fill() : void {}
         public function stroke() : void {}
+        public function createFont(string $name, string $filename) : int {}
+        public function createFontAtIndex(string $name, string $filename, int $fontIndex) : int {}
+        public function findFont(string $name) : int {}
         public function addFallbackFontId(int $baseFont, int $fallbackFont) : int {}
+        public function addFallbackFont(string $baseFont, string $fallbackFont) : int {}
         public function resetFallbackFontsId(int $baseFont) : void {}
+        public function resetFallbackFonts(string $baseFont) : void {}
         public function fontSize(float $size) : void {}
         public function fontBlur(float $blur) : void {}
         public function textLetterSpacing(float $spacing) : void {}
         public function textLineHeight(float $lineHeight) : void {}
         public function textAlign(int $align) : void {}
         public function fontFaceId(int $font) : void {}
+        public function fontFace(string $font) : void {}
+        public function text(float $x, float $y, string $string) : float {}
+        public function textBox(float $x, float $y, float $breakRowWidth, string $string) : void {}
+        public function textBounds(float $x, float $y, string $string, float &$bounds) : float {}
+        public function textBoxBounds(float $x, float $y, float $breakRowWidth, string $string, float &$bounds) : void {}
         public function textMetrics(float &$ascender, float &$descender, float &$lineh) : void {}
         public function deleteInternal() : void {}
         public function debugDumpPathCache() : void {}

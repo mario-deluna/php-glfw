@@ -11,6 +11,7 @@ class NVGParser
      */
     private array $excludedFunctions = 
     [
+        'nvgCreateImage',
     ];
 
     private array $nvgTypeToExt = 
@@ -33,13 +34,17 @@ class NVGParser
 
         $headerFile = file_get_contents($headerFilePath);
 
-        preg_match_all('/(int|void) (nvg.*)\((.*)\);/', $headerFile, $sigs);
+        preg_match_all('/(int|float|void) (nvg.*)\((.*)\);/', $headerFile, $sigs);
 
         foreach($sigs[0] as $k => $funcSig) 
         {
             $returnType = $sigs[1][$k];
             $funcName = $sigs[2][$k];
             $params = $sigs[3][$k];
+
+            if (in_array($funcName, $this->excludedFunctions)) {
+                continue;
+            }
 
             $phpfunc = new ExtFunction($funcName);
             $phpfunc->name = lcfirst(substr($funcName, 3)); // remove nvg prefix
@@ -65,6 +70,8 @@ class NVGParser
                     $phpfunc->incomplete = true;
                     break;
                 }
+
+                $isConstCharPtr = $sourceArg['const'] === 'const' && $rawArgType === 'char' && $argIsPointer;
 
                 if (isset($this->nvgTypeToExt[$rawArgType]) && $rawArgType !== 'void') {
                     $phparg = ExtArgument::make($sourceArg['name'], $this->nvgTypeToExt[$rawArgType]);
@@ -112,6 +119,22 @@ class NVGParser
                             return "\\GL\\VectorGraphics\\VGPaint";
                         }
                     };
+                    $phpfunc->arguments[] = $phparg;
+                }
+                // for nanoVB we consider const char* always as a string
+                elseif ($isConstCharPtr) {
+                    $phparg = ExtArgument::make($sourceArg['name'], ExtType::T_STRING);
+                    $phparg->argumentTypeFrom = $sourceArg['type'];
+                    $phparg->passedByReference = false;
+                    $phparg->comment = $paramDesc[$sourceArg['name']] ?? null;
+
+                    // now in PHP-glfw we do not support "end" strings so we discard 
+                    // any string arguments called "end"
+                    if ($sourceArg['name'] === 'end') {
+                        $phparg->isParsed = false;
+                        $phparg->name = 'NULL'; // we use the name as the argument identifier in the generated function call
+                    }
+
                     $phpfunc->arguments[] = $phparg;
                 }
                 else {

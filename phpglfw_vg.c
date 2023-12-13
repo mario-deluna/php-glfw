@@ -1063,6 +1063,53 @@ PHP_METHOD(GL_VectorGraphics_VGContext, stroke)
     nvgStroke(intern->nvgctx);
 }
 /**
+ * createFont
+ */ 
+PHP_METHOD(GL_VectorGraphics_VGContext, createFont)
+{
+    phpglfw_vgcontext_object *intern = phpglfw_vgcontext_objectptr_from_zobj_p(Z_OBJ_P(getThis()));
+
+    const char *name;
+    size_t name_size;
+    const char *filename;
+    size_t filename_size;
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "ss", &name, &name_size, &filename, &filename_size) == FAILURE) {
+        return;
+    }
+    RETURN_LONG(nvgCreateFont(intern->nvgctx, name, filename));
+}
+/**
+ * createFontAtIndex
+ */ 
+PHP_METHOD(GL_VectorGraphics_VGContext, createFontAtIndex)
+{
+    phpglfw_vgcontext_object *intern = phpglfw_vgcontext_objectptr_from_zobj_p(Z_OBJ_P(getThis()));
+
+    const char *name;
+    size_t name_size;
+    const char *filename;
+    size_t filename_size;
+    zend_long fontIndex;
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "ssl", &name, &name_size, &filename, &filename_size, &fontIndex) == FAILURE) {
+        return;
+    }
+    RETURN_LONG(nvgCreateFontAtIndex(intern->nvgctx, name, filename, fontIndex));
+}
+/**
+ * findFont
+ */ 
+PHP_METHOD(GL_VectorGraphics_VGContext, findFont)
+{
+    phpglfw_vgcontext_object *intern = phpglfw_vgcontext_objectptr_from_zobj_p(Z_OBJ_P(getThis()));
+
+    const char *name;
+    size_t name_size;
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "s", &name, &name_size) == FAILURE) {
+        return;
+    }
+    RETURN_LONG(nvgFindFont(intern->nvgctx, name));
+}
+/**
  * addFallbackFontId
  */ 
 PHP_METHOD(GL_VectorGraphics_VGContext, addFallbackFontId)
@@ -1077,6 +1124,22 @@ PHP_METHOD(GL_VectorGraphics_VGContext, addFallbackFontId)
     RETURN_LONG(nvgAddFallbackFontId(intern->nvgctx, baseFont, fallbackFont));
 }
 /**
+ * addFallbackFont
+ */ 
+PHP_METHOD(GL_VectorGraphics_VGContext, addFallbackFont)
+{
+    phpglfw_vgcontext_object *intern = phpglfw_vgcontext_objectptr_from_zobj_p(Z_OBJ_P(getThis()));
+
+    const char *baseFont;
+    size_t baseFont_size;
+    const char *fallbackFont;
+    size_t fallbackFont_size;
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "ss", &baseFont, &baseFont_size, &fallbackFont, &fallbackFont_size) == FAILURE) {
+        return;
+    }
+    RETURN_LONG(nvgAddFallbackFont(intern->nvgctx, baseFont, fallbackFont));
+}
+/**
  * resetFallbackFontsId
  */ 
 PHP_METHOD(GL_VectorGraphics_VGContext, resetFallbackFontsId)
@@ -1088,6 +1151,20 @@ PHP_METHOD(GL_VectorGraphics_VGContext, resetFallbackFontsId)
         return;
     }
     nvgResetFallbackFontsId(intern->nvgctx, baseFont);
+}
+/**
+ * resetFallbackFonts
+ */ 
+PHP_METHOD(GL_VectorGraphics_VGContext, resetFallbackFonts)
+{
+    phpglfw_vgcontext_object *intern = phpglfw_vgcontext_objectptr_from_zobj_p(Z_OBJ_P(getThis()));
+
+    const char *baseFont;
+    size_t baseFont_size;
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "s", &baseFont, &baseFont_size) == FAILURE) {
+        return;
+    }
+    nvgResetFallbackFonts(intern->nvgctx, baseFont);
 }
 /**
  * fontSize
@@ -1166,6 +1243,96 @@ PHP_METHOD(GL_VectorGraphics_VGContext, fontFaceId)
         return;
     }
     nvgFontFaceId(intern->nvgctx, font);
+}
+/**
+ * fontFace
+ */ 
+PHP_METHOD(GL_VectorGraphics_VGContext, fontFace)
+{
+    phpglfw_vgcontext_object *intern = phpglfw_vgcontext_objectptr_from_zobj_p(Z_OBJ_P(getThis()));
+
+    const char *font;
+    size_t font_size;
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "s", &font, &font_size) == FAILURE) {
+        return;
+    }
+    nvgFontFace(intern->nvgctx, font);
+}
+/**
+ * text
+ */ 
+PHP_METHOD(GL_VectorGraphics_VGContext, text)
+{
+    phpglfw_vgcontext_object *intern = phpglfw_vgcontext_objectptr_from_zobj_p(Z_OBJ_P(getThis()));
+
+    double x;
+    double y;
+    const char *string;
+    size_t string_size;
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "dds", &x, &y, &string, &string_size) == FAILURE) {
+        return;
+    }
+    RETURN_DOUBLE(nvgText(intern->nvgctx, x, y, string, NULL));
+}
+/**
+ * textBox
+ */ 
+PHP_METHOD(GL_VectorGraphics_VGContext, textBox)
+{
+    phpglfw_vgcontext_object *intern = phpglfw_vgcontext_objectptr_from_zobj_p(Z_OBJ_P(getThis()));
+
+    double x;
+    double y;
+    double breakRowWidth;
+    const char *string;
+    size_t string_size;
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "ddds", &x, &y, &breakRowWidth, &string, &string_size) == FAILURE) {
+        return;
+    }
+    nvgTextBox(intern->nvgctx, x, y, breakRowWidth, string, NULL);
+}
+/**
+ * textBounds
+ */ 
+PHP_METHOD(GL_VectorGraphics_VGContext, textBounds)
+{
+    phpglfw_vgcontext_object *intern = phpglfw_vgcontext_objectptr_from_zobj_p(Z_OBJ_P(getThis()));
+
+    double x;
+    double y;
+    const char *string;
+    size_t string_size;
+    zval *bounds_zval;
+    float bounds_tmp;
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "ddsz", &x, &y, &string, &string_size, &bounds_zval) == FAILURE) {
+        return;
+    }
+    ZVAL_DEREF(bounds_zval);
+    convert_to_double(bounds_zval);
+    RETURN_DOUBLE(nvgTextBounds(intern->nvgctx, x, y, string, NULL, &bounds_tmp));
+    ZVAL_DOUBLE(bounds_zval, bounds_tmp);
+}
+/**
+ * textBoxBounds
+ */ 
+PHP_METHOD(GL_VectorGraphics_VGContext, textBoxBounds)
+{
+    phpglfw_vgcontext_object *intern = phpglfw_vgcontext_objectptr_from_zobj_p(Z_OBJ_P(getThis()));
+
+    double x;
+    double y;
+    double breakRowWidth;
+    const char *string;
+    size_t string_size;
+    zval *bounds_zval;
+    float bounds_tmp;
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "dddsz", &x, &y, &breakRowWidth, &string, &string_size, &bounds_zval) == FAILURE) {
+        return;
+    }
+    ZVAL_DEREF(bounds_zval);
+    convert_to_double(bounds_zval);
+    nvgTextBoxBounds(intern->nvgctx, x, y, breakRowWidth, string, NULL, &bounds_tmp);
+    ZVAL_DOUBLE(bounds_zval, bounds_tmp);
 }
 /**
  * textMetrics

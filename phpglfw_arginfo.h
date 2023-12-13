@@ -1,5 +1,5 @@
 /* This is a generated file, edit the .stub.php file instead.
- * Stub hash: 995f771f3c3ac46753a9206dcd829b83aa20fec7 */
+ * Stub hash: 14b7489cec465aaf038ce69c2c4bb9980709bd55 */
 
 ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_glCullFace, 0, 1, IS_VOID, 0)
 	ZEND_ARG_TYPE_INFO(0, mode, IS_LONG, 0)
@@ -3062,13 +3062,37 @@ ZEND_END_ARG_INFO()
 
 #define arginfo_class_GL_VectorGraphics_VGContext_stroke arginfo_glFinish
 
+ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_class_GL_VectorGraphics_VGContext_createFont, 0, 2, IS_LONG, 0)
+	ZEND_ARG_TYPE_INFO(0, name, IS_STRING, 0)
+	ZEND_ARG_TYPE_INFO(0, filename, IS_STRING, 0)
+ZEND_END_ARG_INFO()
+
+ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_class_GL_VectorGraphics_VGContext_createFontAtIndex, 0, 3, IS_LONG, 0)
+	ZEND_ARG_TYPE_INFO(0, name, IS_STRING, 0)
+	ZEND_ARG_TYPE_INFO(0, filename, IS_STRING, 0)
+	ZEND_ARG_TYPE_INFO(0, fontIndex, IS_LONG, 0)
+ZEND_END_ARG_INFO()
+
+ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_class_GL_VectorGraphics_VGContext_findFont, 0, 1, IS_LONG, 0)
+	ZEND_ARG_TYPE_INFO(0, name, IS_STRING, 0)
+ZEND_END_ARG_INFO()
+
 ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_class_GL_VectorGraphics_VGContext_addFallbackFontId, 0, 2, IS_LONG, 0)
 	ZEND_ARG_TYPE_INFO(0, baseFont, IS_LONG, 0)
 	ZEND_ARG_TYPE_INFO(0, fallbackFont, IS_LONG, 0)
 ZEND_END_ARG_INFO()
 
+ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_class_GL_VectorGraphics_VGContext_addFallbackFont, 0, 2, IS_LONG, 0)
+	ZEND_ARG_TYPE_INFO(0, baseFont, IS_STRING, 0)
+	ZEND_ARG_TYPE_INFO(0, fallbackFont, IS_STRING, 0)
+ZEND_END_ARG_INFO()
+
 ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_class_GL_VectorGraphics_VGContext_resetFallbackFontsId, 0, 1, IS_VOID, 0)
 	ZEND_ARG_TYPE_INFO(0, baseFont, IS_LONG, 0)
+ZEND_END_ARG_INFO()
+
+ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_class_GL_VectorGraphics_VGContext_resetFallbackFonts, 0, 1, IS_VOID, 0)
+	ZEND_ARG_TYPE_INFO(0, baseFont, IS_STRING, 0)
 ZEND_END_ARG_INFO()
 
 #define arginfo_class_GL_VectorGraphics_VGContext_fontSize arginfo_glPointSize
@@ -3091,6 +3115,38 @@ ZEND_END_ARG_INFO()
 
 ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_class_GL_VectorGraphics_VGContext_fontFaceId, 0, 1, IS_VOID, 0)
 	ZEND_ARG_TYPE_INFO(0, font, IS_LONG, 0)
+ZEND_END_ARG_INFO()
+
+ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_class_GL_VectorGraphics_VGContext_fontFace, 0, 1, IS_VOID, 0)
+	ZEND_ARG_TYPE_INFO(0, font, IS_STRING, 0)
+ZEND_END_ARG_INFO()
+
+ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_class_GL_VectorGraphics_VGContext_text, 0, 3, IS_DOUBLE, 0)
+	ZEND_ARG_TYPE_INFO(0, x, IS_DOUBLE, 0)
+	ZEND_ARG_TYPE_INFO(0, y, IS_DOUBLE, 0)
+	ZEND_ARG_TYPE_INFO(0, string, IS_STRING, 0)
+ZEND_END_ARG_INFO()
+
+ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_class_GL_VectorGraphics_VGContext_textBox, 0, 4, IS_VOID, 0)
+	ZEND_ARG_TYPE_INFO(0, x, IS_DOUBLE, 0)
+	ZEND_ARG_TYPE_INFO(0, y, IS_DOUBLE, 0)
+	ZEND_ARG_TYPE_INFO(0, breakRowWidth, IS_DOUBLE, 0)
+	ZEND_ARG_TYPE_INFO(0, string, IS_STRING, 0)
+ZEND_END_ARG_INFO()
+
+ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_class_GL_VectorGraphics_VGContext_textBounds, 0, 4, IS_DOUBLE, 0)
+	ZEND_ARG_TYPE_INFO(0, x, IS_DOUBLE, 0)
+	ZEND_ARG_TYPE_INFO(0, y, IS_DOUBLE, 0)
+	ZEND_ARG_TYPE_INFO(0, string, IS_STRING, 0)
+	ZEND_ARG_TYPE_INFO(1, bounds, IS_DOUBLE, 0)
+ZEND_END_ARG_INFO()
+
+ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_class_GL_VectorGraphics_VGContext_textBoxBounds, 0, 5, IS_VOID, 0)
+	ZEND_ARG_TYPE_INFO(0, x, IS_DOUBLE, 0)
+	ZEND_ARG_TYPE_INFO(0, y, IS_DOUBLE, 0)
+	ZEND_ARG_TYPE_INFO(0, breakRowWidth, IS_DOUBLE, 0)
+	ZEND_ARG_TYPE_INFO(0, string, IS_STRING, 0)
+	ZEND_ARG_TYPE_INFO(1, bounds, IS_DOUBLE, 0)
 ZEND_END_ARG_INFO()
 
 ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_class_GL_VectorGraphics_VGContext_textMetrics, 0, 3, IS_VOID, 0)
@@ -3903,14 +3959,24 @@ ZEND_METHOD(GL_VectorGraphics_VGContext, ellipse);
 ZEND_METHOD(GL_VectorGraphics_VGContext, circle);
 ZEND_METHOD(GL_VectorGraphics_VGContext, fill);
 ZEND_METHOD(GL_VectorGraphics_VGContext, stroke);
+ZEND_METHOD(GL_VectorGraphics_VGContext, createFont);
+ZEND_METHOD(GL_VectorGraphics_VGContext, createFontAtIndex);
+ZEND_METHOD(GL_VectorGraphics_VGContext, findFont);
 ZEND_METHOD(GL_VectorGraphics_VGContext, addFallbackFontId);
+ZEND_METHOD(GL_VectorGraphics_VGContext, addFallbackFont);
 ZEND_METHOD(GL_VectorGraphics_VGContext, resetFallbackFontsId);
+ZEND_METHOD(GL_VectorGraphics_VGContext, resetFallbackFonts);
 ZEND_METHOD(GL_VectorGraphics_VGContext, fontSize);
 ZEND_METHOD(GL_VectorGraphics_VGContext, fontBlur);
 ZEND_METHOD(GL_VectorGraphics_VGContext, textLetterSpacing);
 ZEND_METHOD(GL_VectorGraphics_VGContext, textLineHeight);
 ZEND_METHOD(GL_VectorGraphics_VGContext, textAlign);
 ZEND_METHOD(GL_VectorGraphics_VGContext, fontFaceId);
+ZEND_METHOD(GL_VectorGraphics_VGContext, fontFace);
+ZEND_METHOD(GL_VectorGraphics_VGContext, text);
+ZEND_METHOD(GL_VectorGraphics_VGContext, textBox);
+ZEND_METHOD(GL_VectorGraphics_VGContext, textBounds);
+ZEND_METHOD(GL_VectorGraphics_VGContext, textBoxBounds);
 ZEND_METHOD(GL_VectorGraphics_VGContext, textMetrics);
 ZEND_METHOD(GL_VectorGraphics_VGContext, deleteInternal);
 ZEND_METHOD(GL_VectorGraphics_VGContext, debugDumpPathCache);
@@ -4856,14 +4922,24 @@ static const zend_function_entry class_GL_VectorGraphics_VGContext_methods[] = {
 	ZEND_ME(GL_VectorGraphics_VGContext, circle, arginfo_class_GL_VectorGraphics_VGContext_circle, ZEND_ACC_PUBLIC)
 	ZEND_ME(GL_VectorGraphics_VGContext, fill, arginfo_class_GL_VectorGraphics_VGContext_fill, ZEND_ACC_PUBLIC)
 	ZEND_ME(GL_VectorGraphics_VGContext, stroke, arginfo_class_GL_VectorGraphics_VGContext_stroke, ZEND_ACC_PUBLIC)
+	ZEND_ME(GL_VectorGraphics_VGContext, createFont, arginfo_class_GL_VectorGraphics_VGContext_createFont, ZEND_ACC_PUBLIC)
+	ZEND_ME(GL_VectorGraphics_VGContext, createFontAtIndex, arginfo_class_GL_VectorGraphics_VGContext_createFontAtIndex, ZEND_ACC_PUBLIC)
+	ZEND_ME(GL_VectorGraphics_VGContext, findFont, arginfo_class_GL_VectorGraphics_VGContext_findFont, ZEND_ACC_PUBLIC)
 	ZEND_ME(GL_VectorGraphics_VGContext, addFallbackFontId, arginfo_class_GL_VectorGraphics_VGContext_addFallbackFontId, ZEND_ACC_PUBLIC)
+	ZEND_ME(GL_VectorGraphics_VGContext, addFallbackFont, arginfo_class_GL_VectorGraphics_VGContext_addFallbackFont, ZEND_ACC_PUBLIC)
 	ZEND_ME(GL_VectorGraphics_VGContext, resetFallbackFontsId, arginfo_class_GL_VectorGraphics_VGContext_resetFallbackFontsId, ZEND_ACC_PUBLIC)
+	ZEND_ME(GL_VectorGraphics_VGContext, resetFallbackFonts, arginfo_class_GL_VectorGraphics_VGContext_resetFallbackFonts, ZEND_ACC_PUBLIC)
 	ZEND_ME(GL_VectorGraphics_VGContext, fontSize, arginfo_class_GL_VectorGraphics_VGContext_fontSize, ZEND_ACC_PUBLIC)
 	ZEND_ME(GL_VectorGraphics_VGContext, fontBlur, arginfo_class_GL_VectorGraphics_VGContext_fontBlur, ZEND_ACC_PUBLIC)
 	ZEND_ME(GL_VectorGraphics_VGContext, textLetterSpacing, arginfo_class_GL_VectorGraphics_VGContext_textLetterSpacing, ZEND_ACC_PUBLIC)
 	ZEND_ME(GL_VectorGraphics_VGContext, textLineHeight, arginfo_class_GL_VectorGraphics_VGContext_textLineHeight, ZEND_ACC_PUBLIC)
 	ZEND_ME(GL_VectorGraphics_VGContext, textAlign, arginfo_class_GL_VectorGraphics_VGContext_textAlign, ZEND_ACC_PUBLIC)
 	ZEND_ME(GL_VectorGraphics_VGContext, fontFaceId, arginfo_class_GL_VectorGraphics_VGContext_fontFaceId, ZEND_ACC_PUBLIC)
+	ZEND_ME(GL_VectorGraphics_VGContext, fontFace, arginfo_class_GL_VectorGraphics_VGContext_fontFace, ZEND_ACC_PUBLIC)
+	ZEND_ME(GL_VectorGraphics_VGContext, text, arginfo_class_GL_VectorGraphics_VGContext_text, ZEND_ACC_PUBLIC)
+	ZEND_ME(GL_VectorGraphics_VGContext, textBox, arginfo_class_GL_VectorGraphics_VGContext_textBox, ZEND_ACC_PUBLIC)
+	ZEND_ME(GL_VectorGraphics_VGContext, textBounds, arginfo_class_GL_VectorGraphics_VGContext_textBounds, ZEND_ACC_PUBLIC)
+	ZEND_ME(GL_VectorGraphics_VGContext, textBoxBounds, arginfo_class_GL_VectorGraphics_VGContext_textBoxBounds, ZEND_ACC_PUBLIC)
 	ZEND_ME(GL_VectorGraphics_VGContext, textMetrics, arginfo_class_GL_VectorGraphics_VGContext_textMetrics, ZEND_ACC_PUBLIC)
 	ZEND_ME(GL_VectorGraphics_VGContext, deleteInternal, arginfo_class_GL_VectorGraphics_VGContext_deleteInternal, ZEND_ACC_PUBLIC)
 	ZEND_ME(GL_VectorGraphics_VGContext, debugDumpPathCache, arginfo_class_GL_VectorGraphics_VGContext_debugDumpPathCache, ZEND_ACC_PUBLIC)
