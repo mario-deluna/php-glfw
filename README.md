@@ -2,17 +2,34 @@
  <img width="500px" src="https://raw.githubusercontent.com/phpgl/docs-assets/master/php-glfw/logos/logo_with_text.svg">
 </p>
 
-# PHP-GLFW
+<h1 align="center"> PHP-GLFW</h1>
+
+<p align="center">
+  <a href="https://github.com/mario-deluna/php-glfw/blob/master/LICENSE" title="license"><img alt="LICENSE" src="https://img.shields.io/badge/license-MIT-428f7e.svg?logo=open%20source%20initiative&logoColor=white&labelColor=555555"></a>
+  <a href="#tada-php-support" title="PHP Versions Supported"><img alt="PHP Versions Supported" src="https://img.shields.io/badge/php-8.0%20to%208.3-777bb3.svg?logo=php&logoColor=white&labelColor=555555"></a>
+  <a href="https://github.com/mario-deluna/php-glfw/releases/"><img src="https://img.shields.io/github/tag/mario-deluna/php-glfw?include_prereleases=&sort=semver&color=blue" alt="GitHub tag"></a>
+  <a href="https://github.com/mario-deluna/php-glfw/issues"><img src="https://img.shields.io/github/issues/mario-deluna/php-glfw" alt="issues - php-glfw"></a>
+</p>
+
+<p align="center">
+  <a href="https://github.com/mario-deluna/php-glfw/actions/workflows/build.yml" title="PHP-GLFW Tests"><img alt="PHP-GLFW Tests" 
+  src="https://github.com/mario-deluna/php-glfw/actions/workflows/build.yml/badge.svg"></a>
+  <a href="https://github.com/mario-deluna/php-glfw/actions/workflows/macos_installer.yml" title="MacOS Installer"><img alt="MacOS Installer"
+  src="https://github.com/mario-deluna/php-glfw/actions/workflows/macos_installer.yml/badge.svg"></a>
+  <a href="https://github.com/mario-deluna/php-glfw/actions/workflows/windows.yml" title="Windows Build"><img alt="Windows Build"
+  src="https://github.com/mario-deluna/php-glfw/actions/workflows/windows.yml/badge.svg"></a>
+</p>
+
 
 **[Website](https://phpgl.net) • [Getting Started](https://phpgl.net/getting-started/getting-started-with-php-and-opengl.html) • [API Docs](https://phpgl.net/API/Buffer/ByteBuffer.html) • [Examples](https://phpgl.net/examples/00-about-examples.html)**
 
-**A powerful and comprehensive OpenGL and GLFW extension for PHP, with everything you need to build amazing graphical applications 🔋!**
+**A fully-featured OpenGL and GLFW extension for PHP. Batteries included 🔋!**
 
-[![PHP-GLFW Tests](https://github.com/mario-deluna/php-glfw/actions/workflows/build.yml/badge.svg)](https://github.com/mario-deluna/php-glfw/actions/workflows/build.yml)
+<!-- [![PHP-GLFW Tests](https://github.com/mario-deluna/php-glfw/actions/workflows/build.yml/badge.svg)](https://github.com/mario-deluna/php-glfw/actions/workflows/build.yml)
 [![MacOS Installer](https://github.com/mario-deluna/php-glfw/actions/workflows/macos_installer.yml/badge.svg)](https://github.com/mario-deluna/php-glfw/actions/workflows/macos_installer.yml)
-[![Windows Build](https://github.com/mario-deluna/php-glfw/actions/workflows/windows.yml/badge.svg)](https://github.com/mario-deluna/php-glfw/actions/workflows/windows.yml)
+[![Windows Build](https://github.com/mario-deluna/php-glfw/actions/workflows/windows.yml/badge.svg)](https://github.com/mario-deluna/php-glfw/actions/workflows/windows.yml) -->
 
-PHP-GLFW allows you to create captivating _2D_ and _3D_ real-time applications in _PHP_. It introduces a whole new set of tools for PHP developers to build graphical applications like _games, scientific simulations, user interfaces_, and much more.
+PHP-GLFW allows you to create _2D_ and _3D_ real-time applications in _PHP_. It introduces a whole new set of tools for PHP developers to build graphical applications like _games, scientific simulations, user interfaces_, and much more.
 
 <p align="center">
  <img width="720px" src="https://user-images.githubusercontent.com/956212/196137371-74546845-4101-4e22-8d1c-4550f0ba2adf.gif">
