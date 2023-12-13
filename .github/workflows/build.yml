@@ -19,15 +19,6 @@ jobs:
     
     steps:
     - uses: actions/checkout@v3
-
-    - name: INI Workaround for PHP 8.1
-      if: ${{ matrix.php-versions == '8.1' }}
-      # Somehow under PHP 8.1 the ini file is not found
-      # so we just create it manually for now
-      run: |
-        sudo mkdir -p /etc/php/${{ matrix.php-versions }}/cli
-        sudo touch /etc/php/${{ matrix.php-versions }}/cli/php.ini
-        sudo chmod 777 /etc/php/${{ matrix.php-versions }}/cli/php.ini
       
     - name: Setup PHP
       uses: shivammathur/setup-php@v2
@@ -61,8 +52,21 @@ jobs:
         composer require "phpunit/phpunit:9.6.3" \
            --ignore-platform-reqs
       
-    - name: Run PHPUnit 
-      run: xvfb-run --auto-servernum php -dzend_extension=xdebug.so  -dxdebug.auto_trace=ON -dxdebug.trace_output_dir=trace ./vendor/bin/phpunit
+    - name: Run PHPUnit (8.1)
+      if: ${{ matrix.php-versions == '8.1' }}
+      run: |
+        xvfb-run --auto-servernum \
+        phpunit
+      
+    - name: Run PHPUnit
+      if: ${{ matrix.php-versions != '8.1' }}
+      run: |
+        xvfb-run --auto-servernum \
+        php \
+        -dzend_extension=xdebug.so \
+        -dxdebug.auto_trace=ON \
+        -dxdebug.trace_output_dir=trace \
+        ./vendor/bin/phpunit
     
     #- name: Setup upterm session
     #  if: always()
