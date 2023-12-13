@@ -43,23 +43,11 @@ jobs:
         grep -qxF 'extension=glfw.so' /etc/php/${{ matrix.php-versions }}/cli/php.ini || \
         echo 'extension=glfw.so' >> /etc/php/${{ matrix.php-versions }}/cli/php.ini
 
-    - name: Dump PHP info
-      run: |
-        echo /etc/php/${{ matrix.php-versions }}/cli/php.ini
-
     - name: Install PHPUnit
       run: |
-        composer require "phpunit/phpunit:9.6.3" \
-           --ignore-platform-reqs
-      
-    - name: Run PHPUnit (8.1)
-      if: ${{ matrix.php-versions == '8.1' }}
-      run: |
-        xvfb-run --auto-servernum \
-        phpunit
+        composer require "phpunit/phpunit:9.6.3"
       
     - name: Run PHPUnit
-      if: ${{ matrix.php-versions != '8.1' }}
       run: |
         xvfb-run --auto-servernum \
         php \
