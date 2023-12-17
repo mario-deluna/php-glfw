@@ -360,6 +360,7 @@ int nvgTransformInverse(float* dst, const float* src);
 
 // Transform a point by given transform.
 void nvgTransformPoint(float* dstx, float* dsty, const float* xform, float srcx, float srcy);
+void nvgTransformPointCurrent(NVGcontext* ctx, float* dstx, float* dsty, float srcx, float srcy);
 
 // Converts degrees to radians and vice versa.
 float nvgDegToRad(float deg);

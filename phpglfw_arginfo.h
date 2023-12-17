@@ -1,5 +1,5 @@
 /* This is a generated file, edit the .stub.php file instead.
- * Stub hash: 14b7489cec465aaf038ce69c2c4bb9980709bd55 */
+ * Stub hash: 38aa27148c4e466119d9ed230668c2ebc1fa23f3 */
 
 ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_glCullFace, 0, 1, IS_VOID, 0)
 	ZEND_ARG_TYPE_INFO(0, mode, IS_LONG, 0)
@@ -2832,6 +2832,13 @@ ZEND_END_ARG_INFO()
 
 #define arginfo_class_GL_VectorGraphics_VGContext_strokeColorVec4 arginfo_class_GL_VectorGraphics_VGContext_fillColorVec4
 
+ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(arginfo_class_GL_VectorGraphics_VGContext_transformPoint, 0, 2, GL\\Math\\Vec2, 0)
+	ZEND_ARG_TYPE_INFO(0, x, IS_DOUBLE, 0)
+	ZEND_ARG_TYPE_INFO(0, y, IS_DOUBLE, 0)
+ZEND_END_ARG_INFO()
+
+#define arginfo_class_GL_VectorGraphics_VGContext_transformVec2 arginfo_class_GL_Math_Vec2_normalized
+
 ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(arginfo_class_GL_VectorGraphics_VGContext_imageFromTexture, 0, 1, GL\\VectorGraphics\\VGImage, 0)
 	ZEND_ARG_OBJ_INFO(0, texture, GL\\Texture\\Texture2D, 0)
 	ZEND_ARG_TYPE_INFO_WITH_DEFAULT_VALUE(0, repeatMode, IS_LONG, 0, "GL\\VectorGraphics\\VGImage::REPEAT_NONE")
@@ -2955,7 +2962,14 @@ ZEND_END_ARG_INFO()
 #define arginfo_class_GL_VectorGraphics_VGContext_scale arginfo_class_GL_VectorGraphics_VGContext_translate
 
 ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_class_GL_VectorGraphics_VGContext_currentTransform, 0, 1, IS_VOID, 0)
-	ZEND_ARG_TYPE_INFO(1, xform, IS_DOUBLE, 0)
+	ZEND_ARG_OBJ_INFO(0, buffer, GL\\Buffer\\FloatBuffer, 0)
+ZEND_END_ARG_INFO()
+
+ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_class_GL_VectorGraphics_VGContext_transformPointCurrent, 0, 4, IS_VOID, 0)
+	ZEND_ARG_TYPE_INFO(1, dstx, IS_DOUBLE, 0)
+	ZEND_ARG_TYPE_INFO(1, dsty, IS_DOUBLE, 0)
+	ZEND_ARG_TYPE_INFO(0, srcx, IS_DOUBLE, 0)
+	ZEND_ARG_TYPE_INFO(0, srcy, IS_DOUBLE, 0)
 ZEND_END_ARG_INFO()
 
 ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_class_GL_VectorGraphics_VGContext_imageSize, 0, 3, IS_VOID, 0)
@@ -3907,6 +3921,8 @@ ZEND_METHOD(GL_VectorGraphics_VGContext, fillColori);
 ZEND_METHOD(GL_VectorGraphics_VGContext, strokeColori);
 ZEND_METHOD(GL_VectorGraphics_VGContext, fillColorVec4);
 ZEND_METHOD(GL_VectorGraphics_VGContext, strokeColorVec4);
+ZEND_METHOD(GL_VectorGraphics_VGContext, transformPoint);
+ZEND_METHOD(GL_VectorGraphics_VGContext, transformVec2);
 ZEND_METHOD(GL_VectorGraphics_VGContext, imageFromTexture);
 ZEND_METHOD(GL_VectorGraphics_VGContext, linearGradient);
 ZEND_METHOD(GL_VectorGraphics_VGContext, boxGradient);
@@ -3938,6 +3954,7 @@ ZEND_METHOD(GL_VectorGraphics_VGContext, skewX);
 ZEND_METHOD(GL_VectorGraphics_VGContext, skewY);
 ZEND_METHOD(GL_VectorGraphics_VGContext, scale);
 ZEND_METHOD(GL_VectorGraphics_VGContext, currentTransform);
+ZEND_METHOD(GL_VectorGraphics_VGContext, transformPointCurrent);
 ZEND_METHOD(GL_VectorGraphics_VGContext, imageSize);
 ZEND_METHOD(GL_VectorGraphics_VGContext, deleteImage);
 ZEND_METHOD(GL_VectorGraphics_VGContext, scissor);
@@ -4870,6 +4887,8 @@ static const zend_function_entry class_GL_VectorGraphics_VGContext_methods[] = {
 	ZEND_ME(GL_VectorGraphics_VGContext, strokeColori, arginfo_class_GL_VectorGraphics_VGContext_strokeColori, ZEND_ACC_PUBLIC)
 	ZEND_ME(GL_VectorGraphics_VGContext, fillColorVec4, arginfo_class_GL_VectorGraphics_VGContext_fillColorVec4, ZEND_ACC_PUBLIC)
 	ZEND_ME(GL_VectorGraphics_VGContext, strokeColorVec4, arginfo_class_GL_VectorGraphics_VGContext_strokeColorVec4, ZEND_ACC_PUBLIC)
+	ZEND_ME(GL_VectorGraphics_VGContext, transformPoint, arginfo_class_GL_VectorGraphics_VGContext_transformPoint, ZEND_ACC_PUBLIC)
+	ZEND_ME(GL_VectorGraphics_VGContext, transformVec2, arginfo_class_GL_VectorGraphics_VGContext_transformVec2, ZEND_ACC_PUBLIC)
 	ZEND_ME(GL_VectorGraphics_VGContext, imageFromTexture, arginfo_class_GL_VectorGraphics_VGContext_imageFromTexture, ZEND_ACC_PUBLIC)
 	ZEND_ME(GL_VectorGraphics_VGContext, linearGradient, arginfo_class_GL_VectorGraphics_VGContext_linearGradient, ZEND_ACC_PUBLIC)
 	ZEND_ME(GL_VectorGraphics_VGContext, boxGradient, arginfo_class_GL_VectorGraphics_VGContext_boxGradient, ZEND_ACC_PUBLIC)
@@ -4901,6 +4920,7 @@ static const zend_function_entry class_GL_VectorGraphics_VGContext_methods[] = {
 	ZEND_ME(GL_VectorGraphics_VGContext, skewY, arginfo_class_GL_VectorGraphics_VGContext_skewY, ZEND_ACC_PUBLIC)
 	ZEND_ME(GL_VectorGraphics_VGContext, scale, arginfo_class_GL_VectorGraphics_VGContext_scale, ZEND_ACC_PUBLIC)
 	ZEND_ME(GL_VectorGraphics_VGContext, currentTransform, arginfo_class_GL_VectorGraphics_VGContext_currentTransform, ZEND_ACC_PUBLIC)
+	ZEND_ME(GL_VectorGraphics_VGContext, transformPointCurrent, arginfo_class_GL_VectorGraphics_VGContext_transformPointCurrent, ZEND_ACC_PUBLIC)
 	ZEND_ME(GL_VectorGraphics_VGContext, imageSize, arginfo_class_GL_VectorGraphics_VGContext_imageSize, ZEND_ACC_PUBLIC)
 	ZEND_ME(GL_VectorGraphics_VGContext, deleteImage, arginfo_class_GL_VectorGraphics_VGContext_deleteImage, ZEND_ACC_PUBLIC)
 	ZEND_ME(GL_VectorGraphics_VGContext, scissor, arginfo_class_GL_VectorGraphics_VGContext_scissor, ZEND_ACC_PUBLIC)

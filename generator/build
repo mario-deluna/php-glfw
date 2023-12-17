@@ -76,8 +76,7 @@ $gen->adjust(PHPGlfwAdjustments\GLVectorSetterFunctionAdjustment::class);
 $gen->adjust(PHPGlfwAdjustments\GLGetShaderInfoLogAdjustment::class);
 $gen->adjust(PHPGlfwAdjustments\GLReadPixelsAdjustment::class);
 $gen->adjust(PHPGlfwAdjustments\BooleanConstAdjustment::class);
-
-
+$gen->adjust(PHPGlfwAdjustments\NVGCurrentTansformAdjustment::class);
 
 // build the extension
 $gen->build(GEN_PATH_EXT . '/v2/');

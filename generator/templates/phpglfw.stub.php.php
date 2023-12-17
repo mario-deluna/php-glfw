@@ -219,6 +219,8 @@ namespace GL\VectorGraphics
         public function strokeColori(int $r, int $g, int $b, int $a) : void {}
         public function fillColorVec4(\GL\Math\Vec4 $vec) : void {}
         public function strokeColorVec4(\GL\Math\Vec4 $vec) : void {}
+        public function transformPoint(float $x, float $y) : \GL\Math\Vec2 {}
+        public function transformVec2(\GL\Math\Vec2 $vec) : \GL\Math\Vec2 {}
 
         public function imageFromTexture(
             \GL\Texture\Texture2D $texture,

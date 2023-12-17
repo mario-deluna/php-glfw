@@ -2281,6 +2281,8 @@ namespace GL\VectorGraphics
         public function strokeColori(int $r, int $g, int $b, int $a) : void {}
         public function fillColorVec4(\GL\Math\Vec4 $vec) : void {}
         public function strokeColorVec4(\GL\Math\Vec4 $vec) : void {}
+        public function transformPoint(float $x, float $y) : \GL\Math\Vec2 {}
+        public function transformVec2(\GL\Math\Vec2 $vec) : \GL\Math\Vec2 {}
 
         public function imageFromTexture(
             \GL\Texture\Texture2D $texture,
@@ -2319,7 +2321,8 @@ namespace GL\VectorGraphics
         public function skewX(float $angle) : void {}
         public function skewY(float $angle) : void {}
         public function scale(float $x, float $y) : void {}
-        public function currentTransform(float &$xform) : void {}
+        public function currentTransform(\GL\Buffer\FloatBuffer $buffer) : void {}
+        public function transformPointCurrent(float &$dstx, float &$dsty, float $srcx, float $srcy) : void {}
         public function imageSize(int $image, int &$w, int &$h) : void {}
         public function deleteImage(int $image) : void {}
         public function scissor(float $x, float $y, float $w, float $h) : void {}

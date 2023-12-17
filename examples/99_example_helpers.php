@@ -242,6 +242,15 @@ class ExampleHelper
 
     private static ?int $vgFontHandle = null;
 
+    private static function getVGFontHandle(VGContext $vg) : int
+    {
+        if (self::$vgFontHandle === null) {
+            self::$vgFontHandle = $vg->createFont('inconsolata', __DIR__ . '/font/inconsolata/Inconsolata-Regular.ttf');
+        }
+
+        return self::$vgFontHandle;
+    }
+
     /**
      * Draws a colored function call text to the screen.
      * This is used to directly visualize what impact what parameter has on the result.
@@ -252,10 +261,6 @@ class ExampleHelper
      */
     public static function drawFuncLabel(VGContext $vg, float $x, float $y, string $functionCall) 
     {
-        if (self::$vgFontHandle === null) {
-            self::$vgFontHandle = $vg->createFont('inconsolata', __DIR__ . '/font/inconsolata/Inconsolata-Regular.ttf');
-        }
-
         // frist we need to parse the function call into its components
         $matches = [];
         preg_match('/([a-zA-Z0-9]+)\((.*)\)/', $functionCall, $matches);
@@ -264,9 +269,10 @@ class ExampleHelper
         $params = explode(',', $params);
         $params = array_map('trim', $params);
         
+        $vg->save();
         $vg->resetTransform();
         $vg->fontSize(20);
-        $vg->fontFaceId(self::$vgFontHandle);
+        $vg->fontFaceId(self::getVGFontHandle($vg));
         $vg->beginPath();
 
         // first draw the function name
@@ -306,6 +312,7 @@ class ExampleHelper
         $vg->fillColori(22, 159, 255, 255);
         $x = $vg->text($x, $y, ')');
         $vg->fill();
+        $vg->restore();
     }
     
     /**
@@ -354,8 +361,8 @@ class ExampleHelper
         // properly handle offset values
         // because this is a continues grid, pretty much need to just calculate the offset
         // inside the resolution meaning 150 % 100 = 50, so we need to offset by 50 etc.
-        $offsetX = $offsetX % $resolution;
-        $offsetY = $offsetY % $resolution;
+        $offsetX = (int) $offsetX % $resolution;
+        $offsetY = (int) $offsetY % $resolution;
 
         $x = -$offsetX;
         while ($x < $maxX) {
@@ -375,6 +382,51 @@ class ExampleHelper
     }
 
     /**
+     * Draws a light point, mainly used to visualize the coordinate system.
+     */
+    public static function drawCoordPoint(VGContext $vg, float $x, float $y, string $label = null) : void
+    {
+        $vg->beginPath();
+        $vg->circle($x, $y, 5);
+        $vg->fillColori(80, 80, 80, 255);
+        $vg->fill();
+
+        if ($label !== null) {
+            $vg->fontSize(20);
+            $vg->fontFaceId(self::getVGFontHandle($vg));
+            $vg->fillColori(80, 80, 80, 255);
+            $vg->text($x + 10, $y + 24, $label);
+        }
+    }
+
+    /**
+     * Draws a red point with a label, use this when you want to focus on a specific point.
+     */
+    public static function drawPoint(VGContext $vg, float $x, float $y, string $label = null) : void
+    {
+        // we only want to draw the point at the transformed position
+        // so we get the transformed position and then reset the transformation state
+        $point = $vg->transformPoint($x, $y);
+
+        $vg->save();
+        $vg->resetTransform();
+
+        $vg->beginPath();
+        $vg->circle($point->x, $point->y, 5);
+        $vg->fillColori(255, 0, 0, 255);
+        $vg->fill();
+
+        if ($label !== null) {
+            $vg->fontSize(20);
+            $vg->fontFaceId(self::getVGFontHandle($vg));
+            $vg->fillColori(255, 255, 255, 255);
+            $vg->text($point->x + 10, $point->y + 10, $label);
+        }
+
+        $vg->restore();
+    }
+
+    /**
      * Draws a grid representing the coordinate system.
      * 
      * @param VGContext $vg
@@ -382,20 +434,37 @@ class ExampleHelper
      */
     public static function drawCoordSys(VGContext $vg) : void
     {
-        $vg->resetTransform();
-        $vg->translate(sin(glfwGetTime()) * 200, 0);
-
         // first store the current state
         $vg->save();
+        
+        $transformData = new FloatBuffer();
+        $vg->currentTransform($transformData);
+
+        $vg->resetTransform();
 
         // high res grid first
         $vg->strokeColori(20, 20, 20, 255);
         $vg->strokeWidth(1.0);
-        self::drawGrid($vg, 10.0);
+        self::drawGrid($vg, 10.0, -$transformData[4], -$transformData[5]);
 
         // low res grid
         $vg->strokeColori(50, 50, 50, 255);
         $vg->strokeWidth(2.0);
-        self::drawGrid($vg, 100.0);
+        self::drawGrid($vg, 100.0, -$transformData[4], -$transformData[5]);
+
+        // render a the transform(0,0) point label
+        self::drawCoordPoint($vg, $transformData[4], $transformData[5], '0,0');
+
+        $vg->restore();
+    }
+
+    /**
+     * Converts radians to a degree string, used to visualize the value
+     * 
+     * @return void 
+     */
+    public static function radToDegStr(float $rad) : string
+    {
+        return round(((int)rad2deg($rad) ) % 360, 0) . '°';
     }
 }

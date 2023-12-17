@@ -466,6 +466,39 @@ PHP_METHOD(GL_VectorGraphics_VGContext, strokeColorVec4)
     nvgStrokeColor(intern->nvgctx, nvgRGBAf(vec4_ptr->data[0], vec4_ptr->data[1], vec4_ptr->data[2], vec4_ptr->data[3]));
 }
 
+PHP_METHOD(GL_VectorGraphics_VGContext, transformVec2)
+{
+    zval *vec2;
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "O", &vec2, phpglfw_get_math_vec2_ce()) == FAILURE) {
+        return;
+    }
+
+    phpglfw_math_vec2_object *vec2_ptr = phpglfw_math_vec2_objectptr_from_zobj_p(Z_OBJ_P(vec2));
+    phpglfw_vgcontext_object *intern = phpglfw_vgcontext_objectptr_from_zobj_p(Z_OBJ_P(getThis()));
+
+    // construct a new vec2 object
+    object_init_ex(return_value, phpglfw_get_math_vec2_ce());
+    phpglfw_math_vec2_object *new_vec2_ptr = phpglfw_math_vec2_objectptr_from_zobj_p(Z_OBJ_P(return_value));
+    
+    nvgTransformPointCurrent(intern->nvgctx, &new_vec2_ptr->data[0], &new_vec2_ptr->data[1], vec2_ptr->data[0], vec2_ptr->data[1]);
+}
+
+PHP_METHOD(GL_VectorGraphics_VGContext, transformPoint)
+{
+    double x, y;
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "dd", &x, &y) == FAILURE) {
+        return;
+    }
+
+    phpglfw_vgcontext_object *intern = phpglfw_vgcontext_objectptr_from_zobj_p(Z_OBJ_P(getThis()));
+
+    // construct a new vec2 object
+    object_init_ex(return_value, phpglfw_get_math_vec2_ce());
+    phpglfw_math_vec2_object *new_vec2_ptr = phpglfw_math_vec2_objectptr_from_zobj_p(Z_OBJ_P(return_value));
+    
+    nvgTransformPointCurrent(intern->nvgctx, &new_vec2_ptr->data[0], &new_vec2_ptr->data[1], x, y);
+}
+
 void phpglfw_register_vg_module(INIT_FUNC_ARGS)
 {
     zend_class_entry tmp_ce;

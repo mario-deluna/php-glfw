@@ -745,15 +745,40 @@ PHP_METHOD(GL_VectorGraphics_VGContext, currentTransform)
 {
     phpglfw_vgcontext_object *intern = phpglfw_vgcontext_objectptr_from_zobj_p(Z_OBJ_P(getThis()));
 
-    zval *xform_zval;
-    float xform_tmp;
-    if (zend_parse_parameters(ZEND_NUM_ARGS() , "z", &xform_zval) == FAILURE) {
+    zval *buffer_zval;
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "O", &buffer_zval, phpglfw_get_buffer_glfloat_ce()) == FAILURE) {
         return;
     }
-    ZVAL_DEREF(xform_zval);
-    convert_to_double(xform_zval);
-    nvgCurrentTransform(intern->nvgctx, &xform_tmp);
-    ZVAL_DOUBLE(xform_zval, xform_tmp);
+    phpglfw_buffer_glfloat_object *buffer = phpglfw_buffer_glfloat_objectptr_from_zobj_p(Z_OBJ_P(buffer_zval));
+    // ensure the proper size of the buffer
+    cvector_reserve(buffer->vec, 6);
+    // nvgCurrentTransform will copy the values into the float*
+    nvgCurrentTransform(intern->nvgctx, buffer->vec);
+    cvector_set_size(buffer->vec, 6);;
+}
+/**
+ * transformPointCurrent
+ */ 
+PHP_METHOD(GL_VectorGraphics_VGContext, transformPointCurrent)
+{
+    phpglfw_vgcontext_object *intern = phpglfw_vgcontext_objectptr_from_zobj_p(Z_OBJ_P(getThis()));
+
+    zval *dstx_zval;
+    float dstx_tmp;
+    zval *dsty_zval;
+    float dsty_tmp;
+    double srcx;
+    double srcy;
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "zzdd", &dstx_zval, &dsty_zval, &srcx, &srcy) == FAILURE) {
+        return;
+    }
+    ZVAL_DEREF(dstx_zval);
+    convert_to_double(dstx_zval);
+    ZVAL_DEREF(dsty_zval);
+    convert_to_double(dsty_zval);
+    nvgTransformPointCurrent(intern->nvgctx, &dstx_tmp, &dsty_tmp, srcx, srcy);
+    ZVAL_DOUBLE(dstx_zval, dstx_tmp);
+    ZVAL_DOUBLE(dsty_zval, dsty_tmp);
 }
 /**
  * imageSize
@@ -1426,6 +1451,39 @@ PHP_METHOD(GL_VectorGraphics_VGContext, strokeColorVec4)
     phpglfw_vgcontext_object *intern = phpglfw_vgcontext_objectptr_from_zobj_p(Z_OBJ_P(getThis()));
 
     nvgStrokeColor(intern->nvgctx, nvgRGBAf(vec4_ptr->data[0], vec4_ptr->data[1], vec4_ptr->data[2], vec4_ptr->data[3]));
+}
+
+PHP_METHOD(GL_VectorGraphics_VGContext, transformVec2)
+{
+    zval *vec2;
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "O", &vec2, phpglfw_get_math_vec2_ce()) == FAILURE) {
+        return;
+    }
+
+    phpglfw_math_vec2_object *vec2_ptr = phpglfw_math_vec2_objectptr_from_zobj_p(Z_OBJ_P(vec2));
+    phpglfw_vgcontext_object *intern = phpglfw_vgcontext_objectptr_from_zobj_p(Z_OBJ_P(getThis()));
+
+    // construct a new vec2 object
+    object_init_ex(return_value, phpglfw_get_math_vec2_ce());
+    phpglfw_math_vec2_object *new_vec2_ptr = phpglfw_math_vec2_objectptr_from_zobj_p(Z_OBJ_P(return_value));
+    
+    nvgTransformPointCurrent(intern->nvgctx, &new_vec2_ptr->data[0], &new_vec2_ptr->data[1], vec2_ptr->data[0], vec2_ptr->data[1]);
+}
+
+PHP_METHOD(GL_VectorGraphics_VGContext, transformPoint)
+{
+    double x, y;
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "dd", &x, &y) == FAILURE) {
+        return;
+    }
+
+    phpglfw_vgcontext_object *intern = phpglfw_vgcontext_objectptr_from_zobj_p(Z_OBJ_P(getThis()));
+
+    // construct a new vec2 object
+    object_init_ex(return_value, phpglfw_get_math_vec2_ce());
+    phpglfw_math_vec2_object *new_vec2_ptr = phpglfw_math_vec2_objectptr_from_zobj_p(Z_OBJ_P(return_value));
+    
+    nvgTransformPointCurrent(intern->nvgctx, &new_vec2_ptr->data[0], &new_vec2_ptr->data[1], x, y);
 }
 
 void phpglfw_register_vg_module(INIT_FUNC_ARGS)

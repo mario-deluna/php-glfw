@@ -642,6 +642,12 @@ void nvgTransformPoint(float* dx, float* dy, const float* t, float sx, float sy)
 	*dy = sx*t[1] + sy*t[3] + t[5];
 }
 
+void nvgTransformPointCurrent(NVGcontext* ctx, float* dstx, float* dsty, float srcx, float srcy)
+{
+    NVGstate* state = nvg__getState(ctx);
+    nvgTransformPoint(dstx, dsty, state->xform, srcx, srcy);
+}
+
 float nvgDegToRad(float deg)
 {
 	return deg / 180.0f * NVG_PI;
