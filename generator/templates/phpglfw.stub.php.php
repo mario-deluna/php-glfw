@@ -209,6 +209,16 @@ namespace GL\VectorGraphics
         //public function makePaintAABB(float $minx, float $miny, float $maxx, float $maxy, float $angle = 0.0, float $alpha = 1.0) : VGPaint {}
     }
 
+    class VGAlign {
+        // public const LEFT = 1;
+        // public const CENTER = 2;
+        // public const RIGHT = 4;
+        // public const TOP = 8;
+        // public const MIDDLE = 16;
+        // public const BOTTOM = 32;
+        // public const BASELINE = 64;
+    }
+
     class VGContext {
         // public const ANTIALIAS = 1;
         // public const STENCIL_STROKES = 2;

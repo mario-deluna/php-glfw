@@ -43,6 +43,8 @@ zend_class_entry *phpglfw_vgpaint_ce;
 zend_class_entry *phpglfw_vgimage_ce;
 zend_class_entry *phpglfw_vgcolor_ce;
 
+zend_class_entry *phpglfw_vgalign_ce;
+
 zend_class_entry *phpglfw_get_vg_vgcontext_ce() {
     return phpglfw_vgcontext_ce;
 }
@@ -543,6 +545,19 @@ void phpglfw_register_vg_module(INIT_FUNC_ARGS)
 
     zend_declare_class_constant_long(phpglfw_vgimage_ce, "FILTER_LINEAR", strlen("FILTER_LINEAR"), PHPGLFW_VG_FILTER_LINEAR);
     zend_declare_class_constant_long(phpglfw_vgimage_ce, "FILTER_NEAREST", strlen("FILTER_NEAREST"), PHPGLFW_VG_FILTER_NEAREST);
+
+    // register a VGAlign class
+    INIT_CLASS_ENTRY(tmp_ce, "GL\\VectorGraphics\\VGAlign", NULL);
+    phpglfw_vgalign_ce = zend_register_internal_class(&tmp_ce);
+
+    zend_declare_class_constant_long(phpglfw_vgalign_ce, "LEFT", strlen("LEFT"), NVG_ALIGN_LEFT);
+    zend_declare_class_constant_long(phpglfw_vgalign_ce, "CENTER", strlen("CENTER"), NVG_ALIGN_CENTER);
+    zend_declare_class_constant_long(phpglfw_vgalign_ce, "RIGHT", strlen("RIGHT"), NVG_ALIGN_RIGHT);
+
+    zend_declare_class_constant_long(phpglfw_vgalign_ce, "TOP", strlen("TOP"), NVG_ALIGN_TOP);
+    zend_declare_class_constant_long(phpglfw_vgalign_ce, "MIDDLE", strlen("MIDDLE"), NVG_ALIGN_MIDDLE);
+    zend_declare_class_constant_long(phpglfw_vgalign_ce, "BOTTOM", strlen("BOTTOM"), NVG_ALIGN_BOTTOM);
+    zend_declare_class_constant_long(phpglfw_vgalign_ce, "BASELINE", strlen("BASELINE"), NVG_ALIGN_BASELINE);
 
 
     // initialize and register the VectorGraphics Paint class

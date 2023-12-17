@@ -43,6 +43,8 @@ zend_class_entry *phpglfw_vgpaint_ce;
 zend_class_entry *phpglfw_vgimage_ce;
 zend_class_entry *phpglfw_vgcolor_ce;
 
+zend_class_entry *phpglfw_vgalign_ce;
+
 zend_class_entry *phpglfw_get_vg_vgcontext_ce() {
     return phpglfw_vgcontext_ce;
 }
@@ -1327,15 +1329,23 @@ PHP_METHOD(GL_VectorGraphics_VGContext, textBounds)
     double y;
     const char *string;
     size_t string_size;
-    zval *bounds_zval;
-    float bounds_tmp;
-    if (zend_parse_parameters(ZEND_NUM_ARGS() , "ddsz", &x, &y, &string, &string_size, &bounds_zval) == FAILURE) {
+    zval *bounds_zval = NULL;
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "dds|O!", &x, &y, &string, &string_size, &bounds_zval, phpglfw_get_math_vec4_ce()) == FAILURE) {
         return;
     }
-    ZVAL_DEREF(bounds_zval);
-    convert_to_double(bounds_zval);
-    RETURN_DOUBLE(nvgTextBounds(intern->nvgctx, x, y, string, NULL, &bounds_tmp));
-    ZVAL_DOUBLE(bounds_zval, bounds_tmp);
+    phpglfw_math_vec4_object *bounds = NULL;
+    if (bounds_zval != NULL) {
+        ZVAL_DEREF(bounds_zval);
+        // if we got a var but its not an object, we create a new one
+        if (Z_TYPE_P(bounds_zval) == IS_OBJECT && Z_OBJCE_P(bounds_zval) == phpglfw_get_math_vec4_ce()) {
+            bounds = phpglfw_math_vec4_objectptr_from_zobj_p(Z_OBJ_P(bounds_zval));
+        }
+        else {
+            object_init_ex(bounds_zval, phpglfw_get_math_vec4_ce());
+            bounds = phpglfw_math_vec4_objectptr_from_zobj_p(Z_OBJ_P(bounds_zval));
+        }
+    }
+    RETURN_DOUBLE(nvgTextBounds(intern->nvgctx, x, y, string, NULL, bounds->data));
 }
 /**
  * textBoxBounds
@@ -1530,6 +1540,19 @@ void phpglfw_register_vg_module(INIT_FUNC_ARGS)
 
     zend_declare_class_constant_long(phpglfw_vgimage_ce, "FILTER_LINEAR", strlen("FILTER_LINEAR"), PHPGLFW_VG_FILTER_LINEAR);
     zend_declare_class_constant_long(phpglfw_vgimage_ce, "FILTER_NEAREST", strlen("FILTER_NEAREST"), PHPGLFW_VG_FILTER_NEAREST);
+
+    // register a VGAlign class
+    INIT_CLASS_ENTRY(tmp_ce, "GL\\VectorGraphics\\VGAlign", NULL);
+    phpglfw_vgalign_ce = zend_register_internal_class(&tmp_ce);
+
+    zend_declare_class_constant_long(phpglfw_vgalign_ce, "LEFT", strlen("LEFT"), NVG_ALIGN_LEFT);
+    zend_declare_class_constant_long(phpglfw_vgalign_ce, "CENTER", strlen("CENTER"), NVG_ALIGN_CENTER);
+    zend_declare_class_constant_long(phpglfw_vgalign_ce, "RIGHT", strlen("RIGHT"), NVG_ALIGN_RIGHT);
+
+    zend_declare_class_constant_long(phpglfw_vgalign_ce, "TOP", strlen("TOP"), NVG_ALIGN_TOP);
+    zend_declare_class_constant_long(phpglfw_vgalign_ce, "MIDDLE", strlen("MIDDLE"), NVG_ALIGN_MIDDLE);
+    zend_declare_class_constant_long(phpglfw_vgalign_ce, "BOTTOM", strlen("BOTTOM"), NVG_ALIGN_BOTTOM);
+    zend_declare_class_constant_long(phpglfw_vgalign_ce, "BASELINE", strlen("BASELINE"), NVG_ALIGN_BASELINE);
 
 
     // initialize and register the VectorGraphics Paint class

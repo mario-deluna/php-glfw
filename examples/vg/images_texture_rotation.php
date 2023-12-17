@@ -26,10 +26,11 @@ $phpglLogo = $vg->imageFromTexture(
 // ---------------------------------------------------------------------------- 
 while (!glfwWindowShouldClose($window))
 {
+    // clear
     glClearColor(0, 0, 0, 1);
-    // note how we are clearing both the DEPTH and COLOR buffers.
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
+    // fetch the content scale of the window
     $contentScaleX;
     $contentScaleY;
     glfwGetWindowContentScale($window, $contentScaleX, $contentScaleY);
@@ -43,7 +44,7 @@ while (!glfwWindowShouldClose($window))
     // just move x around a bit to visualize the translation
     $screenCenterX += sin(glfwGetTime()) * 100;
 
-    // wirst we translate the coordinate system to the center of the screen
+    // first we translate the coordinate system to the center of the screen
     // after this operation 0,0 will be the center of the screen and not the top left corner
     $vg->translate($screenCenterX, $screenCenterY);
     // for this example we will rotate the coordinate system around the center of the screen

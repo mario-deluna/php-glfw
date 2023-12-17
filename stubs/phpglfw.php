@@ -2270,6 +2270,16 @@ namespace GL\VectorGraphics
         public function makePaintCentered(float $cx, float $cy, float $w, float $h, float $angle = 0.0, float $alpha = 1.0) : VGPaint {}
     }
 
+    class VGAlign {
+        public const LEFT = 1;
+        public const CENTER = 2;
+        public const RIGHT = 4;
+        public const TOP = 8;
+        public const MIDDLE = 16;
+        public const BOTTOM = 32;
+        public const BASELINE = 64;
+    }
+
     class VGContext {
         public const ANTIALIAS = 1;
         public const STENCIL_STROKES = 2;
@@ -2360,7 +2370,7 @@ namespace GL\VectorGraphics
         public function fontFace(string $font) : void {}
         public function text(float $x, float $y, string $string) : float {}
         public function textBox(float $x, float $y, float $breakRowWidth, string $string) : void {}
-        public function textBounds(float $x, float $y, string $string, float &$bounds) : float {}
+        public function textBounds(float $x, float $y, string $string, ?\GL\Math\Vec4 &$bounds = NULL) : float {}
         public function textBoxBounds(float $x, float $y, float $breakRowWidth, string $string, float &$bounds) : void {}
         public function textMetrics(float &$ascender, float &$descender, float &$lineh) : void {}
         public function deleteInternal() : void {}

@@ -343,7 +343,7 @@ class ExtFunction
         }
         // class entry argument
         elseif ($arg->argumentType === ExtType::T_CE && $arg instanceof CEObjectArgument) {
-            $buffer = ($arg->isOptional() ? '?' : '') . $arg->getPHPClassName() . ' ' . '$' . $arg->name;
+            $buffer = ($arg->isOptional() ? '?' : '') . $arg->getPHPClassName() . ' ' . ($arg->explicitPassedByReference ? '&' : '') . '$' . $arg->name;
                 
             if ($arg->isOptional() && $allowDefaultValue) {
                 $buffer .= ' = ' . $arg->defaultValue;

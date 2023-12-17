@@ -2,7 +2,9 @@
 
 use GL\Buffer\FloatBuffer;
 use GL\Geometry\ObjFileParser;
+use GL\Math\Vec4;
 use GL\Texture\Texture2D;
+use GL\VectorGraphics\VGAlign;
 use GL\VectorGraphics\VGContext;
 
 /**
@@ -13,6 +15,11 @@ class ExampleHelper
 {
     const WIN_WIDTH = 1280;
     const WIN_HEIGHT = 720;
+
+    /**
+     * Instance of the current windo
+     */
+    private static ?GLFWwindow $currentWindow = null;
 
     /**
      * Initializes GLFW and creates a window.
@@ -59,6 +66,9 @@ class ExampleHelper
         // more correctly it defines how many screen updates to wait for 
         // after glfwSwapBuffers has been called 
         glfwSwapInterval(1);
+
+        // set the current window
+        self::$currentWindow = $window;
 
         return $window;
     }
@@ -271,6 +281,7 @@ class ExampleHelper
         
         $vg->save();
         $vg->resetTransform();
+        $vg->textAlign(0);
         $vg->fontSize(20);
         $vg->fontFaceId(self::getVGFontHandle($vg));
         $vg->beginPath();
@@ -395,6 +406,7 @@ class ExampleHelper
             $vg->fontSize(20);
             $vg->fontFaceId(self::getVGFontHandle($vg));
             $vg->fillColori(80, 80, 80, 255);
+            $vg->textAlign(0);
             $vg->text($x + 10, $y + 24, $label);
         }
     }
@@ -466,5 +478,113 @@ class ExampleHelper
     public static function radToDegStr(float $rad) : string
     {
         return round(((int)rad2deg($rad) ) % 360, 0) . '°';
+    }
+
+    /**
+     * Draws a button group with the given options.
+     */
+    public static function drawButtonGroup(
+        VGContext $vg, 
+        float $x, 
+        float $y, 
+        string $selected, 
+        array $options, 
+        string &$selectedOption, 
+        callable $onSelect
+    ) : float 
+    {
+        $fontHandle = self::getVGFontHandle($vg);
+        $fontSize = 20;
+        $padding = 30; // distance between the buttons
+        $innerOffset = 4; // offset outer rect and the inner button
+        $lineHeight = $fontSize * 1.8;
+
+        $vg->save();
+
+        // we rest the transformation state as we render the button group
+        // always in screen space, this makes calculating if a click is inside also easier
+        $vg->resetTransform();
+
+        $vg->fontSize($fontSize);
+        $vg->fontFaceId($fontHandle);
+        $vg->textAlign(VGAlign::LEFT | VGAlign::MIDDLE);
+
+        // calculate the width of the button group
+        $buttonWidths = [];
+        $buttonOffsets = [];
+        $offsetc = $padding;
+        foreach($options as $key => $option) {
+            $buttonWidths[$key] = $vg->textBounds(0, 0, $option);
+            $buttonOffsets[$key] = $offsetc;
+            $offsetc += $buttonWidths[$key] + $padding * 2;
+        }
+
+        $totalWidth = $offsetc - $padding;
+        $totalHeight = $lineHeight + $innerOffset * 2;
+
+        // draw the background
+        $vg->beginPath();
+        $vg->roundedRect($x, $y, $totalWidth, $totalHeight, 10);
+        $vg->fillColori(255, 255, 255, 255);
+        $vg->strokeColori(254, 254, 254, 255);
+        $vg->fill();
+
+        // get the current mouse position
+        glfwGetCursorPos(self::$currentWindow, $mouseX, $mouseY);
+
+        static $buttonPressed = [];
+
+        // draw the buttons
+        foreach($options as $key => $option) {
+            $currentWidth = $buttonWidths[$key];
+            $currentOffset = $buttonOffsets[$key];
+
+            $bx = $x + $currentOffset - $padding + $innerOffset;
+            $bw = $currentWidth + $padding * 2 - $innerOffset * 2;
+
+            $by = $y + $innerOffset;
+            $bh = $totalHeight - $innerOffset * 2;
+
+            if (!isset($buttonPressed[$key])) {
+                $buttonPressed[$key] = false;
+            }
+
+            // check if the mouse is inside the button
+            $isInside = $mouseX >= $bx && $mouseX <= $bx + $bw && $mouseY >= $by && $mouseY <= $by + $bh;
+            $isActive = $selectedOption === $key;
+
+            if ($isInside && glfwGetMouseButton(self::$currentWindow, GLFW_MOUSE_BUTTON_LEFT) === GLFW_PRESS) {
+                if (!$buttonPressed[$key]) {
+                    $buttonPressed[$key] = true; 
+                    $onSelect($key);
+                }
+            } else {
+                $buttonPressed[$key] = false; 
+            }
+
+            if ($isActive || $isInside) {
+                $vg->beginPath();
+                $vg->roundedRect($bx, $by, $bw, $bh, 7);
+                if ($isInside) {
+                    $vg->fillColori(76, 66, 233, 200);
+                    $vg->fill();
+                } else {
+                    $vg->fillColori(76, 66, 233, 255);
+                    $vg->fill();
+                }
+
+                // set color for label
+                $vg->fillColori(255, 255, 255, 255);
+            } else {
+                $vg->fillColori(0, 0, 0, 255);
+            }
+
+            // draw the label
+            $vg->text($x + $currentOffset, $y + $totalHeight * 0.5, $option);
+        }
+
+        $vg->restore();
+
+        return $totalWidth;
     }
 }

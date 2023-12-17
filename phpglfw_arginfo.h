@@ -1,5 +1,5 @@
 /* This is a generated file, edit the .stub.php file instead.
- * Stub hash: 38aa27148c4e466119d9ed230668c2ebc1fa23f3 */
+ * Stub hash: 577c3aa8ffc2481ac9e70cb5ef1b6aff911420b0 */
 
 ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_glCullFace, 0, 1, IS_VOID, 0)
 	ZEND_ARG_TYPE_INFO(0, mode, IS_LONG, 0)
@@ -3148,11 +3148,11 @@ ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_class_GL_VectorGraphics_VGContex
 	ZEND_ARG_TYPE_INFO(0, string, IS_STRING, 0)
 ZEND_END_ARG_INFO()
 
-ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_class_GL_VectorGraphics_VGContext_textBounds, 0, 4, IS_DOUBLE, 0)
+ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_class_GL_VectorGraphics_VGContext_textBounds, 0, 3, IS_DOUBLE, 0)
 	ZEND_ARG_TYPE_INFO(0, x, IS_DOUBLE, 0)
 	ZEND_ARG_TYPE_INFO(0, y, IS_DOUBLE, 0)
 	ZEND_ARG_TYPE_INFO(0, string, IS_STRING, 0)
-	ZEND_ARG_TYPE_INFO(1, bounds, IS_DOUBLE, 0)
+	ZEND_ARG_OBJ_INFO_WITH_DEFAULT_VALUE(1, bounds, GL\\Math\\Vec4, 1, "NULL")
 ZEND_END_ARG_INFO()
 
 ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_class_GL_VectorGraphics_VGContext_textBoxBounds, 0, 5, IS_VOID, 0)
@@ -4877,6 +4877,11 @@ static const zend_function_entry class_GL_VectorGraphics_VGPaint_methods[] = {
 static const zend_function_entry class_GL_VectorGraphics_VGImage_methods[] = {
 	ZEND_ME(GL_VectorGraphics_VGImage, makePaint, arginfo_class_GL_VectorGraphics_VGImage_makePaint, ZEND_ACC_PUBLIC)
 	ZEND_ME(GL_VectorGraphics_VGImage, makePaintCentered, arginfo_class_GL_VectorGraphics_VGImage_makePaintCentered, ZEND_ACC_PUBLIC)
+	ZEND_FE_END
+};
+
+
+static const zend_function_entry class_GL_VectorGraphics_VGAlign_methods[] = {
 	ZEND_FE_END
 };
 
