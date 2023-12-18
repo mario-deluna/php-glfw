@@ -1,6 +1,7 @@
 site_name: PHP-GLFW
 repo_url: https://github.com/mario-deluna/php-glfw
 site_url: https://phpgl.net
+site_description: "Create Games and Graphics with PHP and OpenGL: PHP-GLFW brings dynamic 2D and 3D application capabilities to PHP. It's cross-platform, fast, and includes a CG Math Library, Model Loading, Texture Loading, Native Buffer Support, and a Vector Graphics Rendering API."
 use_directory_urls: false
 nav:
   - Home: index.md
@@ -14,6 +15,7 @@ nav:
     - Creating a Window: getting-started/window-creation.md
     - Drawing a Triangle: getting-started/drawing_a_triangle.md
   - User Guide:
+    - Vector Graphics: user-guide/vector-graphics/
     - Math & 3D Space: user-guide/math/
     - Debugging: user-guide/debugging/
   - Classes / Functions & API : 'API/'
@@ -27,7 +29,8 @@ plugins:
 theme:
   name: material
   custom_dir: docs/overrides
-  logo: ./logo_phpglfw_s.png
+  favicon: favicon.ico
+  logo: ./logo.svg
   font:
     text: Source Sans Pro
   palette:
@@ -37,7 +40,7 @@ theme:
     - navigation.tabs
 extra_css:
   - stylesheets/extra.css
-copyright: Copyright &copy; 2018 - 2022 Mario Döring / @see <a target="_blank" href="https://github.com/mario-deluna/php-glfw/blob/master/LICENSE">LICENSE</a>
+copyright: Copyright &copy; 2018 - 2024 Mario Döring / @see <a target="_blank" href="https://github.com/mario-deluna/php-glfw/blob/master/LICENSE">LICENSE</a>
 extra:
   generator: false
 markdown_extensions:

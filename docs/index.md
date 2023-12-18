@@ -1,9 +1,10 @@
 ---
 hide:
   - navigation
+template: home.html
 ---
 
-# PHP-GLFW: An OpenGL and GLFW Extension for PHP
+<!-- # PHP-GLFW: An OpenGL and GLFW Extension for PHP
 
 **A fully-featured OpenGL and GLFW extension for PHP. Batteries included 🔋!**
 
@@ -139,4 +140,4 @@ to generate tangent and bitangent vectors for the loaded geometry directly. Curr
 
 ### How are the bindings achieved?
 
-Instead of porting function by function manually, PHP-GLFW parses the OpenGL specs to generate most of this C extension. Adjustments are made manually where necessary.
+Instead of porting function by function manually, PHP-GLFW parses the OpenGL specs to generate most of this C extension. Adjustments are made manually where necessary. -->

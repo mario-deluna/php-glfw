@@ -48,3 +48,70 @@ constant {
     padding: 3px 5px;
     border-radius: 4px;
 }
+
+/* Homepage stuff */
+
+
+.mdx-expect {
+    margin:2.4rem 0
+}
+
+.mdx-expect__list {
+    display: flex;
+    flex-flow: row wrap;
+    gap: 1.6rem;
+    padding:0
+}
+
+.mdx-expect__item {
+    display: flex;
+    flex: 1 0 48%;
+    gap: .6rem;
+    margin: 0;
+    transition:transform .75s cubic-bezier(.075, .85, .175, 1), opacity .75s
+}
+
+.mdx-expect__item:first-child {
+    transition-delay:.2s
+}
+
+.mdx-expect__item:nth-child(2) {
+    transition-delay:275ms
+}
+
+.mdx-expect__item:nth-child(3) {
+    transition-delay:.35s
+}
+
+.mdx-expect__item:nth-child(4) {
+    transition-delay:425ms
+}
+
+.mdx-expect__item:nth-child(5) {
+    transition-delay:.5s
+}
+
+.mdx-expect__item:nth-child(6) {
+    transition-delay:575ms
+}
+
+
+.mdx-expect__icon {
+    fill: currentcolor;
+    background-color: var(--md-default-fg-color--lightest);
+    border-radius: 100%;
+    flex-shrink: 0;
+    height: 2.2rem;
+    padding: .4rem;
+    width:2.2rem
+}
+
+.mdx-expect__description > :last-child {
+    margin-bottom:0
+}
+
+@media screen and (max-width: 76.234375em) {
+    .mdx-expect__description > :last-child {
+        margin-left:-2.8rem
+    }
+}

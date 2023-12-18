@@ -1,0 +1,225 @@
+{% extends "main.html" %}
+
+<!-- Render hero under tabs -->
+{% block tabs %}
+{{ super() }}
+
+<!-- Additional styles for landing page -->
+<style>
+    /* Application header should be static for the landing page */
+    .md-header {
+        position: initial;
+    }
+    .md-typeset h2 {
+        font-weight: 700;
+        margin-top:.175em
+    }
+
+    .md-hero-backdrop {
+        min-height: 400px;
+        background-image: url({{ './../docs-assets/php-glfw/homepage/phpglfw-mixed-sponza_lr.jpg' | url }});
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        position: relative;
+        height: 100%;
+        display: block;
+    }
+
+    .md-hero-backdrop::before {
+        content: " ";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.4));
+    }
+
+    .md-hero-backdrop .md-hero-backdrop-shadow {
+        display: block;
+        position: relative;
+        height: 100%;
+        width: 100%;
+        bottom: 0;
+        top: 0;
+    }
+
+    .phpglfw-hero-logo {
+        text-align: center;
+    }
+
+    .phpglfw-hero-logo img {
+        margin-top: 25px;
+        max-width: 100px !important;
+    }
+
+    .phpglfw-hero-header {
+        text-align: center;
+        margin-top: 25px;
+        margin-bottom: 20px;
+        color: #fff;
+        margin-left: 2rem;
+        margin-right: 2rem;
+        padding-bottom: 2rem;
+    }
+
+    .phpglfw-hero-header h1 {
+        color: #fff;
+        font-weight: 700;
+        text-shadow: 0 3px 0 #000;
+        font-size: 1.5em;
+    }
+
+    .phpglfw-hero-header p {
+        color: #fff;
+        text-shadow: 0 3px 0 #000;
+        font-size: 1.0em;
+    }
+
+    /* Flexbox grid where first column tries to shrink, second column tries to grow */
+    .layout-sg {
+        display: block;
+        /* display: flex; */
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: space-between;
+    }
+
+    .layout-sg > * {
+        flex: 1 1 50%;
+    }
+
+    .layout-sg > *:first-child {
+        flex: 0 1 auto;
+    }
+
+    /* Hide table of contents */
+    @media screen and (min-width: 60em) {
+
+        .layout-sg {
+            display: flex;
+        }
+
+        .md-hero-backdrop::before {
+            background: linear-gradient(90deg, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0));
+        }
+        
+        .phpglfw-hero-logo img {
+            max-width: 200px !important;
+            margin-top: 100px;
+        }
+
+        .phpglfw-hero-header {
+            margin-top: 100px;
+            text-align: left;
+        }
+
+        .phpglfw-hero-header h1 {
+            font-size: 2em;
+        }
+        
+        .md-sidebar--secondary {
+            display: none;
+        }
+    }
+
+    /* Hide navigation */
+    @media screen and (min-width: 76.25em) {
+        .md-sidebar--primary {
+            display: none;
+        }
+    }
+</style>
+
+<!-- Hero for landing page -->
+<section class="mdx-container">
+
+    <div class="md-hero-backdrop">
+        <div class="md-hero-backdrop-shadow">
+
+            <div class="md-grid md-typeset">
+                <div class="mdx-hero">
+
+                    <!-- Hero content -->
+                    <div class="mdx-hero__content">
+
+                        <div class="layout-sg">
+
+                            <div class="phpglfw-hero-logo">
+                                <img  src="{{ './../docs-assets/php-glfw/logos/logo_on_dark.svg' | url }}"
+                                alt="PHP-GLFW logo with text" />
+                                
+                            </div>
+            
+                            <div class="phpglfw-hero-header">
+                                <h1>GameDev and Real-Time Applications in PHP</h1>
+                                <p>Make games in PHP! Or create real-time visualizations! Or design your own GUI library!<br>PHP-GLFW brings 2D and 3D rendering capabilities to PHP.</p>
+                                <a href="{{ page.next_page.url | url }}" title="{{ page.next_page.title | e }}"
+                                    class="md-button md-button--primary">
+                                Getting Started
+                                </a>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+            
+        </div>
+
+    </div>
+
+    <div class="md-content md-grid">
+        <div class="md-content__inner">
+            <header class="md-typeset">
+                <h1 style="margin-top: 0; margin-bottom: 1rem;"> Batteries included 🔋</h1>
+                <p style="margin-top: 0">To create interactive applications, you need more than just GLFW bindings. This extension aims to provide you with all the basic tools necessary to develop interactive, real-time applications in PHP.</p>
+                </p>
+            </header>
+            <div class="mdx-expect">
+                <ul class="mdx-expect__list">
+                    <li class="mdx-expect__item md-typeset">
+                        <div class="mdx-expect__icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-device-desktop-bolt" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M14.5 16h-10.5a1 1 0 0 1 -1 -1v-10a1 1 0 0 1 1 -1h16a1 1 0 0 1 1 1v7.5" /><path d="M7 20h6" /><path d="M9 16v4" /><path d="M19 16l-2 3h4l-2 3" /></svg>
+                        </div>
+                        <div class="mdx-expect__description">
+                            <h2>GLFW Bindings</h2>
+                            <p>The obvious one, from which the name is derived, this library contains almost full support for GLFW, which provides a simple API for <strong>creating windows</strong>, contexts, and surfaces, as well as for <strong>handling input</strong> and system events.</p>
+                        </div>
+                    </li>
+                    <li class="mdx-expect__item md-typeset">
+                        <div class="mdx-expect__icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-windows" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M17.8 20l-12 -1.5c-1 -.1 -1.8 -.9 -1.8 -1.9v-9.2c0 -1 .8 -1.8 1.8 -1.9l12 -1.5c1.2 -.1 2.2 .8 2.2 1.9v12.1c0 1.2 -1.1 2.1 -2.2 1.9z" /><path d="M12 5l0 14" /><path d="M4 12l16 0" /></svg>
+                        </div>
+                        <div class="mdx-expect__description">
+                            <h2>Cross-Platform</h2>
+                            <p>PHP-GFLW works on <strong>Window</strong>, <strong>MacOS</strong> and <strong>Linux</strong>.</p>
+                        </div>
+                    </li>
+
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    
+</section>
+
+<script>
+    window.addEventListener('load', function () {
+        const highResImage = new Image();
+        highResImage.src = '{{'./../docs-assets/php-glfw/homepage/phpglfw-mixed-sponza_lq.jpg' | url}}';
+        highResImage.onload = function () {
+            document.querySelector('.md-hero-backdrop').style.backgroundImage = 'url(' + this.src + ')';
+        };
+    });
+</script>
+{% endblock %}
+
+<!-- Content -->
+{% block content %}{% endblock %}
+
+<!-- Application footer -->
+{% block footer %}{% endblock %}
