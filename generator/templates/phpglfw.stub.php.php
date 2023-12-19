@@ -188,6 +188,25 @@ namespace GL\VectorGraphics
         //public static function fromVec4(\GL\Math\Vec4 $vec) : VGColor {}
         //public static function fromVec3(\GL\Math\Vec3 $vec) : VGColor {}
 
+        public static function red() : VGColor {}
+        public static function green() : VGColor {}
+        public static function blue() : VGColor {}
+        public static function white() : VGColor {}
+        public static function black() : VGColor {}
+        public static function transparent() : VGColor {}
+        public static function yellow() : VGColor {}
+        public static function cyan() : VGColor {}
+        public static function magenta() : VGColor {}
+        public static function orange() : VGColor {}
+        public static function pink() : VGColor {}
+        public static function purple() : VGColor {}
+        public static function brown() : VGColor {}
+        public static function gray() : VGColor {}
+        public static function darkGray() : VGColor {}
+        public static function lightGray() : VGColor {}
+        public static function random() : VGColor {}
+        public static function randomGray() : VGColor {}
+
         public function __construct(float $r, float $g, float $b, float $a) {}
     }
     

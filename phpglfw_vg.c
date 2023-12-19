@@ -38,6 +38,14 @@
 #define NANOVG_GL3_IMPLEMENTATION
 #include "nanovg_gl.h"
 
+#define DEFINE_STATIC_VGCOLOR_METHOD(name, r, g, b, a) \
+    PHP_METHOD(GL_VectorGraphics_VGColor, name) \
+    { \
+        object_init_ex(return_value, phpglfw_get_vg_vgcolor_ce()); \
+        phpglfw_vgcolor_object *color = phpglfw_vgcolor_objectptr_from_zobj_p(Z_OBJ_P(return_value)); \
+        color->nvgcolor = nvgRGBAf(r, g, b, a); \
+    }
+
 zend_class_entry *phpglfw_vgcontext_ce;
 zend_class_entry *phpglfw_vgpaint_ce;
 zend_class_entry *phpglfw_vgimage_ce;
@@ -152,6 +160,39 @@ PHP_METHOD(GL_VectorGraphics_VGColor, __construct)
 
     phpglfw_vgcolor_object *intern = phpglfw_vgcolor_objectptr_from_zobj_p(Z_OBJ_P(getThis()));
     intern->nvgcolor = nvgRGBAf(r, g, b, a);
+}
+
+DEFINE_STATIC_VGCOLOR_METHOD(red, 1.0f, 0.0f, 0.0f, 1.0f);
+DEFINE_STATIC_VGCOLOR_METHOD(green, 0.0f, 1.0f, 0.0f, 1.0f);
+DEFINE_STATIC_VGCOLOR_METHOD(blue, 0.0f, 0.0f, 1.0f, 1.0f);
+DEFINE_STATIC_VGCOLOR_METHOD(white, 1.0f, 1.0f, 1.0f, 1.0f);
+DEFINE_STATIC_VGCOLOR_METHOD(black, 0.0f, 0.0f, 0.0f, 1.0f);
+DEFINE_STATIC_VGCOLOR_METHOD(transparent, 0.0f, 0.0f, 0.0f, 0.0f);
+DEFINE_STATIC_VGCOLOR_METHOD(yellow, 1.0f, 1.0f, 0.0f, 1.0f);
+DEFINE_STATIC_VGCOLOR_METHOD(cyan, 0.0f, 1.0f, 1.0f, 1.0f);
+DEFINE_STATIC_VGCOLOR_METHOD(magenta, 1.0f, 0.0f, 1.0f, 1.0f);
+DEFINE_STATIC_VGCOLOR_METHOD(orange, 1.0f, 0.65f, 0.0f, 1.0f);
+DEFINE_STATIC_VGCOLOR_METHOD(pink, 1.0f, 0.75f, 0.8f, 1.0f);
+DEFINE_STATIC_VGCOLOR_METHOD(purple, 0.5f, 0.0f, 0.5f, 1.0f);
+DEFINE_STATIC_VGCOLOR_METHOD(brown, 0.65f, 0.16f, 0.16f, 1.0f);
+DEFINE_STATIC_VGCOLOR_METHOD(gray, 0.5f, 0.5f, 0.5f, 1.0f);
+DEFINE_STATIC_VGCOLOR_METHOD(darkGray, 0.33f, 0.33f, 0.33f, 1.0f);
+DEFINE_STATIC_VGCOLOR_METHOD(lightGray, 0.75f, 0.75f, 0.75f, 1.0f);
+
+
+PHP_METHOD(GL_VectorGraphics_VGColor, random)
+{
+    object_init_ex(return_value, phpglfw_get_vg_vgcolor_ce());
+    phpglfw_vgcolor_object *color = phpglfw_vgcolor_objectptr_from_zobj_p(Z_OBJ_P(return_value));
+    color->nvgcolor = nvgRGBAf((float)rand()/RAND_MAX, (float)rand()/RAND_MAX, (float)rand()/RAND_MAX, 1.0f);
+}
+
+PHP_METHOD(GL_VectorGraphics_VGColor, randomGray)
+{
+    object_init_ex(return_value, phpglfw_get_vg_vgcolor_ce());
+    phpglfw_vgcolor_object *color = phpglfw_vgcolor_objectptr_from_zobj_p(Z_OBJ_P(return_value));
+    float grayValue = (float)rand()/RAND_MAX;
+    color->nvgcolor = nvgRGBAf(grayValue, grayValue, grayValue, 1.0f);
 }
 
 /**
