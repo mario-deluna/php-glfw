@@ -10,9 +10,15 @@
     .md-header {
         position: initial;
     }
+
     .md-typeset h2 {
         font-weight: 700;
         margin-top:.175em
+    }
+
+    .mdx-dark {
+        background-color: #333;
+        color: #fff;
     }
 
     .md-hero-backdrop {
@@ -77,6 +83,10 @@
         font-size: 1.0em;
     }
 
+    .lg-image-shadow {
+        box-shadow: 0 20px 90px rgba(0, 0, 0, 0.5);
+    }
+
     /* Flexbox grid where first column tries to shrink, second column tries to grow */
     .layout-sg {
         display: block;
@@ -94,11 +104,99 @@
         flex: 0 1 auto;
     }
 
+    /* Flexbox grid where both elements take up 50% of the space, but are vertically aligned, on mobile should be collapse */
+    .layout-50 {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+    }
+
+    .layout-50 > div {
+        flex: 0 0 100%;
+        box-sizing: border-box;
+    }
+
+    .p-1 {
+        padding: 0.5rem;
+    }
+
+    .p-2 {
+        padding: 1rem;
+    }
+
+    .p-3 {
+        padding: 2rem;
+    }
+
+    .ps-0 {
+        padding-left: 0;
+    }
+
+    .ps-1 {
+        padding-left: 0.5rem;
+    }
+
+    .ps-2 {
+        padding-left: 1rem;
+    }
+
+    .ps-3 {
+        padding-left: 2rem;
+    }
+
+    .pe-0 {
+        padding-right: 0;
+    }
+
+    .pb-0 {
+        padding-bottom: 0;
+    }
+
+    .pt-0 {
+        padding-top: 0;
+    }
+
+    .pt-1 {
+        padding-top: 0.5rem;
+    }
+
+    .pt-2 {
+        padding-top: 1rem;
+    }
+
+    .pt-3 {
+        padding-top: 2rem;
+    }
+
+    .pe-2 {
+        padding-right: 1rem;
+    }
+
+    .pe-3 {
+        padding-right: 2rem;
+    }
+
+    .lg-desc {
+        font-size: 1.4em;
+    }
+
+    .hide-on-mobile {
+        display: none;
+    }
+
     /* Hide table of contents */
     @media screen and (min-width: 60em) {
 
+        .hide-on-mobile {
+            display: block;
+        }
+
         .layout-sg {
             display: flex;
+        }
+
+        .layout-50 > div {
+            flex: 0 0 50%;
         }
 
         .md-hero-backdrop::before {
@@ -130,10 +228,11 @@
             display: none;
         }
     }
+
 </style>
 
 <!-- Hero for landing page -->
-<section class="mdx-container">
+<section class="mdx-container mdx-homepage">
 
     <div class="md-hero-backdrop">
         <div class="md-hero-backdrop-shadow">
@@ -174,7 +273,7 @@
     <div class="md-content md-grid">
         <div class="md-content__inner">
             <header class="md-typeset">
-                <h1 style="margin-top: 0; margin-bottom: 1rem;"> Batteries included 🔋</h1>
+                <h2 style="margin-top: 0; margin-bottom: 1rem;"> Batteries included 🔋</h2>
                 <p style="margin-top: 0">To create interactive applications, you need more than just GLFW bindings. This extension aims to provide you with all the basic tools necessary to develop interactive, real-time applications in PHP.</p>
                 </p>
             </header>
@@ -186,7 +285,7 @@
                         </div>
                         <div class="mdx-expect__description">
                             <h2>GLFW Bindings</h2>
-                            <p>The obvious one, from which the name is derived, this library contains almost full support for GLFW, which provides a simple API for <strong>creating windows</strong>, contexts, and surfaces, as well as for <strong>handling input</strong> and system events.</p>
+                            <p>The obvious one, this extension contains almost full support for GLFW, which provides a simple API for <strong>creating windows</strong>, contexts, and surfaces, as well as for <strong>handling input</strong> and system events.</p>
                         </div>
                     </li>
                     <li class="mdx-expect__item md-typeset">
@@ -195,15 +294,255 @@
                         </div>
                         <div class="mdx-expect__description">
                             <h2>Cross-Platform</h2>
-                            <p>PHP-GFLW works on <strong>Window</strong>, <strong>MacOS</strong> and <strong>Linux</strong>.</p>
+                            <p>PHP-GFLW works on <strong>Window</strong>, <strong>MacOS</strong> and <strong>Linux</strong>. We also support <strong>standalone & portable</strong> binaries for MacOS and Windows.</p>
                         </div>
                     </li>
-
+                    <li class="mdx-expect__item md-typeset">
+                        <div class="mdx-expect__icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brush" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M3 21v-4a4 4 0 1 1 4 4h-4" /><path d="M21 3a16 16 0 0 0 -12.8 10.2" /><path d="M21 3a16 16 0 0 1 -10.2 12.8" /><path d="M10.6 9a9 9 0 0 1 4.4 4.4" /></svg>
+                        </div>
+                        <div class="mdx-expect__description">
+                            <h2>HTML Canvas like API</h2>
+                            <p>Just want to get something onto the screen quickly without having to deal with shaders, vertices, and lots of boilerplate? PHP-GLFW supports a <strong>Vector Graphics API</strong> to draw simple stuff with minimal effort.</p>
+                        </div>
+                    </li>
+                    <li class="mdx-expect__item md-typeset">
+                        <div class="mdx-expect__icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-vector-triangle" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M10 4m0 1a1 1 0 0 1 1 -1h2a1 1 0 0 1 1 1v2a1 1 0 0 1 -1 1h-2a1 1 0 0 1 -1 -1z" /><path d="M3 17m0 1a1 1 0 0 1 1 -1h2a1 1 0 0 1 1 1v2a1 1 0 0 1 -1 1h-2a1 1 0 0 1 -1 -1z" /><path d="M17 17m0 1a1 1 0 0 1 1 -1h2a1 1 0 0 1 1 1v2a1 1 0 0 1 -1 1h-2a1 1 0 0 1 -1 -1z" /><path d="M6.5 17.1l5 -9.1" /><path d="M17.5 17.1l-5 -9.1" /><path d="M7 19l10 0" /></svg>
+                        </div>
+                        <div class="mdx-expect__description">
+                            <h2>OpenGL Bindings</h2>
+                            <p>Full native support for OpenGL (4.1+ core), bringing <strong>GPU-accelerated rendering</strong> to PHP. We currently support approximately 90% of the full standard.</p>
+                        </div>
+                    </li>
+                    <li class="mdx-expect__item md-typeset">
+                        <div class="mdx-expect__icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-math" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M19 5h-7l-4 14l-3 -6h-2" /><path d="M14 13l6 6" /><path d="M14 19l6 -6" /></svg>
+                        </div>
+                        <div class="mdx-expect__description">
+                            <h2>Math Library</h2>
+                            <p>PHP-GLFW comes with a built-in mathematics library, written in C and optimized for graphical applications. It includes common structs like <code>Vec3</code>, <code>Vec4</code>, <code>Mat4</code>, etc., and many operations you usually find in graphical applications like <code>lookAt</code>, <code>distance</code>, etc.</p>
+                        </div>
+                    </li>
+                    <li class="mdx-expect__item md-typeset">
+                        <div class="mdx-expect__icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-box" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M12 3l8 4.5l0 9l-8 4.5l-8 -4.5l0 -9l8 -4.5" /><path d="M12 12l8 -4.5" /><path d="M12 12l0 9" /><path d="M12 12l-8 -4.5" /></svg>
+                        </div>
+                        <div class="mdx-expect__description">
+                            <h2>Many Utilities</h2>
+                            <p>Need to <strong>load an image</strong> as a texture or a <strong>3D model</strong>? We don't leave you hanging; PHP-GLFW contains many utilities for your GameDev or application needs.</p>
+                        </div>
+                    </li>
                 </ul>
             </div>
         </div>
     </div>
 
+</section>
+
+
+
+<section class="mdx-container mdx-dark md">
+    <div class="md-content md-grid">
+        <div class="md-content__inner md-typeset">
+
+            <h2>Go 3D with PHP</h2>            
+
+            <div class="layout-50">
+                <div class="pe-3">
+                    <p>Hey that rhymes!</p>
+                   <p>Step into 3D programming with PHP-GLFW, bridging PHP with the amazing power and simplicity of <strong>OpenGL</strong>.</p>
+                   <p>We try hard to keep the API as close as possible to its <code>C</code> counterpart, which has a few benefits.</p>
+                    <ul>
+                        <li>There is an ocean of <strong>OpenGL tutorials and guides</strong> out there, and these are <strong>almost identically applicable</strong> when using this extension.</li>
+                        <li><p>We do not predetermine how the rendering pipeline works, thus providing you with <strong>full and granular control</strong> over the rendering process.</p>
+                        </li>
+                    </ul>
+                    <img src="{{ './../docs-assets/php-glfw/homepage/opengl.png' | url }}" width="200" class="hide-on-mobile" />
+                </div>
+                <div>
+                    <img class="lg-image-shadow" src="{{ './../docs-assets/php-glfw/homepage/phpglfw-mixed-sponza_lq.jpg' | url }}" />
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<section class="mdx-container md">
+    <div class="md-content md-grid">
+        <div class="md-content__inner md-typeset">
+
+            <h2>Make 2D Games</h2>            
+
+            <div class="layout-50">
+                <div class="p-3 ps-0 pt-2">
+                    <img class="lg-image-shadow" src="{{ './../docs-assets/visu/games/flappyphpant/gameplay.gif' | url }}" />
+                </div>
+                <div class="p-3 pt-0">
+                    <!-- <p class="lg-desc">Just because large parts of the library focus on <strong>3D rendering</strong>, it doesn't mean you can't make <strong>2D games</strong> with it. In fact, we created our version of Flappy Bird using PHP-GLFW, called <strong>FlappyPHPant!</strong></p> -->
+                    <p class="lg-desc">While PHP-GLFW shines in <strong>3D rendering</strong>, it's equally adept in flatland aka in <strong>2D space</strong>. We made <strong>FlappyPHPant</strong>, our PHP-powered tribute to Flappy Bird.</p>
+
+            <a href="https://github.com/phpgl/flappyphpant" target="_blank" class="md-button md-button--primary">
+                Check it out
+                </a>
+                </div>
+            </div>
+
+
+
+        </div>
+    </div>
+</section>
+
+<section class="mdx-container mdx-dark md">
+    <div class="md-content md-grid">
+        <div class="md-content__inner md-typeset">
+
+            <h2>Vector Graphics API</h2>            
+            <p>Sometimes, you just want something simple...</p>
+
+            <div class="layout-50">
+                <div class="p-3 ps-0">
+                    <img src="{{ './../docs-assets/php-glfw/homepage/rect_basic_move_code.png' | url }}" class="lg-image-shadow" />
+                </div>
+                <div>
+                    <img class="lg-image-shadow" src="{{ './../docs-assets/php-glfw/homepage/rect_basic_move.gif' | url }}" />
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+
+<section class="mdx-container md">
+    <div class="md-content md-grid">
+        <div class="md-content__inner md-typeset">
+        
+            <h2>Fast Math Library</h2>
+        
+            <div class="layout-50">
+                <div class="pe-3">
+                   <p class="lg-desc">
+                    When doing anything with rendering, you unfortunately can't avoid maths.</p>
+                    <p class="lg-desc">
+                    But don't worry, we've got you covered!
+                   <p class="lg-desc">
+                    PHP-GLFW includes a simple and fast math library, written in C, to minimize runtime overhead as much as possible.
+                    <small>There will still be a significant overhead, though...</small>
+                   </p>
+                </div>
+
+        
+            <div class="p-3 ps-0 pt-2">
+                <img src="{{ './../docs-assets/php-glfw/homepage/math_code_np.png' | url }}" class="lg-image-shadow" />
+            </div>
+            </div>
+        
+        </div>
+    </div>
+</section>
+
+<section class="mdx-container mdx-dark md">
+    <div class="md-content md-grid">
+        <div class="md-content__inner md-typeset">
+
+            <h2>Many Utilities</h2>            
+
+            <div class="layout-50">
+                <div class="">
+                    <img class="lg-image-shadow" src="{{ './../docs-assets/php-glfw/homepage/dragndrop_load.gif' | url }}" />
+                    <small>Example of loading <code>.obj</code> files per drag and drop into a 3D scene.</small>
+                </div>
+                <div class="ps-2">
+                    <p>PHP has never been made with GameDev or real-time applications in mind. Thus, there are many basic things missing you usally need when developing such applications.</p>
+
+                    <p>PHP-GLFW tries to bridge this gap by providing various utilities:</p>
+
+                    <ul>
+                        <li>
+                            <strong>Buffer Objects</strong>
+                            <p>
+                                PHP arrays essentially are hashmaps, which are great but not so great for <strong>storing millions of floats</strong>. PHP-GLFW offers buffer objects for numeric data types, stored in a contiguous memory block, yet these can still be accessed like a PHP array.
+                            </p>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="mdx-container md">
+    
+    <div class="md-content md-grid">
+        <div class="md-content__inner md-typeset">
+            <div class="grid cards">
+                <ul>
+                    <li>
+                        <p><span class="twemoji lg middle"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                                    <path
+                                        d="M15 4a8 8 0 0 1 8 8 8 8 0 0 1-8 8 8 8 0 0 1-8-8 8 8 0 0 1 8-8m0 2a6 6 0 0 0-6 6 6 6 0 0 0 6 6 6 6 0 0 0 6-6 6 6 0 0 0-6-6m-1 2h1.5v3.78l2.33 2.33-1.06 1.06L14 12.4V8M2 18a1 1 0 0 1-1-1 1 1 0 0 1 1-1h3.83c.31.71.71 1.38 1.17 2H2m1-5a1 1 0 0 1-1-1 1 1 0 0 1 1-1h2.05L5 12l.05 1H3m1-5a1 1 0 0 1-1-1 1 1 0 0 1 1-1h3c-.46.62-.86 1.29-1.17 2H4Z">
+                                    </path>
+                                </svg></span> <strong>Install in 5 minutes</strong></p>
+                        <hr>
+                        <p>If you haven't installed PHP-GLFW yet, follow the installation guide for your platform.</p>
+                        <p><a href="getting-started/installation/install-linux.html"><span class="twemoji"><svg
+                                        xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                                        <path fill-rule="evenodd"
+                                            d="M13.22 19.03a.75.75 0 0 0 1.06 0l6.25-6.25a.75.75 0 0 0 0-1.06l-6.25-6.25a.75.75 0 1 0-1.06 1.06l4.97 4.97H3.75a.75.75 0 0 0 0 1.5h14.44l-4.97 4.97a.75.75 0 0 0 0 1.06z">
+                                        </path>
+                                    </svg></span> Installation <strong>Linux</strong></a></p>
+                        <p><a href="getting-started/installation/install-macos.html"><span class="twemoji"><svg
+                                        xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                                        <path fill-rule="evenodd"
+                                            d="M13.22 19.03a.75.75 0 0 0 1.06 0l6.25-6.25a.75.75 0 0 0 0-1.06l-6.25-6.25a.75.75 0 1 0-1.06 1.06l4.97 4.97H3.75a.75.75 0 0 0 0 1.5h14.44l-4.97 4.97a.75.75 0 0 0 0 1.06z">
+                                        </path>
+                                    </svg></span> Installation <strong>MacOS</strong></a></p>
+                        <p><a href="getting-started/installation/install-windows.html"><span class="twemoji"><svg
+                                        xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                                        <path fill-rule="evenodd"
+                                            d="M13.22 19.03a.75.75 0 0 0 1.06 0l6.25-6.25a.75.75 0 0 0 0-1.06l-6.25-6.25a.75.75 0 1 0-1.06 1.06l4.97 4.97H3.75a.75.75 0 0 0 0 1.5h14.44l-4.97 4.97a.75.75 0 0 0 0 1.06z">
+                                        </path>
+                                    </svg></span> Installation <strong>Windows</strong></a></p>
+                    </li>
+                    <li>
+                        <p><span class="twemoji lg middle"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                                    <path
+                                        d="M12 2a7 7 0 0 0-7 7c0 2.38 1.19 4.47 3 5.74V17a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1v-2.26c1.81-1.27 3-3.36 3-5.74a7 7 0 0 0-7-7M9 21a1 1 0 0 0 1 1h4a1 1 0 0 0 1-1v-1H9v1Z">
+                                    </path>
+                                </svg></span> <strong>PHP OpenGL Tutorial</strong></p>
+                        <hr>
+                        <p><img alt="PHP-GLFW" src="./../docs-assets/php-glfw/getting_started/basic_pipeline.png" width="100%"></p>
+                        <p>Everything ready to get started? Jump right into the first chapter of the tutorial.</p>
+                        <p><a href="getting-started/window-creation.html"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg"
+                                        viewBox="0 0 24 24">
+                                        <path fill-rule="evenodd"
+                                            d="M13.22 19.03a.75.75 0 0 0 1.06 0l6.25-6.25a.75.75 0 0 0 0-1.06l-6.25-6.25a.75.75 0 1 0-1.06 1.06l4.97 4.97H3.75a.75.75 0 0 0 0 1.5h14.44l-4.97 4.97a.75.75 0 0 0 0 1.06z">
+                                        </path>
+                                    </svg></span> Getting Started (Create Window)</a></p>
+                    </li>
+                    <li>
+                        <p><span class="twemoji lg middle"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                                    <path
+                                        d="M10 16.5v-9l6 4.5M12 2A10 10 0 0 0 2 12a10 10 0 0 0 10 10 10 10 0 0 0 10-10A10 10 0 0 0 12 2Z">
+                                    </path>
+                                </svg></span> <strong>Examples</strong></p>
+                        <hr>
+                        <p><img alt="PHP-GLFW" src="./../docs-assets/php-glfw/examples/preview_sponza.jpg" width="100%"></p>
+                        <p>Want to directly dig into example code? Check out the examples folder.</p>
+                        <p><a href="examples/00-about-examples.html"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg"
+                                        viewBox="0 0 24 24">
+                                        <path fill-rule="evenodd"
+                                            d="M13.22 19.03a.75.75 0 0 0 1.06 0l6.25-6.25a.75.75 0 0 0 0-1.06l-6.25-6.25a.75.75 0 1 0-1.06 1.06l4.97 4.97H3.75a.75.75 0 0 0 0 1.5h14.44l-4.97 4.97a.75.75 0 0 0 0 1.06z">
+                                        </path>
+                                    </svg></span> Examples</a></p>
+                    </li>
+                </ul>
+                </div>
+        </div>
+    </div>
     
 </section>
 
