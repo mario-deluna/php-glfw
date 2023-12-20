@@ -176,6 +176,10 @@
         padding-right: 2rem;
     }
 
+    .mt-0 {
+        margin-top: 0;
+    }
+
     .lg-desc {
         font-size: 1.4em;
     }
@@ -424,7 +428,7 @@
         
             <div class="layout-50">
                 <div class="pe-3">
-                   <p class="lg-desc">
+                   <p class="lg-desc mt-0">
                     When doing anything with rendering, you unfortunately can't avoid maths.</p>
                     <p class="lg-desc">
                     But don't worry, we've got you covered!
@@ -465,6 +469,14 @@
                             <strong>Buffer Objects</strong>
                             <p>
                                 PHP arrays essentially are hashmaps, which are great but not so great for <strong>storing millions of floats</strong>. PHP-GLFW offers buffer objects for numeric data types, stored in a contiguous memory block, yet these can still be accessed like a PHP array.
+                            </p>
+                        </li>
+                        <li>
+                            <strong>File Loaders</strong>
+                            <p>
+                                We include loaders for <strong>images</strong> (<code>.png</code>, <code>.jpg</code>, <code>.gif</code>, <code>.bmp</code>, <code>.tga</code>
+                                ) and <strong>3D models</strong> ( <code>.obj</code>, <code>.mtl</code>).
+
                             </p>
                         </li>
                     </ul>

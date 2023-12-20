@@ -30,7 +30,7 @@ So see this more as a Tutorial to learn OpenGL with PHP. Or an OpenGL crash cour
 
 ## PHP Vector Graphics API
 
-Are you looking for the **HTML Canvas** inspired API for PHP? Check out the [PHP Vector Graphics API]().
+Are you looking for the **HTML Canvas** inspired API for PHP? Check out the PHP Vector Graphics API.
 
 <div class="grid cards" markdown>
 
@@ -40,7 +40,7 @@ Are you looking for the **HTML Canvas** inspired API for PHP? Check out the [PHP
 
     ![PHP Vector Graphics API](./../docs-assets/php-glfw/getting_started/vg_api.png){ width="100%"}
 
-    [:octicons-arrow-right-24: Getting Started (Create Window)](./window-creation.md)
+    [:octicons-arrow-right-24: Creating a VG Context](./creating_a_vgcontext.md)
 
 -   :material-lightbulb:{ .lg .middle } __Vector Graphics User Guide__
 
