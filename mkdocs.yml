@@ -39,6 +39,7 @@ theme:
     primary: black
   features:
     - navigation.tabs
+    - content.tabs.link
 extra_css:
   - stylesheets/extra.css
 copyright: Copyright &copy; 2018 - 2024 Mario Döring / @see <a target="_blank" href="https://github.com/mario-deluna/php-glfw/blob/master/LICENSE">LICENSE</a>
@@ -52,7 +53,8 @@ markdown_extensions:
   - pymdownx.inlinehilite
   - pymdownx.snippets
   - pymdownx.extra
-  - pymdownx.tabbed
+  - pymdownx.tabbed:
+      alternate_style: true
   - pymdownx.emoji:
       emoji_index: !!python/name:materialx.emoji.twemoji
       emoji_generator: !!python/name:materialx.emoji.to_svg

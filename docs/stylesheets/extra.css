@@ -1,5 +1,5 @@
-:root > * {
-    /* --md-code-bg-color:hsla(232,15%,15%,1);
+/* .highlight {
+    --md-code-bg-color:hsla(232,15%,15%,1);
     --md-code-fg-color: hsla(232,18%,86%,1);
     --md-code-hl-color: rgba(66,135,255,0.15);
     --md-code-hl-number-color: #e6695b;
@@ -13,7 +13,38 @@
     --md-code-hl-punctuation-color:hsla(232,75%,90%,0.62);
     --md-code-hl-comment-color:hsla(232,75%,90%,0.62);
     --md-code-hl-generic-color: hsla(232,75%,90%,0.62);
-    --md-code-hl-variable-color: hsla(232,75%,90%,0.62); */
+    --md-code-hl-variable-color: hsla(232,75%,90%,0.62);
+} */
+
+.highlight {
+    --md-code-bg-color: #252A37; /* Dark background */
+    --md-code-fg-color: #d4d4d4; /* Default foreground text */
+    --md-code-hl-color: #264f78; /* Line highlight background */
+    --md-code-hl-number-color: #b5cea8; /* Number color */
+    --md-code-hl-special-color: #569cd6; /* Special character color */
+    --md-code-hl-function-color: #dcdcaa; /* Function name color */
+    --md-code-hl-constant-color: #4ec9b0; /* Constant color */
+    --md-code-hl-keyword-color: #c586c0; /* Keyword color */
+    --md-code-hl-string-color: #ce9178; /* String color */
+    --md-code-hl-name-color: #9cdcfe; /* Variable and other names */
+    --md-code-hl-operator-color: #d4d4d4; /* Operator color */
+    --md-code-hl-punctuation-color: #d4d4d4; /* Punctuation color */
+    --md-code-hl-comment-color: #6a9955; /* Comment color */
+    --md-code-hl-generic-color: #d4d4d4; /* Generic text color */
+    --md-code-hl-variable-color: #9CDCFE; /* Variable color */
+}
+
+.highlight pre code {
+    border-radius: 8px;
+    padding: 16px;
+}
+
+.highlight :is(.nx) {
+    color: #4EC9B0;
+}
+
+.highlight :is(.na) {
+    color: #DCDCAA;
 }
 
 .md-typeset h3 code, .md-typeset h2 code {

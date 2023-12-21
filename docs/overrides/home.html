@@ -179,6 +179,14 @@
     .mt-0 {
         margin-top: 0;
     }
+    
+    .mt-1 {
+        margin-top: 0.5rem;
+    }
+
+    .mt-2 {
+        margin-top: 1rem;
+    }
 
     .lg-desc {
         font-size: 1.4em;
@@ -253,7 +261,7 @@
                                 <img  src="{{ './../docs-assets/php-glfw/logos/logo_on_dark.svg' | url }}"
                                 alt="PHP-GLFW logo with text" />
                                 
-                            </div>
+                            </div> 
             
                             <div class="phpglfw-hero-header">
                                 <h1>GameDev and Real-Time Applications in PHP</h1>
@@ -387,7 +395,7 @@
                     <!-- <p class="lg-desc">Just because large parts of the library focus on <strong>3D rendering</strong>, it doesn't mean you can't make <strong>2D games</strong> with it. In fact, we created our version of Flappy Bird using PHP-GLFW, called <strong>FlappyPHPant!</strong></p> -->
                     <p class="lg-desc">While PHP-GLFW shines in <strong>3D rendering</strong>, it's equally adept in flatland aka in <strong>2D space</strong>. We made <strong>FlappyPHPant</strong>, our PHP-powered tribute to Flappy Bird.</p>
 
-            <a href="https://github.com/phpgl/flappyphpant" target="_blank" class="md-button md-button--primary">
+            <a href="https://github.com/phpgl/flappyphpant" target="_blank" class="md-button md-button--secondary">
                 Check it out
                 </a>
                 </div>
@@ -403,22 +411,27 @@
     <div class="md-content md-grid">
         <div class="md-content__inner md-typeset">
 
-            <h2>Vector Graphics API</h2>            
-            <p>Sometimes, you just want something simple...</p>
+            <h2>Vector Graphics API</h2>
 
             <div class="layout-50">
-                <div class="p-3 ps-0">
-                    <img src="{{ './../docs-assets/php-glfw/homepage/rect_basic_move_code.png' | url }}" class="lg-image-shadow" />
+                <div class="p-3 ps-0 pt-0">
+
+                    <p>Sometimes, you just want something simple...</p>
+                    <img src="{{ './../docs-assets/php-glfw/homepage/rect_basic_move_code.png' | url }}"
+                        class="lg-image-shadow" />
+                    <a href="/getting-started/creating_a_vgcontext.html"
+                        class="md-button md-button--primary mt-2">
+                        Learn more
+                    </a>
                 </div>
                 <div>
-                    <img class="lg-image-shadow" src="{{ './../docs-assets/php-glfw/homepage/rect_basic_move.gif' | url }}" />
+                    <img class="lg-image-shadow"
+                        src="{{ './../docs-assets/php-glfw/homepage/rect_basic_move.gif' | url }}" />
                 </div>
             </div>
         </div>
     </div>
 </section>
-
-
 
 <section class="mdx-container md">
     <div class="md-content md-grid">
