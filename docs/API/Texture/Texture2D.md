@@ -50,6 +50,18 @@ returns
 
 ---
      
+### `fromBuffer`
+
+Loads a texture / image from a buffer and returns a Texture2D object.
+
+```php
+static function fromBuffer(int $width, int $height, \GL\Buffer\UByteBuffer $buffer, int $channels = \GL\Texture\Texture2D::CHANNEL_RGBA) : \GL\Texture\Texture2D
+```
+
+The buffer is not copied, the Texture2D object will hold a reference to the buffer given.
+
+---
+     
 ### `width`
 
 Returns the width of the image.
@@ -94,7 +106,7 @@ returns
      
 ### `buffer`
 
-Creates and returns a `UByteBuffer` instance from the given image file.
+Returns a reference to the internal `UByteBuffer` instance of the current texture.
 
 ```php
 function buffer() : \GL\Buffer\UByteBuffer
@@ -122,6 +134,48 @@ arguments
 returns
 
 :    `void` 
+
+---
+     
+### `writePNG`
+
+Writes the image data to a file on disk. (PNG)
+
+```php
+function writePNG(string $path) : void
+```
+
+arguments
+
+:    1. `string` `$file` The path to the file to write to.
+
+---
+     
+### `writeBMP`
+
+Writes the image data to a file on disk. (BMP)
+
+```php
+function writeBMP(string $path) : void
+```
+
+arguments
+
+:    1. `string` `$file` The path to the file to write to.
+
+---
+     
+### `writeTGA`
+
+Writes the image data to a file on disk. (TGA)
+
+```php
+function writeTGA(string $path) : void
+```
+
+arguments
+
+:    1. `string` `$file` The path to the file to write to.
 
 ---
      

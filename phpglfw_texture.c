@@ -147,6 +147,37 @@ PHP_METHOD(GL_Texture_Texture2D, fromDisk)
     // buffer->vec = data;
 }
 
+PHP_METHOD(GL_Texture_Texture2D, fromBuffer)
+{
+    zend_long width, height, channels = 4;
+    zval *buffer_zval;
+    if (zend_parse_parameters(ZEND_NUM_ARGS(), "llO|l", &width, &height, &buffer_zval, phpglfw_get_buffer_glubyte_ce(), &channels) == FAILURE) {
+        RETURN_THROWS();
+    }
+
+    if (channels > 4 || channels < 1) {
+        zend_throw_error(NULL, "Invalid number of channels. Must be between 1 and 4.");
+        return;
+    }
+
+    // check if the buffer is big enough
+    phpglfw_buffer_glubyte_object *buffer = phpglfw_buffer_glubyte_objectptr_from_zobj_p(Z_OBJ_P(buffer_zval));
+
+    if (cvector_size(buffer->vec) < width * height * channels) {
+        zend_throw_error(NULL, "Buffer is too small to hold the image data.");
+        return;
+    }
+
+    object_init_ex(return_value, phpglfw_get_texture_texture2d_ce());
+    phpglfw_texture2d_object *intern = phpglfw_texture2d_objectptr_from_zobj_p(Z_OBJ_P(return_value));
+
+    ZVAL_COPY(&intern->buffer_zval, buffer_zval);
+
+    intern->width = width;
+    intern->height = height;
+    intern->channels = channels;
+}
+
 PHP_METHOD(GL_Texture_Texture2D, width)
 {
     phpglfw_texture2d_object *intern = phpglfw_texture2d_objectptr_from_zobj_p(Z_OBJ_P(getThis()));
@@ -184,7 +215,47 @@ PHP_METHOD(GL_Texture_Texture2D, writeJPG)
     if (zend_parse_parameters(ZEND_NUM_ARGS() , "s", &path, &path_size) == FAILURE) {
         RETURN_THROWS();
     }
+    stbi_flip_vertically_on_write(1);
     stbi_write_jpg(path, intern->width, intern->height, intern->channels, buffer->vec, 100);
+}
+
+PHP_METHOD(GL_Texture_Texture2D, writePNG)
+{
+    phpglfw_texture2d_object *intern = phpglfw_texture2d_objectptr_from_zobj_p(Z_OBJ_P(getThis()));
+    phpglfw_buffer_glubyte_object *buffer = phpglfw_buffer_glubyte_objectptr_from_zobj_p(Z_OBJ_P(&intern->buffer_zval));
+    const char *path;
+    size_t path_size;
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "s", &path, &path_size) == FAILURE) {
+        RETURN_THROWS();
+    }
+    stbi_flip_vertically_on_write(1);
+    stbi_write_png(path, intern->width, intern->height, intern->channels, buffer->vec, 0);
+}
+
+PHP_METHOD(GL_Texture_Texture2D, writeBMP)
+{
+    phpglfw_texture2d_object *intern = phpglfw_texture2d_objectptr_from_zobj_p(Z_OBJ_P(getThis()));
+    phpglfw_buffer_glubyte_object *buffer = phpglfw_buffer_glubyte_objectptr_from_zobj_p(Z_OBJ_P(&intern->buffer_zval));
+    const char *path;
+    size_t path_size;
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "s", &path, &path_size) == FAILURE) {
+        RETURN_THROWS();
+    }
+    stbi_flip_vertically_on_write(1);
+    stbi_write_bmp(path, intern->width, intern->height, intern->channels, buffer->vec);
+}
+
+PHP_METHOD(GL_Texture_Texture2D, writeTGA)
+{
+    phpglfw_texture2d_object *intern = phpglfw_texture2d_objectptr_from_zobj_p(Z_OBJ_P(getThis()));
+    phpglfw_buffer_glubyte_object *buffer = phpglfw_buffer_glubyte_objectptr_from_zobj_p(Z_OBJ_P(&intern->buffer_zval));
+    const char *path;
+    size_t path_size;
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "s", &path, &path_size) == FAILURE) {
+        RETURN_THROWS();
+    }
+    stbi_flip_vertically_on_write(1);
+    stbi_write_tga(path, intern->width, intern->height, intern->channels, buffer->vec);
 }
 
 void phpglfw_register_texture_module(INIT_FUNC_ARGS)

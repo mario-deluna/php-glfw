@@ -18,6 +18,7 @@ nav:
   - User Guide:
     - Vector Graphics: user-guide/vector-graphics/
     - Math & 3D Space: user-guide/math/
+    - Offscreen & Headless Rendering: user-guide/offscreen/
     - Debugging: user-guide/debugging/
   - Classes / Functions & API : 'API/'
   - Examples: 'examples/'

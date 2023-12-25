@@ -34,11 +34,15 @@ Read more about the [`glTexImage2D`](/API/OpenGL/glTexImage2D.html) function to 
 
 <?php foreach([
     'fromDisk', 
+    'fromBuffer',
     'width',
     'height',
     'channels',
     'buffer',
     'writeJPG',
+    'writePNG',
+    'writeBMP',
+    'writeTGA',
 ] as $funcName) : ?>
 <?php echo $docParser->getAPIRefMarkdown('GL\\Texture\\Texture2D::' . $funcName); ?> 
 <?php endforeach; ?>

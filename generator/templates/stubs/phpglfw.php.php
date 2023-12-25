@@ -1257,7 +1257,14 @@ namespace GL\Texture
         public static function fromDisk(string $path) : Texture2D {}
 
         /**
-         * Creates and returns a `UByteBuffer` instance from the given image file.
+         * Loads a texture / image from a buffer and returns a Texture2D object.
+         * 
+         * The buffer is not copied, the Texture2D object will hold a reference to the buffer given.
+         */
+        public static function fromBuffer(int $width, int $height, \GL\Buffer\UByteBuffer $buffer, int $channels = Texture2D::CHANNEL_RGBA) : Texture2D {}
+
+        /**
+         * Returns a reference to the internal `UByteBuffer` instance of the current texture.
          * 
          * @return \GL\UByteBuffer The loaded image data.
          */
@@ -1293,6 +1300,27 @@ namespace GL\Texture
          * @return void
          */
         public function writeJPG(string $path, int $quality = 100) : void {}
+
+        /**
+         * Writes the image data to a file on disk. (PNG)
+         *
+         * @param string $file The path to the file to write to.
+         */
+        public function writePNG(string $path) : void {}
+
+        /**
+         * Writes the image data to a file on disk. (BMP)
+         *
+         * @param string $file The path to the file to write to.
+         */
+        public function writeBMP(string $path) : void {}
+
+        /**
+         * Writes the image data to a file on disk. (TGA)
+         *
+         * @param string $file The path to the file to write to.
+         */
+        public function writeTGA(string $path) : void {}
     }
 }
 

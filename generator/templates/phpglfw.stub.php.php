@@ -65,11 +65,16 @@ namespace GL\Texture
         // public const CHANNEL_RGBA = 4;
 
         public static function fromDisk(string $path, int $requestedChannelCount = 0, bool $flipVertically = true) : Texture2D {}
+        public static function fromBuffer(int $width, int $height, \GL\Buffer\UByteBuffer $buffer, int $channels = Texture2D::CHANNEL_RGBA) : Texture2D {} 
         public function buffer() : \GL\Buffer\UByteBuffer {}
         public function width() : int {}
         public function height() : int {}
         public function channels() : int {}
+
         public function writeJPG(string $path, int $quality = 100) : void {}
+        public function writePNG(string $path) : void {}
+        public function writeBMP(string $path) : void {}
+        public function writeTGA(string $path) : void {}
     }
 }
 
