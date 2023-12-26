@@ -14,7 +14,6 @@ nav:
       - IDE Setup: getting-started/installation/ide-setup.md
     - Creating a Window: getting-started/window-creation.md
     - Drawing a Triangle: getting-started/drawing_a_triangle.md
-    - Creating a VG Context: getting-started/creating_a_vgcontext.md
   - User Guide:
     - Vector Graphics: user-guide/vector-graphics/
     - Math & 3D Space: user-guide/math/
