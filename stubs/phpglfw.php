@@ -2332,6 +2332,9 @@ namespace GL\VectorGraphics
         public const STENCIL_STROKES = 2;
         public const DEBUG = 4;
 
+        public const CCW = 1;
+        public const CW = 2;
+
         public function __construct(int $flags = 0) {}
 
         public function fillColori(int $r, int $g, int $b, int $a) : void {}

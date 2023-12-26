@@ -252,3 +252,7 @@ As simple as that, we now have a circle that follows the mouse cursor.
 </figure>
 
 In the next chapter we are going to dive a bit more into the basics.
+
+## Additional Resources
+
+* The vector graphics API is based on a modified version of the amazing [NanoVG](https://github.com/memononen/nanovg) library. 

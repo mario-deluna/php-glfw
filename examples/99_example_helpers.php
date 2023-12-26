@@ -587,4 +587,233 @@ class ExampleHelper
 
         return $totalWidth;
     }
+
+    public static function createAnimation(VGContext $vg) : ExampleAnimation {
+        return new ExampleAnimation($vg);
+    }
+}
+
+
+class ExampleAnimationFrame {
+
+    public array $animations = [];
+
+    public const FRAME_KEY = 0;
+    public const FRAME_TYPE = 1;
+    public const FRAME_FROM = 2;
+    public const FRAME_TO = 3;
+    public const FRAME_DURATION = 4;
+
+    public function __construct(
+        public int $offset,
+    )
+    {
+    }
+
+    public function push(string $key, string $type, ?float $from, float $to, int $duration) : void
+    {
+        $this->animations[] = [$key, $type, $from, $to, $duration];
+    }
+
+    public function linear(string $key, float $from, float $to, int $duration) : void
+    {
+        $this->push($key, 'linear', $from, $to, $duration);
+    }
+
+    public function easeIn(string $key, float $from, float $to, int $duration) : void
+    {
+        $this->push($key, 'easeIn', $from, $to, $duration);
+    }
+
+    public function easeOut(string $key, float $from, float $to, int $duration) : void
+    {
+        $this->push($key, 'easeOut', $from, $to, $duration);
+    }
+
+    public function easeInOut(string $key, float $from, float $to, int $duration) : void
+    {
+        $this->push($key, 'easeInOut', $from, $to, $duration);
+    }
+
+    public function easeInOutTo(string $key, float $to, int $duration) : void
+    {
+        $this->push($key, 'easeInOut', null, $to, $duration);
+    }
+
+    public function getFrameLenght() : int
+    {
+        $max = 0;
+        foreach($this->animations as $animation) {
+            $max = max($max, $animation[self::FRAME_DURATION]);
+        }
+
+        return $max;
+    }
+}
+
+class ExampleAnimation
+{
+    public array $states = [];
+    public array $stateProgress = [];
+    public array $activeStates = [];
+
+    private array $frames = [];
+
+    private $lastTick = 0;
+    private $tickSizes = [];
+
+    public function __construct(
+        private VGContext $vg,
+    )
+    {
+    }
+
+    private function alphaEaseIn(float $progress) : float
+    {
+        return $progress * $progress;
+    }
+
+    private function alphaEaseOut(float $progress) : float
+    {
+        return 1.0 - (1.0 - $progress) * (1.0 - $progress);
+    }
+
+    private function alphaEaseInOut(float $progress) : float
+    {
+        return $progress < 0.5 ? $this->alphaEaseIn($progress * 2.0) * 0.5 : $this->alphaEaseOut($progress * 2.0 - 1.0) * 0.5 + 0.5;
+    }
+    
+    public function defaults(array $defaults) : self
+    {
+        foreach($defaults as $key => $value) {
+            if (isset($this->states[$key])) {
+                throw new \Exception('Default value for "' . $key . '" has already been set, you need to set the default value before you set the animation.');
+            }
+            $this->states[$key] = $value;
+        }
+
+        return $this;
+    }
+
+    public function after(int $offset, callable $callback) : self
+    {
+        $currentOffset = $offset;
+        // get the last frames offset
+        if (count($this->frames) > 0) {
+            $lastFrame = $this->frames[count($this->frames) - 1];
+            $currentOffset += $lastFrame->offset + $lastFrame->getFrameLenght();
+        }
+
+        $frame = new ExampleAnimationFrame($currentOffset);
+
+        $callback($frame, $this->vg);
+
+        $this->frames[] = $frame;
+
+        return $this;
+    }
+
+    private function buildAnimationPreconditions()
+    {
+        $states = [];
+
+        // in here we basically just determine the "from" values for each animation
+        foreach($this->frames as $frame) {
+            foreach($frame->animations as &$animation)  {
+                if (!isset($states[$animation[ExampleAnimationFrame::FRAME_KEY]])) {
+                    $states[$animation[ExampleAnimationFrame::FRAME_KEY]] = $animation[ExampleAnimationFrame::FRAME_FROM] ?? $this->states[$animation[ExampleAnimationFrame::FRAME_KEY]] ?? 0;
+                }
+
+                if ($animation[ExampleAnimationFrame::FRAME_FROM] === null) {
+                    $animation[ExampleAnimationFrame::FRAME_FROM] = $states[$animation[ExampleAnimationFrame::FRAME_KEY]];
+                }
+
+                // set the new from value
+                $states[$animation[ExampleAnimationFrame::FRAME_KEY]] = $animation[ExampleAnimationFrame::FRAME_TO];
+            }
+        }
+    }
+
+    public function build(float $time) : void 
+    {
+        if (empty($this->stateProgress)) {
+            $this->buildAnimationPreconditions();
+        }
+
+        $this->tickSizes[] = $time - $this->lastTick;
+        $this->lastTick = $time;
+        // take max 8 samples
+        if (count($this->tickSizes) > 16) {
+            array_shift($this->tickSizes);
+        }
+
+        $tickSize = (array_sum($this->tickSizes) / count($this->tickSizes) * 1000);
+
+        // collect all aviailable keys and their base values
+        foreach($this->frames as $frame) {
+            foreach($frame->animations as $animation)  {
+                if (!isset($this->states[$animation[ExampleAnimationFrame::FRAME_KEY]])) {
+                    $this->states[$animation[ExampleAnimationFrame::FRAME_KEY]] = $animation[ExampleAnimationFrame::FRAME_FROM];
+                    $this->stateProgress[$animation[ExampleAnimationFrame::FRAME_KEY]] = 0.0;
+                }
+            }
+        }
+
+        // flatten the animations
+        $animations = [];
+        $lastTick = 0;
+        foreach($this->frames as $frame) {
+            foreach($frame->animations as $animation)  {
+                $animations[] = [
+                    'start' => $frame->offset,
+                    'end' => $frame->offset + $animation[ExampleAnimationFrame::FRAME_DURATION],  
+                    'ani' => $animation,
+                ];
+
+                $lastTick = max($lastTick, $frame->offset + $animation[ExampleAnimationFrame::FRAME_DURATION]);
+            }
+        }
+
+        // convert time to tick 
+        $tick = (int) round($time * 1000);
+        // loop tick around the last tick
+        $tick = $tick % $lastTick;
+
+        // find all animations that are active at the current tick
+        $activeAnimations = [];
+        foreach($animations as $animation) {
+            if ($tick >= $animation['start'] && $tick <= $animation['end'] + $tickSize) {
+                $activeAnimations[] = $animation;
+            }
+        }
+
+        // apply the animations
+        foreach($activeAnimations as $animation) {
+            [$key, $type, $from, $to, $duration] = $animation['ani'];
+            $progress = ($tick - $animation['start']) / $duration;
+
+            // clamp progress
+            $progress = min(1.0, max(0.0, $progress));
+
+            // apply easing function
+            switch($type) {
+                case 'linear':
+                    break;
+                case 'easeIn':
+                    $progress = $this->alphaEaseIn($progress);
+                    break;
+                case 'easeOut':
+                    $progress = $this->alphaEaseOut($progress);
+                    break;
+                case 'easeInOut':
+                    $progress = $this->alphaEaseInOut($progress);
+                    break;
+            }
+
+            $value = $from + ($to - $from) * $progress;
+            
+            $this->states[$key] = $value;
+            $this->stateProgress[$key] = $progress;
+        }
+    }
 }

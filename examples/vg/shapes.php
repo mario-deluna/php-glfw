@@ -35,14 +35,58 @@ while (!glfwWindowShouldClose($window))
 
     ExampleHelper::drawCoordSys($vg);
 
+    // draw a rectangle 
     $vg->beginPath();
-    $vg->rect(400 + sin(glfwGetTime()) * 300, 100, 80, 80);
+    $vg->rect(50, 150, 100, 100);
     $vg->fillColor(VGColor::red());
     $vg->fill();
 
-    ExampleHelper::drawFuncLabels($vg, 50, 50, [
-        "rect(" . (400 + sin(glfwGetTime()) * 300) . ", 100, 80, 80)",
-    ]);
+    // draw rounded rectangle
+    $vg->beginPath();
+    $vg->roundedRect(200, 150, 100, 100, 25);
+    $vg->fillColor(VGColor::green());
+    $vg->fill();
+
+    // draw ellipse
+    $vg->beginPath();
+    $vg->ellipse(400, 200, 50, 25);
+    $vg->fillColor(VGColor::blue());
+    $vg->fill();
+
+    // draw circle
+    $vg->beginPath();
+    $vg->circle(550, 200, 50);
+    $vg->fillColor(VGColor::yellow());
+    $vg->fill();
+
+    // draw arc
+    $vg->beginPath();
+    $vg->arc(700, 200, 50, 0, 3.14, 1);
+    $vg->fillColor(VGColor::cyan());
+    $vg->fill();
+
+    // draw the progress segment
+    $cx = 200;
+    $cy = 100;
+    $radius = 50;
+    $progress = sin(glfwGetTime()) * 0.5 + 0.5;
+    $startAngle = -M_PI * 0.5; 
+    $endAngle = $startAngle + (M_PI * 2 * $progress);
+
+    $vg->beginPath();
+    $vg->moveTo($cx, $cy);
+    $startX = $cx + $radius * cos($startAngle);
+    $startY = $cy + $radius * sin($startAngle);
+    $vg->lineTo($startX, $startY);
+    $vg->arc($cx, $cy, $radius, $startAngle, $endAngle, VGContext::CW);
+    $vg->closePath();
+    $vg->fillColor(VGColor::red());
+    $vg->fill();
+
+
+    // ExampleHelper::drawFuncLabels($vg, 50, 50, [
+    //     "strokeWidth($strokeWidth);",
+    // ]);
 
     // end the frame will dispatch all the draw commands to the GPU
     $vg->endFrame();

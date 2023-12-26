@@ -64,6 +64,11 @@ enum {
     PHPGLFW_VG_FILTER_NEAREST = 1<<1,
 };
 
+enum {
+    PHPGLFW_VG_CCW = NVG_CCW,
+    PHPGLFW_VG_CW = NVG_CW,
+};
+
 zend_class_entry *phpglfw_get_vg_vgcontext_ce();
 zend_class_entry *phpglfw_get_vg_vgpaint_ce();
 zend_class_entry *phpglfw_get_vg_vgimage_ce();

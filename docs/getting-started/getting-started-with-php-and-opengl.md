@@ -34,13 +34,13 @@ Are you looking for the **HTML Canvas** inspired API for PHP? Check out the PHP 
 
 <div class="grid cards" markdown>
 
--   :material-clock-fast:{ .lg .middle } __Creating a VG Context__
+-   :material-clock-fast:{ .lg .middle } __Getting Started with VG__
 
     ---
 
-    ![PHP Vector Graphics API](./../docs-assets/php-glfw/getting_started/vg_api.png){ width="100%"}
+    ![PHP Vector Graphics API](./../docs-assets/php-glfw/getting_started/vg_example.jpg){ width="100%"}
 
-    [:octicons-arrow-right-24: Creating a VG Context](./creating_a_vgcontext.md)
+    [:octicons-arrow-right-24: Getting Started](./../user-guide/vector-graphics/creating_a_vgcontext.md)
 
 -   :material-lightbulb:{ .lg .middle } __Vector Graphics User Guide__
 

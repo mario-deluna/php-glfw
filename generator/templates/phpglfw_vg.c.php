@@ -560,6 +560,10 @@ void phpglfw_register_vg_module(INIT_FUNC_ARGS)
     zend_declare_class_constant_long(phpglfw_vgcontext_ce, "STENCIL_STROKES", strlen("STENCIL_STROKES"), NVG_STENCIL_STROKES);
     zend_declare_class_constant_long(phpglfw_vgcontext_ce, "DEBUG", strlen("DEBUG"), NVG_DEBUG);
 
+    // CCW and CW
+    zend_declare_class_constant_long(phpglfw_vgcontext_ce, "CCW", strlen("CCW"), PHPGLFW_VG_CCW);
+    zend_declare_class_constant_long(phpglfw_vgcontext_ce, "CW", strlen("CW"), PHPGLFW_VG_CW);
+
     // initialize and register the VectorGraphics Color class
     INIT_CLASS_ENTRY(tmp_ce, "GL\\VectorGraphics\\VGColor", class_GL_VectorGraphics_VGColor_methods);
     phpglfw_vgcolor_ce = zend_register_internal_class(&tmp_ce);
