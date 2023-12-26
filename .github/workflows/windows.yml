@@ -11,6 +11,7 @@ jobs:
     strategy:
       matrix:
           version: ['8.0', '8.1', '8.2']
+          # version: ['8.1', '8.2', '8.3']
           arch: [x64]
           ts: [ts, nts]
     runs-on: windows-latest

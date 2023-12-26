@@ -223,7 +223,7 @@ int <?php echo $obj->getHandlerMethodName('unserialize'); ?>(zval *object, zend_
     const unsigned char *buf_end = buf + buf_len;
     zval *zv;
     php_unserialize_data_t unserialize_data;
-    zend_object *zobj;
+    //zend_object *zobj;
 
     PHP_VAR_UNSERIALIZE_INIT(unserialize_data);
 
@@ -234,7 +234,7 @@ int <?php echo $obj->getHandlerMethodName('unserialize'); ?>(zval *object, zend_
         for (int y = 0; y < 4; y++) {
             zv = var_tmp_var(&unserialize_data);
             if (!php_var_unserialize(zv, &buf_ptr, buf_end, &unserialize_data) || Z_TYPE_P(zv) != IS_DOUBLE) {
-                zend_throw_error(NULL, "Could not unserialize matrix element", 0);
+                zend_throw_error(NULL, "Could not unserialize matrix element");
                 zend_object_std_dtor(&obj->std);
                 efree(obj);
                 PHP_VAR_UNSERIALIZE_DESTROY(unserialize_data);
@@ -279,7 +279,7 @@ int <?php echo $obj->getHandlerMethodName('unserialize'); ?>(zval *object, zend_
     const unsigned char *buf_end = buf + buf_len;
     zval *zv;
     php_unserialize_data_t unserialize_data;
-    zend_object *zobj;
+    //zend_object *zobj;
 
     PHP_VAR_UNSERIALIZE_INIT(unserialize_data);
 
@@ -289,7 +289,7 @@ int <?php echo $obj->getHandlerMethodName('unserialize'); ?>(zval *object, zend_
     for (int i = 0; i < <?php echo $obj->size; ?>; i++) {
         zv = var_tmp_var(&unserialize_data);
         if (!php_var_unserialize(zv, &buf_ptr, buf_end, &unserialize_data) || Z_TYPE_P(zv) != IS_DOUBLE) {
-            zend_throw_error(NULL, "Could not unserialize vector element", 0);
+            zend_throw_error(NULL, "Could not unserialize vector element");
             zend_object_std_dtor(&obj->std);
             efree(obj);
             PHP_VAR_UNSERIALIZE_DESTROY(unserialize_data);
@@ -750,9 +750,11 @@ static int <?php echo $obj->getHandlerMethodName('do_op'); ?>(zend_uchar opcode,
 
 PHP_METHOD(<?php echo $obj->getFullNamespaceConstString(); ?>, __construct)
 {
+<?php if (!$obj->isMatrix()) : ?>
     zval *obj;
     obj = getThis();
     <?php echo $obj->getObjectName(); ?> *obj_ptr = <?php echo $obj->objectFromZObjFunctionName(); ?>(Z_OBJ_P(obj));
+<?php endif; ?>
 
 <?php if ($obj->isVector()) : ?>
 <?php echo tabulate($obj->getVectorZendParseParamters()); ?> 

@@ -28,6 +28,33 @@ So see this more as a Tutorial to learn OpenGL with PHP. Or an OpenGL crash cour
     [:octicons-arrow-right-24: Getting Started (Create Window)](./window-creation.md)
 </div>
 
+## PHP Vector Graphics API
+
+Are you looking for the **HTML Canvas** inspired API for PHP? Check out the PHP Vector Graphics API.
+
+<div class="grid cards" markdown>
+
+-   :material-clock-fast:{ .lg .middle } __Getting Started with VG__
+
+    ---
+
+    ![PHP Vector Graphics API](./../docs-assets/php-glfw/getting_started/vg_example.jpg){ width="100%"}
+
+    [:octicons-arrow-right-24: Getting Started](./../user-guide/vector-graphics/creating_a_vgcontext.md)
+
+-   :material-lightbulb:{ .lg .middle } __Vector Graphics User Guide__
+
+    ---
+
+    ![PHP-GLFW](./../docs-assets/php-glfw/getting_started/basic_pipeline.png){ width="100%"}
+
+    Everything ready to get started? Jump right into the first chapter of the tutorial.
+
+    [:octicons-arrow-right-24: Getting Started (Create Window)](./window-creation.md)
+</div>
+
+
+
 ## What is OpenGL?
 
 Creating realistic, three-dimensional models or designing immersive virtual landscapes in games requires the use of powerful graphics APIs like OpenGL, Vulkan, or DirectX. Among these tools, OpenGL, (Open Graphics Library), is a popular cross-platform API for rendering 2D and 3D graphics. It has been employed in various applications, ranging from gaming and computer-aided design (CAD) to scientific visualizations. Although rendering APIs such as Vulkan and DirectX have also gained prominence for their particular strengths, OpenGL's simplicity and capabilities maintain its relevance in the field of graphics rendering.

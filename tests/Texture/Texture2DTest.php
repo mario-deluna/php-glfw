@@ -9,7 +9,7 @@ class Texture2DTest extends \PHPUnit\Framework\TestCase
     public function testFromDisk() : void
     {
         // tests loading the php logo from disk and validatating a hash of the internal data
-        $logo = Texture2D::fromDisk(__DIR__ . '/../../examples/phplogo.png');
+        $logo = Texture2D::fromDisk(__DIR__ . '/../../examples/phpglfwlogo.png');
 
         $this->assertEquals(512, $logo->width());
         $this->assertEquals(512, $logo->height());
@@ -23,6 +23,6 @@ class Texture2DTest extends \PHPUnit\Framework\TestCase
             }
         }
 
-        $this->assertEquals('ba4d0004d615eb72f288739672910586', md5(implode('', $samples)));
+        $this->assertEquals('a0bed380430adca3c3ddaec5e9142516', md5(implode('', $samples)));
     }
 }

@@ -115,6 +115,13 @@ abstract class ExtArgument
     public bool $passedByReference = false;
 
     /**
+     * Is the argument parsed?
+     * A not parsed argument won't be parsed from the userland function call
+     * but will be present in the generated C function
+     */
+    public bool $isParsed = true;
+
+    /**
      * Constrcutor
      * @param string $name The name of the argument 
      */

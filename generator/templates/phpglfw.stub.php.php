@@ -57,12 +57,24 @@ namespace GL\Geometry\ObjFileParser
 namespace GL\Texture
 {
     class Texture2D {
-        public static function fromDisk(string $path) : Texture2D {}
+        // public const CHANNEL_R = 1;
+        // public const CHANNEL_GRAY = 1;
+        // public const CHANNEL_RG = 2;
+        // public const CHANNEL_GRAY_ALPHA = 2;
+        // public const CHANNEL_RGB = 3;
+        // public const CHANNEL_RGBA = 4;
+
+        public static function fromDisk(string $path, int $requestedChannelCount = 0, bool $flipVertically = true) : Texture2D {}
+        public static function fromBuffer(int $width, int $height, \GL\Buffer\UByteBuffer $buffer, int $channels = Texture2D::CHANNEL_RGBA) : Texture2D {} 
         public function buffer() : \GL\Buffer\UByteBuffer {}
         public function width() : int {}
         public function height() : int {}
         public function channels() : int {}
+
         public function writeJPG(string $path, int $quality = 100) : void {}
+        public function writePNG(string $path) : void {}
+        public function writeBMP(string $path) : void {}
+        public function writeTGA(string $path) : void {}
     }
 }
 
@@ -169,6 +181,99 @@ namespace GL\Buffer
         public function reserve(int $size) : void {}
     }
 <?php endforeach; ?>
+};
+
+namespace GL\VectorGraphics
+{
+    class VGColor {
+        //public static function rgb(float $r, float $g, float $b) : VGColor {}
+        //public static function rgba(float $r, float $g, float $b, float $a) : VGColor {}
+        //public static function irgb(int $r, int $g, int $b) : VGColor {}
+        //public static function irgba(int $r, int $g, int $b, int $a) : VGColor {}
+        //public static function fromVec4(\GL\Math\Vec4 $vec) : VGColor {}
+        //public static function fromVec3(\GL\Math\Vec3 $vec) : VGColor {}
+
+        public static function red() : VGColor {}
+        public static function green() : VGColor {}
+        public static function blue() : VGColor {}
+        public static function white() : VGColor {}
+        public static function black() : VGColor {}
+        public static function transparent() : VGColor {}
+        public static function yellow() : VGColor {}
+        public static function cyan() : VGColor {}
+        public static function magenta() : VGColor {}
+        public static function orange() : VGColor {}
+        public static function pink() : VGColor {}
+        public static function purple() : VGColor {}
+        public static function brown() : VGColor {}
+        public static function gray() : VGColor {}
+        public static function darkGray() : VGColor {}
+        public static function lightGray() : VGColor {}
+        public static function random() : VGColor {}
+        public static function randomGray() : VGColor {}
+
+        public function __construct(float $r, float $g, float $b, float $a) {}
+    }
+    
+    class VGPaint {
+        //public static function fromImage(VGImage $image, float $cx, float $cy, float $w, float $h, float $angle, float $alpha = 1.0) : VGPaint {}
+    }
+
+    class VGImage {
+        // public const REPEAT_NONE = 0;
+        // public const REPEAT_X = 1;
+        // public const REPEAT_Y = 2;
+        // public const REPEAT_XY = 3;
+
+        // public const FILTER_LINEAR = 0;
+        // public const FILTER_NEAREST = 1;
+
+        public function makePaint(float $x, float $y, float $w, float $h, float $angle = 0.0, float $alpha = 1.0) : VGPaint {}
+        public function makePaintCentered(float $cx, float $cy, float $w, float $h, float $angle = 0.0, float $alpha = 1.0) : VGPaint {}
+        //public function makePaintAABB(float $minx, float $miny, float $maxx, float $maxy, float $angle = 0.0, float $alpha = 1.0) : VGPaint {}
+    }
+
+    class VGAlign {
+        // public const LEFT = 1;
+        // public const CENTER = 2;
+        // public const RIGHT = 4;
+        // public const TOP = 8;
+        // public const MIDDLE = 16;
+        // public const BOTTOM = 32;
+        // public const BASELINE = 64;
+    }
+
+    class VGContext {
+        // public const ANTIALIAS = 1;
+        // public const STENCIL_STROKES = 2;
+        // public const DEBUG = 4;
+
+        // public const CCW = 1;
+        // public const CW = 2;
+
+        public function __construct(int $flags = 0) {}
+        public function fillColori(int $r, int $g, int $b, int $a) : void {}
+        public function strokeColori(int $r, int $g, int $b, int $a) : void {}
+        public function fillColorVec4(\GL\Math\Vec4 $vec) : void {}
+        public function strokeColorVec4(\GL\Math\Vec4 $vec) : void {}
+        public function transformPoint(float $x, float $y) : \GL\Math\Vec2 {}
+        public function transformVec2(\GL\Math\Vec2 $vec) : \GL\Math\Vec2 {}
+
+        public function imageFromTexture(
+            \GL\Texture\Texture2D $texture,
+            int $repeatMode = VGImage::REPEAT_NONE,
+            int $filterMode = VGImage::FILTER_LINEAR
+        ) : VGImage {}
+
+        public function linearGradient(float $sx, float $sy, float $ex, float $ey, VGColor $icol, VGColor $ocol) : VGPaint {}
+        public function boxGradient(float $x, float $y, float $w, float $h, float $r, float $f, VGColor $icol, VGColor $ocol) : VGPaint {}
+        public function radialGradient(float $cx, float $cy, float $inr, float $outr, VGColor $icol, VGColor $ocol) : VGPaint {}
+        //public function imagePattern(float $cx, float $cy, float $w, float $h, float $angle, float $alpha) : VGPaint {}
+
+<?php foreach($vgContextFunctions as $func) : ?>
+        public <?php echo $func->getPHPStub(); ?>
+<?php endforeach; ?> 
+    }
 };
 
 namespace {

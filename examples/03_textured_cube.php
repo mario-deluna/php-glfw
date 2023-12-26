@@ -64,7 +64,7 @@ glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
 // PHP-GLFW comes with an image loader based on stb_image
 // with it you can easly create a pixel buffer object to upload to opengl
-$textureData = Texture2D::fromDisk(__DIR__ . '/phplogo.png');
+$textureData = Texture2D::fromDisk(__DIR__ . '/phpglfwlogo.png', Texture2D::CHANNEL_RGB);
 glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, $textureData->width(), $textureData->height(), 0, GL_RGB, GL_UNSIGNED_BYTE, $textureData->buffer());
 
 // this call generates the mipmaps for the texture

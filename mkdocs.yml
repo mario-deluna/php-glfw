@@ -1,6 +1,7 @@
 site_name: PHP-GLFW
 repo_url: https://github.com/mario-deluna/php-glfw
 site_url: https://phpgl.net
+site_description: "Create Games and Graphics with PHP and OpenGL: PHP-GLFW brings dynamic 2D and 3D application capabilities to PHP. It's cross-platform, fast, and includes a CG Math Library, Model Loading, Texture Loading, Native Buffer Support, and a Vector Graphics Rendering API."
 use_directory_urls: false
 nav:
   - Home: index.md
@@ -14,7 +15,13 @@ nav:
     - Creating a Window: getting-started/window-creation.md
     - Drawing a Triangle: getting-started/drawing_a_triangle.md
   - User Guide:
+    - Vector Graphics:
+      - Getting Started: user-guide/vector-graphics/creating_a_vgcontext.md
+      - Fill & Stroke: user-guide/vector-graphics/fill-vs-stroke.md
+      - Shapes: user-guide/vector-graphics/shapes.md
+      - Colors: user-guide/vector-graphics/colors.md
     - Math & 3D Space: user-guide/math/
+    - Offscreen & Headless Rendering: user-guide/offscreen/
     - Debugging: user-guide/debugging/
   - Classes / Functions & API : 'API/'
   - Examples: 'examples/'
@@ -27,7 +34,8 @@ plugins:
 theme:
   name: material
   custom_dir: docs/overrides
-  logo: ./logo_phpglfw_s.png
+  favicon: favicon.ico
+  logo: ./logo.svg
   font:
     text: Source Sans Pro
   palette:
@@ -35,9 +43,10 @@ theme:
     primary: black
   features:
     - navigation.tabs
+    - content.tabs.link
 extra_css:
   - stylesheets/extra.css
-copyright: Copyright &copy; 2018 - 2022 Mario Döring / @see <a target="_blank" href="https://github.com/mario-deluna/php-glfw/blob/master/LICENSE">LICENSE</a>
+copyright: Copyright &copy; 2018 - 2024 Mario Döring / @see <a target="_blank" href="https://github.com/mario-deluna/php-glfw/blob/master/LICENSE">LICENSE</a>
 extra:
   generator: false
 markdown_extensions:
@@ -48,7 +57,8 @@ markdown_extensions:
   - pymdownx.inlinehilite
   - pymdownx.snippets
   - pymdownx.extra
-  - pymdownx.tabbed
+  - pymdownx.tabbed:
+      alternate_style: true
   - pymdownx.emoji:
       emoji_index: !!python/name:materialx.emoji.twemoji
       emoji_generator: !!python/name:materialx.emoji.to_svg

@@ -32,6 +32,10 @@ $gen->import($spec, 'gl', '4.1', [
 $glfwparser = new GLFWHeaderParser;
 $glfwparser->process(GEN_PATH_EXT . '/vendor/glfw/include/GLFW/glfw3.h', $gen);
 
+// VectorGraphics import 
+$nanovg = new NVGParser();
+$nanovg->process(GEN_PATH_EXT . '/vendor/nanovg/src/nanovg.h', $gen);
+
 // generate buffer classes for gl data types
 // 'GLbyte' => 'BYTE',
 // 'GLubyte' => 'UNSIGNED_BYTE',
@@ -43,7 +47,7 @@ $glfwparser->process(GEN_PATH_EXT . '/vendor/glfw/include/GLFW/glfw3.h', $gen);
 // 'GLhalf' => 'HALF_FLOAT',
 // 'GLdouble' => 'DOUBLE',
 $gen->phpglfwBuffers[] = new PHPGLFWBuffer('FloatBuffer', 'GLfloat', ExtType::T_DOUBLE);
-$gen->phpglfwBuffers[] = new PHPGLFWBuffer('HFloatBuffer', 'GLhalf', ExtType::T_DOUBLE);
+$gen->phpglfwBuffers[] = new PHPGLFWBuffer('HFloatBuffer', 'GLhalf', ExtType::T_LONG); // we currenly have no way to handle 16bit floats, so we consider them like the "GLhalf" as a unsigned short
 $gen->phpglfwBuffers[] = new PHPGLFWBuffer('DoubleBuffer', 'GLdouble', ExtType::T_DOUBLE);
 $gen->phpglfwBuffers[] = new PHPGLFWBuffer('IntBuffer', 'GLint', ExtType::T_LONG);
 $gen->phpglfwBuffers[] = new PHPGLFWBuffer('UIntBuffer', 'GLuint', ExtType::T_LONG);
@@ -72,7 +76,8 @@ $gen->adjust(PHPGlfwAdjustments\GLVectorSetterFunctionAdjustment::class);
 $gen->adjust(PHPGlfwAdjustments\GLGetShaderInfoLogAdjustment::class);
 $gen->adjust(PHPGlfwAdjustments\GLReadPixelsAdjustment::class);
 $gen->adjust(PHPGlfwAdjustments\BooleanConstAdjustment::class);
-
+$gen->adjust(PHPGlfwAdjustments\NVGCurrentTansformAdjustment::class);
+$gen->adjust(PHPGlfwAdjustments\NVGTextBoundsAdjustment::class);
 
 // build the extension
 $gen->build(GEN_PATH_EXT . '/v2/');
