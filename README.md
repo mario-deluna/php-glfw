@@ -138,7 +138,7 @@ PHP-GLFW parses the OpenGL specs to generate most of the C extension, instead of
 
 > 1. [Full Documentation](https://phpgl.net)
 > 2. [Getting Started Guide](https://phpgl.net/getting-started/window-creation.html)
-> 3. [User Guide](https://phpgl.net/user-guide/math/math_functions.html)
+> 3. [User Guide](https://phpgl.net/user-guide/vector-graphics/creating_a_vgcontext.html)
 > 4. [API Docs](https://phpgl.net/API/Buffer/ByteBuffer.html)
 
 ## Examples
