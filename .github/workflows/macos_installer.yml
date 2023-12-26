@@ -2,7 +2,7 @@ name: MacOS Installer
 
 on:
   workflow_run:
-    workflows: ["PHPglfw"]
+    workflows: ["PHP-GLFW Tests"]
     types:
       - completed
 
