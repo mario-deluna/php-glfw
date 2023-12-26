@@ -1,4 +1,4 @@
-# Creating a VG Context
+# Getting started
 
 Before we get to drawing anything, just like with normal OpenGL we need to open a window and create a context in which we can actually draw in. 
 
@@ -12,10 +12,15 @@ _We are not going to discuss the details of creating a window and a context in t
 
 
 <figure markdown>
-  ![PHP HTML Canvas like API Example](./../../docs-assets/php-glfw/getting_started/vg_example.jpg){ width="700" }
+  <!-- ![PHP HTML Canvas like API Example](./../../docs-assets/php-glfw/getting_started/vg_example.jpg){ width="700" } -->
+  <video controls="true" allowfullscreen="true" poster="./../../docs-assets/php-glfw/getting_started/vg_example.jpg" style="width: 100%;">
+    <source src="./../../docs-assets/php-glfw/user_guide/vg/context_creation/vg_demo.mp4" type="video/mp4">
+  </video>
 </figure>
 
-## Creating the context object
+You can run this example by `php examples/11_vector_graphics.php`.
+
+## Creating a VG Context
 
 To properly utilize the vector graphics API, we need to create a `VGContext` object. This object will hold all the internal state that the vector graphics state machine needs to operate. (You can have multiple.)
 
@@ -157,26 +162,93 @@ All together, this is how you would draw a red rectangle to the screen.
 </figure>
 
 
+=== "Basic"
+
+    ```php
+    $vg->beginPath();
+    $vg->rect(10, 10, 100, 100);
+    $vg->fillColor(VGColor::red());
+    $vg->fill();
+    ```
+
+=== "Full Example"
+
+    ```php
+    use GL\VectorGraphics\VGColor;
+    use GL\VectorGraphics\VGContext;
+
+    if (!glfwInit()) {
+        throw new Exception('GLFW could not be initialized!');
+    }
+
+    // make sure to set the GLFW context version to the same 
+    // version the GLFW extension has been compiled with, default 4.1
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 1);
+    glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+    glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
+
+    // Create a window 
+    if (!$window = glfwCreateWindow(800, 600, "PHP GLFW Demo")) {
+        throw new Exception('OS Window could not be initialized!');
+    }
+
+    glfwMakeContextCurrent($window);
+    glfwSwapInterval(1);
+
+    // initalize the a vector graphics context
+    $vg = new VGContext(VGContext::ANTIALIAS);
+
+    // Main Loop
+    while (!glfwWindowShouldClose($window))
+    {
+        glClearColor(0, 0, 0, 1);
+        glClear(GL_COLOR_BUFFER_BIT);
+
+        // start a new vector graphics frame
+        $vg->beginFrame(800, 600, 1);
+
+        $vg->beginPath();
+        $vg->rect(10, 10, 100, 100);
+        $vg->fillColor(VGColor::red());
+        $vg->fill();
+
+        // end the frame will dispatch all the draw commands to the GPU
+        $vg->endFrame();
+
+        glfwSwapBuffers($window);
+        glfwPollEvents();
+    }
+
+    glfwDestroyWindow($window);
+    glfwTerminate();
+    ```
+
+## Adding some interaction
+
+To not end this "Getting Started" tutorial with a static image, let's add some interaction to our example. We are going to draw a circle that follows the mouse cursor.
+
+To get the mouse position, we can use the `glfwGetCursorPos()` function.
+
+```php
+glfwGetCursorPos($window, $mouseX, $mouseY);
+```
+
+Then we just replace our call to `rect()` with a call to `circle()` and use the mouse position as the center of the circle.
+
 ```php
 $vg->beginPath();
-$vg->rect(10, 10, 100, 100);
+$vg->circle($mouseX, $mouseY, 50);
 $vg->fillColor(VGColor::red());
 $vg->fill();
 ```
 
-### Stroking vs Filling
+As simple as that, we now have a circle that follows the mouse cursor. 
 
-There are two ways to draw a shape to the screen. We can either fill the shape or stroke the shape. Filling a shape means that the shape will be filled with the current fill color. Stroking a shape means that the shape will be drawn as a line with the current stroke color.
-
-Creating the same rectangle as above, but this time stroking it instead of filling it, will look like this:
-
-<figure markdown>
-  ![PHP VectorGraphics Rectangle Stroke Drawing](./../../docs-assets/php-glfw/user_guide/vg/context_creation/rect_stroke.png){ width="700" }
+<figure class="video_container">
+  <video controls="true" allowfullscreen="true">
+    <source src="./../../docs-assets/php-glfw/user_guide/vg/context_creation/circle_follow.mp4" type="video/mp4">
+  </video>
 </figure>
 
-```php
-$vg->beginPath();
-$vg->rect(10, 10, 100, 100);
-$vg->strokeColor(VGColor::red());
-$vg->stroke();
-```
+In the next chapter we are going to dive a bit more into the basics.
