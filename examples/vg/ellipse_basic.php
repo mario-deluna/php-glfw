@@ -6,11 +6,31 @@ require __DIR__ . '/../99_example_helpers.php';
 
 use GL\Texture\Texture2D;
 use GL\VectorGraphics\{VGAlign, VGContext, VGColor};
+use phpDocumentor\Reflection\DocBlock\Tags\Example;
 
 $window = ExampleHelper::begin();
 
 // initalize the a vector graphics context
 $vg = new VGContext(VGContext::ANTIALIAS);
+
+$ani = ExampleHelper::createAnimation($vg)
+    ->defaults([
+        'rx' => 100,
+        'ry' => 100,
+    ])
+    ->after(500, function($frame, $vg) {
+        $frame->easeInOutTo('rx', 200, 1000);
+    })
+    ->after(500, function($frame, $vg) {
+        $frame->easeInOutTo('rx', 100, 1000);
+    })
+    ->after(500, function($frame, $vg) {
+        $frame->easeInOutTo('ry', 200, 1000);
+    })
+    ->after(500, function($frame, $vg) {
+        $frame->easeInOutTo('ry', 100, 1000);
+    });
+
 
 // Main Loop
 // ---------------------------------------------------------------------------- 
@@ -30,26 +50,28 @@ while (!glfwWindowShouldClose($window))
 
     ExampleHelper::drawCoordSys($vg);
 
-    $cornerRadius = 50 + sin(glfwGetTime()) * 25;
+    $ani->build(glfwGetTime());
+
+    $radiusX = $ani->states['rx'];
+    $radiusY = $ani->states['ry'];
 
     $vg->beginPath();
-    $vg->roundedRect(100, 100, 200, 200, $cornerRadius);
+    $vg->ellipse(400, 200, $radiusX, $radiusY);
     $vg->fillColori(22, 159, 255, 255);
     $vg->fill();
 
-    // radius
-    ExampleHelper::drawLength($vg, 320, 100, 320, 100 + $cornerRadius, "radius = " . round($cornerRadius));
+    // Drawing radii next to the ellipse
+    // ExampleHelper::drawLength($vg, 400 - $radiusX, 320, 400 + $radiusX, 320, "radiusX = " . round($radiusX), 'bottom');
+    // ExampleHelper::drawLength($vg, 280, 200 - $radiusY, 280, 200 + $radiusY, "radiusY = " . round($radiusY), 'left');
 
-    // width
-    ExampleHelper::drawLength($vg, 100, 320, 300, 320, "width = 200", 'bottom');
+    ExampleHelper::drawLength($vg, 400, 320, 400 + $radiusX, 320, "radiusX = " . round($radiusX), 'bottom');
+    ExampleHelper::drawLength($vg, 280, 200, 280, 200 + $radiusY, "radiusY = " . round($radiusY), 'left');
 
-    ExampleHelper::drawPoint($vg, 100, 100, '100,100');
+    ExampleHelper::drawPoint($vg, 400, 200, '400, 200');
 
     ExampleHelper::drawFuncLabels($vg, 50, 50, [
-        "roundedRect(100, 100, 200, 200, $cornerRadius);",
+        "ellipse(400, 200, $radiusX, $radiusY);",
     ]);
-
-
 
     // end the frame will dispatch all the draw commands to the GPU
     $vg->endFrame();

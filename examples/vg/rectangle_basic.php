@@ -7,11 +7,6 @@ require __DIR__ . '/../99_example_helpers.php';
 use GL\Texture\Texture2D;
 use GL\VectorGraphics\{VGAlign, VGContext, VGColor};
 
-// ensure mbstring extensin is loaded, we need it for the text rendering
-if (!extension_loaded('mbstring')) {
-    throw new \Exception('mbstring extension is required for this example');
-}
-
 $window = ExampleHelper::begin();
 
 // initalize the a vector graphics context

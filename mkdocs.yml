@@ -15,7 +15,11 @@ nav:
     - Creating a Window: getting-started/window-creation.md
     - Drawing a Triangle: getting-started/drawing_a_triangle.md
   - User Guide:
-    - Vector Graphics: user-guide/vector-graphics/
+    - Vector Graphics:
+      - Getting Started: user-guide/vector-graphics/creating_a_vgcontext.md
+      - Fill & Stroke: user-guide/vector-graphics/fill-vs-stroke.md
+      - Shapes: user-guide/vector-graphics/shapes.md
+      - Colors: user-guide/vector-graphics/colors.md
     - Math & 3D Space: user-guide/math/
     - Offscreen & Headless Rendering: user-guide/offscreen/
     - Debugging: user-guide/debugging/

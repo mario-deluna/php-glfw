@@ -5,6 +5,7 @@ use GL\Geometry\ObjFileParser;
 use GL\Math\Vec4;
 use GL\Texture\Texture2D;
 use GL\VectorGraphics\VGAlign;
+use GL\VectorGraphics\VGColor;
 use GL\VectorGraphics\VGContext;
 
 /**
@@ -432,6 +433,7 @@ class ExampleHelper
             $vg->fontSize(20);
             $vg->fontFaceId(self::getVGFontHandle($vg));
             $vg->fillColori(255, 255, 255, 255);
+            $vg->textAlign(VGAlign::LEFT | VGAlign::MIDDLE);
             $vg->text($point->x + 10, $point->y + 10, $label);
         }
 
@@ -479,6 +481,94 @@ class ExampleHelper
     {
         return round(((int)rad2deg($rad) ) % 360, 0) . '°';
     }
+
+    private static function getLengthIndicatorColor() : VGColor
+    {
+        return new VGColor(0.8, 0.8, 0.8, 1.0);
+    }
+
+    private static function getLengthTextColor() : VGColor
+    {
+        return new VGColor(0.7, 0.7, 0.7, 1.0);
+    }
+
+    /**
+     * Draws a small perpendicular mark at a point on the line.
+     */
+    private static function drawEndMark(VGContext $vg, float $x, float $y, float $otherX, float $otherY) : void
+    {
+        $markLength = 5; // Length of the end mark
+        $angle = atan2($y - $otherY, $x - $otherX) + M_PI / 2;
+
+        // Calculate end points for the mark
+        $endX1 = $x + $markLength * cos($angle);
+        $endY1 = $y + $markLength * sin($angle);
+        $endX2 = $x - $markLength * cos($angle);
+        $endY2 = $y - $markLength * sin($angle);
+
+        // Draw the mark
+        $vg->beginPath();
+        $vg->moveTo($endX1, $endY1);
+        $vg->lineTo($endX2, $endY2);
+        $vg->stroke();
+    }
+
+    /**
+     * Draws a short perpendicular line at a given point.
+     */
+    public static function drawLength(VGContext $vg, float $x1, float $y1, float $x2, float $y2, string $label = null, string $labelPos = 'right') : void
+    {
+        // Main line
+        $vg->beginPath();
+        $vg->moveTo($x1, $y1);
+        $vg->lineTo($x2, $y2);
+        $vg->strokeColor(self::getLengthIndicatorColor());
+        $vg->strokeWidth(2.0);
+        $vg->stroke();
+
+        // Draw end marks
+        self::drawEndMark($vg, $x1, $y1, $x2, $y2);
+        self::drawEndMark($vg, $x2, $y2, $x1, $y1);
+
+        // Label
+        if ($label !== null) {
+
+            // get the center of the line
+            $labelX = $x1 + ($x2 - $x1) * 0.5;
+            $labelY = $y1 + ($y2 - $y1) * 0.5;
+
+            // left side of the aabb
+            if ($labelPos === 'right') {
+                $labelX += 20;
+                $vg->textAlign(VGAlign::LEFT | VGAlign::MIDDLE);
+            } else if ($labelPos === 'left') {
+                $labelX -= 20;
+                $vg->textAlign(VGAlign::RIGHT | VGAlign::MIDDLE);
+            } else if ($labelPos === 'top') {
+                $labelY -= 20;
+                $vg->textAlign(VGAlign::CENTER | VGAlign::BOTTOM);
+            } else if ($labelPos === 'bottom') {
+                $labelY += 20;
+                $vg->textAlign(VGAlign::CENTER | VGAlign::TOP);
+            } else if ($labelPos === 'a') {
+                // a means at point 1
+                $labelX = $x1;
+                $labelY = $y1 - 20;
+                $vg->textAlign(VGAlign::LEFT | VGAlign::MIDDLE);
+            } else if ($labelPos === 'b') {
+                // b means at point 2
+                $labelX = $x2;
+                $labelY = $y2 + 20;
+                $vg->textAlign(VGAlign::LEFT | VGAlign::MIDDLE);
+            }
+
+            $vg->fontSize(20);
+            $vg->fontFaceId(self::getVGFontHandle($vg));
+            $vg->fillColor(self::getLengthTextColor());
+            $vg->text($labelX, $labelY, $label);
+        }
+    }
+
 
     /**
      * Draws a button group with the given options.

@@ -7,15 +7,11 @@ require __DIR__ . '/../99_example_helpers.php';
 use GL\Texture\Texture2D;
 use GL\VectorGraphics\{VGAlign, VGContext, VGColor};
 
-// ensure mbstring extensin is loaded, we need it for the text rendering
-if (!extension_loaded('mbstring')) {
-    throw new \Exception('mbstring extension is required for this example');
-}
-
 $window = ExampleHelper::begin();
 
 // initalize the a vector graphics context
 $vg = new VGContext(VGContext::ANTIALIAS);
+
 
 // Main Loop
 // ---------------------------------------------------------------------------- 
@@ -35,39 +31,49 @@ while (!glfwWindowShouldClose($window))
 
     ExampleHelper::drawCoordSys($vg);
 
-    // draw a rectangle 
-    $vg->beginPath();
-    $vg->rect(50, 150, 100, 100);
-    $vg->fillColor(VGColor::red());
-    $vg->fill();
+    $colors = [
+        'red',
+        'green',
+        'blue',
+        'white',
+        'black',
+        'transparent',
+        'yellow',
+        'cyan',
+        'magenta',
+        'orange',
+        'pink',
+        'purple',
+        'brown',
+        'gray',
+        'darkGray',
+        'lightGray',
+        'random',
+        'randomGray',
+    ];
 
-    // draw rounded rectangle
-    $vg->beginPath();
-    $vg->roundedRect(200, 150, 100, 100, 25);
-    $vg->fillColor(VGColor::green());
-    $vg->fill();
+    $circleRadius = 45;
+    $gutter = 10;
+    $x = 50;
+    $y = 50;
+    foreach($colors as $i => $color) {
+        $vg->beginPath();
+        $vg->circle($x, $y, $circleRadius);
+        $vg->fillColor(VGColor::$color());
+        $vg->fill();
 
-    // draw ellipse
-    $vg->beginPath();
-    $vg->ellipse(400, 200, 50, 25);
-    $vg->fillColor(VGColor::blue());
-    $vg->fill();
+        // label
+        $vg->fillColor(VGColor::white());
+        $vg->fontSize(14);
+        $vg->textAlign(VGAlign::CENTER | VGAlign::MIDDLE);
+        $vg->text($x, $y + $circleRadius + 20, $color);
 
-    // draw circle
-    $vg->beginPath();
-    $vg->circle(550, 200, 50);
-    $vg->fillColor(VGColor::yellow());
-    $vg->fill();
-
-    // draw arc
-    $vg->beginPath();
-    $vg->arc(700, 200, 50, 0, 3.14, VGContext::CCW);
-    $vg->fillColor(VGColor::cyan());
-    $vg->fill();
-
-    // ExampleHelper::drawFuncLabels($vg, 50, 50, [
-    //     "strokeWidth($strokeWidth);",
-    // ]);
+        $x += $circleRadius * 2 + $gutter;
+        if($x > ExampleHelper::WIN_WIDTH - 50) {
+            $x = 50;
+            $y += $circleRadius * 2 + $gutter + 50;
+        }
+    }
 
     // end the frame will dispatch all the draw commands to the GPU
     $vg->endFrame();

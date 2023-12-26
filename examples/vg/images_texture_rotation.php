@@ -6,7 +6,6 @@ require __DIR__ . '/../99_example_helpers.php';
 
 use GL\Texture\Texture2D;
 use GL\VectorGraphics\{VGContext, VGColor};
-use phpDocumentor\Reflection\DocBlock\Tags\Example;
 
 // ensure mbstring extensin is loaded, we need it for the text rendering
 if (!extension_loaded('mbstring')) {
