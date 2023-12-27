@@ -10,10 +10,10 @@ jobs:
         shell: cmd
     strategy:
       matrix:
-          version: ['8.0', '8.1', '8.2']
-          # version: ['8.1', '8.2', '8.3']
+          version: ['8.1', '8.2', '8.3']
           arch: [x64]
-          ts: [ts, nts]
+          #ts: [ts, nts]
+          ts: [nts] # we are currently facing an issue on windows with the ZTS build, it crashes during the module initalisation 
     runs-on: windows-latest
     steps:
       - name: Checkout PHP-GLFW
@@ -21,7 +21,7 @@ jobs:
         
       - name: Setup PHP
         id: setup-php
-        uses: cmb69/setup-php-sdk@v0.6
+        uses: php/setup-php-sdk@v0.8
         with:
           version: ${{matrix.version}}
           arch: ${{matrix.arch}}
