@@ -25,12 +25,12 @@ jobs:
           echo "ARTIFACT_DIR=/tmp/php-${{ matrix.php-versions }}-glfw-cli-macos-x86_64" >> $GITHUB_ENV
           echo "STATIC_CLI_DIR=/tmp/static-php-cli" >> $GITHUB_ENV
 
-      # Cache composer dependencies
-      #- id: cache-static-php-cli
-      #  uses: actions/cache@v3
-      #  with:
-      #    path: /tmp/static-php-cli
-      #    key: cache-static-php-cli
+      # Cache downloads
+      - id: cache-static-php-cli
+        uses: actions/cache@v3
+        with:
+          path: /tmp/static-php-cli
+          key: cache-static-php-cli
 
       - name: Download static-php-cli
         if: steps.cache-static-php-cli.outputs.cache-hit != 'true'
@@ -38,7 +38,6 @@ jobs:
           # Clone only the specific commit to save time and space
           git clone --depth 1 --branch main https://github.com/crazywhalecc/static-php-cli.git /tmp/static-php-cli
           cd /tmp/static-php-cli
-          git checkout 4e99211bc37ae37aae6ee7918fc7669be505bc9a
           
           # Install composer dependencies
           composer install --no-dev --no-interaction --no-progress --no-suggest --no-scripts --prefer-dist --optimize-autoloader
