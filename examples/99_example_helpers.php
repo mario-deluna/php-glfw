@@ -197,6 +197,43 @@ class ExampleHelper
         return [$VAO, $VBO];
     }
 
+    public static function createQuadVBO()
+    {
+        $verticies = new FloatBuffer([ 
+            // positions    // texCoords
+            -1.0,  1.0, 0.0, 1.0,
+            -1.0, -1.0, 0.0, 0.0,
+             1.0, -1.0, 1.0, 0.0,
+
+            -1.0,  1.0, 0.0, 1.0,
+             1.0, -1.0, 1.0, 0.0,
+             1.0,  1.0, 1.0, 1.0
+        ]);
+        
+        // create a vertex array object and upload the vertices
+        glGenVertexArrays(1, $VAO);
+        glGenBuffers(1, $VBO);
+        
+        glBindVertexArray($VAO);
+        glBindBuffer(GL_ARRAY_BUFFER, $VBO);
+        glBufferData(GL_ARRAY_BUFFER, $verticies, GL_STATIC_DRAW);
+        
+        // declare the vertex attributes
+        // positions
+        glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, GL_SIZEOF_FLOAT * 4, 0);
+        glEnableVertexAttribArray(0);
+        
+        // uv
+        glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, GL_SIZEOF_FLOAT * 4, GL_SIZEOF_FLOAT * 2);
+        glEnableVertexAttribArray(1);
+        
+        // unbind
+        glBindBuffer(GL_ARRAY_BUFFER, 0); 
+        glBindVertexArray(0); 
+
+        return [$VAO, $VBO];
+    }
+
     public static function loadTexture(string $path, int $format = GL_RGB) : int
     {
         // generate a texture, load it from a file and bind it

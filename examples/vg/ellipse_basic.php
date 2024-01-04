@@ -6,7 +6,6 @@ require __DIR__ . '/../99_example_helpers.php';
 
 use GL\Texture\Texture2D;
 use GL\VectorGraphics\{VGAlign, VGContext, VGColor};
-use phpDocumentor\Reflection\DocBlock\Tags\Example;
 
 $window = ExampleHelper::begin();
 
