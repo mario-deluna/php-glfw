@@ -25,6 +25,7 @@
  */
 #include "phpglfw_buffer.h"
 
+#include "phpglfw.h"
 #include "phpglfw_arginfo.h"
 #include "phpglfw_math.h"
 
@@ -338,7 +339,7 @@ int phpglfw_buffer_glfloat_unserialize_handler(zval *object, zend_class_entry *c
 
 static int phpglfw_buffer_glfloat_serialize_handler(zval *object, unsigned char **buffer, size_t *buf_len, zend_serialize_data *data)
 {
-    bool serialize_hex_float = INI_BOOL("glfw.buffer_serialize_hex_float");
+    bool serialize_hex_float = PHPGLFW_G(buffer_serialize_hex_float);
     phpglfw_buffer_glfloat_object *obj_ptr = phpglfw_buffer_glfloat_objectptr_from_zobj_p(Z_OBJ_P(object));
     size_t num_elements = cvector_size(obj_ptr->vec);
 
@@ -1396,7 +1397,7 @@ int phpglfw_buffer_gldouble_unserialize_handler(zval *object, zend_class_entry *
 
 static int phpglfw_buffer_gldouble_serialize_handler(zval *object, unsigned char **buffer, size_t *buf_len, zend_serialize_data *data)
 {
-    bool serialize_hex_float = INI_BOOL("glfw.buffer_serialize_hex_float");
+    bool serialize_hex_float = PHPGLFW_G(buffer_serialize_hex_float);
     phpglfw_buffer_gldouble_object *obj_ptr = phpglfw_buffer_gldouble_objectptr_from_zobj_p(Z_OBJ_P(object));
     size_t num_elements = cvector_size(obj_ptr->vec);
 

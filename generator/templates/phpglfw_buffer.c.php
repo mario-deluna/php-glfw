@@ -25,6 +25,7 @@
  */
 #include "phpglfw_buffer.h"
 
+#include "phpglfw.h"
 #include "phpglfw_arginfo.h"
 #include "phpglfw_math.h"
 
@@ -282,7 +283,7 @@ int <?php echo $buffer->getHandlerMethodName('unserialize'); ?>(zval *object, ze
 static int <?php echo $buffer->getHandlerMethodName('serialize'); ?>(zval *object, unsigned char **buffer, size_t *buf_len, zend_serialize_data *data)
 {
 <?php if (!$buffer->isPrintfSameInHex()) : ?>
-    bool serialize_hex_float = INI_BOOL("glfw.buffer_serialize_hex_float");
+    bool serialize_hex_float = PHPGLFW_G(buffer_serialize_hex_float);
 <?php endif; ?>
     <?php echo $buffer->getObjectName(); ?> *obj_ptr = <?php echo $buffer->objectFromZObjFunctionName(); ?>(Z_OBJ_P(object));
     size_t num_elements = cvector_size(obj_ptr->vec);

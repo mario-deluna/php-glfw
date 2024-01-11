@@ -39,6 +39,7 @@
 #include "phpglfw_objparser.h"
 #include "phpglfw_vg.h"
 
+ZEND_DECLARE_MODULE_GLOBALS(glfw)
 
 zend_module_entry glfw_module_entry = {
     STANDARD_MODULE_HEADER,
@@ -50,22 +51,22 @@ zend_module_entry glfw_module_entry = {
     NULL,
     PHP_MINFO(glfw),
     PHP_GLFW_VERSION,
-    STANDARD_MODULE_PROPERTIES
+	PHP_MODULE_GLOBALS(glfw),
+	NULL,
+	NULL,
+	NULL,
+	STANDARD_MODULE_PROPERTIES_EX
 };
 
 #ifdef COMPILE_DL_GLFW
 ZEND_GET_MODULE(glfw)
 #endif
 
-ZEND_BEGIN_MODULE_GLOBALS(glfw)
-    bool buffer_serialize_hex_float;
-ZEND_END_MODULE_GLOBALS(glfw)
-
-ZEND_DECLARE_MODULE_GLOBALS(glfw)
-
+/* {{{ PHP_INI */
 PHP_INI_BEGIN()
-    STD_PHP_INI_ENTRY("glfw.buffer_serialize_hex_float", "false", PHP_INI_ALL, OnUpdateBool, buffer_serialize_hex_float, zend_glfw_globals, glfw_globals)
+    STD_PHP_INI_BOOLEAN("glfw.buffer_serialize_hex_float", "0", PHP_INI_ALL, OnUpdateBool, buffer_serialize_hex_float, zend_glfw_globals, glfw_globals)
 PHP_INI_END()
+/* }}} */
 
 /**
  * MINIT
