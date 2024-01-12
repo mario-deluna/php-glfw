@@ -3,7 +3,7 @@
 Rendering **text** is a fundamental aspect of many graphics applications, from displaying user interface elements to showing in-game information. However, implementing custom text rendering can be complex and time-consuming, especially when dealing with various font styles and sizes. PHP-GLFW's Vector Graphics API allows you the use of **TrueType Font (TTF)** files.
 
 <figure markdown>
-![PHP VectorGraphics Color Constants](./../../docs-assets/php-glfw/user_guide/vg/text/intro.png){ width="100%" }
+![Example of text rendering using PHP-GLFW Vector Graphics API](./../../docs-assets/php-glfw/user_guide/vg/text/intro.png){ width="100%" }
   <figcaption>Run this <code>php examples/vg/text_intro.php</code></figcaption>
 </figure>
 
@@ -49,7 +49,7 @@ $vg->text(50, 50, 'Hello World!');
 ```
 
 <figure markdown>
-![PHP VectorGraphics Color Constants](./../../docs-assets/php-glfw/user_guide/vg/text/greentext.png){ width="100%" }
+![Example of green text rendering using PHP-GLFW Vector Graphics API](./../../docs-assets/php-glfw/user_guide/vg/text/greentext.png){ width="100%" }
 </figure>
 
 You do not have to set the font size every time you render text. The Vector Graphics API behaves like a state machine, so the font size will be remembered until you change it again.
@@ -59,7 +59,7 @@ You do not have to set the font size every time you render text. The Vector Grap
 You can change the text alignment by calling the `textAlign()` method. 
 
 <figure markdown>
-![PHP VectorGraphics Color Constants](./../../docs-assets/php-glfw/user_guide/vg/text/text_align.gif){ width="100%" }
+![Animated demonstration of text alignment options in PHP-GLFW Vector Graphics API](./../../docs-assets/php-glfw/user_guide/vg/text/text_align.gif){ width="100%" }
   <figcaption>Run this <code>php examples/vg/text_alignment.php</code></figcaption>
 </figure>
 
@@ -86,7 +86,7 @@ When working with text, you will pretty quickly end up in a situation where you 
 ### X Advance
 
 <figure markdown>
-![PHP VectorGraphics Color Constants](./../../docs-assets/php-glfw/user_guide/vg/text/text_x_advnace.png){ width="100%" }
+![Example of text X advance feature in PHP-GLFW Vector Graphics API](./../../docs-assets/php-glfw/user_guide/vg/text/text_x_advnace.png){ width="100%" }
   <figcaption>Run this <code>php examples/vg/text_color_words.php</code></figcaption>
 </figure>
 

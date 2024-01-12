@@ -58,7 +58,7 @@ You can lighten and darken a color with the `lighten()` and `darken()` functions
 Internally the RGB is converted to HSL, the lightness is then modified and the color is converted back to RGB.
 
 <figure markdown>
-![PHP VectorGraphics Color Constants](./../../docs-assets/php-glfw/user_guide/vg/colors/color_lightness.png){ width="100%" }
+![Illustration of lightening and darkening colors using PHP-GLFW VectorGraphics API](./../../docs-assets/php-glfw/user_guide/vg/colors/color_lightness.png){ width="100%" }
   <figcaption>Run this <code>php examples/vg/color_lightness.php</code></figcaption>
 </figure>
 
