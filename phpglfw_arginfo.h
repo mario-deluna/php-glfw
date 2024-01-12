@@ -1,5 +1,5 @@
 /* This is a generated file, edit the .stub.php file instead.
- * Stub hash: 1f5ec7f5760896375037d1202fccd28563f22306 */
+ * Stub hash: 08fa24b6afb25e10eb4bd4a4d23ec6113c2960ad */
 
 ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_glCullFace, 0, 1, IS_VOID, 0)
 	ZEND_ARG_TYPE_INFO(0, mode, IS_LONG, 0)
@@ -2803,6 +2803,45 @@ ZEND_END_ARG_INFO()
 
 #define arginfo_class_GL_Buffer_UByteBuffer_reserve arginfo_class_GL_Buffer_BufferInterface_reserve
 
+ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(arginfo_class_GL_VectorGraphics_VGColor_rgb, 0, 3, GL\\VectorGraphics\\VGColor, 0)
+	ZEND_ARG_TYPE_INFO(0, r, IS_DOUBLE, 0)
+	ZEND_ARG_TYPE_INFO(0, g, IS_DOUBLE, 0)
+	ZEND_ARG_TYPE_INFO(0, b, IS_DOUBLE, 0)
+ZEND_END_ARG_INFO()
+
+ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(arginfo_class_GL_VectorGraphics_VGColor_rgba, 0, 4, GL\\VectorGraphics\\VGColor, 0)
+	ZEND_ARG_TYPE_INFO(0, r, IS_DOUBLE, 0)
+	ZEND_ARG_TYPE_INFO(0, g, IS_DOUBLE, 0)
+	ZEND_ARG_TYPE_INFO(0, b, IS_DOUBLE, 0)
+	ZEND_ARG_TYPE_INFO(0, a, IS_DOUBLE, 0)
+ZEND_END_ARG_INFO()
+
+ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(arginfo_class_GL_VectorGraphics_VGColor_hsl, 0, 3, GL\\VectorGraphics\\VGColor, 0)
+	ZEND_ARG_TYPE_INFO(0, h, IS_DOUBLE, 0)
+	ZEND_ARG_TYPE_INFO(0, s, IS_DOUBLE, 0)
+	ZEND_ARG_TYPE_INFO(0, l, IS_DOUBLE, 0)
+ZEND_END_ARG_INFO()
+
+ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(arginfo_class_GL_VectorGraphics_VGColor_hsla, 0, 4, GL\\VectorGraphics\\VGColor, 0)
+	ZEND_ARG_TYPE_INFO(0, h, IS_DOUBLE, 0)
+	ZEND_ARG_TYPE_INFO(0, s, IS_DOUBLE, 0)
+	ZEND_ARG_TYPE_INFO(0, l, IS_DOUBLE, 0)
+	ZEND_ARG_TYPE_INFO(0, a, IS_DOUBLE, 0)
+ZEND_END_ARG_INFO()
+
+ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(arginfo_class_GL_VectorGraphics_VGColor_irgb, 0, 3, GL\\VectorGraphics\\VGColor, 0)
+	ZEND_ARG_TYPE_INFO(0, r, IS_LONG, 0)
+	ZEND_ARG_TYPE_INFO(0, g, IS_LONG, 0)
+	ZEND_ARG_TYPE_INFO(0, b, IS_LONG, 0)
+ZEND_END_ARG_INFO()
+
+ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(arginfo_class_GL_VectorGraphics_VGColor_irgba, 0, 4, GL\\VectorGraphics\\VGColor, 0)
+	ZEND_ARG_TYPE_INFO(0, r, IS_LONG, 0)
+	ZEND_ARG_TYPE_INFO(0, g, IS_LONG, 0)
+	ZEND_ARG_TYPE_INFO(0, b, IS_LONG, 0)
+	ZEND_ARG_TYPE_INFO(0, a, IS_LONG, 0)
+ZEND_END_ARG_INFO()
+
 ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(arginfo_class_GL_VectorGraphics_VGColor_red, 0, 0, GL\\VectorGraphics\\VGColor, 0)
 ZEND_END_ARG_INFO()
 
@@ -3969,6 +4008,12 @@ ZEND_METHOD(GL_Buffer_UByteBuffer, clear);
 ZEND_METHOD(GL_Buffer_UByteBuffer, size);
 ZEND_METHOD(GL_Buffer_UByteBuffer, capacity);
 ZEND_METHOD(GL_Buffer_UByteBuffer, reserve);
+ZEND_METHOD(GL_VectorGraphics_VGColor, rgb);
+ZEND_METHOD(GL_VectorGraphics_VGColor, rgba);
+ZEND_METHOD(GL_VectorGraphics_VGColor, hsl);
+ZEND_METHOD(GL_VectorGraphics_VGColor, hsla);
+ZEND_METHOD(GL_VectorGraphics_VGColor, irgb);
+ZEND_METHOD(GL_VectorGraphics_VGColor, irgba);
 ZEND_METHOD(GL_VectorGraphics_VGColor, red);
 ZEND_METHOD(GL_VectorGraphics_VGColor, green);
 ZEND_METHOD(GL_VectorGraphics_VGColor, blue);
@@ -4942,6 +4987,12 @@ static const zend_function_entry class_GL_Buffer_UByteBuffer_methods[] = {
 
 
 static const zend_function_entry class_GL_VectorGraphics_VGColor_methods[] = {
+	ZEND_ME(GL_VectorGraphics_VGColor, rgb, arginfo_class_GL_VectorGraphics_VGColor_rgb, ZEND_ACC_PUBLIC|ZEND_ACC_STATIC)
+	ZEND_ME(GL_VectorGraphics_VGColor, rgba, arginfo_class_GL_VectorGraphics_VGColor_rgba, ZEND_ACC_PUBLIC|ZEND_ACC_STATIC)
+	ZEND_ME(GL_VectorGraphics_VGColor, hsl, arginfo_class_GL_VectorGraphics_VGColor_hsl, ZEND_ACC_PUBLIC|ZEND_ACC_STATIC)
+	ZEND_ME(GL_VectorGraphics_VGColor, hsla, arginfo_class_GL_VectorGraphics_VGColor_hsla, ZEND_ACC_PUBLIC|ZEND_ACC_STATIC)
+	ZEND_ME(GL_VectorGraphics_VGColor, irgb, arginfo_class_GL_VectorGraphics_VGColor_irgb, ZEND_ACC_PUBLIC|ZEND_ACC_STATIC)
+	ZEND_ME(GL_VectorGraphics_VGColor, irgba, arginfo_class_GL_VectorGraphics_VGColor_irgba, ZEND_ACC_PUBLIC|ZEND_ACC_STATIC)
 	ZEND_ME(GL_VectorGraphics_VGColor, red, arginfo_class_GL_VectorGraphics_VGColor_red, ZEND_ACC_PUBLIC|ZEND_ACC_STATIC)
 	ZEND_ME(GL_VectorGraphics_VGColor, green, arginfo_class_GL_VectorGraphics_VGColor_green, ZEND_ACC_PUBLIC|ZEND_ACC_STATIC)
 	ZEND_ME(GL_VectorGraphics_VGColor, blue, arginfo_class_GL_VectorGraphics_VGColor_blue, ZEND_ACC_PUBLIC|ZEND_ACC_STATIC)

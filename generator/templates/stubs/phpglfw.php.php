@@ -1327,10 +1327,48 @@ namespace GL\Texture
 namespace GL\VectorGraphics
 {
     class VGColor {
-        //public static function rgb(float $r, float $g, float $b) : VGColor {}
-        //public static function rgba(float $r, float $g, float $b, float $a) : VGColor {}
-        //public static function irgb(int $r, int $g, int $b) : VGColor {}
-        //public static function irgba(int $r, int $g, int $b, int $a) : VGColor {}
+        public static function rgb(float $r, float $g, float $b) : VGColor {}
+        public static function rgba(float $r, float $g, float $b, float $a) : VGColor {}
+        /**
+         * HSL color constructor
+         * All values are in the range [0.0, 1.0]
+         *
+         * @param float $h Hue
+         * @param float $s Saturation
+         * @param float $l Lightness
+         */
+        public static function hsl(float $h, float $s, float $l) : VGColor {}
+
+        /**
+         * HSL with alpha color constructor
+         * All values are in the range [0.0, 1.0]
+         *
+         * @param float $h Hue
+         * @param float $s Saturation
+         * @param float $l Lightness
+         */
+        public static function hsla(float $h, float $s, float $l, float $a) : VGColor {}
+
+        /**
+         * RGB color constructor from integer values
+         * All values are in the range [0, 255]
+         *
+         * @param int $r Red
+         * @param int $g Green
+         * @param int $b Blue
+         */
+        public static function irgb(int $r, int $g, int $b) : VGColor {}
+
+        /**
+         * RGBA color constructor from integer values
+         * All values are in the range [0, 255]
+         *
+         * @param int $r Red
+         * @param int $g Green
+         * @param int $b Blue
+         * @param int $a Alpha
+         */
+        public static function irgba(int $r, int $g, int $b, int $a) : VGColor {}
         //public static function fromVec4(\GL\Math\Vec4 $vec) : VGColor {}
         //public static function fromVec3(\GL\Math\Vec3 $vec) : VGColor {}
 
@@ -1352,6 +1390,26 @@ namespace GL\VectorGraphics
         public static function lightGray() : VGColor {}
         public static function random() : VGColor {}
         public static function randomGray() : VGColor {} 
+
+        /**
+         * Virtual property for the red component of the color
+         */
+        public float $r;
+
+        /**
+         * Virtual property for the green component of the color
+         */
+        public float $g;
+
+        /**
+         * Virtual property for the blue component of the color
+         */
+        public float $b;
+
+        /**
+         * Virtual property for the alpha component of the color
+         */
+        public float $a;
 
         public function __construct(float $r, float $g, float $b, float $a) {}
     }
