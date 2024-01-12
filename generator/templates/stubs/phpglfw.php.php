@@ -1412,6 +1412,30 @@ namespace GL\VectorGraphics
         public float $a;
 
         public function __construct(float $r, float $g, float $b, float $a) {}
+
+        /**
+         * Returns the color as a Vec4 where each component represents Hue, Saturation, Lightness and Alpha respectively.
+         */
+        public function getHSLA() : \GL\Math\Vec4 {}
+
+        /**
+         * Returns the color as a Vec3 where each component represents Hue, Saturation and Lightness respectively.
+         */
+        public function getHSL() : \GL\Math\Vec3 {}
+
+        /**
+         * Returns the color as a Vec4 where each component represents Red, Green, Blue and Alpha respectively.
+         */
+        public function getVec4() : \GL\Math\Vec4 {}
+
+        /**
+         * Returns the color as a Vec3 where each component represents Red, Green and Blue respectively.
+         */
+        public function getVec3() : \GL\Math\Vec3 {}
+
+        public function darken(float $amount) : VGColor {}
+        public function lighten(float $amount) : VGColor {}
+        public function invert() : VGColor {}
     }
     
     class VGPaint {

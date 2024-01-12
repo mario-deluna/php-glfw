@@ -1,5 +1,5 @@
 /* This is a generated file, edit the .stub.php file instead.
- * Stub hash: 08fa24b6afb25e10eb4bd4a4d23ec6113c2960ad */
+ * Stub hash: 13b267516805868812d843c1565eb7db12d828b6 */
 
 ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_glCullFace, 0, 1, IS_VOID, 0)
 	ZEND_ARG_TYPE_INFO(0, mode, IS_LONG, 0)
@@ -2886,6 +2886,22 @@ ZEND_BEGIN_ARG_INFO_EX(arginfo_class_GL_VectorGraphics_VGColor___construct, 0, 0
 	ZEND_ARG_TYPE_INFO(0, a, IS_DOUBLE, 0)
 ZEND_END_ARG_INFO()
 
+#define arginfo_class_GL_VectorGraphics_VGColor_getHSLA arginfo_class_GL_Math_Vec4_copy
+
+#define arginfo_class_GL_VectorGraphics_VGColor_getHSL arginfo_class_GL_Math_Vec3_copy
+
+#define arginfo_class_GL_VectorGraphics_VGColor_getVec4 arginfo_class_GL_Math_Vec4_copy
+
+#define arginfo_class_GL_VectorGraphics_VGColor_getVec3 arginfo_class_GL_Math_Vec3_copy
+
+ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(arginfo_class_GL_VectorGraphics_VGColor_darken, 0, 1, GL\\VectorGraphics\\VGColor, 0)
+	ZEND_ARG_TYPE_INFO(0, amount, IS_DOUBLE, 0)
+ZEND_END_ARG_INFO()
+
+#define arginfo_class_GL_VectorGraphics_VGColor_lighten arginfo_class_GL_VectorGraphics_VGColor_darken
+
+#define arginfo_class_GL_VectorGraphics_VGColor_invert arginfo_class_GL_VectorGraphics_VGColor_red
+
 ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(arginfo_class_GL_VectorGraphics_VGImage_makePaint, 0, 4, GL\\VectorGraphics\\VGPaint, 0)
 	ZEND_ARG_TYPE_INFO(0, x, IS_DOUBLE, 0)
 	ZEND_ARG_TYPE_INFO(0, y, IS_DOUBLE, 0)
@@ -4033,6 +4049,13 @@ ZEND_METHOD(GL_VectorGraphics_VGColor, lightGray);
 ZEND_METHOD(GL_VectorGraphics_VGColor, random);
 ZEND_METHOD(GL_VectorGraphics_VGColor, randomGray);
 ZEND_METHOD(GL_VectorGraphics_VGColor, __construct);
+ZEND_METHOD(GL_VectorGraphics_VGColor, getHSLA);
+ZEND_METHOD(GL_VectorGraphics_VGColor, getHSL);
+ZEND_METHOD(GL_VectorGraphics_VGColor, getVec4);
+ZEND_METHOD(GL_VectorGraphics_VGColor, getVec3);
+ZEND_METHOD(GL_VectorGraphics_VGColor, darken);
+ZEND_METHOD(GL_VectorGraphics_VGColor, lighten);
+ZEND_METHOD(GL_VectorGraphics_VGColor, invert);
 ZEND_METHOD(GL_VectorGraphics_VGImage, makePaint);
 ZEND_METHOD(GL_VectorGraphics_VGImage, makePaintCentered);
 ZEND_METHOD(GL_VectorGraphics_VGContext, __construct);
@@ -5012,6 +5035,13 @@ static const zend_function_entry class_GL_VectorGraphics_VGColor_methods[] = {
 	ZEND_ME(GL_VectorGraphics_VGColor, random, arginfo_class_GL_VectorGraphics_VGColor_random, ZEND_ACC_PUBLIC|ZEND_ACC_STATIC)
 	ZEND_ME(GL_VectorGraphics_VGColor, randomGray, arginfo_class_GL_VectorGraphics_VGColor_randomGray, ZEND_ACC_PUBLIC|ZEND_ACC_STATIC)
 	ZEND_ME(GL_VectorGraphics_VGColor, __construct, arginfo_class_GL_VectorGraphics_VGColor___construct, ZEND_ACC_PUBLIC)
+	ZEND_ME(GL_VectorGraphics_VGColor, getHSLA, arginfo_class_GL_VectorGraphics_VGColor_getHSLA, ZEND_ACC_PUBLIC)
+	ZEND_ME(GL_VectorGraphics_VGColor, getHSL, arginfo_class_GL_VectorGraphics_VGColor_getHSL, ZEND_ACC_PUBLIC)
+	ZEND_ME(GL_VectorGraphics_VGColor, getVec4, arginfo_class_GL_VectorGraphics_VGColor_getVec4, ZEND_ACC_PUBLIC)
+	ZEND_ME(GL_VectorGraphics_VGColor, getVec3, arginfo_class_GL_VectorGraphics_VGColor_getVec3, ZEND_ACC_PUBLIC)
+	ZEND_ME(GL_VectorGraphics_VGColor, darken, arginfo_class_GL_VectorGraphics_VGColor_darken, ZEND_ACC_PUBLIC)
+	ZEND_ME(GL_VectorGraphics_VGColor, lighten, arginfo_class_GL_VectorGraphics_VGColor_lighten, ZEND_ACC_PUBLIC)
+	ZEND_ME(GL_VectorGraphics_VGColor, invert, arginfo_class_GL_VectorGraphics_VGColor_invert, ZEND_ACC_PUBLIC)
 	ZEND_FE_END
 };
 

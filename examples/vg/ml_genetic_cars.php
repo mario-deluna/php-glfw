@@ -27,6 +27,26 @@ glfwSetKeyCallback($window, function($key, $scancode, $action, $mods) use (&$vSy
     if ($key === GLFW_KEY_B && $action === GLFW_PRESS) {
         $onlyRenderBest = !$onlyRenderBest;
     }
+
+    // dumps the instructions of the best car
+    if ($key === GLFW_KEY_P && $action === GLFW_PRESS) {
+        global $cars;
+
+        // find first with best flag
+        foreach($cars as $car) {
+            if ($car->isBest) {
+                break;
+            }
+        }
+
+        echo "Instructions: ";
+        echo str_repeat('-', 80) . PHP_EOL;
+        foreach($car->instructions as $instruction) {
+            echo $instruction->change->value;
+        }
+        echo PHP_EOL;
+        echo str_repeat('-', 80) . PHP_EOL;
+    }
 });
 
 
@@ -38,6 +58,7 @@ enum CarStateChange : int {
     case Decelerate = 1;
     case TurnLeft = 2;
     case TurnRight = 3;
+    case DoNothing = 4;
 }
 
 class CarInstruction {
@@ -173,7 +194,10 @@ class Obsticle {
 $instructionCount = 1000;
 $populationSize = 100;
 $mutationRate = 0.1;
+$tragetX = ExampleHelper::WIN_WIDTH - 100;
+$tragetY = ExampleHelper::WIN_HEIGHT - 100;
 $cars = [];
+
 for ($i = 0; $i < $populationSize; $i++) {
     $car = new Car();
     $car->x = 50;
@@ -183,7 +207,7 @@ for ($i = 0; $i < $populationSize; $i++) {
     // fill random 100 instructions
     for ($j = 0; $j < $instructionCount; $j++) {
         $car->instructions[] = new CarInstruction(
-            change: CarStateChange::from(rand(0, 3)),
+            change: CarStateChange::from(rand(0, 4)),
             strength: mt_rand(0, 100) / 10,
         );
     }
@@ -231,7 +255,7 @@ while (!glfwWindowShouldClose($window))
 
         // fitness for now is just the distance to the center
         foreach ($cars as $car) {
-            $car->fitness = sqrt(pow($car->x - ExampleHelper::WIN_WIDTH / 2, 2) + pow($car->y - ExampleHelper::WIN_HEIGHT / 2, 2));
+            $car->fitness = sqrt(pow($car->x - $tragetX, 2) + pow($car->y - $tragetY, 2));
             $car->fitness += $car->penalty;
         }
 
@@ -279,12 +303,20 @@ while (!glfwWindowShouldClose($window))
                 $car->instructions[$i] = $randomCar->instructions[$i];
             }
 
+            // to avoid the cars getting stupid because they learned something
+            // that will never work out we will use a fixed 50% mutation rate 
+            // on some of the cars
+            $effectiveMutationRate = $mutationRate;
+            if (mt_rand(0, 10) === 0) {
+                $effectiveMutationRate = 0.2;
+            }
+
             // also mutate 10% of the instructions
             for ($i = 0; $i < $instructionCount; $i++) {
-                if (mt_rand(0, 100) / 100 < $mutationRate) {
+                if (mt_rand(0, 100) / 100 < $effectiveMutationRate) {
                     $car->numMutations++;
                     $car->instructions[$i] = new CarInstruction(
-                        change: CarStateChange::from(rand(0, 3)),
+                        change: CarStateChange::from(rand(0, 4)),
                         strength: mt_rand(0, 100) / 10,
                     );
                 }
@@ -319,7 +351,7 @@ while (!glfwWindowShouldClose($window))
     }
 
     // draw a point of the target
-    ExampleHelper::drawPoint($vg, ExampleHelper::WIN_WIDTH / 2, ExampleHelper::WIN_HEIGHT / 2, "Target");
+    ExampleHelper::drawPoint($vg, $tragetX, $tragetY, "Target");
 
     // end the frame will dispatch all the draw commands to the GPU
     $vg->endFrame();

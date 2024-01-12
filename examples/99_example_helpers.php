@@ -360,7 +360,6 @@ class ExampleHelper
         // close bracket
         $vg->fillColori(22, 159, 255, 255);
         $x = $vg->text($x, $y, ')');
-        $vg->fill();
         $vg->restore();
     }
     

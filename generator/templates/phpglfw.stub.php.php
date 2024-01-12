@@ -220,6 +220,15 @@ namespace GL\VectorGraphics
         public float $a;
 
         public function __construct(float $r, float $g, float $b, float $a) {}
+
+        public function getHSLA() : \GL\Math\Vec4 {}
+        public function getHSL() : \GL\Math\Vec3 {}
+        public function getVec4() : \GL\Math\Vec4 {}
+        public function getVec3() : \GL\Math\Vec3 {}
+
+        public function darken(float $amount) : VGColor {}
+        public function lighten(float $amount) : VGColor {}
+        public function invert() : VGColor {}
     }
     
     class VGPaint {

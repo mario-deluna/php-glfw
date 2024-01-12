@@ -68,5 +68,75 @@ class VGColorTest extends \PHPUnit\Framework\TestCase
         $this->assertEqualsColor(1.0, 0.0, 0.0, 0.4, $color);
     }
 
-    
+    public function testGetHSLA() : void
+    {
+        $color = VGColor::rgb(1.0, 0.0, 0.0);
+        $hsla = $color->getHSLA();
+
+        $this->assertEqualsWithDelta(0.0, $hsla->x, 0.005);
+        $this->assertEqualsWithDelta(1.0, $hsla->y, 0.005);
+        $this->assertEqualsWithDelta(0.5, $hsla->z, 0.005);
+        $this->assertEqualsWithDelta(1.0, $hsla->w, 0.005);        
+    }
+
+    public function testGetHSL() : void
+    {
+        $color = VGColor::rgb(1.0, 0.0, 0.0);
+        $hsl = $color->getHSL();
+
+        $this->assertEqualsWithDelta(0.0, $hsl->x, 0.005);
+        $this->assertEqualsWithDelta(1.0, $hsl->y, 0.005);
+        $this->assertEqualsWithDelta(0.5, $hsl->z, 0.005);
+    }
+
+    public function testGetVec4() : void
+    {
+        $color = VGColor::rgba(0.1, 0.2, 0.3, 0.4);
+        $vec4 = $color->getVec4();
+
+        $this->assertEqualsWithDelta(0.1, $vec4->x, 0.005);
+        $this->assertEqualsWithDelta(0.2, $vec4->y, 0.005);
+        $this->assertEqualsWithDelta(0.3, $vec4->z, 0.005);
+        $this->assertEqualsWithDelta(0.4, $vec4->w, 0.005);
+    }
+
+    public function testGetVec3() : void
+    {
+        $color = VGColor::rgb(0.1, 0.2, 0.3);
+        $vec3 = $color->getVec3();
+
+        $this->assertEqualsWithDelta(0.1, $vec3->x, 0.005);
+        $this->assertEqualsWithDelta(0.2, $vec3->y, 0.005);
+        $this->assertEqualsWithDelta(0.3, $vec3->z, 0.005);
+    }
+
+    public function testDarken() : void
+    {
+        $color = VGColor::hsl(0.5, 1.0, 0.5);
+        $darker = $color->darken(0.1)->getHSL();
+
+        $this->assertEqualsWithDelta(0.5, $darker->x, 0.005);
+        $this->assertEqualsWithDelta(1.0, $darker->y, 0.005);
+        $this->assertEqualsWithDelta(0.4, $darker->z, 0.005);
+    }
+
+    public function testLighten() : void
+    {
+        $color = VGColor::hsl(0.5, 1.0, 0.5);
+        $lighter = $color->lighten(0.1)->getHSL();
+
+        $this->assertEqualsWithDelta(0.5, $lighter->x, 0.005);
+        $this->assertEqualsWithDelta(1.0, $lighter->y, 0.005);
+        $this->assertEqualsWithDelta(0.6, $lighter->z, 0.005);
+    }
+
+    public function testInvert() : void
+    {
+        $color = VGColor::rgb(0.1, 0.2, 0.3);
+        $inverted = $color->invert()->getVec3();
+
+        $this->assertEqualsWithDelta(0.9, $inverted->x, 0.005);
+        $this->assertEqualsWithDelta(0.8, $inverted->y, 0.005);
+        $this->assertEqualsWithDelta(0.7, $inverted->z, 0.005);
+    }
 }
