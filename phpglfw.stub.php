@@ -326,10 +326,12 @@ namespace GL\Buffer
 namespace GL\VectorGraphics
 {
     class VGColor {
-        //public static function rgb(float $r, float $g, float $b) : VGColor {}
-        //public static function rgba(float $r, float $g, float $b, float $a) : VGColor {}
-        //public static function irgb(int $r, int $g, int $b) : VGColor {}
-        //public static function irgba(int $r, int $g, int $b, int $a) : VGColor {}
+        public static function rgb(float $r, float $g, float $b) : VGColor {}
+        public static function rgba(float $r, float $g, float $b, float $a) : VGColor {}
+        public static function hsl(float $h, float $s, float $l) : VGColor {}
+        public static function hsla(float $h, float $s, float $l, float $a) : VGColor {}
+        public static function irgb(int $r, int $g, int $b) : VGColor {}
+        public static function irgba(int $r, int $g, int $b, int $a) : VGColor {}
         //public static function fromVec4(\GL\Math\Vec4 $vec) : VGColor {}
         //public static function fromVec3(\GL\Math\Vec3 $vec) : VGColor {}
 
@@ -352,7 +354,21 @@ namespace GL\VectorGraphics
         public static function random() : VGColor {}
         public static function randomGray() : VGColor {}
 
+        public float $r;
+        public float $g;
+        public float $b;
+        public float $a;
+
         public function __construct(float $r, float $g, float $b, float $a) {}
+
+        public function getHSLA() : \GL\Math\Vec4 {}
+        public function getHSL() : \GL\Math\Vec3 {}
+        public function getVec4() : \GL\Math\Vec4 {}
+        public function getVec3() : \GL\Math\Vec3 {}
+
+        public function darken(float $amount) : VGColor {}
+        public function lighten(float $amount) : VGColor {}
+        public function invert() : VGColor {}
     }
     
     class VGPaint {

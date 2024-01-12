@@ -428,6 +428,8 @@ void nvgEndFrame(NVGcontext* ctx)
 	}
 }
 
+
+
 NVGcolor nvgRGB(unsigned char r, unsigned char g, unsigned char b)
 {
 	return nvgRGBA(r,g,b,255);
@@ -506,6 +508,8 @@ static float nvg__hue(float h, float m1, float m2)
 	return m1;
 }
 
+
+
 NVGcolor nvgHSLA(float h, float s, float l, unsigned char a)
 {
 	float m1, m2;
@@ -521,6 +525,45 @@ NVGcolor nvgHSLA(float h, float s, float l, unsigned char a)
 	col.b = nvg__clampf(nvg__hue(h - 1.0f/3.0f, m1, m2), 0.0f, 1.0f);
 	col.a = a/255.0f;
 	return col;
+}
+
+void nvgColorToHSLA(NVGcolor color, float* h, float* s, float* l, float* a) {
+    float r = color.r;
+    float g = color.g;
+    float b = color.b;
+    *a = color.a;
+
+    float max = fmaxf(r, fmaxf(g, b));
+    float min = fminf(r, fminf(g, b));
+    float delta = max - min;
+
+    *l = (max + min) / 2;
+
+    if (delta == 0) {
+        *h = 0;
+        *s = 0;
+    } else {
+        *s = delta / (1 - fabsf(2 * *l - 1));
+
+        float deltaR = (((max - r) / 6) + (delta / 2)) / delta;
+        float deltaG = (((max - g) / 6) + (delta / 2)) / delta;
+        float deltaB = (((max - b) / 6) + (delta / 2)) / delta;
+
+        if (r == max) {
+            *h = deltaB - deltaG;
+        } else if (g == max) {
+            *h = (1.0f / 3.0f) + deltaR - deltaB;
+        } else {
+            *h = (2.0f / 3.0f) + deltaG - deltaR;
+        }
+
+        if (*h < 0) {
+            *h += 1;
+        }
+        if (*h > 1) {
+            *h -= 1;
+        }
+    }
 }
 
 void nvgTransformIdentity(float* t)

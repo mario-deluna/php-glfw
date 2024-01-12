@@ -217,6 +217,11 @@ NVGcolor nvgHSL(float h, float s, float l);
 // HSL values are all in range [0..1], alpha in range [0..255]
 NVGcolor nvgHSLA(float h, float s, float l, unsigned char a);
 
+// Converts a NVGcolor to its HSLA (Hue, Saturation, Lightness, Alpha) representation.
+// The converted values are stored in the provided pointers.
+void nvgColorToHSLA(NVGcolor color, float* h, float* s, float* l, float* a);
+
+
 //
 // State Handling
 //

@@ -151,6 +151,68 @@ static HashTable *phpglfw_vgcolor_debug_info_handler(zend_object *object, int *i
     return ht;
 }
 
+static zval *phpglfw_vgcolor_read_prop_handler(zend_object *object, zend_string *member, int type, void **cache_slot, zval *rv) 
+{
+    phpglfw_vgcolor_object *obj_ptr = phpglfw_vgcolor_objectptr_from_zobj_p(object);
+
+	if ((type != BP_VAR_R && type != BP_VAR_IS)) {
+		zend_throw_error(NULL, "GL\\VectorGraphics\\VGColor properties are virtual and cannot be referenced.");
+		rv = &EG( uninitialized_zval );
+	} else {
+
+        if (zend_string_equals_literal(member, "r")) {
+		    ZVAL_DOUBLE(rv, obj_ptr->nvgcolor.rgba[0]);
+        }
+        else if (zend_string_equals_literal(member, "g")) {
+		    ZVAL_DOUBLE(rv, obj_ptr->nvgcolor.rgba[1]);
+        }
+        else if (zend_string_equals_literal(member, "b")) {
+		    ZVAL_DOUBLE(rv, obj_ptr->nvgcolor.rgba[2]);
+        }
+        else if (zend_string_equals_literal(member, "a")) {
+		    ZVAL_DOUBLE(rv, obj_ptr->nvgcolor.rgba[3]);
+        }
+        else {
+            ZVAL_NULL(rv);
+        }
+	}
+
+	return rv;
+}
+
+static zval *phpglfw_vgcolor_write_prop_handler(zend_object *object, zend_string *member, zval *value, void **cache_slot) 
+{
+    if (Z_TYPE_P(value) == IS_LONG) {
+        convert_to_double(value);
+    }
+    
+    if (Z_TYPE_P(value) != IS_DOUBLE) {
+		zend_throw_error(NULL, "GL\\VectorGraphics\\VGColor properties can only be of type 'float'.");
+        return value;
+    }
+    else {
+        phpglfw_vgcolor_object *obj_ptr = phpglfw_vgcolor_objectptr_from_zobj_p(object);
+
+        if (zend_string_equals_literal(member, "r")) {
+		    obj_ptr->nvgcolor.rgba[0] = Z_DVAL_P(value); 
+        }
+        else if (zend_string_equals_literal(member, "g")) {
+		    obj_ptr->nvgcolor.rgba[1] = Z_DVAL_P(value); 
+        }
+        else if (zend_string_equals_literal(member, "b")) {
+		    obj_ptr->nvgcolor.rgba[2] = Z_DVAL_P(value); 
+        }
+        else if (zend_string_equals_literal(member, "a")) {
+		    obj_ptr->nvgcolor.rgba[3] = Z_DVAL_P(value); 
+        }
+        else {
+		    zend_throw_error(NULL, "GL\\VectorGraphics\\VGColor trying to write into a invalid property.");
+        }
+    }
+
+	return value;
+}
+
 PHP_METHOD(GL_VectorGraphics_VGColor, __construct)
 {
     double r, g, b, a;
@@ -160,6 +222,84 @@ PHP_METHOD(GL_VectorGraphics_VGColor, __construct)
 
     phpglfw_vgcolor_object *intern = phpglfw_vgcolor_objectptr_from_zobj_p(Z_OBJ_P(getThis()));
     intern->nvgcolor = nvgRGBAf(r, g, b, a);
+}
+
+PHP_METHOD(GL_VectorGraphics_VGColor, rgb)
+{
+    double r, g, b;
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "ddd", &r, &g, &b) == FAILURE) {
+        RETURN_THROWS();
+    }
+
+    object_init_ex(return_value, phpglfw_get_vg_vgcolor_ce());
+    phpglfw_vgcolor_object *color = phpglfw_vgcolor_objectptr_from_zobj_p(Z_OBJ_P(return_value));
+    color->nvgcolor = nvgRGBAf(r, g, b, 1.0f);
+}
+
+PHP_METHOD(GL_VectorGraphics_VGColor, rgba)
+{
+    double r, g, b, a;
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "dddd", &r, &g, &b, &a) == FAILURE) {
+        RETURN_THROWS();
+    }
+
+    object_init_ex(return_value, phpglfw_get_vg_vgcolor_ce());
+    phpglfw_vgcolor_object *color = phpglfw_vgcolor_objectptr_from_zobj_p(Z_OBJ_P(return_value));
+    color->nvgcolor = nvgRGBAf(r, g, b, a);
+}
+
+PHP_METHOD(GL_VectorGraphics_VGColor, hsl)
+{
+    double h, s, l;
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "ddd", &h, &s, &l) == FAILURE) {
+        RETURN_THROWS();
+    }
+
+    object_init_ex(return_value, phpglfw_get_vg_vgcolor_ce());
+    phpglfw_vgcolor_object *color = phpglfw_vgcolor_objectptr_from_zobj_p(Z_OBJ_P(return_value));
+    color->nvgcolor = nvgHSLA(h, s, l, 255);
+}
+
+PHP_METHOD(GL_VectorGraphics_VGColor, hsla)
+{
+    double h, s, l, a;
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "dddd", &h, &s, &l, &a) == FAILURE) {
+        RETURN_THROWS();
+    }
+
+    // nanovg expects the alpha value to be a unsigned char here for some reason
+    // it is internally then converted back to a float -,- 
+    // i could fix this, but im lazy
+    unsigned char alpha = (unsigned char)(a * 255.0f);
+
+    object_init_ex(return_value, phpglfw_get_vg_vgcolor_ce());
+    phpglfw_vgcolor_object *color = phpglfw_vgcolor_objectptr_from_zobj_p(Z_OBJ_P(return_value));
+
+    color->nvgcolor = nvgHSLA(h, s, l, alpha);
+}
+
+PHP_METHOD(GL_VectorGraphics_VGColor, irgb)
+{
+    zend_long r, g, b;
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "lll", &r, &g, &b) == FAILURE) {
+        RETURN_THROWS();
+    }
+
+    object_init_ex(return_value, phpglfw_get_vg_vgcolor_ce());
+    phpglfw_vgcolor_object *color = phpglfw_vgcolor_objectptr_from_zobj_p(Z_OBJ_P(return_value));
+    color->nvgcolor = nvgRGBA(r, g, b, 255);
+}
+
+PHP_METHOD(GL_VectorGraphics_VGColor, irgba)
+{
+    zend_long r, g, b, a;
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "llll", &r, &g, &b, &a) == FAILURE) {
+        RETURN_THROWS();
+    }
+
+    object_init_ex(return_value, phpglfw_get_vg_vgcolor_ce());
+    phpglfw_vgcolor_object *color = phpglfw_vgcolor_objectptr_from_zobj_p(Z_OBJ_P(return_value));
+    color->nvgcolor = nvgRGBA(r, g, b, a);
 }
 
 DEFINE_STATIC_VGCOLOR_METHOD(red, 1.0f, 0.0f, 0.0f, 1.0f);
@@ -193,6 +333,101 @@ PHP_METHOD(GL_VectorGraphics_VGColor, randomGray)
     phpglfw_vgcolor_object *color = phpglfw_vgcolor_objectptr_from_zobj_p(Z_OBJ_P(return_value));
     float grayValue = (float)rand()/RAND_MAX;
     color->nvgcolor = nvgRGBAf(grayValue, grayValue, grayValue, 1.0f);
+}
+
+PHP_METHOD(GL_VectorGraphics_VGColor, getHSLA)
+{
+    phpglfw_vgcolor_object *intern = phpglfw_vgcolor_objectptr_from_zobj_p(Z_OBJ_P(getThis()));
+
+    object_init_ex(return_value, phpglfw_get_math_vec4_ce());
+    phpglfw_math_vec4_object *vec4 = phpglfw_math_vec4_objectptr_from_zobj_p(Z_OBJ_P(return_value));
+
+    nvgColorToHSLA(intern->nvgcolor, &vec4->data[0], &vec4->data[1], &vec4->data[2], &vec4->data[3]);
+}
+
+PHP_METHOD(GL_VectorGraphics_VGColor, getHSL)
+{
+    phpglfw_vgcolor_object *intern = phpglfw_vgcolor_objectptr_from_zobj_p(Z_OBJ_P(getThis()));
+
+    object_init_ex(return_value, phpglfw_get_math_vec3_ce());
+    phpglfw_math_vec3_object *vec3 = phpglfw_math_vec3_objectptr_from_zobj_p(Z_OBJ_P(return_value));
+    float throwaway;
+    nvgColorToHSLA(intern->nvgcolor, &vec3->data[0], &vec3->data[1], &vec3->data[2], &throwaway);
+}
+
+PHP_METHOD(GL_VectorGraphics_VGColor, getVec4)
+{
+    phpglfw_vgcolor_object *intern = phpglfw_vgcolor_objectptr_from_zobj_p(Z_OBJ_P(getThis()));
+
+    object_init_ex(return_value, phpglfw_get_math_vec4_ce());
+    phpglfw_math_vec4_object *vec4 = phpglfw_math_vec4_objectptr_from_zobj_p(Z_OBJ_P(return_value));
+    vec4->data[0] = intern->nvgcolor.r;
+    vec4->data[1] = intern->nvgcolor.g;
+    vec4->data[2] = intern->nvgcolor.b;
+    vec4->data[3] = intern->nvgcolor.a;
+}
+
+PHP_METHOD(GL_VectorGraphics_VGColor, getVec3)
+{
+    phpglfw_vgcolor_object *intern = phpglfw_vgcolor_objectptr_from_zobj_p(Z_OBJ_P(getThis()));
+
+    object_init_ex(return_value, phpglfw_get_math_vec3_ce());
+    phpglfw_math_vec3_object *vec3 = phpglfw_math_vec3_objectptr_from_zobj_p(Z_OBJ_P(return_value));
+    vec3->data[0] = intern->nvgcolor.r;
+    vec3->data[1] = intern->nvgcolor.g;
+    vec3->data[2] = intern->nvgcolor.b;
+}
+
+
+// public function darken(float $amount) : VGColor {}
+// public function lighten(float $amount) : VGColor {}
+// public function saturate(float $amount) : VGColor {}
+// public function desaturate(float $amount) : VGColor {}
+// public function invert() : VGColor {}
+
+void adjust_hsl_l(INTERNAL_FUNCTION_PARAMETERS, double amount)
+{
+    phpglfw_vgcolor_object *intern = phpglfw_vgcolor_objectptr_from_zobj_p(Z_OBJ_P(getThis()));
+
+    object_init_ex(return_value, phpglfw_get_vg_vgcolor_ce());
+    phpglfw_vgcolor_object *color = phpglfw_vgcolor_objectptr_from_zobj_p(Z_OBJ_P(return_value));
+
+    float h, s, l, a;
+    nvgColorToHSLA(intern->nvgcolor, &h, &s, &l, &a);
+    l += amount;
+
+    color->nvgcolor = nvgHSL(h, s, l);
+    color->nvgcolor.a = a; // skip the conversion to unsigned char
+}
+
+PHP_METHOD(GL_VectorGraphics_VGColor, darken)
+{
+    double amount;
+    if (zend_parse_parameters(ZEND_NUM_ARGS(), "d", &amount) == FAILURE) {
+        RETURN_THROWS();
+    }
+
+    adjust_hsl_l(INTERNAL_FUNCTION_PARAM_PASSTHRU, -amount);
+}
+
+PHP_METHOD(GL_VectorGraphics_VGColor, lighten)
+{
+    double amount;
+    if (zend_parse_parameters(ZEND_NUM_ARGS(), "d", &amount) == FAILURE) {
+        RETURN_THROWS();
+    }
+
+    adjust_hsl_l(INTERNAL_FUNCTION_PARAM_PASSTHRU, amount);
+}
+
+PHP_METHOD(GL_VectorGraphics_VGColor, invert)
+{
+    phpglfw_vgcolor_object *intern = phpglfw_vgcolor_objectptr_from_zobj_p(Z_OBJ_P(getThis()));
+
+    object_init_ex(return_value, phpglfw_get_vg_vgcolor_ce());
+    phpglfw_vgcolor_object *color = phpglfw_vgcolor_objectptr_from_zobj_p(Z_OBJ_P(return_value));
+
+    color->nvgcolor = nvgRGBAf(1.0f - intern->nvgcolor.r, 1.0f - intern->nvgcolor.g, 1.0f - intern->nvgcolor.b, intern->nvgcolor.a);
 }
 
 /**
@@ -1568,6 +1803,8 @@ void phpglfw_register_vg_module(INIT_FUNC_ARGS)
     phpglfw_vgcolor_handlers.offset = XtOffsetOf(phpglfw_vgcolor_object, std);
     phpglfw_vgcolor_handlers.free_obj = phpglfw_vgcolor_free_handler;
     phpglfw_vgcolor_handlers.get_debug_info = phpglfw_vgcolor_debug_info_handler;
+    phpglfw_vgcolor_handlers.read_property = phpglfw_vgcolor_read_prop_handler;
+    phpglfw_vgcolor_handlers.write_property = phpglfw_vgcolor_write_prop_handler;
 
     // initialize and register the VectorGraphics Image class
     INIT_CLASS_ENTRY(tmp_ce, "GL\\VectorGraphics\\VGImage", class_GL_VectorGraphics_VGImage_methods);
