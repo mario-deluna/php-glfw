@@ -79,6 +79,22 @@ You can change the text alignment by calling the `textAlign()` method.
 $vg->textAlign(VGAlign::CENTER | VGAlign::MIDDLE);
 ```
 
+## Text Boxes
+
+You can render text inside a box by calling the `textBox()` method. This method will automatically wrap the text to fit inside of a given width.
+
+<figure markdown>
+![Example of text box rendering using PHP-GLFW Vector Graphics API](./../../docs-assets/php-glfw/user_guide/vg/text/text_box.gif){ width="100%" }
+  <figcaption>Run this <code>php examples/vg/text_boxes.php</code></figcaption>
+</figure>
+
+The `textBox()` method works very similar to the `text()` method, except it takes an additional parameter for the width of the box.
+
+```php
+// textBox(x, y, width, string)
+$vg->textBox(50, 50, 200, 'Hello World!');
+```
+
 ## Text Metrics
 
 When working with text, you will pretty quickly end up in a situation where you need to know the size of the text you are rendering.
@@ -94,7 +110,7 @@ For exmaple, lets say we want to render a sentence where each word is a differen
 
 ```php
 $x = 50;
-foreach(['Hey', 'How', 'Are', 'You?'] as $word) {
+foreach(['Hey ', 'How ', 'Are ', 'You? '] as $word) {
     $vg->fillColor(VGColor::random());
     $x = $vg->text($x, 50, $word); 
 }

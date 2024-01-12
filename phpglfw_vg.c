@@ -1635,15 +1635,23 @@ PHP_METHOD(GL_VectorGraphics_VGContext, textBoxBounds)
     double breakRowWidth;
     const char *string;
     size_t string_size;
-    zval *bounds_zval;
-    float bounds_tmp;
-    if (zend_parse_parameters(ZEND_NUM_ARGS() , "dddsz", &x, &y, &breakRowWidth, &string, &string_size, &bounds_zval) == FAILURE) {
+    zval *bounds_zval = NULL;
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "ddds|O!", &x, &y, &breakRowWidth, &string, &string_size, &bounds_zval, phpglfw_get_math_vec4_ce()) == FAILURE) {
         return;
     }
-    ZVAL_DEREF(bounds_zval);
-    convert_to_double(bounds_zval);
-    nvgTextBoxBounds(intern->nvgctx, x, y, breakRowWidth, string, NULL, &bounds_tmp);
-    ZVAL_DOUBLE(bounds_zval, bounds_tmp);
+    phpglfw_math_vec4_object *bounds = NULL;
+    if (bounds_zval != NULL) {
+        ZVAL_DEREF(bounds_zval);
+        // if we got a var but its not an object, we create a new one
+        if (Z_TYPE_P(bounds_zval) == IS_OBJECT && Z_OBJCE_P(bounds_zval) == phpglfw_get_math_vec4_ce()) {
+            bounds = phpglfw_math_vec4_objectptr_from_zobj_p(Z_OBJ_P(bounds_zval));
+        }
+        else {
+            object_init_ex(bounds_zval, phpglfw_get_math_vec4_ce());
+            bounds = phpglfw_math_vec4_objectptr_from_zobj_p(Z_OBJ_P(bounds_zval));
+        }
+    }
+    nvgTextBoxBounds(intern->nvgctx, x, y, breakRowWidth, string, NULL, bounds->data);
 }
 /**
  * textMetrics

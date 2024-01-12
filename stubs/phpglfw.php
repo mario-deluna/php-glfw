@@ -2503,7 +2503,7 @@ namespace GL\VectorGraphics
         public function text(float $x, float $y, string $string) : float {}
         public function textBox(float $x, float $y, float $breakRowWidth, string $string) : void {}
         public function textBounds(float $x, float $y, string $string, ?\GL\Math\Vec4 &$bounds = NULL) : float {}
-        public function textBoxBounds(float $x, float $y, float $breakRowWidth, string $string, float &$bounds) : void {}
+        public function textBoxBounds(float $x, float $y, float $breakRowWidth, string $string, ?\GL\Math\Vec4 &$bounds = NULL) : void {}
         public function textMetrics(float &$ascender, float &$descender, float &$lineh) : void {}
         public function deleteInternal() : void {}
         public function debugDumpPathCache() : void {}
