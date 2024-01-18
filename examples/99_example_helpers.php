@@ -290,7 +290,7 @@ class ExampleHelper
 
     private static ?int $vgFontHandle = null;
 
-    private static function getVGFontHandle(VGContext $vg) : int
+    public static function getVGFontHandle(VGContext $vg) : int
     {
         if (self::$vgFontHandle === null) {
             self::$vgFontHandle = $vg->createFont('inconsolata', __DIR__ . '/font/inconsolata/Inconsolata-Regular.ttf');

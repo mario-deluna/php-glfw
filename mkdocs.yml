@@ -21,6 +21,7 @@ nav:
       - Shapes: user-guide/vector-graphics/shapes.md
       - Colors: user-guide/vector-graphics/colors.md
       - Text & Fonts: user-guide/vector-graphics/text.md
+      - Images: user-guide/vector-graphics/images.md
     - Math & 3D Space: user-guide/math/
     - Offscreen & Headless Rendering: user-guide/offscreen/
     - Debugging: user-guide/debugging/
