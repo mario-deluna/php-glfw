@@ -59,6 +59,42 @@ In this section you will find a collection of examples that demonstrate how to u
 ## Vector Graphics examples
 
 <!-- VGEXAMPLES BEGIN -->
+### Fun
+
+<div class="grid cards" markdown>
+
+-   __Plotting primes__
+
+    ---
+
+    [![Example](./../../docs-assets/php-glfw/examples/vg/fun_primes_1_full_thumb.png)](./vector-graphics/fun_primes_1_full.md)
+
+-   __Genetic Car Pathfinding__
+
+    ---
+
+    [![Example](./../../docs-assets/php-glfw/examples/vg/ml_genetic_cars_thumb.png)](./vector-graphics/ml_genetic_cars.md)
+
+</div>
+
+### Text
+
+<div class="grid cards" markdown>
+
+-   __Text Alignment__
+
+    ---
+
+    [![Example](./../../docs-assets/php-glfw/examples/vg/text_alignment_thumb.png)](./vector-graphics/text_alignment.md)
+
+-   __Text with Shadow__
+
+    ---
+
+    [![Example](./../../docs-assets/php-glfw/examples/vg/text_intro_thumb.png)](./vector-graphics/text_intro.md)
+
+</div>
+
 <!-- VGEXAMPLES END -->
 
 ## Advanced examples

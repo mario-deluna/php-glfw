@@ -6,6 +6,7 @@
  * 
  * @category   Text
  * @image      user_guide/vg/text/text_align.gif
+ * @thumbnail  examples/vg/{example}.png
  */
 
 /**

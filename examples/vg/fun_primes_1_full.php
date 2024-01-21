@@ -1,5 +1,21 @@
 <?php
 /**
+ * Plotting primes
+ * 
+ * Prime numbers are a fascinating! This example will plot the prime numbers in a grid.
+ * 
+ * Controls:
+ * 
+ *  - Space: Toggle the plotting process on or off.
+ *  - R: Reset the plotting to its initial state, including the prime number sequence, view width, view height, zoom level, and offsets.
+ *  - Q / E: Decrease / Increase the view width. This will rebuild the framebuffer and resume plotting.
+ *  - A / D: Decrease / Increase the view height. This will rebuild the framebuffer and resume plotting.
+ *  - Scroll: Zoom in or out on the plot. Zooming is centered around the current view.
+ *  - Left Mouse Button (Drag): Click and drag to move the plot offset, allowing you to pan around the plotted area.
+ *
+ * @category   Fun
+ */
+/**
  * We utilize the example helpers here to focus on what matter in this specifc example.
  */
 require __DIR__ . '/../99_example_helpers.php';
@@ -275,7 +291,6 @@ while (!glfwWindowShouldClose($window))
             $vg->textAlign(VGAlign::CENTER | VGAlign::MIDDLE);
             $vg->fillColori(255, 255, 255, 255);
             $vg->text($x * $blockWidth + $blockWidth / 2, $y * $blockHeight + $blockHeight / 2, $number);
-            $vg->fill();
         }
     }
 

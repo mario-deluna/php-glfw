@@ -13,6 +13,7 @@ class VGExample {
         public string $description,
         public string $text,
         public array $parameters = [],
+        public ?string $thumbnail = null,
     )
     {}
 
@@ -35,6 +36,12 @@ class VGExample {
 
     public function getImagePathAbs() : string {
         $path = $this->getImagePath();
+        if ($this->parameters['thumbnail'] ?? false) {
+            $path = "./../../docs-assets/php-glfw/{$this->parameters['thumbnail']}";
+
+            // replace {example} with the example name
+            $path = str_replace('{example}', $this->getDocName(), $path);
+        }
         return GEN_PATH_EXT . '/docs/' . substr($path, 8);
     }
 }
@@ -64,7 +71,7 @@ foreach (scandir($vgExamplesPath) as $file) {
     }
 
     $lines = explode("\n", $comment);
-    $lines = array_map(fn($line) => preg_replace('/^\s*\*\s*/', '', $line), $lines);
+    $lines = array_map(fn($line) => preg_replace('/^\ ?+\* ?/', '', $line), $lines);
 
     if (count($lines) === 0) {
         continue;
@@ -107,6 +114,7 @@ foreach($vgExamples as $example)
 {
     // build a thumbnail for the example
     $thumbPath = GEN_PATH_EXT . '/docs/docs-assets/php-glfw/examples/vg/' . $example->getDocName() . '_thumb.png';
+    $example->thumbnail = './../../docs-assets/php-glfw/examples/vg/' . $example->getDocName() . '_thumb.png';
     $imageSysPath = $example->getImagePathAbs();
 
     if (!file_exists($thumbPath)) 
@@ -146,3 +154,44 @@ foreach($vgExamples as $example)
     // write 
     file_put_contents($example->getDocPath(), $mkbuffer);
 }
+
+// next up, open the 00-about-examples.md file and update the list of examples
+$aboutExamplesPath = GEN_PATH_EXT . '/docs/examples/00-about-examples.md';
+$aboutExamplesContent = file_get_contents($aboutExamplesPath);
+
+// we have a marker inside of the MK file
+// <!-- VGEXAMPLES BEGIN -->
+// <!-- VGEXAMPLES END -->
+$markerStart = strpos($aboutExamplesContent, '<!-- VGEXAMPLES BEGIN -->');
+$markerEnd = strpos($aboutExamplesContent, '<!-- VGEXAMPLES END -->', $markerStart);
+
+if ($markerStart === false || $markerEnd === false) {
+    throw new \Exception('Could not find marker in about examples file');
+}
+
+$markerStart += strlen('<!-- VGEXAMPLES BEGIN -->');
+
+$docHead = substr($aboutExamplesContent, 0, $markerStart);
+$docTail = substr($aboutExamplesContent, $markerEnd);
+
+$newContent = $docHead . PHP_EOL;
+
+// group the examples by category
+$categories = [];
+foreach($vgExamples as $example) {
+    $categories[$example->parameters['category'] ?? 'Uncategorized'][] = $example;
+}
+
+foreach($categories as $category => $examples) {
+    $newContent .= "### {$category}\n\n";
+
+    $newContent .= "<div class=\"grid cards\" markdown>\n\n";
+    $newContent .= implode("\n\n", array_map(function($example) {
+        return "-   __{$example->name}__\n\n    ---\n\n    [![Example]({$example->thumbnail})](./vector-graphics/{$example->getDocName()}.md)";
+    }, $examples));
+    $newContent .= "\n\n</div>\n\n";
+}
+
+$newContent .= $docTail;
+
+file_put_contents($aboutExamplesPath, $newContent);
