@@ -26,7 +26,10 @@ nav:
     - Offscreen & Headless Rendering: user-guide/offscreen/
     - Debugging: user-guide/debugging/
   - Classes / Functions & API : 'API/'
-  - Examples: 'examples/'
+  - Examples:
+    - About PHP-GLFW Examples: examples/00-about-examples.md
+    - OpenGL: examples/opengl/
+    - Vector Graphics: examples/vector-graphics/
   - VISU Framework →: https://visu.phpgl.net
 plugins:
   - search

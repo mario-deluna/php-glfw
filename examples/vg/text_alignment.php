@@ -1,5 +1,14 @@
 <?php
 /**
+ * Text Alignment
+ * 
+ * This interactive example shows how to align text horizontally and vertically.
+ * 
+ * @category   Text
+ * @image      user_guide/vg/text/text_align.gif
+ */
+
+/**
  * We utilize the example helpers here to focus on what matter in this specifc example.
  */
 require __DIR__ . '/../99_example_helpers.php';

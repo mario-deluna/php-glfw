@@ -2,8 +2,12 @@
 
 This example shows how to render text using PHP OpenGL. It uses a simple bitmap font to render text on the screen.
 
+!!! note
+    This example shows how to implement text rendering with OpenGL from scratch. In most cases you want to use the 
+    VectorGraphics API to render text. See the [**VectorGraphics Text Rendering**](./../user-guide/vector-graphics/text.md).
+
 <figure markdown>
-  ![Text rendering with OpenGL in PHP](./../docs-assets/php-glfw/examples/07-text-rendering.png){ width="600" }
+  ![Text rendering with OpenGL in PHP](./../../docs-assets/php-glfw/examples/07-text-rendering.png){ width="600" }
   <figcaption>Text rendering with OpenGL in PHP</figcaption>
 </figure>
 

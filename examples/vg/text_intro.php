@@ -1,5 +1,15 @@
 <?php
 /**
+ * Text with Shadow
+ * 
+ * This example shows how to render text with a shadow. Which acutally is just a
+ * blurred version of the text rendered behind the actual text.
+ * 
+ * @category   Text
+ * @image      user_guide/vg/text/intro.png
+ */
+
+/**
  * We utilize the example helpers here to focus on what matter in this specifc example.
  */
 require __DIR__ . '/../99_example_helpers.php';

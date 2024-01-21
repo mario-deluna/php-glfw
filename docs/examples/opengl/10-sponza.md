@@ -7,7 +7,7 @@ This example loads and renders the Crytek Sponza sample. If you are familiar wit
 </div>
 
 <figure markdown>
-  ![Sponza with OpenGL in PHP](./../docs-assets/php-glfw/examples/preview_sponza.jpg){ width="100%" }
+  ![Sponza with OpenGL in PHP](./../../docs-assets/php-glfw/examples/preview_sponza.jpg){ width="100%" }
   <figcaption>Sponza with OpenGL in PHP</figcaption>
 </figure>
 
