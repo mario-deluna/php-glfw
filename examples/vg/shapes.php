@@ -17,6 +17,23 @@ $window = ExampleHelper::begin();
 // initalize the a vector graphics context
 $vg = new VGContext(VGContext::ANTIALIAS);
 
+$baseY = 150;
+
+$ani = ExampleHelper::createAnimation($vg)
+    ->defaults([
+        'squareY' => $baseY,
+        'circleRadius' => 50,
+    ])
+    ->after(2000, function($frame, $vg) use($baseY) {
+        $frame->easeOutBounceTo('squareY', $baseY + 50, 1000);
+        $frame->easeInOutTo('circleRadius', 80, 300);
+    })
+    ->after(0, function($frame, $vg) use($baseY) {
+        $frame->easeOutBounceTo('squareY', $baseY, 1000);
+        $frame->easeInOutTo('circleRadius', 50, 500);
+    });
+
+
 // Main Loop
 // ---------------------------------------------------------------------------- 
 while (!glfwWindowShouldClose($window))
@@ -35,9 +52,11 @@ while (!glfwWindowShouldClose($window))
 
     ExampleHelper::drawCoordSys($vg);
 
+    $ani->build(glfwGetTime());
+
     // draw a rectangle 
     $vg->beginPath();
-    $vg->rect(50, 150, 100, 100);
+    $vg->rect(50, $ani->states['squareY'], 100, 100);
     $vg->fillColor(VGColor::red());
     $vg->fill();
 
@@ -55,7 +74,7 @@ while (!glfwWindowShouldClose($window))
 
     // draw circle
     $vg->beginPath();
-    $vg->circle(550, 200, 50);
+    $vg->circle(550, 200, $ani->states['circleRadius']);
     $vg->fillColor(VGColor::yellow());
     $vg->fill();
 

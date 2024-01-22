@@ -40,42 +40,65 @@ Are you looking for the **HTML Canvas** inspired API for PHP? Check out the PHP 
 
     ![PHP Vector Graphics API](./../docs-assets/php-glfw/getting_started/vg_example.jpg){ width="100%"}
 
+    Want to learn how to use the vector graphics API? Check out our getting started guide.
+
     [:octicons-arrow-right-24: Getting Started](./../user-guide/vector-graphics/creating_a_vgcontext.md)
 
--   :material-lightbulb:{ .lg .middle } __Vector Graphics User Guide__
+
+-   :material-lightbulb:{ .lg .middle } __Fun PHP VG Examples__
 
     ---
 
-    ![PHP-GLFW](./../docs-assets/php-glfw/getting_started/basic_pipeline.png){ width="100%"}
+    ![PHP-GLFW](./../docs-assets/php-glfw/examples/vg/fun_bitshifting_thumb.png){ width="100%"}
 
-    Everything ready to get started? Jump right into the first chapter of the tutorial.
+    We craftet a ton of interactive examples to play around with. Check them out!
 
-    [:octicons-arrow-right-24: Getting Started (Create Window)](./window-creation.md)
+    [:octicons-arrow-right-24: Vector Graphics Examples](./../examples/00-about-examples.md#vector-graphics-examples)
 </div>
-
-
 
 ## What is OpenGL?
 
-Creating realistic, three-dimensional models or designing immersive virtual landscapes in games requires the use of powerful graphics APIs like OpenGL, Vulkan, or DirectX. Among these tools, OpenGL, (Open Graphics Library), is a popular cross-platform API for rendering 2D and 3D graphics. It has been employed in various applications, ranging from gaming and computer-aided design (CAD) to scientific visualizations. Although rendering APIs such as Vulkan and DirectX have also gained prominence for their particular strengths, OpenGL's simplicity and capabilities maintain its relevance in the field of graphics rendering.
+Imagine you want to build a chair. Where would you begin?
+
+You could start by planting a tree, waiting for it to grow, and then using a rock to chop it down. From there, you could carve wooden tools out of the tree stump then... _ok, you get where im getting at._
+
+We could also **not start from zero**. _(Ignoring the fact that you could take this game much further...)_  
+
+Realistically, you would likely use some pre-made tools, equipment, and perhaps some pre-cut wooden planks to build a simple chair.
+
+The same concept applies here. Think of **OpenGL as a set of basic tools** that allow you to work with your material, which in this case is the **GPU**.
+
+### Why OpenGL?
+
+There are other very popular graphics APIs, such as Vulkan, Metal, and DirectX. 
+
+ * OpenGL is incredibly simple, has a wealth of resources available to learn from, is cross-platform, and has been used to build games for literally decades.
+ * Vulkan is awesome, but its very low-level nature would make it an absolute pain to use with PHP while essentially losing all the benefits such a low-level API would give you.
+ * Metal is only available on Apple devices and DirectX is only available on Windows, making OpenGL the clear choice here.
 
 ### State Machine
 
-An important aspect of OpenGL is its architecture as a state machine. This implies that OpenGL relies on a collection of global states to determine its graphics rendering behavior. Programmers can modify and configure these states to achieve their desired visual effects. While this concept might appear unconventional, especially for those familiar with object-oriented programming (OOP), understanding its intricacies can lead to a powerful and adaptable approach to graphics rendering.
+As a PHP developer, you are likely familiar with object-oriented programming (OOP) or the old school PHP Spaghetti®.
 
-### Navigating the Learning Curve
+To my knowledge, there aren't any popular state machine APIs in PHP userland. 
 
-Adapting to OpenGL's state machine architecture can be challenging, especially for those with an OOP background. It may lead to unexpected and frustrating bugs during the learning process. However, don't let this discourage you! As you become more familiar with the API, you'll discover the potential it holds for creating stunning visual experiences.
+**However, OpenGL is one.**
 
-To help you get started, here are some tips for working with OpenGL:
+If you've never worked with a state machine API before, it may feel a bit strange at first. Especially if you're used to classic OOP, this will _feel wrong_ and you won't stop thinking about the _potential bugs_ with so much _global state_ that everybody can and will change!
 
-1. **Take it slow:** Familiarize yourself with the fundamentals of OpenGL and its state machine design. Start with simple 2D graphics before diving into more complex 3D scenes.
-2. **Be patient:** Learning OpenGL can be an iterative process, so don't be afraid to experiment and make mistakes. The more you practice, the better you'll become.
-3. **Utilize resources:** There are numerous tutorials, forums, and documentation available to help you learn OpenGL. Engage with the community and ask questions if you're stuck.
-   I can really recommend [https://gamedev.net](https://gamedev.net)
-4. **Understand shaders:** Shaders play a crucial role in OpenGL, so it's important to learn how to write and use them effectively to control the rendering pipeline.
+In real-time rendering, **performance plays a massive role**, so reducing unnecessary operations is key. Clever algorithms are obviously indispensable as well. **Try to suppress your OOP instincts and embrace the state machine.**
 
+_(If you are already thinking of creating a superclass `Drawable` with a `draw()` method which all of your objects will inherit from, don't...)_
 
+## Vector Graphics API
+
+PHP-GLFW also includes a Vector Graphics (VG) API, which is inspired by the HTML Canvas API. This API provides a convenient way to draw graphics on the screen and rapidly prototype ideas and concepts.
+
+The VG API is based on a modified version of [NanoVG](https://github.com/memononen/nanovg) and, like the rest of PHP-GLFW, is a state machine.
+
+Personally, I find it useful to visualize concepts, and the VG API is perfect for that. You can quickly put ideas on the screen and see how they look and feel.
+
+Additionally, you can freely combine the VG API with a custom OpenGL rendering pipeline. For example, you can use the VG API to draw a user interface (UI) and then use OpenGL to render a 3D scene underneath it.
 
 ## Additional Resources 
 
