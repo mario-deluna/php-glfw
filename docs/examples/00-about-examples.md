@@ -59,6 +59,24 @@ In this section you will find a collection of examples that demonstrate how to u
 ## Vector Graphics examples
 
 <!-- VGEXAMPLES BEGIN -->
+### Color
+
+<div class="grid cards" markdown>
+
+-   __Color Constants__
+
+    ---
+
+    [![Example](./../../docs-assets/php-glfw/examples/vg/color_constants_thumb.png)](./vector-graphics/color_constants.md)
+
+-   __Color Lightness__
+
+    ---
+
+    [![Example](./../../docs-assets/php-glfw/examples/vg/color_lightness_thumb.png)](./vector-graphics/color_lightness.md)
+
+</div>
+
 ### Fun
 
 <div class="grid cards" markdown>

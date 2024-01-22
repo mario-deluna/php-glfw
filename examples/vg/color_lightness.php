@@ -1,5 +1,14 @@
 <?php
 /**
+ * Color Lightness
+ * 
+ * This example shows conversion between RGB and HLS color space and how to
+ * lighten and darken a color.
+ *
+ * @image      user_guide/vg/colors/color_lightness.png
+ * @category   Color
+ */
+/**
  * We utilize the example helpers here to focus on what matter in this specifc example.
  */
 require __DIR__ . '/../99_example_helpers.php';
