@@ -51,6 +51,11 @@
         top: 0;
     }
 
+    .md-typeset .md-button--white {
+        border-color: #fff;
+        color: #fff;
+    }
+
     .phpglfw-hero-logo {
         text-align: center;
     }
@@ -186,6 +191,18 @@
 
     .mt-2 {
         margin-top: 1rem;
+    }
+
+    .ms-1 {
+        margin-left: 0.5rem;
+    }
+
+    .me-1 {
+        margin-right: 0.5rem;
+    }
+
+    .me-2 {
+        margin-right: 1rem;
     }
 
     .lg-desc {
@@ -417,16 +434,24 @@
                 <div class="p-3 ps-0 pt-0">
 
                     <p>Sometimes, you just want something simple...</p>
-                    <img src="{{ './../docs-assets/php-glfw/homepage/rect_basic_move_code.png' | url }}"
+                    <img src="{{ './../docs-assets/php-glfw/homepage/rect_basic_move_code2.png' | url }}"
                         class="lg-image-shadow" />
-                    <a href="{{ '/user-guide/vector-graphics/creating_a_vgcontext.html' | url }}"
-                        class="md-button md-button--primary mt-2">
-                        Learn more
-                    </a>
+
+                    <p>We have a ton of <strong>Interactive Examples</strong> for the Vector Graphics API as it is just fun to create things with it.</p>
+
+                        <a href="{{ '/user-guide/vector-graphics/creating_a_vgcontext.html' | url }}"
+                            class="md-button md-button--primary mt-2 me-1">
+                            Learn more
+                        </a>
+                        <a href="/examples/00-about-examples.html#vector-graphics-examples"
+                            class="md-button md-button--white mt-2">
+                            Examples
+                        </a>
                 </div>
                 <div>
-                    <img class="lg-image-shadow"
-                        src="{{ './../docs-assets/php-glfw/homepage/rect_basic_move.gif' | url }}" />
+                    <!-- <img class="lg-image-shadow"
+                        src="{{ './../docs-assets/php-glfw/homepage/rect_basic_move.gif' | url }}" /> -->
+                    <img class ="lg-image-shadow" src="{{ './../docs-assets/php-glfw/user_guide/vg/shapes/rect_demo.gif' | url }}" />
                 </div>
             </div>
         </div>

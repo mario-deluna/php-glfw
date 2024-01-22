@@ -81,6 +81,12 @@ In this section you will find a collection of examples that demonstrate how to u
 
 <div class="grid cards" markdown>
 
+-   __Visaulizing Bitshifting__
+
+    ---
+
+    [![Example](./../../docs-assets/php-glfw/examples/vg/fun_bitshifting_thumb.png)](./vector-graphics/fun_bitshifting.md)
+
 -   __Plotting primes__
 
     ---

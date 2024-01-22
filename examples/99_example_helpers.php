@@ -862,6 +862,11 @@ class ExampleAnimationFrame {
         $this->push($key, 'easeInOut', null, $to, $duration);
     }
 
+    public function easeOutBounceTo(string $key, float $to, int $duration) : void
+    {
+        $this->push($key, 'easeOutBounce', null, $to, $duration);
+    }
+
     public function getFrameLenght() : int
     {
         $max = 0;
@@ -903,6 +908,22 @@ class ExampleAnimation
     private function alphaEaseInOut(float $progress) : float
     {
         return $progress < 0.5 ? $this->alphaEaseIn($progress * 2.0) * 0.5 : $this->alphaEaseOut($progress * 2.0 - 1.0) * 0.5 + 0.5;
+    }
+
+    private function alphaEaseOutBounce(float $progress) : float
+    {
+        if ($progress < 1.0 / 2.75) {
+            return 7.5625 * $progress * $progress;
+        } else if ($progress < 2.0 / 2.75) {
+            $progress -= 1.5 / 2.75;
+            return 7.5625 * $progress * $progress + 0.75;
+        } else if ($progress < 2.5 / 2.75) {
+            $progress -= 2.25 / 2.75;
+            return 7.5625 * $progress * $progress + 0.9375;
+        } else {
+            $progress -= 2.625 / 2.75;
+            return 7.5625 * $progress * $progress + 0.984375;
+        }
     }
     
     public function defaults(array $defaults) : self
@@ -1029,6 +1050,9 @@ class ExampleAnimation
                     break;
                 case 'easeInOut':
                     $progress = $this->alphaEaseInOut($progress);
+                    break;
+                case 'easeOutBounce':
+                    $progress = $this->alphaEaseOutBounce($progress);
                     break;
             }
 
