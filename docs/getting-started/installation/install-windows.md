@@ -15,31 +15,31 @@
 
 # Installing PHP-GLFW on Windows
 
-PHP-GLFW will not run properly under WSL (Windows Subsystem) so make sure you install PHP nativley to windows. 
-If you havent already done so checkout [Installing PHP natively on Windows](#installing-php-natively-on-windows).
+PHP-GLFW will not run properly under WSL (Windows Subsystem) so make sure you install PHP natively on windows. 
+If you haven't already done so, check out the [Installing PHP natively on Windows](#installing-php-natively-on-windows) section.
 
 
 ## Download DLL
 
-For Windows we provide a prebuilt `DLL` which you can simply download and but into your php extension folder.
+For Windows, we provide a prebuilt `DLL` which you can simply download and place into your PHP extension folder.
 
  1. See the releases page for the latest `DLL` downloads: [PHP-GLFW Releases](https://github.com/mario-deluna/php-glfw/releases)
- 2. Download the matching `DLL` for your local php installation. (If you follow this guide `ts_x64`)
- 3. Move and rename the downloaded `dll` to your PHP's `ext` folder. Usally `C:\php\ext\php_glfw.dll`. 
- 4. Enable the extension in your `php.ini` (usally at `C:\php\php.ini`)
+ 2. Download the matching `DLL` for your local PHP installation. (If you are following this guide `ts_x64`)
+ 3. Move and rename the downloaded `dll` to your PHP's `ext` folder. Usually `C:\php\ext\php_glfw.dll`. 
+ 4. Enable the extension in your `php.ini` (usually at `C:\php\php.ini`)
     ```ini
     extension=glfw
     ```
 
 !!! success ""
     
-    **Thats it**, You can check if the extension is loaded properly with `php -m`.
+    **That's it**, You can check if the extension is loaded properly with `php -m`.
 
 ---
 
 ## Installing PHP natively on Windows
 
-PHP-GLFW will not run properly under WSL (Windows Subsystem) so make sure you install PHP nativley to windows. If you already done so you can skip the next section.
+PHP-GLFW will not run properly under WSL (Windows Subsystem) so make sure you install PHP natively on windows. If you have already done so you can skip the next section.
 
 1. Go to https://windows.php.net/download#php-8.1 and download a x64 thread safe version of PHP.
 2. Extract the zip file and move the contents to `C:\php`. (You have to create that directory)

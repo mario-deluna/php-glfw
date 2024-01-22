@@ -138,7 +138,7 @@ You can get the dot product of two vectors using the [`dot()`](/API/Math/Vec3.ht
 $vec1 = new Vec3(5.0, 12.5, 7.5);
 $vec2 = new Vec3(0.5, 2.0, 0.75);
 
-echo Vec3::dot($vec2); // prints 33.125
+echo Vec3::dot($vec1, $vec2); // prints 33.125
 ```
 
 #### Distance 

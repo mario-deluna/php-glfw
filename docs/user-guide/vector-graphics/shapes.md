@@ -1,6 +1,6 @@
 # Shapes (Circle, Rectangle, Polygon, etc.)
 
-There are a number of basic shapes for which a helper function is provided.
+A number of basic shapes can be drawn using helper functions.
 
 <figure markdown>
 ![PHP VectorGraphics Shapes](./../../docs-assets/php-glfw/user_guide/vg/shapes/shapes.png){ width="100%" }

@@ -1,6 +1,6 @@
-# Getting started
+# Getting Started
 
-Before we get to drawing anything, just like with normal OpenGL we need to open a window and create a context in which we can actually draw in. 
+Before we can start drawing anything, we need to create a window and create a context in which we can draw.
 
 Please see [Creating a Window](./window-creation.md) for more information on how to create a window and a context.
 

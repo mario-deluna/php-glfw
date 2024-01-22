@@ -1,4 +1,4 @@
-# Gettings Started with PHP & OpenGL 
+# Getting Started with PHP & OpenGL
 
 This getting started guide is not specifically just about PHP-GLFW. I also try to explain some basics about OpenGL and how to use it with PHP.
 So see this more as a Tutorial to learn OpenGL with PHP. Or an OpenGL crash course in PHP.
@@ -76,7 +76,8 @@ To help you get started, here are some tips for working with OpenGL:
 4. **Understand shaders:** Shaders play a crucial role in OpenGL, so it's important to learn how to write and use them effectively to control the rendering pipeline.
 
 
-## Additional resources 
+
+## Additional Resources 
 
 I took a lot of inspiration from multiple sources to write this tutorial. Especially the [LearnOpenGL](https://learnopengl.com/) website was a great help and went into much more detail than I could for PHP-GLFW. I highly recommend you check it out, as most things are directly applicable to PHP-GLFW.
 

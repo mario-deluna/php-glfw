@@ -1,4 +1,4 @@
-# Debug OpenGL calls with apitrace
+# Debugging OpenGL Calls with apitrace
 
 Every OpenGL developer, at some point, will face the challenge of a black screen or a crash without a clear understanding of what went wrong. In these situations, recording and replaying OpenGL calls in a debugger can be invaluable. Several tools can help you achieve this, but one of the most popular is [apitrace](http://apitrace.github.io/). Apitrace stands out due to its simplicity, ease of use, and cross-platform compatibility, supporting all major operating systems.
 

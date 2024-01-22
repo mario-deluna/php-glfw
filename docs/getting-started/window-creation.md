@@ -1,4 +1,4 @@
-# Opening a window
+# Opening a Window
 
 Before we get to drawing anything, we need to open a window and create a context in which we can actually draw in. This requires some boilerplate code which we discuss in this guide.
 

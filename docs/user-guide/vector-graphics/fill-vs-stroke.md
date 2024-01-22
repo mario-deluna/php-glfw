@@ -1,11 +1,10 @@
-# Fill vs Stroke
+# Filling and Stroking
 
+In the PHP-GLFW vector graphics context, shapes can be rendered on-screen using two methods: filling and stroking.
 
-In a php-glfw vector graphics context, shapes can be rendered on-screen using two methods: fill and stroke.
+* **Filling** a shape colors its entire interior area. When you fill a shape, like a circle, the entire circle is covered with the fill color.
 
-* **Fill** Filling a shape colors its entire interior area. When you fill a shape, like a circle, the entire circle is covered with the fill color.
-
-* **Stroke** Stroking a shape outlines it without filling the interior. Stroking a circle, for example, results in just the circle's edge being drawn, using the stroke color. 
+* **Stroking** a shape outlines it without filling the interior. Stroking a circle, for example, results in just the circle's edge being drawn, using the stroke color. 
 
 
 <figure markdown>
@@ -34,7 +33,7 @@ In a php-glfw vector graphics context, shapes can be rendered on-screen using tw
     ```
 
 
-## Fill and Stroke Together
+## Filling and Stroking Together
 
 These two methods can be used together to create borders and outlines for shapes.
 

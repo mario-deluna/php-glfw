@@ -1,6 +1,6 @@
-# Render to an Image
+# Rendering to an Image
 
-It is possible to render your OpenGL scene or parts of it to an image with PHP-GLFW.
+You can render your OpenGL scene or parts of it to an image using PHP-GLFW.
 
 The [`Texture2D`](./../../API/Texture/Texture2D.md) class can be constructed using a buffer of pixel data. 
 

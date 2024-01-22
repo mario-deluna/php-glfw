@@ -613,7 +613,6 @@ class ExampleHelper
         VGContext $vg, 
         float $x, 
         float $y, 
-        string $selected, 
         array $options, 
         string &$selectedOption, 
         callable $onSelect
@@ -712,6 +711,103 @@ class ExampleHelper
         $vg->restore();
 
         return $totalWidth;
+    }
+
+    public static function drawButton(
+        VGContext $vg, 
+        float $x, 
+        float $y, 
+        string $label, 
+        callable $onClick,
+        string $align = 'center'
+    ) : float
+    {
+        $fontHandle = self::getVGFontHandle($vg);
+        $fontSize = 20;
+        $padding = 30;
+        $innerOffset = 4;
+        $lineHeight = $fontSize * 1.8;
+        $buttonId = sprintf('%s_%d_%d', $label, $x, $y);
+    
+        $vg->save();
+
+        // just like the button group we reset the transformation state
+        $vg->resetTransform();
+    
+        $vg->fontSize($fontSize);
+        $vg->fontFaceId($fontHandle);
+        $vg->textAlign(VGAlign::LEFT | VGAlign::MIDDLE);
+    
+        // calculate the width of the button
+        $buttonWidth = $vg->textBounds(0, 0, $label) + $padding * 2;
+        $totalHeight = $lineHeight + $innerOffset * 2;
+
+        // adjust x and y to center the button
+        if ($align === 'center') {
+            $x -= $buttonWidth * 0.5;
+            $y -= $totalHeight * 0.5;
+        }
+        else if ($align === 'right') {
+            $x -= $buttonWidth;
+        }
+    
+        // background always white
+        $vg->beginPath();
+        $vg->roundedRect($x, $y, $buttonWidth, $totalHeight, 10);
+        $vg->fillColori(255, 255, 255, 255);
+        $vg->fill();
+    
+        // Get the current mouse position
+        glfwGetCursorPos(self::$currentWindow, $mouseX, $mouseY);
+    
+        // Check if the mouse is inside the button
+        $isInside = $mouseX >= $x && $mouseX <= $x + $buttonWidth &&
+                    $mouseY >= $y && $mouseY <= $y + $totalHeight;
+    
+        static $buttonPressed = [];
+        if (!isset($buttonPressed[$buttonId])) {
+            $buttonPressed[$buttonId] = false;
+        }
+    
+        if ($isInside && glfwGetMouseButton(self::$currentWindow, GLFW_MOUSE_BUTTON_LEFT) === GLFW_PRESS) {
+            if (!$buttonPressed[$buttonId]) {
+                $buttonPressed[$buttonId] = true;
+                $onClick();
+            }
+        } else {
+            $buttonPressed[$buttonId] = false;
+        }
+
+        $highlightColor = VGColor::irgba(76, 66, 233, 200);
+    
+        // Set button color based on state
+        if (!$isInside) {
+            $vg->beginPath();
+            $vg->fillColor($highlightColor);
+            $vg->roundedRect($x + $innerOffset, $y + $innerOffset, $buttonWidth - $innerOffset * 2, $totalHeight - $innerOffset * 2, 7);
+            $vg->fill();
+
+            $vg->fillColor(VGColor::white());
+        } else {
+
+            // if the button is pressed currently we render some darker gray 
+            // just to highlight that the button is currently pressed
+            if (glfwGetMouseButton(self::$currentWindow, GLFW_MOUSE_BUTTON_LEFT) === GLFW_PRESS) {
+                $vg->beginPath();
+                $vg->fillColor(VGColor::lightGray());
+                $vg->roundedRect($x + $innerOffset, $y + $innerOffset, $buttonWidth - $innerOffset * 2, $totalHeight - $innerOffset * 2, 7);
+                $vg->fill();
+            }
+
+            $vg->fillColor($highlightColor);
+        }
+    
+        // Draw the label
+        $vg->text($x + $padding, $y + $totalHeight * 0.5, $label);
+    
+        $vg->restore();
+
+        return $x + $buttonWidth;
     }
 
     public static function createAnimation(VGContext $vg) : ExampleAnimation {

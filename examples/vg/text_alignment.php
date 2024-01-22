@@ -70,7 +70,7 @@ while (!glfwWindowShouldClose($window))
     $vg->translate($screenCenterX, $screenCenterY);
 
     ExampleHelper::drawCoordSys($vg);
-    $offset = ExampleHelper::drawButtonGroup($vg, 100, ExampleHelper::WIN_HEIGHT - 100, $horizontalAlignment, [
+    $offset = ExampleHelper::drawButtonGroup($vg, 100, ExampleHelper::WIN_HEIGHT - 100, [
         'LEFT' => 'Left',
         'CENTER' => 'Center',
         'RIGHT' => 'Right',
@@ -78,7 +78,7 @@ while (!glfwWindowShouldClose($window))
         $horizontalAlignment = $alignment;
     });
 
-    ExampleHelper::drawButtonGroup($vg, 200 + $offset, ExampleHelper::WIN_HEIGHT - 100, $verticalAlignment, [
+    ExampleHelper::drawButtonGroup($vg, 200 + $offset, ExampleHelper::WIN_HEIGHT - 100, [
         'TOP' => 'Top',
         'MIDDLE' => 'Middle',
         'BASELINE' => 'Baseline',
