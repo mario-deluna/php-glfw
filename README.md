@@ -35,7 +35,7 @@ PHP-GLFW allows you to create _2D_ and _3D_ real-time applications in _PHP_. It 
  <img width="720px" src="https://user-images.githubusercontent.com/956212/196137371-74546845-4101-4e22-8d1c-4550f0ba2adf.gif">
 </p>
 
-_Currently supports **PHP8.0**, **8.1**, and **8.2**_
+_Currently supports **PHP8.x**_
 
 - [What is this extension? Discover the features 🚀](#what-is-this-extension-features-)
   + [OpenGL](#opengl)
