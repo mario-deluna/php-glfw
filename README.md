@@ -177,6 +177,16 @@ Classic Pong game programmed with pure OpenGL wrapped in OOP code.
 
 https://github.com/medilies/php-pong
 
+### php-chip8
+
+Yet another CHIP-8 emulator, but in PHP!
+
+<p align="center">
+   <img width="640" src="https://github.com/mario-deluna/php-chip8/assets/956212/ae03baa0-8a00-4872-8131-39ca420a6310" alt="A CHIP-8 Game Emulator written in PHP">
+</p>
+
+https://github.com/mario-deluna/php-chip8
+
 ## Installation 
 
 **Please refer to the comprehensive installation guide here: [Installation](https://phpgl.net/getting-started/installation/install-linux.html)**
