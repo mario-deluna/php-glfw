@@ -671,10 +671,10 @@ PHP_METHOD(GL_VectorGraphics_VGContext, __construct)
     phpglfw_vgcontext_object *intern = phpglfw_vgcontext_objectptr_from_zobj_p(Z_OBJ_P(obj));
 
     // parse the flags from the constructor
-    int flags = 0;
-    if (zend_parse_parameters(ZEND_NUM_ARGS() , "|l", &flags) == FAILURE) {
-        RETURN_THROWS();
-    }
+    zend_long flags = 0;
+	if (zend_parse_parameters(ZEND_NUM_ARGS(), "|l", &flags) == FAILURE) {
+		RETURN_THROWS();
+	}
 
     // quick sanity check for the flags
     if (flags > (NVG_ANTIALIAS | NVG_STENCIL_STROKES | NVG_DEBUG)) {
