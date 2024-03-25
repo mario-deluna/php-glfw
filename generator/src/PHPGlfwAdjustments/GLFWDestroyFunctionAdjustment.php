@@ -37,7 +37,7 @@ EOD;
 
         // the to be destructed resource need to be passed by ref 
         // so we can null it
-        $func->arguments[0]->passedByRef = true;    
+        $func->arguments[0]->passedByReference = true;    
 
         $gen->replaceFunctionByName($func);
     }

@@ -206,6 +206,36 @@ abstract class BufferTestCase extends \PHPUnit\Framework\TestCase
         }
     }
 
+    public function testSerialisation() 
+    {
+        $className = $this->getBufferClass();
+        $data = $this->getTestData();
+        $buffer = new $className($data);
+
+        ini_set('glfw.buffer_serialize_hex_float', false);
+
+        $serialized = serialize($buffer);
+        $unserialized = unserialize($serialized);
+
+        $this->assertEquals($buffer->size(), $unserialized->size());
+
+        for($i=0; $i<count($data); $i++) {
+            $this->assertEqualBufferValue($data[$i], $unserialized[$i]);
+        }
+
+        // test with hex serialization
+        ini_set('glfw.buffer_serialize_hex_float', true);
+
+        $serialized = serialize($buffer);
+        $unserialized = unserialize($serialized);
+
+        $this->assertEquals($buffer->size(), $unserialized->size());
+
+        for($i=0; $i<count($data); $i++) {
+            $this->assertEqualBufferValue($data[$i], $unserialized[$i]);
+        }
+    }
+
     public function testToString() 
     {
         $className = $this->getBufferClass();

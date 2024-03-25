@@ -19,7 +19,22 @@ echo $mat[15];
 <?php foreach([
     '__construct', 
     'fromArray',
-    'inverted'
+    'inverted',
+    'multiplyQuat',
+    'copy',
+    'row',
+    'setRow',
+    'col',
+    'setCol',
+    'lookAt',
+    'perspective',
+    'ortho',
+    'transpose',
+    'inverse',
+    'scale',
+    'translate',
+    'rotate',
+    'determinant',
 ] as $funcName) : ?>
 <?php echo $docParser->getAPIRefMarkdown('GL\\Math\\' . $mat->name . '::' . $funcName); ?> 
 <?php endforeach; ?>

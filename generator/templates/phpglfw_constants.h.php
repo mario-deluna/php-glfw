@@ -3,7 +3,7 @@
  * 
  * Extension constants
  *
- * Copyright (c) 2018-2022 Mario Döring
+ * Copyright (c) 2018-2024 Mario Döring
  * 
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -26,8 +26,10 @@
 #ifndef PHP_GLFW_CONSTANTS_H
 #define PHP_GLFW_CONSTANTS_H 1
 
+#ifndef _GLFW_WIN32
 #ifdef _WIN32
 #define _GLFW_WIN32
+#endif
 #endif
 
 #include <zend_API.h>

@@ -2,7 +2,7 @@ name: MacOS Installer
 
 on:
   workflow_run:
-    workflows: ["PHPglfw"]
+    workflows: ["PHP-GLFW Tests"]
     types:
       - completed
 
@@ -12,7 +12,7 @@ jobs:
     strategy:
       matrix:
         operating-system: ['macos-latest']
-        php-versions: ['8.0', '8.1']
+        php-versions: ['8.0', '8.1', '8.2']
     
     steps:
     - uses: actions/checkout@v3

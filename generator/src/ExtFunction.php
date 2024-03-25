@@ -95,6 +95,7 @@ class ExtFunction
         $b = '';
         $optionalSet = false;
         foreach($this->arguments as $arg) {
+            if (!$arg->isParsed) continue;
             if ($arg->isOptional() && $optionalSet === false) {
                 $b .= '|';
                 $optionalSet = true;
@@ -111,6 +112,7 @@ class ExtFunction
     {
         $args = [];
         foreach($this->arguments as $arg) {
+            if (!$arg->isParsed) continue;
             foreach($arg->getZendParameterParseArguments() as $paramArg) {
                 $args[] = $paramArg;
             }
@@ -128,6 +130,7 @@ class ExtFunction
 
         // define var declaration
         foreach($this->arguments as $arg) {
+            if (!$arg->isParsed) continue;
             $b .= $arg->getVariableDeclaration() . PHP_EOL;
         }
 
@@ -136,6 +139,7 @@ class ExtFunction
         $b .= "}" . PHP_EOL;
 
         foreach($this->arguments as $arg) {
+            if (!$arg->isParsed) continue;
             $b .= $arg->getUsePrepCode() . PHP_EOL;
         }
 
@@ -194,8 +198,12 @@ class ExtFunction
      */
     public function getFunctionImplementationBody() : string
     {
+        $parsableArguments = array_filter($this->arguments, function($arg) {
+            return $arg->isParsed;
+        });
+
         $b = "";
-        if (!empty($this->arguments)) $b .= $this->getArgumentParseCode() . PHP_EOL . PHP_EOL;
+        if (!empty($parsableArguments)) $b .= $this->getArgumentParseCode() . PHP_EOL . PHP_EOL;
         $b .= $this->getReturnStatement($this->getFunctionCallCode());
 
         // if ($this->name == 'glShaderSource') {
@@ -318,7 +326,7 @@ class ExtFunction
     public function getPHPStub() : string
     {
         $stubReturnType = $this->getPHPStubReturn();
-        return "function {$this->name}({$this->getPHPStubArguments()}) : {$stubReturnType} {};\n";
+        return "function {$this->name}({$this->getPHPStubArguments()}) : {$stubReturnType} {}\n";
     }
 
     public function getPHPStubArgument(ExtArgument $arg, bool $allowDefaultValue = true) : string
@@ -335,7 +343,7 @@ class ExtFunction
         }
         // class entry argument
         elseif ($arg->argumentType === ExtType::T_CE && $arg instanceof CEObjectArgument) {
-            $buffer = ($arg->isOptional() ? '?' : '') . $arg->getPHPClassName() . ' ' . '$' . $arg->name;
+            $buffer = ($arg->isOptional() ? '?' : '') . $arg->getPHPClassName() . ' ' . ($arg->explicitPassedByReference ? '&' : '') . '$' . $arg->name;
                 
             if ($arg->isOptional() && $allowDefaultValue) {
                 $buffer .= ' = ' . $arg->defaultValue;
@@ -355,6 +363,7 @@ class ExtFunction
     {
         $args = [];
         foreach($this->arguments as $arg) {
+            if (!$arg->isParsed) continue;
             $args[] = $this->getPHPStubArgument($arg);
         }
 

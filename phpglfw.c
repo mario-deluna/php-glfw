@@ -1,7 +1,7 @@
 /**
  * PHP-glfw 
  *
- * Copyright (c) 2018-2022 Mario Döring
+ * Copyright (c) 2018-2024 Mario Döring
  * 
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -37,7 +37,9 @@
 #include "phpglfw_buffer.h"
 #include "phpglfw_texture.h"
 #include "phpglfw_objparser.h"
+#include "phpglfw_vg.h"
 
+ZEND_DECLARE_MODULE_GLOBALS(glfw)
 
 zend_module_entry glfw_module_entry = {
     STANDARD_MODULE_HEADER,
@@ -49,12 +51,22 @@ zend_module_entry glfw_module_entry = {
     NULL,
     PHP_MINFO(glfw),
     PHP_GLFW_VERSION,
-    STANDARD_MODULE_PROPERTIES
+	PHP_MODULE_GLOBALS(glfw),
+	NULL,
+	NULL,
+	NULL,
+	STANDARD_MODULE_PROPERTIES_EX
 };
 
 #ifdef COMPILE_DL_GLFW
 ZEND_GET_MODULE(glfw)
 #endif
+
+/* {{{ PHP_INI */
+PHP_INI_BEGIN()
+    STD_PHP_INI_BOOLEAN("glfw.buffer_serialize_hex_float", "0", PHP_INI_ALL, OnUpdateBool, buffer_serialize_hex_float, zend_glfw_globals, glfw_globals)
+PHP_INI_END()
+/* }}} */
 
 /**
  * MINIT
@@ -62,6 +74,8 @@ ZEND_GET_MODULE(glfw)
  */
 PHP_MINIT_FUNCTION(glfw)
 {   
+    REGISTER_INI_ENTRIES();
+
     // register constants
     phpglfw_register_constants(INIT_FUNC_ARGS_PASSTHRU);
 
@@ -82,6 +96,9 @@ PHP_MINIT_FUNCTION(glfw)
 
     // object parser module
     phpglfw_register_objparser_module(INIT_FUNC_ARGS_PASSTHRU);
+
+    // vg module
+    phpglfw_register_vg_module(INIT_FUNC_ARGS_PASSTHRU);
 
     return SUCCESS;
 }

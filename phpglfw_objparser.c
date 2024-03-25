@@ -3,7 +3,7 @@
  * 
  * Extension: GL Textures
  *
- * Copyright (c) 2018-2022 Mario Döring
+ * Copyright (c) 2018-2024 Mario Döring
  * 
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -775,7 +775,7 @@ PHP_METHOD(GL_Geometry_ObjFileParser, getMeshes)
     
     // construct a new float buffer
     object_init_ex(return_value, phpglfw_get_buffer_glfloat_ce());
-    phpglfw_buffer_glfloat_object *buffer_intern = phpglfw_buffer_glfloat_objectptr_from_zobj_p(Z_OBJ_P(return_value));
+    // phpglfw_buffer_glfloat_object *buffer_intern = phpglfw_buffer_glfloat_objectptr_from_zobj_p(Z_OBJ_P(return_value));
 
     // group selection
     fastObjGroup group;

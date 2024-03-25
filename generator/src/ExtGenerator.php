@@ -36,6 +36,13 @@ class ExtGenerator
     public array $phpglfwBuffers = [];
 
     /**
+     * Array of VGContext functions
+     * 
+     * @var array<ExtFunction>
+     */
+    public array $vgContextFunctions = [];
+
+    /**
      * Map of GLTypes to extension type
      *
      * @var array<string, string>
@@ -123,6 +130,20 @@ class ExtGenerator
     }
 
     /**
+     * Finds a vector graphics context function by name
+     */
+    public function getVGContextFunctionByName(string $functionName) : ?ExtFunction
+    {
+        foreach($this->vgContextFunctions as $func) {
+            if ($func->name === $functionName) {
+                return $func;
+            }
+        }
+
+        return null;
+    }
+
+    /**
      * Returns an array of function which name matches the given regex
      * 
      * @return array<ExtFunction>
@@ -165,6 +186,23 @@ class ExtGenerator
 
         // just add it if not replacable
         $this->methods[] = $replacement;
+    }
+
+    /** 
+     * Find a vector graphics context function instance by name and replace it.
+     * If the function does not already exists it will simply be added.
+     */
+    public function replaceVGContextFunctionByName(ExtFunction $replacement) : void
+    {
+        foreach($this->vgContextFunctions as $k => $func) {
+            if ($func->name === $replacement->name) {
+                $this->vgContextFunctions[$k] = $replacement;
+                return;
+            }
+        }
+
+        // just add it if not replacable
+        $this->vgContextFunctions[] = $replacement;
     }
 
     /**
@@ -264,6 +302,12 @@ class ExtGenerator
             $phpfunc = new ExtFunction($func->name);
             $phpfunc->incomplete = false;
             $phpfunc->comment = $func->commentSummary;
+
+            // override the comment if an override is defined
+            $docOverridePath = GEN_PATH_DATA . '/fncdoc_override/' . $func->name . '.md';
+            if (file_exists($docOverridePath)) {
+                $phpfunc->comment = file_get_contents($docOverridePath);
+            }
 
             $sig = $func->name . '(' . implode(',', array_column($func->arguments, 'name')) . ')';
 
@@ -444,6 +488,7 @@ class ExtGenerator
         $this->buildFunctionsBody();
         $this->buildGLBufferHeaderAndBody();
         $this->buildGLMathHeaderAndBody();
+        $this->buildGLVGHeaderAndBody();
         $this->buildStubs();
 
         // docs 
@@ -460,11 +505,23 @@ class ExtGenerator
             copy(__DIR__ . '/../../stubs/phpglfw.php', __DIR__ . '/../../../../phpgl/ide-stubs/src/phpglfw.php');
         }
 
+        // create the GLSUPPORT.md file 
+        $supportFileBody = "# PHP-GLFW OpenGL Support\n\n";
+
         foreach($this->methods as $func) {
+
+            if ($func->incomplete) {
+                $supportFileBody .= sprintf("- [ ] `%s`\n", $func->name);
+            } else {
+                $supportFileBody .= sprintf("- [x] `%s`\n", $func->name);
+            }
+
             if ($func->incomplete) {
                 echo "Icomplete function: " . $func->name . "\n";
             }
         }
+
+        file_put_contents(__DIR__ . '/../../GLSUPPORT.md', $supportFileBody);
     }
 
     /**
@@ -549,6 +606,20 @@ class ExtGenerator
         ]);
     }
 
+
+    /**
+     * Builds the "phpglfw_vg" files
+     */
+    private function buildGLVGHeaderAndBody() : void
+    {
+        $this->generateTemplate('phpglfw_vg.h', [
+            'ctxfunctions' => $this->vgContextFunctions,
+        ]);
+        $this->generateTemplate('phpglfw_vg.c', [
+            'ctxfunctions' => $this->vgContextFunctions,
+        ]);
+    }
+
     /**
      * Builds the PHP Stubs file
      */
@@ -563,6 +634,7 @@ class ExtGenerator
             'buffers' => $this->phpglfwBuffers,
             'constants' => $this->constants,
             'functions' => $this->getCompleteFunctions(),
+            'vgContextFunctions' => $this->vgContextFunctions,
             '__buffer_prefix' => '<?php ' . PHP_EOL
         ]);
 
@@ -574,6 +646,7 @@ class ExtGenerator
             'buffers' => $this->phpglfwBuffers,
             'constants' => $this->constants,
             'functions' => $this->getCompleteFunctions(),
+            'vgContextFunctions' => $this->vgContextFunctions,
             '__buffer_prefix' => '<?php ' . PHP_EOL
         ], false));
     }

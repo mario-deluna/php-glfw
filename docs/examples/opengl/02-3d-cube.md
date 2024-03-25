@@ -3,7 +3,7 @@
 This example shows how to render a 3D cube using PHP OpenGL.
 
 <figure markdown>
-  ![A 3D Cube drawn with OpenGL in PHP](./../docs-assets/php-glfw/examples/02-cube.png){ width="400" }
+  ![A 3D Cube drawn with OpenGL in PHP](./../../docs-assets/php-glfw/examples/02-cube.png){ width="400" }
   <figcaption>A 3D Cube drawn with OpenGL in PHP</figcaption>
 </figure>
 

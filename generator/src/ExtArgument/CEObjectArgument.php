@@ -14,6 +14,14 @@ class CEObjectArgument extends ExtArgument
     public bool $passedByReference = true;
 
     /**
+     * This var is a bit of a hack, basically i missused the "passedByReference" because 
+     * I was lazy and it bit me in the ass 2 years later...
+     * 
+     * Explicit passed by reference will add an explicit reference for class entry values
+     */
+    public bool $explicitPassedByReference = false;
+
+    /**
      * The char used for parsing the arguments with the zend engine
      */
     public string $charid = 'O';

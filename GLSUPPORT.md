@@ -1,0 +1,624 @@
+# PHP-GLFW OpenGL Support
+
+- [x] `glCullFace`
+- [x] `glFrontFace`
+- [x] `glHint`
+- [x] `glLineWidth`
+- [x] `glPointSize`
+- [x] `glPolygonMode`
+- [x] `glScissor`
+- [x] `glTexParameterf`
+- [x] `glTexParameterfv`
+- [x] `glTexParameteri`
+- [x] `glTexParameteriv`
+- [ ] `glTexImage1D`
+- [x] `glTexImage2D`
+- [x] `glDrawBuffer`
+- [x] `glClear`
+- [x] `glClearColor`
+- [x] `glClearStencil`
+- [x] `glClearDepth`
+- [x] `glStencilMask`
+- [x] `glColorMask`
+- [x] `glDepthMask`
+- [x] `glDisable`
+- [x] `glEnable`
+- [x] `glFinish`
+- [x] `glFlush`
+- [x] `glBlendFunc`
+- [x] `glLogicOp`
+- [x] `glStencilFunc`
+- [x] `glStencilOp`
+- [x] `glDepthFunc`
+- [x] `glPixelStoref`
+- [x] `glPixelStorei`
+- [x] `glReadBuffer`
+- [x] `glReadPixels`
+- [x] `glGetBooleanv`
+- [x] `glGetDoublev`
+- [x] `glGetError`
+- [x] `glGetFloatv`
+- [x] `glGetIntegerv`
+- [x] `glGetString`
+- [ ] `glGetTexImage`
+- [x] `glGetTexParameterfv`
+- [x] `glGetTexParameteriv`
+- [x] `glGetTexLevelParameterfv`
+- [x] `glGetTexLevelParameteriv`
+- [x] `glIsEnabled`
+- [x] `glDepthRange`
+- [x] `glViewport`
+- [x] `glDrawArrays`
+- [ ] `glDrawElements`
+- [x] `glPolygonOffset`
+- [x] `glCopyTexImage1D`
+- [x] `glCopyTexImage2D`
+- [x] `glCopyTexSubImage1D`
+- [x] `glCopyTexSubImage2D`
+- [ ] `glTexSubImage1D`
+- [ ] `glTexSubImage2D`
+- [x] `glBindTexture`
+- [x] `glDeleteTextures`
+- [x] `glGenTextures`
+- [x] `glIsTexture`
+- [ ] `glDrawRangeElements`
+- [ ] `glTexImage3D`
+- [ ] `glTexSubImage3D`
+- [x] `glCopyTexSubImage3D`
+- [x] `glActiveTexture`
+- [x] `glSampleCoverage`
+- [ ] `glCompressedTexImage3D`
+- [ ] `glCompressedTexImage2D`
+- [ ] `glCompressedTexImage1D`
+- [ ] `glCompressedTexSubImage3D`
+- [ ] `glCompressedTexSubImage2D`
+- [ ] `glCompressedTexSubImage1D`
+- [ ] `glGetCompressedTexImage`
+- [x] `glBlendFuncSeparate`
+- [ ] `glMultiDrawArrays`
+- [ ] `glMultiDrawElements`
+- [x] `glPointParameterf`
+- [x] `glPointParameterfv`
+- [x] `glPointParameteri`
+- [x] `glPointParameteriv`
+- [x] `glBlendColor`
+- [x] `glBlendEquation`
+- [x] `glGenQueries`
+- [x] `glDeleteQueries`
+- [x] `glIsQuery`
+- [x] `glBeginQuery`
+- [x] `glEndQuery`
+- [x] `glGetQueryiv`
+- [x] `glGetQueryObjectiv`
+- [x] `glGetQueryObjectuiv`
+- [x] `glBindBuffer`
+- [x] `glDeleteBuffers`
+- [x] `glGenBuffers`
+- [x] `glIsBuffer`
+- [ ] `glBufferSubData`
+- [ ] `glGetBufferSubData`
+- [ ] `glMapBuffer`
+- [x] `glUnmapBuffer`
+- [x] `glGetBufferParameteriv`
+- [ ] `glGetBufferPointerv`
+- [x] `glBlendEquationSeparate`
+- [x] `glDrawBuffers`
+- [x] `glStencilOpSeparate`
+- [x] `glStencilFuncSeparate`
+- [x] `glStencilMaskSeparate`
+- [x] `glAttachShader`
+- [x] `glBindAttribLocation`
+- [x] `glCompileShader`
+- [x] `glCreateProgram`
+- [x] `glCreateShader`
+- [x] `glDeleteProgram`
+- [x] `glDeleteShader`
+- [x] `glDetachShader`
+- [x] `glDisableVertexAttribArray`
+- [x] `glEnableVertexAttribArray`
+- [ ] `glGetActiveAttrib`
+- [ ] `glGetActiveUniform`
+- [x] `glGetAttachedShaders`
+- [x] `glGetAttribLocation`
+- [x] `glGetProgramiv`
+- [x] `glGetProgramInfoLog`
+- [x] `glGetShaderiv`
+- [x] `glGetShaderInfoLog`
+- [ ] `glGetShaderSource`
+- [x] `glGetUniformLocation`
+- [x] `glGetUniformfv`
+- [x] `glGetUniformiv`
+- [x] `glGetVertexAttribdv`
+- [x] `glGetVertexAttribfv`
+- [x] `glGetVertexAttribiv`
+- [ ] `glGetVertexAttribPointerv`
+- [x] `glIsProgram`
+- [x] `glIsShader`
+- [x] `glLinkProgram`
+- [x] `glUseProgram`
+- [x] `glUniform1f`
+- [x] `glUniform2f`
+- [x] `glUniform3f`
+- [x] `glUniform4f`
+- [x] `glUniform1i`
+- [x] `glUniform2i`
+- [x] `glUniform3i`
+- [x] `glUniform4i`
+- [x] `glUniform1fv`
+- [x] `glUniform2fv`
+- [x] `glUniform3fv`
+- [x] `glUniform4fv`
+- [x] `glUniform1iv`
+- [x] `glUniform2iv`
+- [x] `glUniform3iv`
+- [x] `glUniform4iv`
+- [x] `glUniformMatrix2fv`
+- [x] `glUniformMatrix3fv`
+- [x] `glUniformMatrix4fv`
+- [x] `glValidateProgram`
+- [x] `glVertexAttrib1d`
+- [x] `glVertexAttrib1dv`
+- [x] `glVertexAttrib1f`
+- [x] `glVertexAttrib1fv`
+- [x] `glVertexAttrib1s`
+- [x] `glVertexAttrib1sv`
+- [x] `glVertexAttrib2d`
+- [x] `glVertexAttrib2dv`
+- [x] `glVertexAttrib2f`
+- [x] `glVertexAttrib2fv`
+- [x] `glVertexAttrib2s`
+- [x] `glVertexAttrib2sv`
+- [x] `glVertexAttrib3d`
+- [x] `glVertexAttrib3dv`
+- [x] `glVertexAttrib3f`
+- [x] `glVertexAttrib3fv`
+- [x] `glVertexAttrib3s`
+- [x] `glVertexAttrib3sv`
+- [x] `glVertexAttrib4Nbv`
+- [x] `glVertexAttrib4Niv`
+- [x] `glVertexAttrib4Nsv`
+- [x] `glVertexAttrib4Nub`
+- [x] `glVertexAttrib4Nubv`
+- [x] `glVertexAttrib4Nuiv`
+- [x] `glVertexAttrib4Nusv`
+- [x] `glVertexAttrib4bv`
+- [x] `glVertexAttrib4d`
+- [x] `glVertexAttrib4dv`
+- [x] `glVertexAttrib4f`
+- [x] `glVertexAttrib4fv`
+- [x] `glVertexAttrib4iv`
+- [x] `glVertexAttrib4s`
+- [x] `glVertexAttrib4sv`
+- [x] `glVertexAttrib4ubv`
+- [x] `glVertexAttrib4uiv`
+- [x] `glVertexAttrib4usv`
+- [x] `glVertexAttribPointer`
+- [x] `glUniformMatrix2x3fv`
+- [x] `glUniformMatrix3x2fv`
+- [x] `glUniformMatrix2x4fv`
+- [x] `glUniformMatrix4x2fv`
+- [x] `glUniformMatrix3x4fv`
+- [x] `glUniformMatrix4x3fv`
+- [x] `glColorMaski`
+- [x] `glGetBooleani_v`
+- [x] `glGetIntegeri_v`
+- [x] `glEnablei`
+- [x] `glDisablei`
+- [x] `glIsEnabledi`
+- [x] `glBeginTransformFeedback`
+- [x] `glEndTransformFeedback`
+- [x] `glBindBufferRange`
+- [x] `glBindBufferBase`
+- [ ] `glTransformFeedbackVaryings`
+- [ ] `glGetTransformFeedbackVarying`
+- [x] `glClampColor`
+- [x] `glBeginConditionalRender`
+- [x] `glEndConditionalRender`
+- [ ] `glVertexAttribIPointer`
+- [x] `glGetVertexAttribIiv`
+- [x] `glGetVertexAttribIuiv`
+- [x] `glVertexAttribI1i`
+- [x] `glVertexAttribI2i`
+- [x] `glVertexAttribI3i`
+- [x] `glVertexAttribI4i`
+- [x] `glVertexAttribI1ui`
+- [x] `glVertexAttribI2ui`
+- [x] `glVertexAttribI3ui`
+- [x] `glVertexAttribI4ui`
+- [x] `glVertexAttribI1iv`
+- [x] `glVertexAttribI2iv`
+- [x] `glVertexAttribI3iv`
+- [x] `glVertexAttribI4iv`
+- [x] `glVertexAttribI1uiv`
+- [x] `glVertexAttribI2uiv`
+- [x] `glVertexAttribI3uiv`
+- [x] `glVertexAttribI4uiv`
+- [x] `glVertexAttribI4bv`
+- [x] `glVertexAttribI4sv`
+- [x] `glVertexAttribI4ubv`
+- [x] `glVertexAttribI4usv`
+- [x] `glGetUniformuiv`
+- [x] `glBindFragDataLocation`
+- [x] `glGetFragDataLocation`
+- [x] `glUniform1ui`
+- [x] `glUniform2ui`
+- [x] `glUniform3ui`
+- [x] `glUniform4ui`
+- [x] `glUniform1uiv`
+- [x] `glUniform2uiv`
+- [x] `glUniform3uiv`
+- [x] `glUniform4uiv`
+- [x] `glTexParameterIiv`
+- [x] `glTexParameterIuiv`
+- [x] `glGetTexParameterIiv`
+- [x] `glGetTexParameterIuiv`
+- [x] `glClearBufferiv`
+- [x] `glClearBufferuiv`
+- [x] `glClearBufferfv`
+- [x] `glClearBufferfi`
+- [x] `glGetStringi`
+- [x] `glIsRenderbuffer`
+- [x] `glBindRenderbuffer`
+- [x] `glDeleteRenderbuffers`
+- [x] `glGenRenderbuffers`
+- [x] `glRenderbufferStorage`
+- [x] `glGetRenderbufferParameteriv`
+- [x] `glIsFramebuffer`
+- [x] `glBindFramebuffer`
+- [x] `glDeleteFramebuffers`
+- [x] `glGenFramebuffers`
+- [x] `glCheckFramebufferStatus`
+- [x] `glFramebufferTexture1D`
+- [x] `glFramebufferTexture2D`
+- [x] `glFramebufferTexture3D`
+- [x] `glFramebufferRenderbuffer`
+- [x] `glGetFramebufferAttachmentParameteriv`
+- [x] `glGenerateMipmap`
+- [x] `glBlitFramebuffer`
+- [x] `glRenderbufferStorageMultisample`
+- [x] `glFramebufferTextureLayer`
+- [ ] `glMapBufferRange`
+- [x] `glFlushMappedBufferRange`
+- [x] `glBindVertexArray`
+- [x] `glDeleteVertexArrays`
+- [x] `glGenVertexArrays`
+- [x] `glIsVertexArray`
+- [x] `glDrawArraysInstanced`
+- [ ] `glDrawElementsInstanced`
+- [x] `glTexBuffer`
+- [x] `glPrimitiveRestartIndex`
+- [x] `glCopyBufferSubData`
+- [ ] `glGetUniformIndices`
+- [ ] `glGetActiveUniformsiv`
+- [ ] `glGetActiveUniformName`
+- [x] `glGetUniformBlockIndex`
+- [x] `glGetActiveUniformBlockiv`
+- [ ] `glGetActiveUniformBlockName`
+- [x] `glUniformBlockBinding`
+- [ ] `glDrawElementsBaseVertex`
+- [ ] `glDrawRangeElementsBaseVertex`
+- [ ] `glDrawElementsInstancedBaseVertex`
+- [ ] `glMultiDrawElementsBaseVertex`
+- [x] `glProvokingVertex`
+- [x] `glIsSync`
+- [x] `glGetInteger64v`
+- [x] `glGetInteger64i_v`
+- [x] `glGetBufferParameteri64v`
+- [x] `glFramebufferTexture`
+- [x] `glTexImage2DMultisample`
+- [x] `glTexImage3DMultisample`
+- [x] `glGetMultisamplefv`
+- [x] `glSampleMaski`
+- [x] `glBindFragDataLocationIndexed`
+- [x] `glGetFragDataIndex`
+- [x] `glGenSamplers`
+- [x] `glDeleteSamplers`
+- [x] `glIsSampler`
+- [x] `glBindSampler`
+- [x] `glSamplerParameteri`
+- [x] `glSamplerParameteriv`
+- [x] `glSamplerParameterf`
+- [x] `glSamplerParameterfv`
+- [x] `glSamplerParameterIiv`
+- [x] `glSamplerParameterIuiv`
+- [x] `glGetSamplerParameteriv`
+- [x] `glGetSamplerParameterIiv`
+- [x] `glGetSamplerParameterfv`
+- [x] `glGetSamplerParameterIuiv`
+- [x] `glQueryCounter`
+- [x] `glGetQueryObjecti64v`
+- [x] `glGetQueryObjectui64v`
+- [x] `glVertexAttribDivisor`
+- [x] `glVertexAttribP1ui`
+- [x] `glVertexAttribP1uiv`
+- [x] `glVertexAttribP2ui`
+- [x] `glVertexAttribP2uiv`
+- [x] `glVertexAttribP3ui`
+- [x] `glVertexAttribP3uiv`
+- [x] `glVertexAttribP4ui`
+- [x] `glVertexAttribP4uiv`
+- [x] `glVertexP2ui`
+- [x] `glVertexP2uiv`
+- [x] `glVertexP3ui`
+- [x] `glVertexP3uiv`
+- [x] `glVertexP4ui`
+- [x] `glVertexP4uiv`
+- [x] `glTexCoordP1ui`
+- [x] `glTexCoordP1uiv`
+- [x] `glTexCoordP2ui`
+- [x] `glTexCoordP2uiv`
+- [x] `glTexCoordP3ui`
+- [x] `glTexCoordP3uiv`
+- [x] `glTexCoordP4ui`
+- [x] `glTexCoordP4uiv`
+- [x] `glMultiTexCoordP1ui`
+- [x] `glMultiTexCoordP1uiv`
+- [x] `glMultiTexCoordP2ui`
+- [x] `glMultiTexCoordP2uiv`
+- [x] `glMultiTexCoordP3ui`
+- [x] `glMultiTexCoordP3uiv`
+- [x] `glMultiTexCoordP4ui`
+- [x] `glMultiTexCoordP4uiv`
+- [x] `glNormalP3ui`
+- [x] `glNormalP3uiv`
+- [x] `glColorP3ui`
+- [x] `glColorP3uiv`
+- [x] `glColorP4ui`
+- [x] `glColorP4uiv`
+- [x] `glSecondaryColorP3ui`
+- [x] `glSecondaryColorP3uiv`
+- [x] `glMinSampleShading`
+- [x] `glBlendEquationi`
+- [x] `glBlendEquationSeparatei`
+- [x] `glBlendFunci`
+- [x] `glBlendFuncSeparatei`
+- [ ] `glDrawArraysIndirect`
+- [ ] `glDrawElementsIndirect`
+- [x] `glUniform1d`
+- [x] `glUniform2d`
+- [x] `glUniform3d`
+- [x] `glUniform4d`
+- [x] `glUniform1dv`
+- [x] `glUniform2dv`
+- [x] `glUniform3dv`
+- [x] `glUniform4dv`
+- [x] `glUniformMatrix2dv`
+- [x] `glUniformMatrix3dv`
+- [x] `glUniformMatrix4dv`
+- [x] `glUniformMatrix2x3dv`
+- [x] `glUniformMatrix2x4dv`
+- [x] `glUniformMatrix3x2dv`
+- [x] `glUniformMatrix3x4dv`
+- [x] `glUniformMatrix4x2dv`
+- [x] `glUniformMatrix4x3dv`
+- [x] `glGetUniformdv`
+- [x] `glGetSubroutineUniformLocation`
+- [x] `glGetSubroutineIndex`
+- [x] `glGetActiveSubroutineUniformiv`
+- [ ] `glGetActiveSubroutineUniformName`
+- [ ] `glGetActiveSubroutineName`
+- [x] `glUniformSubroutinesuiv`
+- [x] `glGetUniformSubroutineuiv`
+- [x] `glGetProgramStageiv`
+- [x] `glPatchParameteri`
+- [x] `glPatchParameterfv`
+- [x] `glBindTransformFeedback`
+- [x] `glDeleteTransformFeedbacks`
+- [x] `glGenTransformFeedbacks`
+- [x] `glIsTransformFeedback`
+- [x] `glPauseTransformFeedback`
+- [x] `glResumeTransformFeedback`
+- [x] `glDrawTransformFeedback`
+- [x] `glDrawTransformFeedbackStream`
+- [x] `glBeginQueryIndexed`
+- [x] `glEndQueryIndexed`
+- [x] `glGetQueryIndexediv`
+- [x] `glReleaseShaderCompiler`
+- [ ] `glShaderBinary`
+- [x] `glGetShaderPrecisionFormat`
+- [x] `glDepthRangef`
+- [x] `glClearDepthf`
+- [ ] `glGetProgramBinary`
+- [ ] `glProgramBinary`
+- [x] `glProgramParameteri`
+- [x] `glUseProgramStages`
+- [x] `glActiveShaderProgram`
+- [ ] `glCreateShaderProgramv`
+- [x] `glBindProgramPipeline`
+- [x] `glDeleteProgramPipelines`
+- [x] `glGenProgramPipelines`
+- [x] `glIsProgramPipeline`
+- [x] `glGetProgramPipelineiv`
+- [x] `glProgramUniform1i`
+- [x] `glProgramUniform1iv`
+- [x] `glProgramUniform1f`
+- [x] `glProgramUniform1fv`
+- [x] `glProgramUniform1d`
+- [x] `glProgramUniform1dv`
+- [x] `glProgramUniform1ui`
+- [x] `glProgramUniform1uiv`
+- [x] `glProgramUniform2i`
+- [x] `glProgramUniform2iv`
+- [x] `glProgramUniform2f`
+- [x] `glProgramUniform2fv`
+- [x] `glProgramUniform2d`
+- [x] `glProgramUniform2dv`
+- [x] `glProgramUniform2ui`
+- [x] `glProgramUniform2uiv`
+- [x] `glProgramUniform3i`
+- [x] `glProgramUniform3iv`
+- [x] `glProgramUniform3f`
+- [x] `glProgramUniform3fv`
+- [x] `glProgramUniform3d`
+- [x] `glProgramUniform3dv`
+- [x] `glProgramUniform3ui`
+- [x] `glProgramUniform3uiv`
+- [x] `glProgramUniform4i`
+- [x] `glProgramUniform4iv`
+- [x] `glProgramUniform4f`
+- [x] `glProgramUniform4fv`
+- [x] `glProgramUniform4d`
+- [x] `glProgramUniform4dv`
+- [x] `glProgramUniform4ui`
+- [x] `glProgramUniform4uiv`
+- [x] `glProgramUniformMatrix2fv`
+- [x] `glProgramUniformMatrix3fv`
+- [x] `glProgramUniformMatrix4fv`
+- [x] `glProgramUniformMatrix2dv`
+- [x] `glProgramUniformMatrix3dv`
+- [x] `glProgramUniformMatrix4dv`
+- [x] `glProgramUniformMatrix2x3fv`
+- [x] `glProgramUniformMatrix3x2fv`
+- [x] `glProgramUniformMatrix2x4fv`
+- [x] `glProgramUniformMatrix4x2fv`
+- [x] `glProgramUniformMatrix3x4fv`
+- [x] `glProgramUniformMatrix4x3fv`
+- [x] `glProgramUniformMatrix2x3dv`
+- [x] `glProgramUniformMatrix3x2dv`
+- [x] `glProgramUniformMatrix2x4dv`
+- [x] `glProgramUniformMatrix4x2dv`
+- [x] `glProgramUniformMatrix3x4dv`
+- [x] `glProgramUniformMatrix4x3dv`
+- [x] `glValidateProgramPipeline`
+- [ ] `glGetProgramPipelineInfoLog`
+- [x] `glVertexAttribL1d`
+- [x] `glVertexAttribL2d`
+- [x] `glVertexAttribL3d`
+- [x] `glVertexAttribL4d`
+- [x] `glVertexAttribL1dv`
+- [x] `glVertexAttribL2dv`
+- [x] `glVertexAttribL3dv`
+- [x] `glVertexAttribL4dv`
+- [ ] `glVertexAttribLPointer`
+- [x] `glGetVertexAttribLdv`
+- [x] `glViewportArrayv`
+- [x] `glViewportIndexedf`
+- [x] `glViewportIndexedfv`
+- [x] `glScissorArrayv`
+- [x] `glScissorIndexed`
+- [x] `glScissorIndexedv`
+- [x] `glDepthRangeArrayv`
+- [x] `glDepthRangeIndexed`
+- [x] `glGetFloati_v`
+- [x] `glGetDoublei_v`
+- [x] `glfwInit`
+- [x] `glfwTerminate`
+- [x] `glfwInitHint`
+- [x] `glfwGetVersion`
+- [x] `glfwGetVersionString`
+- [ ] `glfwGetError`
+- [ ] `glfwSetErrorCallback`
+- [ ] `glfwGetMonitors`
+- [x] `glfwGetPrimaryMonitor`
+- [x] `glfwGetMonitorPos`
+- [x] `glfwGetMonitorWorkarea`
+- [x] `glfwGetMonitorPhysicalSize`
+- [x] `glfwGetMonitorContentScale`
+- [x] `glfwGetMonitorName`
+- [ ] `glfwSetMonitorUserPointer`
+- [ ] `glfwGetMonitorUserPointer`
+- [ ] `glfwSetMonitorCallback`
+- [ ] `glfwGetVideoModes`
+- [ ] `glfwGetVideoMode`
+- [x] `glfwSetGamma`
+- [ ] `glfwGetGammaRamp`
+- [ ] `glfwSetGammaRamp`
+- [x] `glfwDefaultWindowHints`
+- [x] `glfwWindowHint`
+- [x] `glfwWindowHintString`
+- [x] `glfwCreateWindow`
+- [x] `glfwDestroyWindow`
+- [x] `glfwWindowShouldClose`
+- [x] `glfwSetWindowShouldClose`
+- [x] `glfwSetWindowTitle`
+- [ ] `glfwSetWindowIcon`
+- [x] `glfwGetWindowPos`
+- [x] `glfwSetWindowPos`
+- [x] `glfwGetWindowSize`
+- [x] `glfwSetWindowSizeLimits`
+- [x] `glfwSetWindowAspectRatio`
+- [x] `glfwSetWindowSize`
+- [x] `glfwGetFramebufferSize`
+- [x] `glfwGetWindowFrameSize`
+- [x] `glfwGetWindowContentScale`
+- [x] `glfwGetWindowOpacity`
+- [x] `glfwSetWindowOpacity`
+- [x] `glfwIconifyWindow`
+- [x] `glfwRestoreWindow`
+- [x] `glfwMaximizeWindow`
+- [x] `glfwShowWindow`
+- [x] `glfwHideWindow`
+- [x] `glfwFocusWindow`
+- [x] `glfwRequestWindowAttention`
+- [x] `glfwGetWindowMonitor`
+- [x] `glfwSetWindowMonitor`
+- [x] `glfwGetWindowAttrib`
+- [x] `glfwSetWindowAttrib`
+- [ ] `glfwSetWindowUserPointer`
+- [ ] `glfwGetWindowUserPointer`
+- [x] `glfwSetWindowPosCallback`
+- [x] `glfwSetWindowSizeCallback`
+- [x] `glfwSetWindowCloseCallback`
+- [x] `glfwSetWindowRefreshCallback`
+- [x] `glfwSetWindowFocusCallback`
+- [x] `glfwSetWindowIconifyCallback`
+- [x] `glfwSetWindowMaximizeCallback`
+- [x] `glfwSetFramebufferSizeCallback`
+- [x] `glfwSetWindowContentScaleCallback`
+- [x] `glfwPollEvents`
+- [x] `glfwWaitEvents`
+- [x] `glfwWaitEventsTimeout`
+- [x] `glfwPostEmptyEvent`
+- [x] `glfwGetInputMode`
+- [x] `glfwSetInputMode`
+- [x] `glfwRawMouseMotionSupported`
+- [x] `glfwGetKeyName`
+- [x] `glfwGetKeyScancode`
+- [x] `glfwGetKey`
+- [x] `glfwGetMouseButton`
+- [x] `glfwGetCursorPos`
+- [x] `glfwSetCursorPos`
+- [ ] `glfwCreateCursor`
+- [x] `glfwCreateStandardCursor`
+- [x] `glfwDestroyCursor`
+- [x] `glfwSetCursor`
+- [x] `glfwSetKeyCallback`
+- [x] `glfwSetCharCallback`
+- [x] `glfwSetCharModsCallback`
+- [x] `glfwSetMouseButtonCallback`
+- [x] `glfwSetCursorPosCallback`
+- [x] `glfwSetCursorEnterCallback`
+- [x] `glfwSetScrollCallback`
+- [x] `glfwSetDropCallback`
+- [x] `glfwJoystickPresent`
+- [ ] `glfwGetJoystickAxes`
+- [ ] `glfwGetJoystickButtons`
+- [ ] `glfwGetJoystickHats`
+- [x] `glfwGetJoystickName`
+- [x] `glfwGetJoystickGUID`
+- [ ] `glfwSetJoystickUserPointer`
+- [ ] `glfwGetJoystickUserPointer`
+- [x] `glfwJoystickIsGamepad`
+- [ ] `glfwSetJoystickCallback`
+- [x] `glfwUpdateGamepadMappings`
+- [x] `glfwGetGamepadName`
+- [ ] `glfwGetGamepadState`
+- [x] `glfwSetClipboardString`
+- [x] `glfwGetClipboardString`
+- [x] `glfwGetTime`
+- [x] `glfwSetTime`
+- [ ] `glfwGetTimerValue`
+- [ ] `glfwGetTimerFrequency`
+- [x] `glfwMakeContextCurrent`
+- [x] `glfwGetCurrentContext`
+- [x] `glfwSwapBuffers`
+- [x] `glfwSwapInterval`
+- [x] `glfwExtensionSupported`
+- [ ] `glfwGetProcAddress`
+- [x] `glfwVulkanSupported`
+- [x] `glShaderSource`
+- [x] `glBufferData`
+- [x] `glUniformMatrix4f`
+- [x] `glUniformVec2f`
+- [x] `glUniformVec3f`
+- [x] `glUniformVec4f`

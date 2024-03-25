@@ -3,7 +3,7 @@
 This example shows how to render a 3D object with simple lighting using PHP OpenGL. 
 
 <figure markdown>
-  ![Basic lighting with OpenGL in PHP](./../docs-assets/php-glfw/examples/06-basic-light.png){ width="600" }
+  ![Basic lighting with OpenGL in PHP](./../../docs-assets/php-glfw/examples/06-basic-light.png){ width="600" }
   <figcaption>Basic lighting with OpenGL in PHP</figcaption>
 </figure>
 

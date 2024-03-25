@@ -1,7 +1,7 @@
 /**
  * PHP-glfw 
  *
- * Copyright (c) 2018-2022 Mario Döring
+ * Copyright (c) 2018-2024 Mario Döring
  * 
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,7 +23,7 @@
  */
 #ifndef PHP_GLFW_H
 #define PHP_GLFW_H 1
-#define PHP_GLFW_VERSION "2.0"
+#define PHP_GLFW_VERSION "2.1.4"
 #define PHP_GLFW_EXTNAME "glfw"
 
 extern zend_module_entry glfw_module_entry;
@@ -32,5 +32,17 @@ extern zend_module_entry glfw_module_entry;
 PHP_MINIT_FUNCTION(glfw);
 PHP_MINFO_FUNCTION(glfw);
 PHP_MSHUTDOWN_FUNCTION(glfw);
+
+ZEND_BEGIN_MODULE_GLOBALS(glfw)
+    zend_bool buffer_serialize_hex_float;
+ZEND_END_MODULE_GLOBALS(glfw)
+
+ZEND_EXTERN_MODULE_GLOBALS(glfw)
+
+#ifdef ZTS
+#define PHPGLFW_G(v) TSRMG(glfw_globals_id, zend_glfw_globals *, v)
+#else
+#define PHPGLFW_G(v) (glfw_globals.v)
+#endif
 
 #endif

@@ -5,7 +5,7 @@ This is the most basic example of how to use the GLFW library. You can think of 
 This example does not utilize our helper class to keep it as basic as possible.
 
 <figure markdown>
-  ![A triangle drawn with OpenGL in PHP](./../docs-assets/php-glfw/examples/01-triangle.png){ width="400" }
+  ![A triangle drawn with OpenGL in PHP](./../../docs-assets/php-glfw/examples/01-triangle.png){ width="400" }
   <figcaption>A triangle drawn with OpenGL in PHP</figcaption>
 </figure>
 

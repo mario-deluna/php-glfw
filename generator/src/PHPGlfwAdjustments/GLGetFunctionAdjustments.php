@@ -15,6 +15,8 @@ class GLGetFunctionAdjustments implements AdjustmentInterface
     {
         $func = new class($functionName) extends ExtFunction 
         {
+            public array $tmpData = [];
+
             public function getFunctionCallCode() : string
             {
                 list($internalType, $convertFunc, $assignMacro) = $this->tmpData;
@@ -70,6 +72,8 @@ EOD;
     {
         $func = new class($functionName) extends ExtFunction 
         {
+            public array $tmpData = [];
+            
             public function getFunctionCallCode() : string
             {
                 list($internalType, $convertFunc, $assignMacro) = $this->tmpData;

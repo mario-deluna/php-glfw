@@ -3,7 +3,7 @@
  * 
  * Extension: GL Buffers
  *
- * Copyright (c) 2018-2022 Mario Döring
+ * Copyright (c) 2018-2024 Mario Döring
  * 
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -25,6 +25,7 @@
  */
 #include "phpglfw_buffer.h"
 
+#include "phpglfw.h"
 #include "phpglfw_arginfo.h"
 #include "phpglfw_math.h"
 
@@ -33,6 +34,7 @@
 #include "zend_interfaces.h"
 
 #include "linmath.h"
+#include "cvector.h"
 
 #define pglmax(a,b) ((a) > (b) ? (a) : (b))
 #define pglmin(a,b) ((a) < (b) ? (a) : (b))
@@ -287,6 +289,153 @@ void phpglfw_buffer_glfloat_array_set_handler(zend_object *object, zval *offset,
             zend_throw_error(NULL, "Only a int offset '$buffer[int]' can be used with the GL\\Buffer\\BufferInterface object");
         }
     }
+}
+/*
+static int phpglfw_buffer_glfloat_serialize_handler(zval *object, unsigned char **buffer, size_t *buf_len, zend_serialize_data *data)
+{
+    phpglfw_buffer_glfloat_object *obj_ptr = phpglfw_buffer_glfloat_objectptr_from_zobj_p(Z_OBJ_P(object));
+
+    size_t item_count = cvector_size(obj_ptr->vec);
+    *buf_len = sizeof(size_t) + item_count * sizeof(GLfloat);
+    *buffer = emalloc(*buf_len);
+
+    memcpy(*buffer, &item_count, sizeof(size_t));
+    memcpy(*buffer + sizeof(size_t), obj_ptr->vec, item_count * sizeof(GLfloat));
+
+    return SUCCESS;
+}
+
+int phpglfw_buffer_glfloat_unserialize_handler(zval *object, zend_class_entry *ce, const unsigned char *buf, size_t buf_len, zend_unserialize_data *data)
+{
+    const unsigned char *buf_ptr = buf;
+    size_t item_count;
+    phpglfw_buffer_glfloat_object *obj;
+
+    if (buf_len < sizeof(size_t)) {
+        zend_throw_error(NULL, "Buffer underflow during phpglfw_buffer_glfloat_object unserialization", 0);
+        return FAILURE;
+    }
+
+    memcpy(&item_count, buf_ptr, sizeof(size_t));
+    buf_ptr += sizeof(size_t);
+
+    if (buf_len < sizeof(size_t) + item_count * sizeof(GLfloat)) {
+        zend_throw_error(NULL, "Buffer underflow during phpglfw_buffer_glfloat_object unserialization", 0);
+        return FAILURE;
+    }
+
+    object_init_ex(object, phpglfw_buffer_glfloat_ce);
+    obj = phpglfw_buffer_glfloat_objectptr_from_zobj_p(Z_OBJ_P(object));
+    //obj->vec = emalloc(item_count * sizeof(GLfloat));
+
+    cvector_reserve(obj->vec, item_count);
+    cvector_set_size(obj->vec, item_count); 
+
+    // copy the data
+    memcpy(obj->vec, buf_ptr, item_count * sizeof(GLfloat));
+
+    return SUCCESS;
+}*/
+
+static int phpglfw_buffer_glfloat_serialize_handler(zval *object, unsigned char **buffer, size_t *buf_len, zend_serialize_data *data)
+{
+    bool serialize_hex_float = PHPGLFW_G(buffer_serialize_hex_float);
+    phpglfw_buffer_glfloat_object *obj_ptr = phpglfw_buffer_glfloat_objectptr_from_zobj_p(Z_OBJ_P(object));
+    size_t num_elements = cvector_size(obj_ptr->vec);
+
+    // I want the standard serialization format to be human readable and easaly reconstructable
+    // which is why I use a simple format of: <num_elements>:<element1> <element2> <element3> ...
+    // More efficent serialization formats should be added as seperate, deticated functions
+    cvector_vector_type(char) buffer_string = NULL;
+
+    // used to temporarly store the string representation of each element
+    // honestly I could not find a proper description of the maximum length of a double represented as 
+    // string, after spending an hour down that rabbit hole I decided to just use a buffer of 256 bytes
+    char tmp[256]; 
+
+    // reserve some space for the string, its going to be more 
+    // at the end but saves the first few reallocs
+    cvector_reserve(buffer_string, num_elements * sizeof(GLfloat));
+
+    // write the number of elements
+    int offset = sprintf(tmp, "%zu:", num_elements);
+    cvector_push_back_array(buffer_string, tmp, offset);
+
+    // write each element
+    if (serialize_hex_float) {
+        for (size_t i = 0; i < num_elements; i++) {
+            offset = sprintf(tmp, "%a ", obj_ptr->vec[i]);
+            cvector_push_back_array(buffer_string, tmp, offset);
+        }
+    } else {
+        for (size_t i = 0; i < num_elements; i++) {
+            offset = sprintf(tmp, "%.9g ", obj_ptr->vec[i]);
+            cvector_push_back_array(buffer_string, tmp, offset);
+        }
+    }
+
+    // trim away the trailing space
+    cvector_pop_back(buffer_string);
+
+    size_t total_size = cvector_size(buffer_string);
+
+    *buffer = (unsigned char *)estrndup(buffer_string, total_size);
+    *buf_len = total_size;
+    // efree(buf);
+
+    return SUCCESS;
+}
+
+static int phpglfw_buffer_glfloat_unserialize_handler(zval *object, zend_class_entry *ce, const unsigned char *buf, size_t buf_len, zend_unserialize_data *data)
+{
+    phpglfw_buffer_glfloat_object *obj;
+
+    size_t exp_item_count, item_count;
+    char *endptr, *token, *tmp_copy;
+    
+    // prints the buffer for debugging
+    // for (size_t i = 0; i < buf_len; i++) {
+    //     printf("%c", buf[i]);
+    // }
+    // printf("\n");
+
+    // read the number of elements
+    exp_item_count = item_count = strtoul((char *)buf, &endptr, 10);
+    if (endptr == (char *)buf || *endptr != ':') {
+        // Failed to parse the number of elements
+        zend_throw_error(NULL, "Invalid format during phpglfw_buffer_glfloat_object unserialization, could not parse the number of elements.");
+        return FAILURE;
+    }
+
+    // skip the ':'
+    endptr++;
+
+    // create a copy of the buffer, we are going to modify it
+    // @TODO: when using `strtok` we are modifying the entire buffer,
+    // which will cause an issue when we are using the same buffer for multiple elements
+    // This copy for sure can be avoided, but im going to tackle that in the future
+    tmp_copy = estrndup(endptr, buf_len - (endptr - (char *)buf));
+
+    // make the object
+    object_init_ex(object, phpglfw_buffer_glfloat_ce);
+    obj = phpglfw_buffer_glfloat_objectptr_from_zobj_p(Z_OBJ_P(object));
+
+    cvector_reserve(obj->vec, exp_item_count); 
+
+    // read the elements, check if our endptr is still valid and we have not reached the end of the buffer
+    token = strtok(tmp_copy, " ");
+    while (token != NULL && item_count > 0) {
+                cvector_push_back(obj->vec, atof(token));
+                token = strtok(NULL, " ");
+        item_count--;
+    }
+
+    if (cvector_size(obj->vec) != exp_item_count) {
+        zend_throw_error(NULL, "Mismatch in expected item count during phpglfw_buffer_glfloat_object unserialization. Expected: %zu, Found: %zu", exp_item_count, cvector_size(obj->vec));
+        return FAILURE;
+    }
+
+    return SUCCESS;
 }
 
 static HashTable *phpglfw_buffer_glfloat_debug_info_handler(zend_object *object, int *is_temp)
@@ -598,7 +747,7 @@ static zval *phpglfw_buffer_glhalf_it_current_data_handler(zend_object_iterator 
 	phpglfw_buffer_glhalf_iterator *iterator = (phpglfw_buffer_glhalf_iterator*)iter;
     phpglfw_buffer_glhalf_object *obj_ptr = phpglfw_buffer_glhalf_objectptr_from_zobj_p(Z_OBJ_P(&iter->data));
 
-	ZVAL_DOUBLE(&iterator->current, obj_ptr->vec[iterator->index]);
+	ZVAL_LONG(&iterator->current, obj_ptr->vec[iterator->index]);
 
 	return &iterator->current;
 }
@@ -672,7 +821,7 @@ zval *phpglfw_buffer_glhalf_array_get_handler(zend_object *object, zval *offset,
 		size_t index = (size_t)Z_LVAL_P(offset);
 
         if (index < cvector_size(obj_ptr->vec)) {
-            ZVAL_DOUBLE(rv, obj_ptr->vec[index]);
+            ZVAL_LONG(rv, obj_ptr->vec[index]);
         } else {
             ZVAL_NULL(rv);
         }
@@ -686,8 +835,8 @@ zval *phpglfw_buffer_glhalf_array_get_handler(zend_object *object, zval *offset,
 
 void phpglfw_buffer_glhalf_array_set_handler(zend_object *object, zval *offset, zval *value)
 {
-    if (Z_TYPE_P(value) != IS_DOUBLE) {
-        zend_throw_error(NULL, "Trying to store non float value in a float type buffer.");
+    if (Z_TYPE_P(value) != IS_LONG) {
+        zend_throw_error(NULL, "Trying to store non int value in a int type buffer.");
         return;
     }
 
@@ -695,7 +844,7 @@ void phpglfw_buffer_glhalf_array_set_handler(zend_object *object, zval *offset, 
 
     // if offset is not given ($buff[] = 3.14)  
 	if (offset == NULL) {
-        cvector_push_back(obj_ptr->vec, Z_DVAL_P(value));
+        cvector_push_back(obj_ptr->vec, Z_LVAL_P(value));
 	} 
     else {
         if (Z_TYPE_P(offset) == IS_LONG) {
@@ -705,11 +854,150 @@ void phpglfw_buffer_glhalf_array_set_handler(zend_object *object, zval *offset, 
                 zend_throw_error(NULL, "Cannot modify unallocated buffer space, the element at index [%d] does not exist. Use `push` or `fill` to allocate the requested spaces.",  (int) index);
             }
 
-            obj_ptr->vec[index] = Z_DVAL_P(value);
+            obj_ptr->vec[index] = Z_LVAL_P(value);
         } else {
             zend_throw_error(NULL, "Only a int offset '$buffer[int]' can be used with the GL\\Buffer\\BufferInterface object");
         }
     }
+}
+/*
+static int phpglfw_buffer_glhalf_serialize_handler(zval *object, unsigned char **buffer, size_t *buf_len, zend_serialize_data *data)
+{
+    phpglfw_buffer_glhalf_object *obj_ptr = phpglfw_buffer_glhalf_objectptr_from_zobj_p(Z_OBJ_P(object));
+
+    size_t item_count = cvector_size(obj_ptr->vec);
+    *buf_len = sizeof(size_t) + item_count * sizeof(GLhalf);
+    *buffer = emalloc(*buf_len);
+
+    memcpy(*buffer, &item_count, sizeof(size_t));
+    memcpy(*buffer + sizeof(size_t), obj_ptr->vec, item_count * sizeof(GLhalf));
+
+    return SUCCESS;
+}
+
+int phpglfw_buffer_glhalf_unserialize_handler(zval *object, zend_class_entry *ce, const unsigned char *buf, size_t buf_len, zend_unserialize_data *data)
+{
+    const unsigned char *buf_ptr = buf;
+    size_t item_count;
+    phpglfw_buffer_glhalf_object *obj;
+
+    if (buf_len < sizeof(size_t)) {
+        zend_throw_error(NULL, "Buffer underflow during phpglfw_buffer_glhalf_object unserialization", 0);
+        return FAILURE;
+    }
+
+    memcpy(&item_count, buf_ptr, sizeof(size_t));
+    buf_ptr += sizeof(size_t);
+
+    if (buf_len < sizeof(size_t) + item_count * sizeof(GLhalf)) {
+        zend_throw_error(NULL, "Buffer underflow during phpglfw_buffer_glhalf_object unserialization", 0);
+        return FAILURE;
+    }
+
+    object_init_ex(object, phpglfw_buffer_glhalf_ce);
+    obj = phpglfw_buffer_glhalf_objectptr_from_zobj_p(Z_OBJ_P(object));
+    //obj->vec = emalloc(item_count * sizeof(GLhalf));
+
+    cvector_reserve(obj->vec, item_count);
+    cvector_set_size(obj->vec, item_count); 
+
+    // copy the data
+    memcpy(obj->vec, buf_ptr, item_count * sizeof(GLhalf));
+
+    return SUCCESS;
+}*/
+
+static int phpglfw_buffer_glhalf_serialize_handler(zval *object, unsigned char **buffer, size_t *buf_len, zend_serialize_data *data)
+{
+    phpglfw_buffer_glhalf_object *obj_ptr = phpglfw_buffer_glhalf_objectptr_from_zobj_p(Z_OBJ_P(object));
+    size_t num_elements = cvector_size(obj_ptr->vec);
+
+    // I want the standard serialization format to be human readable and easaly reconstructable
+    // which is why I use a simple format of: <num_elements>:<element1> <element2> <element3> ...
+    // More efficent serialization formats should be added as seperate, deticated functions
+    cvector_vector_type(char) buffer_string = NULL;
+
+    // used to temporarly store the string representation of each element
+    // honestly I could not find a proper description of the maximum length of a double represented as 
+    // string, after spending an hour down that rabbit hole I decided to just use a buffer of 256 bytes
+    char tmp[256]; 
+
+    // reserve some space for the string, its going to be more 
+    // at the end but saves the first few reallocs
+    cvector_reserve(buffer_string, num_elements * sizeof(GLhalf));
+
+    // write the number of elements
+    int offset = sprintf(tmp, "%zu:", num_elements);
+    cvector_push_back_array(buffer_string, tmp, offset);
+
+    // write each element
+        for (size_t i = 0; i < num_elements; i++) {
+            offset = sprintf(tmp, "%hu ", obj_ptr->vec[i]);
+            cvector_push_back_array(buffer_string, tmp, offset);
+        }
+
+    // trim away the trailing space
+    cvector_pop_back(buffer_string);
+
+    size_t total_size = cvector_size(buffer_string);
+
+    *buffer = (unsigned char *)estrndup(buffer_string, total_size);
+    *buf_len = total_size;
+    // efree(buf);
+
+    return SUCCESS;
+}
+
+static int phpglfw_buffer_glhalf_unserialize_handler(zval *object, zend_class_entry *ce, const unsigned char *buf, size_t buf_len, zend_unserialize_data *data)
+{
+    phpglfw_buffer_glhalf_object *obj;
+
+    size_t exp_item_count, item_count;
+    char *endptr, *token, *tmp_copy;
+    
+    // prints the buffer for debugging
+    // for (size_t i = 0; i < buf_len; i++) {
+    //     printf("%c", buf[i]);
+    // }
+    // printf("\n");
+
+    // read the number of elements
+    exp_item_count = item_count = strtoul((char *)buf, &endptr, 10);
+    if (endptr == (char *)buf || *endptr != ':') {
+        // Failed to parse the number of elements
+        zend_throw_error(NULL, "Invalid format during phpglfw_buffer_glhalf_object unserialization, could not parse the number of elements.");
+        return FAILURE;
+    }
+
+    // skip the ':'
+    endptr++;
+
+    // create a copy of the buffer, we are going to modify it
+    // @TODO: when using `strtok` we are modifying the entire buffer,
+    // which will cause an issue when we are using the same buffer for multiple elements
+    // This copy for sure can be avoided, but im going to tackle that in the future
+    tmp_copy = estrndup(endptr, buf_len - (endptr - (char *)buf));
+
+    // make the object
+    object_init_ex(object, phpglfw_buffer_glhalf_ce);
+    obj = phpglfw_buffer_glhalf_objectptr_from_zobj_p(Z_OBJ_P(object));
+
+    cvector_reserve(obj->vec, exp_item_count); 
+
+    // read the elements, check if our endptr is still valid and we have not reached the end of the buffer
+    token = strtok(tmp_copy, " ");
+    while (token != NULL && item_count > 0) {
+                cvector_push_back(obj->vec, strtol(token, NULL, 10));
+                token = strtok(NULL, " ");
+        item_count--;
+    }
+
+    if (cvector_size(obj->vec) != exp_item_count) {
+        zend_throw_error(NULL, "Mismatch in expected item count during phpglfw_buffer_glhalf_object unserialization. Expected: %zu, Found: %zu", exp_item_count, cvector_size(obj->vec));
+        return FAILURE;
+    }
+
+    return SUCCESS;
 }
 
 static HashTable *phpglfw_buffer_glhalf_debug_info_handler(zend_object *object, int *is_temp)
@@ -728,7 +1016,7 @@ static HashTable *phpglfw_buffer_glhalf_debug_info_handler(zend_object *object, 
     zend_hash_str_update(ht, "size", sizeof("size") - 1, &zv);
 
     for(size_t i = 0; i < pglmin(127, cvector_size(obj_ptr->vec)); i++) {
-        ZVAL_DOUBLE(&zv, obj_ptr->vec[i]);
+        ZVAL_LONG(&zv, obj_ptr->vec[i]);
         zend_hash_index_update(dataht, i, &zv);
     }
 
@@ -766,8 +1054,8 @@ PHP_METHOD(GL_Buffer_HFloatBuffer, __toString)
 
 PHP_METHOD(GL_Buffer_HFloatBuffer, push)
 {
-    double value;
-    if (zend_parse_parameters(ZEND_NUM_ARGS() , "d", &value) == FAILURE) {
+    zend_long value;
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "l", &value) == FAILURE) {
         return;
     }
 
@@ -790,12 +1078,12 @@ PHP_METHOD(GL_Buffer_HFloatBuffer, pushArray)
     phpglfw_buffer_glhalf_object *obj_ptr = phpglfw_buffer_glhalf_objectptr_from_zobj_p(Z_OBJ_P(obj));
 
     ZEND_HASH_FOREACH_VAL(Z_ARRVAL_P(array), array) {
-        if (Z_TYPE_P(array) != IS_DOUBLE) {
-            zend_throw_error(NULL, "Trying to store non float value in a float type buffer.");
+        if (Z_TYPE_P(array) != IS_LONG) {
+            zend_throw_error(NULL, "Trying to store non int value in a int type buffer.");
             return;
         }
 
-        cvector_push_back(obj_ptr->vec, Z_DVAL_P(array));
+        cvector_push_back(obj_ptr->vec, Z_LVAL_P(array));
     } ZEND_HASH_FOREACH_END();
 }
 
@@ -827,9 +1115,9 @@ PHP_METHOD(GL_Buffer_HFloatBuffer, clear)
 
 PHP_METHOD(GL_Buffer_HFloatBuffer, fill)
 {
-    double value;
+    zend_long value;
     zend_long fill_size;
-    if (zend_parse_parameters(ZEND_NUM_ARGS() , "ld", &fill_size, &value) == FAILURE) {
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "ll", &fill_size, &value) == FAILURE) {
         return;
     }
 
@@ -881,10 +1169,10 @@ PHP_METHOD(GL_Buffer_HFloatBuffer, __construct)
     cvector_reserve(obj_ptr->vec, zend_hash_num_elements(initaldata));
 
     ZEND_HASH_FOREACH_VAL(initaldata, data)
-        if (Z_TYPE_P(data) == IS_DOUBLE) {
-            cvector_push_back(obj_ptr->vec, Z_DVAL_P(data));
+        if (Z_TYPE_P(data) == IS_LONG) {
+            cvector_push_back(obj_ptr->vec, Z_LVAL_P(data));
         } else {
-            zend_throw_error(NULL, "All elements of the inital data array has to be of type: float");
+            zend_throw_error(NULL, "All elements of the inital data array has to be of type: int");
         }
     ZEND_HASH_FOREACH_END();
 }
@@ -1059,6 +1347,153 @@ void phpglfw_buffer_gldouble_array_set_handler(zend_object *object, zval *offset
             zend_throw_error(NULL, "Only a int offset '$buffer[int]' can be used with the GL\\Buffer\\BufferInterface object");
         }
     }
+}
+/*
+static int phpglfw_buffer_gldouble_serialize_handler(zval *object, unsigned char **buffer, size_t *buf_len, zend_serialize_data *data)
+{
+    phpglfw_buffer_gldouble_object *obj_ptr = phpglfw_buffer_gldouble_objectptr_from_zobj_p(Z_OBJ_P(object));
+
+    size_t item_count = cvector_size(obj_ptr->vec);
+    *buf_len = sizeof(size_t) + item_count * sizeof(GLdouble);
+    *buffer = emalloc(*buf_len);
+
+    memcpy(*buffer, &item_count, sizeof(size_t));
+    memcpy(*buffer + sizeof(size_t), obj_ptr->vec, item_count * sizeof(GLdouble));
+
+    return SUCCESS;
+}
+
+int phpglfw_buffer_gldouble_unserialize_handler(zval *object, zend_class_entry *ce, const unsigned char *buf, size_t buf_len, zend_unserialize_data *data)
+{
+    const unsigned char *buf_ptr = buf;
+    size_t item_count;
+    phpglfw_buffer_gldouble_object *obj;
+
+    if (buf_len < sizeof(size_t)) {
+        zend_throw_error(NULL, "Buffer underflow during phpglfw_buffer_gldouble_object unserialization", 0);
+        return FAILURE;
+    }
+
+    memcpy(&item_count, buf_ptr, sizeof(size_t));
+    buf_ptr += sizeof(size_t);
+
+    if (buf_len < sizeof(size_t) + item_count * sizeof(GLdouble)) {
+        zend_throw_error(NULL, "Buffer underflow during phpglfw_buffer_gldouble_object unserialization", 0);
+        return FAILURE;
+    }
+
+    object_init_ex(object, phpglfw_buffer_gldouble_ce);
+    obj = phpglfw_buffer_gldouble_objectptr_from_zobj_p(Z_OBJ_P(object));
+    //obj->vec = emalloc(item_count * sizeof(GLdouble));
+
+    cvector_reserve(obj->vec, item_count);
+    cvector_set_size(obj->vec, item_count); 
+
+    // copy the data
+    memcpy(obj->vec, buf_ptr, item_count * sizeof(GLdouble));
+
+    return SUCCESS;
+}*/
+
+static int phpglfw_buffer_gldouble_serialize_handler(zval *object, unsigned char **buffer, size_t *buf_len, zend_serialize_data *data)
+{
+    bool serialize_hex_float = PHPGLFW_G(buffer_serialize_hex_float);
+    phpglfw_buffer_gldouble_object *obj_ptr = phpglfw_buffer_gldouble_objectptr_from_zobj_p(Z_OBJ_P(object));
+    size_t num_elements = cvector_size(obj_ptr->vec);
+
+    // I want the standard serialization format to be human readable and easaly reconstructable
+    // which is why I use a simple format of: <num_elements>:<element1> <element2> <element3> ...
+    // More efficent serialization formats should be added as seperate, deticated functions
+    cvector_vector_type(char) buffer_string = NULL;
+
+    // used to temporarly store the string representation of each element
+    // honestly I could not find a proper description of the maximum length of a double represented as 
+    // string, after spending an hour down that rabbit hole I decided to just use a buffer of 256 bytes
+    char tmp[256]; 
+
+    // reserve some space for the string, its going to be more 
+    // at the end but saves the first few reallocs
+    cvector_reserve(buffer_string, num_elements * sizeof(GLdouble));
+
+    // write the number of elements
+    int offset = sprintf(tmp, "%zu:", num_elements);
+    cvector_push_back_array(buffer_string, tmp, offset);
+
+    // write each element
+    if (serialize_hex_float) {
+        for (size_t i = 0; i < num_elements; i++) {
+            offset = sprintf(tmp, "%a ", obj_ptr->vec[i]);
+            cvector_push_back_array(buffer_string, tmp, offset);
+        }
+    } else {
+        for (size_t i = 0; i < num_elements; i++) {
+            offset = sprintf(tmp, "%.17g ", obj_ptr->vec[i]);
+            cvector_push_back_array(buffer_string, tmp, offset);
+        }
+    }
+
+    // trim away the trailing space
+    cvector_pop_back(buffer_string);
+
+    size_t total_size = cvector_size(buffer_string);
+
+    *buffer = (unsigned char *)estrndup(buffer_string, total_size);
+    *buf_len = total_size;
+    // efree(buf);
+
+    return SUCCESS;
+}
+
+static int phpglfw_buffer_gldouble_unserialize_handler(zval *object, zend_class_entry *ce, const unsigned char *buf, size_t buf_len, zend_unserialize_data *data)
+{
+    phpglfw_buffer_gldouble_object *obj;
+
+    size_t exp_item_count, item_count;
+    char *endptr, *token, *tmp_copy;
+    
+    // prints the buffer for debugging
+    // for (size_t i = 0; i < buf_len; i++) {
+    //     printf("%c", buf[i]);
+    // }
+    // printf("\n");
+
+    // read the number of elements
+    exp_item_count = item_count = strtoul((char *)buf, &endptr, 10);
+    if (endptr == (char *)buf || *endptr != ':') {
+        // Failed to parse the number of elements
+        zend_throw_error(NULL, "Invalid format during phpglfw_buffer_gldouble_object unserialization, could not parse the number of elements.");
+        return FAILURE;
+    }
+
+    // skip the ':'
+    endptr++;
+
+    // create a copy of the buffer, we are going to modify it
+    // @TODO: when using `strtok` we are modifying the entire buffer,
+    // which will cause an issue when we are using the same buffer for multiple elements
+    // This copy for sure can be avoided, but im going to tackle that in the future
+    tmp_copy = estrndup(endptr, buf_len - (endptr - (char *)buf));
+
+    // make the object
+    object_init_ex(object, phpglfw_buffer_gldouble_ce);
+    obj = phpglfw_buffer_gldouble_objectptr_from_zobj_p(Z_OBJ_P(object));
+
+    cvector_reserve(obj->vec, exp_item_count); 
+
+    // read the elements, check if our endptr is still valid and we have not reached the end of the buffer
+    token = strtok(tmp_copy, " ");
+    while (token != NULL && item_count > 0) {
+                cvector_push_back(obj->vec, atof(token));
+                token = strtok(NULL, " ");
+        item_count--;
+    }
+
+    if (cvector_size(obj->vec) != exp_item_count) {
+        zend_throw_error(NULL, "Mismatch in expected item count during phpglfw_buffer_gldouble_object unserialization. Expected: %zu, Found: %zu", exp_item_count, cvector_size(obj->vec));
+        return FAILURE;
+    }
+
+    return SUCCESS;
 }
 
 static HashTable *phpglfw_buffer_gldouble_debug_info_handler(zend_object *object, int *is_temp)
@@ -1409,6 +1844,145 @@ void phpglfw_buffer_glint_array_set_handler(zend_object *object, zval *offset, z
         }
     }
 }
+/*
+static int phpglfw_buffer_glint_serialize_handler(zval *object, unsigned char **buffer, size_t *buf_len, zend_serialize_data *data)
+{
+    phpglfw_buffer_glint_object *obj_ptr = phpglfw_buffer_glint_objectptr_from_zobj_p(Z_OBJ_P(object));
+
+    size_t item_count = cvector_size(obj_ptr->vec);
+    *buf_len = sizeof(size_t) + item_count * sizeof(GLint);
+    *buffer = emalloc(*buf_len);
+
+    memcpy(*buffer, &item_count, sizeof(size_t));
+    memcpy(*buffer + sizeof(size_t), obj_ptr->vec, item_count * sizeof(GLint));
+
+    return SUCCESS;
+}
+
+int phpglfw_buffer_glint_unserialize_handler(zval *object, zend_class_entry *ce, const unsigned char *buf, size_t buf_len, zend_unserialize_data *data)
+{
+    const unsigned char *buf_ptr = buf;
+    size_t item_count;
+    phpglfw_buffer_glint_object *obj;
+
+    if (buf_len < sizeof(size_t)) {
+        zend_throw_error(NULL, "Buffer underflow during phpglfw_buffer_glint_object unserialization", 0);
+        return FAILURE;
+    }
+
+    memcpy(&item_count, buf_ptr, sizeof(size_t));
+    buf_ptr += sizeof(size_t);
+
+    if (buf_len < sizeof(size_t) + item_count * sizeof(GLint)) {
+        zend_throw_error(NULL, "Buffer underflow during phpglfw_buffer_glint_object unserialization", 0);
+        return FAILURE;
+    }
+
+    object_init_ex(object, phpglfw_buffer_glint_ce);
+    obj = phpglfw_buffer_glint_objectptr_from_zobj_p(Z_OBJ_P(object));
+    //obj->vec = emalloc(item_count * sizeof(GLint));
+
+    cvector_reserve(obj->vec, item_count);
+    cvector_set_size(obj->vec, item_count); 
+
+    // copy the data
+    memcpy(obj->vec, buf_ptr, item_count * sizeof(GLint));
+
+    return SUCCESS;
+}*/
+
+static int phpglfw_buffer_glint_serialize_handler(zval *object, unsigned char **buffer, size_t *buf_len, zend_serialize_data *data)
+{
+    phpglfw_buffer_glint_object *obj_ptr = phpglfw_buffer_glint_objectptr_from_zobj_p(Z_OBJ_P(object));
+    size_t num_elements = cvector_size(obj_ptr->vec);
+
+    // I want the standard serialization format to be human readable and easaly reconstructable
+    // which is why I use a simple format of: <num_elements>:<element1> <element2> <element3> ...
+    // More efficent serialization formats should be added as seperate, deticated functions
+    cvector_vector_type(char) buffer_string = NULL;
+
+    // used to temporarly store the string representation of each element
+    // honestly I could not find a proper description of the maximum length of a double represented as 
+    // string, after spending an hour down that rabbit hole I decided to just use a buffer of 256 bytes
+    char tmp[256]; 
+
+    // reserve some space for the string, its going to be more 
+    // at the end but saves the first few reallocs
+    cvector_reserve(buffer_string, num_elements * sizeof(GLint));
+
+    // write the number of elements
+    int offset = sprintf(tmp, "%zu:", num_elements);
+    cvector_push_back_array(buffer_string, tmp, offset);
+
+    // write each element
+        for (size_t i = 0; i < num_elements; i++) {
+            offset = sprintf(tmp, "%d ", obj_ptr->vec[i]);
+            cvector_push_back_array(buffer_string, tmp, offset);
+        }
+
+    // trim away the trailing space
+    cvector_pop_back(buffer_string);
+
+    size_t total_size = cvector_size(buffer_string);
+
+    *buffer = (unsigned char *)estrndup(buffer_string, total_size);
+    *buf_len = total_size;
+    // efree(buf);
+
+    return SUCCESS;
+}
+
+static int phpglfw_buffer_glint_unserialize_handler(zval *object, zend_class_entry *ce, const unsigned char *buf, size_t buf_len, zend_unserialize_data *data)
+{
+    phpglfw_buffer_glint_object *obj;
+
+    size_t exp_item_count, item_count;
+    char *endptr, *token, *tmp_copy;
+    
+    // prints the buffer for debugging
+    // for (size_t i = 0; i < buf_len; i++) {
+    //     printf("%c", buf[i]);
+    // }
+    // printf("\n");
+
+    // read the number of elements
+    exp_item_count = item_count = strtoul((char *)buf, &endptr, 10);
+    if (endptr == (char *)buf || *endptr != ':') {
+        // Failed to parse the number of elements
+        zend_throw_error(NULL, "Invalid format during phpglfw_buffer_glint_object unserialization, could not parse the number of elements.");
+        return FAILURE;
+    }
+
+    // skip the ':'
+    endptr++;
+
+    // create a copy of the buffer, we are going to modify it
+    // @TODO: when using `strtok` we are modifying the entire buffer,
+    // which will cause an issue when we are using the same buffer for multiple elements
+    // This copy for sure can be avoided, but im going to tackle that in the future
+    tmp_copy = estrndup(endptr, buf_len - (endptr - (char *)buf));
+
+    // make the object
+    object_init_ex(object, phpglfw_buffer_glint_ce);
+    obj = phpglfw_buffer_glint_objectptr_from_zobj_p(Z_OBJ_P(object));
+
+    cvector_reserve(obj->vec, exp_item_count); 
+
+    // read the elements, check if our endptr is still valid and we have not reached the end of the buffer
+    token = strtok(tmp_copy, " ");
+    while (token != NULL && item_count > 0) {
+                cvector_push_back(obj->vec, strtol(token, NULL, 10));
+                token = strtok(NULL, " ");
+        item_count--;
+    }
+
+    if (cvector_size(obj->vec) != exp_item_count) {
+        zend_throw_error(NULL, "Mismatch in expected item count during phpglfw_buffer_glint_object unserialization. Expected: %zu, Found: %zu", exp_item_count, cvector_size(obj->vec));
+        return FAILURE;
+    }
+
+    return SUCCESS;
+}
 
 static HashTable *phpglfw_buffer_glint_debug_info_handler(zend_object *object, int *is_temp)
 {
@@ -1757,6 +2331,145 @@ void phpglfw_buffer_gluint_array_set_handler(zend_object *object, zval *offset, 
             zend_throw_error(NULL, "Only a int offset '$buffer[int]' can be used with the GL\\Buffer\\BufferInterface object");
         }
     }
+}
+/*
+static int phpglfw_buffer_gluint_serialize_handler(zval *object, unsigned char **buffer, size_t *buf_len, zend_serialize_data *data)
+{
+    phpglfw_buffer_gluint_object *obj_ptr = phpglfw_buffer_gluint_objectptr_from_zobj_p(Z_OBJ_P(object));
+
+    size_t item_count = cvector_size(obj_ptr->vec);
+    *buf_len = sizeof(size_t) + item_count * sizeof(GLuint);
+    *buffer = emalloc(*buf_len);
+
+    memcpy(*buffer, &item_count, sizeof(size_t));
+    memcpy(*buffer + sizeof(size_t), obj_ptr->vec, item_count * sizeof(GLuint));
+
+    return SUCCESS;
+}
+
+int phpglfw_buffer_gluint_unserialize_handler(zval *object, zend_class_entry *ce, const unsigned char *buf, size_t buf_len, zend_unserialize_data *data)
+{
+    const unsigned char *buf_ptr = buf;
+    size_t item_count;
+    phpglfw_buffer_gluint_object *obj;
+
+    if (buf_len < sizeof(size_t)) {
+        zend_throw_error(NULL, "Buffer underflow during phpglfw_buffer_gluint_object unserialization", 0);
+        return FAILURE;
+    }
+
+    memcpy(&item_count, buf_ptr, sizeof(size_t));
+    buf_ptr += sizeof(size_t);
+
+    if (buf_len < sizeof(size_t) + item_count * sizeof(GLuint)) {
+        zend_throw_error(NULL, "Buffer underflow during phpglfw_buffer_gluint_object unserialization", 0);
+        return FAILURE;
+    }
+
+    object_init_ex(object, phpglfw_buffer_gluint_ce);
+    obj = phpglfw_buffer_gluint_objectptr_from_zobj_p(Z_OBJ_P(object));
+    //obj->vec = emalloc(item_count * sizeof(GLuint));
+
+    cvector_reserve(obj->vec, item_count);
+    cvector_set_size(obj->vec, item_count); 
+
+    // copy the data
+    memcpy(obj->vec, buf_ptr, item_count * sizeof(GLuint));
+
+    return SUCCESS;
+}*/
+
+static int phpglfw_buffer_gluint_serialize_handler(zval *object, unsigned char **buffer, size_t *buf_len, zend_serialize_data *data)
+{
+    phpglfw_buffer_gluint_object *obj_ptr = phpglfw_buffer_gluint_objectptr_from_zobj_p(Z_OBJ_P(object));
+    size_t num_elements = cvector_size(obj_ptr->vec);
+
+    // I want the standard serialization format to be human readable and easaly reconstructable
+    // which is why I use a simple format of: <num_elements>:<element1> <element2> <element3> ...
+    // More efficent serialization formats should be added as seperate, deticated functions
+    cvector_vector_type(char) buffer_string = NULL;
+
+    // used to temporarly store the string representation of each element
+    // honestly I could not find a proper description of the maximum length of a double represented as 
+    // string, after spending an hour down that rabbit hole I decided to just use a buffer of 256 bytes
+    char tmp[256]; 
+
+    // reserve some space for the string, its going to be more 
+    // at the end but saves the first few reallocs
+    cvector_reserve(buffer_string, num_elements * sizeof(GLuint));
+
+    // write the number of elements
+    int offset = sprintf(tmp, "%zu:", num_elements);
+    cvector_push_back_array(buffer_string, tmp, offset);
+
+    // write each element
+        for (size_t i = 0; i < num_elements; i++) {
+            offset = sprintf(tmp, "%u ", obj_ptr->vec[i]);
+            cvector_push_back_array(buffer_string, tmp, offset);
+        }
+
+    // trim away the trailing space
+    cvector_pop_back(buffer_string);
+
+    size_t total_size = cvector_size(buffer_string);
+
+    *buffer = (unsigned char *)estrndup(buffer_string, total_size);
+    *buf_len = total_size;
+    // efree(buf);
+
+    return SUCCESS;
+}
+
+static int phpglfw_buffer_gluint_unserialize_handler(zval *object, zend_class_entry *ce, const unsigned char *buf, size_t buf_len, zend_unserialize_data *data)
+{
+    phpglfw_buffer_gluint_object *obj;
+
+    size_t exp_item_count, item_count;
+    char *endptr, *token, *tmp_copy;
+    
+    // prints the buffer for debugging
+    // for (size_t i = 0; i < buf_len; i++) {
+    //     printf("%c", buf[i]);
+    // }
+    // printf("\n");
+
+    // read the number of elements
+    exp_item_count = item_count = strtoul((char *)buf, &endptr, 10);
+    if (endptr == (char *)buf || *endptr != ':') {
+        // Failed to parse the number of elements
+        zend_throw_error(NULL, "Invalid format during phpglfw_buffer_gluint_object unserialization, could not parse the number of elements.");
+        return FAILURE;
+    }
+
+    // skip the ':'
+    endptr++;
+
+    // create a copy of the buffer, we are going to modify it
+    // @TODO: when using `strtok` we are modifying the entire buffer,
+    // which will cause an issue when we are using the same buffer for multiple elements
+    // This copy for sure can be avoided, but im going to tackle that in the future
+    tmp_copy = estrndup(endptr, buf_len - (endptr - (char *)buf));
+
+    // make the object
+    object_init_ex(object, phpglfw_buffer_gluint_ce);
+    obj = phpglfw_buffer_gluint_objectptr_from_zobj_p(Z_OBJ_P(object));
+
+    cvector_reserve(obj->vec, exp_item_count); 
+
+    // read the elements, check if our endptr is still valid and we have not reached the end of the buffer
+    token = strtok(tmp_copy, " ");
+    while (token != NULL && item_count > 0) {
+                cvector_push_back(obj->vec, strtol(token, NULL, 10));
+                token = strtok(NULL, " ");
+        item_count--;
+    }
+
+    if (cvector_size(obj->vec) != exp_item_count) {
+        zend_throw_error(NULL, "Mismatch in expected item count during phpglfw_buffer_gluint_object unserialization. Expected: %zu, Found: %zu", exp_item_count, cvector_size(obj->vec));
+        return FAILURE;
+    }
+
+    return SUCCESS;
 }
 
 static HashTable *phpglfw_buffer_gluint_debug_info_handler(zend_object *object, int *is_temp)
@@ -2107,6 +2820,145 @@ void phpglfw_buffer_glshort_array_set_handler(zend_object *object, zval *offset,
         }
     }
 }
+/*
+static int phpglfw_buffer_glshort_serialize_handler(zval *object, unsigned char **buffer, size_t *buf_len, zend_serialize_data *data)
+{
+    phpglfw_buffer_glshort_object *obj_ptr = phpglfw_buffer_glshort_objectptr_from_zobj_p(Z_OBJ_P(object));
+
+    size_t item_count = cvector_size(obj_ptr->vec);
+    *buf_len = sizeof(size_t) + item_count * sizeof(GLshort);
+    *buffer = emalloc(*buf_len);
+
+    memcpy(*buffer, &item_count, sizeof(size_t));
+    memcpy(*buffer + sizeof(size_t), obj_ptr->vec, item_count * sizeof(GLshort));
+
+    return SUCCESS;
+}
+
+int phpglfw_buffer_glshort_unserialize_handler(zval *object, zend_class_entry *ce, const unsigned char *buf, size_t buf_len, zend_unserialize_data *data)
+{
+    const unsigned char *buf_ptr = buf;
+    size_t item_count;
+    phpglfw_buffer_glshort_object *obj;
+
+    if (buf_len < sizeof(size_t)) {
+        zend_throw_error(NULL, "Buffer underflow during phpglfw_buffer_glshort_object unserialization", 0);
+        return FAILURE;
+    }
+
+    memcpy(&item_count, buf_ptr, sizeof(size_t));
+    buf_ptr += sizeof(size_t);
+
+    if (buf_len < sizeof(size_t) + item_count * sizeof(GLshort)) {
+        zend_throw_error(NULL, "Buffer underflow during phpglfw_buffer_glshort_object unserialization", 0);
+        return FAILURE;
+    }
+
+    object_init_ex(object, phpglfw_buffer_glshort_ce);
+    obj = phpglfw_buffer_glshort_objectptr_from_zobj_p(Z_OBJ_P(object));
+    //obj->vec = emalloc(item_count * sizeof(GLshort));
+
+    cvector_reserve(obj->vec, item_count);
+    cvector_set_size(obj->vec, item_count); 
+
+    // copy the data
+    memcpy(obj->vec, buf_ptr, item_count * sizeof(GLshort));
+
+    return SUCCESS;
+}*/
+
+static int phpglfw_buffer_glshort_serialize_handler(zval *object, unsigned char **buffer, size_t *buf_len, zend_serialize_data *data)
+{
+    phpglfw_buffer_glshort_object *obj_ptr = phpglfw_buffer_glshort_objectptr_from_zobj_p(Z_OBJ_P(object));
+    size_t num_elements = cvector_size(obj_ptr->vec);
+
+    // I want the standard serialization format to be human readable and easaly reconstructable
+    // which is why I use a simple format of: <num_elements>:<element1> <element2> <element3> ...
+    // More efficent serialization formats should be added as seperate, deticated functions
+    cvector_vector_type(char) buffer_string = NULL;
+
+    // used to temporarly store the string representation of each element
+    // honestly I could not find a proper description of the maximum length of a double represented as 
+    // string, after spending an hour down that rabbit hole I decided to just use a buffer of 256 bytes
+    char tmp[256]; 
+
+    // reserve some space for the string, its going to be more 
+    // at the end but saves the first few reallocs
+    cvector_reserve(buffer_string, num_elements * sizeof(GLshort));
+
+    // write the number of elements
+    int offset = sprintf(tmp, "%zu:", num_elements);
+    cvector_push_back_array(buffer_string, tmp, offset);
+
+    // write each element
+        for (size_t i = 0; i < num_elements; i++) {
+            offset = sprintf(tmp, "%hd ", obj_ptr->vec[i]);
+            cvector_push_back_array(buffer_string, tmp, offset);
+        }
+
+    // trim away the trailing space
+    cvector_pop_back(buffer_string);
+
+    size_t total_size = cvector_size(buffer_string);
+
+    *buffer = (unsigned char *)estrndup(buffer_string, total_size);
+    *buf_len = total_size;
+    // efree(buf);
+
+    return SUCCESS;
+}
+
+static int phpglfw_buffer_glshort_unserialize_handler(zval *object, zend_class_entry *ce, const unsigned char *buf, size_t buf_len, zend_unserialize_data *data)
+{
+    phpglfw_buffer_glshort_object *obj;
+
+    size_t exp_item_count, item_count;
+    char *endptr, *token, *tmp_copy;
+    
+    // prints the buffer for debugging
+    // for (size_t i = 0; i < buf_len; i++) {
+    //     printf("%c", buf[i]);
+    // }
+    // printf("\n");
+
+    // read the number of elements
+    exp_item_count = item_count = strtoul((char *)buf, &endptr, 10);
+    if (endptr == (char *)buf || *endptr != ':') {
+        // Failed to parse the number of elements
+        zend_throw_error(NULL, "Invalid format during phpglfw_buffer_glshort_object unserialization, could not parse the number of elements.");
+        return FAILURE;
+    }
+
+    // skip the ':'
+    endptr++;
+
+    // create a copy of the buffer, we are going to modify it
+    // @TODO: when using `strtok` we are modifying the entire buffer,
+    // which will cause an issue when we are using the same buffer for multiple elements
+    // This copy for sure can be avoided, but im going to tackle that in the future
+    tmp_copy = estrndup(endptr, buf_len - (endptr - (char *)buf));
+
+    // make the object
+    object_init_ex(object, phpglfw_buffer_glshort_ce);
+    obj = phpglfw_buffer_glshort_objectptr_from_zobj_p(Z_OBJ_P(object));
+
+    cvector_reserve(obj->vec, exp_item_count); 
+
+    // read the elements, check if our endptr is still valid and we have not reached the end of the buffer
+    token = strtok(tmp_copy, " ");
+    while (token != NULL && item_count > 0) {
+                cvector_push_back(obj->vec, strtol(token, NULL, 10));
+                token = strtok(NULL, " ");
+        item_count--;
+    }
+
+    if (cvector_size(obj->vec) != exp_item_count) {
+        zend_throw_error(NULL, "Mismatch in expected item count during phpglfw_buffer_glshort_object unserialization. Expected: %zu, Found: %zu", exp_item_count, cvector_size(obj->vec));
+        return FAILURE;
+    }
+
+    return SUCCESS;
+}
 
 static HashTable *phpglfw_buffer_glshort_debug_info_handler(zend_object *object, int *is_temp)
 {
@@ -2455,6 +3307,145 @@ void phpglfw_buffer_glushort_array_set_handler(zend_object *object, zval *offset
             zend_throw_error(NULL, "Only a int offset '$buffer[int]' can be used with the GL\\Buffer\\BufferInterface object");
         }
     }
+}
+/*
+static int phpglfw_buffer_glushort_serialize_handler(zval *object, unsigned char **buffer, size_t *buf_len, zend_serialize_data *data)
+{
+    phpglfw_buffer_glushort_object *obj_ptr = phpglfw_buffer_glushort_objectptr_from_zobj_p(Z_OBJ_P(object));
+
+    size_t item_count = cvector_size(obj_ptr->vec);
+    *buf_len = sizeof(size_t) + item_count * sizeof(GLushort);
+    *buffer = emalloc(*buf_len);
+
+    memcpy(*buffer, &item_count, sizeof(size_t));
+    memcpy(*buffer + sizeof(size_t), obj_ptr->vec, item_count * sizeof(GLushort));
+
+    return SUCCESS;
+}
+
+int phpglfw_buffer_glushort_unserialize_handler(zval *object, zend_class_entry *ce, const unsigned char *buf, size_t buf_len, zend_unserialize_data *data)
+{
+    const unsigned char *buf_ptr = buf;
+    size_t item_count;
+    phpglfw_buffer_glushort_object *obj;
+
+    if (buf_len < sizeof(size_t)) {
+        zend_throw_error(NULL, "Buffer underflow during phpglfw_buffer_glushort_object unserialization", 0);
+        return FAILURE;
+    }
+
+    memcpy(&item_count, buf_ptr, sizeof(size_t));
+    buf_ptr += sizeof(size_t);
+
+    if (buf_len < sizeof(size_t) + item_count * sizeof(GLushort)) {
+        zend_throw_error(NULL, "Buffer underflow during phpglfw_buffer_glushort_object unserialization", 0);
+        return FAILURE;
+    }
+
+    object_init_ex(object, phpglfw_buffer_glushort_ce);
+    obj = phpglfw_buffer_glushort_objectptr_from_zobj_p(Z_OBJ_P(object));
+    //obj->vec = emalloc(item_count * sizeof(GLushort));
+
+    cvector_reserve(obj->vec, item_count);
+    cvector_set_size(obj->vec, item_count); 
+
+    // copy the data
+    memcpy(obj->vec, buf_ptr, item_count * sizeof(GLushort));
+
+    return SUCCESS;
+}*/
+
+static int phpglfw_buffer_glushort_serialize_handler(zval *object, unsigned char **buffer, size_t *buf_len, zend_serialize_data *data)
+{
+    phpglfw_buffer_glushort_object *obj_ptr = phpglfw_buffer_glushort_objectptr_from_zobj_p(Z_OBJ_P(object));
+    size_t num_elements = cvector_size(obj_ptr->vec);
+
+    // I want the standard serialization format to be human readable and easaly reconstructable
+    // which is why I use a simple format of: <num_elements>:<element1> <element2> <element3> ...
+    // More efficent serialization formats should be added as seperate, deticated functions
+    cvector_vector_type(char) buffer_string = NULL;
+
+    // used to temporarly store the string representation of each element
+    // honestly I could not find a proper description of the maximum length of a double represented as 
+    // string, after spending an hour down that rabbit hole I decided to just use a buffer of 256 bytes
+    char tmp[256]; 
+
+    // reserve some space for the string, its going to be more 
+    // at the end but saves the first few reallocs
+    cvector_reserve(buffer_string, num_elements * sizeof(GLushort));
+
+    // write the number of elements
+    int offset = sprintf(tmp, "%zu:", num_elements);
+    cvector_push_back_array(buffer_string, tmp, offset);
+
+    // write each element
+        for (size_t i = 0; i < num_elements; i++) {
+            offset = sprintf(tmp, "%hu ", obj_ptr->vec[i]);
+            cvector_push_back_array(buffer_string, tmp, offset);
+        }
+
+    // trim away the trailing space
+    cvector_pop_back(buffer_string);
+
+    size_t total_size = cvector_size(buffer_string);
+
+    *buffer = (unsigned char *)estrndup(buffer_string, total_size);
+    *buf_len = total_size;
+    // efree(buf);
+
+    return SUCCESS;
+}
+
+static int phpglfw_buffer_glushort_unserialize_handler(zval *object, zend_class_entry *ce, const unsigned char *buf, size_t buf_len, zend_unserialize_data *data)
+{
+    phpglfw_buffer_glushort_object *obj;
+
+    size_t exp_item_count, item_count;
+    char *endptr, *token, *tmp_copy;
+    
+    // prints the buffer for debugging
+    // for (size_t i = 0; i < buf_len; i++) {
+    //     printf("%c", buf[i]);
+    // }
+    // printf("\n");
+
+    // read the number of elements
+    exp_item_count = item_count = strtoul((char *)buf, &endptr, 10);
+    if (endptr == (char *)buf || *endptr != ':') {
+        // Failed to parse the number of elements
+        zend_throw_error(NULL, "Invalid format during phpglfw_buffer_glushort_object unserialization, could not parse the number of elements.");
+        return FAILURE;
+    }
+
+    // skip the ':'
+    endptr++;
+
+    // create a copy of the buffer, we are going to modify it
+    // @TODO: when using `strtok` we are modifying the entire buffer,
+    // which will cause an issue when we are using the same buffer for multiple elements
+    // This copy for sure can be avoided, but im going to tackle that in the future
+    tmp_copy = estrndup(endptr, buf_len - (endptr - (char *)buf));
+
+    // make the object
+    object_init_ex(object, phpglfw_buffer_glushort_ce);
+    obj = phpglfw_buffer_glushort_objectptr_from_zobj_p(Z_OBJ_P(object));
+
+    cvector_reserve(obj->vec, exp_item_count); 
+
+    // read the elements, check if our endptr is still valid and we have not reached the end of the buffer
+    token = strtok(tmp_copy, " ");
+    while (token != NULL && item_count > 0) {
+                cvector_push_back(obj->vec, strtol(token, NULL, 10));
+                token = strtok(NULL, " ");
+        item_count--;
+    }
+
+    if (cvector_size(obj->vec) != exp_item_count) {
+        zend_throw_error(NULL, "Mismatch in expected item count during phpglfw_buffer_glushort_object unserialization. Expected: %zu, Found: %zu", exp_item_count, cvector_size(obj->vec));
+        return FAILURE;
+    }
+
+    return SUCCESS;
 }
 
 static HashTable *phpglfw_buffer_glushort_debug_info_handler(zend_object *object, int *is_temp)
@@ -2805,6 +3796,145 @@ void phpglfw_buffer_glbyte_array_set_handler(zend_object *object, zval *offset, 
         }
     }
 }
+/*
+static int phpglfw_buffer_glbyte_serialize_handler(zval *object, unsigned char **buffer, size_t *buf_len, zend_serialize_data *data)
+{
+    phpglfw_buffer_glbyte_object *obj_ptr = phpglfw_buffer_glbyte_objectptr_from_zobj_p(Z_OBJ_P(object));
+
+    size_t item_count = cvector_size(obj_ptr->vec);
+    *buf_len = sizeof(size_t) + item_count * sizeof(GLbyte);
+    *buffer = emalloc(*buf_len);
+
+    memcpy(*buffer, &item_count, sizeof(size_t));
+    memcpy(*buffer + sizeof(size_t), obj_ptr->vec, item_count * sizeof(GLbyte));
+
+    return SUCCESS;
+}
+
+int phpglfw_buffer_glbyte_unserialize_handler(zval *object, zend_class_entry *ce, const unsigned char *buf, size_t buf_len, zend_unserialize_data *data)
+{
+    const unsigned char *buf_ptr = buf;
+    size_t item_count;
+    phpglfw_buffer_glbyte_object *obj;
+
+    if (buf_len < sizeof(size_t)) {
+        zend_throw_error(NULL, "Buffer underflow during phpglfw_buffer_glbyte_object unserialization", 0);
+        return FAILURE;
+    }
+
+    memcpy(&item_count, buf_ptr, sizeof(size_t));
+    buf_ptr += sizeof(size_t);
+
+    if (buf_len < sizeof(size_t) + item_count * sizeof(GLbyte)) {
+        zend_throw_error(NULL, "Buffer underflow during phpglfw_buffer_glbyte_object unserialization", 0);
+        return FAILURE;
+    }
+
+    object_init_ex(object, phpglfw_buffer_glbyte_ce);
+    obj = phpglfw_buffer_glbyte_objectptr_from_zobj_p(Z_OBJ_P(object));
+    //obj->vec = emalloc(item_count * sizeof(GLbyte));
+
+    cvector_reserve(obj->vec, item_count);
+    cvector_set_size(obj->vec, item_count); 
+
+    // copy the data
+    memcpy(obj->vec, buf_ptr, item_count * sizeof(GLbyte));
+
+    return SUCCESS;
+}*/
+
+static int phpglfw_buffer_glbyte_serialize_handler(zval *object, unsigned char **buffer, size_t *buf_len, zend_serialize_data *data)
+{
+    phpglfw_buffer_glbyte_object *obj_ptr = phpglfw_buffer_glbyte_objectptr_from_zobj_p(Z_OBJ_P(object));
+    size_t num_elements = cvector_size(obj_ptr->vec);
+
+    // I want the standard serialization format to be human readable and easaly reconstructable
+    // which is why I use a simple format of: <num_elements>:<element1> <element2> <element3> ...
+    // More efficent serialization formats should be added as seperate, deticated functions
+    cvector_vector_type(char) buffer_string = NULL;
+
+    // used to temporarly store the string representation of each element
+    // honestly I could not find a proper description of the maximum length of a double represented as 
+    // string, after spending an hour down that rabbit hole I decided to just use a buffer of 256 bytes
+    char tmp[256]; 
+
+    // reserve some space for the string, its going to be more 
+    // at the end but saves the first few reallocs
+    cvector_reserve(buffer_string, num_elements * sizeof(GLbyte));
+
+    // write the number of elements
+    int offset = sprintf(tmp, "%zu:", num_elements);
+    cvector_push_back_array(buffer_string, tmp, offset);
+
+    // write each element
+        for (size_t i = 0; i < num_elements; i++) {
+            offset = sprintf(tmp, "%hhd ", obj_ptr->vec[i]);
+            cvector_push_back_array(buffer_string, tmp, offset);
+        }
+
+    // trim away the trailing space
+    cvector_pop_back(buffer_string);
+
+    size_t total_size = cvector_size(buffer_string);
+
+    *buffer = (unsigned char *)estrndup(buffer_string, total_size);
+    *buf_len = total_size;
+    // efree(buf);
+
+    return SUCCESS;
+}
+
+static int phpglfw_buffer_glbyte_unserialize_handler(zval *object, zend_class_entry *ce, const unsigned char *buf, size_t buf_len, zend_unserialize_data *data)
+{
+    phpglfw_buffer_glbyte_object *obj;
+
+    size_t exp_item_count, item_count;
+    char *endptr, *token, *tmp_copy;
+    
+    // prints the buffer for debugging
+    // for (size_t i = 0; i < buf_len; i++) {
+    //     printf("%c", buf[i]);
+    // }
+    // printf("\n");
+
+    // read the number of elements
+    exp_item_count = item_count = strtoul((char *)buf, &endptr, 10);
+    if (endptr == (char *)buf || *endptr != ':') {
+        // Failed to parse the number of elements
+        zend_throw_error(NULL, "Invalid format during phpglfw_buffer_glbyte_object unserialization, could not parse the number of elements.");
+        return FAILURE;
+    }
+
+    // skip the ':'
+    endptr++;
+
+    // create a copy of the buffer, we are going to modify it
+    // @TODO: when using `strtok` we are modifying the entire buffer,
+    // which will cause an issue when we are using the same buffer for multiple elements
+    // This copy for sure can be avoided, but im going to tackle that in the future
+    tmp_copy = estrndup(endptr, buf_len - (endptr - (char *)buf));
+
+    // make the object
+    object_init_ex(object, phpglfw_buffer_glbyte_ce);
+    obj = phpglfw_buffer_glbyte_objectptr_from_zobj_p(Z_OBJ_P(object));
+
+    cvector_reserve(obj->vec, exp_item_count); 
+
+    // read the elements, check if our endptr is still valid and we have not reached the end of the buffer
+    token = strtok(tmp_copy, " ");
+    while (token != NULL && item_count > 0) {
+                cvector_push_back(obj->vec, strtol(token, NULL, 10));
+                token = strtok(NULL, " ");
+        item_count--;
+    }
+
+    if (cvector_size(obj->vec) != exp_item_count) {
+        zend_throw_error(NULL, "Mismatch in expected item count during phpglfw_buffer_glbyte_object unserialization. Expected: %zu, Found: %zu", exp_item_count, cvector_size(obj->vec));
+        return FAILURE;
+    }
+
+    return SUCCESS;
+}
 
 static HashTable *phpglfw_buffer_glbyte_debug_info_handler(zend_object *object, int *is_temp)
 {
@@ -3154,6 +4284,145 @@ void phpglfw_buffer_glubyte_array_set_handler(zend_object *object, zval *offset,
         }
     }
 }
+/*
+static int phpglfw_buffer_glubyte_serialize_handler(zval *object, unsigned char **buffer, size_t *buf_len, zend_serialize_data *data)
+{
+    phpglfw_buffer_glubyte_object *obj_ptr = phpglfw_buffer_glubyte_objectptr_from_zobj_p(Z_OBJ_P(object));
+
+    size_t item_count = cvector_size(obj_ptr->vec);
+    *buf_len = sizeof(size_t) + item_count * sizeof(GLubyte);
+    *buffer = emalloc(*buf_len);
+
+    memcpy(*buffer, &item_count, sizeof(size_t));
+    memcpy(*buffer + sizeof(size_t), obj_ptr->vec, item_count * sizeof(GLubyte));
+
+    return SUCCESS;
+}
+
+int phpglfw_buffer_glubyte_unserialize_handler(zval *object, zend_class_entry *ce, const unsigned char *buf, size_t buf_len, zend_unserialize_data *data)
+{
+    const unsigned char *buf_ptr = buf;
+    size_t item_count;
+    phpglfw_buffer_glubyte_object *obj;
+
+    if (buf_len < sizeof(size_t)) {
+        zend_throw_error(NULL, "Buffer underflow during phpglfw_buffer_glubyte_object unserialization", 0);
+        return FAILURE;
+    }
+
+    memcpy(&item_count, buf_ptr, sizeof(size_t));
+    buf_ptr += sizeof(size_t);
+
+    if (buf_len < sizeof(size_t) + item_count * sizeof(GLubyte)) {
+        zend_throw_error(NULL, "Buffer underflow during phpglfw_buffer_glubyte_object unserialization", 0);
+        return FAILURE;
+    }
+
+    object_init_ex(object, phpglfw_buffer_glubyte_ce);
+    obj = phpglfw_buffer_glubyte_objectptr_from_zobj_p(Z_OBJ_P(object));
+    //obj->vec = emalloc(item_count * sizeof(GLubyte));
+
+    cvector_reserve(obj->vec, item_count);
+    cvector_set_size(obj->vec, item_count); 
+
+    // copy the data
+    memcpy(obj->vec, buf_ptr, item_count * sizeof(GLubyte));
+
+    return SUCCESS;
+}*/
+
+static int phpglfw_buffer_glubyte_serialize_handler(zval *object, unsigned char **buffer, size_t *buf_len, zend_serialize_data *data)
+{
+    phpglfw_buffer_glubyte_object *obj_ptr = phpglfw_buffer_glubyte_objectptr_from_zobj_p(Z_OBJ_P(object));
+    size_t num_elements = cvector_size(obj_ptr->vec);
+
+    // I want the standard serialization format to be human readable and easaly reconstructable
+    // which is why I use a simple format of: <num_elements>:<element1> <element2> <element3> ...
+    // More efficent serialization formats should be added as seperate, deticated functions
+    cvector_vector_type(char) buffer_string = NULL;
+
+    // used to temporarly store the string representation of each element
+    // honestly I could not find a proper description of the maximum length of a double represented as 
+    // string, after spending an hour down that rabbit hole I decided to just use a buffer of 256 bytes
+    char tmp[256]; 
+
+    // reserve some space for the string, its going to be more 
+    // at the end but saves the first few reallocs
+    cvector_reserve(buffer_string, num_elements * sizeof(GLubyte));
+
+    // write the number of elements
+    int offset = sprintf(tmp, "%zu:", num_elements);
+    cvector_push_back_array(buffer_string, tmp, offset);
+
+    // write each element
+        for (size_t i = 0; i < num_elements; i++) {
+            offset = sprintf(tmp, "%hhu ", obj_ptr->vec[i]);
+            cvector_push_back_array(buffer_string, tmp, offset);
+        }
+
+    // trim away the trailing space
+    cvector_pop_back(buffer_string);
+
+    size_t total_size = cvector_size(buffer_string);
+
+    *buffer = (unsigned char *)estrndup(buffer_string, total_size);
+    *buf_len = total_size;
+    // efree(buf);
+
+    return SUCCESS;
+}
+
+static int phpglfw_buffer_glubyte_unserialize_handler(zval *object, zend_class_entry *ce, const unsigned char *buf, size_t buf_len, zend_unserialize_data *data)
+{
+    phpglfw_buffer_glubyte_object *obj;
+
+    size_t exp_item_count, item_count;
+    char *endptr, *token, *tmp_copy;
+    
+    // prints the buffer for debugging
+    // for (size_t i = 0; i < buf_len; i++) {
+    //     printf("%c", buf[i]);
+    // }
+    // printf("\n");
+
+    // read the number of elements
+    exp_item_count = item_count = strtoul((char *)buf, &endptr, 10);
+    if (endptr == (char *)buf || *endptr != ':') {
+        // Failed to parse the number of elements
+        zend_throw_error(NULL, "Invalid format during phpglfw_buffer_glubyte_object unserialization, could not parse the number of elements.");
+        return FAILURE;
+    }
+
+    // skip the ':'
+    endptr++;
+
+    // create a copy of the buffer, we are going to modify it
+    // @TODO: when using `strtok` we are modifying the entire buffer,
+    // which will cause an issue when we are using the same buffer for multiple elements
+    // This copy for sure can be avoided, but im going to tackle that in the future
+    tmp_copy = estrndup(endptr, buf_len - (endptr - (char *)buf));
+
+    // make the object
+    object_init_ex(object, phpglfw_buffer_glubyte_ce);
+    obj = phpglfw_buffer_glubyte_objectptr_from_zobj_p(Z_OBJ_P(object));
+
+    cvector_reserve(obj->vec, exp_item_count); 
+
+    // read the elements, check if our endptr is still valid and we have not reached the end of the buffer
+    token = strtok(tmp_copy, " ");
+    while (token != NULL && item_count > 0) {
+                cvector_push_back(obj->vec, strtol(token, NULL, 10));
+                token = strtok(NULL, " ");
+        item_count--;
+    }
+
+    if (cvector_size(obj->vec) != exp_item_count) {
+        zend_throw_error(NULL, "Mismatch in expected item count during phpglfw_buffer_glubyte_object unserialization. Expected: %zu, Found: %zu", exp_item_count, cvector_size(obj->vec));
+        return FAILURE;
+    }
+
+    return SUCCESS;
+}
 
 static HashTable *phpglfw_buffer_glubyte_debug_info_handler(zend_object *object, int *is_temp)
 {
@@ -3345,6 +4614,8 @@ void phpglfw_register_buffer_module(INIT_FUNC_ARGS)
     INIT_CLASS_ENTRY(tmp_ce, "GL\\Buffer\\FloatBuffer", class_GL_Buffer_FloatBuffer_methods);
     phpglfw_buffer_glfloat_ce = zend_register_internal_class(&tmp_ce);
     phpglfw_buffer_glfloat_ce->create_object = phpglfw_buffer_glfloat_create_handler;
+    phpglfw_buffer_glfloat_ce->serialize = phpglfw_buffer_glfloat_serialize_handler;
+    phpglfw_buffer_glfloat_ce->unserialize = phpglfw_buffer_glfloat_unserialize_handler;
     phpglfw_buffer_glfloat_ce->get_iterator = phpglfw_buffer_glfloat_get_iterator_handler;
 
 	zend_class_implements(phpglfw_buffer_glfloat_ce, 1, phpglfw_buffer_interface_ce);
@@ -3360,6 +4631,8 @@ void phpglfw_register_buffer_module(INIT_FUNC_ARGS)
     INIT_CLASS_ENTRY(tmp_ce, "GL\\Buffer\\HFloatBuffer", class_GL_Buffer_HFloatBuffer_methods);
     phpglfw_buffer_glhalf_ce = zend_register_internal_class(&tmp_ce);
     phpglfw_buffer_glhalf_ce->create_object = phpglfw_buffer_glhalf_create_handler;
+    phpglfw_buffer_glhalf_ce->serialize = phpglfw_buffer_glhalf_serialize_handler;
+    phpglfw_buffer_glhalf_ce->unserialize = phpglfw_buffer_glhalf_unserialize_handler;
     phpglfw_buffer_glhalf_ce->get_iterator = phpglfw_buffer_glhalf_get_iterator_handler;
 
 	zend_class_implements(phpglfw_buffer_glhalf_ce, 1, phpglfw_buffer_interface_ce);
@@ -3375,6 +4648,8 @@ void phpglfw_register_buffer_module(INIT_FUNC_ARGS)
     INIT_CLASS_ENTRY(tmp_ce, "GL\\Buffer\\DoubleBuffer", class_GL_Buffer_DoubleBuffer_methods);
     phpglfw_buffer_gldouble_ce = zend_register_internal_class(&tmp_ce);
     phpglfw_buffer_gldouble_ce->create_object = phpglfw_buffer_gldouble_create_handler;
+    phpglfw_buffer_gldouble_ce->serialize = phpglfw_buffer_gldouble_serialize_handler;
+    phpglfw_buffer_gldouble_ce->unserialize = phpglfw_buffer_gldouble_unserialize_handler;
     phpglfw_buffer_gldouble_ce->get_iterator = phpglfw_buffer_gldouble_get_iterator_handler;
 
 	zend_class_implements(phpglfw_buffer_gldouble_ce, 1, phpglfw_buffer_interface_ce);
@@ -3390,6 +4665,8 @@ void phpglfw_register_buffer_module(INIT_FUNC_ARGS)
     INIT_CLASS_ENTRY(tmp_ce, "GL\\Buffer\\IntBuffer", class_GL_Buffer_IntBuffer_methods);
     phpglfw_buffer_glint_ce = zend_register_internal_class(&tmp_ce);
     phpglfw_buffer_glint_ce->create_object = phpglfw_buffer_glint_create_handler;
+    phpglfw_buffer_glint_ce->serialize = phpglfw_buffer_glint_serialize_handler;
+    phpglfw_buffer_glint_ce->unserialize = phpglfw_buffer_glint_unserialize_handler;
     phpglfw_buffer_glint_ce->get_iterator = phpglfw_buffer_glint_get_iterator_handler;
 
 	zend_class_implements(phpglfw_buffer_glint_ce, 1, phpglfw_buffer_interface_ce);
@@ -3405,6 +4682,8 @@ void phpglfw_register_buffer_module(INIT_FUNC_ARGS)
     INIT_CLASS_ENTRY(tmp_ce, "GL\\Buffer\\UIntBuffer", class_GL_Buffer_UIntBuffer_methods);
     phpglfw_buffer_gluint_ce = zend_register_internal_class(&tmp_ce);
     phpglfw_buffer_gluint_ce->create_object = phpglfw_buffer_gluint_create_handler;
+    phpglfw_buffer_gluint_ce->serialize = phpglfw_buffer_gluint_serialize_handler;
+    phpglfw_buffer_gluint_ce->unserialize = phpglfw_buffer_gluint_unserialize_handler;
     phpglfw_buffer_gluint_ce->get_iterator = phpglfw_buffer_gluint_get_iterator_handler;
 
 	zend_class_implements(phpglfw_buffer_gluint_ce, 1, phpglfw_buffer_interface_ce);
@@ -3420,6 +4699,8 @@ void phpglfw_register_buffer_module(INIT_FUNC_ARGS)
     INIT_CLASS_ENTRY(tmp_ce, "GL\\Buffer\\ShortBuffer", class_GL_Buffer_ShortBuffer_methods);
     phpglfw_buffer_glshort_ce = zend_register_internal_class(&tmp_ce);
     phpglfw_buffer_glshort_ce->create_object = phpglfw_buffer_glshort_create_handler;
+    phpglfw_buffer_glshort_ce->serialize = phpglfw_buffer_glshort_serialize_handler;
+    phpglfw_buffer_glshort_ce->unserialize = phpglfw_buffer_glshort_unserialize_handler;
     phpglfw_buffer_glshort_ce->get_iterator = phpglfw_buffer_glshort_get_iterator_handler;
 
 	zend_class_implements(phpglfw_buffer_glshort_ce, 1, phpglfw_buffer_interface_ce);
@@ -3435,6 +4716,8 @@ void phpglfw_register_buffer_module(INIT_FUNC_ARGS)
     INIT_CLASS_ENTRY(tmp_ce, "GL\\Buffer\\UShortBuffer", class_GL_Buffer_UShortBuffer_methods);
     phpglfw_buffer_glushort_ce = zend_register_internal_class(&tmp_ce);
     phpglfw_buffer_glushort_ce->create_object = phpglfw_buffer_glushort_create_handler;
+    phpglfw_buffer_glushort_ce->serialize = phpglfw_buffer_glushort_serialize_handler;
+    phpglfw_buffer_glushort_ce->unserialize = phpglfw_buffer_glushort_unserialize_handler;
     phpglfw_buffer_glushort_ce->get_iterator = phpglfw_buffer_glushort_get_iterator_handler;
 
 	zend_class_implements(phpglfw_buffer_glushort_ce, 1, phpglfw_buffer_interface_ce);
@@ -3450,6 +4733,8 @@ void phpglfw_register_buffer_module(INIT_FUNC_ARGS)
     INIT_CLASS_ENTRY(tmp_ce, "GL\\Buffer\\ByteBuffer", class_GL_Buffer_ByteBuffer_methods);
     phpglfw_buffer_glbyte_ce = zend_register_internal_class(&tmp_ce);
     phpglfw_buffer_glbyte_ce->create_object = phpglfw_buffer_glbyte_create_handler;
+    phpglfw_buffer_glbyte_ce->serialize = phpglfw_buffer_glbyte_serialize_handler;
+    phpglfw_buffer_glbyte_ce->unserialize = phpglfw_buffer_glbyte_unserialize_handler;
     phpglfw_buffer_glbyte_ce->get_iterator = phpglfw_buffer_glbyte_get_iterator_handler;
 
 	zend_class_implements(phpglfw_buffer_glbyte_ce, 1, phpglfw_buffer_interface_ce);
@@ -3465,6 +4750,8 @@ void phpglfw_register_buffer_module(INIT_FUNC_ARGS)
     INIT_CLASS_ENTRY(tmp_ce, "GL\\Buffer\\UByteBuffer", class_GL_Buffer_UByteBuffer_methods);
     phpglfw_buffer_glubyte_ce = zend_register_internal_class(&tmp_ce);
     phpglfw_buffer_glubyte_ce->create_object = phpglfw_buffer_glubyte_create_handler;
+    phpglfw_buffer_glubyte_ce->serialize = phpglfw_buffer_glubyte_serialize_handler;
+    phpglfw_buffer_glubyte_ce->unserialize = phpglfw_buffer_glubyte_unserialize_handler;
     phpglfw_buffer_glubyte_ce->get_iterator = phpglfw_buffer_glubyte_get_iterator_handler;
 
 	zend_class_implements(phpglfw_buffer_glubyte_ce, 1, phpglfw_buffer_interface_ce);

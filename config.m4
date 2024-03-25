@@ -4,8 +4,10 @@ dnl config.m4 for extension glfw
 PHP_ARG_ENABLE(glfw, whether to enable glfw support,
 [  --enable-glfw           Enable glfw support])
 
-PHP_ARG_WITH(glfw-dir, for glfw library,
-[  --with-glfw-dir[=DIR]   Set the path to glfw install prefix.], yes)
+PHP_ARG_WITH([glfw-dir],
+  [dir of glfw],
+  [AS_HELP_STRING([[--with-glfw-dir[=DIR]]],
+    [Path to the glfw library directory])], [no], [no])
 
 AC_MSG_CHECKING([for os target])
 AC_CANONICAL_HOST
@@ -30,22 +32,28 @@ else
   AC_MSG_RESULT([building for Linux])
 fi
 
+check_for_glfw3() {
+  for i in /usr/local /usr /opt /opt/homebrew /opt/local; do
+    if test -r "$i/include/GLFW/glfw3.h"; then
+      GLFW_DIR=$i
+      return 0
+    fi
+  done
+  return 1
+}
+
 if test "$PHP_GLFW" != "no"; then
 	
 	AC_MSG_CHECKING([for glfw installation])
 	
-	if test "x$PHP_GLFW_DIR" != "xno" && test "x$PHP_GLFW_DIR" != "xyes"; then
+  if test "x$PHP_GLFW_DIR" != "xno"; then
     if test -r "$PHP_GLFW_DIR/include/GLFW/glfw3.h"; then
       GLFW_DIR=$PHP_GLFW_DIR
-      break
+    else
+      check_for_glfw3
     fi
   else
-    for i in /usr/local /usr /opt /opt/local; do
-      if test -r "$i/include/GLFW/glfw3.h"; then
-        GLFW_DIR=$i
-        break
-      fi
-    done
+    check_for_glfw3
   fi
 
   if test "x$GLFW_DIR" = "x"; then
@@ -53,19 +61,12 @@ if test "$PHP_GLFW" != "no"; then
     # Build glfw
     cd vendor/glfw
     # cmake . -DGLFW_BUILD_TESTS=OFF -DGLFW_BUILD_EXAMPLES=OFF -DCMAKE_INSTALL_PREFIX=./ && make install
-    cmake . -DGLFW_BUILD_TESTS=OFF -DGLFW_BUILD_EXAMPLES=OFF -DBUILD_SHARED_LIBS=ON && sudo make install
+    cmake . -DGLFW_BUILD_TESTS=OFF -DGLFW_BUILD_EXAMPLES=OFF -DGLFW_BUILD_DOCS=OFF -DBUILD_SHARED_LIBS=ON && sudo make install
     if test "$build_linux" = "yes"; then
       sudo ldconfig 
     fi
     cd ./../../
-
-
-    for i in /usr/local /usr /opt /opt/local; do
-      if test -r "$i/include/GLFW/glfw3.h"; then
-        GLFW_DIR=$i
-        break
-      fi
-    done
+    check_for_glfw3
   fi
 
   if test "x$GLFW_DIR" = "x"; then
@@ -73,24 +74,6 @@ if test "$PHP_GLFW" != "no"; then
   fi
 
   AC_MSG_RESULT([found in $GLFW_DIR ($PHP_LIBDIR)])
-
-  # GLAD
-  PHP_ADD_INCLUDE(vendor/glad/include)
-
-  # CVector
-  PHP_ADD_INCLUDE(vendor/cvector)
-  
-  # STB headers
-  PHP_ADD_INCLUDE(vendor/stb) 
-
-  # Fast Obj
-  PHP_ADD_INCLUDE(vendor/fastobj) 
-  
-  # GLFW
-  PHP_ADD_INCLUDE([$GLFW_DIR/include])
-  PHP_ADD_LIBRARY_WITH_PATH(glfw, [$GLFW_DIR/lib], GLFW_SHARED_LIBADD)
-  AC_DEFINE(HAVE_GLFW, 1, [Whether you have glfw])
-  PHP_SUBST(GLFW_SHARED_LIBADD)
 
   # GLFW lib common sources
   GLFWLIB_SRC_FILES=""
@@ -131,7 +114,7 @@ if test "$PHP_GLFW" != "no"; then
     #   vendor/glfw/src/osmesa_context.c \
     #   vendor/glfw/src/null_joystick.c"
     
-    # PHP_ADD_BUILD_DIR($ext_builddir/vendro/glfw/src)
+    # PHP_ADD_BUILD_DIR($ext_builddir/vendor/glfw/src)
   fi
 
   PHPGLFW_SRC_FILES="phpglfw.c \
@@ -141,10 +124,39 @@ if test "$PHP_GLFW" != "no"; then
     phpglfw_buffer.c \
     phpglfw_texture.c \
     phpglfw_objparser.c \
+    phpglfw_vg.c \
     vendor/fastobj/fast_obj.c \
-    vendor/glad/src/glad.c"
+    vendor/glad/src/glad.c \
+    vendor/nanovg/src/nanovg.c"
+
+  # we already use stb libs in phpglfw so we need to stop nanovg from implementing them
+  GLFWPLATTFORMARGS="-DNVG_NO_STB=1 $GLFWPLATTFORMARGS"
+
+  # the generated arginfo file has unicode issues because we have classes like "\\UInt"
+  # im just going to supress those warnings for now, please don't judge me
+  GLFWPLATTFORMARGS="-Wno-unicode $GLFWPLATTFORMARGS"
+
+  PHP_ADD_LIBRARY_WITH_PATH(glfw, [$GLFW_DIR/lib], GLFW_SHARED_LIBADD)
+  AC_DEFINE(HAVE_GLFW, 1, [Whether you have glfw])
+  PHP_SUBST(GLFW_SHARED_LIBADD)
+    
+  PHP_NEW_EXTENSION(glfw, $PHPGLFW_SRC_FILES $GLFWLIB_SRC_FILES, $ext_shared, , $GLFWPLATTFORMARGS -Wall)
+
+  PHP_ADD_INCLUDE([$ext_srcdir])
+  PHP_ADD_INCLUDE([$ext_srcdir/vendor/glad/include])
+  PHP_ADD_INCLUDE([$ext_srcdir/vendor/cvector])
+  PHP_ADD_INCLUDE([$ext_srcdir/vendor/stb])
+  PHP_ADD_INCLUDE([$ext_srcdir/vendor/fastobj])
+  PHP_ADD_INCLUDE([$ext_srcdir/vendor/nanovg/src])
+  PHP_ADD_INCLUDE([$GLFW_DIR/include])
+
+  PHP_INSTALL_HEADERS([ext/glfw], [*.h \
+        vendor/glad/include/*.h \
+        vendor/cvector/*.h \
+        vendor/stb/*.h \
+        vendor/fastobj/*.h \
+        vendor/nanovg/src/*.h])
 
   PHP_ADD_BUILD_DIR($ext_builddir/src)
 
-  PHP_NEW_EXTENSION(glfw, $PHPGLFW_SRC_FILES $GLFWLIB_SRC_FILES, $ext_shared, , $GLFWPLATTFORMARGS -Wall)
 fi

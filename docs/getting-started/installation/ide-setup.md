@@ -2,13 +2,13 @@
 
 ## Stubs
 
-As this is a PHP extension, your editor / IDE does not support auto-completion and doc lookups without some help.
-We created a composer package you can include as a dev dependency to have full support:
+Since PHP-GLFW is a PHP extension, your editor / IDE may not support auto-completion and doc lookups without some help.
+To address this, we have created a composer package that you can include as a dev dependency to have full support:
 
 ```bash
 composer require --dev phpgl/ide-stubs
 ```
 
-## Visual Studio Code
+<!-- ## Visual Studio Code
 
-## PHPStorm
+## PHPStorm -->

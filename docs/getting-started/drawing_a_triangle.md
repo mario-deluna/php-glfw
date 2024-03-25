@@ -1,4 +1,4 @@
-# Drawing a triangle
+# Drawing a Triangle
 
 Now things start to get a bit more interesting and we are going to draw our first triangle. We will use the same window from the previous example, so make sure you have that running.
 
@@ -12,7 +12,7 @@ Now things start to get a bit more interesting and we are going to draw our firs
     This getting started tutorial is based on the examples provided with PHP-GLFW.<br> You can check out the complete source code here: [01_triangle.php](https://github.com/mario-deluna/php-glfw/blob/master/examples/01_triangle.php)
 
 
-## Why a triangle?
+## Why a Triangle?
 
 Why draw a triangle? Well, it's the simplest geometry you can draw and it's a good starting point to get familiar with the rendering pipeline.
 I honestly was kinda blown away when I realized that every object/model/mesh could be represented as a collection of triangles. (That sentence is going to make a few math people mad) but let me explain.
@@ -23,7 +23,7 @@ A square is made up of two triangles. A cube is made up of six squares, and so o
 
 My next level drawing skills besides, lets talk about the rendering pipeline.
 
-## The rendering pipeline
+## The Rendering Pipeline
 
 The rendering pipeline simplified, is a series of steps that are executed to transform a 3D model into a 2D image that can be displayed on the screen. The OpenGL pipeline in this example is divided into two parts, the vertex processing and fragment processing. There are many more steps/stages which we will not cover here to keep things simple. (If you are interested, you can read more about it [here](https://www.khronos.org/opengl/wiki/Rendering_Pipeline_Overview))
 
@@ -35,7 +35,7 @@ Some of these shaders can be programmed by the user. The GPU driver handles othe
 
 In PHP-GLFW (PHP OpenGL) you still write your shaders in GLSL. We could have written a transpiler of some sort to convert PHP to GLSL, but that would have been a lot of work and would have made the library a lot more complex, and I also believe it would ultimately defeat the purpose. 
 
-## Vertex arrays (VAO and VBO)
+## Vertex Arrays (VAO and VBO)
 
 In order to draw a triangle, we need to define the vertices that make up the triangle. A vertex array is not necessarily just an array of vertex positions. It can also contain other information such as color, texture coordinates, normals, etc. 
 
@@ -55,17 +55,19 @@ glBindBuffer(GL_ARRAY_BUFFER, $VBO);
 
 So what is happing here? We are creating a vertex array object (_VAO_) using the [`glGenVertexArrays`](./../API/OpenGL/glGenVertexArrays.md) function. We are also creating a buffer for our vertices using the [`glGenBuffers`](./../API/OpenGL/glGenBuffers.md) function. Using the [`glBindVertexArray`](./../API/OpenGL/glBindVertexArray.md) and [`glBindBuffer`](./../API/OpenGL/glBindBuffer.md) functions we are binding the buffer (_VBO_) and our vertex array object (_VAO_) to the current context.
 
+
+
 ### Uploading the vertex data
 
-PHP-GLFW provides a few helper classes to make it easier to upload data to the GPU. PHP unfortunately, doest really have built in tools to work with "real" arrays of data (like C/C++). So this extension comes with custom buffer classes that can be used to upload data to the GPU "directly".
+PHP-GLFW provides a few helper classes to make it easier to upload data to the GPU. PHP unfortunately, does not have built-in tools to work with "real" arrays of data (like C/C++). So this extension comes with custom buffer classes that can be used to upload data to the GPU "directly".
 
-So lets declare our triange vertices and upload them to the GPU using [`glBufferData`](./../API/OpenGL/glBufferData.md).
+So let's declare our triangle vertices and upload them to the GPU using [`glBufferData`](./../API/OpenGL/glBufferData.md).
 
 ```{ .php .annotate }
 $buffer = new \GL\Buffer\FloatBuffer([ # (1)!
    // positions     // colors
    0.5, -0.5, 0.0,  1.0, 0.0, 0.0,  // bottom right
-  -0.5, -0.5, 0.0,  0.0, 1.0, 0.0,  // bottom let
+  -0.5, -0.5, 0.0,  0.0, 1.0, 0.0,  // bottom left
    0.0,  0.5, 0.0,  0.0, 0.0, 1.0   // top 
 ]);
 
@@ -93,7 +95,7 @@ But what does the data actually mean? If not clear from the code here a visual r
 
 We now know how that buffer data is to be interpreted, but we still need to tell the GPU how to interpret the data. We do this by setting the vertex attribute pointers using the [`glVertexAttribPointer`](./../API/OpenGL/glVertexAttribPointer.md) function.
 
-А vertex attribute pointer consists of 3 central values to allow the GPU to iterate over your vertex data. Lets assume a type uniform vertex buffer for now:
+A vertex attribute pointer consists of 3 central values to allow the GPU to iterate over your vertex data. Lets assume a type uniform vertex buffer for now:
 
 - `size` - The number of components per vertex attribute
 - `stride` - The offset between consecutive vertex attributes
@@ -102,7 +104,7 @@ We now know how that buffer data is to be interpreted, but we still need to tell
 
 ![PHP-GLFW](./../docs-assets/php-glfw/getting_started/vertex_attributes.png){ width="100%"}
 
-Now in practive the [`glVertexAttribPointer`](./../API/OpenGL/glVertexAttribPointer.md) function is delcered like this:
+Now in practice the [`glVertexAttribPointer`](./../API/OpenGL/glVertexAttribPointer.md) function is declared like this:
 
 ```php
 function glVertexAttribPointer(
@@ -115,7 +117,7 @@ function glVertexAttribPointer(
 ) : void
 ```
 
-In case of our trinagle we have 6 components per vertex. The first 3 components are the position of the vertex and the last 3 components are the color of the vertex.
+In case of our triangle we have 6 components per vertex. The first 3 components are the position of the vertex and the last 3 components are the color of the vertex.
 
 ```php
 // positions

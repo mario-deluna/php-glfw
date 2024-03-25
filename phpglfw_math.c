@@ -3,7 +3,7 @@
  * 
  * Extension: GL Math
  *
- * Copyright (c) 2018-2022 Mario Döring
+ * Copyright (c) 2018-2024 Mario Döring
  * 
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -203,7 +203,7 @@ int phpglfw_math_vec2_unserialize_handler(zval *object, zend_class_entry *ce, co
     const unsigned char *buf_end = buf + buf_len;
     zval *zv;
     php_unserialize_data_t unserialize_data;
-    zend_object *zobj;
+    //zend_object *zobj;
 
     PHP_VAR_UNSERIALIZE_INIT(unserialize_data);
 
@@ -213,7 +213,7 @@ int phpglfw_math_vec2_unserialize_handler(zval *object, zend_class_entry *ce, co
     for (int i = 0; i < 2; i++) {
         zv = var_tmp_var(&unserialize_data);
         if (!php_var_unserialize(zv, &buf_ptr, buf_end, &unserialize_data) || Z_TYPE_P(zv) != IS_DOUBLE) {
-            zend_throw_error(NULL, "Could not unserialize vector element", 0);
+            zend_throw_error(NULL, "Could not unserialize vector element");
             zend_object_std_dtor(&obj->std);
             efree(obj);
             PHP_VAR_UNSERIALIZE_DESTROY(unserialize_data);
@@ -771,7 +771,7 @@ int phpglfw_math_vec3_unserialize_handler(zval *object, zend_class_entry *ce, co
     const unsigned char *buf_end = buf + buf_len;
     zval *zv;
     php_unserialize_data_t unserialize_data;
-    zend_object *zobj;
+    //zend_object *zobj;
 
     PHP_VAR_UNSERIALIZE_INIT(unserialize_data);
 
@@ -781,7 +781,7 @@ int phpglfw_math_vec3_unserialize_handler(zval *object, zend_class_entry *ce, co
     for (int i = 0; i < 3; i++) {
         zv = var_tmp_var(&unserialize_data);
         if (!php_var_unserialize(zv, &buf_ptr, buf_end, &unserialize_data) || Z_TYPE_P(zv) != IS_DOUBLE) {
-            zend_throw_error(NULL, "Could not unserialize vector element", 0);
+            zend_throw_error(NULL, "Could not unserialize vector element");
             zend_object_std_dtor(&obj->std);
             efree(obj);
             PHP_VAR_UNSERIALIZE_DESTROY(unserialize_data);
@@ -1408,7 +1408,7 @@ int phpglfw_math_vec4_unserialize_handler(zval *object, zend_class_entry *ce, co
     const unsigned char *buf_end = buf + buf_len;
     zval *zv;
     php_unserialize_data_t unserialize_data;
-    zend_object *zobj;
+    //zend_object *zobj;
 
     PHP_VAR_UNSERIALIZE_INIT(unserialize_data);
 
@@ -1418,7 +1418,7 @@ int phpglfw_math_vec4_unserialize_handler(zval *object, zend_class_entry *ce, co
     for (int i = 0; i < 4; i++) {
         zv = var_tmp_var(&unserialize_data);
         if (!php_var_unserialize(zv, &buf_ptr, buf_end, &unserialize_data) || Z_TYPE_P(zv) != IS_DOUBLE) {
-            zend_throw_error(NULL, "Could not unserialize vector element", 0);
+            zend_throw_error(NULL, "Could not unserialize vector element");
             zend_object_std_dtor(&obj->std);
             efree(obj);
             PHP_VAR_UNSERIALIZE_DESTROY(unserialize_data);
@@ -2006,7 +2006,7 @@ int phpglfw_math_quat_unserialize_handler(zval *object, zend_class_entry *ce, co
     const unsigned char *buf_end = buf + buf_len;
     zval *zv;
     php_unserialize_data_t unserialize_data;
-    zend_object *zobj;
+    //zend_object *zobj;
 
     PHP_VAR_UNSERIALIZE_INIT(unserialize_data);
 
@@ -2016,7 +2016,7 @@ int phpglfw_math_quat_unserialize_handler(zval *object, zend_class_entry *ce, co
     for (int i = 0; i < 4; i++) {
         zv = var_tmp_var(&unserialize_data);
         if (!php_var_unserialize(zv, &buf_ptr, buf_end, &unserialize_data) || Z_TYPE_P(zv) != IS_DOUBLE) {
-            zend_throw_error(NULL, "Could not unserialize vector element", 0);
+            zend_throw_error(NULL, "Could not unserialize vector element");
             zend_object_std_dtor(&obj->std);
             efree(obj);
             PHP_VAR_UNSERIALIZE_DESTROY(unserialize_data);
@@ -2731,7 +2731,7 @@ int phpglfw_math_mat4_unserialize_handler(zval *object, zend_class_entry *ce, co
     const unsigned char *buf_end = buf + buf_len;
     zval *zv;
     php_unserialize_data_t unserialize_data;
-    zend_object *zobj;
+    //zend_object *zobj;
 
     PHP_VAR_UNSERIALIZE_INIT(unserialize_data);
 
@@ -2742,7 +2742,7 @@ int phpglfw_math_mat4_unserialize_handler(zval *object, zend_class_entry *ce, co
         for (int y = 0; y < 4; y++) {
             zv = var_tmp_var(&unserialize_data);
             if (!php_var_unserialize(zv, &buf_ptr, buf_end, &unserialize_data) || Z_TYPE_P(zv) != IS_DOUBLE) {
-                zend_throw_error(NULL, "Could not unserialize matrix element", 0);
+                zend_throw_error(NULL, "Could not unserialize matrix element");
                 zend_object_std_dtor(&obj->std);
                 efree(obj);
                 PHP_VAR_UNSERIALIZE_DESTROY(unserialize_data);
@@ -2876,9 +2876,6 @@ static int phpglfw_math_mat4_do_op_handler(zend_uchar opcode, zval *result, zval
 
 PHP_METHOD(GL_Math_Mat4, __construct)
 {
-    zval *obj;
-    obj = getThis();
-    phpglfw_math_mat4_object *obj_ptr = phpglfw_math_mat4_objectptr_from_zobj_p(Z_OBJ_P(obj));
 
 }
 

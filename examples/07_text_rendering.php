@@ -27,11 +27,11 @@ glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
 // because we have a pixel font we want to use nearest neighbor filtering
 glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-$textureData = Texture2D::fromDisk(__DIR__ . '/font/cozette.png');
+$textureData = Texture2D::fromDisk(__DIR__ . '/font/cozette/cozette.png');
 glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, $textureData->width(), $textureData->height(), 0, GL_RGBA, GL_UNSIGNED_BYTE, $textureData->buffer());
 
 // next we need to parse the xml file that contains the font atlas
-$atlasXml = simplexml_load_file(__DIR__ . '/font/cozette.xml');
+$atlasXml = simplexml_load_file(__DIR__ . '/font/cozette/cozette.xml');
 $atlas = [];
 $atlasWidth = (int) $atlasXml->common->attributes()->scaleW;
 $atlasHeight = (int) $atlasXml->common->attributes()->scaleH;
