@@ -69,6 +69,19 @@ enum {
     PHPGLFW_VG_CW = NVG_CW,
 };
 
+enum {
+    PHPGLFW_VG_SOLID = NVG_SOLID,
+    PHPGLFW_VG_HOLE = NVG_HOLE,
+};
+
+enum {
+    PHPGLFW_VG_BUTT = NVG_BUTT,
+    PHPGLFW_VG_ROUND = NVG_ROUND,
+    PHPGLFW_VG_SQUARE = NVG_SQUARE,
+    PHPGLFW_VG_BEVEL = NVG_BEVEL,
+    PHPGLFW_VG_MITER = NVG_MITER,
+};
+
 zend_class_entry *phpglfw_get_vg_vgcontext_ce();
 zend_class_entry *phpglfw_get_vg_vgpaint_ce();
 zend_class_entry *phpglfw_get_vg_vgimage_ce();

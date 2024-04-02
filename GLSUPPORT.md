@@ -301,6 +301,9 @@
 - [ ] `glMultiDrawElementsBaseVertex`
 - [x] `glProvokingVertex`
 - [x] `glIsSync`
+- [x] `glDeleteSync`
+- [x] `glClientWaitSync`
+- [x] `glWaitSync`
 - [x] `glGetInteger64v`
 - [x] `glGetInteger64i_v`
 - [x] `glGetBufferParameteri64v`

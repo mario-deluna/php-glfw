@@ -4163,7 +4163,7 @@ PHP_FUNCTION(glVertexAttribPointer)
     if (zend_parse_parameters(ZEND_NUM_ARGS() , "lllbll", &index, &size, &type, &normalized, &stride, &offset) == FAILURE) {
         return;
     }
-    glVertexAttribPointer(index, size, type, normalized, stride, offset);
+    glVertexAttribPointer(index, size, type, normalized, stride, (const void*)(uintptr_t)offset);
 } 
 
 /**
@@ -6154,7 +6154,47 @@ PHP_FUNCTION(glIsSync)
     if (zend_parse_parameters(ZEND_NUM_ARGS() , "l", &sync) == FAILURE) {
         return;
     }
-    RETURN_BOOL(glIsSync(sync));
+    RETURN_BOOL(glIsSync((const void*)(uintptr_t)sync));
+} 
+
+/**
+ * glDeleteSync
+ */ 
+PHP_FUNCTION(glDeleteSync)
+{
+    zend_long sync;
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "l", &sync) == FAILURE) {
+        return;
+    }
+    glDeleteSync((const void*)(uintptr_t)sync);
+} 
+
+/**
+ * glClientWaitSync
+ */ 
+PHP_FUNCTION(glClientWaitSync)
+{
+    zend_long sync;
+    zend_long flags;
+    zend_long timeout;
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "lll", &sync, &flags, &timeout) == FAILURE) {
+        return;
+    }
+    RETURN_LONG(glClientWaitSync((const void*)(uintptr_t)sync, flags, timeout));
+} 
+
+/**
+ * glWaitSync
+ */ 
+PHP_FUNCTION(glWaitSync)
+{
+    zend_long sync;
+    zend_long flags;
+    zend_long timeout;
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "lll", &sync, &flags, &timeout) == FAILURE) {
+        return;
+    }
+    glWaitSync((const void*)(uintptr_t)sync, flags, timeout);
 } 
 
 /**

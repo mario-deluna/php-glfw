@@ -1372,6 +1372,19 @@ namespace GL\VectorGraphics
         //public static function fromVec4(\GL\Math\Vec4 $vec) : VGColor {}
         //public static function fromVec3(\GL\Math\Vec3 $vec) : VGColor {}
 
+        /**
+         * Hex color constructor
+         * You can pass a hex string with or without the `#` prefix. (e.g. `#FF0000` or `FF0000`)
+         * 
+         * Example:
+         *     $color = VGColor::hex('#FF0000');
+         *     $color = VGColor::hex('FF0000');
+         *     $color = VGColor::hex('#000');
+         * 
+         * @param string $hex The hex string to convert to a color.
+         */
+        public static function hex(string $hex) : VGColor {}
+
         public static function red() : VGColor {}
         public static function green() : VGColor {}
         public static function blue() : VGColor {}
@@ -1471,6 +1484,15 @@ namespace GL\VectorGraphics
 
         public const CCW = 1;
         public const CW = 2;
+
+        public const SOLID = 1;
+        public const HOLE = 2;
+
+        public const LINECAP_BUTT = 0;
+        public const LINECAP_ROUND = 1;
+        public const LINECAP_SQUARE = 2;
+        public const LINECAP_BEVEL = 3;
+        public const LINECAP_MITER = 4;
 
         public function __construct(int $flags = 0) {}
 

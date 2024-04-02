@@ -195,6 +195,8 @@ namespace GL\VectorGraphics
         //public static function fromVec4(\GL\Math\Vec4 $vec) : VGColor {}
         //public static function fromVec3(\GL\Math\Vec3 $vec) : VGColor {}
 
+        public static function hex(string $hex) : VGColor {}
+
         public static function red() : VGColor {}
         public static function green() : VGColor {}
         public static function blue() : VGColor {}
@@ -266,6 +268,15 @@ namespace GL\VectorGraphics
 
         // public const CCW = 1;
         // public const CW = 2;
+
+        // public const SOLID = 1;
+        // public const HOLE = 2;
+
+        // public const LINECAP_BUTT = 0;
+        // public const LINECAP_ROUND = 1;
+        // public const LINECAP_SQUARE = 2;
+        // public const LINECAP_BEVEL = 3;
+        // public const LINECAP_MITER = 4;
 
         public function __construct(int $flags = 0) {}
         public function fillColori(int $r, int $g, int $b, int $a) : void {}

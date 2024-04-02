@@ -38,11 +38,35 @@ class VGColorTest extends \PHPUnit\Framework\TestCase
         $this->assertEqualsColor(0.1, 0.2, 0.3, 0.4, $color);
     }
 
-    // public function testConstructorHex() : void
-    // {
-    //     $color = VGColor::hex(0x123456);
-    //     $this->assertEqualsColor(0.07, 0.20, 0.34, 1.0, $color);
-    // }
+    public function testConstructorHex() : void
+    {
+        $color = VGColor::hex('#FF0000');
+        $this->assertEqualsColor(1.0, 0.0, 0.0, 1.0, $color);
+
+        // lowercase
+        $color = VGColor::hex('#ff0000');
+        $this->assertEqualsColor(1.0, 0.0, 0.0, 1.0, $color);
+
+        // shorthand
+        $color = VGColor::hex('#F00');
+        $this->assertEqualsColor(1.0, 0.0, 0.0, 1.0, $color);
+
+        // lowercase shorthand
+        $color = VGColor::hex('#f00');
+        $this->assertEqualsColor(1.0, 0.0, 0.0, 1.0, $color);
+    
+        // 8 digit
+        $color = VGColor::hex('#FF000000');
+        $this->assertEqualsColor(1.0, 0.0, 0.0, 0.0, $color);
+
+        // without #
+        $color = VGColor::hex('00FF00');
+        $this->assertEqualsColor(0.0, 1.0, 0.0, 1.0, $color);
+
+        // lowercase without #
+        $color = VGColor::hex('0000ff');
+        $this->assertEqualsColor(0.0, 0.0, 1.0, 1.0, $color);
+    }
 
     public function testConstructorIRGB() : void
     {

@@ -1,5 +1,5 @@
 /* This is a generated file, edit the .stub.php file instead.
- * Stub hash: a0579792e55ffe668e8f27a2a88a2d5077eca81c */
+ * Stub hash: c99848f4f772ccbee652379c809ad7057283d774 */
 
 ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_glCullFace, 0, 1, IS_VOID, 0)
 	ZEND_ARG_TYPE_INFO(0, mode, IS_LONG, 0)
@@ -1130,6 +1130,22 @@ ZEND_END_ARG_INFO()
 
 ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_glIsSync, 0, 1, _IS_BOOL, 0)
 	ZEND_ARG_TYPE_INFO(0, sync, IS_LONG, 0)
+ZEND_END_ARG_INFO()
+
+ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_glDeleteSync, 0, 1, IS_VOID, 0)
+	ZEND_ARG_TYPE_INFO(0, sync, IS_LONG, 0)
+ZEND_END_ARG_INFO()
+
+ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_glClientWaitSync, 0, 3, IS_LONG, 0)
+	ZEND_ARG_TYPE_INFO(0, sync, IS_LONG, 0)
+	ZEND_ARG_TYPE_INFO(0, flags, IS_LONG, 0)
+	ZEND_ARG_TYPE_INFO(0, timeout, IS_LONG, 0)
+ZEND_END_ARG_INFO()
+
+ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_glWaitSync, 0, 3, IS_VOID, 0)
+	ZEND_ARG_TYPE_INFO(0, sync, IS_LONG, 0)
+	ZEND_ARG_TYPE_INFO(0, flags, IS_LONG, 0)
+	ZEND_ARG_TYPE_INFO(0, timeout, IS_LONG, 0)
 ZEND_END_ARG_INFO()
 
 ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_glGetInteger64v, 0, 2, IS_VOID, 0)
@@ -2842,6 +2858,10 @@ ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(arginfo_class_GL_VectorGraphics_VGColor_i
 	ZEND_ARG_TYPE_INFO(0, a, IS_LONG, 0)
 ZEND_END_ARG_INFO()
 
+ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(arginfo_class_GL_VectorGraphics_VGColor_hex, 0, 1, GL\\VectorGraphics\\VGColor, 0)
+	ZEND_ARG_TYPE_INFO(0, hex, IS_STRING, 0)
+ZEND_END_ARG_INFO()
+
 ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(arginfo_class_GL_VectorGraphics_VGColor_red, 0, 0, GL\\VectorGraphics\\VGColor, 0)
 ZEND_END_ARG_INFO()
 
@@ -3544,6 +3564,9 @@ ZEND_FUNCTION(glGetActiveUniformBlockiv);
 ZEND_FUNCTION(glUniformBlockBinding);
 ZEND_FUNCTION(glProvokingVertex);
 ZEND_FUNCTION(glIsSync);
+ZEND_FUNCTION(glDeleteSync);
+ZEND_FUNCTION(glClientWaitSync);
+ZEND_FUNCTION(glWaitSync);
 ZEND_FUNCTION(glGetInteger64v);
 ZEND_FUNCTION(glGetInteger64i_v);
 ZEND_FUNCTION(glGetBufferParameteri64v);
@@ -4030,6 +4053,7 @@ ZEND_METHOD(GL_VectorGraphics_VGColor, hsl);
 ZEND_METHOD(GL_VectorGraphics_VGColor, hsla);
 ZEND_METHOD(GL_VectorGraphics_VGColor, irgb);
 ZEND_METHOD(GL_VectorGraphics_VGColor, irgba);
+ZEND_METHOD(GL_VectorGraphics_VGColor, hex);
 ZEND_METHOD(GL_VectorGraphics_VGColor, red);
 ZEND_METHOD(GL_VectorGraphics_VGColor, green);
 ZEND_METHOD(GL_VectorGraphics_VGColor, blue);
@@ -4405,6 +4429,9 @@ static const zend_function_entry ext_functions[] = {
 	ZEND_FE(glUniformBlockBinding, arginfo_glUniformBlockBinding)
 	ZEND_FE(glProvokingVertex, arginfo_glProvokingVertex)
 	ZEND_FE(glIsSync, arginfo_glIsSync)
+	ZEND_FE(glDeleteSync, arginfo_glDeleteSync)
+	ZEND_FE(glClientWaitSync, arginfo_glClientWaitSync)
+	ZEND_FE(glWaitSync, arginfo_glWaitSync)
 	ZEND_FE(glGetInteger64v, arginfo_glGetInteger64v)
 	ZEND_FE(glGetInteger64i_v, arginfo_glGetInteger64i_v)
 	ZEND_FE(glGetBufferParameteri64v, arginfo_glGetBufferParameteri64v)
@@ -5016,6 +5043,7 @@ static const zend_function_entry class_GL_VectorGraphics_VGColor_methods[] = {
 	ZEND_ME(GL_VectorGraphics_VGColor, hsla, arginfo_class_GL_VectorGraphics_VGColor_hsla, ZEND_ACC_PUBLIC|ZEND_ACC_STATIC)
 	ZEND_ME(GL_VectorGraphics_VGColor, irgb, arginfo_class_GL_VectorGraphics_VGColor_irgb, ZEND_ACC_PUBLIC|ZEND_ACC_STATIC)
 	ZEND_ME(GL_VectorGraphics_VGColor, irgba, arginfo_class_GL_VectorGraphics_VGColor_irgba, ZEND_ACC_PUBLIC|ZEND_ACC_STATIC)
+	ZEND_ME(GL_VectorGraphics_VGColor, hex, arginfo_class_GL_VectorGraphics_VGColor_hex, ZEND_ACC_PUBLIC|ZEND_ACC_STATIC)
 	ZEND_ME(GL_VectorGraphics_VGColor, red, arginfo_class_GL_VectorGraphics_VGColor_red, ZEND_ACC_PUBLIC|ZEND_ACC_STATIC)
 	ZEND_ME(GL_VectorGraphics_VGColor, green, arginfo_class_GL_VectorGraphics_VGColor_green, ZEND_ACC_PUBLIC|ZEND_ACC_STATIC)
 	ZEND_ME(GL_VectorGraphics_VGColor, blue, arginfo_class_GL_VectorGraphics_VGColor_blue, ZEND_ACC_PUBLIC|ZEND_ACC_STATIC)

@@ -22,10 +22,10 @@ $gen->import($spec, 'gl', '4.1', [
     'glShaderSource', // custom implementation
     'glBufferData', // custom implementation
     'glGetSynciv', // currently not supported
-    'glWaitSync', // currently not supported
-    'glDeleteSync', // currently not supported
+    // 'glWaitSync', // currently not supported
+    // 'glDeleteSync', // currently not supported
     'glFenceSync', // currently not supported
-    'glClientWaitSync', // currently not supported
+    // 'glClientWaitSync', // currently not supported
 ]);
 
 // parse the glfw header
@@ -75,6 +75,7 @@ $gen->adjust(PHPGlfwAdjustments\GLGetStringAdjustment::class);
 $gen->adjust(PHPGlfwAdjustments\GLVectorSetterFunctionAdjustment::class);
 $gen->adjust(PHPGlfwAdjustments\GLGetShaderInfoLogAdjustment::class);
 $gen->adjust(PHPGlfwAdjustments\GLReadPixelsAdjustment::class);
+$gen->adjust(PHPGlfwAdjustments\GLConstVoidPtrAsUint::class);
 $gen->adjust(PHPGlfwAdjustments\BooleanConstAdjustment::class);
 $gen->adjust(PHPGlfwAdjustments\NVGCurrentTansformAdjustment::class);
 $gen->adjust(PHPGlfwAdjustments\NVGTextBoundsAdjustment::class);

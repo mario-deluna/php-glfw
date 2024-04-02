@@ -335,6 +335,8 @@ namespace GL\VectorGraphics
         //public static function fromVec4(\GL\Math\Vec4 $vec) : VGColor {}
         //public static function fromVec3(\GL\Math\Vec3 $vec) : VGColor {}
 
+        public static function hex(string $hex) : VGColor {}
+
         public static function red() : VGColor {}
         public static function green() : VGColor {}
         public static function blue() : VGColor {}
@@ -406,6 +408,15 @@ namespace GL\VectorGraphics
 
         // public const CCW = 1;
         // public const CW = 2;
+
+        // public const SOLID = 1;
+        // public const HOLE = 2;
+
+        // public const LINECAP_BUTT = 0;
+        // public const LINECAP_ROUND = 1;
+        // public const LINECAP_SQUARE = 2;
+        // public const LINECAP_BEVEL = 3;
+        // public const LINECAP_MITER = 4;
 
         public function __construct(int $flags = 0) {}
         public function fillColori(int $r, int $g, int $b, int $a) : void {}
@@ -2434,6 +2445,9 @@ namespace {
     function glUniformBlockBinding(int $program, int $uniformBlockIndex, int $uniformBlockBinding) : void {}
     function glProvokingVertex(int $mode) : void {}
     function glIsSync(int $sync) : bool {}
+    function glDeleteSync(int $sync) : void {}
+    function glClientWaitSync(int $sync, int $flags, int $timeout) : int {}
+    function glWaitSync(int $sync, int $flags, int $timeout) : void {}
     function glGetInteger64v(int $pname, int &$data) : void {}
     function glGetInteger64i_v(int $target, int $index, int &$data) : void {}
     function glGetBufferParameteri64v(int $target, int $pname, int &$params) : void {}

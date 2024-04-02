@@ -302,6 +302,76 @@ PHP_METHOD(GL_VectorGraphics_VGColor, irgba)
     color->nvgcolor = nvgRGBA(r, g, b, a);
 }
 
+PHP_METHOD(GL_VectorGraphics_VGColor, hex)
+{
+    const char *hex;
+    size_t hex_len;
+    size_t hex_off = 0;
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "s", &hex, &hex_len) == FAILURE) {
+        RETURN_THROWS();
+    }
+
+    // allocate memory for the 8 character hex string (9th is for the null terminator)
+    char hex_str[9] = {0, 0, 0, 0, 0, 0, 0, 0, 0};
+
+    // remove the hash if it exists
+    if (hex[0] == '#') {
+        hex_off = 1;
+    }
+
+    // if the hex string is only 3 characters long, we need to expand it
+    // Note: I know there is a smarter way to do this, but i had a memory bug
+    // this somehow fixed it and i could not be bothered to investigate further
+    if (hex_len - hex_off == 3) {
+        hex_str[0] = hex[0+hex_off];
+        hex_str[1] = hex[0+hex_off];
+        hex_str[2] = hex[1+hex_off];
+        hex_str[3] = hex[1+hex_off];
+        hex_str[4] = hex[2+hex_off];
+        hex_str[5] = hex[2+hex_off];
+        hex_str[6] = 'f';
+        hex_str[7] = 'f';
+    }
+    // 6 characters long
+    else if (hex_len - hex_off == 6) {
+        hex_str[0] = hex[0+hex_off];
+        hex_str[1] = hex[1+hex_off];
+        hex_str[2] = hex[2+hex_off];
+        hex_str[3] = hex[3+hex_off];
+        hex_str[4] = hex[4+hex_off];
+        hex_str[5] = hex[5+hex_off];
+        hex_str[6] = 'f';
+        hex_str[7] = 'f';
+    }
+    else if (hex_len - hex_off == 8) {
+        hex_str[0] = hex[0+hex_off];
+        hex_str[1] = hex[1+hex_off];
+        hex_str[2] = hex[2+hex_off];
+        hex_str[3] = hex[3+hex_off];
+        hex_str[4] = hex[4+hex_off];
+        hex_str[5] = hex[5+hex_off];
+        hex_str[6] = hex[6+hex_off];
+        hex_str[7] = hex[7+hex_off];
+    }
+    else {
+        zend_throw_error(NULL, "Invalid hex string length, must be 3, 6 or 8 characters long.");
+        RETURN_THROWS();
+    }
+
+    // convert the hex string to a long
+    long color = strtol(hex_str, NULL, 16);
+
+    // extract rgba values
+    float r = ((color >> 24) & 0xFF) / 255.0f;
+    float g = ((color >> 16) & 0xFF) / 255.0f;
+    float b = ((color >> 8) & 0xFF) / 255.0f;
+    float a = (color & 0xFF) / 255.0f;
+
+    object_init_ex(return_value, phpglfw_get_vg_vgcolor_ce());
+    phpglfw_vgcolor_object *vgcolor = phpglfw_vgcolor_objectptr_from_zobj_p(Z_OBJ_P(return_value));
+    vgcolor->nvgcolor = nvgRGBAf(r, g, b, a);
+}
+
 DEFINE_STATIC_VGCOLOR_METHOD(red, 1.0f, 0.0f, 0.0f, 1.0f);
 DEFINE_STATIC_VGCOLOR_METHOD(green, 0.0f, 1.0f, 0.0f, 1.0f);
 DEFINE_STATIC_VGCOLOR_METHOD(blue, 0.0f, 0.0f, 1.0f, 1.0f);
@@ -798,6 +868,17 @@ void phpglfw_register_vg_module(INIT_FUNC_ARGS)
     // CCW and CW
     zend_declare_class_constant_long(phpglfw_vgcontext_ce, "CCW", strlen("CCW"), PHPGLFW_VG_CCW);
     zend_declare_class_constant_long(phpglfw_vgcontext_ce, "CW", strlen("CW"), PHPGLFW_VG_CW);
+
+    // Solidity
+    zend_declare_class_constant_long(phpglfw_vgcontext_ce, "SOLID", strlen("SOLID"), PHPGLFW_VG_SOLID);
+    zend_declare_class_constant_long(phpglfw_vgcontext_ce, "HOLE", strlen("HOLE"), PHPGLFW_VG_HOLE);
+
+    // LineCap
+    zend_declare_class_constant_long(phpglfw_vgcontext_ce, "LINECAP_BUTT", strlen("LINECAP_BUTT"), PHPGLFW_VG_BUTT);
+    zend_declare_class_constant_long(phpglfw_vgcontext_ce, "LINECAP_ROUND", strlen("LINECAP_ROUND"), PHPGLFW_VG_ROUND);
+    zend_declare_class_constant_long(phpglfw_vgcontext_ce, "LINECAP_SQUARE", strlen("LINECAP_SQUARE"), PHPGLFW_VG_SQUARE);
+    zend_declare_class_constant_long(phpglfw_vgcontext_ce, "LINECAP_BEVEL", strlen("LINECAP_BEVEL"), PHPGLFW_VG_BEVEL);
+    zend_declare_class_constant_long(phpglfw_vgcontext_ce, "LINECAP_MITER", strlen("LINECAP_MITER"), PHPGLFW_VG_MITER);
 
     // initialize and register the VectorGraphics Color class
     INIT_CLASS_ENTRY(tmp_ce, "GL\\VectorGraphics\\VGColor", class_GL_VectorGraphics_VGColor_methods);
