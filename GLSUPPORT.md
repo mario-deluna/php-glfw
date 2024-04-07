@@ -40,7 +40,7 @@
 - [x] `glGetFloatv`
 - [x] `glGetIntegerv`
 - [x] `glGetString`
-- [ ] `glGetTexImage`
+- [x] `glGetTexImage`
 - [x] `glGetTexParameterfv`
 - [x] `glGetTexParameteriv`
 - [x] `glGetTexLevelParameterfv`

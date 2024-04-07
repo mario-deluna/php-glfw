@@ -179,6 +179,7 @@ namespace GL\Buffer
         public function size() : int {}
         public function capacity() : int {}
         public function reserve(int $size) : void {}
+        public function dump() : string {}
     }
 <?php endforeach; ?>
 };

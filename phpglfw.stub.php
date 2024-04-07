@@ -224,6 +224,7 @@ namespace GL\Buffer
         public function size() : int {}
         public function capacity() : int {}
         public function reserve(int $size) : void {}
+        public function dump() : string {}
     }
 
     class HFloatBuffer implements BufferInterface {
@@ -236,6 +237,7 @@ namespace GL\Buffer
         public function size() : int {}
         public function capacity() : int {}
         public function reserve(int $size) : void {}
+        public function dump() : string {}
     }
 
     class DoubleBuffer implements BufferInterface {
@@ -248,6 +250,7 @@ namespace GL\Buffer
         public function size() : int {}
         public function capacity() : int {}
         public function reserve(int $size) : void {}
+        public function dump() : string {}
     }
 
     class IntBuffer implements BufferInterface {
@@ -260,6 +263,7 @@ namespace GL\Buffer
         public function size() : int {}
         public function capacity() : int {}
         public function reserve(int $size) : void {}
+        public function dump() : string {}
     }
 
     class UIntBuffer implements BufferInterface {
@@ -272,6 +276,7 @@ namespace GL\Buffer
         public function size() : int {}
         public function capacity() : int {}
         public function reserve(int $size) : void {}
+        public function dump() : string {}
     }
 
     class ShortBuffer implements BufferInterface {
@@ -284,6 +289,7 @@ namespace GL\Buffer
         public function size() : int {}
         public function capacity() : int {}
         public function reserve(int $size) : void {}
+        public function dump() : string {}
     }
 
     class UShortBuffer implements BufferInterface {
@@ -296,6 +302,7 @@ namespace GL\Buffer
         public function size() : int {}
         public function capacity() : int {}
         public function reserve(int $size) : void {}
+        public function dump() : string {}
     }
 
     class ByteBuffer implements BufferInterface {
@@ -308,6 +315,7 @@ namespace GL\Buffer
         public function size() : int {}
         public function capacity() : int {}
         public function reserve(int $size) : void {}
+        public function dump() : string {}
     }
 
     class UByteBuffer implements BufferInterface {
@@ -320,6 +328,7 @@ namespace GL\Buffer
         public function size() : int {}
         public function capacity() : int {}
         public function reserve(int $size) : void {}
+        public function dump() : string {}
     }
 };
 
@@ -2221,6 +2230,7 @@ namespace {
     function glGetFloatv(int $pname, ?bool &...$data) : void {}
     function glGetIntegerv(int $pname, ?bool &...$data) : void {}
     function glGetString(int $name) : string {}
+    function glGetTexImage(int $target, int $level, int $format, int $type, \GL\Buffer\BufferInterface $pixels) : void {}
     function glGetTexParameterfv(int $target, int $pname, ?bool &...$params) : void {}
     function glGetTexParameteriv(int $target, int $pname, ?bool &...$params) : void {}
     function glGetTexLevelParameterfv(int $target, int $level, int $pname, float &$params) : void {}

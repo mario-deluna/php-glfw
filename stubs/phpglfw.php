@@ -1227,6 +1227,13 @@ namespace GL\Buffer
          * @return int buffer space in element count (not bytes)
          */
         public function capacity() : int {}
+
+        /**
+         * Returns the internal data of the buffer as a binary string.
+         * 
+         * @return string The binary string of the buffer.
+         */
+        public function dump() : string {}
     }
 
     class HFloatBuffer implements BufferInterface {
@@ -1297,6 +1304,13 @@ namespace GL\Buffer
          * @return int buffer space in element count (not bytes)
          */
         public function capacity() : int {}
+
+        /**
+         * Returns the internal data of the buffer as a binary string.
+         * 
+         * @return string The binary string of the buffer.
+         */
+        public function dump() : string {}
     }
 
     class DoubleBuffer implements BufferInterface {
@@ -1367,6 +1381,13 @@ namespace GL\Buffer
          * @return int buffer space in element count (not bytes)
          */
         public function capacity() : int {}
+
+        /**
+         * Returns the internal data of the buffer as a binary string.
+         * 
+         * @return string The binary string of the buffer.
+         */
+        public function dump() : string {}
     }
 
     class IntBuffer implements BufferInterface {
@@ -1437,6 +1458,13 @@ namespace GL\Buffer
          * @return int buffer space in element count (not bytes)
          */
         public function capacity() : int {}
+
+        /**
+         * Returns the internal data of the buffer as a binary string.
+         * 
+         * @return string The binary string of the buffer.
+         */
+        public function dump() : string {}
     }
 
     class UIntBuffer implements BufferInterface {
@@ -1507,6 +1535,13 @@ namespace GL\Buffer
          * @return int buffer space in element count (not bytes)
          */
         public function capacity() : int {}
+
+        /**
+         * Returns the internal data of the buffer as a binary string.
+         * 
+         * @return string The binary string of the buffer.
+         */
+        public function dump() : string {}
     }
 
     class ShortBuffer implements BufferInterface {
@@ -1577,6 +1612,13 @@ namespace GL\Buffer
          * @return int buffer space in element count (not bytes)
          */
         public function capacity() : int {}
+
+        /**
+         * Returns the internal data of the buffer as a binary string.
+         * 
+         * @return string The binary string of the buffer.
+         */
+        public function dump() : string {}
     }
 
     class UShortBuffer implements BufferInterface {
@@ -1647,6 +1689,13 @@ namespace GL\Buffer
          * @return int buffer space in element count (not bytes)
          */
         public function capacity() : int {}
+
+        /**
+         * Returns the internal data of the buffer as a binary string.
+         * 
+         * @return string The binary string of the buffer.
+         */
+        public function dump() : string {}
     }
 
     class ByteBuffer implements BufferInterface {
@@ -1717,6 +1766,13 @@ namespace GL\Buffer
          * @return int buffer space in element count (not bytes)
          */
         public function capacity() : int {}
+
+        /**
+         * Returns the internal data of the buffer as a binary string.
+         * 
+         * @return string The binary string of the buffer.
+         */
+        public function dump() : string {}
     }
 
     class UByteBuffer implements BufferInterface {
@@ -1787,6 +1843,13 @@ namespace GL\Buffer
          * @return int buffer space in element count (not bytes)
          */
         public function capacity() : int {}
+
+        /**
+         * Returns the internal data of the buffer as a binary string.
+         * 
+         * @return string The binary string of the buffer.
+         */
+        public function dump() : string {}
     }
 };
 
@@ -3089,6 +3152,19 @@ namespace {
      * @return string
      */ 
     function glGetString(int $name) : string {}
+ 
+    /**
+     * glGetTexImage
+     * 
+     * @param int $target 
+     * @param int $level 
+     * @param int $format 
+     * @param int $type 
+     * @param \GL\Buffer\BufferInterface $pixels 
+     * 
+     * @return void
+     */ 
+    function glGetTexImage(int $target, int $level, int $format, int $type, \GL\Buffer\BufferInterface $pixels) : void {}
  
     /**
      * glGetTexParameterfv

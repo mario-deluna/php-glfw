@@ -616,6 +616,15 @@ PHP_METHOD(<?php echo $buffer->getFullNamespaceConstString(); ?>, capacity)
     RETURN_LONG(cvector_capacity(obj_ptr->vec));
 }
 
+PHP_METHOD(<?php echo $buffer->getFullNamespaceConstString(); ?>, dump)
+{
+    zval *obj;
+    obj = getThis();
+    <?php echo $buffer->getObjectName(); ?> *obj_ptr = <?php echo $buffer->objectFromZObjFunctionName(); ?>(Z_OBJ_P(obj));
+
+    RETURN_STRINGL((char *)obj_ptr->vec, cvector_size(obj_ptr->vec) * sizeof(<?php echo $buffer->type; ?>));
+}
+
 PHP_METHOD(<?php echo $buffer->getFullNamespaceConstString(); ?>, __construct)
 {
     HashTable *initaldata = NULL;

@@ -841,6 +841,13 @@ namespace GL\Buffer
          * @return int buffer space in element count (not bytes)
          */
         public function capacity() : int {}
+
+        /**
+         * Returns the internal data of the buffer as a binary string.
+         * 
+         * @return string The binary string of the buffer.
+         */
+        public function dump() : string {}
     }
 <?php endforeach; ?>
 };

@@ -658,6 +658,15 @@ PHP_METHOD(GL_Buffer_FloatBuffer, capacity)
     RETURN_LONG(cvector_capacity(obj_ptr->vec));
 }
 
+PHP_METHOD(GL_Buffer_FloatBuffer, dump)
+{
+    zval *obj;
+    obj = getThis();
+    phpglfw_buffer_glfloat_object *obj_ptr = phpglfw_buffer_glfloat_objectptr_from_zobj_p(Z_OBJ_P(obj));
+
+    RETURN_STRINGL((char *)obj_ptr->vec, cvector_size(obj_ptr->vec) * sizeof(GLfloat));
+}
+
 PHP_METHOD(GL_Buffer_FloatBuffer, __construct)
 {
     HashTable *initaldata = NULL;
@@ -1144,6 +1153,15 @@ PHP_METHOD(GL_Buffer_HFloatBuffer, capacity)
     phpglfw_buffer_glhalf_object *obj_ptr = phpglfw_buffer_glhalf_objectptr_from_zobj_p(Z_OBJ_P(obj));
 
     RETURN_LONG(cvector_capacity(obj_ptr->vec));
+}
+
+PHP_METHOD(GL_Buffer_HFloatBuffer, dump)
+{
+    zval *obj;
+    obj = getThis();
+    phpglfw_buffer_glhalf_object *obj_ptr = phpglfw_buffer_glhalf_objectptr_from_zobj_p(Z_OBJ_P(obj));
+
+    RETURN_STRINGL((char *)obj_ptr->vec, cvector_size(obj_ptr->vec) * sizeof(GLhalf));
 }
 
 PHP_METHOD(GL_Buffer_HFloatBuffer, __construct)
@@ -1642,6 +1660,15 @@ PHP_METHOD(GL_Buffer_DoubleBuffer, capacity)
     RETURN_LONG(cvector_capacity(obj_ptr->vec));
 }
 
+PHP_METHOD(GL_Buffer_DoubleBuffer, dump)
+{
+    zval *obj;
+    obj = getThis();
+    phpglfw_buffer_gldouble_object *obj_ptr = phpglfw_buffer_gldouble_objectptr_from_zobj_p(Z_OBJ_P(obj));
+
+    RETURN_STRINGL((char *)obj_ptr->vec, cvector_size(obj_ptr->vec) * sizeof(GLdouble));
+}
+
 PHP_METHOD(GL_Buffer_DoubleBuffer, __construct)
 {
     HashTable *initaldata = NULL;
@@ -2128,6 +2155,15 @@ PHP_METHOD(GL_Buffer_IntBuffer, capacity)
     phpglfw_buffer_glint_object *obj_ptr = phpglfw_buffer_glint_objectptr_from_zobj_p(Z_OBJ_P(obj));
 
     RETURN_LONG(cvector_capacity(obj_ptr->vec));
+}
+
+PHP_METHOD(GL_Buffer_IntBuffer, dump)
+{
+    zval *obj;
+    obj = getThis();
+    phpglfw_buffer_glint_object *obj_ptr = phpglfw_buffer_glint_objectptr_from_zobj_p(Z_OBJ_P(obj));
+
+    RETURN_STRINGL((char *)obj_ptr->vec, cvector_size(obj_ptr->vec) * sizeof(GLint));
 }
 
 PHP_METHOD(GL_Buffer_IntBuffer, __construct)
@@ -2618,6 +2654,15 @@ PHP_METHOD(GL_Buffer_UIntBuffer, capacity)
     RETURN_LONG(cvector_capacity(obj_ptr->vec));
 }
 
+PHP_METHOD(GL_Buffer_UIntBuffer, dump)
+{
+    zval *obj;
+    obj = getThis();
+    phpglfw_buffer_gluint_object *obj_ptr = phpglfw_buffer_gluint_objectptr_from_zobj_p(Z_OBJ_P(obj));
+
+    RETURN_STRINGL((char *)obj_ptr->vec, cvector_size(obj_ptr->vec) * sizeof(GLuint));
+}
+
 PHP_METHOD(GL_Buffer_UIntBuffer, __construct)
 {
     HashTable *initaldata = NULL;
@@ -3104,6 +3149,15 @@ PHP_METHOD(GL_Buffer_ShortBuffer, capacity)
     phpglfw_buffer_glshort_object *obj_ptr = phpglfw_buffer_glshort_objectptr_from_zobj_p(Z_OBJ_P(obj));
 
     RETURN_LONG(cvector_capacity(obj_ptr->vec));
+}
+
+PHP_METHOD(GL_Buffer_ShortBuffer, dump)
+{
+    zval *obj;
+    obj = getThis();
+    phpglfw_buffer_glshort_object *obj_ptr = phpglfw_buffer_glshort_objectptr_from_zobj_p(Z_OBJ_P(obj));
+
+    RETURN_STRINGL((char *)obj_ptr->vec, cvector_size(obj_ptr->vec) * sizeof(GLshort));
 }
 
 PHP_METHOD(GL_Buffer_ShortBuffer, __construct)
@@ -3594,6 +3648,15 @@ PHP_METHOD(GL_Buffer_UShortBuffer, capacity)
     RETURN_LONG(cvector_capacity(obj_ptr->vec));
 }
 
+PHP_METHOD(GL_Buffer_UShortBuffer, dump)
+{
+    zval *obj;
+    obj = getThis();
+    phpglfw_buffer_glushort_object *obj_ptr = phpglfw_buffer_glushort_objectptr_from_zobj_p(Z_OBJ_P(obj));
+
+    RETURN_STRINGL((char *)obj_ptr->vec, cvector_size(obj_ptr->vec) * sizeof(GLushort));
+}
+
 PHP_METHOD(GL_Buffer_UShortBuffer, __construct)
 {
     HashTable *initaldata = NULL;
@@ -4082,6 +4145,15 @@ PHP_METHOD(GL_Buffer_ByteBuffer, capacity)
     RETURN_LONG(cvector_capacity(obj_ptr->vec));
 }
 
+PHP_METHOD(GL_Buffer_ByteBuffer, dump)
+{
+    zval *obj;
+    obj = getThis();
+    phpglfw_buffer_glbyte_object *obj_ptr = phpglfw_buffer_glbyte_objectptr_from_zobj_p(Z_OBJ_P(obj));
+
+    RETURN_STRINGL((char *)obj_ptr->vec, cvector_size(obj_ptr->vec) * sizeof(GLbyte));
+}
+
 PHP_METHOD(GL_Buffer_ByteBuffer, __construct)
 {
     HashTable *initaldata = NULL;
@@ -4568,6 +4640,15 @@ PHP_METHOD(GL_Buffer_UByteBuffer, capacity)
     phpglfw_buffer_glubyte_object *obj_ptr = phpglfw_buffer_glubyte_objectptr_from_zobj_p(Z_OBJ_P(obj));
 
     RETURN_LONG(cvector_capacity(obj_ptr->vec));
+}
+
+PHP_METHOD(GL_Buffer_UByteBuffer, dump)
+{
+    zval *obj;
+    obj = getThis();
+    phpglfw_buffer_glubyte_object *obj_ptr = phpglfw_buffer_glubyte_objectptr_from_zobj_p(Z_OBJ_P(obj));
+
+    RETURN_STRINGL((char *)obj_ptr->vec, cvector_size(obj_ptr->vec) * sizeof(GLubyte));
 }
 
 PHP_METHOD(GL_Buffer_UByteBuffer, __construct)
