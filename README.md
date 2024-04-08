@@ -147,16 +147,6 @@ PHP-GLFW parses the OpenGL specs to generate most of the C extension, instead of
 
 Explore the [examples](./examples#examples) directory to dive into the code.
 
-### PHP-Towerdense Game
-
-We are currently developing a 3D game entirely built with PHP, leveraging the power of PHP-GLFW. The game, named PHP-TowerDefense, is open-source and serves as a showcase for the capabilities of PHP-GLFW. Although the game is in active development, it is not yet ready for release.
-
-<p align="center">
- <img width="80%" alt="PHP-TowerDefense Screenshot" src="https://user-images.githubusercontent.com/956212/222989984-e1b2d431-26de-47f4-a17d-7800e5afb052.jpg">
-</p>
-Check out the game's repository on GitHub for more information and to follow its progress: https://github.com/phpgl/php-towerdefense
-
-
 ### FlappyPHPant
 
 A very simple Flappy Bird-like game written in PHP.
@@ -167,15 +157,6 @@ A very simple Flappy Bird-like game written in PHP.
 
 https://github.com/phpgl/flappyphpant
 
-### php-pong
-
-Classic Pong game programmed with pure OpenGL wrapped in OOP code.
-
-<p align="center">
-   <img width="640" src="https://raw.githubusercontent.com/medilies/php-pong/main/screened.gif" alt="Classic Pong Game written in PHP">
-</p>
-
-https://github.com/medilies/php-pong
 
 ### php-chip8
 
@@ -186,6 +167,26 @@ Yet another CHIP-8 emulator, but in PHP!
 </p>
 
 https://github.com/mario-deluna/php-chip8
+
+
+### PHP-Towerdense Game
+
+We are currently developing a 3D game entirely built with PHP, leveraging the power of PHP-GLFW. The game, named PHP-TowerDefense, is open-source and serves as a showcase for the capabilities of PHP-GLFW. Although the game is in active development, it is not yet ready for release.
+
+<p align="center">
+ <img width="80%" alt="PHP-TowerDefense Screenshot" src="https://user-images.githubusercontent.com/956212/222989984-e1b2d431-26de-47f4-a17d-7800e5afb052.jpg">
+</p>
+Check out the game's repository on GitHub for more information and to follow its progress: https://github.com/phpgl/php-towerdefense
+
+### php-pong
+
+Classic Pong game programmed with pure OpenGL wrapped in OOP code.
+
+<p align="center">
+   <img width="640" src="https://raw.githubusercontent.com/medilies/php-pong/main/screened.gif" alt="Classic Pong Game written in PHP">
+</p>
+
+https://github.com/medilies/php-pong
 
 ## Installation 
 
