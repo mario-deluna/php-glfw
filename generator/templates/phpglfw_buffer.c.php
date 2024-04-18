@@ -556,6 +556,46 @@ PHP_METHOD(<?php echo $buffer->getFullNamespaceConstString(); ?>, pushMat4)
     }
 }
 
+PHP_METHOD(<?php echo $buffer->getFullNamespaceConstString(); ?>, quantizeToUChar)
+{
+    bool autonormalize = true;
+    double upper_bound = 1.0;
+    double lower_bound = 0.0;
+
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "|bdd", &autonormalize, &lower_bound, &upper_bound) == FAILURE) {
+        return;
+    }
+
+    float min = lower_bound;
+    float max = upper_bound;
+
+    zval *obj;
+    obj = getThis();
+    <?php echo $buffer->getObjectName(); ?> *obj_ptr = <?php echo $buffer->objectFromZObjFunctionName(); ?>(Z_OBJ_P(obj));
+
+    // make the return value a ubyte Buffer
+    object_init_ex(return_value, phpglfw_get_buffer_glubyte_ce());
+    phpglfw_buffer_glubyte_object *res_ptr = phpglfw_buffer_glubyte_objectptr_from_zobj_p(Z_OBJ_P(return_value));
+
+    // determine the min and max values if autonormalize is enabled
+    if (autonormalize) {
+        for(size_t i = 0; i < cvector_size(obj_ptr->vec); i++) {
+            min = pglmin(min, obj_ptr->vec[i]);
+            max = pglmax(max, obj_ptr->vec[i]);
+        }
+    }
+    
+    // ensure buffer has the correct size
+    cvector_reserve(res_ptr->vec, cvector_size(obj_ptr->vec));
+    cvector_set_size(res_ptr->vec, cvector_size(obj_ptr->vec));
+
+    // quantize the values
+    for(size_t i = 0; i < cvector_size(obj_ptr->vec); i++) {
+        res_ptr->vec[i] = (GLubyte) (255.0 * (obj_ptr->vec[i] - min) / (max - min));
+    }
+}
+
+
 <?php endif; ?>
 
 

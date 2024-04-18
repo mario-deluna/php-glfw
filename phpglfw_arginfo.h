@@ -1,5 +1,5 @@
 /* This is a generated file, edit the .stub.php file instead.
- * Stub hash: fe94f09fe6a0f4fd45eeaeb334c4e05a04a7b020 */
+ * Stub hash: 1662d3dcede06a7251c032db07c4d51ecfa7d083 */
 
 ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_glCullFace, 0, 1, IS_VOID, 0)
 	ZEND_ARG_TYPE_INFO(0, mode, IS_LONG, 0)
@@ -2314,6 +2314,88 @@ ZEND_END_ARG_INFO()
 
 #define arginfo_class_GL_Texture_Texture2D_writeTGA arginfo_class_GL_Texture_Texture2D_writePNG
 
+ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_class_GL_Noise_perlin, 0, 3, IS_DOUBLE, 0)
+	ZEND_ARG_TYPE_INFO(0, x, IS_DOUBLE, 0)
+	ZEND_ARG_TYPE_INFO(0, y, IS_DOUBLE, 0)
+	ZEND_ARG_TYPE_INFO(0, z, IS_DOUBLE, 0)
+	ZEND_ARG_TYPE_INFO_WITH_DEFAULT_VALUE(0, wrapX, IS_LONG, 0, "0")
+	ZEND_ARG_TYPE_INFO_WITH_DEFAULT_VALUE(0, wrapY, IS_LONG, 0, "0")
+	ZEND_ARG_TYPE_INFO_WITH_DEFAULT_VALUE(0, wrapZ, IS_LONG, 0, "0")
+	ZEND_ARG_TYPE_INFO_WITH_DEFAULT_VALUE(0, seed, IS_LONG, 0, "0")
+ZEND_END_ARG_INFO()
+
+ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_class_GL_Noise_ridge, 0, 3, IS_DOUBLE, 0)
+	ZEND_ARG_TYPE_INFO(0, x, IS_DOUBLE, 0)
+	ZEND_ARG_TYPE_INFO(0, y, IS_DOUBLE, 0)
+	ZEND_ARG_TYPE_INFO(0, z, IS_DOUBLE, 0)
+	ZEND_ARG_TYPE_INFO_WITH_DEFAULT_VALUE(0, lacunarity, IS_DOUBLE, 0, "2.0")
+	ZEND_ARG_TYPE_INFO_WITH_DEFAULT_VALUE(0, gain, IS_DOUBLE, 0, "0.5")
+	ZEND_ARG_TYPE_INFO_WITH_DEFAULT_VALUE(0, offset, IS_DOUBLE, 0, "1.0")
+	ZEND_ARG_TYPE_INFO_WITH_DEFAULT_VALUE(0, octaves, IS_LONG, 0, "6")
+ZEND_END_ARG_INFO()
+
+ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_class_GL_Noise_fbm, 0, 3, IS_DOUBLE, 0)
+	ZEND_ARG_TYPE_INFO(0, x, IS_DOUBLE, 0)
+	ZEND_ARG_TYPE_INFO(0, y, IS_DOUBLE, 0)
+	ZEND_ARG_TYPE_INFO(0, z, IS_DOUBLE, 0)
+	ZEND_ARG_TYPE_INFO_WITH_DEFAULT_VALUE(0, lacunarity, IS_DOUBLE, 0, "2.0")
+	ZEND_ARG_TYPE_INFO_WITH_DEFAULT_VALUE(0, gain, IS_DOUBLE, 0, "0.5")
+	ZEND_ARG_TYPE_INFO_WITH_DEFAULT_VALUE(0, octaves, IS_LONG, 0, "6")
+ZEND_END_ARG_INFO()
+
+#define arginfo_class_GL_Noise_turbulence arginfo_class_GL_Noise_fbm
+
+ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_class_GL_Noise_perlinFill2D, 0, 4, IS_VOID, 0)
+	ZEND_ARG_OBJ_INFO(0, buffer, GL\\Buffer\\FloatBuffer, 0)
+	ZEND_ARG_TYPE_INFO(0, width, IS_LONG, 0)
+	ZEND_ARG_TYPE_INFO(0, height, IS_LONG, 0)
+	ZEND_ARG_TYPE_INFO(0, scale, IS_DOUBLE, 0)
+	ZEND_ARG_TYPE_INFO_WITH_DEFAULT_VALUE(0, offsetX, IS_DOUBLE, 0, "0")
+	ZEND_ARG_TYPE_INFO_WITH_DEFAULT_VALUE(0, offsetY, IS_DOUBLE, 0, "0")
+	ZEND_ARG_TYPE_INFO_WITH_DEFAULT_VALUE(0, wrapX, IS_LONG, 0, "0")
+	ZEND_ARG_TYPE_INFO_WITH_DEFAULT_VALUE(0, wrapY, IS_LONG, 0, "0")
+	ZEND_ARG_TYPE_INFO_WITH_DEFAULT_VALUE(0, seed, IS_LONG, 0, "0")
+ZEND_END_ARG_INFO()
+
+ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_class_GL_Noise_ridgeFill2D, 0, 4, IS_VOID, 0)
+	ZEND_ARG_OBJ_INFO(0, buffer, GL\\Buffer\\FloatBuffer, 0)
+	ZEND_ARG_TYPE_INFO(0, width, IS_LONG, 0)
+	ZEND_ARG_TYPE_INFO(0, height, IS_LONG, 0)
+	ZEND_ARG_TYPE_INFO(0, scale, IS_DOUBLE, 0)
+	ZEND_ARG_TYPE_INFO_WITH_DEFAULT_VALUE(0, offsetX, IS_DOUBLE, 0, "0")
+	ZEND_ARG_TYPE_INFO_WITH_DEFAULT_VALUE(0, offsetY, IS_DOUBLE, 0, "0")
+	ZEND_ARG_TYPE_INFO_WITH_DEFAULT_VALUE(0, lacunarity, IS_DOUBLE, 0, "2.0")
+	ZEND_ARG_TYPE_INFO_WITH_DEFAULT_VALUE(0, gain, IS_DOUBLE, 0, "0.5")
+	ZEND_ARG_TYPE_INFO_WITH_DEFAULT_VALUE(0, offset, IS_DOUBLE, 0, "1.0")
+	ZEND_ARG_TYPE_INFO_WITH_DEFAULT_VALUE(0, octaves, IS_LONG, 0, "6")
+ZEND_END_ARG_INFO()
+
+ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_class_GL_Noise_fbmFill2D, 0, 4, IS_VOID, 0)
+	ZEND_ARG_OBJ_INFO(0, buffer, GL\\Buffer\\FloatBuffer, 0)
+	ZEND_ARG_TYPE_INFO(0, width, IS_LONG, 0)
+	ZEND_ARG_TYPE_INFO(0, height, IS_LONG, 0)
+	ZEND_ARG_TYPE_INFO(0, scale, IS_DOUBLE, 0)
+	ZEND_ARG_TYPE_INFO_WITH_DEFAULT_VALUE(0, offsetX, IS_DOUBLE, 0, "0")
+	ZEND_ARG_TYPE_INFO_WITH_DEFAULT_VALUE(0, offsetY, IS_DOUBLE, 0, "0")
+	ZEND_ARG_TYPE_INFO_WITH_DEFAULT_VALUE(0, lacunarity, IS_DOUBLE, 0, "2.0")
+	ZEND_ARG_TYPE_INFO_WITH_DEFAULT_VALUE(0, gain, IS_DOUBLE, 0, "0.5")
+	ZEND_ARG_TYPE_INFO_WITH_DEFAULT_VALUE(0, octaves, IS_LONG, 0, "6")
+ZEND_END_ARG_INFO()
+
+#define arginfo_class_GL_Noise_turbulenceFill2D arginfo_class_GL_Noise_fbmFill2D
+
+ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_class_GL_Noise_islandFill2D, 0, 3, IS_VOID, 0)
+	ZEND_ARG_OBJ_INFO(0, buffer, GL\\Buffer\\FloatBuffer, 0)
+	ZEND_ARG_TYPE_INFO(0, width, IS_LONG, 0)
+	ZEND_ARG_TYPE_INFO(0, height, IS_LONG, 0)
+	ZEND_ARG_TYPE_INFO_WITH_DEFAULT_VALUE(0, z, IS_DOUBLE, 0, "0.0")
+	ZEND_ARG_TYPE_INFO_WITH_DEFAULT_VALUE(0, scale, IS_DOUBLE, 0, "1.0")
+	ZEND_ARG_TYPE_INFO_WITH_DEFAULT_VALUE(0, islandmix, IS_DOUBLE, 0, "0.7")
+	ZEND_ARG_TYPE_INFO_WITH_DEFAULT_VALUE(0, lacunarity, IS_DOUBLE, 0, "2.0")
+	ZEND_ARG_TYPE_INFO_WITH_DEFAULT_VALUE(0, gain, IS_DOUBLE, 0, "0.5")
+	ZEND_ARG_TYPE_INFO_WITH_DEFAULT_VALUE(0, octaves, IS_LONG, 0, "6")
+ZEND_END_ARG_INFO()
+
 ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_class_GL_Math_GLM_radians, 0, 1, IS_DOUBLE, 0)
 	ZEND_ARG_TYPE_INFO(0, degrees, IS_DOUBLE, 0)
 ZEND_END_ARG_INFO()
@@ -2663,6 +2745,12 @@ ZEND_END_ARG_INFO()
 
 ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_class_GL_Buffer_FloatBuffer_pushMat4, 0, 1, IS_VOID, 0)
 	ZEND_ARG_OBJ_INFO(0, matrix, GL\\Buffer\\GL\\Math\\Mat4, 0)
+ZEND_END_ARG_INFO()
+
+ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(arginfo_class_GL_Buffer_FloatBuffer_quantizeToUChar, 0, 0, GL\\Buffer\\\125ByteBuffer, 0)
+	ZEND_ARG_TYPE_INFO_WITH_DEFAULT_VALUE(0, autoNormalize, _IS_BOOL, 0, "true")
+	ZEND_ARG_TYPE_INFO_WITH_DEFAULT_VALUE(0, lowerBound, IS_DOUBLE, 0, "0.0")
+	ZEND_ARG_TYPE_INFO_WITH_DEFAULT_VALUE(0, upperBound, IS_DOUBLE, 0, "1.0")
 ZEND_END_ARG_INFO()
 
 ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_class_GL_Buffer_FloatBuffer_fill, 0, 2, IS_VOID, 0)
@@ -3899,6 +3987,15 @@ ZEND_METHOD(GL_Texture_Texture2D, writeJPG);
 ZEND_METHOD(GL_Texture_Texture2D, writePNG);
 ZEND_METHOD(GL_Texture_Texture2D, writeBMP);
 ZEND_METHOD(GL_Texture_Texture2D, writeTGA);
+ZEND_METHOD(GL_Noise, perlin);
+ZEND_METHOD(GL_Noise, ridge);
+ZEND_METHOD(GL_Noise, fbm);
+ZEND_METHOD(GL_Noise, turbulence);
+ZEND_METHOD(GL_Noise, perlinFill2D);
+ZEND_METHOD(GL_Noise, ridgeFill2D);
+ZEND_METHOD(GL_Noise, fbmFill2D);
+ZEND_METHOD(GL_Noise, turbulenceFill2D);
+ZEND_METHOD(GL_Noise, islandFill2D);
 ZEND_METHOD(GL_Math_GLM, radians);
 ZEND_METHOD(GL_Math_GLM, angle);
 ZEND_METHOD(GL_Math_GLM, triangleNormal);
@@ -3997,6 +4094,7 @@ ZEND_METHOD(GL_Buffer_FloatBuffer, pushVec2);
 ZEND_METHOD(GL_Buffer_FloatBuffer, pushVec3);
 ZEND_METHOD(GL_Buffer_FloatBuffer, pushVec4);
 ZEND_METHOD(GL_Buffer_FloatBuffer, pushMat4);
+ZEND_METHOD(GL_Buffer_FloatBuffer, quantizeToUChar);
 ZEND_METHOD(GL_Buffer_FloatBuffer, fill);
 ZEND_METHOD(GL_Buffer_FloatBuffer, clear);
 ZEND_METHOD(GL_Buffer_FloatBuffer, size);
@@ -4813,6 +4911,20 @@ static const zend_function_entry class_GL_Texture_Texture2D_methods[] = {
 };
 
 
+static const zend_function_entry class_GL_Noise_methods[] = {
+	ZEND_ME(GL_Noise, perlin, arginfo_class_GL_Noise_perlin, ZEND_ACC_PUBLIC|ZEND_ACC_STATIC)
+	ZEND_ME(GL_Noise, ridge, arginfo_class_GL_Noise_ridge, ZEND_ACC_PUBLIC|ZEND_ACC_STATIC)
+	ZEND_ME(GL_Noise, fbm, arginfo_class_GL_Noise_fbm, ZEND_ACC_PUBLIC|ZEND_ACC_STATIC)
+	ZEND_ME(GL_Noise, turbulence, arginfo_class_GL_Noise_turbulence, ZEND_ACC_PUBLIC|ZEND_ACC_STATIC)
+	ZEND_ME(GL_Noise, perlinFill2D, arginfo_class_GL_Noise_perlinFill2D, ZEND_ACC_PUBLIC|ZEND_ACC_STATIC)
+	ZEND_ME(GL_Noise, ridgeFill2D, arginfo_class_GL_Noise_ridgeFill2D, ZEND_ACC_PUBLIC|ZEND_ACC_STATIC)
+	ZEND_ME(GL_Noise, fbmFill2D, arginfo_class_GL_Noise_fbmFill2D, ZEND_ACC_PUBLIC|ZEND_ACC_STATIC)
+	ZEND_ME(GL_Noise, turbulenceFill2D, arginfo_class_GL_Noise_turbulenceFill2D, ZEND_ACC_PUBLIC|ZEND_ACC_STATIC)
+	ZEND_ME(GL_Noise, islandFill2D, arginfo_class_GL_Noise_islandFill2D, ZEND_ACC_PUBLIC|ZEND_ACC_STATIC)
+	ZEND_FE_END
+};
+
+
 static const zend_function_entry class_GL_Math_GLM_methods[] = {
 	ZEND_ME(GL_Math_GLM, radians, arginfo_class_GL_Math_GLM_radians, ZEND_ACC_PUBLIC|ZEND_ACC_STATIC)
 	ZEND_ME(GL_Math_GLM, angle, arginfo_class_GL_Math_GLM_angle, ZEND_ACC_PUBLIC|ZEND_ACC_STATIC)
@@ -4952,6 +5064,7 @@ static const zend_function_entry class_GL_Buffer_FloatBuffer_methods[] = {
 	ZEND_ME(GL_Buffer_FloatBuffer, pushVec3, arginfo_class_GL_Buffer_FloatBuffer_pushVec3, ZEND_ACC_PUBLIC)
 	ZEND_ME(GL_Buffer_FloatBuffer, pushVec4, arginfo_class_GL_Buffer_FloatBuffer_pushVec4, ZEND_ACC_PUBLIC)
 	ZEND_ME(GL_Buffer_FloatBuffer, pushMat4, arginfo_class_GL_Buffer_FloatBuffer_pushMat4, ZEND_ACC_PUBLIC)
+	ZEND_ME(GL_Buffer_FloatBuffer, quantizeToUChar, arginfo_class_GL_Buffer_FloatBuffer_quantizeToUChar, ZEND_ACC_PUBLIC)
 	ZEND_ME(GL_Buffer_FloatBuffer, fill, arginfo_class_GL_Buffer_FloatBuffer_fill, ZEND_ACC_PUBLIC)
 	ZEND_ME(GL_Buffer_FloatBuffer, clear, arginfo_class_GL_Buffer_FloatBuffer_clear, ZEND_ACC_PUBLIC)
 	ZEND_ME(GL_Buffer_FloatBuffer, size, arginfo_class_GL_Buffer_FloatBuffer_size, ZEND_ACC_PUBLIC)
