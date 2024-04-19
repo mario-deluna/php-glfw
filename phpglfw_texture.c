@@ -422,13 +422,21 @@ PHP_METHOD(GL_Noise, turbulenceFill2D)
     }
 }
 
+float funhash(uint32_t x) {
+    x = ((x >> 16) ^ x) * 0x45d9f3b;
+    x = ((x >> 16) ^ x) * 0x45d9f3b;
+    x = (x >> 16) ^ x;
+
+    return (float)x / (float)0x00FFFFFF;
+}
+
 // basically the same as ridgeFill2D but we use a distance function to create a island shape
 PHP_METHOD(GL_Noise, islandFill2D)
 {
     zval *buffer_zval;
-    zend_long width, height, octaves = 6;
-    double scale = 1.0, lacunarity = 2.0, gain = 0.5, islandmix = 0.7, z = 0.0;
-    if (zend_parse_parameters(ZEND_NUM_ARGS(), "Oll|dddddl", &buffer_zval, phpglfw_get_buffer_glfloat_ce(), &width, &height, &z, &scale, &islandmix, &lacunarity, &gain, &octaves) == FAILURE) {
+    zend_long width, height, octaves = 6, islandseed = 42;
+    double scale = 1.0, lacunarity = 2.0, gain = 0.5, islandmix = 0.7;
+    if (zend_parse_parameters(ZEND_NUM_ARGS(), "Oll|lddddl", &buffer_zval, phpglfw_get_buffer_glfloat_ce(), &width, &height, &islandseed, &scale, &islandmix, &lacunarity, &gain, &octaves) == FAILURE) {
         RETURN_THROWS();
     }
 
@@ -446,6 +454,17 @@ PHP_METHOD(GL_Noise, islandFill2D)
     float cy = height / 2.0;
     float max_dist = sqrtf(cx * cx + cy * cy);
 
+    // get some pseudo random x, y, z values for the given seed
+    // we just use a simple hash function here
+    float bx = (float)funhash((uint32_t)islandseed);
+    float by = (float)funhash((uint32_t)islandseed + 1);
+    float bz = (float)funhash((uint32_t)islandseed + 2);
+
+    // php_printf("seed %i\n", islandseed);
+    // php_printf("bx %f\n", bx);
+    // php_printf("by %f\n", by);
+    // php_printf("bz %f\n", bz);
+    
     for (int y = 0; y < height; y++) {
         for (int x = 0; x < width; x++) {
             float dx = cx - x;
@@ -456,7 +475,9 @@ PHP_METHOD(GL_Noise, islandFill2D)
 
             double nx = (double)x / width - 0.5;
             double ny = (double)y / height - 0.5;
-            float noise = stb_perlin_ridge_noise3(nx * fscale, ny * fscale, z, lacunarity, gain, 1.0, octaves);
+            // float noise = stb_perlin_ridge_noise3(nx * fscale, ny * fscale, z, lacunarity, gain, 1.0, octaves);
+            float noise = stb_perlin_ridge_noise3(nx * fscale + bx, ny * fscale + by, bz, lacunarity, gain, 1.0, octaves);
+            // float noise = stb_perlin_fbm_noise3(nx * fscale, ny * fscale, z, lacunarity, gain, octaves);
             float value = noise * dist_factor;
 
             buffer->vec[y * width + x] = value;

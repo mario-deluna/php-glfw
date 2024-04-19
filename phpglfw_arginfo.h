@@ -1,5 +1,5 @@
 /* This is a generated file, edit the .stub.php file instead.
- * Stub hash: 1662d3dcede06a7251c032db07c4d51ecfa7d083 */
+ * Stub hash: eae6f3ff8db951550995e02fcbbeb396cb09233a */
 
 ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_glCullFace, 0, 1, IS_VOID, 0)
 	ZEND_ARG_TYPE_INFO(0, mode, IS_LONG, 0)
@@ -2388,7 +2388,7 @@ ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_class_GL_Noise_islandFill2D, 0, 
 	ZEND_ARG_OBJ_INFO(0, buffer, GL\\Buffer\\FloatBuffer, 0)
 	ZEND_ARG_TYPE_INFO(0, width, IS_LONG, 0)
 	ZEND_ARG_TYPE_INFO(0, height, IS_LONG, 0)
-	ZEND_ARG_TYPE_INFO_WITH_DEFAULT_VALUE(0, z, IS_DOUBLE, 0, "0.0")
+	ZEND_ARG_TYPE_INFO_WITH_DEFAULT_VALUE(0, islandseed, IS_LONG, 0, "42")
 	ZEND_ARG_TYPE_INFO_WITH_DEFAULT_VALUE(0, scale, IS_DOUBLE, 0, "1.0")
 	ZEND_ARG_TYPE_INFO_WITH_DEFAULT_VALUE(0, islandmix, IS_DOUBLE, 0, "0.7")
 	ZEND_ARG_TYPE_INFO_WITH_DEFAULT_VALUE(0, lacunarity, IS_DOUBLE, 0, "2.0")
