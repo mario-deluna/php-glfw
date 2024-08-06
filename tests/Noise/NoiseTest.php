@@ -207,7 +207,7 @@ class NoiseTest extends \PHPUnit\Framework\TestCase
         $size = 1024;
         $buffer = new FloatBuffer();
         Noise::perlinFill2D($buffer, $size, $size, 8.0);
-        // Noise::islandFill2D($buffer, $size, $size, 3234234, 2, 2);
+        // Noise::islandFill2D($buffer, $size, $size, 6, 1.0, 2.0);
         // Texture2D::fromBuffer($size, $size, $buffer->quantizeToUChar(), Texture2D::CHANNEL_R)->writePNG('perlinFill2D.png');
 
         // sample first, last and some in the middle
