@@ -124,6 +124,61 @@ static void phpglfw_vgcolor_free_handler(zend_object *object)
     zend_object_std_dtor(&intern->std);
 }
 
+static int phpglfw_vgcolor_serialize_handler(zval *object, unsigned char **buffer, size_t *buf_len, zend_serialize_data *data)
+{
+    phpglfw_vgcolor_object *obj_ptr = phpglfw_vgcolor_objectptr_from_zobj_p(Z_OBJ_P(object));
+
+    smart_str buf = {0};
+    zval zv;
+    php_serialize_data_t serialize_data;
+
+    PHP_VAR_SERIALIZE_INIT(serialize_data);
+
+    ZVAL_DOUBLE(&zv, obj_ptr->nvgcolor.rgba[0]);
+    php_var_serialize(&buf, &zv, &serialize_data);
+    ZVAL_DOUBLE(&zv, obj_ptr->nvgcolor.rgba[1]);
+    php_var_serialize(&buf, &zv, &serialize_data);
+    ZVAL_DOUBLE(&zv, obj_ptr->nvgcolor.rgba[2]);
+    php_var_serialize(&buf, &zv, &serialize_data);
+    ZVAL_DOUBLE(&zv, obj_ptr->nvgcolor.rgba[3]);
+    php_var_serialize(&buf, &zv, &serialize_data);
+
+    PHP_VAR_SERIALIZE_DESTROY(serialize_data);
+    *buffer = (unsigned char *) estrndup(ZSTR_VAL(buf.s), ZSTR_LEN(buf.s));
+    *buf_len = ZSTR_LEN(buf.s);
+    zend_string_release_ex(buf.s, 0);
+
+    return SUCCESS;
+}
+
+int phpglfw_vgcolor_unserialize_handler(zval *object, zend_class_entry *ce, const unsigned char *buf, size_t buf_len, zend_unserialize_data *data)
+{
+    const unsigned char *buf_ptr = buf;
+    const unsigned char *buf_end = buf + buf_len;
+    zval *zv;
+    php_unserialize_data_t unserialize_data;
+    
+    PHP_VAR_UNSERIALIZE_INIT(unserialize_data);
+
+    object_init_ex(object, phpglfw_vgcolor_ce);
+    phpglfw_vgcolor_object *obj = phpglfw_vgcolor_objectptr_from_zobj_p(Z_OBJ_P(object));
+
+    for (int i = 0; i < 4; i++) {
+        zv = var_tmp_var(&unserialize_data);
+        if (!php_var_unserialize(zv, &buf_ptr, buf_end, &unserialize_data) || Z_TYPE_P(zv) != IS_DOUBLE) {
+            zend_throw_error(NULL, "Could not unserialize vector element");
+            zend_object_std_dtor(&obj->std);
+            efree(obj);
+            PHP_VAR_UNSERIALIZE_DESTROY(unserialize_data);
+            return FAILURE;
+        }
+        obj->nvgcolor.rgba[i] = Z_DVAL_P(zv);
+    }
+
+    PHP_VAR_UNSERIALIZE_DESTROY(unserialize_data);
+    return SUCCESS;
+}
+
 static void debug_info_nvgcolor_to_hs(HashTable *ht, NVGcolor *color)
 {
     zval zv;
@@ -884,6 +939,8 @@ void phpglfw_register_vg_module(INIT_FUNC_ARGS)
     INIT_CLASS_ENTRY(tmp_ce, "GL\\VectorGraphics\\VGColor", class_GL_VectorGraphics_VGColor_methods);
     phpglfw_vgcolor_ce = zend_register_internal_class(&tmp_ce);
     phpglfw_vgcolor_ce->create_object = phpglfw_vgcolor_create_handler;
+    phpglfw_vgcolor_ce->serialize = phpglfw_vgcolor_serialize_handler;
+    phpglfw_vgcolor_ce->unserialize = phpglfw_vgcolor_unserialize_handler;
 
     memcpy(&phpglfw_vgcolor_handlers, &std_object_handlers, sizeof(zend_object_handlers));
     phpglfw_vgcolor_handlers.offset = XtOffsetOf(phpglfw_vgcolor_object, std);

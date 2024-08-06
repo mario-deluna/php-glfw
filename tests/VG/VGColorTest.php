@@ -163,4 +163,12 @@ class VGColorTest extends \PHPUnit\Framework\TestCase
         $this->assertEqualsWithDelta(0.8, $inverted->y, 0.005);
         $this->assertEqualsWithDelta(0.7, $inverted->z, 0.005);
     }
+
+    public function testSerialize() : void
+    {
+        $color = VGColor::rgba(0.1, 0.2, 0.3, 0.4);
+        $serialized = serialize($color);
+        $color2 = unserialize($serialized);
+        $this->assertEqualsColor(0.1, 0.2, 0.3, 0.4, $color2);
+    }
 }
