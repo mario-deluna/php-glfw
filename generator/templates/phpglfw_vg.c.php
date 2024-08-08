@@ -789,6 +789,38 @@ PHP_METHOD(GL_VectorGraphics_VGContext, imageFromTexture)
     image->nvgimage_handle = nvgCreateImageRGBA(intern->nvgctx, texture_ptr->width, texture_ptr->height, image_flags, buffer->vec);
 }
 
+PHP_METHOD(GL_VectorGraphics_VGContext, imageFromHandle)
+{
+    zend_long texture, w, h;
+    zend_long repeat = PHPGLFW_VG_REPEAT_NONE;
+    zend_long filter = PHPGLFW_VG_FILTER_LINEAR;
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "lll|ll", &texture, &w, &h, &repeat, &filter) == FAILURE) {
+        RETURN_THROWS();
+    }
+
+    phpglfw_vgcontext_object *intern = phpglfw_vgcontext_objectptr_from_zobj_p(Z_OBJ_P(getThis()));
+
+    object_init_ex(return_value, phpglfw_get_vg_vgimage_ce());
+    phpglfw_vgimage_object *image = phpglfw_vgimage_objectptr_from_zobj_p(Z_OBJ_P(return_value));
+
+    // build the NVGimageFlags
+    int image_flags = 0;
+    if (repeat == PHPGLFW_VG_REPEAT_X) {
+        image_flags |= NVG_IMAGE_REPEATX;
+    } else if (repeat == PHPGLFW_VG_REPEAT_Y) {
+        image_flags |= NVG_IMAGE_REPEATY;
+    } else if (repeat == PHPGLFW_VG_REPEAT_XY) {
+        image_flags |= NVG_IMAGE_REPEATX | NVG_IMAGE_REPEATY;
+    }
+
+    // apply nearest filtering (default is linear)
+    if (filter == PHPGLFW_VG_FILTER_NEAREST) {
+        image_flags |= NVG_IMAGE_NEAREST;
+    }
+
+    image->nvgimage_handle = nvglCreateImageFromHandleGL3(intern->nvgctx, texture, w, h, image_flags);
+}
+
 PHP_METHOD(GL_VectorGraphics_VGContext, __construct)
 {
     zval *obj;

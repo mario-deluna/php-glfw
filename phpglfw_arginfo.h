@@ -1,5 +1,5 @@
 /* This is a generated file, edit the .stub.php file instead.
- * Stub hash: fe94f09fe6a0f4fd45eeaeb334c4e05a04a7b020 */
+ * Stub hash: 1f66ad28b7ac79407c7e688fb7cebce32f53af0a */
 
 ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_glCullFace, 0, 1, IS_VOID, 0)
 	ZEND_ARG_TYPE_INFO(0, mode, IS_LONG, 0)
@@ -2998,6 +2998,14 @@ ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(arginfo_class_GL_VectorGraphics_VGContext
 	ZEND_ARG_TYPE_INFO_WITH_DEFAULT_VALUE(0, filterMode, IS_LONG, 0, "GL\\VectorGraphics\\VGImage::FILTER_LINEAR")
 ZEND_END_ARG_INFO()
 
+ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(arginfo_class_GL_VectorGraphics_VGContext_imageFromHandle, 0, 3, GL\\VectorGraphics\\VGImage, 0)
+	ZEND_ARG_TYPE_INFO(0, handle, IS_LONG, 0)
+	ZEND_ARG_TYPE_INFO(0, width, IS_LONG, 0)
+	ZEND_ARG_TYPE_INFO(0, height, IS_LONG, 0)
+	ZEND_ARG_TYPE_INFO_WITH_DEFAULT_VALUE(0, repeatMode, IS_LONG, 0, "GL\\VectorGraphics\\VGImage::REPEAT_NONE")
+	ZEND_ARG_TYPE_INFO_WITH_DEFAULT_VALUE(0, filterMode, IS_LONG, 0, "GL\\VectorGraphics\\VGImage::FILTER_LINEAR")
+ZEND_END_ARG_INFO()
+
 ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(arginfo_class_GL_VectorGraphics_VGContext_linearGradient, 0, 6, GL\\VectorGraphics\\VGPaint, 0)
 	ZEND_ARG_TYPE_INFO(0, sx, IS_DOUBLE, 0)
 	ZEND_ARG_TYPE_INFO(0, sy, IS_DOUBLE, 0)
@@ -4126,6 +4134,7 @@ ZEND_METHOD(GL_VectorGraphics_VGContext, strokeColorVec4);
 ZEND_METHOD(GL_VectorGraphics_VGContext, transformPoint);
 ZEND_METHOD(GL_VectorGraphics_VGContext, transformVec2);
 ZEND_METHOD(GL_VectorGraphics_VGContext, imageFromTexture);
+ZEND_METHOD(GL_VectorGraphics_VGContext, imageFromHandle);
 ZEND_METHOD(GL_VectorGraphics_VGContext, linearGradient);
 ZEND_METHOD(GL_VectorGraphics_VGContext, boxGradient);
 ZEND_METHOD(GL_VectorGraphics_VGContext, radialGradient);
@@ -5146,6 +5155,7 @@ static const zend_function_entry class_GL_VectorGraphics_VGContext_methods[] = {
 	ZEND_ME(GL_VectorGraphics_VGContext, transformPoint, arginfo_class_GL_VectorGraphics_VGContext_transformPoint, ZEND_ACC_PUBLIC)
 	ZEND_ME(GL_VectorGraphics_VGContext, transformVec2, arginfo_class_GL_VectorGraphics_VGContext_transformVec2, ZEND_ACC_PUBLIC)
 	ZEND_ME(GL_VectorGraphics_VGContext, imageFromTexture, arginfo_class_GL_VectorGraphics_VGContext_imageFromTexture, ZEND_ACC_PUBLIC)
+	ZEND_ME(GL_VectorGraphics_VGContext, imageFromHandle, arginfo_class_GL_VectorGraphics_VGContext_imageFromHandle, ZEND_ACC_PUBLIC)
 	ZEND_ME(GL_VectorGraphics_VGContext, linearGradient, arginfo_class_GL_VectorGraphics_VGContext_linearGradient, ZEND_ACC_PUBLIC)
 	ZEND_ME(GL_VectorGraphics_VGContext, boxGradient, arginfo_class_GL_VectorGraphics_VGContext_boxGradient, ZEND_ACC_PUBLIC)
 	ZEND_ME(GL_VectorGraphics_VGContext, radialGradient, arginfo_class_GL_VectorGraphics_VGContext_radialGradient, ZEND_ACC_PUBLIC)

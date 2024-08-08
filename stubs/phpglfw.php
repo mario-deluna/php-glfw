@@ -2517,6 +2517,14 @@ namespace GL\VectorGraphics
             int $filterMode = VGImage::FILTER_LINEAR
         ) : VGImage {}
 
+        public function imageFromHandle(
+            int $handle,
+            int $width,
+            int $height,
+            int $repeatMode = VGImage::REPEAT_NONE,
+            int $filterMode = VGImage::FILTER_LINEAR
+        ) : VGImage {}
+
         public function linearGradient(float $sx, float $sy, float $ex, float $ey, VGColor $icol, VGColor $ocol) : VGPaint {}
         public function boxGradient(float $x, float $y, float $w, float $h, float $r, float $f, VGColor $icol, VGColor $ocol) : VGPaint {}
         public function radialGradient(float $cx, float $cy, float $inr, float $outr, VGColor $icol, VGColor $ocol) : VGPaint {}
