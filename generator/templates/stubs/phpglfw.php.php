@@ -1654,19 +1654,97 @@ namespace GL\VectorGraphics
          */
         public function __construct(int $flags = 0) {}
 
+        /**
+         * Sets the fill color using integer values.
+         *
+         * @param int $r The red component (0-255).
+         * @param int $g The green component (0-255).
+         * @param int $b The blue component (0-255).
+         * @param int $a The alpha component (0-255), where 255 is fully opaque.
+         */
         public function fillColori(int $r, int $g, int $b, int $a) : void {}
+
+        /**
+         * Sets the stroke color using integer values.
+         *
+         * @param int $r The red component (0-255).
+         * @param int $g The green component (0-255).
+         * @param int $b The blue component (0-255).
+         * @param int $a The alpha component (0-255), where 255 is fully opaque.
+         */
         public function strokeColori(int $r, int $g, int $b, int $a) : void {}
+
+        /**
+         * Sets the fill color using a Vec4 object.
+         *
+         * @param \GL\Math\Vec4 $vec A vector containing the RGBA components of the color.
+         */
         public function fillColorVec4(\GL\Math\Vec4 $vec) : void {}
+
+        /**
+         * Sets the stroke color using a Vec4 object.
+         *
+         * @param \GL\Math\Vec4 $vec A vector containing the RGBA components of the color.
+         */
         public function strokeColorVec4(\GL\Math\Vec4 $vec) : void {}
+
+        /**
+         * Transforms a point using the current transformation matrix.
+         *
+         * @param float $x The x-coordinate of the point.
+         * @param float $y The y-coordinate of the point.
+         * @return \GL\Math\Vec2 The transformed point as a Vec2 object.
+         */
         public function transformPoint(float $x, float $y) : \GL\Math\Vec2 {}
+
+        /**
+         * Transforms a vector using the current transformation matrix.
+         *
+         * @param \GL\Math\Vec2 $vec The vector to transform.
+         * @return \GL\Math\Vec2 The transformed vector.
+         */
         public function transformVec2(\GL\Math\Vec2 $vec) : \GL\Math\Vec2 {}
 
+        /**
+         * Creates a VGImage object from a given texture. 
+         * This will upload the texture to the GPU.
+         *
+         * ```php
+         * $image = $vg->imageFromTexture($texture, VGImage::REPEAT_XY, VGImage::FILTER_LINEAR);
+         * ```
+         *
+         * @param \GL\Texture\Texture2D $texture The texture to create the image from.
+         * @param int $repeatMode This can be either VGImage::REPEAT_XY, VGImage::REPEAT_X, VGImage::REPEAT_Y, or VGImage::REPEAT_NONE.
+         *                        This controls how the image is repeated when the shape is larger than the image. 
+         *                        The default is VGImage::REPEAT_NONE.
+         * @param int $filterMode This can be either VGImage::FILTER_LINEAR or VGImage::FILTER_NEAREST.
+         *                        This controls how the image is filtered when it is scaled. 
+         *                        The default is VGImage::FILTER_LINEAR.
+         */
         public function imageFromTexture(
             \GL\Texture\Texture2D $texture,
             int $repeatMode = VGImage::REPEAT_NONE,
             int $filterMode = VGImage::FILTER_LINEAR
         ) : VGImage {}
 
+        /**
+         * Creates a VGImage object from a given texture handle. 
+         * This will reference the texture already uploaded to the GPU.
+         *
+         * ```php
+         * $image = $vg->imageFromHandle($handle, $width, $height, VGImage::REPEAT_XY, VGImage::FILTER_LINEAR);
+         * ```
+         *
+         * @param int $handle The GPU handle of the texture.
+         * @param int $width The width of the texture.
+         * @param int $height The height of the texture.
+         * @param int $repeatMode This can be either VGImage::REPEAT_XY, VGImage::REPEAT_X, VGImage::REPEAT_Y, or VGImage::REPEAT_NONE.
+         *                        This controls how the image is repeated when the shape is larger than the image. 
+         *                        The default is VGImage::REPEAT_NONE.
+         * @param int $filterMode This can be either VGImage::FILTER_LINEAR or VGImage::FILTER_NEAREST.
+         *                        This controls how the image is filtered when it is scaled. 
+         *                        The default is VGImage::FILTER_LINEAR.
+         */
         public function imageFromHandle(
             int $handle,
             int $width,
@@ -1674,9 +1752,80 @@ namespace GL\VectorGraphics
             int $repeatMode = VGImage::REPEAT_NONE,
             int $filterMode = VGImage::FILTER_LINEAR
         ) : VGImage {}
-
+        
+        /**
+         * Creates a linear gradient paint object.
+         * The gradient is defined by the start and end points, as well as the colors at these points.
+         *
+         * ```php
+         * $x1 = 50;    
+         * $y1 = 150;
+         * $x2 = 350;
+         * $y2 = 450;
+         * $color1 = new VGColor(0.051, 0.682, 0.914, 1.0);
+         * $color2 = new VGColor(0.169, 0.961, 0.596, 1.0);
+         *
+         * $paint = $vg->linearGradient($x1, $y1, $x2, $y2, $color1, $color2);
+         * ```
+         *
+         * @param float $sx The x-coordinate of the start point of the gradient.
+         * @param float $sy The y-coordinate of the start point of the gradient.
+         * @param float $ex The x-coordinate of the end point of the gradient.
+         * @param float $ey The y-coordinate of the end point of the gradient.
+         * @param VGColor $icol The color at the start point of the gradient.
+         * @param VGColor $ocol The color at the end point of the gradient.
+         */
         public function linearGradient(float $sx, float $sy, float $ex, float $ey, VGColor $icol, VGColor $ocol) : VGPaint {}
+        
+        /**
+         * Creates a box gradient paint object.
+         *
+         * ```php
+         * $x = 100;
+         * $y = 100;
+         * $width = 200;
+         * $height = 100;
+         * $radius = 10;
+         * $feather = 20;
+         * $color1 = new VGColor(0.051, 0.682, 0.914, 1.0);
+         * $color2 = new VGColor(0.169, 0.961, 0.596, 1.0);
+         *
+         * $paint = $vg->boxGradient($x, $y, $width, $height, $radius, $feather, $color1, $color2);
+         * ```
+         *
+         * @param float $x The x-coordinate of the top left corner of the box.
+         * @param float $y The y-coordinate of the top left corner of the box.
+         * @param float $w The width of the box.
+         * @param float $h The height of the box.
+         * @param float $r The corner radius of the box.
+         * @param float $f The feathering amount (how much the gradient fades).
+         * @param VGColor $icol The color inside the box.
+         * @param VGColor $ocol The color outside the box.
+         */
         public function boxGradient(float $x, float $y, float $w, float $h, float $r, float $f, VGColor $icol, VGColor $ocol) : VGPaint {}
+        
+        /**
+         * Creates a radial gradient paint object.
+         * The gradient is defined by the center point and two radii, with the color transitioning from the inner to the outer radius.
+         *
+         * ```php
+         * $cx = 150;
+         * $cy = 150;
+         * $innerRadius = 50;
+         * $outerRadius = 100;
+         * $color1 = new VGColor(0.914, 0.051, 0.682, 1.0);
+         * $color2 = new VGColor(0.961, 0.596, 0.169, 1.0);
+         *
+         * $paint = $vg->radialGradient($cx, $cy, $innerRadius, $outerRadius, $color1, $color2);
+         * ```
+         *
+         * @param float $cx The x-coordinate of the center of the gradient.
+         * @param float $cy The y-coordinate of the center of the gradient.
+         * @param float $inr The inner radius of the gradient.
+         * @param float $outr The outer radius of the gradient.
+         * @param VGColor $icol The color at the inner radius.
+         * @param VGColor $ocol The color at the outer radius.
+         */
         public function radialGradient(float $cx, float $cy, float $inr, float $outr, VGColor $icol, VGColor $ocol) : VGPaint {}
         //public function imagePattern(float $cx, float $cy, float $w, float $h, float $angle, float $alpha) : VGPaint {}
 
