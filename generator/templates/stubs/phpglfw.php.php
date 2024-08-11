@@ -1453,8 +1453,27 @@ namespace GL\VectorGraphics
          */
         public function getVec3() : \GL\Math\Vec3 {}
 
+        /**
+         * Darkens the color by the specified amount.
+         *
+         * @param float $amount The amount to darken the color by.
+         * @return VGColor The darkened color.
+         */
         public function darken(float $amount) : VGColor {}
+
+        /**
+         * Lightens the color by the specified amount.
+         *
+         * @param float $amount The amount to lighten the color by.
+         * @return VGColor The lightened color.
+         */
         public function lighten(float $amount) : VGColor {}
+
+        /**
+         * Inverts the color.
+         *
+         * @return VGColor The inverted color.
+         */
         public function invert() : VGColor {}
     }
     
@@ -1462,14 +1481,36 @@ namespace GL\VectorGraphics
     }
 
     class VGImage {
+        /**
+         * No repeat pattern.
+         */
         public const REPEAT_NONE = 0;
+
+        /**
+         * Repeat pattern in the X direction.
+         */
         public const REPEAT_X = 1;
+
+        /**
+         * Repeat pattern in the Y direction.
+         */
         public const REPEAT_Y = 2;
+
+        /**
+         * Repeat pattern in both X and Y directions.
+         */
         public const REPEAT_XY = 3;
 
+        /**
+         * Linear filtering.
+         */
         public const FILTER_LINEAR = 0;
-        public const FILTER_NEAREST = 1;
 
+        /**
+         * Nearest-neighbor filtering.
+         */
+        public const FILTER_NEAREST = 1;
+        
         public function makePaint(float $x, float $y, float $w, float $h, float $angle = 0.0, float $alpha = 1.0) : VGPaint {}
         public function makePaintCentered(float $cx, float $cy, float $w, float $h, float $angle = 0.0, float $alpha = 1.0) : VGPaint {}
     }
