@@ -95,8 +95,8 @@ jobs:
     - name: Install PHP-GLFW
       run: |
         sudo make install && \
-        grep -qxF 'extension=glfw.so' /usr/local/etc/php/${{ matrix.php-versions }}/php.ini || \
-        echo 'extension=glfw.so' >> /usr/local/etc/php/${{ matrix.php-versions }}/php.ini
+        grep -qxF 'extension=glfw.so' /opt/homebrew/etc/php/${{ matrix.php-versions }}/php.ini || \
+        echo 'extension=glfw.so' >> /opt/homebrew/etc/php/${{ matrix.php-versions }}/php.ini
     
     - name: Install PHPUnit
       run: composer require "phpunit/phpunit:9.6.3"

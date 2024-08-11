@@ -2576,22 +2576,83 @@ namespace GL\VectorGraphics
     }
 
     class VGContext {
+        /**
+         * Enable antialiasing.
+         * Provides smoother edges for shapes and text.
+         */
         public const ANTIALIAS = 1;
+
+        /**
+         * Enable stencil strokes.
+         * Allows for more accurate stroke rendering for overlapping shapes.
+         */
         public const STENCIL_STROKES = 2;
+
+        /**
+         * Enable debug mode.
+         * Adds additional error checks.
+         */
         public const DEBUG = 4;
 
+        /**
+         * Counter-clockwise winding.
+         * Used for defining solid shapes.
+         */
         public const CCW = 1;
+
+        /**
+         * Clockwise winding.
+         * Used for defining hole shapes.
+         */
         public const CW = 2;
 
+        /**
+         * Solid fill. (Same as VGContext::CCW)
+         * Used for filling paths.
+         */
         public const SOLID = 1;
+
+        /**
+         * Hole fill. (Same as VGContext::CW)
+         * Used for creating holes in paths.
+         */
         public const HOLE = 2;
 
+        /**
+         * Butt line cap.
+         */
         public const LINECAP_BUTT = 0;
-        public const LINECAP_ROUND = 1;
-        public const LINECAP_SQUARE = 2;
-        public const LINECAP_BEVEL = 3;
-        public const LINECAP_MITER = 4;
 
+        /**
+         * Round line cap.
+         */
+        public const LINECAP_ROUND = 1;
+
+        /**
+         * Square line cap.
+         */
+        public const LINECAP_SQUARE = 2;
+
+        /**
+         * Bevel line join.
+         */
+        public const LINEJOIN_BEVEL = 3;
+
+        /**
+        * Miter line join.
+        */
+        public const LINEJOIN_MITER = 4;
+
+        /**
+         * VGContext Constructor 
+         *
+         * example: 
+         * ```php
+         * $context = new VGContext(VGContext::ANTIALIAS);
+         * ```
+         * 
+         * @param int $flags The flags to use for the context.
+         */
         public function __construct(int $flags = 0) {}
 
         public function fillColori(int $r, int $g, int $b, int $a) : void {}

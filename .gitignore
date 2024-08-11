@@ -58,3 +58,4 @@ vendor/glfw/src/glfw3.pc
 vendor/glfw/src/glfw3*.cmake
 vendor/glfw/src/glfw_config.h
 vendor/glfw/src/libglfw*.dylib
+vendor/autoload.php

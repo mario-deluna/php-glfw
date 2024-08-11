@@ -441,8 +441,8 @@ namespace GL\VectorGraphics
         // public const LINECAP_BUTT = 0;
         // public const LINECAP_ROUND = 1;
         // public const LINECAP_SQUARE = 2;
-        // public const LINECAP_BEVEL = 3;
-        // public const LINECAP_MITER = 4;
+        // public const LINEJOIN_BEVEL = 3;
+        // public const LINEJOIN_MITER = 4;
 
         public function __construct(int $flags = 0) {}
         public function fillColori(int $r, int $g, int $b, int $a) : void {}
