@@ -1511,17 +1511,66 @@ namespace GL\VectorGraphics
          */
         public const FILTER_NEAREST = 1;
         
+        /**
+         * Creates a paint object of the current image that can be used to fill or stroke shapes.
+         *
+         * @param float $x The x-coordinate of the top left corner of the paint.
+         * @param float $y The y-coordinate of the top left corner of the paint.
+         * @param float $width The width of the paint.
+         * @param float $height The height of the paint.
+         * @param float $angle The angle of the paint in radians. (The rotation is around the top left corner of the paint.)
+         * @param float $alpha The alpha value of the paint.
+         */
         public function makePaint(float $x, float $y, float $w, float $h, float $angle = 0.0, float $alpha = 1.0) : VGPaint {}
+
+        /**
+         * Creates a paint object of the current image (from center) that can be used to fill or stroke shapes.
+         * The image is centered around the given coordinates and also rotated around the center.
+         *
+         * @param float $cx The x-coordinate of the center of the paint.
+         * @param float $cy The y-coordinate of the center of the paint.
+         * @param float $width The width of the paint.
+         * @param float $height The height of the paint.
+         * @param float $angle The angle of the paint in radians. (The rotation is around the center of the paint.)
+         * @param float $alpha The alpha value of the paint.
+         */
         public function makePaintCentered(float $cx, float $cy, float $w, float $h, float $angle = 0.0, float $alpha = 1.0) : VGPaint {}
     }
 
     class VGAlign {
+        /**
+         * Align to the left.
+         */
         public const LEFT = 1;
+
+        /**
+         * Align to the center horizontally.
+         */
         public const CENTER = 2;
+
+        /**
+         * Align to the right.
+         */
         public const RIGHT = 4;
+
+        /**
+         * Align to the top.
+         */
         public const TOP = 8;
+
+        /**
+         * Align to the middle vertically.
+         */
         public const MIDDLE = 16;
+
+        /**
+         * Align to the bottom.
+         */
         public const BOTTOM = 32;
+
+        /**
+         * Align to the baseline.
+         */
         public const BASELINE = 64;
     }
 

@@ -90,12 +90,11 @@ jobs:
       run: sudo phpize && ./configure --enable-glfw && make
    
     - name: Locate php.ini
-      run: echo php -i | grep 'php.ini'
+      run: php -i | grep 'php.ini'
       
     - name: Install PHP-GLFW
       run: |
         sudo make install && \
-        echo php -i | grep 'php.ini' && \
         grep -qxF 'extension=glfw.so' /usr/local/etc/php/${{ matrix.php-versions }}/php.ini || \
         echo 'extension=glfw.so' >> /usr/local/etc/php/${{ matrix.php-versions }}/php.ini
     
