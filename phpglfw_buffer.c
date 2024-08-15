@@ -525,6 +525,7 @@ PHP_METHOD(GL_Buffer_FloatBuffer, pushArray)
     } ZEND_HASH_FOREACH_END();
 }
 
+
 PHP_METHOD(GL_Buffer_FloatBuffer, pushVec2)
 {
     zval *vec2;
@@ -4621,6 +4622,22 @@ PHP_METHOD(GL_Buffer_UByteBuffer, pushArray)
 
         cvector_push_back(obj_ptr->vec, Z_LVAL_P(array));
     } ZEND_HASH_FOREACH_END();
+}
+
+
+PHP_METHOD(GL_Buffer_UByteBuffer, pushString)
+{
+    char *string;
+    size_t string_len;
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "s", &string, &string_len) == FAILURE) {
+        return;
+    }
+
+    zval *obj;
+    obj = getThis();
+    phpglfw_buffer_glubyte_object *obj_ptr = phpglfw_buffer_glubyte_objectptr_from_zobj_p(Z_OBJ_P(obj));
+
+    cvector_push_back_array(obj_ptr->vec, string, string_len);
 }
 
 

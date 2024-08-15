@@ -1,5 +1,5 @@
 /* This is a generated file, edit the .stub.php file instead.
- * Stub hash: f17c3ffcb6dc21fe4907987a1e015d5782e07747 */
+ * Stub hash: 7c5fff69f0da609fbaeb7e773bb84697fa40d4f2 */
 
 ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_glCullFace, 0, 1, IS_VOID, 0)
 	ZEND_ARG_TYPE_INFO(0, mode, IS_LONG, 0)
@@ -2921,6 +2921,10 @@ ZEND_END_ARG_INFO()
 
 #define arginfo_class_GL_Buffer_UByteBuffer_pushArray arginfo_class_GL_Buffer_FloatBuffer_pushArray
 
+ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_class_GL_Buffer_UByteBuffer_pushString, 0, 1, IS_VOID, 0)
+	ZEND_ARG_TYPE_INFO(0, str, IS_STRING, 0)
+ZEND_END_ARG_INFO()
+
 #define arginfo_class_GL_Buffer_UByteBuffer_fill arginfo_class_GL_Buffer_HFloatBuffer_fill
 
 #define arginfo_class_GL_Buffer_UByteBuffer_clear arginfo_glFinish
@@ -4183,6 +4187,7 @@ ZEND_METHOD(GL_Buffer_UByteBuffer, __construct);
 ZEND_METHOD(GL_Buffer_UByteBuffer, __toString);
 ZEND_METHOD(GL_Buffer_UByteBuffer, push);
 ZEND_METHOD(GL_Buffer_UByteBuffer, pushArray);
+ZEND_METHOD(GL_Buffer_UByteBuffer, pushString);
 ZEND_METHOD(GL_Buffer_UByteBuffer, fill);
 ZEND_METHOD(GL_Buffer_UByteBuffer, clear);
 ZEND_METHOD(GL_Buffer_UByteBuffer, size);
@@ -5194,6 +5199,7 @@ static const zend_function_entry class_GL_Buffer_UByteBuffer_methods[] = {
 	ZEND_ME(GL_Buffer_UByteBuffer, __toString, arginfo_class_GL_Buffer_UByteBuffer___toString, ZEND_ACC_PUBLIC)
 	ZEND_ME(GL_Buffer_UByteBuffer, push, arginfo_class_GL_Buffer_UByteBuffer_push, ZEND_ACC_PUBLIC)
 	ZEND_ME(GL_Buffer_UByteBuffer, pushArray, arginfo_class_GL_Buffer_UByteBuffer_pushArray, ZEND_ACC_PUBLIC)
+	ZEND_ME(GL_Buffer_UByteBuffer, pushString, arginfo_class_GL_Buffer_UByteBuffer_pushString, ZEND_ACC_PUBLIC)
 	ZEND_ME(GL_Buffer_UByteBuffer, fill, arginfo_class_GL_Buffer_UByteBuffer_fill, ZEND_ACC_PUBLIC)
 	ZEND_ME(GL_Buffer_UByteBuffer, clear, arginfo_class_GL_Buffer_UByteBuffer_clear, ZEND_ACC_PUBLIC)
 	ZEND_ME(GL_Buffer_UByteBuffer, size, arginfo_class_GL_Buffer_UByteBuffer_size, ZEND_ACC_PUBLIC)

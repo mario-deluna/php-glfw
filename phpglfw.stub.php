@@ -340,6 +340,7 @@ namespace GL\Buffer
         public function __toString() : string {}
         public function push(int $value) : void {}
         public function pushArray(array $values) : void {}
+        public function pushString(string $str) : void {}
         public function fill(int $count, int $value) : void {}
         public function clear() : void {}
         public function size() : int {}

@@ -481,7 +481,25 @@ PHP_METHOD(<?php echo $buffer->getFullNamespaceConstString(); ?>, pushArray)
     } ZEND_HASH_FOREACH_END();
 }
 
-<?php if ($buffer->name == 'FloatBuffer') : ?>
+<?php if ($buffer->name == 'UByteBuffer') : ?>
+
+PHP_METHOD(<?php echo $buffer->getFullNamespaceConstString(); ?>, pushString)
+{
+    char *string;
+    size_t string_len;
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "s", &string, &string_len) == FAILURE) {
+        return;
+    }
+
+    zval *obj;
+    obj = getThis();
+    <?php echo $buffer->getObjectName(); ?> *obj_ptr = <?php echo $buffer->objectFromZObjFunctionName(); ?>(Z_OBJ_P(obj));
+
+    cvector_push_back_array(obj_ptr->vec, string, string_len);
+}
+
+<?php elseif ($buffer->name == 'FloatBuffer') : ?>
+
 PHP_METHOD(<?php echo $buffer->getFullNamespaceConstString(); ?>, pushVec2)
 {
     zval *vec2;

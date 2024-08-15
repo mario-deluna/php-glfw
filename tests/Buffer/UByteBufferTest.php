@@ -43,4 +43,23 @@ class UByteBufferTest extends BufferTestCase
         $this->assertEquals(255, $buffer[2]);
         $this->assertEquals(0, $buffer[3]);
     }
+
+    public function testPushString()
+    {
+        $buffer = new UByteBuffer();
+        $buffer->pushString('Hello World!');
+
+        $this->assertEquals(72, $buffer[0]);
+        $this->assertEquals(101, $buffer[1]);
+        $this->assertEquals(108, $buffer[2]);
+        $this->assertEquals(108, $buffer[3]);
+        $this->assertEquals(111, $buffer[4]);
+        $this->assertEquals(32, $buffer[5]);
+        $this->assertEquals(87, $buffer[6]);
+        $this->assertEquals(111, $buffer[7]);
+        $this->assertEquals(114, $buffer[8]);
+        $this->assertEquals(108, $buffer[9]);
+        $this->assertEquals(100, $buffer[10]);
+        $this->assertEquals(33, $buffer[11]);
+    }
 }

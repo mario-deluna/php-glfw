@@ -184,7 +184,9 @@ namespace GL\Buffer
         public function __toString() : string {}
         public function push(<?php echo $buffer->getValuePHPType(); ?> $value) : void {}
         public function pushArray(array $values) : void {}
-<?php if ($buffer->name == 'FloatBuffer') : ?>
+<?php if ($buffer->name == 'UByteBuffer') : ?>
+        public function pushString(string $str) : void {}
+<?php elseif ($buffer->name == 'FloatBuffer') : ?>
         public function pushVec2(GL\Math\Vec2 $vec) : void {}
         public function pushVec3(GL\Math\Vec3 $vec) : void {}
         public function pushVec4(GL\Math\Vec4 $vec) : void {}
