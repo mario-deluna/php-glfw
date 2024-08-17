@@ -1341,16 +1341,184 @@ namespace GL
 {
     class Noise 
     {
-        
+        /**
+         * Samples a Perlin noise value.
+         *
+         * The `wrap` parameters allow you to generate wraparound noise, which repeats at powers of two.
+         * A value of 0 indicates "no wrapping." Due to the implementation details, the noise always wraps
+         * every 256 units, regardless of the specified wrap value.
+         * 
+         * The implementation is based on "stb_perlin.h" by Sean Barrett, Jack Mott, Jordan Peck.
+         *
+         * @param float $x      The x-coordinate.
+         * @param float $y      The y-coordinate.
+         * @param float $z      The z-coordinate.
+         * @param int   $wrapX  The wrap value for the x-axis.
+         * @param int   $wrapY  The wrap value for the y-axis.
+         * @param int   $wrapZ  The wrap value for the z-axis.
+         * @param int   $seed   The seed that determines the variation of the noise function.
+         *                      Only the lowest 8 bits of the seed are used.
+         */
         public static function perlin(float $x, float $y, float $z, int $wrapX = 0, int $wrapY = 0, int $wrapZ = 0, int $seed = 0) : float {}
+        
+        /**
+         * Samples a "ridged" fractal perlin value
+         * 
+         * @param float $x The x coordinate
+         * @param float $y The y coordinate
+         * @param float $z The z coordinate
+         * @param float $lacunarity the spacing between successive octaves (default `2.0`).
+         * @param float $gain the relative weighting applied to each successive octave (default `0.5`).
+         * @param float $offset the offset used to invert the ridges (default `1.0`).
+         * @param int $octaves the number of octaves to sum (default `6`).
+         *                     This determines the number of noise3() calls and directly affects runtime performance.
+         *
+         * @return float The ridged noise value.
+         * 
+         * @see stb_perlin_ridge_noise3
+         *
+         * The implementation is based on "stb_perlin.h" by Sean Barrett, Jack Mott, Jordan Peck.
+         */
         public static function ridge(float $x, float $y, float $z, float $lacunarity = 2.0, float $gain = 0.5, float $offset = 1.0, int $octaves = 6) : float {}
+        
+        /**
+         * Samples a "fractal Brownian motion" perlin value
+         *
+         * @param float $x The x coordinate
+         * @param float $y The y coordinate
+         * @param float $z The z coordinate
+         * @param float $lacunarity the spacing between successive octaves (default `2.0`).
+         * @param float $gain the relative weighting applied to each successive octave (default `0.5`).
+         * @param int $octaves the number of octaves to sum (default `6`).
+         *                    This determines the number of noise3() calls and directly affects runtime performance.
+         *
+         * @return float The fractal Brownian motion noise value.
+         *
+         * @see stb_perlin_fbm_noise3
+         * 
+         * The implementation is based on "stb_perlin.h" by Sean Barrett, Jack Mott, Jordan Peck.
+         */
         public static function fbm(float $x, float $y, float $z, float $lacunarity = 2.0, float $gain = 0.5, int $octaves = 6) : float {}
+        
+        /**
+         * Samples a "turbulence" perlin value
+         * 
+         * @param float $x The x coordinate
+         * @param float $y The y coordinate
+         * @param float $z The z coordinate
+         * @param float $lacunarity the spacing between successive octaves (default `2.0`).
+         * @param float $gain the relative weighting applied to each successive octave (default `0.5`).
+         * @param int $octaves the number of octaves to sum (default `6`).
+         *                   This determines the number of noise3() calls and directly affects runtime performance.
+         *
+         * @return float The turbulence noise value.
+         *
+         * @see stb_perlin_turbulence_noise3
+         *
+         * The implementation is based on "stb_perlin.h" by Sean Barrett, Jack Mott, Jordan Peck.
+         */
         public static function turbulence(float $x, float $y, float $z, float $lacunarity = 2.0, float $gain = 0.5, int $octaves = 6) : float {}
 
+        /**
+         * Fill a FloatBuffer with a 2D perlin noise pattern.
+         * 
+         * With `offsetX` and `offsetY` you can move the noise pattern around.
+         * Think of the scale as the zoom level of the noise pattern.
+         * The `wrapX` and `wrapY` parameters allow you to generate wraparound noise, which repeats at powers of two.
+         *
+         * @param \GL\Buffer\FloatBuffer $buffer The buffer to fill.
+         * @param int $width The width of the map.
+         * @param int $height The height of the map.
+         * @param float $scale The scale of the noise pattern.
+         * @param float $offsetX The x offset of the noise pattern.
+         * @param float $offsetY The y offset of the noise pattern.
+         * @param int $wrapX The wrap value for the x-axis.
+         * @param int $wrapY The wrap value for the y-axis.
+         * @param int $seed The seed that determines the variation of the noise function.
+         */
         public static function perlinFill2D(\GL\Buffer\FloatBuffer $buffer, int $width, int $height, float $scale, float $offsetX = 0, float $offsetY = 0, int $wrapX = 0, int $wrapY = 0, int $seed = 0) : void {}
+        
+        /**
+         * Fill a FloatBuffer with a 2D ridged noise pattern.
+         *
+         * With `offsetX` and `offsetY` you can move the noise pattern around.
+         * Think of the `scale` as the zoom level of the noise pattern.
+         * The `wrapX` and `wrapY` parameters allow you to generate wraparound noise, which repeats at powers of two.
+         *  
+         * @param \GL\Buffer\FloatBuffer $buffer The buffer to fill.
+         * @param int $width The width of the map.
+         * @param int $height The height of the map.
+         * @param float $scale The scale of the noise pattern.
+         * @param float $offsetX The x offset of the noise pattern.
+         * @param float $offsetY The y offset of the noise pattern.
+         * @param float $lacunarity the spacing between successive octaves (default `2.0`).
+         * @param float $gain the relative weighting applied to each successive octave (default `0.5`).
+         * @param float $offset the offset used to invert the ridges (default `1.0`).
+         * @param int $octaves the number of octaves to sum (default `6`).
+         *                     This determines the number of noise3() calls and directly affects runtime performance.
+         */
         public static function ridgeFill2D(\GL\Buffer\FloatBuffer $buffer, int $width, int $height, float $scale, float $offsetX = 0, float $offsetY = 0, float $lacunarity = 2.0, float $gain = 0.5, float $offset = 1.0, int $octaves = 6) : void {}
+        
+        /**
+         * Fill a FloatBuffer with a 2D fractal Brownian motion (fBm) noise pattern.
+         *
+         * With `offsetX` and `offsetY` you can move the noise pattern around.
+         * Think of the `scale` as the zoom level of the noise pattern.
+         * The `lacunarity` determines the frequency multiplier between successive octaves, 
+         * and `gain` controls the amplitude scaling. The `octaves` parameter determines
+         * the number of noise layers to sum, affecting both the detail and runtime performance.
+         *
+         * @param \GL\Buffer\FloatBuffer $buffer The buffer to fill.
+         * @param int $width The width of the map.
+         * @param int $height The height of the map. 
+         * @param float $scale The scale of the noise pattern.
+         * @param float $offsetX The x offset of the noise pattern.
+         * @param float $offsetY The y offset of the noise pattern.
+         * @param float $lacunarity The frequency multiplier between successive octaves (default `2.0`).
+         * @param float $gain The amplitude scaling factor for successive octaves (default `0.5`).
+         * @param int $octaves The number of octaves to sum (default `6`).
+         */
         public static function fbmFill2D(\GL\Buffer\FloatBuffer $buffer, int $width, int $height, float $scale, float $offsetX = 0, float $offsetY = 0, float $lacunarity = 2.0, float $gain = 0.5, int $octaves = 6) : void {}
+        
+        /**
+         * Fill a FloatBuffer with a 2D turbulence noise pattern.
+         *
+         * With `offsetX` and `offsetY` you can move the noise pattern around.
+         * Think of the `scale` as the zoom level of the noise pattern.
+         * The `lacunarity` determines the frequency multiplier between successive octaves, 
+         * and `gain` controls the amplitude scaling. The `octaves` parameter determines
+         * the number of noise layers to sum, affecting both the detail and runtime performance.
+         *
+         * @param \GL\Buffer\FloatBuffer $buffer The buffer to fill.
+         * @param int $width The width of the map.
+         * @param int $height The height of the map.
+         * @param float $scale The scale of the noise pattern.
+         * @param float $offsetX The x offset of the noise pattern.
+         * @param float $offsetY The y offset of the noise pattern.
+         * @param float $lacunarity The frequency multiplier between successive octaves (default `2.0`).
+         * @param float $gain The amplitude scaling factor for successive octaves (default `0.5`).
+         * @param int $octaves The number of octaves to sum (default `6`).
+         */
         public static function turbulenceFill2D(\GL\Buffer\FloatBuffer $buffer, int $width, int $height, float $scale, float $offsetX = 0, float $offsetY = 0, float $lacunarity = 2.0, float $gain = 0.5, int $octaves = 6) : void {}
+        
+        /**
+         * Fill a FloatBuffer with a 2D island-shaped noise pattern.
+         *
+         * This function generates a noise pattern that simulates islands by combining a noise pattern 
+         * with a radial gradient. The `islandseed` controls the variation of the island shapes,
+         * `scale` adjusts the overall size, and `islandmix` blends the noise pattern with the island shape.
+         * The `lacunarity`, `gain`, and `octaves` parameters further control the noise detail and characteristics.
+         *
+         * @param \GL\Buffer\FloatBuffer $buffer The buffer to fill.
+         * @param int $width The width of the map.
+         * @param int $height The height of the map.
+         * @param int $islandseed The seed for island shape variation (default `42`).
+         * @param float $scale The scale of the noise pattern (default `1.0`).
+         * @param float $islandmix The blend factor between the noise pattern and island shape (default `0.7`).
+         * @param float $lacunarity The frequency multiplier between successive octaves (default `2.0`).
+         * @param float $gain The amplitude scaling factor for successive octaves (default `0.5`).
+         * @param int $octaves The number of octaves to sum (default `6`).
+         */
         public static function islandFill2D(\GL\Buffer\FloatBuffer $buffer, int $width, int $height, int $islandseed = 42, float $scale = 1.0, float $islandmix = 0.7, float $lacunarity = 2.0, float $gain = 0.5, int $octaves = 6) : void {}
     }
 }

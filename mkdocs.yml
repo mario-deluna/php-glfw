@@ -24,9 +24,10 @@ nav:
       - Images: user-guide/vector-graphics/images.md
       - Gradients: user-guide/vector-graphics/gradients.md
     - Math & 3D Space: user-guide/math/
+    - Noise: user-guide/noise/
     - Offscreen & Headless Rendering: user-guide/offscreen/
     - Debugging: user-guide/debugging/
-  - Classes / Functions & API : 'API/'
+  # - Classes / Functions & API : 'API/'
   - Examples:
     - About PHP-GLFW Examples: examples/00-about-examples.md
     - OpenGL: examples/opengl/
