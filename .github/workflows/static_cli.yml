@@ -22,7 +22,6 @@ jobs:
       - name: Install PHP
         run: |
           brew install php@${{ matrix.php-versions }}
-          echo "::add-path::$(brew --prefix php@${{ matrix.php-versions }})/bin"
 
       - name: Install Composer
         run: |
