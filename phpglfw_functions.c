@@ -1539,7 +1539,12 @@ PHP_FUNCTION(glGetString)
     if (zend_parse_parameters(ZEND_NUM_ARGS() , "l", &name) == FAILURE) {
         return;
     }
-    RETURN_STRING(glGetString(name));
+    const char *result = (const char *)glGetString(name);
+    if (result) {
+        RETURN_STRING(result);
+    } else {
+        RETURN_NULL();
+    }
 } 
 
 /**
@@ -5652,7 +5657,12 @@ PHP_FUNCTION(glGetStringi)
     if (zend_parse_parameters(ZEND_NUM_ARGS() , "ll", &name, &index) == FAILURE) {
         return;
     }
-    RETURN_STRING(glGetStringi(name, index));
+    const char *result = (const char *)glGetStringi(name, index);
+    if (result) {
+        RETURN_STRING(result);
+    } else {
+        RETURN_NULL();
+    }
 } 
 
 /**

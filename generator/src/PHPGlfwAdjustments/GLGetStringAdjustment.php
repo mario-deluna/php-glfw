@@ -17,11 +17,38 @@ class GLGetStringAdjustment implements AdjustmentInterface
     public function handle(ExtGenerator $gen) : void
     {
         foreach(['glGetString', 'glGetStringi'] as $fname) {
-            $func = $gen->getFunctionByName($fname);
+
+            $func = new class($fname) extends ExtFunction 
+            {    
+                public function getFunctionImplementationBody() : string
+                {
+                    $buffer = $this->getArgumentParseCode() . PHP_EOL . PHP_EOL;
+                    $funcCallCode = $this->getFunctionCallCode();
+
+                    $buffer .= <<<CODE
+                    const char *result = (const char *)$funcCallCode;
+
+                    if (result) {
+                        RETURN_STRING(result);
+                    } else {
+                        RETURN_NULL();
+                    }
+                    CODE;
+
+                    return $buffer;
+                }
+            };
+
+            $orig = $gen->getFunctionByName($fname);
+
+            // copy arguments
+            $func->arguments = $orig->arguments;
+            $func->comment = $orig->comment;
+
             $func->returnType = ExtType::T_STRING;
-    
-            // force complete
             $func->incomplete = false;
+
+            $gen->replaceFunctionByName($func);
         }
     }
 }

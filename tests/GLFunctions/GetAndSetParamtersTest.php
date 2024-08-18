@@ -140,5 +140,18 @@ class GetAndSetParamtersTest extends GLFunctionsTestCase
     {
         $version = glGetString(GL_VERSION);
         $this->assertGreaterThan(1, strlen($version));
+        
+        $numOfExtensions = 0;
+        glGetIntegerv(GL_NUM_EXTENSIONS, $numOfExtensions);
+
+        // should be at least 1
+        $this->assertGreaterThan(0, $numOfExtensions);
+
+        // fetch the extension names
+        for($i = 0; $i < $numOfExtensions; $i++) {
+            $ext = glGetStringi(GL_EXTENSIONS, $i);
+            // should be at least 1 char long
+            $this->assertGreaterThan(0, strlen($ext));
+        }
     }
 }

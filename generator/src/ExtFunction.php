@@ -206,10 +206,6 @@ class ExtFunction
         if (!empty($parsableArguments)) $b .= $this->getArgumentParseCode() . PHP_EOL . PHP_EOL;
         $b .= $this->getReturnStatement($this->getFunctionCallCode());
 
-        // if ($this->name == 'glShaderSource') {
-        //     var_dump($this, $b); die;
-        // }
-
         foreach($this->arguments as $arg) {
             if (
                 $arg->passedByReference &&
