@@ -2,6 +2,25 @@
 
 In this section you will find a collection of examples that demonstrate how to use PHP-GLFW. The examples are organized in a way that you can follow the progression of the examples and learn more about the library.
 
+
+## OpenSource Projects
+
+<div class="grid cards" markdown>
+
+-   __PHP CHIP-8__
+
+    ---
+
+    [![PHP CHIP-8, a chip8 emulator written in PHP](https://private-user-images.githubusercontent.com/956212/309742225-ae03baa0-8a00-4872-8131-39ca420a6310.gif?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3MjQwMDYxNDcsIm5iZiI6MTcyNDAwNTg0NywicGF0aCI6Ii85NTYyMTIvMzA5NzQyMjI1LWFlMDNiYWEwLThhMDAtNDg3Mi04MTMxLTM5Y2E0MjBhNjMxMC5naWY_WC1BbXotQWxnb3JpdGhtPUFXUzQtSE1BQy1TSEEyNTYmWC1BbXotQ3JlZGVudGlhbD1BS0lBVkNPRFlMU0E1M1BRSzRaQSUyRjIwMjQwODE4JTJGdXMtZWFzdC0xJTJGczMlMkZhd3M0X3JlcXVlc3QmWC1BbXotRGF0ZT0yMDI0MDgxOFQxODMwNDdaJlgtQW16LUV4cGlyZXM9MzAwJlgtQW16LVNpZ25hdHVyZT04YTg5NTM0MTVlZmZkYmU5Njg5NDg5N2Y5NjkzODYyYTEzYzdjNGQyN2IzZmQ2NGRmN2NiODIxYzNmNGQ4Yzg0JlgtQW16LVNpZ25lZEhlYWRlcnM9aG9zdCZhY3Rvcl9pZD0wJmtleV9pZD0wJnJlcG9faWQ9MCJ9.zPvWM7dIMqJgT-8WgNi2pFt3An8X-UkRVIqkpg0ToMs)]([./opengl/10-sponza.md](https://github.com/mario-deluna/php-chip8))
+
+-   __Flappyphant__
+
+    ---
+
+    [![Flppyphant, a 2D game written in PHP](./../docs-assets/visu/games/flappyphpant/gameplay.gif)](https://github.com/phpgl/flappyphpant)
+
+</div>
+
 ## Basic examples
 
 <div class="grid cards" markdown>
