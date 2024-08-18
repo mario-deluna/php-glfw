@@ -27,7 +27,7 @@ nav:
     - Noise: user-guide/noise/
     - Offscreen & Headless Rendering: user-guide/offscreen/
     - Debugging: user-guide/debugging/
-  # - Classes / Functions & API : 'API/'
+  - Classes / Functions & API : 'API/'
   - Examples:
     - About PHP-GLFW Examples: examples/00-about-examples.md
     - OpenGL: examples/opengl/

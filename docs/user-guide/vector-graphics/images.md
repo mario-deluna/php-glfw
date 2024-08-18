@@ -89,7 +89,7 @@ $vg->fill();
 
 ### In Global Space?
 
-The paint is defined in global space. This means that the paint will not be affected by the shape it is used to fill. This might be a bit counterintuitive at first.
+The paint is defined in global space. This means that the paint will **NOT** be affected by the shape it is used to fill. This might be a bit counterintuitive at first.
 
 A simple example to visualize this is to create a paint that covers the entire screen and then draw a rectangle in the middle of the screen with the paint.
 
@@ -103,4 +103,45 @@ $vg->beginPath();
 $vg->rect(100, 100, 200, 200);
 $vg->fillPaint($paint);
 $vg->fill();
+```
+
+### Scaling a Paint
+
+If you are now confused how to set the size of an image, this is controlled by the paramters passed to `makePaint`. The `width` and `height` parameters define the size of the paint in global space.
+
+![PHP-GLFW VectorGraphics Image Scaling](./../../docs-assets/php-glfw/user_guide/vg/images/image_scaling_vg_phpglfw.png)
+
+A quick example:
+
+```php
+$vg->beginPath();
+$vg->rect(100, 100, 200, 200);
+$paint = $myImage->makePaint(100, 100, 200, 200);
+$vg->fillPaint($paint);
+$vg->fill();
+
+// slight smaller
+$vg->beginPath();
+$vg->rect(350, 100, 100, 100);
+$paint = $myImage->makePaint(350, 100, 100, 100);
+$vg->fillPaint($paint);
+$vg->fill();
+
+// even smaller
+$vg->beginPath();
+$vg->rect(500, 100, 50, 50);
+$paint = $myImage->makePaint(500, 100, 50, 50);
+$vg->fillPaint($paint);
+$vg->fill();
+```
+
+## Prexisting images (Context sharing)
+
+If you have a texture that is already uploaded to the GPU, you can create an image from it that can be used as a paint.
+
+```php
+$glTexture; // the GL texture handle
+
+$vgImage = $vg->imageFromHandle($glTexture, $textureWidth, $textureHeight);
+$paint = $vgImage->makePaint(0, 0, $textureWidth, $textureHeight);
 ```
