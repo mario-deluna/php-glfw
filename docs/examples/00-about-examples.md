@@ -101,6 +101,30 @@ In this section you will find a collection of examples that demonstrate how to u
 
 </div>
 
+### Gradients
+
+<div class="grid cards" markdown>
+
+-   __Linear Gradient__
+
+    ---
+
+    [![Example](./../../docs-assets/php-glfw/examples/vg/gradient_linear_thumb.png)](./vector-graphics/gradient_linear.md)
+
+-   __Radial Gradient__
+
+    ---
+
+    [![Example](./../../docs-assets/php-glfw/examples/vg/gradient_radial_thumb.png)](./vector-graphics/gradient_radial.md)
+
+-   __Gradient Wave__
+
+    ---
+
+    [![Example](./../../docs-assets/php-glfw/examples/vg/gradient_wave_thumb.png)](./vector-graphics/gradient_wave.md)
+
+</div>
+
 ### Images
 
 <div class="grid cards" markdown>
@@ -152,6 +176,18 @@ In this section you will find a collection of examples that demonstrate how to u
     ---
 
     [![Example](./../../docs-assets/php-glfw/examples/vg/text_alignment_thumb.png)](./vector-graphics/text_alignment.md)
+
+-   __Text Boxes__
+
+    ---
+
+    [![Example](./../../docs-assets/php-glfw/examples/vg/text_boxes_thumb.png)](./vector-graphics/text_boxes.md)
+
+-   __Colored Words__
+
+    ---
+
+    [![Example](./../../docs-assets/php-glfw/examples/vg/text_color_words_thumb.png)](./vector-graphics/text_color_words.md)
 
 -   __Text with Shadow__
 

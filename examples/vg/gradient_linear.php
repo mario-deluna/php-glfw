@@ -1,5 +1,11 @@
 <?php
 /**
+ * Linear Gradient
+ * This PHP GLFW Vector Graphics example show how to create a linear gradient and apply it to a rectangle.
+ * 
+ * @category   Gradients
+ */
+/**
  * We utilize the example helpers here to focus on what matter in this specifc example.
  */
 require __DIR__ . '/../99_example_helpers.php';

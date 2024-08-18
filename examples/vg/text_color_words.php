@@ -1,6 +1,12 @@
 <?php
 /**
- * We utilize the example helpers here to focus on what matter in this specifc example.
+ * Colored Words
+ * 
+ * This examples demonstrates how to render a sentence with each word having a different color. To 
+ * achieve this we have to draw each word separately.
+ * 
+ * @image      user_guide/vg/text/text_x_advnace.png
+ * @category   Text
  */
 require __DIR__ . '/../99_example_helpers.php';
 

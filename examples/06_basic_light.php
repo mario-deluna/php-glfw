@@ -99,7 +99,7 @@ glEnable(GL_DEPTH_TEST);
 
 // capture keyboard events to toggle rendering modes
 $wireframe = false;
-glfwSetKeyCallback($window, function ($key, $scancode, $action, $mods) use (&$wireframe) {
+glfwSetKeyCallback($window, function ($key, $scancode, $action, $mods) use (&$wireframe, $window) {
     if ($key == GLFW_KEY_ESCAPE && $action == GLFW_PRESS) {
         glfwSetWindowShouldClose($window, true);
     }
