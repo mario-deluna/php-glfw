@@ -1,8 +1,8 @@
 # Color Gradients
 
-Gradients allow you to fill shapes with colors that smoothly transition from one to another. You can use gradients to paint any path (text is unfortunatly not yet supported), and we support two types: linear and radial.
+Gradients allow you to fill shapes with colors that smoothly transition from one to another. You can use gradients to paint any path (unfortunately, text is not yet supported), and we support two types: linear and radial.
 
-Something important to note: when you use gradients in PHP-GLFW's Vector Graphics API, the position and size of your shape don't change the gradient itself. Instead, they affect how the gradient maps onto your shape. It's a bit like stretching out a large foil of gift wrap and then using your shape to cut out a piece of it.
+One important thing to note: when you use gradients in PHP-GLFW's Vector Graphics API, the position and size of your shape don't change the gradient itself. Instead, they affect how the gradient maps onto your shape. It's a bit like stretching out a large sheet of gift wrap and then using your shape to cut out a piece of it.
 
 Images follow a similar concept; check out [Images & Graphics](./images.md).
 
@@ -17,13 +17,13 @@ A linear gradient requires just two points to work: where it starts and where it
   <figcaption>Run this <code>php examples/vg/gradient_linear.php</code></figcaption>
 </figure>
 
-Gradients just like images/textures are applied using a `VGPaint` object. 
+Gradients, just like images/textures, are applied using a `VGPaint` object. 
 
-To create such a linear paint:
+To create a linear paint:
 
 ```php
 $x1 = 50;    
-$y2 = 150;
+$y1 = 150;
 $x2 = 350;
 $y2 = 450;
 $color1 = new VGColor(0.051, 0.682, 0.914, 1.0);
