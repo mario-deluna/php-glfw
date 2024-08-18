@@ -1,5 +1,11 @@
 <?php
 /**
+ * Image Rotation
+ * This example showcases how an image can be rotated using the PHP GLFW Vector Graphics API.
+ * 
+ * @category   Images
+ */
+/**
  * We utilize the example helpers here to focus on what matter in this specifc example.
  */
 require __DIR__ . '/../99_example_helpers.php';

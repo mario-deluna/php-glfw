@@ -101,6 +101,48 @@ In this section you will find a collection of examples that demonstrate how to u
 
 </div>
 
+### Images
+
+<div class="grid cards" markdown>
+
+-   __Image Filtering__
+
+    ---
+
+    [![Example](./../../docs-assets/php-glfw/examples/vg/images_filtering_thumb.png)](./vector-graphics/images_filtering.md)
+
+-   __Image Repetition__
+
+    ---
+
+    [![Example](./../../docs-assets/php-glfw/examples/vg/images_repeating_thumb.png)](./vector-graphics/images_repeating.md)
+
+-   __Image Rotation__
+
+    ---
+
+    [![Example](./../../docs-assets/php-glfw/examples/vg/images_texture_rotation_thumb.png)](./vector-graphics/images_texture_rotation.md)
+
+</div>
+
+### Noise
+
+<div class="grid cards" markdown>
+
+-   __Noise explorer__
+
+    ---
+
+    [![Example](./../../docs-assets/php-glfw/examples/vg/noise_explorer_thumb.png)](./vector-graphics/noise_explorer.md)
+
+-   __Noise Grid__
+
+    ---
+
+    [![Example](./../../docs-assets/php-glfw/examples/vg/noise_grid_thumb.png)](./vector-graphics/noise_grid.md)
+
+</div>
+
 ### Text
 
 <div class="grid cards" markdown>

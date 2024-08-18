@@ -1,5 +1,14 @@
 <?php
 /**
+ * Image Filtering
+ * 
+ * This exmaple show cases how to use the different image filtering options available in the PHP GLFW Vector Graphics API.
+ *
+ * @image      user_guide/vg/images/images_filtering.png
+ * @category   Images
+ */
+
+/**
  * We utilize the example helpers here to focus on what matter in this specifc example.
  */
 require __DIR__ . '/../99_example_helpers.php';

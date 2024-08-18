@@ -24,6 +24,10 @@ class GLConstVoidPtrAsUint implements AdjustmentInterface
         ] as $fname => $argname) {
             $func = $gen->getFunctionByName($fname);
 
+            if (!$func) {
+                continue;
+            }
+
             // find the argument called offset
             foreach($func->arguments as $k => $arg) {
                 if($arg->name == $argname) {

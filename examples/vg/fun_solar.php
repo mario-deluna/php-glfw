@@ -1,11 +1,9 @@
 <?php
-/**
+/*
  * Simple Solar System
  * We will use the vector graphics context to draw a simple solar system. This is massivley simplified
  * but still fun to play around with. Im using real world values but the oribtal mechanics are questionable at best.
  * And I completely ignore the fact that the planets are not on the same plane, this is just a 2D simulation.
- * 
- * @category   Fun
  */
 /**
  * We utilize the example helpers here to focus on what matter in this specifc example.

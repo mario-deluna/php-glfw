@@ -391,7 +391,7 @@ class ExtGenerator
             }
 
             //  assign return type
-            if ($this->glTypeToExtType[$func->returnTypeString]) {
+            if ($this->glTypeToExtType[$func->returnTypeString] ?? false) {
                 $phpfunc->returnType = $this->mapGlTypeToExtType($func->returnTypeString);
             }
             $phpfunc->returnTypeFrom = ($phpfunc->returnType != $func->returnTypeString) ? $func->returnTypeString : null;

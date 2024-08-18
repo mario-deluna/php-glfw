@@ -9,7 +9,7 @@ PHP-GFLW comes with a number of basic noise functions. Noise is used in games fo
 You can run this demo:
 
 ```bash
-php examples/vg/fun_noise.php
+php examples/vg/noise_explorer.php
 ```
 
 The following noise functions are available:
