@@ -964,8 +964,8 @@ void phpglfw_register_vg_module(INIT_FUNC_ARGS)
     zend_declare_class_constant_long(phpglfw_vgcontext_ce, "LINECAP_BUTT", strlen("LINECAP_BUTT"), PHPGLFW_VG_BUTT);
     zend_declare_class_constant_long(phpglfw_vgcontext_ce, "LINECAP_ROUND", strlen("LINECAP_ROUND"), PHPGLFW_VG_ROUND);
     zend_declare_class_constant_long(phpglfw_vgcontext_ce, "LINECAP_SQUARE", strlen("LINECAP_SQUARE"), PHPGLFW_VG_SQUARE);
-    zend_declare_class_constant_long(phpglfw_vgcontext_ce, "LINECAP_BEVEL", strlen("LINECAP_BEVEL"), PHPGLFW_VG_BEVEL);
-    zend_declare_class_constant_long(phpglfw_vgcontext_ce, "LINECAP_MITER", strlen("LINECAP_MITER"), PHPGLFW_VG_MITER);
+    zend_declare_class_constant_long(phpglfw_vgcontext_ce, "LINEJOIN_BEVEL", strlen("LINEJOIN_BEVEL"), PHPGLFW_VG_BEVEL);
+    zend_declare_class_constant_long(phpglfw_vgcontext_ce, "LINEJOIN_MITER", strlen("LINEJOIN_MITER"), PHPGLFW_VG_MITER);
 
     // initialize and register the VectorGraphics Color class
     INIT_CLASS_ENTRY(tmp_ce, "GL\\VectorGraphics\\VGColor", class_GL_VectorGraphics_VGColor_methods);

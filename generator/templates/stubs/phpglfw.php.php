@@ -780,7 +780,13 @@ namespace GL\Buffer
          */
         public function pushArray(array $values) : void {}
 
-<?php if ($buffer->name == 'FloatBuffer') : ?>
+<?php if ($buffer->name == 'UByteBuffer') : ?>
+        /**
+         * Pushes a string into the buffer
+         */
+        public function pushString(string $string) : void {}
+
+<?php elseif ($buffer->name == 'FloatBuffer') : ?>
         /**
          * Pushes the values of a Vec2 object into the buffer
          */
@@ -1331,6 +1337,192 @@ namespace GL\Texture
     }
 }
 
+namespace GL
+{
+    class Noise 
+    {
+        /**
+         * Samples a Perlin noise value.
+         *
+         * The `wrap` parameters allow you to generate wraparound noise, which repeats at powers of two.
+         * A value of 0 indicates "no wrapping." Due to the implementation details, the noise always wraps
+         * every 256 units, regardless of the specified wrap value.
+         * 
+         * The implementation is based on "stb_perlin.h" by Sean Barrett, Jack Mott, Jordan Peck.
+         *
+         * @param float $x      The x-coordinate.
+         * @param float $y      The y-coordinate.
+         * @param float $z      The z-coordinate.
+         * @param int   $wrapX  The wrap value for the x-axis.
+         * @param int   $wrapY  The wrap value for the y-axis.
+         * @param int   $wrapZ  The wrap value for the z-axis.
+         * @param int   $seed   The seed that determines the variation of the noise function.
+         *                      Only the lowest 8 bits of the seed are used.
+         */
+        public static function perlin(float $x, float $y, float $z, int $wrapX = 0, int $wrapY = 0, int $wrapZ = 0, int $seed = 0) : float {}
+        
+        /**
+         * Samples a "ridged" fractal perlin value
+         * 
+         * @param float $x The x coordinate
+         * @param float $y The y coordinate
+         * @param float $z The z coordinate
+         * @param float $lacunarity the spacing between successive octaves (default `2.0`).
+         * @param float $gain the relative weighting applied to each successive octave (default `0.5`).
+         * @param float $offset the offset used to invert the ridges (default `1.0`).
+         * @param int $octaves the number of octaves to sum (default `6`).
+         *                     This determines the number of noise3() calls and directly affects runtime performance.
+         *
+         * @return float The ridged noise value.
+         * 
+         * @see stb_perlin_ridge_noise3
+         *
+         * The implementation is based on "stb_perlin.h" by Sean Barrett, Jack Mott, Jordan Peck.
+         */
+        public static function ridge(float $x, float $y, float $z, float $lacunarity = 2.0, float $gain = 0.5, float $offset = 1.0, int $octaves = 6) : float {}
+        
+        /**
+         * Samples a "fractal Brownian motion" perlin value
+         *
+         * @param float $x The x coordinate
+         * @param float $y The y coordinate
+         * @param float $z The z coordinate
+         * @param float $lacunarity the spacing between successive octaves (default `2.0`).
+         * @param float $gain the relative weighting applied to each successive octave (default `0.5`).
+         * @param int $octaves the number of octaves to sum (default `6`).
+         *                    This determines the number of noise3() calls and directly affects runtime performance.
+         *
+         * @return float The fractal Brownian motion noise value.
+         *
+         * @see stb_perlin_fbm_noise3
+         * 
+         * The implementation is based on "stb_perlin.h" by Sean Barrett, Jack Mott, Jordan Peck.
+         */
+        public static function fbm(float $x, float $y, float $z, float $lacunarity = 2.0, float $gain = 0.5, int $octaves = 6) : float {}
+        
+        /**
+         * Samples a "turbulence" perlin value
+         * 
+         * @param float $x The x coordinate
+         * @param float $y The y coordinate
+         * @param float $z The z coordinate
+         * @param float $lacunarity the spacing between successive octaves (default `2.0`).
+         * @param float $gain the relative weighting applied to each successive octave (default `0.5`).
+         * @param int $octaves the number of octaves to sum (default `6`).
+         *                   This determines the number of noise3() calls and directly affects runtime performance.
+         *
+         * @return float The turbulence noise value.
+         *
+         * @see stb_perlin_turbulence_noise3
+         *
+         * The implementation is based on "stb_perlin.h" by Sean Barrett, Jack Mott, Jordan Peck.
+         */
+        public static function turbulence(float $x, float $y, float $z, float $lacunarity = 2.0, float $gain = 0.5, int $octaves = 6) : float {}
+
+        /**
+         * Fill a FloatBuffer with a 2D perlin noise pattern.
+         * 
+         * With `offsetX` and `offsetY` you can move the noise pattern around.
+         * Think of the scale as the zoom level of the noise pattern.
+         * The `wrapX` and `wrapY` parameters allow you to generate wraparound noise, which repeats at powers of two.
+         *
+         * @param \GL\Buffer\FloatBuffer $buffer The buffer to fill.
+         * @param int $width The width of the map.
+         * @param int $height The height of the map.
+         * @param float $scale The scale of the noise pattern.
+         * @param float $offsetX The x offset of the noise pattern.
+         * @param float $offsetY The y offset of the noise pattern.
+         * @param int $wrapX The wrap value for the x-axis.
+         * @param int $wrapY The wrap value for the y-axis.
+         * @param int $seed The seed that determines the variation of the noise function.
+         */
+        public static function perlinFill2D(\GL\Buffer\FloatBuffer $buffer, int $width, int $height, float $scale, float $offsetX = 0, float $offsetY = 0, int $wrapX = 0, int $wrapY = 0, int $seed = 0) : void {}
+        
+        /**
+         * Fill a FloatBuffer with a 2D ridged noise pattern.
+         *
+         * With `offsetX` and `offsetY` you can move the noise pattern around.
+         * Think of the `scale` as the zoom level of the noise pattern.
+         * The `wrapX` and `wrapY` parameters allow you to generate wraparound noise, which repeats at powers of two.
+         *  
+         * @param \GL\Buffer\FloatBuffer $buffer The buffer to fill.
+         * @param int $width The width of the map.
+         * @param int $height The height of the map.
+         * @param float $scale The scale of the noise pattern.
+         * @param float $offsetX The x offset of the noise pattern.
+         * @param float $offsetY The y offset of the noise pattern.
+         * @param float $lacunarity the spacing between successive octaves (default `2.0`).
+         * @param float $gain the relative weighting applied to each successive octave (default `0.5`).
+         * @param float $offset the offset used to invert the ridges (default `1.0`).
+         * @param int $octaves the number of octaves to sum (default `6`).
+         *                     This determines the number of noise3() calls and directly affects runtime performance.
+         */
+        public static function ridgeFill2D(\GL\Buffer\FloatBuffer $buffer, int $width, int $height, float $scale, float $offsetX = 0, float $offsetY = 0, float $lacunarity = 2.0, float $gain = 0.5, float $offset = 1.0, int $octaves = 6) : void {}
+        
+        /**
+         * Fill a FloatBuffer with a 2D fractal Brownian motion (fBm) noise pattern.
+         *
+         * With `offsetX` and `offsetY` you can move the noise pattern around.
+         * Think of the `scale` as the zoom level of the noise pattern.
+         * The `lacunarity` determines the frequency multiplier between successive octaves, 
+         * and `gain` controls the amplitude scaling. The `octaves` parameter determines
+         * the number of noise layers to sum, affecting both the detail and runtime performance.
+         *
+         * @param \GL\Buffer\FloatBuffer $buffer The buffer to fill.
+         * @param int $width The width of the map.
+         * @param int $height The height of the map. 
+         * @param float $scale The scale of the noise pattern.
+         * @param float $offsetX The x offset of the noise pattern.
+         * @param float $offsetY The y offset of the noise pattern.
+         * @param float $lacunarity The frequency multiplier between successive octaves (default `2.0`).
+         * @param float $gain The amplitude scaling factor for successive octaves (default `0.5`).
+         * @param int $octaves The number of octaves to sum (default `6`).
+         */
+        public static function fbmFill2D(\GL\Buffer\FloatBuffer $buffer, int $width, int $height, float $scale, float $offsetX = 0, float $offsetY = 0, float $lacunarity = 2.0, float $gain = 0.5, int $octaves = 6) : void {}
+        
+        /**
+         * Fill a FloatBuffer with a 2D turbulence noise pattern.
+         *
+         * With `offsetX` and `offsetY` you can move the noise pattern around.
+         * Think of the `scale` as the zoom level of the noise pattern.
+         * The `lacunarity` determines the frequency multiplier between successive octaves, 
+         * and `gain` controls the amplitude scaling. The `octaves` parameter determines
+         * the number of noise layers to sum, affecting both the detail and runtime performance.
+         *
+         * @param \GL\Buffer\FloatBuffer $buffer The buffer to fill.
+         * @param int $width The width of the map.
+         * @param int $height The height of the map.
+         * @param float $scale The scale of the noise pattern.
+         * @param float $offsetX The x offset of the noise pattern.
+         * @param float $offsetY The y offset of the noise pattern.
+         * @param float $lacunarity The frequency multiplier between successive octaves (default `2.0`).
+         * @param float $gain The amplitude scaling factor for successive octaves (default `0.5`).
+         * @param int $octaves The number of octaves to sum (default `6`).
+         */
+        public static function turbulenceFill2D(\GL\Buffer\FloatBuffer $buffer, int $width, int $height, float $scale, float $offsetX = 0, float $offsetY = 0, float $lacunarity = 2.0, float $gain = 0.5, int $octaves = 6) : void {}
+        
+        /**
+         * Fill a FloatBuffer with a 2D island-shaped noise pattern.
+         *
+         * This function generates a noise pattern that simulates islands by combining a noise pattern 
+         * with a radial gradient. The `islandseed` controls the variation of the island shapes,
+         * `scale` adjusts the overall size, and `islandmix` blends the noise pattern with the island shape.
+         * The `lacunarity`, `gain`, and `octaves` parameters further control the noise detail and characteristics.
+         *
+         * @param \GL\Buffer\FloatBuffer $buffer The buffer to fill.
+         * @param int $width The width of the map.
+         * @param int $height The height of the map.
+         * @param int $islandseed The seed for island shape variation (default `42`).
+         * @param float $scale The scale of the noise pattern (default `1.0`).
+         * @param float $islandmix The blend factor between the noise pattern and island shape (default `0.7`).
+         * @param float $lacunarity The frequency multiplier between successive octaves (default `2.0`).
+         * @param float $gain The amplitude scaling factor for successive octaves (default `0.5`).
+         * @param int $octaves The number of octaves to sum (default `6`).
+         */
+        public static function islandFill2D(\GL\Buffer\FloatBuffer $buffer, int $width, int $height, int $islandseed = 42, float $scale = 1.0, float $islandmix = 0.7, float $lacunarity = 2.0, float $gain = 0.5, int $octaves = 6) : void {}
+    }
+}
+
 namespace GL\VectorGraphics
 {
     class VGColor {
@@ -1453,8 +1645,27 @@ namespace GL\VectorGraphics
          */
         public function getVec3() : \GL\Math\Vec3 {}
 
+        /**
+         * Darkens the color by the specified amount.
+         *
+         * @param float $amount The amount to darken the color by.
+         * @return VGColor The darkened color.
+         */
         public function darken(float $amount) : VGColor {}
+
+        /**
+         * Lightens the color by the specified amount.
+         *
+         * @param float $amount The amount to lighten the color by.
+         * @return VGColor The lightened color.
+         */
         public function lighten(float $amount) : VGColor {}
+
+        /**
+         * Inverts the color.
+         *
+         * @return VGColor The inverted color.
+         */
         public function invert() : VGColor {}
     }
     
@@ -1462,60 +1673,270 @@ namespace GL\VectorGraphics
     }
 
     class VGImage {
+        /**
+         * No repeat pattern.
+         */
         public const REPEAT_NONE = 0;
+
+        /**
+         * Repeat pattern in the X direction.
+         */
         public const REPEAT_X = 1;
+
+        /**
+         * Repeat pattern in the Y direction.
+         */
         public const REPEAT_Y = 2;
+
+        /**
+         * Repeat pattern in both X and Y directions.
+         */
         public const REPEAT_XY = 3;
 
+        /**
+         * Linear filtering.
+         */
         public const FILTER_LINEAR = 0;
-        public const FILTER_NEAREST = 1;
 
+        /**
+         * Nearest-neighbor filtering.
+         */
+        public const FILTER_NEAREST = 1;
+        
+        /**
+         * Creates a paint object of the current image that can be used to fill or stroke shapes.
+         *
+         * @param float $x The x-coordinate of the top left corner of the paint.
+         * @param float $y The y-coordinate of the top left corner of the paint.
+         * @param float $width The width of the paint.
+         * @param float $height The height of the paint.
+         * @param float $angle The angle of the paint in radians. (The rotation is around the top left corner of the paint.)
+         * @param float $alpha The alpha value of the paint.
+         */
         public function makePaint(float $x, float $y, float $w, float $h, float $angle = 0.0, float $alpha = 1.0) : VGPaint {}
+
+        /**
+         * Creates a paint object of the current image (from center) that can be used to fill or stroke shapes.
+         * The image is centered around the given coordinates and also rotated around the center.
+         *
+         * @param float $cx The x-coordinate of the center of the paint.
+         * @param float $cy The y-coordinate of the center of the paint.
+         * @param float $width The width of the paint.
+         * @param float $height The height of the paint.
+         * @param float $angle The angle of the paint in radians. (The rotation is around the center of the paint.)
+         * @param float $alpha The alpha value of the paint.
+         */
         public function makePaintCentered(float $cx, float $cy, float $w, float $h, float $angle = 0.0, float $alpha = 1.0) : VGPaint {}
     }
 
     class VGAlign {
+        /**
+         * Align to the left.
+         */
         public const LEFT = 1;
+
+        /**
+         * Align to the center horizontally.
+         */
         public const CENTER = 2;
+
+        /**
+         * Align to the right.
+         */
         public const RIGHT = 4;
+
+        /**
+         * Align to the top.
+         */
         public const TOP = 8;
+
+        /**
+         * Align to the middle vertically.
+         */
         public const MIDDLE = 16;
+
+        /**
+         * Align to the bottom.
+         */
         public const BOTTOM = 32;
+
+        /**
+         * Align to the baseline.
+         */
         public const BASELINE = 64;
     }
 
     class VGContext {
+        /**
+         * Enable antialiasing.
+         * Provides smoother edges for shapes and text.
+         */
         public const ANTIALIAS = 1;
+
+        /**
+         * Enable stencil strokes.
+         * Allows for more accurate stroke rendering for overlapping shapes.
+         */
         public const STENCIL_STROKES = 2;
+
+        /**
+         * Enable debug mode.
+         * Adds additional error checks.
+         */
         public const DEBUG = 4;
 
+        /**
+         * Counter-clockwise winding.
+         * Used for defining solid shapes.
+         */
         public const CCW = 1;
+
+        /**
+         * Clockwise winding.
+         * Used for defining hole shapes.
+         */
         public const CW = 2;
 
+        /**
+         * Solid fill. (Same as VGContext::CCW)
+         * Used for filling paths.
+         */
         public const SOLID = 1;
+
+        /**
+         * Hole fill. (Same as VGContext::CW)
+         * Used for creating holes in paths.
+         */
         public const HOLE = 2;
 
+        /**
+         * Butt line cap.
+         */
         public const LINECAP_BUTT = 0;
-        public const LINECAP_ROUND = 1;
-        public const LINECAP_SQUARE = 2;
-        public const LINECAP_BEVEL = 3;
-        public const LINECAP_MITER = 4;
 
+        /**
+         * Round line cap.
+         */
+        public const LINECAP_ROUND = 1;
+
+        /**
+         * Square line cap.
+         */
+        public const LINECAP_SQUARE = 2;
+
+        /**
+         * Bevel line join.
+         */
+        public const LINEJOIN_BEVEL = 3;
+
+        /**
+        * Miter line join.
+        */
+        public const LINEJOIN_MITER = 4;
+
+        /**
+         * VGContext Constructor 
+         *
+         * example: 
+         * ```php
+         * $context = new VGContext(VGContext::ANTIALIAS);
+         * ```
+         * 
+         * @param int $flags The flags to use for the context.
+         */
         public function __construct(int $flags = 0) {}
 
+        /**
+         * Sets the fill color using integer values.
+         *
+         * @param int $r The red component (0-255).
+         * @param int $g The green component (0-255).
+         * @param int $b The blue component (0-255).
+         * @param int $a The alpha component (0-255), where 255 is fully opaque.
+         */
         public function fillColori(int $r, int $g, int $b, int $a) : void {}
+
+        /**
+         * Sets the stroke color using integer values.
+         *
+         * @param int $r The red component (0-255).
+         * @param int $g The green component (0-255).
+         * @param int $b The blue component (0-255).
+         * @param int $a The alpha component (0-255), where 255 is fully opaque.
+         */
         public function strokeColori(int $r, int $g, int $b, int $a) : void {}
+
+        /**
+         * Sets the fill color using a Vec4 object.
+         *
+         * @param \GL\Math\Vec4 $vec A vector containing the RGBA components of the color.
+         */
         public function fillColorVec4(\GL\Math\Vec4 $vec) : void {}
+
+        /**
+         * Sets the stroke color using a Vec4 object.
+         *
+         * @param \GL\Math\Vec4 $vec A vector containing the RGBA components of the color.
+         */
         public function strokeColorVec4(\GL\Math\Vec4 $vec) : void {}
+
+        /**
+         * Transforms a point using the current transformation matrix.
+         *
+         * @param float $x The x-coordinate of the point.
+         * @param float $y The y-coordinate of the point.
+         * @return \GL\Math\Vec2 The transformed point as a Vec2 object.
+         */
         public function transformPoint(float $x, float $y) : \GL\Math\Vec2 {}
+
+        /**
+         * Transforms a vector using the current transformation matrix.
+         *
+         * @param \GL\Math\Vec2 $vec The vector to transform.
+         * @return \GL\Math\Vec2 The transformed vector.
+         */
         public function transformVec2(\GL\Math\Vec2 $vec) : \GL\Math\Vec2 {}
 
+        /**
+         * Creates a VGImage object from a given texture. 
+         * This will upload the texture to the GPU.
+         *
+         * ```php
+         * $image = $vg->imageFromTexture($texture, VGImage::REPEAT_XY, VGImage::FILTER_LINEAR);
+         * ```
+         *
+         * @param \GL\Texture\Texture2D $texture The texture to create the image from.
+         * @param int $repeatMode This can be either VGImage::REPEAT_XY, VGImage::REPEAT_X, VGImage::REPEAT_Y, or VGImage::REPEAT_NONE.
+         *                        This controls how the image is repeated when the shape is larger than the image. 
+         *                        The default is VGImage::REPEAT_NONE.
+         * @param int $filterMode This can be either VGImage::FILTER_LINEAR or VGImage::FILTER_NEAREST.
+         *                        This controls how the image is filtered when it is scaled. 
+         *                        The default is VGImage::FILTER_LINEAR.
+         */
         public function imageFromTexture(
             \GL\Texture\Texture2D $texture,
             int $repeatMode = VGImage::REPEAT_NONE,
             int $filterMode = VGImage::FILTER_LINEAR
         ) : VGImage {}
 
+        /**
+         * Creates a VGImage object from a given texture handle. 
+         * This will reference the texture already uploaded to the GPU.
+         *
+         * ```php
+         * $image = $vg->imageFromHandle($handle, $width, $height, VGImage::REPEAT_XY, VGImage::FILTER_LINEAR);
+         * ```
+         *
+         * @param int $handle The GPU handle of the texture.
+         * @param int $width The width of the texture.
+         * @param int $height The height of the texture.
+         * @param int $repeatMode This can be either VGImage::REPEAT_XY, VGImage::REPEAT_X, VGImage::REPEAT_Y, or VGImage::REPEAT_NONE.
+         *                        This controls how the image is repeated when the shape is larger than the image. 
+         *                        The default is VGImage::REPEAT_NONE.
+         * @param int $filterMode This can be either VGImage::FILTER_LINEAR or VGImage::FILTER_NEAREST.
+         *                        This controls how the image is filtered when it is scaled. 
+         *                        The default is VGImage::FILTER_LINEAR.
+         */
         public function imageFromHandle(
             int $handle,
             int $width,
@@ -1523,9 +1944,80 @@ namespace GL\VectorGraphics
             int $repeatMode = VGImage::REPEAT_NONE,
             int $filterMode = VGImage::FILTER_LINEAR
         ) : VGImage {}
-
+        
+        /**
+         * Creates a linear gradient paint object.
+         * The gradient is defined by the start and end points, as well as the colors at these points.
+         *
+         * ```php
+         * $x1 = 50;    
+         * $y1 = 150;
+         * $x2 = 350;
+         * $y2 = 450;
+         * $color1 = new VGColor(0.051, 0.682, 0.914, 1.0);
+         * $color2 = new VGColor(0.169, 0.961, 0.596, 1.0);
+         *
+         * $paint = $vg->linearGradient($x1, $y1, $x2, $y2, $color1, $color2);
+         * ```
+         *
+         * @param float $sx The x-coordinate of the start point of the gradient.
+         * @param float $sy The y-coordinate of the start point of the gradient.
+         * @param float $ex The x-coordinate of the end point of the gradient.
+         * @param float $ey The y-coordinate of the end point of the gradient.
+         * @param VGColor $icol The color at the start point of the gradient.
+         * @param VGColor $ocol The color at the end point of the gradient.
+         */
         public function linearGradient(float $sx, float $sy, float $ex, float $ey, VGColor $icol, VGColor $ocol) : VGPaint {}
+        
+        /**
+         * Creates a box gradient paint object.
+         *
+         * ```php
+         * $x = 100;
+         * $y = 100;
+         * $width = 200;
+         * $height = 100;
+         * $radius = 10;
+         * $feather = 20;
+         * $color1 = new VGColor(0.051, 0.682, 0.914, 1.0);
+         * $color2 = new VGColor(0.169, 0.961, 0.596, 1.0);
+         *
+         * $paint = $vg->boxGradient($x, $y, $width, $height, $radius, $feather, $color1, $color2);
+         * ```
+         *
+         * @param float $x The x-coordinate of the top left corner of the box.
+         * @param float $y The y-coordinate of the top left corner of the box.
+         * @param float $w The width of the box.
+         * @param float $h The height of the box.
+         * @param float $r The corner radius of the box.
+         * @param float $f The feathering amount (how much the gradient fades).
+         * @param VGColor $icol The color inside the box.
+         * @param VGColor $ocol The color outside the box.
+         */
         public function boxGradient(float $x, float $y, float $w, float $h, float $r, float $f, VGColor $icol, VGColor $ocol) : VGPaint {}
+        
+        /**
+         * Creates a radial gradient paint object.
+         * The gradient is defined by the center point and two radii, with the color transitioning from the inner to the outer radius.
+         *
+         * ```php
+         * $cx = 150;
+         * $cy = 150;
+         * $innerRadius = 50;
+         * $outerRadius = 100;
+         * $color1 = new VGColor(0.914, 0.051, 0.682, 1.0);
+         * $color2 = new VGColor(0.961, 0.596, 0.169, 1.0);
+         *
+         * $paint = $vg->radialGradient($cx, $cy, $innerRadius, $outerRadius, $color1, $color2);
+         * ```
+         *
+         * @param float $cx The x-coordinate of the center of the gradient.
+         * @param float $cy The y-coordinate of the center of the gradient.
+         * @param float $inr The inner radius of the gradient.
+         * @param float $outr The outer radius of the gradient.
+         * @param VGColor $icol The color at the inner radius.
+         * @param VGColor $ocol The color at the outer radius.
+         */
         public function radialGradient(float $cx, float $cy, float $inr, float $outr, VGColor $icol, VGColor $ocol) : VGPaint {}
         //public function imagePattern(float $cx, float $cy, float $w, float $h, float $angle, float $alpha) : VGPaint {}
 

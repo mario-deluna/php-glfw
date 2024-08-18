@@ -78,6 +78,22 @@ namespace GL\Texture
     }
 }
 
+namespace GL
+{
+    class Noise {
+        public static function perlin(float $x, float $y, float $z, int $wrapX = 0, int $wrapY = 0, int $wrapZ = 0, int $seed = 0) : float {}
+        public static function ridge(float $x, float $y, float $z, float $lacunarity = 2.0, float $gain = 0.5, float $offset = 1.0, int $octaves = 6) : float {}
+        public static function fbm(float $x, float $y, float $z, float $lacunarity = 2.0, float $gain = 0.5, int $octaves = 6) : float {}
+        public static function turbulence(float $x, float $y, float $z, float $lacunarity = 2.0, float $gain = 0.5, int $octaves = 6) : float {}
+
+        public static function perlinFill2D(\GL\Buffer\FloatBuffer $buffer, int $width, int $height, float $scale, float $offsetX = 0, float $offsetY = 0, int $wrapX = 0, int $wrapY = 0, int $seed = 0) : void {}
+        public static function ridgeFill2D(\GL\Buffer\FloatBuffer $buffer, int $width, int $height, float $scale, float $offsetX = 0, float $offsetY = 0, float $lacunarity = 2.0, float $gain = 0.5, float $offset = 1.0, int $octaves = 6) : void {}
+        public static function fbmFill2D(\GL\Buffer\FloatBuffer $buffer, int $width, int $height, float $scale, float $offsetX = 0, float $offsetY = 0, float $lacunarity = 2.0, float $gain = 0.5, int $octaves = 6) : void {}
+        public static function turbulenceFill2D(\GL\Buffer\FloatBuffer $buffer, int $width, int $height, float $scale, float $offsetX = 0, float $offsetY = 0, float $lacunarity = 2.0, float $gain = 0.5, int $octaves = 6) : void {}
+        public static function islandFill2D(\GL\Buffer\FloatBuffer $buffer, int $width, int $height, int $islandseed = 42, float $scale = 1.0, float $islandmix = 0.7, float $lacunarity = 2.0, float $gain = 0.5, int $octaves = 6) : void {}
+    }
+}
+
 namespace GL\Math 
 {
     class GLM {
@@ -168,11 +184,14 @@ namespace GL\Buffer
         public function __toString() : string {}
         public function push(<?php echo $buffer->getValuePHPType(); ?> $value) : void {}
         public function pushArray(array $values) : void {}
-<?php if ($buffer->name == 'FloatBuffer') : ?>
+<?php if ($buffer->name == 'UByteBuffer') : ?>
+        public function pushString(string $str) : void {}
+<?php elseif ($buffer->name == 'FloatBuffer') : ?>
         public function pushVec2(GL\Math\Vec2 $vec) : void {}
         public function pushVec3(GL\Math\Vec3 $vec) : void {}
         public function pushVec4(GL\Math\Vec4 $vec) : void {}
         public function pushMat4(GL\Math\Mat4 $matrix) : void {}
+        public function quantizeToUChar(bool $autoNormalize = true, float $lowerBound = 0.0, float $upperBound = 1.0) : \GL\Buffer\UByteBuffer {}
 <?php endif; ?>
         public function fill(int $count, <?php echo $buffer->getValuePHPType(); ?> $value) : void {}
         public function clear() : void {}
@@ -276,8 +295,8 @@ namespace GL\VectorGraphics
         // public const LINECAP_BUTT = 0;
         // public const LINECAP_ROUND = 1;
         // public const LINECAP_SQUARE = 2;
-        // public const LINECAP_BEVEL = 3;
-        // public const LINECAP_MITER = 4;
+        // public const LINEJOIN_BEVEL = 3;
+        // public const LINEJOIN_MITER = 4;
 
         public function __construct(int $flags = 0) {}
         public function fillColori(int $r, int $g, int $b, int $a) : void {}

@@ -9,6 +9,7 @@ if (PHP_GLFW != "no") {
 		CHECK_HEADER_ADD_INCLUDE("GLFW/glfw3.h", "CFLAGS_GLFW", configure_module_dirname + "\\vendor\\glfw\\include;" + PHP_EXTRA_INCLUDES) &&
 		CHECK_HEADER_ADD_INCLUDE("cvector.h", "CFLAGS_GLFW", configure_module_dirname + "\\vendor\\cvector;" + PHP_EXTRA_INCLUDES) &&
 		CHECK_HEADER_ADD_INCLUDE("stb_image.h", "CFLAGS_GLFW", configure_module_dirname + "\\vendor\\stb;" + PHP_EXTRA_INCLUDES) &&
+		CHECK_HEADER_ADD_INCLUDE("stb_perlin.h", "CFLAGS_GLFW", configure_module_dirname + "\\vendor\\stb;" + PHP_EXTRA_INCLUDES) &&
 		CHECK_HEADER_ADD_INCLUDE("fast_obj.h", "CFLAGS_GLFW", configure_module_dirname + "\\vendor\\fastobj;" + PHP_EXTRA_INCLUDES) &&
         CHECK_HEADER_ADD_INCLUDE("nanovg.h", "CFLAGS_GLFW", configure_module_dirname + "\\vendor\\nanovg\\src;" + PHP_EXTRA_INCLUDES) &&
         CHECK_HEADER_ADD_INCLUDE("nanovg_gl.h", "CFLAGS_GLFW", configure_module_dirname + "\\vendor\\nanovg\\src;" + PHP_EXTRA_INCLUDES) &&

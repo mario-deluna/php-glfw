@@ -35,6 +35,11 @@
 #define STB_IMAGE_WRITE_IMPLEMENTATION
 #include "stb_image_write.h"
 
+// we also have the perlin noise functions in here
+// they probably should be moved to some utility namespace
+#define STB_PERLIN_IMPLEMENTATION
+#include <stb_perlin.h>
+
 zend_class_entry *phpglfw_texture2d_ce; 
 
 zend_class_entry *phpglfw_get_texture_texture2d_ce() {
@@ -258,6 +263,229 @@ PHP_METHOD(GL_Texture_Texture2D, writeTGA)
     stbi_write_tga(path, intern->width, intern->height, intern->channels, buffer->vec);
 }
 
+PHP_METHOD(GL_Noise, perlin)
+{
+    double x, y, z;
+    zend_long x_wrap = 0, y_wrap = 0, z_wrap = 0, seed = 0;
+    if (zend_parse_parameters(ZEND_NUM_ARGS(), "ddd|llll", &x, &y, &z, &x_wrap, &y_wrap, &z_wrap, &seed) == FAILURE) {
+        RETURN_THROWS();
+    }
+
+    float result = stb_perlin_noise3_seed(x, y, z, x_wrap, y_wrap, z_wrap, seed);
+
+    RETURN_DOUBLE(result);
+}
+
+PHP_METHOD(GL_Noise, ridge)
+{
+    double x, y, z;
+    double lacunarity = 2.0, gain = 0.5, offset = 1.0;
+    zend_long octaves = 6;
+    if (zend_parse_parameters(ZEND_NUM_ARGS(), "ddd|dddl", &x, &y, &z, &lacunarity, &gain, &offset, &octaves) == FAILURE) {
+        RETURN_THROWS();
+    }
+
+    float result = stb_perlin_ridge_noise3(x, y, z, lacunarity, gain, offset, octaves);
+
+    RETURN_DOUBLE(result);
+}
+
+PHP_METHOD(GL_Noise, fbm)
+{
+    double x, y, z;
+    double lacunarity = 2.0, gain = 0.5;
+    zend_long octaves = 6;
+    if (zend_parse_parameters(ZEND_NUM_ARGS(), "ddd|ddl", &x, &y, &z, &lacunarity, &gain, &octaves) == FAILURE) {
+        RETURN_THROWS();
+    }
+
+    float result = stb_perlin_fbm_noise3(x, y, z, lacunarity, gain, octaves);
+
+    RETURN_DOUBLE(result);
+}
+
+PHP_METHOD(GL_Noise, turbulence)
+{
+    double x, y, z;
+    double lacunarity = 2.0, gain = 0.5;
+    zend_long octaves = 6;
+    if (zend_parse_parameters(ZEND_NUM_ARGS(), "ddd|ddl", &x, &y, &z, &lacunarity, &gain, &octaves) == FAILURE) {
+        RETURN_THROWS();
+    }
+
+    float result = stb_perlin_turbulence_noise3(x, y, z, lacunarity, gain, octaves);
+
+    RETURN_DOUBLE(result);
+}
+
+PHP_METHOD(GL_Noise, perlinFill2D)
+{
+    zval *buffer_zval;
+    zend_long width, height, wrapX = 0, wrapY = 0, seed = 0;
+    double scale, offsetX = 0, offsetY = 0;
+    if (zend_parse_parameters(ZEND_NUM_ARGS(), "Olld|ddlll", &buffer_zval, phpglfw_get_buffer_glfloat_ce(), &width, &height, &scale, &offsetX, &offsetY, &wrapX, &wrapY, &seed) == FAILURE) {
+        RETURN_THROWS();
+    }
+
+    phpglfw_buffer_glfloat_object *buffer = phpglfw_buffer_glfloat_objectptr_from_zobj_p(Z_OBJ_P(buffer_zval));
+
+    if (cvector_size(buffer->vec) < width * height) {
+        cvector_reserve(buffer->vec, width * height);
+        cvector_fill(buffer->vec, width * height, 0.0f);
+    }
+
+    for (int y = 0; y < height; y++) {
+        for (int x = 0; x < width; x++) {
+            double nx = (double) x / width - 0.5;
+            double ny = (double) y / height - 0.5;
+            float value = stb_perlin_noise3_seed(nx * scale + offsetX, ny * scale + offsetY, 0, wrapX, wrapY, 0, seed);
+            buffer->vec[y * width + x] = value;
+        }
+    }
+}
+
+PHP_METHOD(GL_Noise, ridgeFill2D)
+{
+    zval *buffer_zval;
+    zend_long width, height, octaves = 6;
+    double scale, offsetX = 0, offsetY = 0, lacunarity = 2.0, gain = 0.5, offset = 1.0;
+    if (zend_parse_parameters(ZEND_NUM_ARGS(), "Olld|dddddll", &buffer_zval, phpglfw_get_buffer_glfloat_ce(), &width, &height, &scale, &offsetX, &offsetY, &lacunarity, &gain, &offset, &octaves) == FAILURE) {
+        RETURN_THROWS();
+    }
+
+    phpglfw_buffer_glfloat_object *buffer = phpglfw_buffer_glfloat_objectptr_from_zobj_p(Z_OBJ_P(buffer_zval));
+
+    if (cvector_size(buffer->vec) < width * height) {
+        cvector_reserve(buffer->vec, width * height);
+        cvector_fill(buffer->vec, width * height, 0.0f);
+    }
+
+    for (int y = 0; y < height; y++) {
+        for (int x = 0; x < width; x++) {
+            double nx = (double) x / width - 0.5;
+            double ny = (double) y / height - 0.5;
+            float value = stb_perlin_ridge_noise3(nx * scale + offsetX, ny * scale + offsetY, 0, lacunarity, gain, offset, octaves);
+            buffer->vec[y * width + x] = value;
+        }
+    }
+}
+
+PHP_METHOD(GL_Noise, fbmFill2D)
+{
+    zval *buffer_zval;
+    zend_long width, height, octaves = 6;
+    double scale, offsetX = 0, offsetY = 0, lacunarity = 2.0, gain = 0.5;
+    if (zend_parse_parameters(ZEND_NUM_ARGS(), "Olld|ddddl", &buffer_zval, phpglfw_get_buffer_glfloat_ce(), &width, &height, &scale, &offsetX, &offsetY, &lacunarity, &gain, &octaves) == FAILURE) {
+        RETURN_THROWS();
+    }
+
+    phpglfw_buffer_glfloat_object *buffer = phpglfw_buffer_glfloat_objectptr_from_zobj_p(Z_OBJ_P(buffer_zval));
+
+    if (cvector_size(buffer->vec) < width * height) {
+        cvector_reserve(buffer->vec, width * height);
+        cvector_fill(buffer->vec, width * height, 0.0f);
+    }
+
+    for (int y = 0; y < height; y++) {
+        for (int x = 0; x < width; x++) {
+            double nx = (double) x / width - 0.5;
+            double ny = (double) y / height - 0.5;
+            float value = stb_perlin_fbm_noise3(nx * scale + offsetX, ny * scale + offsetY, 0, lacunarity, gain, octaves);
+            buffer->vec[y * width + x] = value;
+        }
+    }
+}
+
+PHP_METHOD(GL_Noise, turbulenceFill2D)
+{
+    zval *buffer_zval;
+    zend_long width, height, octaves = 6;
+    double scale, offsetX = 0, offsetY = 0, lacunarity = 2.0, gain = 0.5;
+    if (zend_parse_parameters(ZEND_NUM_ARGS(), "Olld|ddddl", &buffer_zval, phpglfw_get_buffer_glfloat_ce(), &width, &height, &scale, &offsetX, &offsetY, &lacunarity, &gain, &octaves) == FAILURE) {
+        RETURN_THROWS();
+    }
+
+    phpglfw_buffer_glfloat_object *buffer = phpglfw_buffer_glfloat_objectptr_from_zobj_p(Z_OBJ_P(buffer_zval));
+
+    if (cvector_size(buffer->vec) < width * height) {
+        cvector_reserve(buffer->vec, width * height);
+        cvector_fill(buffer->vec, width * height, 0.0f);
+    }
+
+    for (int y = 0; y < height; y++) {
+        for (int x = 0; x < width; x++) {
+            double nx = (double) x / width - 0.5;
+            double ny = (double) y / height - 0.5;
+            float value = stb_perlin_turbulence_noise3(nx * scale + offsetX, ny * scale + offsetY, 0, lacunarity, gain, octaves);
+            buffer->vec[y * width + x] = value;
+        }
+    }
+}
+
+float funhash(uint32_t x) {
+    x = ((x >> 16) ^ x) * 0x45d9f3b;
+    x = ((x >> 16) ^ x) * 0x45d9f3b;
+    x = (x >> 16) ^ x;
+
+    return (float)x / (float)0x00FFFFFF;
+}
+
+// basically the same as ridgeFill2D but we use a distance function to create a island shape
+PHP_METHOD(GL_Noise, islandFill2D)
+{
+    zval *buffer_zval;
+    zend_long width, height, octaves = 6, islandseed = 42;
+    double scale = 1.0, lacunarity = 2.0, gain = 0.5, islandmix = 0.7;
+    if (zend_parse_parameters(ZEND_NUM_ARGS(), "Oll|lddddl", &buffer_zval, phpglfw_get_buffer_glfloat_ce(), &width, &height, &islandseed, &scale, &islandmix, &lacunarity, &gain, &octaves) == FAILURE) {
+        RETURN_THROWS();
+    }
+
+    float fscale = scale;
+    float fmix = islandmix;
+
+    phpglfw_buffer_glfloat_object *buffer = phpglfw_buffer_glfloat_objectptr_from_zobj_p(Z_OBJ_P(buffer_zval));
+
+    if (cvector_size(buffer->vec) < width * height) {
+        cvector_reserve(buffer->vec, width * height);
+        cvector_fill(buffer->vec, width * height, 0.0f);
+    }
+
+    float cx = width / 2.0;
+    float cy = height / 2.0;
+    float max_dist = sqrtf(cx * cx + cy * cy);
+
+    // get some pseudo random x, y, z values for the given seed
+    // we just use a simple hash function here
+    float bx = (float)funhash((uint32_t)islandseed);
+    float by = (float)funhash((uint32_t)islandseed + 1);
+    float bz = (float)funhash((uint32_t)islandseed + 2);
+
+    // php_printf("seed %i\n", islandseed);
+    // php_printf("bx %f\n", bx);
+    // php_printf("by %f\n", by);
+    // php_printf("bz %f\n", bz);
+    
+    for (int y = 0; y < height; y++) {
+        for (int x = 0; x < width; x++) {
+            float dx = cx - x;
+            float dy = cy - y;
+            float dist = sqrtf(dx * dx + dy * dy);
+            float dist_factor = 1.0f - (dist / max_dist);
+            dist_factor = powf(dist_factor, fmix);
+
+            double nx = (double)x / width - 0.5;
+            double ny = (double)y / height - 0.5;
+            // float noise = stb_perlin_ridge_noise3(nx * fscale, ny * fscale, z, lacunarity, gain, 1.0, octaves);
+            float noise = stb_perlin_ridge_noise3(nx * fscale + bx, ny * fscale + by, bz, lacunarity, gain, 1.0, octaves);
+            // float noise = stb_perlin_fbm_noise3(nx * fscale, ny * fscale, z, lacunarity, gain, octaves);
+            float value = noise * dist_factor;
+
+            buffer->vec[y * width + x] = value;
+        }
+    }
+}
+
+
 void phpglfw_register_texture_module(INIT_FUNC_ARGS)
 {
     zend_class_entry tmp_ce;
@@ -277,4 +505,8 @@ void phpglfw_register_texture_module(INIT_FUNC_ARGS)
     phpglfw_texture2d_handlers.offset = XtOffsetOf(phpglfw_texture2d_object, std);
     phpglfw_texture2d_handlers.free_obj = phpglfw_texture2d_free_handler;
     phpglfw_texture2d_handlers.get_debug_info = phpglfw_texture2d_debug_info_handler;
+
+    // register a noise class for the perlin noise functions
+    INIT_CLASS_ENTRY(tmp_ce, "GL\\Noise", class_GL_Noise_methods);
+    zend_register_internal_class(&tmp_ce);
 }
