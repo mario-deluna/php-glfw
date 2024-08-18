@@ -8,11 +8,11 @@ Until now, we have only been using solid colors to fill shapes. However, you can
   </video>
 </figure>
 
-There are three steps required to do this:
+There are three steps required to achieve this:
 
 1. Loading the image from disk into memory.
 2. Uploading the texture to the GPU.
-3. Creating a VGPaint from the texture that can be used as a fill pattern.
+3. Creating a `VGPaint` from the texture that can be used as a fill pattern.
 
 ## Loading Images
 
@@ -22,7 +22,7 @@ The first step is to load the image from disk into memory. This can be done with
 $texture = Texture2D::fromDisk('/path/to/your/image.png', Texture2D::CHANNEL_RGBA, false);
 ```
 
-In the Vector Graphics API, we only support RGBA (4-channel) images. The last parameter is a boolean that indicates whether the image should be flipped vertically. This is required because OpenGL and the Vector Graphics API have different coordinate systems.
+In the Vector Graphics API, only RGBA (4-channel) images are supported. The last parameter is a boolean that indicates whether the image should be flipped vertically. This is required because OpenGL and the Vector Graphics API use different coordinate systems.
 
 ## Uploading the Texture
 
@@ -48,7 +48,7 @@ Note that there are two optional arguments that can be passed to this method:
     </video>
     </figure>
 
-A full function call would look like this:
+A complete function call would look like this:
 
 ```php
 $image = $vg->imageFromTexture($texture, VGImage::REPEAT_XY, VGImage::FILTER_LINEAR);
@@ -56,7 +56,7 @@ $image = $vg->imageFromTexture($texture, VGImage::REPEAT_XY, VGImage::FILTER_LIN
 
 ## Creating a Paint
 
-The last step is to create a paint from the image. The paint is defined in global space and can be used to fill or stroke any shape.
+The final step is to create a paint from the image. The paint is defined in global space and can be used to fill or stroke any shape.
 
 ```php
 // makePaint(x, y, width, height, angle, alpha)
@@ -89,9 +89,9 @@ $vg->fill();
 
 ### In Global Space?
 
-The paint is defined in global space. This means that the paint will **NOT** be affected by the shape it is used to fill. This might be a bit counterintuitive at first.
+The paint is defined in global space, meaning it will **NOT** be affected by the shape it is used to fill. This might seem counterintuitive at first.
 
-A simple example to visualize this is to create a paint that covers the entire screen and then draw a rectangle in the middle of the screen with the paint.
+A simple example to visualize this is to create a paint that covers the entire screen and then draw a rectangle in the middle of the screen with that paint.
 
 <figure markdown>
 ![PHP VectorGraphics Image Fill](./../../docs-assets/php-glfw/user_guide/vg/images/images_globalspace.gif){ width="70%" }
@@ -107,7 +107,7 @@ $vg->fill();
 
 ### Scaling a Paint
 
-If you are now confused how to set the size of an image, this is controlled by the paramters passed to `makePaint`. The `width` and `height` parameters define the size of the paint in global space.
+If you are now confused about how to set the size of an image, this is controlled by the parameters passed to `makePaint`. The `width` and `height` parameters define the size of the paint in global space.
 
 ![PHP-GLFW VectorGraphics Image Scaling](./../../docs-assets/php-glfw/user_guide/vg/images/image_scaling_vg_phpglfw.png)
 
@@ -120,7 +120,7 @@ $paint = $myImage->makePaint(100, 100, 200, 200);
 $vg->fillPaint($paint);
 $vg->fill();
 
-// slight smaller
+// slightly smaller
 $vg->beginPath();
 $vg->rect(350, 100, 100, 100);
 $paint = $myImage->makePaint(350, 100, 100, 100);
@@ -135,7 +135,7 @@ $vg->fillPaint($paint);
 $vg->fill();
 ```
 
-## Prexisting images (Context sharing)
+## Preexisting Images (Context Sharing)
 
 If you have a texture that is already uploaded to the GPU, you can create an image from it that can be used as a paint.
 
