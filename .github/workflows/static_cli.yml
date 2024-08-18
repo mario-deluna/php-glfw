@@ -11,13 +11,18 @@ jobs:
     runs-on: macos-latest
     strategy:
       matrix:
-        php-versions: ['8.2']
+        php-versions: ['8.3']
     steps:
       - uses: actions/checkout@v3
 
       # Install macOS missing packages and mark os suffix
       - run: |
           brew install automake gzip
+          
+      - name: Install PHP
+        run: |
+          brew install php@${{ matrix.php-versions }}
+          echo "::add-path::$(brew --prefix php@${{ matrix.php-versions }})/bin"
 
       - name: Install Composer
         run: |
