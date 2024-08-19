@@ -1,5 +1,5 @@
 /* This is a generated file, edit the .stub.php file instead.
- * Stub hash: 7c5fff69f0da609fbaeb7e773bb84697fa40d4f2 */
+ * Stub hash: e036cef786fe0cc975200d41c8168292af6a0cdb */
 
 ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_glCullFace, 0, 1, IS_VOID, 0)
 	ZEND_ARG_TYPE_INFO(0, mode, IS_LONG, 0)
@@ -3426,6 +3426,24 @@ ZEND_END_ARG_INFO()
 
 #define arginfo_class_GL_VectorGraphics_VGContext_debugDumpPathCache arginfo_glFinish
 
+ZEND_BEGIN_ARG_INFO_EX(arginfo_class_GL_Audio_Engine___construct, 0, 0, 0)
+	ZEND_ARG_TYPE_INFO_WITH_DEFAULT_VALUE(0, options, IS_ARRAY, 0, "[]")
+ZEND_END_ARG_INFO()
+
+ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(arginfo_class_GL_Audio_Engine_soundFromDisk, 0, 1, GL\\Audio\\Sound, 0)
+	ZEND_ARG_TYPE_INFO(0, path, IS_STRING, 0)
+ZEND_END_ARG_INFO()
+
+#define arginfo_class_GL_Audio_Sound___construct arginfo_class_GL_Geometry_ObjFileParser_Material___construct
+
+#define arginfo_class_GL_Audio_Sound_play arginfo_glFinish
+
+ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_class_GL_Audio_Sound_setPosition, 0, 3, IS_VOID, 0)
+	ZEND_ARG_TYPE_INFO(0, x, IS_DOUBLE, 0)
+	ZEND_ARG_TYPE_INFO(0, y, IS_DOUBLE, 0)
+	ZEND_ARG_TYPE_INFO(0, z, IS_DOUBLE, 0)
+ZEND_END_ARG_INFO()
+
 
 ZEND_FUNCTION(glCullFace);
 ZEND_FUNCTION(glFrontFace);
@@ -4311,6 +4329,11 @@ ZEND_METHOD(GL_VectorGraphics_VGContext, textBoxBounds);
 ZEND_METHOD(GL_VectorGraphics_VGContext, textMetrics);
 ZEND_METHOD(GL_VectorGraphics_VGContext, deleteInternal);
 ZEND_METHOD(GL_VectorGraphics_VGContext, debugDumpPathCache);
+ZEND_METHOD(GL_Audio_Engine, __construct);
+ZEND_METHOD(GL_Audio_Engine, soundFromDisk);
+ZEND_METHOD(GL_Audio_Sound, __construct);
+ZEND_METHOD(GL_Audio_Sound, play);
+ZEND_METHOD(GL_Audio_Sound, setPosition);
 
 
 static const zend_function_entry ext_functions[] = {
@@ -5348,5 +5371,20 @@ static const zend_function_entry class_GL_VectorGraphics_VGContext_methods[] = {
 	ZEND_ME(GL_VectorGraphics_VGContext, textMetrics, arginfo_class_GL_VectorGraphics_VGContext_textMetrics, ZEND_ACC_PUBLIC)
 	ZEND_ME(GL_VectorGraphics_VGContext, deleteInternal, arginfo_class_GL_VectorGraphics_VGContext_deleteInternal, ZEND_ACC_PUBLIC)
 	ZEND_ME(GL_VectorGraphics_VGContext, debugDumpPathCache, arginfo_class_GL_VectorGraphics_VGContext_debugDumpPathCache, ZEND_ACC_PUBLIC)
+	ZEND_FE_END
+};
+
+
+static const zend_function_entry class_GL_Audio_Engine_methods[] = {
+	ZEND_ME(GL_Audio_Engine, __construct, arginfo_class_GL_Audio_Engine___construct, ZEND_ACC_PUBLIC)
+	ZEND_ME(GL_Audio_Engine, soundFromDisk, arginfo_class_GL_Audio_Engine_soundFromDisk, ZEND_ACC_PUBLIC)
+	ZEND_FE_END
+};
+
+
+static const zend_function_entry class_GL_Audio_Sound_methods[] = {
+	ZEND_ME(GL_Audio_Sound, __construct, arginfo_class_GL_Audio_Sound___construct, ZEND_ACC_PUBLIC)
+	ZEND_ME(GL_Audio_Sound, play, arginfo_class_GL_Audio_Sound_play, ZEND_ACC_PUBLIC)
+	ZEND_ME(GL_Audio_Sound, setPosition, arginfo_class_GL_Audio_Sound_setPosition, ZEND_ACC_PUBLIC)
 	ZEND_FE_END
 };

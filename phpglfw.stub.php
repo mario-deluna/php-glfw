@@ -546,6 +546,22 @@ namespace GL\VectorGraphics
     }
 };
 
+namespace GL\Audio
+{
+    class Engine {
+        public function __construct(array $options = []) {}
+
+        public function soundFromDisk(string $path) : \GL\Audio\Sound {}
+    }
+    
+    class Sound {
+        public function __construct() {}
+        public function play() : void {}
+
+        public function setPosition(float $x, float $y, float $z) : void {}
+    }
+};
+
 namespace {
     /**
      * Constants
