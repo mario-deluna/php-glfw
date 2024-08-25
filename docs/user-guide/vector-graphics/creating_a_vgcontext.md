@@ -2,7 +2,7 @@
 
 Before we can start drawing anything, we need to create a window and create a context in which we can draw.
 
-Please see [Creating a Window](./window-creation.md) for more information on how to create a window and a context.
+Please see [Creating a Window](./../../getting-started/window-creation.md) for more information on how to create a window and a context.
 
 _We are not going to discuss the details of creating a window and a context in this tutorial._
 
