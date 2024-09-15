@@ -1,5 +1,5 @@
 /* This is a generated file, edit the .stub.php file instead.
- * Stub hash: 7c5fff69f0da609fbaeb7e773bb84697fa40d4f2 */
+ * Stub hash: b0d79ff50f0ceba7e80a0de9e20cc3b5dfd7fa96 */
 
 ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_glCullFace, 0, 1, IS_VOID, 0)
 	ZEND_ARG_TYPE_INFO(0, mode, IS_LONG, 0)
@@ -1921,6 +1921,12 @@ ZEND_END_ARG_INFO()
 ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_glfwGetMonitorName, 0, 1, IS_STRING, 0)
 	ZEND_ARG_OBJ_INFO(0, monitor, GLFWmonitor, 0)
 ZEND_END_ARG_INFO()
+
+ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(arginfo_glfwGetVideoModes, 0, 1, GLFWvidmode, 0)
+	ZEND_ARG_OBJ_INFO(0, monitor, GLFWmonitor, 0)
+ZEND_END_ARG_INFO()
+
+#define arginfo_glfwGetVideoMode arginfo_glfwGetVideoModes
 
 ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_glfwSetGamma, 0, 2, IS_VOID, 0)
 	ZEND_ARG_OBJ_INFO(0, monitor, GLFWmonitor, 0)
@@ -3895,6 +3901,8 @@ ZEND_FUNCTION(glfwGetMonitorWorkarea);
 ZEND_FUNCTION(glfwGetMonitorPhysicalSize);
 ZEND_FUNCTION(glfwGetMonitorContentScale);
 ZEND_FUNCTION(glfwGetMonitorName);
+ZEND_FUNCTION(glfwGetVideoModes);
+ZEND_FUNCTION(glfwGetVideoMode);
 ZEND_FUNCTION(glfwSetGamma);
 ZEND_FUNCTION(glfwDefaultWindowHints);
 ZEND_FUNCTION(glfwWindowHint);
@@ -4782,6 +4790,8 @@ static const zend_function_entry ext_functions[] = {
 	ZEND_FE(glfwGetMonitorPhysicalSize, arginfo_glfwGetMonitorPhysicalSize)
 	ZEND_FE(glfwGetMonitorContentScale, arginfo_glfwGetMonitorContentScale)
 	ZEND_FE(glfwGetMonitorName, arginfo_glfwGetMonitorName)
+	ZEND_FE(glfwGetVideoModes, arginfo_glfwGetVideoModes)
+	ZEND_FE(glfwGetVideoMode, arginfo_glfwGetVideoMode)
 	ZEND_FE(glfwSetGamma, arginfo_glfwSetGamma)
 	ZEND_FE(glfwDefaultWindowHints, arginfo_glfwDefaultWindowHints)
 	ZEND_FE(glfwWindowHint, arginfo_glfwWindowHint)

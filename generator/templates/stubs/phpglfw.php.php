@@ -28,7 +28,14 @@ namespace
      * GLFW video mode resource
      * This class is used to store the GLFW video mode resource in PHP.
      */
-    class GLFWvidmode {}
+    class GLFWvidmode {
+        public readonly int $width;
+        public readonly int $height;
+        public readonly int $redBits;
+        public readonly int $greenBits;
+        public readonly int $blueBits;
+        public readonly int $refreshRate;
+    }
 
     /**
      * GLFW gamma ramp resource

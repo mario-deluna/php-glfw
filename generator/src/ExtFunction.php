@@ -301,7 +301,7 @@ class ExtFunction
      */
     protected function generateExtImplementationReturnIPO(string $call) : string
     {   
-        $b = sprintf("%s %s = %s;\n", $this->returnIPO->getType(), $this->returnIPO->getObjectStructPointerVar(), $call);
+        $b = sprintf("%s %s = %s;\n", $this->returnIPO->getStoreType(), $this->returnIPO->getObjectStructPointerVar(), $call);
         $b .= sprintf("%s(return_value, %s);", $this->returnIPO->getAssignPtrToZvalFunctionName(), $this->returnIPO->getObjectStructPointerVar()); 
         
         return $b;

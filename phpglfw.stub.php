@@ -2685,6 +2685,8 @@ namespace {
     function glfwGetMonitorPhysicalSize(GLFWmonitor $monitor, int &$widthMM, int &$heightMM) : void {}
     function glfwGetMonitorContentScale(GLFWmonitor $monitor, float &$xscale, float &$yscale) : void {}
     function glfwGetMonitorName(GLFWmonitor $monitor) : string {}
+    function glfwGetVideoModes(GLFWmonitor $monitor) : GLFWvidmode {}
+    function glfwGetVideoMode(GLFWmonitor $monitor) : GLFWvidmode {}
     function glfwSetGamma(GLFWmonitor $monitor, float $gamma) : void {}
     function glfwDefaultWindowHints() : void {}
     function glfwWindowHint(int $hint, int $value) : void {}

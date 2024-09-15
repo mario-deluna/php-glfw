@@ -29,7 +29,14 @@ namespace
      * GLFW video mode resource
      * This class is used to store the GLFW video mode resource in PHP.
      */
-    class GLFWvidmode {}
+    class GLFWvidmode {
+        public readonly int $width;
+        public readonly int $height;
+        public readonly int $redBits;
+        public readonly int $greenBits;
+        public readonly int $blueBits;
+        public readonly int $refreshRate;
+    }
 
     /**
      * GLFW gamma ramp resource
@@ -8830,6 +8837,35 @@ namespace {
      * `error` occurred.
      */ 
     function glfwGetMonitorName(GLFWmonitor $monitor) : string {}
+ 
+    /**
+     * Returns the available video modes for the specified monitor.
+     * 
+     * This function returns an array of all video modes supported by the specified
+     * monitor. The returned array is sorted in ascending order, first by color
+     * bit depth (the sum of all channel depths), then by resolution area (the
+     * product of width and height), then resolution width and finally by refresh
+     * rate.
+     * 
+     * @param GLFWmonitor $monitor The monitor to query.
+     * 
+     * @return GLFWvidmode
+     */ 
+    function glfwGetVideoModes(GLFWmonitor $monitor) : GLFWvidmode {}
+ 
+    /**
+     * Returns the current mode of the specified monitor.
+     * 
+     * This function returns the current video mode of the specified monitor. If
+     * you have created a full screen window for that monitor, the return value
+     * will depend on whether that window is iconified.
+     * 
+     * @param GLFWmonitor $monitor The monitor to query.
+     * 
+     * @return GLFWvidmode The current mode of the monitor, or `NULL` if an
+     * `error` occurred.
+     */ 
+    function glfwGetVideoMode(GLFWmonitor $monitor) : GLFWvidmode {}
  
     /**
      * Generates a gamma ramp and sets it for the specified monitor.

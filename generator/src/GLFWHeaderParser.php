@@ -68,6 +68,31 @@ class GLFWHeaderParser
                 return "glfwDestroyCursor($var);";
             }
         });
+
+        $extGen->addIPO(new class('GLFWvidmode', 'GLFWvidmode*') extends ExtInternalPtrObject {
+            /**
+             * An array of values that can be accessed from the object
+             * 
+             * @var array<array{string, string}>
+             */
+            public array $structAccessMembers = [
+                ['width', 'int'],
+                ['height', 'int'],
+                ['redBits', 'int'],
+                ['greenBits', 'int'],
+                ['blueBits', 'int'],
+                ['refreshRate', 'int'],
+            ];
+
+            public function getStoreType() : string 
+            {
+                return 'const ' . $this->type;
+            }
+
+            public function getDestructionCall(string $var) : string {
+                return "";
+            }
+        });
     }
 
     public function process(string $headerFilePath, ExtGenerator $extGen)

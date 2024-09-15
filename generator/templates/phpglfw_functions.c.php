@@ -58,7 +58,7 @@ zend_class_entry *<?php echo $ipo->getClassEntryName(); ?>;
  */
 <?php foreach($ipos as $ipo) : ?>
 typedef struct _<?php echo $ipo->getObjectStructName(); ?> {
-    <?php echo $ipo->getType(); ?> <?php echo $ipo->getObjectStructPointerVar(); ?>;
+    <?php echo $ipo->getStoreType(); ?> <?php echo $ipo->getObjectStructPointerVar(); ?>;
     zend_object std;
     <?php foreach($ipo->additionalZvals as $zval) : ?>
     zval <?php echo $zval; ?>;
@@ -129,7 +129,73 @@ static void <?php echo $ipo->getObjectFreeFunctionName(); ?>(zend_object *intern
     zend_object_std_dtor(intern);
 }
 
-void <?php echo $ipo->getAssignPtrToZvalFunctionName(); ?>(zval *val, <?php echo $ipo->getType(); ?> <?php echo $ipo->getObjectStructPointerVar(); ?>)
+<?php if ($ipo->structAccessMembers) : ?> 
+// allow access to the structure members of the internal object
+zval *<?php echo $ipo->getObjectReadPropertyFunctionName(); ?>(zend_object *object, zend_string *member, int type, void **cache_slot, zval *rv)
+{
+    <?php echo $ipo->getObjectStructName(); ?> *intern = <?php echo $ipo->getObjectStructPtrFromZObjPtrFunctionName(); ?>(object);
+    zval *retval = &EG(uninitialized_zval);
+
+    if (intern-><?php echo $ipo->getObjectStructPointerVar(); ?>) {
+<?php foreach($ipo->structAccessMembers as $i => $member) : ?>
+        <?php echo $i === 0 ? '' : 'else '; ?>if (zend_string_equals_literal(member, "<?php echo $member[0]; ?>")) {
+<?php if ($member[1] === 'int') : ?>
+            ZVAL_LONG(retval, intern-><?php echo $ipo->getObjectStructPointerVar(); ?>-><?php echo $member[0]; ?>);
+<?php elseif ($member[1] === 'float') : ?>
+            ZVAL_DOUBLE(retval, intern-><?php echo $ipo->getObjectStructPointerVar(); ?>-><?php echo $member[0]; ?>);
+<?php elseif ($member[1] === 'string') : ?>
+            ZVAL_STRING(retval, intern-><?php echo $ipo->getObjectStructPointerVar(); ?>-><?php echo $member[0]; ?>);
+<?php elseif ($member[1] === 'bool') : ?>
+            ZVAL_BOOL(retval, intern-><?php echo $ipo->getObjectStructPointerVar(); ?>-><?php echo $member[0]; ?>);
+<?php endif; ?>
+            return retval;
+        }
+<?php endforeach; ?>
+        else {
+            zend_throw_error(NULL, "Trying to access invalid property '%s' on <?php echo $ipo->getPHPClassName(); ?>", ZSTR_VAL(member));
+        }
+    }
+
+    return retval;
+}
+
+
+static HashTable *<?php echo $ipo->getObjectDebugInfoFunctionName(); ?>(zend_object *object, int *is_temp)
+{
+    <?php echo $ipo->getObjectStructName(); ?> *intern = <?php echo $ipo->getObjectStructPtrFromZObjPtrFunctionName(); ?>(object);
+
+    *is_temp = 1;
+
+    if (intern-><?php echo $ipo->getObjectStructPointerVar(); ?>) {
+        HashTable *ht;
+        zval zv;
+
+        ht = zend_new_array(<?php echo count($ipo->structAccessMembers); ?>);
+
+<?php foreach($ipo->structAccessMembers as $member) : ?>
+<?php if ($member[1] === 'int') : ?>
+        ZVAL_LONG(&zv, intern-><?php echo $ipo->getObjectStructPointerVar(); ?>-><?php echo $member[0]; ?>);
+<?php elseif ($member[1] === 'float') : ?>
+        ZVAL_DOUBLE(&zv, intern-><?php echo $ipo->getObjectStructPointerVar(); ?>-><?php echo $member[0]; ?>);
+<?php elseif ($member[1] === 'string') : ?>
+        if (intern-><?php echo $ipo->getObjectStructPointerVar(); ?>-><?php echo $member[0]; ?>) {
+            ZVAL_STRING(&zv, intern-><?php echo $ipo->getObjectStructPointerVar(); ?>-><?php echo $member[0]; ?>);
+        } else {
+            ZVAL_NULL(&zv);
+        }
+<?php elseif ($member[1] === 'bool') : ?>
+        ZVAL_BOOL(&zv, intern-><?php echo $ipo->getObjectStructPointerVar(); ?>-><?php echo $member[0]; ?>);
+<?php endif; ?>
+        zend_hash_str_add(ht, "<?php echo $member[0]; ?>", sizeof("<?php echo $member[0]; ?>") - 1, &zv);
+<?php endforeach; ?>
+        return ht;
+    }
+
+    return NULL;
+}
+<?php endif; ?>
+
+void <?php echo $ipo->getAssignPtrToZvalFunctionName(); ?>(zval *val, <?php echo $ipo->getStoreType(); ?> <?php echo $ipo->getObjectStructPointerVar(); ?>)
 {
     object_init_ex(val, <?php echo $ipo->getClassEntryName(); ?>);
     <?php echo $ipo->getObjectStructPtrFromZObjPtrFunctionName(); ?>(Z_OBJ_P(val))-><?php echo $ipo->getObjectStructPointerVar(); ?> = <?php echo $ipo->getObjectStructPointerVar(); ?>;
@@ -146,9 +212,15 @@ void <?php echo $ipo->getObjectMinitHelperFunctionName(); ?>(void)
     <?php echo $ipo->getObjectHandlersVar(); ?>.get_constructor = <?php echo $ipo->getClassConstructorFunctionName(); ?>;
     <?php echo $ipo->getObjectHandlersVar(); ?>.compare = zend_objects_not_comparable;
     <?php echo $ipo->getObjectHandlersVar(); ?>.offset = XtOffsetOf(<?php echo $ipo->getObjectStructName(); ?>, std);
+
+<?php if ($ipo->structAccessMembers) : ?>
+    <?php echo $ipo->getObjectHandlersVar(); ?>.read_property = <?php echo $ipo->getObjectReadPropertyFunctionName(); ?>;
+    <?php echo $ipo->getObjectHandlersVar(); ?>.get_debug_info = <?php echo $ipo->getObjectDebugInfoFunctionName(); ?>;
+<?php endif; ?>
+
 }
 
-<?php echo $ipo->getType(); ?> <?php echo $ipo->getInternalPtrFromZValPtrFunctionName(); ?>(zval* zp)
+<?php echo $ipo->getStoreType(); ?> <?php echo $ipo->getInternalPtrFromZValPtrFunctionName(); ?>(zval* zp)
 {
     return <?php echo $ipo->getObjectStructPtrFromZObjPtrFunctionName(); ?>(Z_OBJ_P(zp))-><?php echo $ipo->getObjectStructPointerVar(); ?>;
 }

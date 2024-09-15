@@ -521,8 +521,8 @@
 - [ ] `glfwSetMonitorUserPointer`
 - [ ] `glfwGetMonitorUserPointer`
 - [ ] `glfwSetMonitorCallback`
-- [ ] `glfwGetVideoModes`
-- [ ] `glfwGetVideoMode`
+- [x] `glfwGetVideoModes`
+- [x] `glfwGetVideoMode`
 - [x] `glfwSetGamma`
 - [ ] `glfwGetGammaRamp`
 - [ ] `glfwSetGammaRamp`

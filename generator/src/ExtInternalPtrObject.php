@@ -23,6 +23,13 @@ class ExtInternalPtrObject
     public array $additionalZvals = [];
 
     /**
+     * An array of values that can be accessed from the object
+     * 
+     * @var array<array{string, string}>
+     */
+    public array $structAccessMembers = [];
+
+    /**
      * An array of (zend_fcall_info, zend_fcall_info_cache) pairs
      * I use this to store the window & input callback functions for example
      * 
@@ -40,6 +47,11 @@ class ExtInternalPtrObject
     }
 
     public function getType() : string 
+    {
+        return $this->type;
+    }
+
+    public function getStoreType() : string 
     {
         return $this->type;
     }
@@ -101,6 +113,16 @@ class ExtInternalPtrObject
     public function getClassRegistrationFunctionName() 
     {
         return $this->getIdentifierName() . '_class_register';
+    }
+
+    public function getObjectReadPropertyFunctionName() 
+    {
+        return $this->getIdentifierName() . '_object_read_property';
+    }
+
+    public function getObjectDebugInfoFunctionName() 
+    {
+        return $this->getIdentifierName() . '_object_debug_info';
     }
 
     /**
