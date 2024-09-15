@@ -329,7 +329,7 @@ class ExtFunction
     {
         // IPO argument
         if ($arg->argumentType === ExtType::T_IPO) {
-            $buffer = ($arg->isOptional() ? '?' : '') . $arg->argInternalPtrObject->getPHPClassName() . ' ' . '$' . $arg->name;
+            $buffer = ($arg->isOptional() || $arg->isNullable ? '?' : '') . $arg->argInternalPtrObject->getPHPClassName() . ' ' . '$' . $arg->name;
                 
             if ($arg->isOptional() && $allowDefaultValue) {
                 $buffer .= ' = ' . $arg->defaultValue;
@@ -339,7 +339,7 @@ class ExtFunction
         }
         // class entry argument
         elseif ($arg->argumentType === ExtType::T_CE && $arg instanceof CEObjectArgument) {
-            $buffer = ($arg->isOptional() ? '?' : '') . $arg->getPHPClassName() . ' ' . ($arg->explicitPassedByReference ? '&' : '') . '$' . $arg->name;
+            $buffer = ($arg->isOptional() || $arg->isNullable ? '?' : '') . $arg->getPHPClassName() . ' ' . ($arg->explicitPassedByReference ? '&' : '') . '$' . $arg->name;
                 
             if ($arg->isOptional() && $allowDefaultValue) {
                 $buffer .= ' = ' . $arg->defaultValue;

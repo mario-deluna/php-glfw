@@ -2715,7 +2715,7 @@ namespace {
     function glfwFocusWindow(GLFWwindow $window) : void {}
     function glfwRequestWindowAttention(GLFWwindow $window) : void {}
     function glfwGetWindowMonitor(GLFWwindow $window) : GLFWmonitor {}
-    function glfwSetWindowMonitor(GLFWwindow $window, GLFWmonitor $monitor, int $xpos, int $ypos, int $width, int $height, int $refreshRate) : void {}
+    function glfwSetWindowMonitor(GLFWwindow $window, ?GLFWmonitor $monitor, int $xpos, int $ypos, int $width, int $height, int $refreshRate) : void {}
     function glfwGetWindowAttrib(GLFWwindow $window, int $attrib) : int {}
     function glfwSetWindowAttrib(GLFWwindow $window, int $attrib, int $value) : void {}
     function glfwSetWindowPosCallback(GLFWwindow $window, callable $callback) : void {}

@@ -9495,7 +9495,7 @@ namespace {
      * 
      * @param GLFWwindow $window The window whose monitor, size or video mode to
      * set.
-     * @param GLFWmonitor $monitor The desired monitor, or `NULL` to set windowed
+     * @param ?GLFWmonitor $monitor The desired monitor, or `NULL` to set windowed
      * mode.
      * @param int $xpos The desired x-coordinate of the upper-left corner of the
      * content area.
@@ -9510,7 +9510,7 @@ namespace {
      * 
      * @return void
      */ 
-    function glfwSetWindowMonitor(GLFWwindow $window, GLFWmonitor $monitor, int $xpos, int $ypos, int $width, int $height, int $refreshRate) : void {}
+    function glfwSetWindowMonitor(GLFWwindow $window, ?GLFWmonitor $monitor, int $xpos, int $ypos, int $width, int $height, int $refreshRate) : void {}
  
     /**
      * Returns an attribute of the specified window.

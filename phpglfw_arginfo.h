@@ -1,5 +1,5 @@
 /* This is a generated file, edit the .stub.php file instead.
- * Stub hash: b0d79ff50f0ceba7e80a0de9e20cc3b5dfd7fa96 */
+ * Stub hash: 5987166c03bdd5557449c93647771b2487551a2c */
 
 ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_glCullFace, 0, 1, IS_VOID, 0)
 	ZEND_ARG_TYPE_INFO(0, mode, IS_LONG, 0)
@@ -2051,7 +2051,7 @@ ZEND_END_ARG_INFO()
 
 ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_glfwSetWindowMonitor, 0, 7, IS_VOID, 0)
 	ZEND_ARG_OBJ_INFO(0, window, GLFWwindow, 0)
-	ZEND_ARG_OBJ_INFO(0, monitor, GLFWmonitor, 0)
+	ZEND_ARG_OBJ_INFO(0, monitor, GLFWmonitor, 1)
 	ZEND_ARG_TYPE_INFO(0, xpos, IS_LONG, 0)
 	ZEND_ARG_TYPE_INFO(0, ypos, IS_LONG, 0)
 	ZEND_ARG_TYPE_INFO(0, width, IS_LONG, 0)

@@ -44,7 +44,7 @@ class InternalPtrObjectArgument extends ExtArgument
     public function getCharId() : string 
     {
         $c = $this->charid;
-        if ($this->isOptional()) $c .= '!';
+        if ($this->isOptional() || $this->isNullable) $c .= '!';
 
         return $c;
     }
@@ -78,7 +78,7 @@ class InternalPtrObjectArgument extends ExtArgument
      */
     public function getUsePrepCode() : string 
     {
-        return $this->argInternalPtrObject->getInternalPtrFromZValDeclarationCode($this->name, $this->getZValName(), $this->defaultValue);
+        return $this->argInternalPtrObject->getInternalPtrFromZValDeclarationCode($this->name, $this->getZValName(), $this->defaultValue, $this->isNullable);
     }
 
     /**

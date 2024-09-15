@@ -11337,11 +11337,14 @@ PHP_FUNCTION(glfwSetWindowMonitor)
     zend_long width;
     zend_long height;
     zend_long refreshRate;
-    if (zend_parse_parameters(ZEND_NUM_ARGS() , "OOlllll", &window_zval, phpglfw_glfwwindow_ce, &monitor_zval, phpglfw_glfwmonitor_ce, &xpos, &ypos, &width, &height, &refreshRate) == FAILURE) {
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "OO!lllll", &window_zval, phpglfw_glfwwindow_ce, &monitor_zval, phpglfw_glfwmonitor_ce, &xpos, &ypos, &width, &height, &refreshRate) == FAILURE) {
         return;
     }
     GLFWwindow* window = phpglfw_glfwwindowptr_from_zval_ptr(window_zval);
-    GLFWmonitor* monitor = phpglfw_glfwmonitorptr_from_zval_ptr(monitor_zval);
+    GLFWmonitor* monitor = NULL;
+    if (monitor_zval != NULL && Z_TYPE_P(monitor_zval) == IS_OBJECT) {
+        monitor = phpglfw_glfwmonitorptr_from_zval_ptr(monitor_zval);
+    }
     glfwSetWindowMonitor(window, monitor, xpos, ypos, width, height, refreshRate);
 } 
 

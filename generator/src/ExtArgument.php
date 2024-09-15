@@ -122,6 +122,11 @@ abstract class ExtArgument
     public bool $isParsed = true;
 
     /**
+     * Is the argument nullable? can null be passed instead of the desired type?
+     */
+    public bool $isNullable = false;
+
+    /**
      * Constrcutor
      * @param string $name The name of the argument 
      */

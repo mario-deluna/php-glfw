@@ -2,7 +2,7 @@
 Sets the mode, monitor, video mode and placement of a window.
 
 ```php
-function glfwSetWindowMonitor(\GLFWwindow $window, \GLFWmonitor $monitor, int $xpos, int $ypos, int $width, int $height, int $refreshRate) : void
+function glfwSetWindowMonitor(\GLFWwindow $window, ?\GLFWmonitor $monitor, int $xpos, int $ypos, int $width, int $height, int $refreshRate) : void
 ```
 
 This function sets the monitor that the window uses for full screen mode or,
@@ -28,7 +28,7 @@ arguments
 
 :    1. `\GLFWwindow` `$window` The window whose monitor, size or video mode to
     set.
-    2. `\GLFWmonitor` `$monitor` The desired monitor, or `NULL` to set windowed
+    2. `?\GLFWmonitor` `$monitor` The desired monitor, or `NULL` to set windowed
     mode.
     3. `int` `$xpos` The desired x-coordinate of the upper-left corner of the
     content area.
