@@ -10402,6 +10402,45 @@ namespace {
     function glfwJoystickPresent(int $jid) : int {}
  
     /**
+     * Returns the values of all axes of the specified joystick.
+     * 
+     * This function returns the values of all axes of the specified joystick.
+     * Each element in the array is a value between -1.0 and 1.0.
+     * 
+     * If the specified joystick is not present this function will return `NULL`
+     * but will not generate an error. This can be used instead of first calling
+     * [`glfwJoystickPresent`](/API/GLFW/glfwJoystickPresent.html).
+     * 
+     * @param int $jid The `joystick` to query.
+     * 
+     * @return array
+     */ 
+    function glfwGetJoystickAxes(int $jid) : array {}
+ 
+    /**
+     * Returns the state of all buttons of the specified joystick.
+     * 
+     * This function returns the state of all buttons of the specified joystick.
+     * Each element in the array is either `GLFW_PRESS` or `GLFW_RELEASE`.
+     * 
+     * For backward compatibility with earlier versions that did not have @ref
+     * glfwGetJoystickHats, the button array also includes all hats, each
+     * represented as four buttons. The hats are in the same order as returned by
+     * __glfwGetJoystickHats__ and are in the order _up_, _right_, _down_ and
+     * _left_. To disable these extra buttons, set the @ref
+     * GLFW_JOYSTICK_HAT_BUTTONS init hint before initialization.
+     * 
+     * If the specified joystick is not present this function will return `NULL`
+     * but will not generate an error. This can be used instead of first calling
+     * [`glfwJoystickPresent`](/API/GLFW/glfwJoystickPresent.html).
+     * 
+     * @param int $jid The `joystick` to query.
+     * 
+     * @return array
+     */ 
+    function glfwGetJoystickButtons(int $jid) : array {}
+ 
+    /**
      * Returns the name of the specified joystick.
      * 
      * This function returns the name, encoded as UTF-8, of the specified joystick.
@@ -10718,6 +10757,55 @@ namespace {
      * otherwise.
      */ 
     function glfwVulkanSupported() : int {}
+ 
+    /**
+     * Returns the state of the specified gamepad's axes.
+     * 
+     * If the gamepad is not present, or the given joystick is not a gamepad, this
+     * function will return an empty array.
+     * 
+     * The returned array is indexed by the GLFW gamepad axis constants:
+     *  - `GLFW_GAMEPAD_AXIS_LEFT_X`
+     *  - `GLFW_GAMEPAD_AXIS_LEFT_Y`
+     *  - `GLFW_GAMEPAD_AXIS_RIGHT_X`
+     *  - `GLFW_GAMEPAD_AXIS_RIGHT_Y`
+     *  - `GLFW_GAMEPAD_AXIS_LEFT_TRIGGER`
+     *  - `GLFW_GAMEPAD_AXIS_RIGHT_TRIGGER`
+     * 
+     * @param int $joystick The joystick to query.
+     * 
+     * @return array
+     */ 
+    function glfwGetGamepadAxes(int $joystick) : array {}
+ 
+    /**
+     * Returns the state of the specified gamepad's buttons.
+     * 
+     * If the gamepad is not present, or the given joystick is not a gamepad, this
+     * function will return an empty array.
+     * 
+     * The returned array is indexed by the GLFW gamepad button constants:
+     *  - `GLFW_GAMEPAD_BUTTON_A`
+     *  - `GLFW_GAMEPAD_BUTTON_B`
+     *  - `GLFW_GAMEPAD_BUTTON_X`
+     *  - `GLFW_GAMEPAD_BUTTON_Y`
+     *  - `GLFW_GAMEPAD_BUTTON_LEFT_BUMPER`
+     *  - `GLFW_GAMEPAD_BUTTON_RIGHT_BUMPER`
+     *  - `GLFW_GAMEPAD_BUTTON_BACK`
+     *  - `GLFW_GAMEPAD_BUTTON_START`
+     *  - `GLFW_GAMEPAD_BUTTON_GUIDE`
+     *  - `GLFW_GAMEPAD_BUTTON_LEFT_THUMB`
+     *  - `GLFW_GAMEPAD_BUTTON_RIGHT_THUMB`
+     *  - `GLFW_GAMEPAD_BUTTON_DPAD_UP`
+     *  - `GLFW_GAMEPAD_BUTTON_DPAD_RIGHT`
+     *  - `GLFW_GAMEPAD_BUTTON_DPAD_DOWN`
+     *  - `GLFW_GAMEPAD_BUTTON_DPAD_LEFT`
+     * 
+     * @param int $joystick The joystick to query.
+     * 
+     * @return array
+     */ 
+    function glfwGetGamepadButtons(int $joystick) : array {}
  
     /**
      * Replaces the source code in a shader object.

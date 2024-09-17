@@ -594,8 +594,8 @@
 - [x] `glfwSetScrollCallback`
 - [x] `glfwSetDropCallback`
 - [x] `glfwJoystickPresent`
-- [ ] `glfwGetJoystickAxes`
-- [ ] `glfwGetJoystickButtons`
+- [x] `glfwGetJoystickAxes`
+- [x] `glfwGetJoystickButtons`
 - [ ] `glfwGetJoystickHats`
 - [x] `glfwGetJoystickName`
 - [x] `glfwGetJoystickGUID`
@@ -619,6 +619,8 @@
 - [x] `glfwExtensionSupported`
 - [ ] `glfwGetProcAddress`
 - [x] `glfwVulkanSupported`
+- [x] `glfwGetGamepadAxes`
+- [x] `glfwGetGamepadButtons`
 - [x] `glShaderSource`
 - [x] `glBufferData`
 - [x] `glUniformMatrix4f`

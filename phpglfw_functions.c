@@ -11956,6 +11956,40 @@ PHP_FUNCTION(glfwJoystickPresent)
 } 
 
 /**
+ * glfwGetJoystickAxes
+ */ 
+PHP_FUNCTION(glfwGetJoystickAxes)
+{
+    zend_long joystick;
+    if (zend_parse_parameters(ZEND_NUM_ARGS(), "l", &joystick) == FAILURE) {
+        return;
+    }
+    int count;
+    const float* axes = glfwGetJoystickAxes(joystick, &count);
+    array_init(return_value);
+    for (int i = 0; i < count; i++) {
+        add_next_index_double(return_value, axes[i]);
+    }
+} 
+
+/**
+ * glfwGetJoystickButtons
+ */ 
+PHP_FUNCTION(glfwGetJoystickButtons)
+{
+    zend_long joystick;
+    if (zend_parse_parameters(ZEND_NUM_ARGS(), "l", &joystick) == FAILURE) {
+        return;
+    }
+    int count;
+    const unsigned char* buttons = glfwGetJoystickButtons(joystick, &count);
+    array_init(return_value);
+    for (int i = 0; i < count; i++) {
+        add_next_index_bool(return_value, buttons[i]);
+    }
+} 
+
+/**
  * glfwGetJoystickName
  */ 
 PHP_FUNCTION(glfwGetJoystickName)
@@ -12142,6 +12176,46 @@ PHP_FUNCTION(glfwExtensionSupported)
 PHP_FUNCTION(glfwVulkanSupported)
 {
     RETURN_LONG(glfwVulkanSupported());
+} 
+
+/**
+ * glfwGetGamepadAxes
+ */ 
+PHP_FUNCTION(glfwGetGamepadAxes)
+{
+    zend_long joystick;
+    if (zend_parse_parameters(ZEND_NUM_ARGS(), "l", &joystick) == FAILURE) {
+        return;
+    }
+    array_init(return_value);
+    GLFWgamepadstate state;
+    if (!glfwGetGamepadState(joystick, &state)) {
+        return;
+    }
+    // gamepad state has 6 axes
+    for (int i = 0; i < 6; i++) {
+        add_next_index_double(return_value, state.axes[i]);
+    }
+} 
+
+/**
+ * glfwGetGamepadButtons
+ */ 
+PHP_FUNCTION(glfwGetGamepadButtons)
+{
+    zend_long joystick;
+    if (zend_parse_parameters(ZEND_NUM_ARGS(), "l", &joystick) == FAILURE) {
+        return;
+    }
+    array_init(return_value);
+    GLFWgamepadstate state;
+    if (!glfwGetGamepadState(joystick, &state)) {
+        return;
+    }
+    // gamepad state has 15 buttons
+    for (int i = 0; i < 15; i++) {
+        add_next_index_bool(return_value, state.buttons[i]);
+    }
 } 
 
 /**

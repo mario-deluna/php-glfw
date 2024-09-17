@@ -2752,6 +2752,8 @@ namespace {
     function glfwSetScrollCallback(GLFWwindow $window, callable $callback) : void {}
     function glfwSetDropCallback(GLFWwindow $window, callable $callback) : void {}
     function glfwJoystickPresent(int $jid) : int {}
+    function glfwGetJoystickAxes(int $jid) : array {}
+    function glfwGetJoystickButtons(int $jid) : array {}
     function glfwGetJoystickName(int $jid) : string {}
     function glfwGetJoystickGUID(int $jid) : string {}
     function glfwJoystickIsGamepad(int $jid) : int {}
@@ -2767,6 +2769,8 @@ namespace {
     function glfwSwapInterval(int $interval) : void {}
     function glfwExtensionSupported(string $extension) : int {}
     function glfwVulkanSupported() : int {}
+    function glfwGetGamepadAxes(int $joystick) : array {}
+    function glfwGetGamepadButtons(int $joystick) : array {}
     function glShaderSource(int $shader, string $source) : void {}
     function glBufferData(int $target, \GL\Buffer\BufferInterface $buffer, int $usage) : void {}
     function glUniformMatrix4f(int $location, bool $transpose, \GL\Math\Mat4 $matrix) : void {}

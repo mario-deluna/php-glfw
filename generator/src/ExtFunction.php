@@ -35,6 +35,7 @@ class ExtFunction
     public const RETURN_BOOL = ExtType::T_BOOL;
     public const RETURN_STRING = ExtType::T_STRING;
     public const RETURN_IPO = ExtType::T_IPO;
+    public const RETURN_ARRAY = ExtType::T_ARRAY;
 
     /**
      * The original internal return type from the wrapped function

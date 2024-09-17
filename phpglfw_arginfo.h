@@ -1,5 +1,5 @@
 /* This is a generated file, edit the .stub.php file instead.
- * Stub hash: 5987166c03bdd5557449c93647771b2487551a2c */
+ * Stub hash: 47b21f98f92805f0b6f2aae89dc2901e14d9cf34 */
 
 ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_glCullFace, 0, 1, IS_VOID, 0)
 	ZEND_ARG_TYPE_INFO(0, mode, IS_LONG, 0)
@@ -2178,6 +2178,12 @@ ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_glfwJoystickPresent, 0, 1, IS_LO
 	ZEND_ARG_TYPE_INFO(0, jid, IS_LONG, 0)
 ZEND_END_ARG_INFO()
 
+ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_glfwGetJoystickAxes, 0, 1, IS_ARRAY, 0)
+	ZEND_ARG_TYPE_INFO(0, jid, IS_LONG, 0)
+ZEND_END_ARG_INFO()
+
+#define arginfo_glfwGetJoystickButtons arginfo_glfwGetJoystickAxes
+
 ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_glfwGetJoystickName, 0, 1, IS_STRING, 0)
 	ZEND_ARG_TYPE_INFO(0, jid, IS_LONG, 0)
 ZEND_END_ARG_INFO()
@@ -2224,6 +2230,12 @@ ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_glfwExtensionSupported, 0, 1, IS
 ZEND_END_ARG_INFO()
 
 #define arginfo_glfwVulkanSupported arginfo_glGetError
+
+ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_glfwGetGamepadAxes, 0, 1, IS_ARRAY, 0)
+	ZEND_ARG_TYPE_INFO(0, joystick, IS_LONG, 0)
+ZEND_END_ARG_INFO()
+
+#define arginfo_glfwGetGamepadButtons arginfo_glfwGetGamepadAxes
 
 ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_glShaderSource, 0, 2, IS_VOID, 0)
 	ZEND_ARG_TYPE_INFO(0, shader, IS_LONG, 0)
@@ -3968,6 +3980,8 @@ ZEND_FUNCTION(glfwSetCursorEnterCallback);
 ZEND_FUNCTION(glfwSetScrollCallback);
 ZEND_FUNCTION(glfwSetDropCallback);
 ZEND_FUNCTION(glfwJoystickPresent);
+ZEND_FUNCTION(glfwGetJoystickAxes);
+ZEND_FUNCTION(glfwGetJoystickButtons);
 ZEND_FUNCTION(glfwGetJoystickName);
 ZEND_FUNCTION(glfwGetJoystickGUID);
 ZEND_FUNCTION(glfwJoystickIsGamepad);
@@ -3983,6 +3997,8 @@ ZEND_FUNCTION(glfwSwapBuffers);
 ZEND_FUNCTION(glfwSwapInterval);
 ZEND_FUNCTION(glfwExtensionSupported);
 ZEND_FUNCTION(glfwVulkanSupported);
+ZEND_FUNCTION(glfwGetGamepadAxes);
+ZEND_FUNCTION(glfwGetGamepadButtons);
 ZEND_FUNCTION(glShaderSource);
 ZEND_FUNCTION(glBufferData);
 ZEND_FUNCTION(glUniformMatrix4f);
@@ -4857,6 +4873,8 @@ static const zend_function_entry ext_functions[] = {
 	ZEND_FE(glfwSetScrollCallback, arginfo_glfwSetScrollCallback)
 	ZEND_FE(glfwSetDropCallback, arginfo_glfwSetDropCallback)
 	ZEND_FE(glfwJoystickPresent, arginfo_glfwJoystickPresent)
+	ZEND_FE(glfwGetJoystickAxes, arginfo_glfwGetJoystickAxes)
+	ZEND_FE(glfwGetJoystickButtons, arginfo_glfwGetJoystickButtons)
 	ZEND_FE(glfwGetJoystickName, arginfo_glfwGetJoystickName)
 	ZEND_FE(glfwGetJoystickGUID, arginfo_glfwGetJoystickGUID)
 	ZEND_FE(glfwJoystickIsGamepad, arginfo_glfwJoystickIsGamepad)
@@ -4872,6 +4890,8 @@ static const zend_function_entry ext_functions[] = {
 	ZEND_FE(glfwSwapInterval, arginfo_glfwSwapInterval)
 	ZEND_FE(glfwExtensionSupported, arginfo_glfwExtensionSupported)
 	ZEND_FE(glfwVulkanSupported, arginfo_glfwVulkanSupported)
+	ZEND_FE(glfwGetGamepadAxes, arginfo_glfwGetGamepadAxes)
+	ZEND_FE(glfwGetGamepadButtons, arginfo_glfwGetGamepadButtons)
 	ZEND_FE(glShaderSource, arginfo_glShaderSource)
 	ZEND_FE(glBufferData, arginfo_glBufferData)
 	ZEND_FE(glUniformMatrix4f, arginfo_glUniformMatrix4f)

@@ -64,6 +64,7 @@ $gen->adjust(PHPGlfwAdjustments\GLFWCallbacksAdjustment::class);
 $gen->adjust(PHPGlfwAdjustments\GLFWCreateWindowAdjustment::class);
 $gen->adjust(PHPGlfwAdjustments\GLFWGetVideoModesAdjustment::class);
 $gen->adjust(PHPGlfwAdjustments\GLFWSetWindowMonitorAdjustment::class);
+$gen->adjust(PHPGlfwAdjustments\GLFWJoystickAdjustment::class);
 $gen->adjust(PHPGlfwAdjustments\GLShaderSourceAdjustment::class);
 $gen->adjust(PHPGlfwAdjustments\GLBufferDataAdjustment::class);
 $gen->adjust(PHPGlfwAdjustments\GLVertexAttribPointerAdjustment::class);
