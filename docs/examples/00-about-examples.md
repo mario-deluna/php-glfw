@@ -168,6 +168,18 @@ In this section you will find a collection of examples that demonstrate how to u
 
 </div>
 
+### Input
+
+<div class="grid cards" markdown>
+
+-   __Joystick Input__
+
+    ---
+
+    [![Example](./../../docs-assets/php-glfw/examples/vg/input_joystick_thumb.png)](./vector-graphics/input_joystick.md)
+
+</div>
+
 ### Noise
 
 <div class="grid cards" markdown>

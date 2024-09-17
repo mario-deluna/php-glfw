@@ -11,6 +11,7 @@ class ExtType
     public const T_BOOL = 'bool';
     public const T_STRING = 'string';
     public const T_NULL = 'null';
+    public const T_ARRAY = 'array';
     public const T_IPO = '@ibo'; // internal pointer object (ex. GLFWwindow)
     public const T_CE = '@ce'; // class entry (object)
     public const T_VARIADIC = '@variadic'; // variadic argument
@@ -39,6 +40,8 @@ class ExtType
             break;
             case 'string':
                 return 'string';
+            case 'array':
+                return 'array';
             break;
             case '@func':
                 return 'callable';

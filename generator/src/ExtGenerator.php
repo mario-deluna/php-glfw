@@ -172,6 +172,14 @@ class ExtGenerator
     }
 
     /**
+     * Adds a function to the extension
+     */
+    public function addFunction(ExtFunction $func) : void
+    {
+        $this->methods[] = $func;
+    }
+
+    /**
      * Find a extension function instance by name and replace it.
      * If the function does not already exists it will simply be added.
      */
