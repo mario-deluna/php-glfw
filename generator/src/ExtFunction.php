@@ -35,6 +35,7 @@ class ExtFunction
     public const RETURN_BOOL = ExtType::T_BOOL;
     public const RETURN_STRING = ExtType::T_STRING;
     public const RETURN_IPO = ExtType::T_IPO;
+    public const RETURN_ARRAY = ExtType::T_ARRAY;
 
     /**
      * The original internal return type from the wrapped function
@@ -301,7 +302,7 @@ class ExtFunction
      */
     protected function generateExtImplementationReturnIPO(string $call) : string
     {   
-        $b = sprintf("%s %s = %s;\n", $this->returnIPO->getType(), $this->returnIPO->getObjectStructPointerVar(), $call);
+        $b = sprintf("%s %s = %s;\n", $this->returnIPO->getStoreType(), $this->returnIPO->getObjectStructPointerVar(), $call);
         $b .= sprintf("%s(return_value, %s);", $this->returnIPO->getAssignPtrToZvalFunctionName(), $this->returnIPO->getObjectStructPointerVar()); 
         
         return $b;
@@ -329,7 +330,7 @@ class ExtFunction
     {
         // IPO argument
         if ($arg->argumentType === ExtType::T_IPO) {
-            $buffer = ($arg->isOptional() ? '?' : '') . $arg->argInternalPtrObject->getPHPClassName() . ' ' . '$' . $arg->name;
+            $buffer = ($arg->isOptional() || $arg->isNullable ? '?' : '') . $arg->argInternalPtrObject->getPHPClassName() . ' ' . '$' . $arg->name;
                 
             if ($arg->isOptional() && $allowDefaultValue) {
                 $buffer .= ' = ' . $arg->defaultValue;
@@ -339,7 +340,7 @@ class ExtFunction
         }
         // class entry argument
         elseif ($arg->argumentType === ExtType::T_CE && $arg instanceof CEObjectArgument) {
-            $buffer = ($arg->isOptional() ? '?' : '') . $arg->getPHPClassName() . ' ' . ($arg->explicitPassedByReference ? '&' : '') . '$' . $arg->name;
+            $buffer = ($arg->isOptional() || $arg->isNullable ? '?' : '') . $arg->getPHPClassName() . ' ' . ($arg->explicitPassedByReference ? '&' : '') . '$' . $arg->name;
                 
             if ($arg->isOptional() && $allowDefaultValue) {
                 $buffer .= ' = ' . $arg->defaultValue;

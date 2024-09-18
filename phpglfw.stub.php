@@ -2701,6 +2701,8 @@ namespace {
     function glfwGetMonitorPhysicalSize(GLFWmonitor $monitor, int &$widthMM, int &$heightMM) : void {}
     function glfwGetMonitorContentScale(GLFWmonitor $monitor, float &$xscale, float &$yscale) : void {}
     function glfwGetMonitorName(GLFWmonitor $monitor) : string {}
+    function glfwGetVideoModes(GLFWmonitor $monitor) : GLFWvidmode {}
+    function glfwGetVideoMode(GLFWmonitor $monitor) : GLFWvidmode {}
     function glfwSetGamma(GLFWmonitor $monitor, float $gamma) : void {}
     function glfwDefaultWindowHints() : void {}
     function glfwWindowHint(int $hint, int $value) : void {}
@@ -2729,7 +2731,7 @@ namespace {
     function glfwFocusWindow(GLFWwindow $window) : void {}
     function glfwRequestWindowAttention(GLFWwindow $window) : void {}
     function glfwGetWindowMonitor(GLFWwindow $window) : GLFWmonitor {}
-    function glfwSetWindowMonitor(GLFWwindow $window, GLFWmonitor $monitor, int $xpos, int $ypos, int $width, int $height, int $refreshRate) : void {}
+    function glfwSetWindowMonitor(GLFWwindow $window, ?GLFWmonitor $monitor, int $xpos, int $ypos, int $width, int $height, int $refreshRate) : void {}
     function glfwGetWindowAttrib(GLFWwindow $window, int $attrib) : int {}
     function glfwSetWindowAttrib(GLFWwindow $window, int $attrib, int $value) : void {}
     function glfwSetWindowPosCallback(GLFWwindow $window, callable $callback) : void {}
@@ -2766,6 +2768,8 @@ namespace {
     function glfwSetScrollCallback(GLFWwindow $window, callable $callback) : void {}
     function glfwSetDropCallback(GLFWwindow $window, callable $callback) : void {}
     function glfwJoystickPresent(int $jid) : int {}
+    function glfwGetJoystickAxes(int $jid) : array {}
+    function glfwGetJoystickButtons(int $jid) : array {}
     function glfwGetJoystickName(int $jid) : string {}
     function glfwGetJoystickGUID(int $jid) : string {}
     function glfwJoystickIsGamepad(int $jid) : int {}
@@ -2781,6 +2785,8 @@ namespace {
     function glfwSwapInterval(int $interval) : void {}
     function glfwExtensionSupported(string $extension) : int {}
     function glfwVulkanSupported() : int {}
+    function glfwGetGamepadAxes(int $joystick) : array {}
+    function glfwGetGamepadButtons(int $joystick) : array {}
     function glShaderSource(int $shader, string $source) : void {}
     function glBufferData(int $target, \GL\Buffer\BufferInterface $buffer, int $usage) : void {}
     function glUniformMatrix4f(int $location, bool $transpose, \GL\Math\Mat4 $matrix) : void {}

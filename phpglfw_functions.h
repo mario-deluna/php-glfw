@@ -35,6 +35,7 @@ void phpglfw_register_ipos(void);
 void phpglfw_glfwwindow_object_minit_helper(void); 
 void phpglfw_glfwmonitor_object_minit_helper(void); 
 void phpglfw_glfwcursor_object_minit_helper(void); 
+void phpglfw_glfwvidmode_object_minit_helper(void); 
 
 /**
  * callback handling

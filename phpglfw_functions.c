@@ -44,6 +44,7 @@ void phpglfw_register_ipos(void)
     phpglfw_glfwwindow_object_minit_helper(); 
     phpglfw_glfwmonitor_object_minit_helper(); 
     phpglfw_glfwcursor_object_minit_helper(); 
+    phpglfw_glfwvidmode_object_minit_helper(); 
 }
 
 /**
@@ -52,6 +53,7 @@ void phpglfw_register_ipos(void)
 zend_class_entry *phpglfw_glfwwindow_ce; 
 zend_class_entry *phpglfw_glfwmonitor_ce; 
 zend_class_entry *phpglfw_glfwcursor_ce; 
+zend_class_entry *phpglfw_glfwvidmode_ce; 
 
 /**
  * Structs
@@ -90,6 +92,12 @@ typedef struct _phpglfw_glfwcursor_object {
     zend_object std;
      
 } phpglfw_glfwcursor_object; 
+
+typedef struct _phpglfw_glfwvidmode_object {
+    const GLFWvidmode* glfwvidmode;
+    zend_object std;
+     
+} phpglfw_glfwvidmode_object; 
 
 
 /**
@@ -150,6 +158,7 @@ static void phpglfw_glfwwindow_object_free(zend_object *intern)
     zend_object_std_dtor(intern);
 }
 
+
 void phpglfw_glfwwindow_ptr_assign_to_zval_p(zval *val, GLFWwindow* glfwwindow)
 {
     object_init_ex(val, phpglfw_glfwwindow_ce);
@@ -167,6 +176,8 @@ void phpglfw_glfwwindow_object_minit_helper(void)
     phpglfw_glfwwindow_object_handlers.get_constructor = phpglfw_glfwwindow_class_constructor;
     phpglfw_glfwwindow_object_handlers.compare = zend_objects_not_comparable;
     phpglfw_glfwwindow_object_handlers.offset = XtOffsetOf(phpglfw_glfwwindow_object, std);
+
+
 }
 
 GLFWwindow* phpglfw_glfwwindowptr_from_zval_ptr(zval* zp)
@@ -232,6 +243,7 @@ static void phpglfw_glfwmonitor_object_free(zend_object *intern)
     zend_object_std_dtor(intern);
 }
 
+
 void phpglfw_glfwmonitor_ptr_assign_to_zval_p(zval *val, GLFWmonitor* glfwmonitor)
 {
     object_init_ex(val, phpglfw_glfwmonitor_ce);
@@ -249,6 +261,8 @@ void phpglfw_glfwmonitor_object_minit_helper(void)
     phpglfw_glfwmonitor_object_handlers.get_constructor = phpglfw_glfwmonitor_class_constructor;
     phpglfw_glfwmonitor_object_handlers.compare = zend_objects_not_comparable;
     phpglfw_glfwmonitor_object_handlers.offset = XtOffsetOf(phpglfw_glfwmonitor_object, std);
+
+
 }
 
 GLFWmonitor* phpglfw_glfwmonitorptr_from_zval_ptr(zval* zp)
@@ -314,6 +328,7 @@ static void phpglfw_glfwcursor_object_free(zend_object *intern)
     zend_object_std_dtor(intern);
 }
 
+
 void phpglfw_glfwcursor_ptr_assign_to_zval_p(zval *val, GLFWcursor* glfwcursor)
 {
     object_init_ex(val, phpglfw_glfwcursor_ce);
@@ -331,11 +346,170 @@ void phpglfw_glfwcursor_object_minit_helper(void)
     phpglfw_glfwcursor_object_handlers.get_constructor = phpglfw_glfwcursor_class_constructor;
     phpglfw_glfwcursor_object_handlers.compare = zend_objects_not_comparable;
     phpglfw_glfwcursor_object_handlers.offset = XtOffsetOf(phpglfw_glfwcursor_object, std);
+
+
 }
 
 GLFWcursor* phpglfw_glfwcursorptr_from_zval_ptr(zval* zp)
 {
     return phpglfw_glfwcursor_objectptr_from_zobj_p(Z_OBJ_P(zp))->glfwcursor;
+}
+
+/**
+ * GLFWvidmode aka (GLFWvidmode*) 
+ * object handlers, initializers, helpers etc..
+ */
+static zend_object_handlers phpglfw_glfwvidmode_object_handlers;
+static const zend_function_entry phpglfw_glfwvidmode_class_methods[] = {
+    ZEND_FE_END
+};
+
+static zend_always_inline phpglfw_glfwvidmode_object* phpglfw_glfwvidmode_objectptr_from_zobj_p(zend_object* obj)
+{
+    return (phpglfw_glfwvidmode_object *) ((char *) (obj) - XtOffsetOf(phpglfw_glfwvidmode_object, std));
+}
+
+static zend_function *phpglfw_glfwvidmode_class_constructor(zend_object *object)
+{
+    zend_throw_error(NULL, "You cannot initialize a GLFWvidmode object except through helper functions");
+    return NULL;
+}
+
+static zend_class_entry *phpglfw_glfwvidmode_class_register(void)
+{
+    zend_class_entry ce, *class_entry;
+
+    INIT_CLASS_ENTRY(ce, "GLFWvidmode", phpglfw_glfwvidmode_class_methods);
+    class_entry = zend_register_internal_class_ex(&ce, NULL);
+
+#ifdef ZEND_ACC_NOT_SERIALIZABLE  
+    class_entry->ce_flags |= ZEND_ACC_FINAL|ZEND_ACC_NO_DYNAMIC_PROPERTIES|ZEND_ACC_NOT_SERIALIZABLE;
+#else
+    class_entry->ce_flags |= ZEND_ACC_FINAL|ZEND_ACC_NO_DYNAMIC_PROPERTIES;
+#endif
+
+    return class_entry;
+}
+
+zend_object *phpglfw_glfwvidmode_object_create(zend_class_entry *class_type)
+{
+    size_t block_len = sizeof(phpglfw_glfwvidmode_object) + zend_object_properties_size(class_type);
+    phpglfw_glfwvidmode_object *intern = emalloc(block_len);
+    memset(intern, 0, block_len);
+
+    zend_object_std_init(&intern->std, class_type);
+    object_properties_init(&intern->std, class_type);
+    intern->std.handlers = &phpglfw_glfwvidmode_object_handlers;
+
+    return &intern->std;
+}
+
+static void phpglfw_glfwvidmode_object_free(zend_object *intern)
+{
+    phpglfw_glfwvidmode_object *obj_ptr = phpglfw_glfwvidmode_objectptr_from_zobj_p(intern);
+    if (obj_ptr->glfwvidmode) {
+         
+    }
+    zend_object_std_dtor(intern);
+}
+
+ 
+// allow access to the structure members of the internal object
+zval *phpglfw_glfwvidmode_object_read_property(zend_object *object, zend_string *member, int type, void **cache_slot, zval *rv)
+{
+    phpglfw_glfwvidmode_object *intern = phpglfw_glfwvidmode_objectptr_from_zobj_p(object);
+    zval *retval = &EG(uninitialized_zval);
+
+    if (intern->glfwvidmode) {
+        if (zend_string_equals_literal(member, "width")) {
+            ZVAL_LONG(retval, intern->glfwvidmode->width);
+            return retval;
+        }
+        else if (zend_string_equals_literal(member, "height")) {
+            ZVAL_LONG(retval, intern->glfwvidmode->height);
+            return retval;
+        }
+        else if (zend_string_equals_literal(member, "redBits")) {
+            ZVAL_LONG(retval, intern->glfwvidmode->redBits);
+            return retval;
+        }
+        else if (zend_string_equals_literal(member, "greenBits")) {
+            ZVAL_LONG(retval, intern->glfwvidmode->greenBits);
+            return retval;
+        }
+        else if (zend_string_equals_literal(member, "blueBits")) {
+            ZVAL_LONG(retval, intern->glfwvidmode->blueBits);
+            return retval;
+        }
+        else if (zend_string_equals_literal(member, "refreshRate")) {
+            ZVAL_LONG(retval, intern->glfwvidmode->refreshRate);
+            return retval;
+        }
+        else {
+            zend_throw_error(NULL, "Trying to access invalid property '%s' on GLFWvidmode", ZSTR_VAL(member));
+        }
+    }
+
+    return retval;
+}
+
+
+static HashTable *phpglfw_glfwvidmode_object_debug_info(zend_object *object, int *is_temp)
+{
+    phpglfw_glfwvidmode_object *intern = phpglfw_glfwvidmode_objectptr_from_zobj_p(object);
+
+    *is_temp = 1;
+
+    if (intern->glfwvidmode) {
+        HashTable *ht;
+        zval zv;
+
+        ht = zend_new_array(6);
+
+        ZVAL_LONG(&zv, intern->glfwvidmode->width);
+        zend_hash_str_add(ht, "width", sizeof("width") - 1, &zv);
+        ZVAL_LONG(&zv, intern->glfwvidmode->height);
+        zend_hash_str_add(ht, "height", sizeof("height") - 1, &zv);
+        ZVAL_LONG(&zv, intern->glfwvidmode->redBits);
+        zend_hash_str_add(ht, "redBits", sizeof("redBits") - 1, &zv);
+        ZVAL_LONG(&zv, intern->glfwvidmode->greenBits);
+        zend_hash_str_add(ht, "greenBits", sizeof("greenBits") - 1, &zv);
+        ZVAL_LONG(&zv, intern->glfwvidmode->blueBits);
+        zend_hash_str_add(ht, "blueBits", sizeof("blueBits") - 1, &zv);
+        ZVAL_LONG(&zv, intern->glfwvidmode->refreshRate);
+        zend_hash_str_add(ht, "refreshRate", sizeof("refreshRate") - 1, &zv);
+        return ht;
+    }
+
+    return NULL;
+}
+
+void phpglfw_glfwvidmode_ptr_assign_to_zval_p(zval *val, const GLFWvidmode* glfwvidmode)
+{
+    object_init_ex(val, phpglfw_glfwvidmode_ce);
+    phpglfw_glfwvidmode_objectptr_from_zobj_p(Z_OBJ_P(val))->glfwvidmode = glfwvidmode;
+}
+
+void phpglfw_glfwvidmode_object_minit_helper(void)
+{
+    phpglfw_glfwvidmode_ce = phpglfw_glfwvidmode_class_register();
+    phpglfw_glfwvidmode_ce->create_object = phpglfw_glfwvidmode_object_create;
+
+    memcpy(&phpglfw_glfwvidmode_object_handlers, &std_object_handlers, sizeof(zend_object_handlers));
+    phpglfw_glfwvidmode_object_handlers.clone_obj = NULL;
+    phpglfw_glfwvidmode_object_handlers.free_obj = phpglfw_glfwvidmode_object_free;
+    phpglfw_glfwvidmode_object_handlers.get_constructor = phpglfw_glfwvidmode_class_constructor;
+    phpglfw_glfwvidmode_object_handlers.compare = zend_objects_not_comparable;
+    phpglfw_glfwvidmode_object_handlers.offset = XtOffsetOf(phpglfw_glfwvidmode_object, std);
+
+    phpglfw_glfwvidmode_object_handlers.read_property = phpglfw_glfwvidmode_object_read_property;
+    phpglfw_glfwvidmode_object_handlers.get_debug_info = phpglfw_glfwvidmode_object_debug_info;
+
+}
+
+const GLFWvidmode* phpglfw_glfwvidmodeptr_from_zval_ptr(zval* zp)
+{
+    return phpglfw_glfwvidmode_objectptr_from_zobj_p(Z_OBJ_P(zp))->glfwvidmode;
 }
 
 
@@ -10661,6 +10835,40 @@ PHP_FUNCTION(glfwGetMonitorName)
 } 
 
 /**
+ * glfwGetVideoModes
+ */ 
+PHP_FUNCTION(glfwGetVideoModes)
+{
+    zval *monitor_zval;
+    if (zend_parse_parameters(ZEND_NUM_ARGS(), "O", &monitor_zval, phpglfw_glfwmonitor_ce) == FAILURE) {
+        return;
+    }
+    GLFWmonitor* monitor = phpglfw_glfwmonitorptr_from_zval_ptr(monitor_zval);
+    int count;
+    const GLFWvidmode* modes = glfwGetVideoModes(monitor, &count);
+    array_init(return_value);
+    for (int i = 0; i < count; i++) {
+        zval mode_zval;
+        phpglfw_glfwvidmode_ptr_assign_to_zval_p(&mode_zval, &modes[i]);
+        add_next_index_zval(return_value, &mode_zval);
+    }
+} 
+
+/**
+ * glfwGetVideoMode
+ */ 
+PHP_FUNCTION(glfwGetVideoMode)
+{
+    zval *monitor_zval;
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "O", &monitor_zval, phpglfw_glfwmonitor_ce) == FAILURE) {
+        return;
+    }
+    GLFWmonitor* monitor = phpglfw_glfwmonitorptr_from_zval_ptr(monitor_zval);
+    const GLFWvidmode* glfwvidmode = glfwGetVideoMode(monitor);
+    phpglfw_glfwvidmode_ptr_assign_to_zval_p(return_value, glfwvidmode);
+} 
+
+/**
  * glfwSetGamma
  */ 
 PHP_FUNCTION(glfwSetGamma)
@@ -11129,11 +11337,14 @@ PHP_FUNCTION(glfwSetWindowMonitor)
     zend_long width;
     zend_long height;
     zend_long refreshRate;
-    if (zend_parse_parameters(ZEND_NUM_ARGS() , "OOlllll", &window_zval, phpglfw_glfwwindow_ce, &monitor_zval, phpglfw_glfwmonitor_ce, &xpos, &ypos, &width, &height, &refreshRate) == FAILURE) {
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "OO!lllll", &window_zval, phpglfw_glfwwindow_ce, &monitor_zval, phpglfw_glfwmonitor_ce, &xpos, &ypos, &width, &height, &refreshRate) == FAILURE) {
         return;
     }
     GLFWwindow* window = phpglfw_glfwwindowptr_from_zval_ptr(window_zval);
-    GLFWmonitor* monitor = phpglfw_glfwmonitorptr_from_zval_ptr(monitor_zval);
+    GLFWmonitor* monitor = NULL;
+    if (monitor_zval != NULL && Z_TYPE_P(monitor_zval) == IS_OBJECT) {
+        monitor = phpglfw_glfwmonitorptr_from_zval_ptr(monitor_zval);
+    }
     glfwSetWindowMonitor(window, monitor, xpos, ypos, width, height, refreshRate);
 } 
 
@@ -11745,6 +11956,40 @@ PHP_FUNCTION(glfwJoystickPresent)
 } 
 
 /**
+ * glfwGetJoystickAxes
+ */ 
+PHP_FUNCTION(glfwGetJoystickAxes)
+{
+    zend_long joystick;
+    if (zend_parse_parameters(ZEND_NUM_ARGS(), "l", &joystick) == FAILURE) {
+        return;
+    }
+    int count;
+    const float* axes = glfwGetJoystickAxes(joystick, &count);
+    array_init(return_value);
+    for (int i = 0; i < count; i++) {
+        add_next_index_double(return_value, axes[i]);
+    }
+} 
+
+/**
+ * glfwGetJoystickButtons
+ */ 
+PHP_FUNCTION(glfwGetJoystickButtons)
+{
+    zend_long joystick;
+    if (zend_parse_parameters(ZEND_NUM_ARGS(), "l", &joystick) == FAILURE) {
+        return;
+    }
+    int count;
+    const unsigned char* buttons = glfwGetJoystickButtons(joystick, &count);
+    array_init(return_value);
+    for (int i = 0; i < count; i++) {
+        add_next_index_bool(return_value, buttons[i]);
+    }
+} 
+
+/**
  * glfwGetJoystickName
  */ 
 PHP_FUNCTION(glfwGetJoystickName)
@@ -11931,6 +12176,46 @@ PHP_FUNCTION(glfwExtensionSupported)
 PHP_FUNCTION(glfwVulkanSupported)
 {
     RETURN_LONG(glfwVulkanSupported());
+} 
+
+/**
+ * glfwGetGamepadAxes
+ */ 
+PHP_FUNCTION(glfwGetGamepadAxes)
+{
+    zend_long joystick;
+    if (zend_parse_parameters(ZEND_NUM_ARGS(), "l", &joystick) == FAILURE) {
+        return;
+    }
+    array_init(return_value);
+    GLFWgamepadstate state;
+    if (!glfwGetGamepadState(joystick, &state)) {
+        return;
+    }
+    // gamepad state has 6 axes
+    for (int i = 0; i < 6; i++) {
+        add_next_index_double(return_value, state.axes[i]);
+    }
+} 
+
+/**
+ * glfwGetGamepadButtons
+ */ 
+PHP_FUNCTION(glfwGetGamepadButtons)
+{
+    zend_long joystick;
+    if (zend_parse_parameters(ZEND_NUM_ARGS(), "l", &joystick) == FAILURE) {
+        return;
+    }
+    array_init(return_value);
+    GLFWgamepadstate state;
+    if (!glfwGetGamepadState(joystick, &state)) {
+        return;
+    }
+    // gamepad state has 15 buttons
+    for (int i = 0; i < 15; i++) {
+        add_next_index_bool(return_value, state.buttons[i]);
+    }
 } 
 
 /**

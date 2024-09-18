@@ -29,7 +29,14 @@ namespace
      * GLFW video mode resource
      * This class is used to store the GLFW video mode resource in PHP.
      */
-    class GLFWvidmode {}
+    class GLFWvidmode {
+        public readonly int $width;
+        public readonly int $height;
+        public readonly int $redBits;
+        public readonly int $greenBits;
+        public readonly int $blueBits;
+        public readonly int $refreshRate;
+    }
 
     /**
      * GLFW gamma ramp resource
@@ -8832,6 +8839,35 @@ namespace {
     function glfwGetMonitorName(GLFWmonitor $monitor) : string {}
  
     /**
+     * Returns the available video modes for the specified monitor.
+     * 
+     * This function returns an array of all video modes supported by the specified
+     * monitor. The returned array is sorted in ascending order, first by color
+     * bit depth (the sum of all channel depths), then by resolution area (the
+     * product of width and height), then resolution width and finally by refresh
+     * rate.
+     * 
+     * @param GLFWmonitor $monitor The monitor to query.
+     * 
+     * @return GLFWvidmode
+     */ 
+    function glfwGetVideoModes(GLFWmonitor $monitor) : GLFWvidmode {}
+ 
+    /**
+     * Returns the current mode of the specified monitor.
+     * 
+     * This function returns the current video mode of the specified monitor. If
+     * you have created a full screen window for that monitor, the return value
+     * will depend on whether that window is iconified.
+     * 
+     * @param GLFWmonitor $monitor The monitor to query.
+     * 
+     * @return GLFWvidmode The current mode of the monitor, or `NULL` if an
+     * `error` occurred.
+     */ 
+    function glfwGetVideoMode(GLFWmonitor $monitor) : GLFWvidmode {}
+ 
+    /**
      * Generates a gamma ramp and sets it for the specified monitor.
      * 
      * This function generates an appropriately sized gamma ramp from the specified
@@ -9459,7 +9495,7 @@ namespace {
      * 
      * @param GLFWwindow $window The window whose monitor, size or video mode to
      * set.
-     * @param GLFWmonitor $monitor The desired monitor, or `NULL` to set windowed
+     * @param ?GLFWmonitor $monitor The desired monitor, or `NULL` to set windowed
      * mode.
      * @param int $xpos The desired x-coordinate of the upper-left corner of the
      * content area.
@@ -9474,7 +9510,7 @@ namespace {
      * 
      * @return void
      */ 
-    function glfwSetWindowMonitor(GLFWwindow $window, GLFWmonitor $monitor, int $xpos, int $ypos, int $width, int $height, int $refreshRate) : void {}
+    function glfwSetWindowMonitor(GLFWwindow $window, ?GLFWmonitor $monitor, int $xpos, int $ypos, int $width, int $height, int $refreshRate) : void {}
  
     /**
      * Returns an attribute of the specified window.
@@ -10366,6 +10402,45 @@ namespace {
     function glfwJoystickPresent(int $jid) : int {}
  
     /**
+     * Returns the values of all axes of the specified joystick.
+     * 
+     * This function returns the values of all axes of the specified joystick.
+     * Each element in the array is a value between -1.0 and 1.0.
+     * 
+     * If the specified joystick is not present this function will return `NULL`
+     * but will not generate an error. This can be used instead of first calling
+     * [`glfwJoystickPresent`](/API/GLFW/glfwJoystickPresent.html).
+     * 
+     * @param int $jid The `joystick` to query.
+     * 
+     * @return array
+     */ 
+    function glfwGetJoystickAxes(int $jid) : array {}
+ 
+    /**
+     * Returns the state of all buttons of the specified joystick.
+     * 
+     * This function returns the state of all buttons of the specified joystick.
+     * Each element in the array is either `GLFW_PRESS` or `GLFW_RELEASE`.
+     * 
+     * For backward compatibility with earlier versions that did not have @ref
+     * glfwGetJoystickHats, the button array also includes all hats, each
+     * represented as four buttons. The hats are in the same order as returned by
+     * __glfwGetJoystickHats__ and are in the order _up_, _right_, _down_ and
+     * _left_. To disable these extra buttons, set the @ref
+     * GLFW_JOYSTICK_HAT_BUTTONS init hint before initialization.
+     * 
+     * If the specified joystick is not present this function will return `NULL`
+     * but will not generate an error. This can be used instead of first calling
+     * [`glfwJoystickPresent`](/API/GLFW/glfwJoystickPresent.html).
+     * 
+     * @param int $jid The `joystick` to query.
+     * 
+     * @return array
+     */ 
+    function glfwGetJoystickButtons(int $jid) : array {}
+ 
+    /**
      * Returns the name of the specified joystick.
      * 
      * This function returns the name, encoded as UTF-8, of the specified joystick.
@@ -10682,6 +10757,55 @@ namespace {
      * otherwise.
      */ 
     function glfwVulkanSupported() : int {}
+ 
+    /**
+     * Returns the state of the specified gamepad's axes.
+     * 
+     * If the gamepad is not present, or the given joystick is not a gamepad, this
+     * function will return an empty array.
+     * 
+     * The returned array is indexed by the GLFW gamepad axis constants:
+     *  - `GLFW_GAMEPAD_AXIS_LEFT_X`
+     *  - `GLFW_GAMEPAD_AXIS_LEFT_Y`
+     *  - `GLFW_GAMEPAD_AXIS_RIGHT_X`
+     *  - `GLFW_GAMEPAD_AXIS_RIGHT_Y`
+     *  - `GLFW_GAMEPAD_AXIS_LEFT_TRIGGER`
+     *  - `GLFW_GAMEPAD_AXIS_RIGHT_TRIGGER`
+     * 
+     * @param int $joystick The joystick to query.
+     * 
+     * @return array
+     */ 
+    function glfwGetGamepadAxes(int $joystick) : array {}
+ 
+    /**
+     * Returns the state of the specified gamepad's buttons.
+     * 
+     * If the gamepad is not present, or the given joystick is not a gamepad, this
+     * function will return an empty array.
+     * 
+     * The returned array is indexed by the GLFW gamepad button constants:
+     *  - `GLFW_GAMEPAD_BUTTON_A`
+     *  - `GLFW_GAMEPAD_BUTTON_B`
+     *  - `GLFW_GAMEPAD_BUTTON_X`
+     *  - `GLFW_GAMEPAD_BUTTON_Y`
+     *  - `GLFW_GAMEPAD_BUTTON_LEFT_BUMPER`
+     *  - `GLFW_GAMEPAD_BUTTON_RIGHT_BUMPER`
+     *  - `GLFW_GAMEPAD_BUTTON_BACK`
+     *  - `GLFW_GAMEPAD_BUTTON_START`
+     *  - `GLFW_GAMEPAD_BUTTON_GUIDE`
+     *  - `GLFW_GAMEPAD_BUTTON_LEFT_THUMB`
+     *  - `GLFW_GAMEPAD_BUTTON_RIGHT_THUMB`
+     *  - `GLFW_GAMEPAD_BUTTON_DPAD_UP`
+     *  - `GLFW_GAMEPAD_BUTTON_DPAD_RIGHT`
+     *  - `GLFW_GAMEPAD_BUTTON_DPAD_DOWN`
+     *  - `GLFW_GAMEPAD_BUTTON_DPAD_LEFT`
+     * 
+     * @param int $joystick The joystick to query.
+     * 
+     * @return array
+     */ 
+    function glfwGetGamepadButtons(int $joystick) : array {}
  
     /**
      * Replaces the source code in a shader object.
