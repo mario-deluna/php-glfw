@@ -30,7 +30,6 @@
 #include "Zend/zend_smart_str.h"
 #include "ext/standard/info.h"
 #include "ext/standard/php_var.h"
-
 #define MINIAUDIO_IMPLEMENTATION
 #include "miniaudio.h"
 
@@ -167,6 +166,122 @@ PHP_METHOD(GL_Audio_Sound, play)
 
     ma_sound_start(intern->masound);
 }
+
+PHP_METHOD(GL_Audio_Sound, stop)
+{
+    phpglfw_audiosound_object *intern = phpglfw_audiosound_from_zobj_p(Z_OBJ_P(getThis()));
+
+    ma_sound_stop(intern->masound);
+}
+
+PHP_METHOD(GL_Audio_Sound, setStartMs)
+{
+    zend_long start;
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "l", &start) == FAILURE) {
+        RETURN_THROWS();
+    }
+
+    phpglfw_audiosound_object *intern = phpglfw_audiosound_from_zobj_p(Z_OBJ_P(getThis()));
+
+    ma_sound_set_start_time_in_milliseconds(intern->masound, (ma_uint64) start);
+}
+
+PHP_METHOD(GL_Audio_Sound, setStopMs)
+{
+    zend_long stop;
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "l", &stop) == FAILURE) {
+        RETURN_THROWS();
+    }
+
+    phpglfw_audiosound_object *intern = phpglfw_audiosound_from_zobj_p(Z_OBJ_P(getThis()));
+
+    ma_sound_set_stop_time_in_milliseconds(intern->masound, (ma_uint64) stop);
+}
+
+PHP_METHOD(GL_Audio_Sound, isPlaying)
+{
+    phpglfw_audiosound_object *intern = phpglfw_audiosound_from_zobj_p(Z_OBJ_P(getThis()));
+
+    RETURN_BOOL(ma_sound_is_playing(intern->masound));
+}
+
+PHP_METHOD(GL_Audio_Sound, getLength)
+{
+    phpglfw_audiosound_object *intern = phpglfw_audiosound_from_zobj_p(Z_OBJ_P(getThis()));
+
+    float length;
+    ma_sound_get_length_in_seconds(intern->masound, &length);
+    RETURN_DOUBLE(length);
+}
+
+PHP_METHOD(GL_Audio_Sound, getCursor)
+{
+    phpglfw_audiosound_object *intern = phpglfw_audiosound_from_zobj_p(Z_OBJ_P(getThis()));
+
+    float cursor;
+    ma_sound_get_cursor_in_seconds(intern->masound, &cursor);
+    RETURN_DOUBLE(cursor);
+}
+
+PHP_METHOD(GL_Audio_Sound, getLengthPCM)
+{
+    phpglfw_audiosound_object *intern = phpglfw_audiosound_from_zobj_p(Z_OBJ_P(getThis()));
+
+    ma_uint64 length;
+    ma_sound_get_length_in_pcm_frames(intern->masound, &length);
+    RETURN_LONG(length);
+}
+
+PHP_METHOD(GL_Audio_Sound, getCursorPCM)
+{
+    phpglfw_audiosound_object *intern = phpglfw_audiosound_from_zobj_p(Z_OBJ_P(getThis()));
+
+    ma_uint64 cursor;
+    ma_sound_get_cursor_in_pcm_frames(intern->masound, &cursor);
+    RETURN_LONG(cursor);
+}
+
+PHP_METHOD(GL_Audio_Sound, seekTo)
+{
+    double cursor;
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "d", &cursor) == FAILURE) {
+        RETURN_THROWS();
+    }
+
+    phpglfw_audiosound_object *intern = phpglfw_audiosound_from_zobj_p(Z_OBJ_P(getThis()));
+
+    // we cannot actually seek to a given position in seconds, only in pcm frames
+    // means we estimate the pcm frame from the given seconds
+    ma_uint32 sample_rate;
+    ma_sound_get_data_format(intern->masound, NULL, NULL, &sample_rate, NULL, 0);
+    ma_uint64 frame = (ma_uint64)(cursor * sample_rate);
+    ma_uint64 length;
+    ma_sound_get_length_in_pcm_frames(intern->masound, &length);
+
+    // sanity check the frame is within the bounds
+    if (frame > length) {
+        frame = length;
+    }
+
+    // seek to the frame
+    ma_result result = ma_sound_seek_to_pcm_frame(intern->masound, frame);
+
+    RETURN_BOOL(result == MA_SUCCESS);
+}
+
+PHP_METHOD(GL_Audio_Sound, seekToPCM)
+{
+    zend_long cursor;
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "l", &cursor) == FAILURE) {
+        RETURN_THROWS();
+    }
+
+    phpglfw_audiosound_object *intern = phpglfw_audiosound_from_zobj_p(Z_OBJ_P(getThis()));
+    ma_result result = ma_sound_seek_to_pcm_frame(intern->masound, (ma_uint64) cursor);
+
+    RETURN_BOOL(result == MA_SUCCESS);
+}
+
 
 PHP_METHOD(GL_Audio_Sound, setPosition)
 {

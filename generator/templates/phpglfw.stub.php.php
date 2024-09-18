@@ -342,6 +342,17 @@ namespace GL\Audio
     class Sound {
         public function __construct() {}
         public function play() : void {}
+        public function stop() : void {}
+        public function setStartMs(int $start) : void {}
+        public function setStopMs(int $stop) : void {}
+        public function isPlaying() : bool {}
+        public function getLength() : float {}
+        public function getLengthPCM() : int {}
+        public function getCursor() : float {}
+        public function getCursorPCM() : int {}
+        public function seekTo(float $cursor) : bool {}
+        public function seekToPCM(int $cursor) : bool {}
+
 
         public function setPosition(float $x, float $y, float $z) : void {}
     }

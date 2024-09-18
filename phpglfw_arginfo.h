@@ -1,5 +1,5 @@
 /* This is a generated file, edit the .stub.php file instead.
- * Stub hash: e036cef786fe0cc975200d41c8168292af6a0cdb */
+ * Stub hash: 5ff849d4954720e7c437914a5b82de3c6100ef4b */
 
 ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_glCullFace, 0, 1, IS_VOID, 0)
 	ZEND_ARG_TYPE_INFO(0, mode, IS_LONG, 0)
@@ -1922,6 +1922,12 @@ ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_glfwGetMonitorName, 0, 1, IS_STR
 	ZEND_ARG_OBJ_INFO(0, monitor, GLFWmonitor, 0)
 ZEND_END_ARG_INFO()
 
+ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(arginfo_glfwGetVideoModes, 0, 1, GLFWvidmode, 0)
+	ZEND_ARG_OBJ_INFO(0, monitor, GLFWmonitor, 0)
+ZEND_END_ARG_INFO()
+
+#define arginfo_glfwGetVideoMode arginfo_glfwGetVideoModes
+
 ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_glfwSetGamma, 0, 2, IS_VOID, 0)
 	ZEND_ARG_OBJ_INFO(0, monitor, GLFWmonitor, 0)
 	ZEND_ARG_TYPE_INFO(0, gamma, IS_DOUBLE, 0)
@@ -2045,7 +2051,7 @@ ZEND_END_ARG_INFO()
 
 ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_glfwSetWindowMonitor, 0, 7, IS_VOID, 0)
 	ZEND_ARG_OBJ_INFO(0, window, GLFWwindow, 0)
-	ZEND_ARG_OBJ_INFO(0, monitor, GLFWmonitor, 0)
+	ZEND_ARG_OBJ_INFO(0, monitor, GLFWmonitor, 1)
 	ZEND_ARG_TYPE_INFO(0, xpos, IS_LONG, 0)
 	ZEND_ARG_TYPE_INFO(0, ypos, IS_LONG, 0)
 	ZEND_ARG_TYPE_INFO(0, width, IS_LONG, 0)
@@ -2172,6 +2178,12 @@ ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_glfwJoystickPresent, 0, 1, IS_LO
 	ZEND_ARG_TYPE_INFO(0, jid, IS_LONG, 0)
 ZEND_END_ARG_INFO()
 
+ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_glfwGetJoystickAxes, 0, 1, IS_ARRAY, 0)
+	ZEND_ARG_TYPE_INFO(0, jid, IS_LONG, 0)
+ZEND_END_ARG_INFO()
+
+#define arginfo_glfwGetJoystickButtons arginfo_glfwGetJoystickAxes
+
 ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_glfwGetJoystickName, 0, 1, IS_STRING, 0)
 	ZEND_ARG_TYPE_INFO(0, jid, IS_LONG, 0)
 ZEND_END_ARG_INFO()
@@ -2218,6 +2230,12 @@ ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_glfwExtensionSupported, 0, 1, IS
 ZEND_END_ARG_INFO()
 
 #define arginfo_glfwVulkanSupported arginfo_glGetError
+
+ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_glfwGetGamepadAxes, 0, 1, IS_ARRAY, 0)
+	ZEND_ARG_TYPE_INFO(0, joystick, IS_LONG, 0)
+ZEND_END_ARG_INFO()
+
+#define arginfo_glfwGetGamepadButtons arginfo_glfwGetGamepadAxes
 
 ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_glShaderSource, 0, 2, IS_VOID, 0)
 	ZEND_ARG_TYPE_INFO(0, shader, IS_LONG, 0)
@@ -3438,6 +3456,35 @@ ZEND_END_ARG_INFO()
 
 #define arginfo_class_GL_Audio_Sound_play arginfo_glFinish
 
+#define arginfo_class_GL_Audio_Sound_stop arginfo_glFinish
+
+ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_class_GL_Audio_Sound_setStartMs, 0, 1, IS_VOID, 0)
+	ZEND_ARG_TYPE_INFO(0, start, IS_LONG, 0)
+ZEND_END_ARG_INFO()
+
+ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_class_GL_Audio_Sound_setStopMs, 0, 1, IS_VOID, 0)
+	ZEND_ARG_TYPE_INFO(0, stop, IS_LONG, 0)
+ZEND_END_ARG_INFO()
+
+ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_class_GL_Audio_Sound_isPlaying, 0, 0, _IS_BOOL, 0)
+ZEND_END_ARG_INFO()
+
+#define arginfo_class_GL_Audio_Sound_getLength arginfo_glfwGetTime
+
+#define arginfo_class_GL_Audio_Sound_getLengthPCM arginfo_glGetError
+
+#define arginfo_class_GL_Audio_Sound_getCursor arginfo_glfwGetTime
+
+#define arginfo_class_GL_Audio_Sound_getCursorPCM arginfo_glGetError
+
+ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_class_GL_Audio_Sound_seekTo, 0, 1, _IS_BOOL, 0)
+	ZEND_ARG_TYPE_INFO(0, cursor, IS_DOUBLE, 0)
+ZEND_END_ARG_INFO()
+
+ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_class_GL_Audio_Sound_seekToPCM, 0, 1, _IS_BOOL, 0)
+	ZEND_ARG_TYPE_INFO(0, cursor, IS_LONG, 0)
+ZEND_END_ARG_INFO()
+
 ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_class_GL_Audio_Sound_setPosition, 0, 3, IS_VOID, 0)
 	ZEND_ARG_TYPE_INFO(0, x, IS_DOUBLE, 0)
 	ZEND_ARG_TYPE_INFO(0, y, IS_DOUBLE, 0)
@@ -3913,6 +3960,8 @@ ZEND_FUNCTION(glfwGetMonitorWorkarea);
 ZEND_FUNCTION(glfwGetMonitorPhysicalSize);
 ZEND_FUNCTION(glfwGetMonitorContentScale);
 ZEND_FUNCTION(glfwGetMonitorName);
+ZEND_FUNCTION(glfwGetVideoModes);
+ZEND_FUNCTION(glfwGetVideoMode);
 ZEND_FUNCTION(glfwSetGamma);
 ZEND_FUNCTION(glfwDefaultWindowHints);
 ZEND_FUNCTION(glfwWindowHint);
@@ -3978,6 +4027,8 @@ ZEND_FUNCTION(glfwSetCursorEnterCallback);
 ZEND_FUNCTION(glfwSetScrollCallback);
 ZEND_FUNCTION(glfwSetDropCallback);
 ZEND_FUNCTION(glfwJoystickPresent);
+ZEND_FUNCTION(glfwGetJoystickAxes);
+ZEND_FUNCTION(glfwGetJoystickButtons);
 ZEND_FUNCTION(glfwGetJoystickName);
 ZEND_FUNCTION(glfwGetJoystickGUID);
 ZEND_FUNCTION(glfwJoystickIsGamepad);
@@ -3993,6 +4044,8 @@ ZEND_FUNCTION(glfwSwapBuffers);
 ZEND_FUNCTION(glfwSwapInterval);
 ZEND_FUNCTION(glfwExtensionSupported);
 ZEND_FUNCTION(glfwVulkanSupported);
+ZEND_FUNCTION(glfwGetGamepadAxes);
+ZEND_FUNCTION(glfwGetGamepadButtons);
 ZEND_FUNCTION(glShaderSource);
 ZEND_FUNCTION(glBufferData);
 ZEND_FUNCTION(glUniformMatrix4f);
@@ -4333,6 +4386,16 @@ ZEND_METHOD(GL_Audio_Engine, __construct);
 ZEND_METHOD(GL_Audio_Engine, soundFromDisk);
 ZEND_METHOD(GL_Audio_Sound, __construct);
 ZEND_METHOD(GL_Audio_Sound, play);
+ZEND_METHOD(GL_Audio_Sound, stop);
+ZEND_METHOD(GL_Audio_Sound, setStartMs);
+ZEND_METHOD(GL_Audio_Sound, setStopMs);
+ZEND_METHOD(GL_Audio_Sound, isPlaying);
+ZEND_METHOD(GL_Audio_Sound, getLength);
+ZEND_METHOD(GL_Audio_Sound, getLengthPCM);
+ZEND_METHOD(GL_Audio_Sound, getCursor);
+ZEND_METHOD(GL_Audio_Sound, getCursorPCM);
+ZEND_METHOD(GL_Audio_Sound, seekTo);
+ZEND_METHOD(GL_Audio_Sound, seekToPCM);
 ZEND_METHOD(GL_Audio_Sound, setPosition);
 
 
@@ -4805,6 +4868,8 @@ static const zend_function_entry ext_functions[] = {
 	ZEND_FE(glfwGetMonitorPhysicalSize, arginfo_glfwGetMonitorPhysicalSize)
 	ZEND_FE(glfwGetMonitorContentScale, arginfo_glfwGetMonitorContentScale)
 	ZEND_FE(glfwGetMonitorName, arginfo_glfwGetMonitorName)
+	ZEND_FE(glfwGetVideoModes, arginfo_glfwGetVideoModes)
+	ZEND_FE(glfwGetVideoMode, arginfo_glfwGetVideoMode)
 	ZEND_FE(glfwSetGamma, arginfo_glfwSetGamma)
 	ZEND_FE(glfwDefaultWindowHints, arginfo_glfwDefaultWindowHints)
 	ZEND_FE(glfwWindowHint, arginfo_glfwWindowHint)
@@ -4870,6 +4935,8 @@ static const zend_function_entry ext_functions[] = {
 	ZEND_FE(glfwSetScrollCallback, arginfo_glfwSetScrollCallback)
 	ZEND_FE(glfwSetDropCallback, arginfo_glfwSetDropCallback)
 	ZEND_FE(glfwJoystickPresent, arginfo_glfwJoystickPresent)
+	ZEND_FE(glfwGetJoystickAxes, arginfo_glfwGetJoystickAxes)
+	ZEND_FE(glfwGetJoystickButtons, arginfo_glfwGetJoystickButtons)
 	ZEND_FE(glfwGetJoystickName, arginfo_glfwGetJoystickName)
 	ZEND_FE(glfwGetJoystickGUID, arginfo_glfwGetJoystickGUID)
 	ZEND_FE(glfwJoystickIsGamepad, arginfo_glfwJoystickIsGamepad)
@@ -4885,6 +4952,8 @@ static const zend_function_entry ext_functions[] = {
 	ZEND_FE(glfwSwapInterval, arginfo_glfwSwapInterval)
 	ZEND_FE(glfwExtensionSupported, arginfo_glfwExtensionSupported)
 	ZEND_FE(glfwVulkanSupported, arginfo_glfwVulkanSupported)
+	ZEND_FE(glfwGetGamepadAxes, arginfo_glfwGetGamepadAxes)
+	ZEND_FE(glfwGetGamepadButtons, arginfo_glfwGetGamepadButtons)
 	ZEND_FE(glShaderSource, arginfo_glShaderSource)
 	ZEND_FE(glBufferData, arginfo_glBufferData)
 	ZEND_FE(glUniformMatrix4f, arginfo_glUniformMatrix4f)
@@ -5385,6 +5454,16 @@ static const zend_function_entry class_GL_Audio_Engine_methods[] = {
 static const zend_function_entry class_GL_Audio_Sound_methods[] = {
 	ZEND_ME(GL_Audio_Sound, __construct, arginfo_class_GL_Audio_Sound___construct, ZEND_ACC_PUBLIC)
 	ZEND_ME(GL_Audio_Sound, play, arginfo_class_GL_Audio_Sound_play, ZEND_ACC_PUBLIC)
+	ZEND_ME(GL_Audio_Sound, stop, arginfo_class_GL_Audio_Sound_stop, ZEND_ACC_PUBLIC)
+	ZEND_ME(GL_Audio_Sound, setStartMs, arginfo_class_GL_Audio_Sound_setStartMs, ZEND_ACC_PUBLIC)
+	ZEND_ME(GL_Audio_Sound, setStopMs, arginfo_class_GL_Audio_Sound_setStopMs, ZEND_ACC_PUBLIC)
+	ZEND_ME(GL_Audio_Sound, isPlaying, arginfo_class_GL_Audio_Sound_isPlaying, ZEND_ACC_PUBLIC)
+	ZEND_ME(GL_Audio_Sound, getLength, arginfo_class_GL_Audio_Sound_getLength, ZEND_ACC_PUBLIC)
+	ZEND_ME(GL_Audio_Sound, getLengthPCM, arginfo_class_GL_Audio_Sound_getLengthPCM, ZEND_ACC_PUBLIC)
+	ZEND_ME(GL_Audio_Sound, getCursor, arginfo_class_GL_Audio_Sound_getCursor, ZEND_ACC_PUBLIC)
+	ZEND_ME(GL_Audio_Sound, getCursorPCM, arginfo_class_GL_Audio_Sound_getCursorPCM, ZEND_ACC_PUBLIC)
+	ZEND_ME(GL_Audio_Sound, seekTo, arginfo_class_GL_Audio_Sound_seekTo, ZEND_ACC_PUBLIC)
+	ZEND_ME(GL_Audio_Sound, seekToPCM, arginfo_class_GL_Audio_Sound_seekToPCM, ZEND_ACC_PUBLIC)
 	ZEND_ME(GL_Audio_Sound, setPosition, arginfo_class_GL_Audio_Sound_setPosition, ZEND_ACC_PUBLIC)
 	ZEND_FE_END
 };

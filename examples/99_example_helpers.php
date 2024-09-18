@@ -728,6 +728,7 @@ class ExampleHelper
         $innerOffset = 4;
         $lineHeight = $fontSize * 1.8;
         $buttonId = sprintf('%s_%d_%d', $label, $x, $y);
+        $initalX = $x;
     
         $vg->save();
 
@@ -806,6 +807,10 @@ class ExampleHelper
         $vg->text($x + $padding, $y + $totalHeight * 0.5, $label);
     
         $vg->restore();
+
+        if ($align === 'left') {
+            return $initalX + $buttonWidth;
+        }
 
         return $x + $buttonWidth;
     }
