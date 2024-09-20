@@ -32,7 +32,7 @@
 PHP-GLFW allows you to create _2D_ and _3D_ real-time applications in _PHP_. It introduces a whole new set of tools for PHP developers to build graphical applications like _games, scientific simulations, user interfaces_, and much more.
 
 <p align="center">
- <img width="720px" src="https://user-images.githubusercontent.com/956212/196137371-74546845-4101-4e22-8d1c-4550f0ba2adf.gif">
+ <img width="720px" src="https://user-images.githubusercontent.com/956212/196137371-74546845-4101-4e22-8d1c-4550f0ba2adf.gif" alt="3D Rendering in PHP">
 </p>
 
 _Currently supports **PHP8.x**_
@@ -77,10 +77,31 @@ This extension includes bindings for the powerful **[GLFW](https://www.glfw.org)
 * Real-time user input handling
   * **Keyboard and Mouse** event handling
   * **Joystick** input support
+  * **Gamepad** Support
+
+### Vector Graphics API
+
+PHP-GLFW includes a vector graphics API that allows you to draw in a HTML canvas-like manner in PHP. Its uses the same OpenGL context internally allowing you to build complex rendering pipelines utilizing both the vector graphics API and the more low-level OpenGL API.
+
+<p align="left">
+ <img alt="PHP Vector Graphics Rendering Library" src="https://github.com/user-attachments/assets/be534c0e-f0c3-4201-bd98-d7725e3b62ed" align="center" width="600" >
+</p>
+
+- Allows for quick and intuitive rendering of primitives.
+- Includes numerous helpers for colors.
+- Supports gradients and images.
+- Easily renders text with any font.
+- Ideal for quickly creating GUIs.
+
+1. [Read more about the Vector Graphics API](https://phpgl.net/user-guide/vector-graphics/creating_a_vgcontext.html)
 
 ### PHPGL - Math
 
 PHP-GLFW comes with a built-in mathematics library, written in C and optimized for graphical applications.
+
+<p align="left">
+ <img alt="PHP Vector Math Library" src="https://github.com/user-attachments/assets/99b19edc-6679-46c7-82a9-7b0969fce96a" align="center" width="600" >
+</p>
 
 * Supported structs: `Vec2`, `Vec3`, `Vec4`, `Mat4`, and `Quat`
 * Includes most common matrix operations, like: `lookAt`, `perspective`, `inverse`, `rotate`, and more
