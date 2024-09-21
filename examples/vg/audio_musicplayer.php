@@ -5,8 +5,12 @@
 require __DIR__ . '/../99_example_helpers.php';
 
 use GL\Audio\Sound;
+use GL\Buffer\FloatBuffer;
+use GL\Buffer\ShortBuffer;
+use GL\Buffer\UByteBuffer;
+use GL\Geometry\ObjFileParser\Texture;
 use GL\Texture\Texture2D;
-use GL\VectorGraphics\{VGAlign, VGContext, VGColor};
+use GL\VectorGraphics\{VGAlign, VGContext, VGColor, VGImage};
 
 $window = ExampleHelper::begin();
 
@@ -18,10 +22,21 @@ $audioEngine = new \GL\Audio\Engine();
 
 // current sound
 class Playback {
+    public Texture2D $soundTexture;
+    public VGImage $soundImage;
+
     public function __construct(
         public Sound $sound,
         public string $soundFile,
-    ) {}
+        public float $soundX = 0.0,
+        public float $soundY = 0.0,
+    ) {
+        $this->soundTexture = createSoundTexture($sound, ExampleHelper::WIN_WIDTH - 200, 128);
+
+        // upload the texture to the VG Context
+        global $vg;
+        $this->soundImage = $vg->imageFromTexture($this->soundTexture);
+    }
 }
 
 class Player {
@@ -31,6 +46,63 @@ class Player {
 }
 
 $player = new Player();
+
+function createSoundTexture(Sound $sound, int $width, int $height) : Texture2D
+{
+    // read some frames
+    $framesBuffer = new FloatBuffer();
+    $sampleRate = $sound->getSampleRate();
+    $length = $sound->getLengthPCM();
+
+    echo "Starting to generate sound texture...\n";
+
+    // we want to generate a texture from the frames
+    // visualizing the sound
+    $textureBuffer = new UByteBuffer();
+    $textureBuffer->fill($width * $height * 4, 0); // we want to use RGBA to simplify usage with VG
+
+    while ($sound->getCursorPCM() < $length) {
+        $startFrame = $sound->getCursorPCM();
+        $sound->readFrames($sampleRate, $framesBuffer);
+        echo "Reading " . $startFrame . " to " . $sound->getCursorPCM() . " of " . $length . "\n";
+
+        for ($i = 0; $i < $framesBuffer->size(); $i+=$sound->channels) {
+            $x = $startFrame + (int)floor($i / $sound->channels);
+            $x = (int) floor(($x / $length) * $width);
+
+            for($j = 0; $j < $sound->channels; $j++) {
+                $value = $framesBuffer[$i + $j];
+                // y is the value of the sample
+                $y = (int) floor(($value + 1) * 0.5 * $height);
+
+                // update the pixel buffer by simply adding 1 to the red channel
+                $textureBufferIndex = ($x + $y * $width) * 4;
+
+                // i could have solved this cleaner, but decided not to
+                if ($textureBuffer[$textureBufferIndex] < 255) {
+                    $textureBuffer[$textureBufferIndex] = $textureBuffer[$textureBufferIndex] + 1;
+                } elseif ($textureBuffer[$textureBufferIndex + 1] < 255) {
+                    $textureBuffer[$textureBufferIndex + 1] = $textureBuffer[$textureBufferIndex + 1] + 1;
+                } elseif ($textureBuffer[$textureBufferIndex + 2] < 255) {
+                    $textureBuffer[$textureBufferIndex + 2] = $textureBuffer[$textureBufferIndex + 2] + 1;
+                }
+
+                // alpha channel should be 255
+                $textureBuffer[$textureBufferIndex + 3] = 255;
+            } 
+        }
+    }
+
+    echo "Finished generating sound texture...\n";
+
+    // reset the cursor
+    $sound->seekTo(0);
+
+    // create a texture from the buffer
+    $texture = Texture2D::fromBuffer($width, $height, $textureBuffer);
+
+    return $texture;
+}
 
 // register a drop callback
 glfwSetDropCallback($window, function($count, $paths) use ($audioEngine, &$player) {
@@ -50,6 +122,8 @@ glfwSetDropCallback($window, function($count, $paths) use ($audioEngine, &$playe
         $audioEngine->soundFromDisk($effectivePath),
         $effectivePath,
     );
+
+    var_dump($player->playback->sound);
 });
 
 
@@ -102,7 +176,7 @@ while (!glfwWindowShouldClose($window))
         $y += 30;
 
         // render a little progress bar
-        $progressBarHeight = 50;
+        $progressBarHeight = 128;
         $progressBarWidth = ExampleHelper::WIN_WIDTH - ($x * 2);
 
         // when mouse is down inside of the progress bar we seek to the position
@@ -118,20 +192,57 @@ while (!glfwWindowShouldClose($window))
             }
         }
 
+        // image is the background of the progress bar
+        $imagePaint = $player->playback->soundImage->makePaint($x, $y, $progressBarWidth, $progressBarHeight);
         $vg->strokeColor(VGColor::white());
+        $vg->fillPaint($imagePaint);
         $vg->beginPath();
-        $vg->rect($x, $y, $progressBarWidth, $progressBarHeight);
+        $vg->rect($x, $y, $progressBarWidth, $progressBarHeight);   
         $vg->strokeWidth(2);
         $vg->stroke();
+        $vg->fill();
+
 
         // render a red cursor
-        $vg->strokeColor(VGColor::red());
+        $cursorColor = VGColor::red();
+        $cursorColor->a = 0.5;
+        $vg->strokeColor($cursorColor);
         $vg->beginPath();
         $cursorX = $x + $progressBarWidth * $playbackProgress;
         $vg->moveTo($cursorX, $y - 5);
         $vg->lineTo($cursorX, $y + $progressBarHeight + 5);
         $vg->strokeWidth(5);
         $vg->stroke();
+
+        // here we render a little 2d sound position editor
+        $y += $progressBarHeight + 20;
+
+        $positionBoxSize = 200;
+        $vg->beginPath();
+        $vg->strokeColor(VGColor::white());
+        $vg->strokeWidth(2);
+        $vg->rect($x, $y, $positionBoxSize, $positionBoxSize);
+        $vg->stroke();
+
+        // update sound position when mouse is down inside of the position box
+        if (glfwGetMouseButton($window, GLFW_MOUSE_BUTTON_LEFT) === GLFW_PRESS) {
+            $cursorX;
+            $cursorY;
+            glfwGetCursorPos($window, $cursorX, $cursorY);
+            if ($cursorX >= $x && $cursorX <= $x + $positionBoxSize && $cursorY >= $y && $cursorY <= $y + $positionBoxSize) {
+                $player->playback->soundX = ($cursorX - $x) / $positionBoxSize - 0.5;
+                $player->playback->soundY = ($cursorY - $y) / $positionBoxSize - 0.5;
+            }
+        }
+
+        // render the sound position as a red dot
+        $vg->fillColor(VGColor::red());
+        $vg->beginPath();
+        $vg->circle($x + $positionBoxSize * ($player->playback->soundX + 0.5), $y + $positionBoxSize * ($player->playback->soundY + 0.5), 5);
+        $vg->fill();
+
+        // apply the sound position
+        $player->playback->sound->setPosition($player->playback->soundX, $player->playback->soundY, 0);
 
 
         // button group at bottom

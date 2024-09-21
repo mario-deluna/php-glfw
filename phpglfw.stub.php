@@ -2,6 +2,7 @@
 
 /** 
  * @generate-function-entries
+ * @generate-class-entries
  * ##generate-class-entries
  */
 
@@ -555,21 +556,33 @@ namespace GL\Audio
     }
     
     class Sound {
+        public readonly int $sampleRate;
+        public readonly int $channels;
+        public readonly float $length;
+        public readonly int $lengthPCM;
+
         public function __construct() {}
+
+        // prop getters
+        public function getSampleRate() : int {}
+        public function getChannels() : int {}
+        public function getLength() : float {}
+        public function getLengthPCM() : int {}
+
+        // direct ma interface
         public function play() : void {}
         public function stop() : void {}
         public function setStartMs(int $start) : void {}
         public function setStopMs(int $stop) : void {}
         public function isPlaying() : bool {}
-        public function getLength() : float {}
-        public function getLengthPCM() : int {}
         public function getCursor() : float {}
         public function getCursorPCM() : int {}
         public function seekTo(float $cursor) : bool {}
         public function seekToPCM(int $cursor) : bool {}
 
-
         public function setPosition(float $x, float $y, float $z) : void {}
+
+        public function readFrames(int $frames, \GL\Buffer\BufferInterface $buffer) : int {}
     }
 };
 
