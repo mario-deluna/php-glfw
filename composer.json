@@ -14,5 +14,13 @@
                 "description": "Enable PHP-GLFW support"
             }
         ]
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^9.5"
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "GL\\Tests\\": "tests/"
+        }
     }
 }
