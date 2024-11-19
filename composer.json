@@ -1,6 +1,7 @@
 {
     "name": "mario-deluna/php-glfw",
     "type": "php-ext",
+    "license": "MIT",
     "description": "A fully-featured OpenGL and GLFW extension for PHP. ",
     "require": {
         "php": ">= 8.0.0"
