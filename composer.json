@@ -3,7 +3,7 @@
     "type": "php-ext",
     "description": "A fully-featured OpenGL and GLFW extension for PHP. ",
     "require": {
-        "php": ">= 8.1.0"
+        "php": ">= 8.0.0"
     },
     "php-ext": {
         "extension-name": "glfw",
