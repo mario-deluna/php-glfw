@@ -151,7 +151,7 @@ if test "$PHP_GLFW" != "no"; then
   PHP_ADD_INCLUDE([$GLFW_DIR/include])
 
   PHP_INSTALL_HEADERS([ext/glfw], [*.h \
-        vendor/glad/include/*.h \
+        vendor/glad/include/glad/*.h \
         vendor/cvector/*.h \
         vendor/stb/*.h \
         vendor/fastobj/*.h \
