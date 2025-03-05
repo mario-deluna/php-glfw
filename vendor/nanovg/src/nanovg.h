@@ -506,6 +506,9 @@ void nvgPathWinding(NVGcontext* ctx, int dir);
 // Angles are specified in radians.
 void nvgArc(NVGcontext* ctx, float cx, float cy, float r, float a0, float a1, int dir);
 
+// Creates a arc aligned to the function arguments of SVG
+void nvgSvgArcTo(NVGcontext* ctx, float x0, float y0, float rx, float ry, float xAxisRotation, int largeArcFlag, int sweepFlag, float x, float y);
+
 // Creates new rectangle shaped sub-path.
 void nvgRect(NVGcontext* ctx, float x, float y, float w, float h);
 

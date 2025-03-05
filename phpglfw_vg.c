@@ -1421,6 +1421,27 @@ PHP_METHOD(GL_VectorGraphics_VGContext, arc)
     nvgArc(intern->nvgctx, cx, cy, r, a0, a1, dir);
 }
 /**
+ * svgArcTo
+ */ 
+PHP_METHOD(GL_VectorGraphics_VGContext, svgArcTo)
+{
+    phpglfw_vgcontext_object *intern = phpglfw_vgcontext_objectptr_from_zobj_p(Z_OBJ_P(getThis()));
+
+    double x0;
+    double y0;
+    double rx;
+    double ry;
+    double xAxisRotation;
+    zend_long largeArcFlag;
+    zend_long sweepFlag;
+    double x;
+    double y;
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "dddddlldd", &x0, &y0, &rx, &ry, &xAxisRotation, &largeArcFlag, &sweepFlag, &x, &y) == FAILURE) {
+        return;
+    }
+    nvgSvgArcTo(intern->nvgctx, x0, y0, rx, ry, xAxisRotation, largeArcFlag, sweepFlag, x, y);
+}
+/**
  * rect
  */ 
 PHP_METHOD(GL_VectorGraphics_VGContext, rect)

@@ -1,5 +1,5 @@
 /* This is a generated file, edit the .stub.php file instead.
- * Stub hash: 47b21f98f92805f0b6f2aae89dc2901e14d9cf34 */
+ * Stub hash: 8b5a0cc01502c19f354de06ca8620ed8b72f1e74 */
 
 ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_glCullFace, 0, 1, IS_VOID, 0)
 	ZEND_ARG_TYPE_INFO(0, mode, IS_LONG, 0)
@@ -3309,6 +3309,18 @@ ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_class_GL_VectorGraphics_VGContex
 	ZEND_ARG_TYPE_INFO(0, dir, IS_LONG, 0)
 ZEND_END_ARG_INFO()
 
+ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_class_GL_VectorGraphics_VGContext_svgArcTo, 0, 9, IS_VOID, 0)
+	ZEND_ARG_TYPE_INFO(0, x0, IS_DOUBLE, 0)
+	ZEND_ARG_TYPE_INFO(0, y0, IS_DOUBLE, 0)
+	ZEND_ARG_TYPE_INFO(0, rx, IS_DOUBLE, 0)
+	ZEND_ARG_TYPE_INFO(0, ry, IS_DOUBLE, 0)
+	ZEND_ARG_TYPE_INFO(0, xAxisRotation, IS_DOUBLE, 0)
+	ZEND_ARG_TYPE_INFO(0, largeArcFlag, IS_LONG, 0)
+	ZEND_ARG_TYPE_INFO(0, sweepFlag, IS_LONG, 0)
+	ZEND_ARG_TYPE_INFO(0, x, IS_DOUBLE, 0)
+	ZEND_ARG_TYPE_INFO(0, y, IS_DOUBLE, 0)
+ZEND_END_ARG_INFO()
+
 #define arginfo_class_GL_VectorGraphics_VGContext_rect arginfo_class_GL_VectorGraphics_VGContext_scissor
 
 ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_class_GL_VectorGraphics_VGContext_roundedRect, 0, 5, IS_VOID, 0)
@@ -4307,6 +4319,7 @@ ZEND_METHOD(GL_VectorGraphics_VGContext, arcTo);
 ZEND_METHOD(GL_VectorGraphics_VGContext, closePath);
 ZEND_METHOD(GL_VectorGraphics_VGContext, pathWinding);
 ZEND_METHOD(GL_VectorGraphics_VGContext, arc);
+ZEND_METHOD(GL_VectorGraphics_VGContext, svgArcTo);
 ZEND_METHOD(GL_VectorGraphics_VGContext, rect);
 ZEND_METHOD(GL_VectorGraphics_VGContext, roundedRect);
 ZEND_METHOD(GL_VectorGraphics_VGContext, roundedRectVarying);
@@ -5350,6 +5363,7 @@ static const zend_function_entry class_GL_VectorGraphics_VGContext_methods[] = {
 	ZEND_ME(GL_VectorGraphics_VGContext, closePath, arginfo_class_GL_VectorGraphics_VGContext_closePath, ZEND_ACC_PUBLIC)
 	ZEND_ME(GL_VectorGraphics_VGContext, pathWinding, arginfo_class_GL_VectorGraphics_VGContext_pathWinding, ZEND_ACC_PUBLIC)
 	ZEND_ME(GL_VectorGraphics_VGContext, arc, arginfo_class_GL_VectorGraphics_VGContext_arc, ZEND_ACC_PUBLIC)
+	ZEND_ME(GL_VectorGraphics_VGContext, svgArcTo, arginfo_class_GL_VectorGraphics_VGContext_svgArcTo, ZEND_ACC_PUBLIC)
 	ZEND_ME(GL_VectorGraphics_VGContext, rect, arginfo_class_GL_VectorGraphics_VGContext_rect, ZEND_ACC_PUBLIC)
 	ZEND_ME(GL_VectorGraphics_VGContext, roundedRect, arginfo_class_GL_VectorGraphics_VGContext_roundedRect, ZEND_ACC_PUBLIC)
 	ZEND_ME(GL_VectorGraphics_VGContext, roundedRectVarying, arginfo_class_GL_VectorGraphics_VGContext_roundedRectVarying, ZEND_ACC_PUBLIC)

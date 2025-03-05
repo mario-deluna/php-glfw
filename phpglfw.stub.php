@@ -514,6 +514,7 @@ namespace GL\VectorGraphics
         public function closePath() : void {}
         public function pathWinding(int $dir) : void {}
         public function arc(float $cx, float $cy, float $r, float $a0, float $a1, int $dir) : void {}
+        public function svgArcTo(float $x0, float $y0, float $rx, float $ry, float $xAxisRotation, int $largeArcFlag, int $sweepFlag, float $x, float $y) : void {}
         public function rect(float $x, float $y, float $w, float $h) : void {}
         public function roundedRect(float $x, float $y, float $w, float $h, float $r) : void {}
         public function roundedRectVarying(float $x, float $y, float $w, float $h, float $radTopLeft, float $radTopRight, float $radBottomRight, float $radBottomLeft) : void {}

@@ -2218,6 +2218,75 @@ void nvgArcTo(NVGcontext* ctx, float x1, float y1, float x2, float y2, float rad
 	nvgArc(ctx, cx, cy, radius, a0, a1, dir);
 }
 
+void nvgSvgArcTo(NVGcontext* ctx, 
+    float x0, float y0,        // start point (from M)
+    float rx, float ry,        // X and Y radii
+    float xAxisRotation,       // rotation in degrees
+    int largeArcFlag,          // 0 or 1
+    int sweepFlag,             // 0 (CCW) or 1 (CW)
+    float x, float y
+) {
+    // handle degenerate case where start and end points are the same
+    if (nvg__ptEquals(x0, y0, x, y, ctx->distTol)) {
+        return;
+    }
+
+    // NanoVG only supports circular arcs, so we'll use rx as the radius
+    // and approximate the ellipse as a circle for simplicity
+    float radius = rx; 
+    float phi = xAxisRotation * NVG_PI / 180.0f;
+
+    float x1p = (x0 - x) / 2.0f;
+    float y1p = (y0 - y) / 2.0f;
+    float x1 = x1p; 
+    float y1 = y1p;
+
+    float rx2 = rx * rx;
+    float ry2 = ry * ry;
+    float x1_2 = x1 * x1;
+    float y1_2 = y1 * y1;
+
+    float lambda = x1_2 / rx2 + y1_2 / ry2;
+    if (lambda > 1) {
+        rx *= sqrtf(lambda);
+        ry *= sqrtf(lambda);
+        rx2 = rx * rx;
+        ry2 = ry * ry;
+    }
+
+    float coef = sqrtf((rx2 * ry2 - rx2 * y1_2 - ry2 * x1_2) / (rx2 * y1_2 + ry2 * x1_2));
+    if (largeArcFlag == sweepFlag) coef = -coef;
+
+    float cxp = coef * rx * y1 / ry;
+    float cyp = -coef * ry * x1 / rx;
+
+    float cx = cxp + (x0 + x) / 2.0f;
+    float cy = cyp + (y0 + y) / 2.0f;
+
+    float a0 = atan2f((y0 - cy) / ry, (x0 - cx) / rx);
+    float a1 = atan2f((y - cy) / ry, (x - cx) / rx);
+
+    float da = a1 - a0;
+    if (sweepFlag == 1) {
+        if (da < 0) da += 2.0f * NVG_PI;
+    } else {
+        if (da > 0) da -= 2.0f * NVG_PI;
+    }
+
+    if (ctx->ncommands == 0) {
+        nvgMoveTo(ctx, x0, y0);
+    } else {
+        nvgLineTo(ctx, x0, y0);
+    }
+
+    // draw the arc
+    nvgArc(ctx, cx, cy, radius, a0, a1, sweepFlag ? NVG_CW : NVG_CCW);
+
+    // update current position
+    ctx->commandx = x;
+    ctx->commandy = y;
+}
+
 void nvgClosePath(NVGcontext* ctx)
 {
 	float vals[] = { NVG_CLOSE };
