@@ -432,7 +432,7 @@ class ExampleHelper
     /**
      * Draws a light point, mainly used to visualize the coordinate system.
      */
-    public static function drawCoordPoint(VGContext $vg, float $x, float $y, string $label = null) : void
+    public static function drawCoordPoint(VGContext $vg, float $x, float $y, ?string $label = null) : void
     {
         $vg->beginPath();
         $vg->circle($x, $y, 5);
@@ -451,7 +451,7 @@ class ExampleHelper
     /**
      * Draws a red point with a label, use this when you want to focus on a specific point.
      */
-    public static function drawPoint(VGContext $vg, float $x, float $y, string $label = null) : void
+    public static function drawPoint(VGContext $vg, float $x, float $y, ?string $label = null) : void
     {
         // we only want to draw the point at the transformed position
         // so we get the transformed position and then reset the transformation state
@@ -552,7 +552,7 @@ class ExampleHelper
     /**
      * Draws a short perpendicular line at a given point.
      */
-    public static function drawLength(VGContext $vg, float $x1, float $y1, float $x2, float $y2, string $label = null, string $labelPos = 'right') : void
+    public static function drawLength(VGContext $vg, float $x1, float $y1, float $x2, float $y2, ?string $label = null, string $labelPos = 'right') : void
     {
         // Main line
         $vg->beginPath();
