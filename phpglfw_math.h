@@ -26,7 +26,7 @@
 #ifndef PHP_GLFW_MATH_H
 #define PHP_GLFW_MATH_H 1
 
-#include "php.h"
+#include "phpglfw_constants.h"
 #include "linmath.h"
 
 /**

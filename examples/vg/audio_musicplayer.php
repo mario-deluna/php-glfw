@@ -176,7 +176,7 @@ while (!glfwWindowShouldClose($window))
         $y += 30;
 
         // render a little progress bar
-        $progressBarHeight = 128;
+        $progressBarHeight = 108;
         $progressBarWidth = ExampleHelper::WIN_WIDTH - ($x * 2);
 
         // when mouse is down inside of the progress bar we seek to the position
@@ -216,6 +216,12 @@ while (!glfwWindowShouldClose($window))
 
         // here we render a little 2d sound position editor
         $y += $progressBarHeight + 20;
+
+        // create a label 
+        $vg->fillColor(VGColor::white());
+        $vg->textAlign(VGAlign::LEFT | VGAlign::MIDDLE);
+        $vg->text($x, $y, "Sound Position");
+        $y += 20;
 
         $positionBoxSize = 200;
         $vg->beginPath();
