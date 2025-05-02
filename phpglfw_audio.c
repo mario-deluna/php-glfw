@@ -322,6 +322,41 @@ PHP_METHOD(GL_Audio_Sound, seekToPCM)
     RETURN_BOOL(result == MA_SUCCESS);
 }
 
+PHP_METHOD(GL_Audio_Sound, setVolume)
+{
+    double volume;
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "d", &volume) == FAILURE) {
+        RETURN_THROWS();
+    }
+
+    phpglfw_audiosound_object *intern = phpglfw_audiosound_from_zobj_p(Z_OBJ_P(getThis()));
+
+    ma_sound_set_volume(intern->masound, (float) volume);
+}
+
+PHP_METHOD(GL_Audio_Sound, setPitch)
+{
+    double pitch;
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "d", &pitch) == FAILURE) {
+        RETURN_THROWS();
+    }
+
+    phpglfw_audiosound_object *intern = phpglfw_audiosound_from_zobj_p(Z_OBJ_P(getThis()));
+
+    ma_sound_set_pitch(intern->masound, (float) pitch);
+}
+
+PHP_METHOD(GL_Audio_Sound, setLoop)
+{
+    zend_bool loop;
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "b", &loop) == FAILURE) {
+        RETURN_THROWS();
+    }
+
+    phpglfw_audiosound_object *intern = phpglfw_audiosound_from_zobj_p(Z_OBJ_P(getThis()));
+
+    ma_sound_set_looping(intern->masound, loop);
+}
 
 PHP_METHOD(GL_Audio_Sound, setPosition)
 {

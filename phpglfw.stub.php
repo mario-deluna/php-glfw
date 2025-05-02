@@ -580,8 +580,12 @@ namespace GL\Audio
         public function seekTo(float $cursor) : bool {}
         public function seekToPCM(int $cursor) : bool {}
 
-        public function setPosition(float $x, float $y, float $z) : void {}
+        public function setVolume(float $volume) : void {}
+        public function setPitch(float $pitch) : void {}    
+        public function setLoop(bool $loop) : void {}
 
+        public function setPosition(float $x, float $y, float $z) : void {}
+        
         public function readFrames(int $frames, \GL\Buffer\BufferInterface $buffer) : int {}
     }
 };

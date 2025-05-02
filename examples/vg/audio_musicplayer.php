@@ -30,6 +30,8 @@ class Playback {
         public string $soundFile,
         public float $soundX = 0.0,
         public float $soundY = 0.0,
+        public float $volume = 1.0,
+        public float $pitch = 1.0,
     ) {
         $this->soundTexture = createSoundTexture($sound, ExampleHelper::WIN_WIDTH - 200, 128);
 
@@ -250,6 +252,23 @@ while (!glfwWindowShouldClose($window))
         // apply the sound position
         $player->playback->sound->setPosition($player->playback->soundX, $player->playback->soundY, 0);
 
+        // sliders for other settings
+        $sliderHeight = 200;
+        $sliderWidth = 15;
+
+        $x = 100 + $positionBoxSize + 100;
+        $vg->fillColor(VGColor::white());
+        $vg->textAlign(VGAlign::LEFT | VGAlign::MIDDLE);
+        $vg->text($x, $y - 20, "Volume");
+        ExampleHelper::drawSlider($vg, $x, $y, $sliderWidth, $sliderHeight, 0.0, 1.0, $player->playback->volume, '%.2f', 2, true);
+        $player->playback->sound->setVolume($player->playback->volume);
+
+        $x += 100;
+        $vg->fillColor(VGColor::white());
+        $vg->textAlign(VGAlign::LEFT | VGAlign::MIDDLE);
+        $vg->text($x, $y - 20, "Pitch");
+        ExampleHelper::drawSlider($vg, $x, $y, $sliderWidth, $sliderHeight, 0.5, 2.0, $player->playback->pitch, '%.2f', 2, true);
+        $player->playback->sound->setPitch($player->playback->pitch);
 
         // button group at bottom
         $y = ExampleHelper::WIN_HEIGHT - 100;

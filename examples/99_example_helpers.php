@@ -605,10 +605,113 @@ class ExampleHelper
         }
     }
 
-
     /**
-     * Draws a button group with the given options.
+     * Draws an interactable slider (horizontal or vertical).
+     * Returns the new value if changed, otherwise the current value.
      */
+    public static function drawSlider(
+        VGContext $vg,
+        float $x,
+        float $y,
+        float $width,
+        float $height,
+        float $min,
+        float $max,
+        float &$value,
+        string $tooltip = '',
+        bool $vertical = false
+    ) : void {
+        $vg->save();
+        $vg->resetTransform();
+
+        // bg
+        if ($vertical) {
+            $barX = $x;
+            $barY = $y;
+            $barW = $width;
+            $barH = $height;
+            $radius = $width / 2;
+        } else {
+            $barX = $x;
+            $barY = $y;
+            $barW = $width;
+            $barH = $height;
+            $radius = $height / 2;
+        }
+        $vg->beginPath();
+        $vg->roundedRect($barX, $barY, $barW, $barH, $radius);
+        $vg->fillColori(40, 40, 40, 220);
+        $vg->fill();
+        $vg->strokeColori(255, 255, 255, 100);
+        $vg->strokeWidth(2);
+        $vg->stroke();
+
+        // handle pos
+        $t = ($value - $min) / ($max - $min);
+        if ($vertical) {
+            $handleX = $x + $width / 2;
+            $handleY = $y + $height - $t * $height;
+            $handleRadius = $width * 0.7;
+        } else {
+            $handleX = $x + $t * $width;
+            $handleY = $y + $height / 2;
+            $handleRadius = $height * 0.7;
+        }
+
+        // draw handle
+        $vg->beginPath();
+        $vg->circle($handleX, $handleY, $handleRadius);
+        $vg->fillColori(76, 66, 233, 255);
+        $vg->fill();
+        $vg->strokeColori(255, 255, 255, 180);
+        $vg->strokeWidth(2);
+        $vg->stroke();
+
+        // cursor handling
+        glfwGetCursorPos(self::$currentWindow, $mouseX, $mouseY);
+        $isInside = $vertical
+            ? ($mouseX >= $x && $mouseX <= $x + $width && $mouseY >= $y && $mouseY <= $y + $height)
+            : ($mouseX >= $x && $mouseX <= $x + $width && $mouseY >= $y && $mouseY <= $y + $height);
+        static $dragging = false;
+        static $activeSlider = null;
+        $sliderId = sprintf('%d_%d_%s_%s', $x, $y, $tooltip, $vertical ? 'v' : 'h');
+
+        // draw tooltip
+        if ($tooltip !== '' && $activeSlider === $sliderId && ($isInside || $dragging)) {
+            $vg->fontSize(14);
+            $vg->fontFaceId(self::getVGFontHandle($vg));
+            $vg->fillColori(255,255,255,255);
+            $vg->textAlign(VGAlign::LEFT | VGAlign::MIDDLE);
+            if ($vertical) {
+                $tooltipX = $handleX + $handleRadius * 2 + 10;
+                $tooltipY = $handleY;
+                $vg->text($tooltipX, $tooltipY, sprintf($tooltip, $value));
+            } else {
+                $tooltipX = $x + $t * $width + 10;
+                $tooltipY = $y + 10;        
+            }
+        }
+
+
+        $mouseDown = glfwGetMouseButton(self::$currentWindow, GLFW_MOUSE_BUTTON_LEFT) === GLFW_PRESS;
+        if (($isInside && $mouseDown && !$dragging) || ($activeSlider === $sliderId && $mouseDown)) {
+            $dragging = true;
+            $activeSlider = $sliderId;
+            if ($vertical) {
+                $t = 1.0 - (($mouseY - $y) / $height);
+            } else {
+                $t = ($mouseX - $x) / $width;
+            }
+            $t = min(max($t, 0.0), 1.0);
+            $value = $min + $t * ($max - $min);
+        } else if ($activeSlider === $sliderId && !$mouseDown) {
+            $dragging = false;
+            $activeSlider = null;
+        }
+
+        $vg->restore();
+    }
+
     public static function drawButtonGroup(
         VGContext $vg, 
         float $x, 
@@ -727,7 +830,7 @@ class ExampleHelper
         $padding = 30;
         $innerOffset = 4;
         $lineHeight = $fontSize * 1.8;
-        $buttonId = sprintf('%s_%d_%d', $label, $x, $y);
+        $buttonId = sprintf('%s_%d_%d', $label, $x, $y, );
         $initalX = $x;
     
         $vg->save();

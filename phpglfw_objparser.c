@@ -32,6 +32,9 @@
 #define FAST_OBJ_FREE           efree
 #include <fast_obj.h>
 
+static const zend_function_entry phpglfw_empty_function_entries[] = {
+	ZEND_FE_END
+};
 
 zend_class_entry *phpglfw_objparser_ce; 
 zend_class_entry *phpglfw_objparser_res_ce; 
@@ -900,7 +903,7 @@ void phpglfw_register_objparser_module(INIT_FUNC_ARGS)
 
     // Obj File Parser Resource
     // ------------------------------
-    INIT_NS_CLASS_ENTRY(tmp_ce, "GL\\Geometry\\ObjFileParser", "Resource", class_GL_Geometry_ObjFileParser_Resource_methods);
+    INIT_NS_CLASS_ENTRY(tmp_ce, "GL\\Geometry\\ObjFileParser", "Resource", phpglfw_empty_function_entries);
 	phpglfw_objparser_res_ce = zend_register_internal_class_ex(&tmp_ce, NULL);
     phpglfw_objparser_res_ce->create_object = phpglfw_objparser_res_create_handler;
 
@@ -1165,7 +1168,7 @@ void phpglfw_register_objparser_module(INIT_FUNC_ARGS)
 
     // Obj File Parser Mesh
     // ------------------------------
-    INIT_NS_CLASS_ENTRY(tmp_ce, "GL\\Geometry\\ObjFileParser", "Mesh", class_GL_Geometry_ObjFileParser_Mesh_methods);
+    INIT_NS_CLASS_ENTRY(tmp_ce, "GL\\Geometry\\ObjFileParser", "Mesh", phpglfw_empty_function_entries);
     phpglfw_objparser_mesh_ce = zend_register_internal_class(&tmp_ce);
     // phpglfw_objparser_mesh_ce->create_object = phpglfw_objparser_material_create_handler;
 
