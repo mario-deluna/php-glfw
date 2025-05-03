@@ -21,7 +21,7 @@ jobs:
     - uses: actions/checkout@v3
         
     - name: Install dependenies
-      run: sudo apt-get update && sudo apt-get install -y build-essential cmake ${{ matrix.preinstalled-glfw }} xvfb libxrandr-dev libxinerama-dev libxcursor-dev libxi-dev gdb
+      run: sudo apt-get update && sudo apt-get install -y build-essential cmake ${{ matrix.preinstalled-glfw }} php${{ matrix.php-versions }}-dev xvfb libxrandr-dev libxinerama-dev libxcursor-dev libxi-dev gdb
       
     - name: Setup PHP
       uses: shivammathur/setup-php@v2
@@ -40,7 +40,7 @@ jobs:
         echo "PHP config: $(php-config --version)"
 
     - name: Build PHP-GLFW
-      run: sudo phpize && ./configure --enable-glfw && sudo make -j$(nproc)
+      run: sudo phpize && ./configure --enable-glfw
     
     - name: Install PHP-GLFW
       run: | 
