@@ -3,7 +3,6 @@
 /** 
  * @generate-function-entries
  * @generate-class-entries
- * ##generate-class-entries
  */
 
 namespace GL\Geometry
