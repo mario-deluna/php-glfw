@@ -29,7 +29,7 @@ jobs:
         tools: cs2pr, phpunit
         
     - name: Install dependenies
-      run: sudo apt-get update && sudo apt-get install -y php-dev build-essential cmake ${{ matrix.preinstalled-glfw }} xvfb libxrandr-dev libxinerama-dev libxcursor-dev libxi-dev gdb
+      run: sudo apt-get update && sudo apt-get install -y build-essential cmake ${{ matrix.preinstalled-glfw }} xvfb libxrandr-dev libxinerama-dev libxcursor-dev libxi-dev gdb
       
     # - name: Build GLFW lib
     #   run: cd vendor/glfw && cmake . -DGLFW_BUILD_TESTS=OFF -DGLFW_BUILD_EXAMPLES=OFF -DBUILD_SHARED_LIBS=ON && sudo make install && sudo ldconfig && cd ../../
