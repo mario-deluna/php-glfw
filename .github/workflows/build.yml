@@ -12,19 +12,19 @@ jobs:
     runs-on: ${{ matrix.operating-system }}
     strategy:
       matrix:
-        operating-system: ['ubuntu-latest']
+        operating-system: ['ubuntu-22.04']
         php-versions: ['8.0', '8.1', '8.2', '8.3', '8.4']
         phpunit-versions: ['latest']
         preinstalled-glfw: ['libglfw3-dev', '']
     
     steps:
     - uses: actions/checkout@v3
-        
+    
     - name: Install dependenies
-      run: sudo apt-get update && sudo apt-get install -y build-essential cmake ${{ matrix.preinstalled-glfw }} php${{ matrix.php-versions }}-dev xvfb libxrandr-dev libxinerama-dev libxcursor-dev libxi-dev gdb
+      run: sudo apt-get update && sudo apt-get install -y build-essential cmake ${{ matrix.preinstalled-glfw }} php-dev xvfb libxrandr-dev libxinerama-dev libxcursor-dev libxi-dev gdb
       
     - name: Setup PHP
-      uses: shivammathur/setup-php@v2
+      uses: shivammathur/setup-php@2.33.0
       with:
         php-version: ${{ matrix.php-versions }}
         extensions: :glfw, dom, xml, mbstring, zip
