@@ -28,12 +28,18 @@ jobs:
       uses: shivammathur/setup-php@v2
       with:
         php-version: ${{ matrix.php-versions }}
-        extensions: :glfw, dom, xml, mbstring, zip, dev
+        extensions: :glfw, dom, xml, mbstring, zip
         coverage: xdebug
         tools: cs2pr, phpunit
     # - name: Build GLFW lib
     #   run: cd vendor/glfw && cmake . -DGLFW_BUILD_TESTS=OFF -DGLFW_BUILD_EXAMPLES=OFF -DBUILD_SHARED_LIBS=ON && sudo make install && sudo ldconfig && cd ../../
-        
+    
+    - name: Echo current PHP version, php.ini and php-config
+      run: |
+        echo "PHP version: $(php -v)"
+        echo "PHP ini: $(php --ini)"
+        echo "PHP config: $(php-config --version)"
+
     - name: Build PHP-GLFW
       run: phpize && ./configure --enable-glfw && make -j$(nproc)
     
