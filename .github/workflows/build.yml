@@ -38,14 +38,13 @@ jobs:
         echo "PHP version: $(php -v)"
         echo "PHP ini: $(php --ini)"
         echo "PHP config: $(php-config --version)"
-        ecuo "PHPIZE: $(phpize -v)"
+        echo "PHPIZE: $(phpize -v)"
 
     - name: Build PHP-GLFW
       run: sudo phpize && ./configure --enable-glfw
     
     - name: Install PHP-GLFW
       run: | 
-        sudo make clean && \
         sudo make install && \
         grep -qxF 'extension=glfw.so' /etc/php/${{ matrix.php-versions }}/cli/php.ini || \
         echo 'extension=glfw.so' >> /etc/php/${{ matrix.php-versions }}/cli/php.ini
