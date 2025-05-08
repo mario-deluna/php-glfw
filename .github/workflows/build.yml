@@ -38,6 +38,7 @@ jobs:
         echo "PHP version: $(php -v)"
         echo "PHP ini: $(php --ini)"
         echo "PHP config: $(php-config --version)"
+        ecuo "PHPIZE: $(phpize -v)"
 
     - name: Build PHP-GLFW
       run: sudo phpize && ./configure --enable-glfw
