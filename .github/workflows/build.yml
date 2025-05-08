@@ -44,6 +44,7 @@ jobs:
     
     - name: Install PHP-GLFW
       run: | 
+        sudo make clean && \
         sudo make install && \
         grep -qxF 'extension=glfw.so' /etc/php/${{ matrix.php-versions }}/cli/php.ini || \
         echo 'extension=glfw.so' >> /etc/php/${{ matrix.php-versions }}/cli/php.ini
