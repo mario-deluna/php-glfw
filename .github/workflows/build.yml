@@ -18,7 +18,7 @@ jobs:
         preinstalled-glfw: ['libglfw3-dev', '']
     
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
     
     - name: Setup PHP
       uses: shivammathur/setup-php@v2
@@ -31,7 +31,9 @@ jobs:
     #   run: cd vendor/glfw && cmake . -DGLFW_BUILD_TESTS=OFF -DGLFW_BUILD_EXAMPLES=OFF -DBUILD_SHARED_LIBS=ON && sudo make install && sudo ldconfig && cd ../../
     
     - name: Install dependenies
-      run: sudo apt-get update && sudo apt-get install -y build-essential cmake ${{ matrix.preinstalled-glfw }} php-dev xvfb libxrandr-dev libxinerama-dev libxcursor-dev libxi-dev gdb
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y build-essential cmake ${{ matrix.preinstalled-glfw }} xvfb libxrandr-dev libxinerama-dev libxcursor-dev libxi-dev gdb
       
     - name: Echo current PHP version, php.ini and php-config
       run: |
@@ -42,16 +44,12 @@ jobs:
 
     - name: Build PHP-GLFW
       run: |
-        export PATH="$(php-config --prefix)/bin:$PATH"
-        export PHPIZE=$(php-config --prefix)/bin/phpize
-        export PHP_CONFIG=$(php-config --prefix)/bin/php-config
-        $PHPIZE
-        ./configure --enable-glfw --with-php-config=$PHP_CONFIG
-        make
+        phpize
+        ./configure --enable-glfw
+        sudo make -j"$(nproc)" install
     
-    - name: Install PHP-GLFW
+    - name: Enable PHP-GLFW
       run: | 
-        sudo make install && \
         grep -qxF 'extension=glfw.so' /etc/php/${{ matrix.php-versions }}/cli/php.ini || \
         echo 'extension=glfw.so' >> /etc/php/${{ matrix.php-versions }}/cli/php.ini
 

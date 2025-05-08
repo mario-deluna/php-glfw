@@ -1,5 +1,5 @@
 
-/** 
+/**
  * @generate-function-entries
  * @generate-class-entries
  */
