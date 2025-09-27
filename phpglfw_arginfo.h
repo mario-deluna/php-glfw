@@ -2231,6 +2231,13 @@ ZEND_END_ARG_INFO()
 
 #define arginfo_glfwVulkanSupported arginfo_glGetError
 
+ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_glDrawElements, 0, 4, IS_VOID, 0)
+	ZEND_ARG_TYPE_INFO(0, mode, IS_LONG, 0)
+	ZEND_ARG_TYPE_INFO(0, count, IS_LONG, 0)
+	ZEND_ARG_TYPE_INFO(0, type, IS_LONG, 0)
+	ZEND_ARG_OBJ_TYPE_MASK(0, indices, GL\\Buffer\\\125IntBuffer|GL\\Buffer\\\125ShortBuffer|GL\\Buffer\\\125ByteBuffer, MAY_BE_LONG, NULL)
+ZEND_END_ARG_INFO()
+
 ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_glfwGetGamepadAxes, 0, 1, IS_ARRAY, 0)
 	ZEND_ARG_TYPE_INFO(0, joystick, IS_LONG, 0)
 ZEND_END_ARG_INFO()
@@ -4115,6 +4122,7 @@ ZEND_FUNCTION(glfwSwapBuffers);
 ZEND_FUNCTION(glfwSwapInterval);
 ZEND_FUNCTION(glfwExtensionSupported);
 ZEND_FUNCTION(glfwVulkanSupported);
+ZEND_FUNCTION(glDrawElements);
 ZEND_FUNCTION(glfwGetGamepadAxes);
 ZEND_FUNCTION(glfwGetGamepadButtons);
 ZEND_FUNCTION(glShaderSource);
@@ -5048,6 +5056,7 @@ static const zend_function_entry ext_functions[] = {
 	ZEND_FE(glfwSwapInterval, arginfo_glfwSwapInterval)
 	ZEND_FE(glfwExtensionSupported, arginfo_glfwExtensionSupported)
 	ZEND_FE(glfwVulkanSupported, arginfo_glfwVulkanSupported)
+	ZEND_FE(glDrawElements, arginfo_glDrawElements)
 	ZEND_FE(glfwGetGamepadAxes, arginfo_glfwGetGamepadAxes)
 	ZEND_FE(glfwGetGamepadButtons, arginfo_glfwGetGamepadButtons)
 	ZEND_FE(glShaderSource, arginfo_glShaderSource)

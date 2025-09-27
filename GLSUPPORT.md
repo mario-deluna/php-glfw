@@ -623,6 +623,7 @@
 - [x] `glfwGetGamepadButtons`
 - [x] `glShaderSource`
 - [x] `glBufferData`
+- [x] `glDrawElements`
 - [x] `glUniformMatrix4f`
 - [x] `glUniformVec2f`
 - [x] `glUniformVec3f`

@@ -2839,6 +2839,7 @@ namespace {
     function glfwGetGamepadButtons(int $joystick) : array {}
     function glShaderSource(int $shader, string $source) : void {}
     function glBufferData(int $target, \GL\Buffer\BufferInterface $buffer, int $usage) : void {}
+    function glDrawElements(int $mode, int $count, int $type, int|\GL\Buffer\UIntBuffer|\GL\Buffer\UShortBuffer|\GL\Buffer\UByteBuffer $indices) : void {}
     function glUniformMatrix4f(int $location, bool $transpose, \GL\Math\Mat4 $matrix) : void {}
     function glUniformVec2f(int $location, \GL\Math\Vec2 $vec) : void {}
     function glUniformVec3f(int $location, \GL\Math\Vec3 $vec) : void {}
