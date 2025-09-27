@@ -300,6 +300,14 @@ class ExampleHelper
     }
 
     /**
+     * gets the primary color used in buttons, switches, etc.
+     */
+    public static function getPrimaryColor(float $alpha = 1.0) : VGColor
+    {
+        return new VGColor(0.31, 0.224, 0.965, $alpha);
+    }
+
+    /**
      * Draws a colored function call text to the screen.
      * This is used to directly visualize what impact what parameter has on the result.
      * 
@@ -661,7 +669,7 @@ class ExampleHelper
         // draw handle
         $vg->beginPath();
         $vg->circle($handleX, $handleY, $handleRadius);
-        $vg->fillColori(76, 66, 233, 255);
+        $vg->fillColor(self::getPrimaryColor());
         $vg->fill();
         $vg->strokeColori(255, 255, 255, 180);
         $vg->strokeWidth(2);
@@ -797,10 +805,10 @@ class ExampleHelper
                 $vg->beginPath();
                 $vg->roundedRect($bx, $by, $bw, $bh, 7);
                 if ($isInside) {
-                    $vg->fillColori(76, 66, 233, 200);
+                    $vg->fillColor(self::getPrimaryColor(0.8));
                     $vg->fill();
                 } else {
-                    $vg->fillColori(76, 66, 233, 255);
+                    $vg->fillColor(self::getPrimaryColor());
                     $vg->fill();
                 }
 
@@ -885,7 +893,7 @@ class ExampleHelper
             $buttonPressed[$buttonId] = false;
         }
 
-        $highlightColor = VGColor::irgba(76, 66, 233, 200);
+        $highlightColor = self::getPrimaryColor();
     
         // set button color based on state
         if (!$isInside) {
@@ -966,7 +974,7 @@ class ExampleHelper
         
         $vg->beginPath();
         $vg->roundedRect($switchX, $switchY, $switchWidth, $switchHeight, $switchHeight * 0.5);
-        $vg->fillColor($state ? VGColor::irgba(76, 66, 233, 255) : VGColor::gray());
+        $vg->fillColor($state ? self::getPrimaryColor() : VGColor::gray());
         $vg->fill();
         $vg->strokeColor(VGColor::white());
         $vg->strokeWidth(2);
