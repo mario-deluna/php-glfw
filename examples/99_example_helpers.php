@@ -864,10 +864,10 @@ class ExampleHelper
         $vg->fillColori(255, 255, 255, 255);
         $vg->fill();
     
-        // Get the current mouse position
+        // get the current mouse position
         glfwGetCursorPos(self::$currentWindow, $mouseX, $mouseY);
     
-        // Check if the mouse is inside the button
+        // check if the mouse is inside the button
         $isInside = $mouseX >= $x && $mouseX <= $x + $buttonWidth &&
                     $mouseY >= $y && $mouseY <= $y + $totalHeight;
     
@@ -887,7 +887,7 @@ class ExampleHelper
 
         $highlightColor = VGColor::irgba(76, 66, 233, 200);
     
-        // Set button color based on state
+        // set button color based on state
         if (!$isInside) {
             $vg->beginPath();
             $vg->fillColor($highlightColor);
@@ -909,7 +909,7 @@ class ExampleHelper
             $vg->fillColor($highlightColor);
         }
     
-        // Draw the label
+        // draw the label
         $vg->text($x + $padding, $y + $totalHeight * 0.5, $label);
     
         $vg->restore();
@@ -919,6 +919,99 @@ class ExampleHelper
         }
 
         return $x + $buttonWidth;
+    }
+
+    public static function drawSwitch(
+        VGContext $vg, 
+        float $x, 
+        float $y, 
+        string $label, 
+        bool &$state,
+        string $align = 'center'
+    ) : float
+    {
+        $fontHandle = self::getVGFontHandle($vg);
+        $fontSize = 20;
+        $padding = 30;
+        $innerOffset = 4;
+        $lineHeight = $fontSize * 1.8;
+        $switchId = sprintf('%s_%d_%d', $label, $x, $y);
+        $initialX = $x;
+    
+        $vg->save();
+        $vg->resetTransform();
+    
+        $vg->fontSize($fontSize);
+        $vg->fontFaceId($fontHandle);
+        $vg->textAlign(VGAlign::LEFT | VGAlign::MIDDLE);
+    
+        // calculate dimensions
+        $switchWidth = 60; // fixed width for switch
+        $switchHeight = 30; // fixed height for switch
+        $labelWidth = $vg->textBounds(0, 0, $label);
+        $totalWidth = $switchWidth + $labelWidth + $padding;
+        $totalHeight = max($lineHeight, $switchHeight) + $innerOffset * 2;
+    
+        // adjust x and y based on alignment
+        if ($align === 'center') {
+            $x -= $totalWidth * 0.5;
+            $y -= $totalHeight * 0.5;
+        } else if ($align === 'right') {
+            $x -= $totalWidth;
+        }
+    
+        // switch background
+        $switchX = $x;
+        $switchY = $y + ($totalHeight - $switchHeight) * 0.5;
+        
+        $vg->beginPath();
+        $vg->roundedRect($switchX, $switchY, $switchWidth, $switchHeight, $switchHeight * 0.5);
+        $vg->fillColor($state ? VGColor::irgba(76, 66, 233, 255) : VGColor::gray());
+        $vg->fill();
+        $vg->strokeColor(VGColor::white());
+        $vg->strokeWidth(2);
+        $vg->stroke();
+    
+        // switch handle
+        $handleRadius = $switchHeight * 0.4;
+        $handleX = $state ? $switchX + $switchWidth - $handleRadius - 2 : $switchX + $handleRadius + 2;
+        $handleY = $switchY + $switchHeight * 0.5;
+        
+        $vg->beginPath();
+        $vg->circle($handleX, $handleY, $handleRadius);
+        $vg->fillColor(VGColor::white());
+        $vg->fill();
+    
+        // draw label on the right
+        $vg->fillColor(VGColor::white());
+        $vg->text($x + $switchWidth + $padding, $y + $totalHeight * 0.5, $label);
+    
+        // mouse interaction
+        glfwGetCursorPos(self::$currentWindow, $mouseX, $mouseY);
+        $isInside = $mouseX >= $switchX && $mouseX <= $switchX + $switchWidth &&
+                    $mouseY >= $switchY && $mouseY <= $switchY + $switchHeight;
+    
+        static $switchPressed = [];
+        if (!isset($switchPressed[$switchId])) {
+            $switchPressed[$switchId] = false;
+        }
+    
+        if ($isInside && glfwGetMouseButton(self::$currentWindow, GLFW_MOUSE_BUTTON_LEFT) === GLFW_PRESS) {
+            if (!$switchPressed[$switchId]) {
+                $switchPressed[$switchId] = true;
+                $state = !$state;
+            }
+        } else {
+            $switchPressed[$switchId] = false;
+        }
+    
+        $vg->restore();
+    
+        if ($align === 'left') {
+            return $initialX + $totalWidth;
+        }
+    
+        return $x + $totalWidth;
     }
 
     public static function createAnimation(VGContext $vg) : ExampleAnimation {

@@ -32,6 +32,7 @@ class Playback {
         public float $soundY = 0.0,
         public float $volume = 1.0,
         public float $pitch = 1.0,
+        public bool $looping = false,
     ) {
         $this->soundTexture = createSoundTexture($sound, ExampleHelper::WIN_WIDTH - 200, 128);
 
@@ -269,6 +270,13 @@ while (!glfwWindowShouldClose($window))
         $vg->text($x, $y - 20, "Pitch");
         ExampleHelper::drawSlider($vg, $x, $y, $sliderWidth, $sliderHeight, 0.5, 2.0, $player->playback->pitch, '%.2f', 2, true);
         $player->playback->sound->setPitch($player->playback->pitch);
+
+        // apply looping
+        $player->playback->sound->setLoop($player->playback->looping);
+
+        // looping switch
+        $x += 100;
+        ExampleHelper::drawSwitch($vg, $x, $y, "Looping", $player->playback->looping, 'left');
 
         // button group at bottom
         $y = ExampleHelper::WIN_HEIGHT - 100;
