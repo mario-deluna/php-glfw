@@ -712,6 +712,9 @@ class ExampleHelper
         $vg->restore();
     }
 
+    /**
+     * Draws a button group with the given options.
+     */
     public static function drawButtonGroup(
         VGContext $vg, 
         float $x, 
@@ -830,7 +833,7 @@ class ExampleHelper
         $padding = 30;
         $innerOffset = 4;
         $lineHeight = $fontSize * 1.8;
-        $buttonId = sprintf('%s_%d_%d', $label, $x, $y, );
+        $buttonId = sprintf('%s_%d_%d', $label, $x, $y);
         $initalX = $x;
     
         $vg->save();
