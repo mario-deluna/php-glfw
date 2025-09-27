@@ -378,6 +378,20 @@ namespace GL\Audio
         public function setLoop(bool $loop) : void {}
 
         public function setPosition(\GL\Math\Vec3 $position) : void {}
+        public function setMinDistance(float $distance) : void {}
+        public function getMinDistance() : float {}
+        public function setMaxDistance(float $distance) : void {}
+        public function getMaxDistance() : float {}
+        
+        public function setDirection(\GL\Math\Vec3 $direction) : void {}
+        public function getDirection() : \GL\Math\Vec3 {}
+        public function setVelocity(\GL\Math\Vec3 $velocity) : void {}
+        public function getVelocity() : \GL\Math\Vec3 {}
+        
+        public function fadeIn(float $duration) : void {}
+        public function fadeOut(float $duration) : void {}
+        public function setFade(float $fromVolume, float $toVolume, float $duration) : void {}
+        public function getCurrentFadeVolume() : float {}
         
         public function readFrames(int $frames, \GL\Buffer\BufferInterface $buffer) : int {}
     }

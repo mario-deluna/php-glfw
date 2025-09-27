@@ -643,6 +643,159 @@ PHP_METHOD(GL_Audio_Sound, readFrames)
     RETURN_LONG(frames_read);
 }
 
+PHP_METHOD(GL_Audio_Sound, getPosition)
+{
+    phpglfw_audiosound_object *intern = phpglfw_audiosound_from_zobj_p(Z_OBJ_P(getThis()));
+
+    ma_vec3f position = ma_sound_get_position(intern->masound);
+    
+    object_init_ex(return_value, phpglfw_get_math_vec3_ce());
+    phpglfw_math_vec3_object *result_ptr = phpglfw_math_vec3_objectptr_from_zobj_p(Z_OBJ_P(return_value));
+    result_ptr->data[0] = position.x;
+    result_ptr->data[1] = position.y;
+    result_ptr->data[2] = position.z;
+}
+
+PHP_METHOD(GL_Audio_Sound, setMinDistance)
+{
+    double min_distance;
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "d", &min_distance) == FAILURE) {
+        RETURN_THROWS();
+    }
+
+    phpglfw_audiosound_object *intern = phpglfw_audiosound_from_zobj_p(Z_OBJ_P(getThis()));
+    ma_sound_set_min_distance(intern->masound, (float) min_distance);
+}
+
+PHP_METHOD(GL_Audio_Sound, getMinDistance)
+{
+    phpglfw_audiosound_object *intern = phpglfw_audiosound_from_zobj_p(Z_OBJ_P(getThis()));
+    float min_distance = ma_sound_get_min_distance(intern->masound);
+    RETURN_DOUBLE(min_distance);
+}
+
+PHP_METHOD(GL_Audio_Sound, setMaxDistance)
+{
+    double max_distance;
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "d", &max_distance) == FAILURE) {
+        RETURN_THROWS();
+    }
+
+    phpglfw_audiosound_object *intern = phpglfw_audiosound_from_zobj_p(Z_OBJ_P(getThis()));
+    ma_sound_set_max_distance(intern->masound, (float) max_distance);
+}
+
+PHP_METHOD(GL_Audio_Sound, getMaxDistance)
+{
+    phpglfw_audiosound_object *intern = phpglfw_audiosound_from_zobj_p(Z_OBJ_P(getThis()));
+    float max_distance = ma_sound_get_max_distance(intern->masound);
+    RETURN_DOUBLE(max_distance);
+}
+
+PHP_METHOD(GL_Audio_Sound, setDirection)
+{
+    zval *direction_zval;
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "O", &direction_zval, phpglfw_get_math_vec3_ce()) == FAILURE) {
+        RETURN_THROWS();
+    }
+
+    phpglfw_audiosound_object *intern = phpglfw_audiosound_from_zobj_p(Z_OBJ_P(getThis()));
+    phpglfw_math_vec3_object *direction_ptr = phpglfw_math_vec3_objectptr_from_zobj_p(Z_OBJ_P(direction_zval));
+
+    ma_sound_set_direction(intern->masound, direction_ptr->data[0], direction_ptr->data[1], direction_ptr->data[2]);
+}
+
+PHP_METHOD(GL_Audio_Sound, getDirection)
+{
+    phpglfw_audiosound_object *intern = phpglfw_audiosound_from_zobj_p(Z_OBJ_P(getThis()));
+
+    ma_vec3f direction = ma_sound_get_direction(intern->masound);
+    
+    object_init_ex(return_value, phpglfw_get_math_vec3_ce());
+    phpglfw_math_vec3_object *result_ptr = phpglfw_math_vec3_objectptr_from_zobj_p(Z_OBJ_P(return_value));
+    result_ptr->data[0] = direction.x;
+    result_ptr->data[1] = direction.y;
+    result_ptr->data[2] = direction.z;
+}
+
+PHP_METHOD(GL_Audio_Sound, setVelocity)
+{
+    zval *velocity_zval;
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "O", &velocity_zval, phpglfw_get_math_vec3_ce()) == FAILURE) {
+        RETURN_THROWS();
+    }
+
+    phpglfw_audiosound_object *intern = phpglfw_audiosound_from_zobj_p(Z_OBJ_P(getThis()));
+    phpglfw_math_vec3_object *velocity_ptr = phpglfw_math_vec3_objectptr_from_zobj_p(Z_OBJ_P(velocity_zval));
+
+    ma_sound_set_velocity(intern->masound, velocity_ptr->data[0], velocity_ptr->data[1], velocity_ptr->data[2]);
+}
+
+PHP_METHOD(GL_Audio_Sound, getVelocity)
+{
+    phpglfw_audiosound_object *intern = phpglfw_audiosound_from_zobj_p(Z_OBJ_P(getThis()));
+
+    ma_vec3f velocity = ma_sound_get_velocity(intern->masound);
+    
+    object_init_ex(return_value, phpglfw_get_math_vec3_ce());
+    phpglfw_math_vec3_object *result_ptr = phpglfw_math_vec3_objectptr_from_zobj_p(Z_OBJ_P(return_value));
+    result_ptr->data[0] = velocity.x;
+    result_ptr->data[1] = velocity.y;
+    result_ptr->data[2] = velocity.z;
+}
+
+PHP_METHOD(GL_Audio_Sound, fadeIn)
+{
+    double duration;
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "d", &duration) == FAILURE) {
+        RETURN_THROWS();
+    }
+
+    phpglfw_audiosound_object *intern = phpglfw_audiosound_from_zobj_p(Z_OBJ_P(getThis()));
+    
+    float currentvol = ma_sound_get_current_fade_volume(intern->masound);
+    
+    // for simplicity sake we use a float from php userland, so we convert seconds to milliseconds here
+    ma_uint64 duration_ms = (ma_uint64)(duration * 1000.0);
+    ma_sound_set_fade_in_milliseconds(intern->masound, currentvol, 1.0f, duration_ms);
+}
+
+PHP_METHOD(GL_Audio_Sound, fadeOut)
+{
+    double duration;
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "d", &duration) == FAILURE) {
+        RETURN_THROWS();
+    }
+
+    phpglfw_audiosound_object *intern = phpglfw_audiosound_from_zobj_p(Z_OBJ_P(getThis()));
+    
+    float currentvol = ma_sound_get_current_fade_volume(intern->masound);
+    
+    // same here, convert seconds to milliseconds
+    ma_uint64 duration_ms = (ma_uint64)(duration * 1000.0);
+    ma_sound_set_fade_in_milliseconds(intern->masound, currentvol, 0.0f, duration_ms);
+}
+
+PHP_METHOD(GL_Audio_Sound, setFade)
+{
+    double fromVolume, toVolume, duration;
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "ddd", &fromVolume, &toVolume, &duration) == FAILURE) {
+        RETURN_THROWS();
+    }
+
+    phpglfw_audiosound_object *intern = phpglfw_audiosound_from_zobj_p(Z_OBJ_P(getThis()));
+    
+    ma_uint64 duration_ms = (ma_uint64)(duration * 1000.0);
+    ma_sound_set_fade_in_milliseconds(intern->masound, (float)fromVolume, (float)toVolume, duration_ms);
+}
+
+PHP_METHOD(GL_Audio_Sound, getCurrentFadeVolume)
+{
+    phpglfw_audiosound_object *intern = phpglfw_audiosound_from_zobj_p(Z_OBJ_P(getThis()));
+    float fadeVolume = ma_sound_get_current_fade_volume(intern->masound);
+    RETURN_DOUBLE(fadeVolume);
+}
+
 /**
  * Module registration
  * 

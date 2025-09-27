@@ -184,7 +184,9 @@ while (!glfwWindowShouldClose($window))
         $vg->text($x, $y, sprintf("Progress: %.2f of %.2f (%.2f%%)", $playbackCursor, $playbackLength, $playbackProgress * 100));
         $y += 20;
         $vg->text($x, $y, sprintf("PCM: %d of %d", $player->playback->sound->getCursorPCM(), $player->playback->sound->getLengthPCM()));
-        $y += 30;
+        $y += 20;
+        $vg->text($x, $y, sprintf("Fade Volume: %.2f", $player->playback->sound->getCurrentFadeVolume()));
+        $y += 20;
 
         // render a little progress bar
         $progressBarHeight = 108;
@@ -298,6 +300,18 @@ while (!glfwWindowShouldClose($window))
 
         $x = ExampleHelper::drawButton($vg, $x, $y, 'Pause', function() use ($player) {
             $player->playback->sound->stop();
+        }, 'left');
+
+        $x += 20;
+
+        $x = ExampleHelper::drawButton($vg, $x, $y, 'Fade In', function() use ($player) {
+            $player->playback->sound->fadeIn(2.0);
+        }, 'left');
+
+        $x += 20;
+
+        $x = ExampleHelper::drawButton($vg, $x, $y, 'Fade Out', function() use ($player) {
+            $player->playback->sound->fadeOut(2.0);
         }, 'left');
 
         $x += 20;

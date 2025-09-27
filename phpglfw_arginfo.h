@@ -1,5 +1,5 @@
 /* This is a generated file, edit the .stub.php file instead.
- * Stub hash: e6e21cadb4615d1be30c4fe7613db55ea96a76bd */
+ * Stub hash: 2b2ff6d8896ce91850a3bef72a03a9570e50f83b */
 
 ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_glCullFace, 0, 1, IS_VOID, 0)
 	ZEND_ARG_TYPE_INFO(0, mode, IS_LONG, 0)
@@ -3523,6 +3523,40 @@ ZEND_END_ARG_INFO()
 
 #define arginfo_class_GL_Audio_Sound_setPosition arginfo_class_GL_Audio_Engine_setListenerPosition
 
+ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_class_GL_Audio_Sound_setMinDistance, 0, 1, IS_VOID, 0)
+	ZEND_ARG_TYPE_INFO(0, distance, IS_DOUBLE, 0)
+ZEND_END_ARG_INFO()
+
+#define arginfo_class_GL_Audio_Sound_getMinDistance arginfo_glfwGetTime
+
+#define arginfo_class_GL_Audio_Sound_setMaxDistance arginfo_class_GL_Audio_Sound_setMinDistance
+
+#define arginfo_class_GL_Audio_Sound_getMaxDistance arginfo_glfwGetTime
+
+#define arginfo_class_GL_Audio_Sound_setDirection arginfo_class_GL_Audio_Engine_setListenerDirection
+
+#define arginfo_class_GL_Audio_Sound_getDirection arginfo_class_GL_Math_Vec3_copy
+
+ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_class_GL_Audio_Sound_setVelocity, 0, 1, IS_VOID, 0)
+	ZEND_ARG_OBJ_INFO(0, velocity, GL\\Math\\Vec3, 0)
+ZEND_END_ARG_INFO()
+
+#define arginfo_class_GL_Audio_Sound_getVelocity arginfo_class_GL_Math_Vec3_copy
+
+ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_class_GL_Audio_Sound_fadeIn, 0, 1, IS_VOID, 0)
+	ZEND_ARG_TYPE_INFO(0, duration, IS_DOUBLE, 0)
+ZEND_END_ARG_INFO()
+
+#define arginfo_class_GL_Audio_Sound_fadeOut arginfo_class_GL_Audio_Sound_fadeIn
+
+ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_class_GL_Audio_Sound_setFade, 0, 3, IS_VOID, 0)
+	ZEND_ARG_TYPE_INFO(0, fromVolume, IS_DOUBLE, 0)
+	ZEND_ARG_TYPE_INFO(0, toVolume, IS_DOUBLE, 0)
+	ZEND_ARG_TYPE_INFO(0, duration, IS_DOUBLE, 0)
+ZEND_END_ARG_INFO()
+
+#define arginfo_class_GL_Audio_Sound_getCurrentFadeVolume arginfo_glfwGetTime
+
 ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_class_GL_Audio_Sound_readFrames, 0, 2, IS_LONG, 0)
 	ZEND_ARG_TYPE_INFO(0, frames, IS_LONG, 0)
 	ZEND_ARG_OBJ_INFO(0, buffer, GL\\Buffer\\BufferInterface, 0)
@@ -4446,6 +4480,18 @@ ZEND_METHOD(GL_Audio_Sound, setVolume);
 ZEND_METHOD(GL_Audio_Sound, setPitch);
 ZEND_METHOD(GL_Audio_Sound, setLoop);
 ZEND_METHOD(GL_Audio_Sound, setPosition);
+ZEND_METHOD(GL_Audio_Sound, setMinDistance);
+ZEND_METHOD(GL_Audio_Sound, getMinDistance);
+ZEND_METHOD(GL_Audio_Sound, setMaxDistance);
+ZEND_METHOD(GL_Audio_Sound, getMaxDistance);
+ZEND_METHOD(GL_Audio_Sound, setDirection);
+ZEND_METHOD(GL_Audio_Sound, getDirection);
+ZEND_METHOD(GL_Audio_Sound, setVelocity);
+ZEND_METHOD(GL_Audio_Sound, getVelocity);
+ZEND_METHOD(GL_Audio_Sound, fadeIn);
+ZEND_METHOD(GL_Audio_Sound, fadeOut);
+ZEND_METHOD(GL_Audio_Sound, setFade);
+ZEND_METHOD(GL_Audio_Sound, getCurrentFadeVolume);
 ZEND_METHOD(GL_Audio_Sound, readFrames);
 
 
@@ -5527,6 +5573,18 @@ static const zend_function_entry class_GL_Audio_Sound_methods[] = {
 	ZEND_ME(GL_Audio_Sound, setPitch, arginfo_class_GL_Audio_Sound_setPitch, ZEND_ACC_PUBLIC)
 	ZEND_ME(GL_Audio_Sound, setLoop, arginfo_class_GL_Audio_Sound_setLoop, ZEND_ACC_PUBLIC)
 	ZEND_ME(GL_Audio_Sound, setPosition, arginfo_class_GL_Audio_Sound_setPosition, ZEND_ACC_PUBLIC)
+	ZEND_ME(GL_Audio_Sound, setMinDistance, arginfo_class_GL_Audio_Sound_setMinDistance, ZEND_ACC_PUBLIC)
+	ZEND_ME(GL_Audio_Sound, getMinDistance, arginfo_class_GL_Audio_Sound_getMinDistance, ZEND_ACC_PUBLIC)
+	ZEND_ME(GL_Audio_Sound, setMaxDistance, arginfo_class_GL_Audio_Sound_setMaxDistance, ZEND_ACC_PUBLIC)
+	ZEND_ME(GL_Audio_Sound, getMaxDistance, arginfo_class_GL_Audio_Sound_getMaxDistance, ZEND_ACC_PUBLIC)
+	ZEND_ME(GL_Audio_Sound, setDirection, arginfo_class_GL_Audio_Sound_setDirection, ZEND_ACC_PUBLIC)
+	ZEND_ME(GL_Audio_Sound, getDirection, arginfo_class_GL_Audio_Sound_getDirection, ZEND_ACC_PUBLIC)
+	ZEND_ME(GL_Audio_Sound, setVelocity, arginfo_class_GL_Audio_Sound_setVelocity, ZEND_ACC_PUBLIC)
+	ZEND_ME(GL_Audio_Sound, getVelocity, arginfo_class_GL_Audio_Sound_getVelocity, ZEND_ACC_PUBLIC)
+	ZEND_ME(GL_Audio_Sound, fadeIn, arginfo_class_GL_Audio_Sound_fadeIn, ZEND_ACC_PUBLIC)
+	ZEND_ME(GL_Audio_Sound, fadeOut, arginfo_class_GL_Audio_Sound_fadeOut, ZEND_ACC_PUBLIC)
+	ZEND_ME(GL_Audio_Sound, setFade, arginfo_class_GL_Audio_Sound_setFade, ZEND_ACC_PUBLIC)
+	ZEND_ME(GL_Audio_Sound, getCurrentFadeVolume, arginfo_class_GL_Audio_Sound_getCurrentFadeVolume, ZEND_ACC_PUBLIC)
 	ZEND_ME(GL_Audio_Sound, readFrames, arginfo_class_GL_Audio_Sound_readFrames, ZEND_ACC_PUBLIC)
 	ZEND_FE_END
 };

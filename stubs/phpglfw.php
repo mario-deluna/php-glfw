@@ -2714,6 +2714,106 @@ namespace GL\Audio
          * @return void
          */
         public function setPosition(\GL\Math\Vec3 $position) : void {}
+
+        /**
+         * Gets the current 3D position of the sound.
+         * 
+         * @return Vec3 The current position vector.
+         */
+        public function getPosition() : \GL\Math\Vec3 {}
+
+        /**
+         * Sets the minimum distance for 3D audio attenuation.
+         * 
+         * @param float $distance The minimum distance.
+         * @return void
+         */
+        public function setMinDistance(float $distance) : void {}
+
+        /**
+         * Gets the minimum distance for 3D audio attenuation.
+         * 
+         * @return float The minimum distance.
+         */
+        public function getMinDistance() : float {}
+
+        /**
+         * Sets the maximum distance for 3D audio rolloff.
+         * 
+         * @param float $distance The maximum distance.
+         * @return void
+         */
+        public function setMaxDistance(float $distance) : void {}
+
+        /**
+         * Gets the maximum distance for 3D audio rolloff.
+         * 
+         * @return float The maximum distance.
+         */
+        public function getMaxDistance() : float {}
+
+        /**
+         * Sets the direction of the sound for directional audio effects.
+         * 
+         * @param Vec3 $direction The direction vector.
+         * @return void
+         */
+        public function setDirection(\GL\Math\Vec3 $direction) : void {}
+
+        /**
+         * Gets the direction of the sound.
+         * 
+         * @return Vec3 The direction vector.
+         */
+        public function getDirection() : \GL\Math\Vec3 {}
+
+        /**
+         * Sets the velocity of the sound for Doppler effects.
+         * 
+         * @param Vec3 $velocity The velocity vector.
+         * @return void
+         */
+        public function setVelocity(\GL\Math\Vec3 $velocity) : void {}
+
+        /**
+         * Gets the velocity of the sound.
+         * 
+         * @return Vec3 The velocity vector.
+         */
+        public function getVelocity() : \GL\Math\Vec3 {}
+
+        /**
+         * Fades the sound in from 0 to full volume over the specified duration.
+         * 
+         * @param float $duration The fade duration in seconds.
+         * @return void
+         */
+        public function fadeIn(float $duration) : void {}
+
+        /**
+         * Fades the sound out from current volume to 0 over the specified duration.
+         * 
+         * @param float $duration The fade duration in seconds.
+         * @return void
+         */
+        public function fadeOut(float $duration) : void {}
+
+        /**
+         * Sets a custom fade from one volume to another over the specified duration.
+         * 
+         * @param float $fromVolume The starting volume (0.0 to 1.0).
+         * @param float $toVolume The target volume (0.0 to 1.0).
+         * @param float $duration The fade duration in seconds.
+         * @return void
+         */
+        public function setFade(float $fromVolume, float $toVolume, float $duration) : void {}
+
+        /**
+         * Gets the current fade volume.
+         * 
+         * @return float The current fade volume.
+         */
+        public function getCurrentFadeVolume() : float {}
     }
 }
 
