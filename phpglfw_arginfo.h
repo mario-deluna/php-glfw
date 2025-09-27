@@ -1,5 +1,5 @@
 /* This is a generated file, edit the .stub.php file instead.
- * Stub hash: f649d44e32124f1f43fd18e114208b42032cb088 */
+ * Stub hash: e6e21cadb4615d1be30c4fe7613db55ea96a76bd */
 
 ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_glCullFace, 0, 1, IS_VOID, 0)
 	ZEND_ARG_TYPE_INFO(0, mode, IS_LONG, 0)
@@ -3448,8 +3448,30 @@ ZEND_BEGIN_ARG_INFO_EX(arginfo_class_GL_Audio_Engine___construct, 0, 0, 0)
 	ZEND_ARG_TYPE_INFO_WITH_DEFAULT_VALUE(0, options, IS_ARRAY, 0, "[]")
 ZEND_END_ARG_INFO()
 
+#define arginfo_class_GL_Audio_Engine_start arginfo_glFinish
+
+#define arginfo_class_GL_Audio_Engine_stop arginfo_glFinish
+
 ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(arginfo_class_GL_Audio_Engine_soundFromDisk, 0, 1, GL\\Audio\\Sound, 0)
 	ZEND_ARG_TYPE_INFO(0, path, IS_STRING, 0)
+ZEND_END_ARG_INFO()
+
+ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_class_GL_Audio_Engine_setMasterVolume, 0, 1, IS_VOID, 0)
+	ZEND_ARG_TYPE_INFO(0, volume, IS_DOUBLE, 0)
+ZEND_END_ARG_INFO()
+
+#define arginfo_class_GL_Audio_Engine_getMasterVolume arginfo_glfwGetTime
+
+ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_class_GL_Audio_Engine_setListenerPosition, 0, 1, IS_VOID, 0)
+	ZEND_ARG_OBJ_INFO(0, position, GL\\Math\\Vec3, 0)
+ZEND_END_ARG_INFO()
+
+ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_class_GL_Audio_Engine_setListenerDirection, 0, 1, IS_VOID, 0)
+	ZEND_ARG_OBJ_INFO(0, direction, GL\\Math\\Vec3, 0)
+ZEND_END_ARG_INFO()
+
+ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_class_GL_Audio_Engine_setListenerWorldUp, 0, 1, IS_VOID, 0)
+	ZEND_ARG_OBJ_INFO(0, worldUp, GL\\Math\\Vec3, 0)
 ZEND_END_ARG_INFO()
 
 #define arginfo_class_GL_Audio_Sound___construct arginfo_class_GL_Geometry_ObjFileParser_Material___construct
@@ -3489,9 +3511,7 @@ ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_class_GL_Audio_Sound_seekToPCM, 
 	ZEND_ARG_TYPE_INFO(0, cursor, IS_LONG, 0)
 ZEND_END_ARG_INFO()
 
-ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_class_GL_Audio_Sound_setVolume, 0, 1, IS_VOID, 0)
-	ZEND_ARG_TYPE_INFO(0, volume, IS_DOUBLE, 0)
-ZEND_END_ARG_INFO()
+#define arginfo_class_GL_Audio_Sound_setVolume arginfo_class_GL_Audio_Engine_setMasterVolume
 
 ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_class_GL_Audio_Sound_setPitch, 0, 1, IS_VOID, 0)
 	ZEND_ARG_TYPE_INFO(0, pitch, IS_DOUBLE, 0)
@@ -3501,11 +3521,7 @@ ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_class_GL_Audio_Sound_setLoop, 0,
 	ZEND_ARG_TYPE_INFO(0, loop, _IS_BOOL, 0)
 ZEND_END_ARG_INFO()
 
-ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_class_GL_Audio_Sound_setPosition, 0, 3, IS_VOID, 0)
-	ZEND_ARG_TYPE_INFO(0, x, IS_DOUBLE, 0)
-	ZEND_ARG_TYPE_INFO(0, y, IS_DOUBLE, 0)
-	ZEND_ARG_TYPE_INFO(0, z, IS_DOUBLE, 0)
-ZEND_END_ARG_INFO()
+#define arginfo_class_GL_Audio_Sound_setPosition arginfo_class_GL_Audio_Engine_setListenerPosition
 
 ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_class_GL_Audio_Sound_readFrames, 0, 2, IS_LONG, 0)
 	ZEND_ARG_TYPE_INFO(0, frames, IS_LONG, 0)
@@ -4404,7 +4420,14 @@ ZEND_METHOD(GL_VectorGraphics_VGContext, textMetrics);
 ZEND_METHOD(GL_VectorGraphics_VGContext, deleteInternal);
 ZEND_METHOD(GL_VectorGraphics_VGContext, debugDumpPathCache);
 ZEND_METHOD(GL_Audio_Engine, __construct);
+ZEND_METHOD(GL_Audio_Engine, start);
+ZEND_METHOD(GL_Audio_Engine, stop);
 ZEND_METHOD(GL_Audio_Engine, soundFromDisk);
+ZEND_METHOD(GL_Audio_Engine, setMasterVolume);
+ZEND_METHOD(GL_Audio_Engine, getMasterVolume);
+ZEND_METHOD(GL_Audio_Engine, setListenerPosition);
+ZEND_METHOD(GL_Audio_Engine, setListenerDirection);
+ZEND_METHOD(GL_Audio_Engine, setListenerWorldUp);
 ZEND_METHOD(GL_Audio_Sound, __construct);
 ZEND_METHOD(GL_Audio_Sound, getSampleRate);
 ZEND_METHOD(GL_Audio_Sound, getChannels);
@@ -5473,7 +5496,14 @@ static const zend_function_entry class_GL_VectorGraphics_VGContext_methods[] = {
 
 static const zend_function_entry class_GL_Audio_Engine_methods[] = {
 	ZEND_ME(GL_Audio_Engine, __construct, arginfo_class_GL_Audio_Engine___construct, ZEND_ACC_PUBLIC)
+	ZEND_ME(GL_Audio_Engine, start, arginfo_class_GL_Audio_Engine_start, ZEND_ACC_PUBLIC)
+	ZEND_ME(GL_Audio_Engine, stop, arginfo_class_GL_Audio_Engine_stop, ZEND_ACC_PUBLIC)
 	ZEND_ME(GL_Audio_Engine, soundFromDisk, arginfo_class_GL_Audio_Engine_soundFromDisk, ZEND_ACC_PUBLIC)
+	ZEND_ME(GL_Audio_Engine, setMasterVolume, arginfo_class_GL_Audio_Engine_setMasterVolume, ZEND_ACC_PUBLIC)
+	ZEND_ME(GL_Audio_Engine, getMasterVolume, arginfo_class_GL_Audio_Engine_getMasterVolume, ZEND_ACC_PUBLIC)
+	ZEND_ME(GL_Audio_Engine, setListenerPosition, arginfo_class_GL_Audio_Engine_setListenerPosition, ZEND_ACC_PUBLIC)
+	ZEND_ME(GL_Audio_Engine, setListenerDirection, arginfo_class_GL_Audio_Engine_setListenerDirection, ZEND_ACC_PUBLIC)
+	ZEND_ME(GL_Audio_Engine, setListenerWorldUp, arginfo_class_GL_Audio_Engine_setListenerWorldUp, ZEND_ACC_PUBLIC)
 	ZEND_FE_END
 };
 

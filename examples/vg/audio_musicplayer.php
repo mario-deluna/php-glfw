@@ -9,6 +9,7 @@ use GL\Buffer\FloatBuffer;
 use GL\Buffer\ShortBuffer;
 use GL\Buffer\UByteBuffer;
 use GL\Geometry\ObjFileParser\Texture;
+use GL\Math\Vec3;
 use GL\Texture\Texture2D;
 use GL\VectorGraphics\{VGAlign, VGContext, VGColor, VGImage};
 
@@ -18,7 +19,15 @@ $window = ExampleHelper::begin();
 $vg = new VGContext(VGContext::ANTIALIAS);
 
 // init audio engine
-$audioEngine = new \GL\Audio\Engine();
+$audioEngine = new \GL\Audio\Engine([
+    // 'noAutoStart' => true,
+]);
+
+// set up 3D audio listener for proper positional audio
+// listener looking forward (-Z), with Y up
+$audioEngine->setListenerPosition(new Vec3(0, 0, 0));
+$audioEngine->setListenerDirection(new Vec3(0, 0, -1));
+$audioEngine->setListenerWorldUp(new Vec3(0, 1, 0));
 
 // current sound
 class Playback {
@@ -28,8 +37,7 @@ class Playback {
     public function __construct(
         public Sound $sound,
         public string $soundFile,
-        public float $soundX = 0.0,
-        public float $soundY = 0.0,
+        public Vec3 $soundPos = new Vec3(0.0, 0.0, 0.0),
         public float $volume = 1.0,
         public float $pitch = 1.0,
         public bool $looping = false,
@@ -239,19 +247,19 @@ while (!glfwWindowShouldClose($window))
             $cursorY;
             glfwGetCursorPos($window, $cursorX, $cursorY);
             if ($cursorX >= $x && $cursorX <= $x + $positionBoxSize && $cursorY >= $y && $cursorY <= $y + $positionBoxSize) {
-                $player->playback->soundX = ($cursorX - $x) / $positionBoxSize - 0.5;
-                $player->playback->soundY = ($cursorY - $y) / $positionBoxSize - 0.5;
+                $player->playback->soundPos->x = ($cursorX - $x) / $positionBoxSize - 0.5;
+                $player->playback->soundPos->y = ($cursorY - $y) / $positionBoxSize - 0.5;
             }
         }
 
         // render the sound position as a red dot
         $vg->fillColor(VGColor::red());
         $vg->beginPath();
-        $vg->circle($x + $positionBoxSize * ($player->playback->soundX + 0.5), $y + $positionBoxSize * ($player->playback->soundY + 0.5), 5);
+        $vg->circle($x + $positionBoxSize * ($player->playback->soundPos->x + 0.5), $y + $positionBoxSize * ($player->playback->soundPos->y + 0.5), 5);
         $vg->fill();
 
         // apply the sound position
-        $player->playback->sound->setPosition($player->playback->soundX, $player->playback->soundY, 0);
+        $player->playback->sound->setPosition($player->playback->soundPos * new Vec3(1.0, 5.0, 1.0)); // scale Y for better audibility
 
         // sliders for other settings
         $sliderHeight = 200;

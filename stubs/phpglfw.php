@@ -2530,6 +2530,193 @@ namespace GL
     }
 }
 
+namespace GL\Audio
+{
+    /**
+     * The Engine class is the main audio engine that manages all audio playback.
+     * It provides methods for loading sounds, controlling master volume, and 3D audio positioning.
+     */
+    class Engine
+    {
+        /**
+         * Creates a new audio engine instance.
+         * 
+         * @param array $options Optional configuration array with the following keys:
+         *   - listenerCount: int - Number of listeners (1 to 4, default is system dependent)
+         *   - channels: int - Number of output channels (0 = use device default)
+         *   - sampleRate: int - Sample rate in Hz (0 = use device default)
+         *   - periodSizeInFrames: int - Period size in frames for low-latency (0 = use default)
+         *   - periodSizeInMilliseconds: int - Period size in milliseconds (used if periodSizeInFrames is 0)
+         *   - gainSmoothTimeInFrames: int - Smoothing time for gain changes in frames
+         *   - gainSmoothTimeInMilliseconds: int - Smoothing time for gain changes in ms
+         *   - defaultVolumeSmoothTimeInPCMFrames: int - Default volume smoothing time
+         *   - noAutoStart: bool - Don't start the engine automatically (false by default)
+         *   - monoExpansionMode: int - How to expand mono to multi-channel (use GL_MA_MONO_EXPANSION_MODE_* constants)
+         */
+        public function __construct(array $options = []) {}
+
+        /**
+         * Starts the audio engine.
+         * 
+         * @return void
+         * @throws Error if the engine fails to start
+         */
+        public function start() : void {}
+
+        /**
+         * Stops the audio engine.
+         * 
+         * @return void
+         * @throws Error if the engine fails to stop
+         */
+        public function stop() : void {}
+
+        /**
+         * Loads a sound from a file path.
+         * 
+         * @param string $filePath The path to the audio file to load.
+         * @return Sound The loaded sound object.
+         */
+        public function load(string $filePath) : Sound {}
+        
+        /**
+         * Loads a sound from a file path.
+         * Alias for load() method.
+         * 
+         * @param string $filePath The path to the audio file to load.
+         * @return Sound The loaded sound object.
+         */
+        public function soundFromDisk(string $filePath) : Sound {}
+
+        /**
+         * Sets the master volume for all sounds.
+         * 
+         * @param float $volume The master volume level (0.0 to 1.0).
+         * @return void
+         */
+        public function setMasterVolume(float $volume) : void {}
+
+        /**
+         * Gets the current master volume.
+         * 
+         * @return float The current master volume level.
+         */
+        public function getMasterVolume() : float {}
+
+        /**
+         * Sets the listener position for 3D audio.
+         * 
+         * @param Vec3 $position The position vector of the listener.
+         * @return void
+         */
+        public function setListenerPosition(\GL\Math\Vec3 $position) : void {}
+
+        /**
+         * Sets the listener direction for 3D audio.
+         * 
+         * @param Vec3 $direction The direction vector the listener is facing.
+         * @return void
+         */
+        public function setListenerDirection(\GL\Math\Vec3 $direction) : void {}
+
+        /**
+         * Sets the listener world up vector for 3D audio.
+         * 
+         * @param Vec3 $worldUp The up vector defining the listener's orientation.
+         * @return void
+         */
+        public function setListenerWorldUp(\GL\Math\Vec3 $worldUp) : void {}
+    }
+
+    /**
+     * The Sound class represents an individual audio sound that can be played, paused, and controlled.
+     */
+    class Sound
+    {
+        /**
+         * Plays the sound.
+         * 
+         * @return void
+         */
+        public function play() : void {}
+
+        /**
+         * Stops the sound and resets it to the beginning.
+         * 
+         * @return void
+         */
+        public function stop() : void {}
+
+        /**
+         * Sets the volume of the sound.
+         * 
+         * @param float $volume The volume level (0.0 to 1.0).
+         * @return void
+         */
+        public function setVolume(float $volume) : void {}
+
+        /**
+         * Gets the current volume of the sound.
+         * 
+         * @return float The current volume level.
+         */
+        public function getVolume() : float {}
+
+        /**
+         * Sets the pitch of the sound.
+         * 
+         * @param float $pitch The pitch multiplier (1.0 = normal pitch).
+         * @return void
+         */
+        public function setPitch(float $pitch) : void {}
+
+        /**
+         * Gets the current pitch of the sound.
+         * 
+         * @return float The current pitch multiplier.
+         */
+        public function getPitch() : float {}
+
+        /**
+         * Sets whether the sound should loop.
+         * 
+         * @param bool $loop Whether to loop the sound.
+         * @return void
+         */
+        public function setLoop(bool $loop) : void {}
+
+        /**
+         * Gets whether the sound is set to loop.
+         * 
+         * @return bool Whether the sound is set to loop.
+         */
+        public function getLoop() : bool {}
+
+        /**
+         * Sets the pan (stereo positioning) of the sound.
+         * 
+         * @param float $pan The pan value (-1.0 = left, 0.0 = center, 1.0 = right).
+         * @return void
+         */
+        public function setPan(float $pan) : void {}
+
+        /**
+         * Gets the current pan of the sound.
+         * 
+         * @return float The current pan value.
+         */
+        public function getPan() : float {}
+
+        /**
+         * Sets the 3D position of the sound in world space.
+         * 
+         * @param Vec3 $position The position vector (x, y, z).
+         * @return void
+         */
+        public function setPosition(\GL\Math\Vec3 $position) : void {}
+    }
+}
+
 namespace GL\VectorGraphics
 {
     class VGColor {

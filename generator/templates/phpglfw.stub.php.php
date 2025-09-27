@@ -336,7 +336,16 @@ namespace GL\Audio
     class Engine {
         public function __construct(array $options = []) {}
 
+        public function start() : void {}
+        public function stop() : void {}
+
         public function soundFromDisk(string $path) : \GL\Audio\Sound {}
+        
+        public function setMasterVolume(float $volume) : void {}
+        public function getMasterVolume() : float {}
+        public function setListenerPosition(\GL\Math\Vec3 $position) : void {}
+        public function setListenerDirection(\GL\Math\Vec3 $direction) : void {}
+        public function setListenerWorldUp(\GL\Math\Vec3 $worldUp) : void {}
     }
     
     class Sound {
@@ -368,7 +377,7 @@ namespace GL\Audio
         public function setPitch(float $pitch) : void {}    
         public function setLoop(bool $loop) : void {}
 
-        public function setPosition(float $x, float $y, float $z) : void {}
+        public function setPosition(\GL\Math\Vec3 $position) : void {}
         
         public function readFrames(int $frames, \GL\Buffer\BufferInterface $buffer) : int {}
     }

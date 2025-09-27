@@ -26,6 +26,7 @@
 #include "phpglfw_audio.h"
 #include "phpglfw_arginfo.h"
 #include "phpglfw_buffer.h"
+#include "phpglfw_math.h"
 
 #include "php.h"
 #include "Zend/zend_smart_str.h"
@@ -93,12 +94,106 @@ static void phpglfw_audioengine_free_handler(zend_object *object)
 
 PHP_METHOD(GL_Audio_Engine, __construct)
 {
+    zval *options = NULL;
+    if (zend_parse_parameters(ZEND_NUM_ARGS(), "|a", &options) == FAILURE) {
+        RETURN_THROWS();
+    }
+
     phpglfw_audioengine_object *intern = phpglfw_audioengine_from_zobj_p(Z_OBJ_P(getThis()));
 
-    ma_engine_config maengine_conf;
-    maengine_conf.periodSizeInFrames = 4096;
+    // initialize the engine configuration with defaults
+    ma_engine_config maengine_conf = ma_engine_config_init();
 
-    ma_result result = ma_engine_init(NULL, intern->maengine);
+    // parse the options array if provided
+    if (options != NULL && Z_TYPE_P(options) == IS_ARRAY) {
+        zval *val;
+
+        // listenerCount
+        if ((val = zend_hash_str_find(Z_ARRVAL_P(options), "listenerCount", sizeof("listenerCount") - 1)) != NULL) {
+            if (Z_TYPE_P(val) == IS_LONG) {
+                ma_uint32 count = (ma_uint32)Z_LVAL_P(val);
+                if (count >= 1 && count <= MA_ENGINE_MAX_LISTENERS) {
+                    maengine_conf.listenerCount = count;
+                } else {
+                    zend_throw_error(NULL, "listenerCount must be between 1 and %d", MA_ENGINE_MAX_LISTENERS);
+                    RETURN_THROWS();
+                }
+            }
+        }
+
+        // channels
+        if ((val = zend_hash_str_find(Z_ARRVAL_P(options), "channels", sizeof("channels") - 1)) != NULL) {
+            if (Z_TYPE_P(val) == IS_LONG) {
+                maengine_conf.channels = (ma_uint32)Z_LVAL_P(val);
+            }
+        }
+
+        // sampleRate
+        if ((val = zend_hash_str_find(Z_ARRVAL_P(options), "sampleRate", sizeof("sampleRate") - 1)) != NULL) {
+            if (Z_TYPE_P(val) == IS_LONG) {
+                maengine_conf.sampleRate = (ma_uint32)Z_LVAL_P(val);
+            }
+        }
+
+        // periodSizeInFrames
+        if ((val = zend_hash_str_find(Z_ARRVAL_P(options), "periodSizeInFrames", sizeof("periodSizeInFrames") - 1)) != NULL) {
+            if (Z_TYPE_P(val) == IS_LONG) {
+                maengine_conf.periodSizeInFrames = (ma_uint32)Z_LVAL_P(val);
+            }
+        }
+
+        // periodSizeInMilliseconds
+        if ((val = zend_hash_str_find(Z_ARRVAL_P(options), "periodSizeInMilliseconds", sizeof("periodSizeInMilliseconds") - 1)) != NULL) {
+            if (Z_TYPE_P(val) == IS_LONG) {
+                maengine_conf.periodSizeInMilliseconds = (ma_uint32)Z_LVAL_P(val);
+            }
+        }
+
+        // gainSmoothTimeInFrames
+        if ((val = zend_hash_str_find(Z_ARRVAL_P(options), "gainSmoothTimeInFrames", sizeof("gainSmoothTimeInFrames") - 1)) != NULL) {
+            if (Z_TYPE_P(val) == IS_LONG) {
+                maengine_conf.gainSmoothTimeInFrames = (ma_uint32)Z_LVAL_P(val);
+            }
+        }
+
+        // gainSmoothTimeInMilliseconds
+        if ((val = zend_hash_str_find(Z_ARRVAL_P(options), "gainSmoothTimeInMilliseconds", sizeof("gainSmoothTimeInMilliseconds") - 1)) != NULL) {
+            if (Z_TYPE_P(val) == IS_LONG) {
+                maengine_conf.gainSmoothTimeInMilliseconds = (ma_uint32)Z_LVAL_P(val);
+            }
+        }
+
+        // defaultVolumeSmoothTimeInPCMFrames
+        if ((val = zend_hash_str_find(Z_ARRVAL_P(options), "defaultVolumeSmoothTimeInPCMFrames", sizeof("defaultVolumeSmoothTimeInPCMFrames") - 1)) != NULL) {
+            if (Z_TYPE_P(val) == IS_LONG) {
+                maengine_conf.defaultVolumeSmoothTimeInPCMFrames = (ma_uint32)Z_LVAL_P(val);
+            }
+        }
+
+        // noAutoStart
+        if ((val = zend_hash_str_find(Z_ARRVAL_P(options), "noAutoStart", sizeof("noAutoStart") - 1)) != NULL) {
+            if (Z_TYPE_P(val) == IS_TRUE) {
+                maengine_conf.noAutoStart = MA_TRUE;
+            } else if (Z_TYPE_P(val) == IS_FALSE) {
+                maengine_conf.noAutoStart = MA_FALSE;
+            }
+        }
+
+        // monoExpansionMode
+        if ((val = zend_hash_str_find(Z_ARRVAL_P(options), "monoExpansionMode", sizeof("monoExpansionMode") - 1)) != NULL) {
+            if (Z_TYPE_P(val) == IS_LONG) {
+                ma_uint32 mode = (ma_uint32)Z_LVAL_P(val);
+                if (mode <= ma_mono_expansion_mode_stereo_only) {
+                    maengine_conf.monoExpansionMode = (ma_mono_expansion_mode)mode;
+                } else {
+                    zend_throw_error(NULL, "Invalid monoExpansionMode value. Use GL_MA_MONO_EXPANSION_MODE_* constants");
+                    RETURN_THROWS();
+                }
+            }
+        }
+    }
+
+    ma_result result = ma_engine_init(&maengine_conf, intern->maengine);
     if (result != MA_SUCCESS) {
         zend_throw_error(NULL, "GL\\Audio\\Engine Failed to initialize audio engine");
         RETURN_THROWS();
@@ -142,6 +237,87 @@ PHP_METHOD(GL_Audio_Engine, soundFromDisk)
     zend_update_property_long(phpglfw_audiosound_ce, Z_OBJ_P(return_value), "lengthPCM", sizeof("lengthPCM") - 1, pcm_length);
 }
 
+PHP_METHOD(GL_Audio_Engine, setMasterVolume)
+{
+    double volume;
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "d", &volume) == FAILURE) {
+        RETURN_THROWS();
+    }
+
+    phpglfw_audioengine_object *intern = phpglfw_audioengine_from_zobj_p(Z_OBJ_P(getThis()));
+
+    ma_engine_set_volume(intern->maengine, (float) volume);
+}
+
+PHP_METHOD(GL_Audio_Engine, getMasterVolume)
+{
+    phpglfw_audioengine_object *intern = phpglfw_audioengine_from_zobj_p(Z_OBJ_P(getThis()));
+
+    float volume = ma_engine_get_volume(intern->maengine);
+    RETURN_DOUBLE(volume);
+}
+
+PHP_METHOD(GL_Audio_Engine, start)
+{
+    phpglfw_audioengine_object *intern = phpglfw_audioengine_from_zobj_p(Z_OBJ_P(getThis()));
+
+    ma_result result = ma_engine_start(intern->maengine);
+    if (result != MA_SUCCESS) {
+        zend_throw_error(NULL, "GL\\Audio\\Engine Failed to start audio engine");
+        RETURN_THROWS();
+    }
+}
+
+PHP_METHOD(GL_Audio_Engine, stop)
+{
+    phpglfw_audioengine_object *intern = phpglfw_audioengine_from_zobj_p(Z_OBJ_P(getThis()));
+
+    ma_result result = ma_engine_stop(intern->maengine);
+    if (result != MA_SUCCESS) {
+        zend_throw_error(NULL, "GL\\Audio\\Engine Failed to stop audio engine");
+        RETURN_THROWS();
+    }
+}
+
+PHP_METHOD(GL_Audio_Engine, setListenerPosition)
+{
+    zval *position_zval;
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "O", &position_zval, phpglfw_get_math_vec3_ce()) == FAILURE) {
+        RETURN_THROWS();
+    }
+
+    phpglfw_audioengine_object *intern = phpglfw_audioengine_from_zobj_p(Z_OBJ_P(getThis()));
+    phpglfw_math_vec3_object *position_ptr = phpglfw_math_vec3_objectptr_from_zobj_p(Z_OBJ_P(position_zval));
+
+    ma_engine_listener_set_position(intern->maengine, 0, position_ptr->data[0], position_ptr->data[1], position_ptr->data[2]);
+}
+
+PHP_METHOD(GL_Audio_Engine, setListenerDirection)
+{
+    zval *direction_zval;
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "O", &direction_zval, phpglfw_get_math_vec3_ce()) == FAILURE) {
+        RETURN_THROWS();
+    }
+
+    phpglfw_audioengine_object *intern = phpglfw_audioengine_from_zobj_p(Z_OBJ_P(getThis()));
+    phpglfw_math_vec3_object *direction_ptr = phpglfw_math_vec3_objectptr_from_zobj_p(Z_OBJ_P(direction_zval));
+
+    ma_engine_listener_set_direction(intern->maengine, 0, direction_ptr->data[0], direction_ptr->data[1], direction_ptr->data[2]);
+}
+
+PHP_METHOD(GL_Audio_Engine, setListenerWorldUp)
+{
+    zval *worldUp_zval;
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "O", &worldUp_zval, phpglfw_get_math_vec3_ce()) == FAILURE) {
+        RETURN_THROWS();
+    }
+
+    phpglfw_audioengine_object *intern = phpglfw_audioengine_from_zobj_p(Z_OBJ_P(getThis()));
+    phpglfw_math_vec3_object *worldUp_ptr = phpglfw_math_vec3_objectptr_from_zobj_p(Z_OBJ_P(worldUp_zval));
+
+    ma_engine_listener_set_world_up(intern->maengine, 0, worldUp_ptr->data[0], worldUp_ptr->data[1], worldUp_ptr->data[2]);
+}
+
 /**
  * Audio\Sound
  * 
@@ -171,30 +347,6 @@ static void phpglfw_audiosound_free_handler(zend_object *object)
     }
 
     zend_object_std_dtor(&intern->std);
-}
-
-static HashTable *phpglfw_audiosound_debug_info_handler(zend_object *object, int *is_temp)
-{
-    phpglfw_audiosound_object *obj_ptr = phpglfw_audiosound_from_zobj_p(object);
-    zval zv;
-    HashTable *ht;
-
-    ht = zend_new_array(2);
-    *is_temp = 1;
-
-    // fetch data from the sound object
-    ma_uint32 channels;
-    ma_uint32 sample_rate;
-    ma_sound_get_data_format(obj_ptr->masound, NULL, &channels, &sample_rate, NULL, 0);
-
-    // add the data to the array
-    ZVAL_LONG(&zv, channels);
-    zend_hash_str_update(ht, "channels", sizeof("channels") - 1, &zv);
-
-    ZVAL_LONG(&zv, sample_rate);
-    zend_hash_str_update(ht, "sample_rate", sizeof("sample_rate") - 1, &zv);
-
-    return ht;
 }
 
 #define PHPGLFW_AUDIO_SOUND_PROP_GETTER(name, getter) \
@@ -360,14 +512,59 @@ PHP_METHOD(GL_Audio_Sound, setLoop)
 
 PHP_METHOD(GL_Audio_Sound, setPosition)
 {
-    double x, y, z;
-    if (zend_parse_parameters(ZEND_NUM_ARGS() , "ddd", &x, &y, &z) == FAILURE) {
+    zval *position_zval;
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "O", &position_zval, phpglfw_get_math_vec3_ce()) == FAILURE) {
+        RETURN_THROWS();
+    }
+
+    phpglfw_audiosound_object *intern = phpglfw_audiosound_from_zobj_p(Z_OBJ_P(getThis()));
+    phpglfw_math_vec3_object *position_ptr = phpglfw_math_vec3_objectptr_from_zobj_p(Z_OBJ_P(position_zval));
+
+    ma_sound_set_position(intern->masound, position_ptr->data[0], position_ptr->data[1], position_ptr->data[2]);
+}
+
+PHP_METHOD(GL_Audio_Sound, getVolume)
+{
+    phpglfw_audiosound_object *intern = phpglfw_audiosound_from_zobj_p(Z_OBJ_P(getThis()));
+
+    float volume = ma_sound_get_volume(intern->masound);
+    RETURN_DOUBLE(volume);
+}
+
+PHP_METHOD(GL_Audio_Sound, getPitch)
+{
+    phpglfw_audiosound_object *intern = phpglfw_audiosound_from_zobj_p(Z_OBJ_P(getThis()));
+
+    float pitch = ma_sound_get_pitch(intern->masound);
+    RETURN_DOUBLE(pitch);
+}
+
+PHP_METHOD(GL_Audio_Sound, getLoop)
+{
+    phpglfw_audiosound_object *intern = phpglfw_audiosound_from_zobj_p(Z_OBJ_P(getThis()));
+
+    ma_bool32 loop = ma_sound_is_looping(intern->masound);
+    RETURN_BOOL(loop);
+}
+
+PHP_METHOD(GL_Audio_Sound, setPan)
+{
+    double pan;
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "d", &pan) == FAILURE) {
         RETURN_THROWS();
     }
 
     phpglfw_audiosound_object *intern = phpglfw_audiosound_from_zobj_p(Z_OBJ_P(getThis()));
 
-    ma_sound_set_position(intern->masound, x, y, z);
+    ma_sound_set_pan(intern->masound, (float) pan);
+}
+
+PHP_METHOD(GL_Audio_Sound, getPan)
+{
+    phpglfw_audiosound_object *intern = phpglfw_audiosound_from_zobj_p(Z_OBJ_P(getThis()));
+
+    float pan = ma_sound_get_pan(intern->masound);
+    RETURN_DOUBLE(pan);
 }
 
 PHP_METHOD(GL_Audio_Sound, readFrames)
@@ -453,6 +650,11 @@ PHP_METHOD(GL_Audio_Sound, readFrames)
  */
 void phpglfw_register_audio_module(INIT_FUNC_ARGS)
 {
+    // register mono expansion mode constants
+    REGISTER_LONG_CONSTANT("GL_MA_MONO_EXPANSION_MODE_DUPLICATE", ma_mono_expansion_mode_duplicate, CONST_CS|CONST_PERSISTENT);
+    REGISTER_LONG_CONSTANT("GL_MA_MONO_EXPANSION_MODE_AVERAGE", ma_mono_expansion_mode_average, CONST_CS|CONST_PERSISTENT);
+    REGISTER_LONG_CONSTANT("GL_MA_MONO_EXPANSION_MODE_STEREO_ONLY", ma_mono_expansion_mode_stereo_only, CONST_CS|CONST_PERSISTENT);
+
     // init & register the audio engine class
     phpglfw_audioengine_ce = register_class_GL_Audio_Engine();
     phpglfw_audioengine_ce->create_object = phpglfw_audioengine_create_object;
@@ -468,6 +670,5 @@ void phpglfw_register_audio_module(INIT_FUNC_ARGS)
     memcpy(&phpglfw_audiosound_object_handlers, zend_get_std_object_handlers(), sizeof(zend_object_handlers));
     phpglfw_audiosound_object_handlers.offset = XtOffsetOf(phpglfw_audiosound_object, std);
     phpglfw_audiosound_object_handlers.free_obj = phpglfw_audiosound_free_handler;
-    // phpglfw_audiosound_object_handlers.get_debug_info = phpglfw_audiosound_debug_info_handler;
 
 }
