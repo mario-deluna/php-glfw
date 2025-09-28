@@ -87,7 +87,7 @@ jobs:
           zip -r $ARTIFACT_NAME.zip .
 
       - name: Upload artifact
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: ${{ env.ARTIFACT_NAME }}
           path: ${{ env.ARTIFACT_DIR }}/${{ env.ARTIFACT_NAME }}.zip
