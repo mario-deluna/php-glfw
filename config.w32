@@ -15,10 +15,11 @@ if (PHP_GLFW != "no") {
         CHECK_HEADER_ADD_INCLUDE("nanovg_gl.h", "CFLAGS_GLFW", configure_module_dirname + "\\vendor\\nanovg\\src;" + PHP_EXTRA_INCLUDES) &&
         CHECK_HEADER_ADD_INCLUDE("nanovg_gl_utils.h", "CFLAGS_GLFW", configure_module_dirname + "\\vendor\\nanovg\\src;" + PHP_EXTRA_INCLUDES) &&
         CHECK_HEADER_ADD_INCLUDE("stb_truetype.h", "CFLAGS_GLFW", configure_module_dirname + "\\vendor\\nanovg\\src;" + PHP_EXTRA_INCLUDES) &&
-        CHECK_HEADER_ADD_INCLUDE("miniaudio.h", "CFLAGS_GLFW", configure_module_dirname + "\\vendor\\miniaudio;" + PHP_EXTRA_INCLUDES)
+        CHECK_HEADER_ADD_INCLUDE("miniaudio.h", "CFLAGS_GLFW", configure_module_dirname + "\\vendor\\miniaudio;" + PHP_EXTRA_INCLUDES) &&
+        CHECK_HEADER_ADD_INCLUDE("ogt_vox.h", "CFLAGS_GLFW", configure_module_dirname + "\\vendor\\opengametools\\src;" + PHP_EXTRA_INCLUDES)
 	) {
 
-		var sources = "phpglfw.c phpglfw_constants.c phpglfw_functions.c phpglfw_math.c phpglfw_buffer.c phpglfw_texture.c phpglfw_objparser.c phpglfw_vg.c phpglfw_audio.c";
+		var sources = "phpglfw.c phpglfw_constants.c phpglfw_functions.c phpglfw_math.c phpglfw_buffer.c phpglfw_texture.c phpglfw_objparser.c phpglfw_voxparser.c ogt_vox_c_wrapper.cpp phpglfw_vg.c phpglfw_audio.c";
 
 		var glad_sources = "glad.c";
 		var fastobj_sources = "fast_obj.c";
