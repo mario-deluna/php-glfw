@@ -23,6 +23,24 @@ namespace GL\Geometry
         public function getMeshes(string $layout, ?\GL\Geometry\ObjFileParser\Group $group = null) : array {}
         public function getIndexedMeshes(string $layout, ?\GL\Geometry\ObjFileParser\Group $group = null) : array {}
     }
+
+    class VoxFileParser
+    {
+        public readonly ?VoxFileParser\Resource $resource;
+        public readonly array $models;
+        public readonly array $instances;
+        public readonly array $layers;
+        public readonly array $groups;
+        public readonly ?VoxFileParser\Palette $palette;
+        public readonly int $modelCount;
+        public readonly int $instanceCount;
+        public readonly int $layerCount;
+        public readonly int $groupCount;
+
+        public function __construct(string $file) {}
+        public function getModel(int $modelIndex) : ?VoxFileParser\Model {}
+        public function getPaletteColor(int $colorIndex) : ?\GL\Math\Vec4 {}
+    }
 }
 
 namespace GL\Geometry\ObjFileParser
@@ -51,6 +69,89 @@ namespace GL\Geometry\ObjFileParser
 
     class Texture
     {
+        public function __construct() {}
+    }
+}
+
+namespace GL\Geometry\VoxFileParser
+{
+    class Resource {}
+
+    class Palette
+    {
+        public function __construct(?\GL\Buffer\UByteBuffer $buffer = null) {}
+        public function getBuffer() : \GL\Buffer\UByteBuffer {}
+        public function setColor(int $index, \GL\Math\Vec4 $color) : void {}
+        public function setColorf(int $index, float $r, float $g, float $b, float $a = 1.0) : void {}
+        public function getColor(int $index) : \GL\Math\Vec4 {}
+        public function replaceFromBuffer(\GL\Buffer\UByteBuffer|\GL\Buffer\FloatBuffer $buffer) : void {}
+        public function replaceFromArray(array $colors) : void {}
+        public function fillDefault() : void {}
+    }
+
+    class Model
+    {
+        /** @var int */
+        public const MODE_SIMPLE = 0;
+        /** @var int */
+        public const MODE_GREEDY = 1;
+        /** @var int */
+        public const MODE_POLYGON = 2;
+
+        public readonly int $index;
+        public readonly int $sizeX;
+        public readonly int $sizeY;
+        public readonly int $sizeZ;
+        public readonly int $voxelHash;
+        public readonly int $voxelCount;
+        public readonly ?\GL\Buffer\UByteBuffer $voxelData;
+        public readonly ?Resource $resource;
+
+        public function __construct() {}
+        public function getVoxel(int $x, int $y, int $z) : ?int {}
+        public function generateTriangleMesh(
+            \GL\Buffer\FloatBuffer $vertices,
+            \GL\Buffer\UIntBuffer $indices,
+            ?Palette $palette = null,
+            string $mode = 'simple',
+            ?array $options = null
+        ) : bool {}
+    }
+
+    class Instance
+    {
+        public readonly int $index;
+        public readonly ?string $name;
+        public readonly int $modelIndex;
+        public readonly int $layerIndex;
+        public readonly int $groupIndex;
+        public readonly bool $hidden;
+        public readonly ?\GL\Math\Mat4 $transform;
+        public readonly ?\GL\Math\Mat4 $localTransform;
+
+        public function __construct() {}
+    }
+
+    class Layer
+    {
+        public readonly int $index;
+        public readonly ?string $name;
+        public readonly ?\GL\Math\Vec4 $color;
+        public readonly bool $hidden;
+
+        public function __construct() {}
+    }
+
+    class Group
+    {
+        public readonly int $index;
+        public readonly ?string $name;
+        public readonly int $parentGroupIndex;
+        public readonly int $layerIndex;
+        public readonly bool $hidden;
+        public readonly ?\GL\Math\Mat4 $transform;
+        public readonly ?\GL\Math\Mat4 $localTransform;
+
         public function __construct() {}
     }
 }

@@ -2253,6 +2253,205 @@ namespace GL\Geometry
     }
 }
 
+namespace GL\Geometry\VoxFileParser
+{
+    /** @internal Vox parser scene resource */
+    class Resource {}
+
+    /**
+     * Palette helper that owns a 256-entry RGBA byte buffer and exposes convenience helpers
+     * for manipulating MagicaVoxel color data.
+     */
+    class Palette
+    {
+        /**
+         * @param ?\GL\Buffer\UByteBuffer $buffer Optional existing buffer to wrap. When omitted a default palette is created.
+         */
+        public function __construct(?\GL\Buffer\UByteBuffer $buffer = null) {}
+
+        /**
+         * Retrieve the underlying RGBA byte buffer (256 * 4 entries).
+         */
+        public function getBuffer() : \GL\Buffer\UByteBuffer {}
+
+        /**
+         * Assign a color at the given palette index using a Vec4 color.
+         */
+        public function setColor(int $index, \GL\Math\Vec4 $color) : void {}
+
+        /**
+         * Assign a color at the given palette index using individual float components.
+         * Components are expected in the 0..1 range.
+         */
+        public function setColorf(int $index, float $r, float $g, float $b, float $a = 1.0) : void {}
+
+        /**
+         * Fetch a color at the given palette index as a Vec4 object in the 0..1 range.
+         */
+        public function getColor(int $index) : \GL\Math\Vec4 {}
+
+        /**
+         * Replace the palette contents from another buffer. Accepts RGBA byte or float layouts.
+         */
+        public function replaceFromBuffer(\GL\Buffer\UByteBuffer|\GL\Buffer\FloatBuffer $buffer) : void {}
+
+        /**
+         * Replace palette entries from an array of colors. Each color may be [r, g, b] or [r, g, b, a] in 0..1 range.
+         *
+         * @param array<int, array{0:float,1:float,2:float,3?:float}> $colors
+         */
+        public function replaceFromArray(array $colors) : void {}
+
+        /**
+         * Reset the palette to the default MagicaVoxel color table.
+         */
+        public function fillDefault() : void {}
+    }
+
+    /**
+     * Represents a voxel model parsed from a MagicaVoxel scene.
+     */
+    class Model
+    {
+        /** @var int */
+        public const MODE_SIMPLE = 0;
+        /** @var int */
+        public const MODE_GREEDY = 1;
+        /** @var int */
+        public const MODE_POLYGON = 2;
+
+        /** Sequential model index inside the scene */
+        public readonly int $index;
+        /** Grid width */
+        public readonly int $sizeX;
+        /** Grid height */
+        public readonly int $sizeY;
+        /** Grid depth */
+        public readonly int $sizeZ;
+        /** Hash identifying the voxel contents */
+        public readonly int $voxelHash;
+        /** Number of voxels contained in the grid */
+        public readonly int $voxelCount;
+        /** Raw voxel palette indices */
+        public readonly ?\GL\Buffer\UByteBuffer $voxelData;
+        /** Back reference to parser resource */
+        public readonly ?Resource $resource;
+
+        public function __construct() {}
+
+        /**
+         * Generate a triangle mesh for this voxel grid.
+         *
+         * @param \GL\Buffer\FloatBuffer $vertices Destination buffer for vertex attributes (position, normal, colors).
+         * @param \GL\Buffer\UIntBuffer  $indices Destination buffer for triangle indices.
+         * @param Palette|null $palette Optional palette override or editor instance.
+         * @param string $mode Mesh generation mode name (simple, greedy, polygon).
+         * @param array{
+         *     colors?: 'rgb'|'rgba'|'none',
+         *     includePaletteIndex?: bool,
+         *     origin?: 'corner'|'center',
+         *     originOffset?: array<int, float>,
+         *     stats?: array{vertexCount:int,indexCount:int}|null
+         * }|null $options Additional mesh generation controls. When provided, this array receives a `stats` entry on success.
+         *
+         * @return bool True on success, false otherwise.
+         */
+        public function generateTriangleMesh(
+            \GL\Buffer\FloatBuffer $vertices,
+            \GL\Buffer\UIntBuffer $indices,
+            ?Palette $palette = null,
+            string $mode = 'simple',
+            ?array $options = null
+        ) : bool {}
+
+        /** Retrieve the palette index stored at the given voxel coordinate. */
+        public function getVoxel(int $x, int $y, int $z) : ?int {}
+    }
+
+    /** Placement of a voxel model in the scene */
+    class Instance
+    {
+        /** Sequential instance index */
+        public readonly int $index;
+        public readonly ?string $name;
+        public readonly int $modelIndex;
+        public readonly int $layerIndex;
+        public readonly int $groupIndex;
+        public readonly bool $hidden;
+        /** Full transform matrix in scene space */
+        public readonly ?\GL\Math\Mat4 $transform;
+        /** Local transform relative to the parent group */
+        public readonly ?\GL\Math\Mat4 $localTransform;
+
+        public function __construct() {}
+    }
+
+    /** Scene layer metadata */
+    class Layer
+    {
+        /** Sequential layer index */
+        public readonly int $index;
+        public readonly ?string $name;
+        public readonly ?\GL\Math\Vec4 $color;
+        public readonly bool $hidden;
+
+        public function __construct() {}
+    }
+
+    /** Group hierarchy entry */
+    class Group
+    {
+        /** Sequential group index */
+        public readonly int $index;
+        public readonly ?string $name;
+        public readonly int $parentGroupIndex;
+        public readonly int $layerIndex;
+        public readonly bool $hidden;
+        /** Full transform matrix in scene space */
+        public readonly ?\GL\Math\Mat4 $transform;
+        /** Local transform relative to the parent group */
+        public readonly ?\GL\Math\Mat4 $localTransform;
+
+        public function __construct() {}
+    }
+}
+
+namespace GL\Geometry
+{
+    /**
+     * MagicaVoxel file parser that exposes scene data and mesh generation utilities.
+     */
+    class VoxFileParser
+    {
+        /** @var ?VoxFileParser\Resource internal parser resource */
+        public readonly ?VoxFileParser\Resource $resource;
+        /** @var array<int, VoxFileParser\Model> loaded voxel models */
+        public readonly array $models;
+        /** @var array<int, VoxFileParser\Instance> placed instances */
+        public readonly array $instances;
+        /** @var array<int, VoxFileParser\Layer> scene layers */
+        public readonly array $layers;
+        /** @var array<int, VoxFileParser\Group> scene groups */
+        public readonly array $groups;
+        /** @var ?VoxFileParser\Palette Palette helper providing color utilities */
+        public readonly ?VoxFileParser\Palette $palette;
+        /** Total number of voxel models */
+        public readonly int $modelCount;
+        /** Total number of instances */
+        public readonly int $instanceCount;
+        /** Total number of layers */
+        public readonly int $layerCount;
+        /** Total number of groups */
+        public readonly int $groupCount;
+
+        public function __construct(string $file) {}
+
+        public function getModel(int $modelIndex) : ?VoxFileParser\Model {}
+
+        public function getPaletteColor(int $colorIndex) : ?\GL\Math\Vec4 {}
+    }
+}
+
 namespace GL\Texture
 {
     /**

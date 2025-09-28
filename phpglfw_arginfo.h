@@ -1,5 +1,5 @@
 /* This is a generated file, edit the .stub.php file instead.
- * Stub hash: 2b2ff6d8896ce91850a3bef72a03a9570e50f83b */
+ * Stub hash: b4e0a92e5965c6cd63b1bc28a79f6cdc87db7a70 */
 
 ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_glCullFace, 0, 1, IS_VOID, 0)
 	ZEND_ARG_TYPE_INFO(0, mode, IS_LONG, 0)
@@ -2231,13 +2231,6 @@ ZEND_END_ARG_INFO()
 
 #define arginfo_glfwVulkanSupported arginfo_glGetError
 
-ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_glDrawElements, 0, 4, IS_VOID, 0)
-	ZEND_ARG_TYPE_INFO(0, mode, IS_LONG, 0)
-	ZEND_ARG_TYPE_INFO(0, count, IS_LONG, 0)
-	ZEND_ARG_TYPE_INFO(0, type, IS_LONG, 0)
-	ZEND_ARG_OBJ_TYPE_MASK(0, indices, GL\\Buffer\\\125IntBuffer|GL\\Buffer\\\125ShortBuffer|GL\\Buffer\\\125ByteBuffer, MAY_BE_LONG, NULL)
-ZEND_END_ARG_INFO()
-
 ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_glfwGetGamepadAxes, 0, 1, IS_ARRAY, 0)
 	ZEND_ARG_TYPE_INFO(0, joystick, IS_LONG, 0)
 ZEND_END_ARG_INFO()
@@ -2253,6 +2246,13 @@ ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_glBufferData, 0, 3, IS_VOID, 0)
 	ZEND_ARG_TYPE_INFO(0, target, IS_LONG, 0)
 	ZEND_ARG_OBJ_INFO(0, buffer, GL\\Buffer\\BufferInterface, 0)
 	ZEND_ARG_TYPE_INFO(0, usage, IS_LONG, 0)
+ZEND_END_ARG_INFO()
+
+ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_glDrawElements, 0, 4, IS_VOID, 0)
+	ZEND_ARG_TYPE_INFO(0, mode, IS_LONG, 0)
+	ZEND_ARG_TYPE_INFO(0, count, IS_LONG, 0)
+	ZEND_ARG_TYPE_INFO(0, type, IS_LONG, 0)
+	ZEND_ARG_OBJ_TYPE_MASK(0, indices, GL\\Buffer\\\125IntBuffer|GL\\Buffer\\\125ShortBuffer|GL\\Buffer\\\125ByteBuffer, MAY_BE_LONG, NULL)
 ZEND_END_ARG_INFO()
 
 ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_glUniformMatrix4f, 0, 3, IS_VOID, 0)
@@ -2297,12 +2297,78 @@ ZEND_END_ARG_INFO()
 
 #define arginfo_class_GL_Geometry_ObjFileParser_getIndexedMeshes arginfo_class_GL_Geometry_ObjFileParser_getMeshes
 
+#define arginfo_class_GL_Geometry_VoxFileParser___construct arginfo_class_GL_Geometry_ObjFileParser___construct
+
+ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(arginfo_class_GL_Geometry_VoxFileParser_getModel, 0, 1, GL\\Geometry\\VoxFileParser\\Model, 1)
+	ZEND_ARG_TYPE_INFO(0, modelIndex, IS_LONG, 0)
+ZEND_END_ARG_INFO()
+
+ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(arginfo_class_GL_Geometry_VoxFileParser_getPaletteColor, 0, 1, GL\\Math\\Vec4, 1)
+	ZEND_ARG_TYPE_INFO(0, colorIndex, IS_LONG, 0)
+ZEND_END_ARG_INFO()
+
 ZEND_BEGIN_ARG_INFO_EX(arginfo_class_GL_Geometry_ObjFileParser_Material___construct, 0, 0, 0)
 ZEND_END_ARG_INFO()
 
 #define arginfo_class_GL_Geometry_ObjFileParser_Group___construct arginfo_class_GL_Geometry_ObjFileParser_Material___construct
 
 #define arginfo_class_GL_Geometry_ObjFileParser_Texture___construct arginfo_class_GL_Geometry_ObjFileParser_Material___construct
+
+ZEND_BEGIN_ARG_INFO_EX(arginfo_class_GL_Geometry_VoxFileParser_Palette___construct, 0, 0, 0)
+	ZEND_ARG_OBJ_INFO_WITH_DEFAULT_VALUE(0, buffer, GL\\Buffer\\\125ByteBuffer, 1, "null")
+ZEND_END_ARG_INFO()
+
+ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(arginfo_class_GL_Geometry_VoxFileParser_Palette_getBuffer, 0, 0, GL\\Buffer\\\125ByteBuffer, 0)
+ZEND_END_ARG_INFO()
+
+ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_class_GL_Geometry_VoxFileParser_Palette_setColor, 0, 2, IS_VOID, 0)
+	ZEND_ARG_TYPE_INFO(0, index, IS_LONG, 0)
+	ZEND_ARG_OBJ_INFO(0, color, GL\\Math\\Vec4, 0)
+ZEND_END_ARG_INFO()
+
+ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_class_GL_Geometry_VoxFileParser_Palette_setColorf, 0, 4, IS_VOID, 0)
+	ZEND_ARG_TYPE_INFO(0, index, IS_LONG, 0)
+	ZEND_ARG_TYPE_INFO(0, r, IS_DOUBLE, 0)
+	ZEND_ARG_TYPE_INFO(0, g, IS_DOUBLE, 0)
+	ZEND_ARG_TYPE_INFO(0, b, IS_DOUBLE, 0)
+	ZEND_ARG_TYPE_INFO_WITH_DEFAULT_VALUE(0, a, IS_DOUBLE, 0, "1.0")
+ZEND_END_ARG_INFO()
+
+ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(arginfo_class_GL_Geometry_VoxFileParser_Palette_getColor, 0, 1, GL\\Math\\Vec4, 0)
+	ZEND_ARG_TYPE_INFO(0, index, IS_LONG, 0)
+ZEND_END_ARG_INFO()
+
+ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_class_GL_Geometry_VoxFileParser_Palette_replaceFromBuffer, 0, 1, IS_VOID, 0)
+	ZEND_ARG_OBJ_TYPE_MASK(0, buffer, GL\\Buffer\\\125ByteBuffer|GL\\Buffer\\FloatBuffer, 0, NULL)
+ZEND_END_ARG_INFO()
+
+ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_class_GL_Geometry_VoxFileParser_Palette_replaceFromArray, 0, 1, IS_VOID, 0)
+	ZEND_ARG_TYPE_INFO(0, colors, IS_ARRAY, 0)
+ZEND_END_ARG_INFO()
+
+#define arginfo_class_GL_Geometry_VoxFileParser_Palette_fillDefault arginfo_glFinish
+
+#define arginfo_class_GL_Geometry_VoxFileParser_Model___construct arginfo_class_GL_Geometry_ObjFileParser_Material___construct
+
+ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_class_GL_Geometry_VoxFileParser_Model_getVoxel, 0, 3, IS_LONG, 1)
+	ZEND_ARG_TYPE_INFO(0, x, IS_LONG, 0)
+	ZEND_ARG_TYPE_INFO(0, y, IS_LONG, 0)
+	ZEND_ARG_TYPE_INFO(0, z, IS_LONG, 0)
+ZEND_END_ARG_INFO()
+
+ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_class_GL_Geometry_VoxFileParser_Model_generateTriangleMesh, 0, 2, _IS_BOOL, 0)
+	ZEND_ARG_OBJ_INFO(0, vertices, GL\\Buffer\\FloatBuffer, 0)
+	ZEND_ARG_OBJ_INFO(0, indices, GL\\Buffer\\\125IntBuffer, 0)
+	ZEND_ARG_OBJ_INFO_WITH_DEFAULT_VALUE(0, palette, GL\\Geometry\\VoxFileParser\\Palette, 1, "null")
+	ZEND_ARG_TYPE_INFO_WITH_DEFAULT_VALUE(0, mode, IS_STRING, 0, "\'simple\'")
+	ZEND_ARG_TYPE_INFO_WITH_DEFAULT_VALUE(0, options, IS_ARRAY, 1, "null")
+ZEND_END_ARG_INFO()
+
+#define arginfo_class_GL_Geometry_VoxFileParser_Instance___construct arginfo_class_GL_Geometry_ObjFileParser_Material___construct
+
+#define arginfo_class_GL_Geometry_VoxFileParser_Layer___construct arginfo_class_GL_Geometry_ObjFileParser_Material___construct
+
+#define arginfo_class_GL_Geometry_VoxFileParser_Group___construct arginfo_class_GL_Geometry_ObjFileParser_Material___construct
 
 ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(arginfo_class_GL_Texture_Texture2D_fromDisk, 0, 1, GL\\Texture\\Texture2D, 0)
 	ZEND_ARG_TYPE_INFO(0, path, IS_STRING, 0)
@@ -2317,8 +2383,7 @@ ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(arginfo_class_GL_Texture_Texture2D_fromBu
 	ZEND_ARG_TYPE_INFO_WITH_DEFAULT_VALUE(0, channels, IS_LONG, 0, "GL\\Texture\\Texture2D::CHANNEL_RGBA")
 ZEND_END_ARG_INFO()
 
-ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(arginfo_class_GL_Texture_Texture2D_buffer, 0, 0, GL\\Buffer\\\125ByteBuffer, 0)
-ZEND_END_ARG_INFO()
+#define arginfo_class_GL_Texture_Texture2D_buffer arginfo_class_GL_Geometry_VoxFileParser_Palette_getBuffer
 
 #define arginfo_class_GL_Texture_Texture2D_width arginfo_glGetError
 
@@ -2676,16 +2741,14 @@ ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(arginfo_class_GL_Math_Mat4_multiplyQuat, 
 	ZEND_ARG_OBJ_INFO(0, right, GL\\Math\\Quat, 0)
 ZEND_END_ARG_INFO()
 
-ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(arginfo_class_GL_Math_Mat4_row, 0, 1, GL\\Math\\Vec4, 0)
-	ZEND_ARG_TYPE_INFO(0, index, IS_LONG, 0)
-ZEND_END_ARG_INFO()
+#define arginfo_class_GL_Math_Mat4_row arginfo_class_GL_Geometry_VoxFileParser_Palette_getColor
 
 ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_class_GL_Math_Mat4_setRow, 0, 2, IS_VOID, 0)
 	ZEND_ARG_TYPE_INFO(0, index, IS_LONG, 0)
 	ZEND_ARG_OBJ_INFO(0, row, GL\\Math\\Vec4, 0)
 ZEND_END_ARG_INFO()
 
-#define arginfo_class_GL_Math_Mat4_col arginfo_class_GL_Math_Mat4_row
+#define arginfo_class_GL_Math_Mat4_col arginfo_class_GL_Geometry_VoxFileParser_Palette_getColor
 
 ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_class_GL_Math_Mat4_setCol, 0, 2, IS_VOID, 0)
 	ZEND_ARG_TYPE_INFO(0, index, IS_LONG, 0)
@@ -4122,11 +4185,11 @@ ZEND_FUNCTION(glfwSwapBuffers);
 ZEND_FUNCTION(glfwSwapInterval);
 ZEND_FUNCTION(glfwExtensionSupported);
 ZEND_FUNCTION(glfwVulkanSupported);
-ZEND_FUNCTION(glDrawElements);
 ZEND_FUNCTION(glfwGetGamepadAxes);
 ZEND_FUNCTION(glfwGetGamepadButtons);
 ZEND_FUNCTION(glShaderSource);
 ZEND_FUNCTION(glBufferData);
+ZEND_FUNCTION(glDrawElements);
 ZEND_FUNCTION(glUniformMatrix4f);
 ZEND_FUNCTION(glUniformVec2f);
 ZEND_FUNCTION(glUniformVec3f);
@@ -4136,9 +4199,26 @@ ZEND_METHOD(GL_Geometry_ObjFileParser, getVertices);
 ZEND_METHOD(GL_Geometry_ObjFileParser, getIndexedVertices);
 ZEND_METHOD(GL_Geometry_ObjFileParser, getMeshes);
 ZEND_METHOD(GL_Geometry_ObjFileParser, getIndexedMeshes);
+ZEND_METHOD(GL_Geometry_VoxFileParser, __construct);
+ZEND_METHOD(GL_Geometry_VoxFileParser, getModel);
+ZEND_METHOD(GL_Geometry_VoxFileParser, getPaletteColor);
 ZEND_METHOD(GL_Geometry_ObjFileParser_Material, __construct);
 ZEND_METHOD(GL_Geometry_ObjFileParser_Group, __construct);
 ZEND_METHOD(GL_Geometry_ObjFileParser_Texture, __construct);
+ZEND_METHOD(GL_Geometry_VoxFileParser_Palette, __construct);
+ZEND_METHOD(GL_Geometry_VoxFileParser_Palette, getBuffer);
+ZEND_METHOD(GL_Geometry_VoxFileParser_Palette, setColor);
+ZEND_METHOD(GL_Geometry_VoxFileParser_Palette, setColorf);
+ZEND_METHOD(GL_Geometry_VoxFileParser_Palette, getColor);
+ZEND_METHOD(GL_Geometry_VoxFileParser_Palette, replaceFromBuffer);
+ZEND_METHOD(GL_Geometry_VoxFileParser_Palette, replaceFromArray);
+ZEND_METHOD(GL_Geometry_VoxFileParser_Palette, fillDefault);
+ZEND_METHOD(GL_Geometry_VoxFileParser_Model, __construct);
+ZEND_METHOD(GL_Geometry_VoxFileParser_Model, getVoxel);
+ZEND_METHOD(GL_Geometry_VoxFileParser_Model, generateTriangleMesh);
+ZEND_METHOD(GL_Geometry_VoxFileParser_Instance, __construct);
+ZEND_METHOD(GL_Geometry_VoxFileParser_Layer, __construct);
+ZEND_METHOD(GL_Geometry_VoxFileParser_Group, __construct);
 ZEND_METHOD(GL_Texture_Texture2D, fromDisk);
 ZEND_METHOD(GL_Texture_Texture2D, fromBuffer);
 ZEND_METHOD(GL_Texture_Texture2D, buffer);
@@ -5056,11 +5136,11 @@ static const zend_function_entry ext_functions[] = {
 	ZEND_FE(glfwSwapInterval, arginfo_glfwSwapInterval)
 	ZEND_FE(glfwExtensionSupported, arginfo_glfwExtensionSupported)
 	ZEND_FE(glfwVulkanSupported, arginfo_glfwVulkanSupported)
-	ZEND_FE(glDrawElements, arginfo_glDrawElements)
 	ZEND_FE(glfwGetGamepadAxes, arginfo_glfwGetGamepadAxes)
 	ZEND_FE(glfwGetGamepadButtons, arginfo_glfwGetGamepadButtons)
 	ZEND_FE(glShaderSource, arginfo_glShaderSource)
 	ZEND_FE(glBufferData, arginfo_glBufferData)
+	ZEND_FE(glDrawElements, arginfo_glDrawElements)
 	ZEND_FE(glUniformMatrix4f, arginfo_glUniformMatrix4f)
 	ZEND_FE(glUniformVec2f, arginfo_glUniformVec2f)
 	ZEND_FE(glUniformVec3f, arginfo_glUniformVec3f)
@@ -5075,6 +5155,14 @@ static const zend_function_entry class_GL_Geometry_ObjFileParser_methods[] = {
 	ZEND_ME(GL_Geometry_ObjFileParser, getIndexedVertices, arginfo_class_GL_Geometry_ObjFileParser_getIndexedVertices, ZEND_ACC_PUBLIC)
 	ZEND_ME(GL_Geometry_ObjFileParser, getMeshes, arginfo_class_GL_Geometry_ObjFileParser_getMeshes, ZEND_ACC_PUBLIC)
 	ZEND_ME(GL_Geometry_ObjFileParser, getIndexedMeshes, arginfo_class_GL_Geometry_ObjFileParser_getIndexedMeshes, ZEND_ACC_PUBLIC)
+	ZEND_FE_END
+};
+
+
+static const zend_function_entry class_GL_Geometry_VoxFileParser_methods[] = {
+	ZEND_ME(GL_Geometry_VoxFileParser, __construct, arginfo_class_GL_Geometry_VoxFileParser___construct, ZEND_ACC_PUBLIC)
+	ZEND_ME(GL_Geometry_VoxFileParser, getModel, arginfo_class_GL_Geometry_VoxFileParser_getModel, ZEND_ACC_PUBLIC)
+	ZEND_ME(GL_Geometry_VoxFileParser, getPaletteColor, arginfo_class_GL_Geometry_VoxFileParser_getPaletteColor, ZEND_ACC_PUBLIC)
 	ZEND_FE_END
 };
 
@@ -5103,6 +5191,50 @@ static const zend_function_entry class_GL_Geometry_ObjFileParser_Group_methods[]
 
 static const zend_function_entry class_GL_Geometry_ObjFileParser_Texture_methods[] = {
 	ZEND_ME(GL_Geometry_ObjFileParser_Texture, __construct, arginfo_class_GL_Geometry_ObjFileParser_Texture___construct, ZEND_ACC_PUBLIC)
+	ZEND_FE_END
+};
+
+
+static const zend_function_entry class_GL_Geometry_VoxFileParser_Resource_methods[] = {
+	ZEND_FE_END
+};
+
+
+static const zend_function_entry class_GL_Geometry_VoxFileParser_Palette_methods[] = {
+	ZEND_ME(GL_Geometry_VoxFileParser_Palette, __construct, arginfo_class_GL_Geometry_VoxFileParser_Palette___construct, ZEND_ACC_PUBLIC)
+	ZEND_ME(GL_Geometry_VoxFileParser_Palette, getBuffer, arginfo_class_GL_Geometry_VoxFileParser_Palette_getBuffer, ZEND_ACC_PUBLIC)
+	ZEND_ME(GL_Geometry_VoxFileParser_Palette, setColor, arginfo_class_GL_Geometry_VoxFileParser_Palette_setColor, ZEND_ACC_PUBLIC)
+	ZEND_ME(GL_Geometry_VoxFileParser_Palette, setColorf, arginfo_class_GL_Geometry_VoxFileParser_Palette_setColorf, ZEND_ACC_PUBLIC)
+	ZEND_ME(GL_Geometry_VoxFileParser_Palette, getColor, arginfo_class_GL_Geometry_VoxFileParser_Palette_getColor, ZEND_ACC_PUBLIC)
+	ZEND_ME(GL_Geometry_VoxFileParser_Palette, replaceFromBuffer, arginfo_class_GL_Geometry_VoxFileParser_Palette_replaceFromBuffer, ZEND_ACC_PUBLIC)
+	ZEND_ME(GL_Geometry_VoxFileParser_Palette, replaceFromArray, arginfo_class_GL_Geometry_VoxFileParser_Palette_replaceFromArray, ZEND_ACC_PUBLIC)
+	ZEND_ME(GL_Geometry_VoxFileParser_Palette, fillDefault, arginfo_class_GL_Geometry_VoxFileParser_Palette_fillDefault, ZEND_ACC_PUBLIC)
+	ZEND_FE_END
+};
+
+
+static const zend_function_entry class_GL_Geometry_VoxFileParser_Model_methods[] = {
+	ZEND_ME(GL_Geometry_VoxFileParser_Model, __construct, arginfo_class_GL_Geometry_VoxFileParser_Model___construct, ZEND_ACC_PUBLIC)
+	ZEND_ME(GL_Geometry_VoxFileParser_Model, getVoxel, arginfo_class_GL_Geometry_VoxFileParser_Model_getVoxel, ZEND_ACC_PUBLIC)
+	ZEND_ME(GL_Geometry_VoxFileParser_Model, generateTriangleMesh, arginfo_class_GL_Geometry_VoxFileParser_Model_generateTriangleMesh, ZEND_ACC_PUBLIC)
+	ZEND_FE_END
+};
+
+
+static const zend_function_entry class_GL_Geometry_VoxFileParser_Instance_methods[] = {
+	ZEND_ME(GL_Geometry_VoxFileParser_Instance, __construct, arginfo_class_GL_Geometry_VoxFileParser_Instance___construct, ZEND_ACC_PUBLIC)
+	ZEND_FE_END
+};
+
+
+static const zend_function_entry class_GL_Geometry_VoxFileParser_Layer_methods[] = {
+	ZEND_ME(GL_Geometry_VoxFileParser_Layer, __construct, arginfo_class_GL_Geometry_VoxFileParser_Layer___construct, ZEND_ACC_PUBLIC)
+	ZEND_FE_END
+};
+
+
+static const zend_function_entry class_GL_Geometry_VoxFileParser_Group_methods[] = {
+	ZEND_ME(GL_Geometry_VoxFileParser_Group, __construct, arginfo_class_GL_Geometry_VoxFileParser_Group___construct, ZEND_ACC_PUBLIC)
 	ZEND_FE_END
 };
 
@@ -5626,6 +5758,78 @@ static zend_class_entry *register_class_GL_Geometry_ObjFileParser(void)
 	return class_entry;
 }
 
+static zend_class_entry *register_class_GL_Geometry_VoxFileParser(void)
+{
+	zend_class_entry ce, *class_entry;
+
+	INIT_NS_CLASS_ENTRY(ce, "GL\\Geometry", "VoxFileParser", class_GL_Geometry_VoxFileParser_methods);
+	class_entry = zend_register_internal_class_ex(&ce, NULL);
+
+	zval property_resource_default_value;
+	ZVAL_UNDEF(&property_resource_default_value);
+	zend_string *property_resource_name = zend_string_init("resource", sizeof("resource") - 1, 1);
+	zend_string *property_resource_class_GL_Geometry_VoxFileParser_Resource = zend_string_init("GL\\Geometry\\VoxFileParser\\Resource", sizeof("GL\\Geometry\\VoxFileParser\\Resource")-1, 1);
+	zend_declare_typed_property(class_entry, property_resource_name, &property_resource_default_value, ZEND_ACC_PUBLIC|ZEND_ACC_READONLY, NULL, (zend_type) ZEND_TYPE_INIT_CLASS(property_resource_class_GL_Geometry_VoxFileParser_Resource, 0, MAY_BE_NULL));
+	zend_string_release(property_resource_name);
+
+	zval property_models_default_value;
+	ZVAL_UNDEF(&property_models_default_value);
+	zend_string *property_models_name = zend_string_init("models", sizeof("models") - 1, 1);
+	zend_declare_typed_property(class_entry, property_models_name, &property_models_default_value, ZEND_ACC_PUBLIC|ZEND_ACC_READONLY, NULL, (zend_type) ZEND_TYPE_INIT_MASK(MAY_BE_ARRAY));
+	zend_string_release(property_models_name);
+
+	zval property_instances_default_value;
+	ZVAL_UNDEF(&property_instances_default_value);
+	zend_string *property_instances_name = zend_string_init("instances", sizeof("instances") - 1, 1);
+	zend_declare_typed_property(class_entry, property_instances_name, &property_instances_default_value, ZEND_ACC_PUBLIC|ZEND_ACC_READONLY, NULL, (zend_type) ZEND_TYPE_INIT_MASK(MAY_BE_ARRAY));
+	zend_string_release(property_instances_name);
+
+	zval property_layers_default_value;
+	ZVAL_UNDEF(&property_layers_default_value);
+	zend_string *property_layers_name = zend_string_init("layers", sizeof("layers") - 1, 1);
+	zend_declare_typed_property(class_entry, property_layers_name, &property_layers_default_value, ZEND_ACC_PUBLIC|ZEND_ACC_READONLY, NULL, (zend_type) ZEND_TYPE_INIT_MASK(MAY_BE_ARRAY));
+	zend_string_release(property_layers_name);
+
+	zval property_groups_default_value;
+	ZVAL_UNDEF(&property_groups_default_value);
+	zend_string *property_groups_name = zend_string_init("groups", sizeof("groups") - 1, 1);
+	zend_declare_typed_property(class_entry, property_groups_name, &property_groups_default_value, ZEND_ACC_PUBLIC|ZEND_ACC_READONLY, NULL, (zend_type) ZEND_TYPE_INIT_MASK(MAY_BE_ARRAY));
+	zend_string_release(property_groups_name);
+
+	zval property_palette_default_value;
+	ZVAL_UNDEF(&property_palette_default_value);
+	zend_string *property_palette_name = zend_string_init("palette", sizeof("palette") - 1, 1);
+	zend_string *property_palette_class_GL_Geometry_VoxFileParser_Palette = zend_string_init("GL\\Geometry\\VoxFileParser\\Palette", sizeof("GL\\Geometry\\VoxFileParser\\Palette")-1, 1);
+	zend_declare_typed_property(class_entry, property_palette_name, &property_palette_default_value, ZEND_ACC_PUBLIC|ZEND_ACC_READONLY, NULL, (zend_type) ZEND_TYPE_INIT_CLASS(property_palette_class_GL_Geometry_VoxFileParser_Palette, 0, MAY_BE_NULL));
+	zend_string_release(property_palette_name);
+
+	zval property_modelCount_default_value;
+	ZVAL_UNDEF(&property_modelCount_default_value);
+	zend_string *property_modelCount_name = zend_string_init("modelCount", sizeof("modelCount") - 1, 1);
+	zend_declare_typed_property(class_entry, property_modelCount_name, &property_modelCount_default_value, ZEND_ACC_PUBLIC|ZEND_ACC_READONLY, NULL, (zend_type) ZEND_TYPE_INIT_MASK(MAY_BE_LONG));
+	zend_string_release(property_modelCount_name);
+
+	zval property_instanceCount_default_value;
+	ZVAL_UNDEF(&property_instanceCount_default_value);
+	zend_string *property_instanceCount_name = zend_string_init("instanceCount", sizeof("instanceCount") - 1, 1);
+	zend_declare_typed_property(class_entry, property_instanceCount_name, &property_instanceCount_default_value, ZEND_ACC_PUBLIC|ZEND_ACC_READONLY, NULL, (zend_type) ZEND_TYPE_INIT_MASK(MAY_BE_LONG));
+	zend_string_release(property_instanceCount_name);
+
+	zval property_layerCount_default_value;
+	ZVAL_UNDEF(&property_layerCount_default_value);
+	zend_string *property_layerCount_name = zend_string_init("layerCount", sizeof("layerCount") - 1, 1);
+	zend_declare_typed_property(class_entry, property_layerCount_name, &property_layerCount_default_value, ZEND_ACC_PUBLIC|ZEND_ACC_READONLY, NULL, (zend_type) ZEND_TYPE_INIT_MASK(MAY_BE_LONG));
+	zend_string_release(property_layerCount_name);
+
+	zval property_groupCount_default_value;
+	ZVAL_UNDEF(&property_groupCount_default_value);
+	zend_string *property_groupCount_name = zend_string_init("groupCount", sizeof("groupCount") - 1, 1);
+	zend_declare_typed_property(class_entry, property_groupCount_name, &property_groupCount_default_value, ZEND_ACC_PUBLIC|ZEND_ACC_READONLY, NULL, (zend_type) ZEND_TYPE_INIT_MASK(MAY_BE_LONG));
+	zend_string_release(property_groupCount_name);
+
+	return class_entry;
+}
+
 static zend_class_entry *register_class_GL_Geometry_ObjFileParser_Resource(void)
 {
 	zend_class_entry ce, *class_entry;
@@ -5719,6 +5923,253 @@ static zend_class_entry *register_class_GL_Geometry_ObjFileParser_Texture(void)
 
 	INIT_NS_CLASS_ENTRY(ce, "GL\\Geometry\\ObjFileParser", "Texture", class_GL_Geometry_ObjFileParser_Texture_methods);
 	class_entry = zend_register_internal_class_ex(&ce, NULL);
+
+	return class_entry;
+}
+
+static zend_class_entry *register_class_GL_Geometry_VoxFileParser_Resource(void)
+{
+	zend_class_entry ce, *class_entry;
+
+	INIT_NS_CLASS_ENTRY(ce, "GL\\Geometry\\VoxFileParser", "Resource", class_GL_Geometry_VoxFileParser_Resource_methods);
+	class_entry = zend_register_internal_class_ex(&ce, NULL);
+
+	return class_entry;
+}
+
+static zend_class_entry *register_class_GL_Geometry_VoxFileParser_Palette(void)
+{
+	zend_class_entry ce, *class_entry;
+
+	INIT_NS_CLASS_ENTRY(ce, "GL\\Geometry\\VoxFileParser", "Palette", class_GL_Geometry_VoxFileParser_Palette_methods);
+	class_entry = zend_register_internal_class_ex(&ce, NULL);
+
+	return class_entry;
+}
+
+static zend_class_entry *register_class_GL_Geometry_VoxFileParser_Model(void)
+{
+	zend_class_entry ce, *class_entry;
+
+	INIT_NS_CLASS_ENTRY(ce, "GL\\Geometry\\VoxFileParser", "Model", class_GL_Geometry_VoxFileParser_Model_methods);
+	class_entry = zend_register_internal_class_ex(&ce, NULL);
+
+	zval const_MODE_SIMPLE_value;
+	ZVAL_LONG(&const_MODE_SIMPLE_value, 0);
+	zend_string *const_MODE_SIMPLE_name = zend_string_init_interned("MODE_SIMPLE", sizeof("MODE_SIMPLE") - 1, 1);
+	zend_declare_class_constant_ex(class_entry, const_MODE_SIMPLE_name, &const_MODE_SIMPLE_value, ZEND_ACC_PUBLIC, NULL);
+	zend_string_release(const_MODE_SIMPLE_name);
+
+	zval const_MODE_GREEDY_value;
+	ZVAL_LONG(&const_MODE_GREEDY_value, 1);
+	zend_string *const_MODE_GREEDY_name = zend_string_init_interned("MODE_GREEDY", sizeof("MODE_GREEDY") - 1, 1);
+	zend_declare_class_constant_ex(class_entry, const_MODE_GREEDY_name, &const_MODE_GREEDY_value, ZEND_ACC_PUBLIC, NULL);
+	zend_string_release(const_MODE_GREEDY_name);
+
+	zval const_MODE_POLYGON_value;
+	ZVAL_LONG(&const_MODE_POLYGON_value, 2);
+	zend_string *const_MODE_POLYGON_name = zend_string_init_interned("MODE_POLYGON", sizeof("MODE_POLYGON") - 1, 1);
+	zend_declare_class_constant_ex(class_entry, const_MODE_POLYGON_name, &const_MODE_POLYGON_value, ZEND_ACC_PUBLIC, NULL);
+	zend_string_release(const_MODE_POLYGON_name);
+
+	zval property_index_default_value;
+	ZVAL_UNDEF(&property_index_default_value);
+	zend_string *property_index_name = zend_string_init("index", sizeof("index") - 1, 1);
+	zend_declare_typed_property(class_entry, property_index_name, &property_index_default_value, ZEND_ACC_PUBLIC|ZEND_ACC_READONLY, NULL, (zend_type) ZEND_TYPE_INIT_MASK(MAY_BE_LONG));
+	zend_string_release(property_index_name);
+
+	zval property_sizeX_default_value;
+	ZVAL_UNDEF(&property_sizeX_default_value);
+	zend_string *property_sizeX_name = zend_string_init("sizeX", sizeof("sizeX") - 1, 1);
+	zend_declare_typed_property(class_entry, property_sizeX_name, &property_sizeX_default_value, ZEND_ACC_PUBLIC|ZEND_ACC_READONLY, NULL, (zend_type) ZEND_TYPE_INIT_MASK(MAY_BE_LONG));
+	zend_string_release(property_sizeX_name);
+
+	zval property_sizeY_default_value;
+	ZVAL_UNDEF(&property_sizeY_default_value);
+	zend_string *property_sizeY_name = zend_string_init("sizeY", sizeof("sizeY") - 1, 1);
+	zend_declare_typed_property(class_entry, property_sizeY_name, &property_sizeY_default_value, ZEND_ACC_PUBLIC|ZEND_ACC_READONLY, NULL, (zend_type) ZEND_TYPE_INIT_MASK(MAY_BE_LONG));
+	zend_string_release(property_sizeY_name);
+
+	zval property_sizeZ_default_value;
+	ZVAL_UNDEF(&property_sizeZ_default_value);
+	zend_string *property_sizeZ_name = zend_string_init("sizeZ", sizeof("sizeZ") - 1, 1);
+	zend_declare_typed_property(class_entry, property_sizeZ_name, &property_sizeZ_default_value, ZEND_ACC_PUBLIC|ZEND_ACC_READONLY, NULL, (zend_type) ZEND_TYPE_INIT_MASK(MAY_BE_LONG));
+	zend_string_release(property_sizeZ_name);
+
+	zval property_voxelHash_default_value;
+	ZVAL_UNDEF(&property_voxelHash_default_value);
+	zend_string *property_voxelHash_name = zend_string_init("voxelHash", sizeof("voxelHash") - 1, 1);
+	zend_declare_typed_property(class_entry, property_voxelHash_name, &property_voxelHash_default_value, ZEND_ACC_PUBLIC|ZEND_ACC_READONLY, NULL, (zend_type) ZEND_TYPE_INIT_MASK(MAY_BE_LONG));
+	zend_string_release(property_voxelHash_name);
+
+	zval property_voxelCount_default_value;
+	ZVAL_UNDEF(&property_voxelCount_default_value);
+	zend_string *property_voxelCount_name = zend_string_init("voxelCount", sizeof("voxelCount") - 1, 1);
+	zend_declare_typed_property(class_entry, property_voxelCount_name, &property_voxelCount_default_value, ZEND_ACC_PUBLIC|ZEND_ACC_READONLY, NULL, (zend_type) ZEND_TYPE_INIT_MASK(MAY_BE_LONG));
+	zend_string_release(property_voxelCount_name);
+
+	zval property_voxelData_default_value;
+	ZVAL_UNDEF(&property_voxelData_default_value);
+	zend_string *property_voxelData_name = zend_string_init("voxelData", sizeof("voxelData") - 1, 1);
+	zend_string *property_voxelData_class_GL_Buffer_UByteBuffer = zend_string_init("GL\\Buffer\\\125ByteBuffer", sizeof("GL\\Buffer\\\125ByteBuffer")-1, 1);
+	zend_declare_typed_property(class_entry, property_voxelData_name, &property_voxelData_default_value, ZEND_ACC_PUBLIC|ZEND_ACC_READONLY, NULL, (zend_type) ZEND_TYPE_INIT_CLASS(property_voxelData_class_GL_Buffer_UByteBuffer, 0, MAY_BE_NULL));
+	zend_string_release(property_voxelData_name);
+
+	zval property_resource_default_value;
+	ZVAL_UNDEF(&property_resource_default_value);
+	zend_string *property_resource_name = zend_string_init("resource", sizeof("resource") - 1, 1);
+	zend_string *property_resource_class_GL_Geometry_VoxFileParser_Resource = zend_string_init("GL\\Geometry\\VoxFileParser\\Resource", sizeof("GL\\Geometry\\VoxFileParser\\Resource")-1, 1);
+	zend_declare_typed_property(class_entry, property_resource_name, &property_resource_default_value, ZEND_ACC_PUBLIC|ZEND_ACC_READONLY, NULL, (zend_type) ZEND_TYPE_INIT_CLASS(property_resource_class_GL_Geometry_VoxFileParser_Resource, 0, MAY_BE_NULL));
+	zend_string_release(property_resource_name);
+
+	return class_entry;
+}
+
+static zend_class_entry *register_class_GL_Geometry_VoxFileParser_Instance(void)
+{
+	zend_class_entry ce, *class_entry;
+
+	INIT_NS_CLASS_ENTRY(ce, "GL\\Geometry\\VoxFileParser", "Instance", class_GL_Geometry_VoxFileParser_Instance_methods);
+	class_entry = zend_register_internal_class_ex(&ce, NULL);
+
+	zval property_index_default_value;
+	ZVAL_UNDEF(&property_index_default_value);
+	zend_string *property_index_name = zend_string_init("index", sizeof("index") - 1, 1);
+	zend_declare_typed_property(class_entry, property_index_name, &property_index_default_value, ZEND_ACC_PUBLIC|ZEND_ACC_READONLY, NULL, (zend_type) ZEND_TYPE_INIT_MASK(MAY_BE_LONG));
+	zend_string_release(property_index_name);
+
+	zval property_name_default_value;
+	ZVAL_UNDEF(&property_name_default_value);
+	zend_string *property_name_name = zend_string_init("name", sizeof("name") - 1, 1);
+	zend_declare_typed_property(class_entry, property_name_name, &property_name_default_value, ZEND_ACC_PUBLIC|ZEND_ACC_READONLY, NULL, (zend_type) ZEND_TYPE_INIT_MASK(MAY_BE_STRING|MAY_BE_NULL));
+	zend_string_release(property_name_name);
+
+	zval property_modelIndex_default_value;
+	ZVAL_UNDEF(&property_modelIndex_default_value);
+	zend_string *property_modelIndex_name = zend_string_init("modelIndex", sizeof("modelIndex") - 1, 1);
+	zend_declare_typed_property(class_entry, property_modelIndex_name, &property_modelIndex_default_value, ZEND_ACC_PUBLIC|ZEND_ACC_READONLY, NULL, (zend_type) ZEND_TYPE_INIT_MASK(MAY_BE_LONG));
+	zend_string_release(property_modelIndex_name);
+
+	zval property_layerIndex_default_value;
+	ZVAL_UNDEF(&property_layerIndex_default_value);
+	zend_string *property_layerIndex_name = zend_string_init("layerIndex", sizeof("layerIndex") - 1, 1);
+	zend_declare_typed_property(class_entry, property_layerIndex_name, &property_layerIndex_default_value, ZEND_ACC_PUBLIC|ZEND_ACC_READONLY, NULL, (zend_type) ZEND_TYPE_INIT_MASK(MAY_BE_LONG));
+	zend_string_release(property_layerIndex_name);
+
+	zval property_groupIndex_default_value;
+	ZVAL_UNDEF(&property_groupIndex_default_value);
+	zend_string *property_groupIndex_name = zend_string_init("groupIndex", sizeof("groupIndex") - 1, 1);
+	zend_declare_typed_property(class_entry, property_groupIndex_name, &property_groupIndex_default_value, ZEND_ACC_PUBLIC|ZEND_ACC_READONLY, NULL, (zend_type) ZEND_TYPE_INIT_MASK(MAY_BE_LONG));
+	zend_string_release(property_groupIndex_name);
+
+	zval property_hidden_default_value;
+	ZVAL_UNDEF(&property_hidden_default_value);
+	zend_string *property_hidden_name = zend_string_init("hidden", sizeof("hidden") - 1, 1);
+	zend_declare_typed_property(class_entry, property_hidden_name, &property_hidden_default_value, ZEND_ACC_PUBLIC|ZEND_ACC_READONLY, NULL, (zend_type) ZEND_TYPE_INIT_MASK(MAY_BE_BOOL));
+	zend_string_release(property_hidden_name);
+
+	zval property_transform_default_value;
+	ZVAL_UNDEF(&property_transform_default_value);
+	zend_string *property_transform_name = zend_string_init("transform", sizeof("transform") - 1, 1);
+	zend_string *property_transform_class_GL_Math_Mat4 = zend_string_init("GL\\Math\\Mat4", sizeof("GL\\Math\\Mat4")-1, 1);
+	zend_declare_typed_property(class_entry, property_transform_name, &property_transform_default_value, ZEND_ACC_PUBLIC|ZEND_ACC_READONLY, NULL, (zend_type) ZEND_TYPE_INIT_CLASS(property_transform_class_GL_Math_Mat4, 0, MAY_BE_NULL));
+	zend_string_release(property_transform_name);
+
+	zval property_localTransform_default_value;
+	ZVAL_UNDEF(&property_localTransform_default_value);
+	zend_string *property_localTransform_name = zend_string_init("localTransform", sizeof("localTransform") - 1, 1);
+	zend_string *property_localTransform_class_GL_Math_Mat4 = zend_string_init("GL\\Math\\Mat4", sizeof("GL\\Math\\Mat4")-1, 1);
+	zend_declare_typed_property(class_entry, property_localTransform_name, &property_localTransform_default_value, ZEND_ACC_PUBLIC|ZEND_ACC_READONLY, NULL, (zend_type) ZEND_TYPE_INIT_CLASS(property_localTransform_class_GL_Math_Mat4, 0, MAY_BE_NULL));
+	zend_string_release(property_localTransform_name);
+
+	return class_entry;
+}
+
+static zend_class_entry *register_class_GL_Geometry_VoxFileParser_Layer(void)
+{
+	zend_class_entry ce, *class_entry;
+
+	INIT_NS_CLASS_ENTRY(ce, "GL\\Geometry\\VoxFileParser", "Layer", class_GL_Geometry_VoxFileParser_Layer_methods);
+	class_entry = zend_register_internal_class_ex(&ce, NULL);
+
+	zval property_index_default_value;
+	ZVAL_UNDEF(&property_index_default_value);
+	zend_string *property_index_name = zend_string_init("index", sizeof("index") - 1, 1);
+	zend_declare_typed_property(class_entry, property_index_name, &property_index_default_value, ZEND_ACC_PUBLIC|ZEND_ACC_READONLY, NULL, (zend_type) ZEND_TYPE_INIT_MASK(MAY_BE_LONG));
+	zend_string_release(property_index_name);
+
+	zval property_name_default_value;
+	ZVAL_UNDEF(&property_name_default_value);
+	zend_string *property_name_name = zend_string_init("name", sizeof("name") - 1, 1);
+	zend_declare_typed_property(class_entry, property_name_name, &property_name_default_value, ZEND_ACC_PUBLIC|ZEND_ACC_READONLY, NULL, (zend_type) ZEND_TYPE_INIT_MASK(MAY_BE_STRING|MAY_BE_NULL));
+	zend_string_release(property_name_name);
+
+	zval property_color_default_value;
+	ZVAL_UNDEF(&property_color_default_value);
+	zend_string *property_color_name = zend_string_init("color", sizeof("color") - 1, 1);
+	zend_string *property_color_class_GL_Math_Vec4 = zend_string_init("GL\\Math\\Vec4", sizeof("GL\\Math\\Vec4")-1, 1);
+	zend_declare_typed_property(class_entry, property_color_name, &property_color_default_value, ZEND_ACC_PUBLIC|ZEND_ACC_READONLY, NULL, (zend_type) ZEND_TYPE_INIT_CLASS(property_color_class_GL_Math_Vec4, 0, MAY_BE_NULL));
+	zend_string_release(property_color_name);
+
+	zval property_hidden_default_value;
+	ZVAL_UNDEF(&property_hidden_default_value);
+	zend_string *property_hidden_name = zend_string_init("hidden", sizeof("hidden") - 1, 1);
+	zend_declare_typed_property(class_entry, property_hidden_name, &property_hidden_default_value, ZEND_ACC_PUBLIC|ZEND_ACC_READONLY, NULL, (zend_type) ZEND_TYPE_INIT_MASK(MAY_BE_BOOL));
+	zend_string_release(property_hidden_name);
+
+	return class_entry;
+}
+
+static zend_class_entry *register_class_GL_Geometry_VoxFileParser_Group(void)
+{
+	zend_class_entry ce, *class_entry;
+
+	INIT_NS_CLASS_ENTRY(ce, "GL\\Geometry\\VoxFileParser", "Group", class_GL_Geometry_VoxFileParser_Group_methods);
+	class_entry = zend_register_internal_class_ex(&ce, NULL);
+
+	zval property_index_default_value;
+	ZVAL_UNDEF(&property_index_default_value);
+	zend_string *property_index_name = zend_string_init("index", sizeof("index") - 1, 1);
+	zend_declare_typed_property(class_entry, property_index_name, &property_index_default_value, ZEND_ACC_PUBLIC|ZEND_ACC_READONLY, NULL, (zend_type) ZEND_TYPE_INIT_MASK(MAY_BE_LONG));
+	zend_string_release(property_index_name);
+
+	zval property_name_default_value;
+	ZVAL_UNDEF(&property_name_default_value);
+	zend_string *property_name_name = zend_string_init("name", sizeof("name") - 1, 1);
+	zend_declare_typed_property(class_entry, property_name_name, &property_name_default_value, ZEND_ACC_PUBLIC|ZEND_ACC_READONLY, NULL, (zend_type) ZEND_TYPE_INIT_MASK(MAY_BE_STRING|MAY_BE_NULL));
+	zend_string_release(property_name_name);
+
+	zval property_parentGroupIndex_default_value;
+	ZVAL_UNDEF(&property_parentGroupIndex_default_value);
+	zend_string *property_parentGroupIndex_name = zend_string_init("parentGroupIndex", sizeof("parentGroupIndex") - 1, 1);
+	zend_declare_typed_property(class_entry, property_parentGroupIndex_name, &property_parentGroupIndex_default_value, ZEND_ACC_PUBLIC|ZEND_ACC_READONLY, NULL, (zend_type) ZEND_TYPE_INIT_MASK(MAY_BE_LONG));
+	zend_string_release(property_parentGroupIndex_name);
+
+	zval property_layerIndex_default_value;
+	ZVAL_UNDEF(&property_layerIndex_default_value);
+	zend_string *property_layerIndex_name = zend_string_init("layerIndex", sizeof("layerIndex") - 1, 1);
+	zend_declare_typed_property(class_entry, property_layerIndex_name, &property_layerIndex_default_value, ZEND_ACC_PUBLIC|ZEND_ACC_READONLY, NULL, (zend_type) ZEND_TYPE_INIT_MASK(MAY_BE_LONG));
+	zend_string_release(property_layerIndex_name);
+
+	zval property_hidden_default_value;
+	ZVAL_UNDEF(&property_hidden_default_value);
+	zend_string *property_hidden_name = zend_string_init("hidden", sizeof("hidden") - 1, 1);
+	zend_declare_typed_property(class_entry, property_hidden_name, &property_hidden_default_value, ZEND_ACC_PUBLIC|ZEND_ACC_READONLY, NULL, (zend_type) ZEND_TYPE_INIT_MASK(MAY_BE_BOOL));
+	zend_string_release(property_hidden_name);
+
+	zval property_transform_default_value;
+	ZVAL_UNDEF(&property_transform_default_value);
+	zend_string *property_transform_name = zend_string_init("transform", sizeof("transform") - 1, 1);
+	zend_string *property_transform_class_GL_Math_Mat4 = zend_string_init("GL\\Math\\Mat4", sizeof("GL\\Math\\Mat4")-1, 1);
+	zend_declare_typed_property(class_entry, property_transform_name, &property_transform_default_value, ZEND_ACC_PUBLIC|ZEND_ACC_READONLY, NULL, (zend_type) ZEND_TYPE_INIT_CLASS(property_transform_class_GL_Math_Mat4, 0, MAY_BE_NULL));
+	zend_string_release(property_transform_name);
+
+	zval property_localTransform_default_value;
+	ZVAL_UNDEF(&property_localTransform_default_value);
+	zend_string *property_localTransform_name = zend_string_init("localTransform", sizeof("localTransform") - 1, 1);
+	zend_string *property_localTransform_class_GL_Math_Mat4 = zend_string_init("GL\\Math\\Mat4", sizeof("GL\\Math\\Mat4")-1, 1);
+	zend_declare_typed_property(class_entry, property_localTransform_name, &property_localTransform_default_value, ZEND_ACC_PUBLIC|ZEND_ACC_READONLY, NULL, (zend_type) ZEND_TYPE_INIT_CLASS(property_localTransform_class_GL_Math_Mat4, 0, MAY_BE_NULL));
+	zend_string_release(property_localTransform_name);
 
 	return class_entry;
 }
