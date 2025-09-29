@@ -124,7 +124,10 @@ if test "$PHP_GLFW" != "no"; then
     phpglfw_buffer.c \
     phpglfw_texture.c \
     phpglfw_objparser.c \
+    phpglfw_voxparser.c \
+    ogt_vox_c_wrapper.cpp \
     phpglfw_vg.c \
+    phpglfw_audio.c \
     vendor/fastobj/fast_obj.c \
     vendor/glad/src/glad.c \
     vendor/nanovg/src/nanovg.c"
@@ -140,7 +143,9 @@ if test "$PHP_GLFW" != "no"; then
   AC_DEFINE(HAVE_GLFW, 1, [Whether you have glfw])
   PHP_SUBST(GLFW_SHARED_LIBADD)
     
+  PHP_REQUIRE_CXX()
   PHP_NEW_EXTENSION(glfw, $PHPGLFW_SRC_FILES $GLFWLIB_SRC_FILES, $ext_shared, , $GLFWPLATTFORMARGS -Wall)
+
 
   PHP_ADD_INCLUDE([$ext_srcdir])
   PHP_ADD_INCLUDE([$ext_srcdir/vendor/glad/include])
@@ -148,15 +153,21 @@ if test "$PHP_GLFW" != "no"; then
   PHP_ADD_INCLUDE([$ext_srcdir/vendor/stb])
   PHP_ADD_INCLUDE([$ext_srcdir/vendor/fastobj])
   PHP_ADD_INCLUDE([$ext_srcdir/vendor/nanovg/src])
+  PHP_ADD_INCLUDE([$ext_srcdir/vendor/miniaudio])
+  PHP_ADD_INCLUDE([$ext_srcdir/vendor/opengametools/src])
   PHP_ADD_INCLUDE([$GLFW_DIR/include])
 
   PHP_INSTALL_HEADERS([ext/glfw], [*.h \
         vendor/glad/include/glad/*.h \
+        vendor/glad/include/KHR/*.h \
         vendor/cvector/*.h \
         vendor/stb/*.h \
         vendor/fastobj/*.h \
-        vendor/nanovg/src/*.h])
-
+        vendor/nanovg/src/*.h \
+        vendor/miniaudio/*.h \
+        vendor/opengametools/src/*.h \
+        vendor/glfw/include/GLFW/*.h])
+    
   PHP_ADD_BUILD_DIR($ext_builddir/src)
 
 fi

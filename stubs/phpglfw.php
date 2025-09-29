@@ -2253,6 +2253,205 @@ namespace GL\Geometry
     }
 }
 
+namespace GL\Geometry\VoxFileParser
+{
+    /** @internal Vox parser scene resource */
+    class Resource {}
+
+    /**
+     * Palette helper that owns a 256-entry RGBA byte buffer and exposes convenience helpers
+     * for manipulating MagicaVoxel color data.
+     */
+    class Palette
+    {
+        /**
+         * @param ?\GL\Buffer\UByteBuffer $buffer Optional existing buffer to wrap. When omitted a default palette is created.
+         */
+        public function __construct(?\GL\Buffer\UByteBuffer $buffer = null) {}
+
+        /**
+         * Retrieve the underlying RGBA byte buffer (256 * 4 entries).
+         */
+        public function getBuffer() : \GL\Buffer\UByteBuffer {}
+
+        /**
+         * Assign a color at the given palette index using a Vec4 color.
+         */
+        public function setColor(int $index, \GL\Math\Vec4 $color) : void {}
+
+        /**
+         * Assign a color at the given palette index using individual float components.
+         * Components are expected in the 0..1 range.
+         */
+        public function setColorf(int $index, float $r, float $g, float $b, float $a = 1.0) : void {}
+
+        /**
+         * Fetch a color at the given palette index as a Vec4 object in the 0..1 range.
+         */
+        public function getColor(int $index) : \GL\Math\Vec4 {}
+
+        /**
+         * Replace the palette contents from another buffer. Accepts RGBA byte or float layouts.
+         */
+        public function replaceFromBuffer(\GL\Buffer\UByteBuffer|\GL\Buffer\FloatBuffer $buffer) : void {}
+
+        /**
+         * Replace palette entries from an array of colors. Each color may be [r, g, b] or [r, g, b, a] in 0..1 range.
+         *
+         * @param array<int, array{0:float,1:float,2:float,3?:float}> $colors
+         */
+        public function replaceFromArray(array $colors) : void {}
+
+        /**
+         * Reset the palette to the default MagicaVoxel color table.
+         */
+        public function fillDefault() : void {}
+    }
+
+    /**
+     * Represents a voxel model parsed from a MagicaVoxel scene.
+     */
+    class Model
+    {
+        /** @var int */
+        public const MODE_SIMPLE = 0;
+        /** @var int */
+        public const MODE_GREEDY = 1;
+        /** @var int */
+        public const MODE_POLYGON = 2;
+
+        /** Sequential model index inside the scene */
+        public readonly int $index;
+        /** Grid width */
+        public readonly int $sizeX;
+        /** Grid height */
+        public readonly int $sizeY;
+        /** Grid depth */
+        public readonly int $sizeZ;
+        /** Hash identifying the voxel contents */
+        public readonly int $voxelHash;
+        /** Number of voxels contained in the grid */
+        public readonly int $voxelCount;
+        /** Raw voxel palette indices */
+        public readonly ?\GL\Buffer\UByteBuffer $voxelData;
+        /** Back reference to parser resource */
+        public readonly ?Resource $resource;
+
+        public function __construct() {}
+
+        /**
+         * Generate a triangle mesh for this voxel grid.
+         *
+         * @param \GL\Buffer\FloatBuffer $vertices Destination buffer for vertex attributes (position, normal, colors).
+         * @param \GL\Buffer\UIntBuffer  $indices Destination buffer for triangle indices.
+         * @param Palette|null $palette Optional palette override or editor instance.
+         * @param string $mode Mesh generation mode name (simple, greedy, polygon).
+         * @param array{
+         *     colors?: 'rgb'|'rgba'|'none',
+         *     includePaletteIndex?: bool,
+         *     origin?: 'corner'|'center',
+         *     originOffset?: array<int, float>,
+         *     stats?: array{vertexCount:int,indexCount:int}|null
+         * }|null $options Additional mesh generation controls. When provided, this array receives a `stats` entry on success.
+         *
+         * @return bool True on success, false otherwise.
+         */
+        public function generateTriangleMesh(
+            \GL\Buffer\FloatBuffer $vertices,
+            \GL\Buffer\UIntBuffer $indices,
+            ?Palette $palette = null,
+            string $mode = 'simple',
+            ?array $options = null
+        ) : bool {}
+
+        /** Retrieve the palette index stored at the given voxel coordinate. */
+        public function getVoxel(int $x, int $y, int $z) : ?int {}
+    }
+
+    /** Placement of a voxel model in the scene */
+    class Instance
+    {
+        /** Sequential instance index */
+        public readonly int $index;
+        public readonly ?string $name;
+        public readonly int $modelIndex;
+        public readonly int $layerIndex;
+        public readonly int $groupIndex;
+        public readonly bool $hidden;
+        /** Full transform matrix in scene space */
+        public readonly ?\GL\Math\Mat4 $transform;
+        /** Local transform relative to the parent group */
+        public readonly ?\GL\Math\Mat4 $localTransform;
+
+        public function __construct() {}
+    }
+
+    /** Scene layer metadata */
+    class Layer
+    {
+        /** Sequential layer index */
+        public readonly int $index;
+        public readonly ?string $name;
+        public readonly ?\GL\Math\Vec4 $color;
+        public readonly bool $hidden;
+
+        public function __construct() {}
+    }
+
+    /** Group hierarchy entry */
+    class Group
+    {
+        /** Sequential group index */
+        public readonly int $index;
+        public readonly ?string $name;
+        public readonly int $parentGroupIndex;
+        public readonly int $layerIndex;
+        public readonly bool $hidden;
+        /** Full transform matrix in scene space */
+        public readonly ?\GL\Math\Mat4 $transform;
+        /** Local transform relative to the parent group */
+        public readonly ?\GL\Math\Mat4 $localTransform;
+
+        public function __construct() {}
+    }
+}
+
+namespace GL\Geometry
+{
+    /**
+     * MagicaVoxel file parser that exposes scene data and mesh generation utilities.
+     */
+    class VoxFileParser
+    {
+        /** @var ?VoxFileParser\Resource internal parser resource */
+        public readonly ?VoxFileParser\Resource $resource;
+        /** @var array<int, VoxFileParser\Model> loaded voxel models */
+        public readonly array $models;
+        /** @var array<int, VoxFileParser\Instance> placed instances */
+        public readonly array $instances;
+        /** @var array<int, VoxFileParser\Layer> scene layers */
+        public readonly array $layers;
+        /** @var array<int, VoxFileParser\Group> scene groups */
+        public readonly array $groups;
+        /** @var ?VoxFileParser\Palette Palette helper providing color utilities */
+        public readonly ?VoxFileParser\Palette $palette;
+        /** Total number of voxel models */
+        public readonly int $modelCount;
+        /** Total number of instances */
+        public readonly int $instanceCount;
+        /** Total number of layers */
+        public readonly int $layerCount;
+        /** Total number of groups */
+        public readonly int $groupCount;
+
+        public function __construct(string $file) {}
+
+        public function getModel(int $modelIndex) : ?VoxFileParser\Model {}
+
+        public function getPaletteColor(int $colorIndex) : ?\GL\Math\Vec4 {}
+    }
+}
+
 namespace GL\Texture
 {
     /**
@@ -2527,6 +2726,293 @@ namespace GL
          * @param int $octaves The number of octaves to sum (default `6`).
          */
         public static function islandFill2D(\GL\Buffer\FloatBuffer $buffer, int $width, int $height, int $islandseed = 42, float $scale = 1.0, float $islandmix = 0.7, float $lacunarity = 2.0, float $gain = 0.5, int $octaves = 6) : void {}
+    }
+}
+
+namespace GL\Audio
+{
+    /**
+     * The Engine class is the main audio engine that manages all audio playback.
+     * It provides methods for loading sounds, controlling master volume, and 3D audio positioning.
+     */
+    class Engine
+    {
+        /**
+         * Creates a new audio engine instance.
+         * 
+         * @param array $options Optional configuration array with the following keys:
+         *   - listenerCount: int - Number of listeners (1 to 4, default is system dependent)
+         *   - channels: int - Number of output channels (0 = use device default)
+         *   - sampleRate: int - Sample rate in Hz (0 = use device default)
+         *   - periodSizeInFrames: int - Period size in frames for low-latency (0 = use default)
+         *   - periodSizeInMilliseconds: int - Period size in milliseconds (used if periodSizeInFrames is 0)
+         *   - gainSmoothTimeInFrames: int - Smoothing time for gain changes in frames
+         *   - gainSmoothTimeInMilliseconds: int - Smoothing time for gain changes in ms
+         *   - defaultVolumeSmoothTimeInPCMFrames: int - Default volume smoothing time
+         *   - noAutoStart: bool - Don't start the engine automatically (false by default)
+         *   - monoExpansionMode: int - How to expand mono to multi-channel (use GL_MA_MONO_EXPANSION_MODE_* constants)
+         */
+        public function __construct(array $options = []) {}
+
+        /**
+         * Starts the audio engine.
+         * 
+         * @return void
+         * @throws Error if the engine fails to start
+         */
+        public function start() : void {}
+
+        /**
+         * Stops the audio engine.
+         * 
+         * @return void
+         * @throws Error if the engine fails to stop
+         */
+        public function stop() : void {}
+
+        /**
+         * Loads a sound from a file path.
+         * 
+         * @param string $filePath The path to the audio file to load.
+         * @return Sound The loaded sound object.
+         */
+        public function load(string $filePath) : Sound {}
+        
+        /**
+         * Loads a sound from a file path.
+         * Alias for load() method.
+         * 
+         * @param string $filePath The path to the audio file to load.
+         * @return Sound The loaded sound object.
+         */
+        public function soundFromDisk(string $filePath) : Sound {}
+
+        /**
+         * Sets the master volume for all sounds.
+         * 
+         * @param float $volume The master volume level (0.0 to 1.0).
+         * @return void
+         */
+        public function setMasterVolume(float $volume) : void {}
+
+        /**
+         * Gets the current master volume.
+         * 
+         * @return float The current master volume level.
+         */
+        public function getMasterVolume() : float {}
+
+        /**
+         * Sets the listener position for 3D audio.
+         * 
+         * @param Vec3 $position The position vector of the listener.
+         * @return void
+         */
+        public function setListenerPosition(\GL\Math\Vec3 $position) : void {}
+
+        /**
+         * Sets the listener direction for 3D audio.
+         * 
+         * @param Vec3 $direction The direction vector the listener is facing.
+         * @return void
+         */
+        public function setListenerDirection(\GL\Math\Vec3 $direction) : void {}
+
+        /**
+         * Sets the listener world up vector for 3D audio.
+         * 
+         * @param Vec3 $worldUp The up vector defining the listener's orientation.
+         * @return void
+         */
+        public function setListenerWorldUp(\GL\Math\Vec3 $worldUp) : void {}
+    }
+
+    /**
+     * The Sound class represents an individual audio sound that can be played, paused, and controlled.
+     */
+    class Sound
+    {
+        /**
+         * Plays the sound.
+         * 
+         * @return void
+         */
+        public function play() : void {}
+
+        /**
+         * Stops the sound and resets it to the beginning.
+         * 
+         * @return void
+         */
+        public function stop() : void {}
+
+        /**
+         * Sets the volume of the sound.
+         * 
+         * @param float $volume The volume level (0.0 to 1.0).
+         * @return void
+         */
+        public function setVolume(float $volume) : void {}
+
+        /**
+         * Gets the current volume of the sound.
+         * 
+         * @return float The current volume level.
+         */
+        public function getVolume() : float {}
+
+        /**
+         * Sets the pitch of the sound.
+         * 
+         * @param float $pitch The pitch multiplier (1.0 = normal pitch).
+         * @return void
+         */
+        public function setPitch(float $pitch) : void {}
+
+        /**
+         * Gets the current pitch of the sound.
+         * 
+         * @return float The current pitch multiplier.
+         */
+        public function getPitch() : float {}
+
+        /**
+         * Sets whether the sound should loop.
+         * 
+         * @param bool $loop Whether to loop the sound.
+         * @return void
+         */
+        public function setLoop(bool $loop) : void {}
+
+        /**
+         * Gets whether the sound is set to loop.
+         * 
+         * @return bool Whether the sound is set to loop.
+         */
+        public function getLoop() : bool {}
+
+        /**
+         * Sets the pan (stereo positioning) of the sound.
+         * 
+         * @param float $pan The pan value (-1.0 = left, 0.0 = center, 1.0 = right).
+         * @return void
+         */
+        public function setPan(float $pan) : void {}
+
+        /**
+         * Gets the current pan of the sound.
+         * 
+         * @return float The current pan value.
+         */
+        public function getPan() : float {}
+
+        /**
+         * Sets the 3D position of the sound in world space.
+         * 
+         * @param Vec3 $position The position vector (x, y, z).
+         * @return void
+         */
+        public function setPosition(\GL\Math\Vec3 $position) : void {}
+
+        /**
+         * Gets the current 3D position of the sound.
+         * 
+         * @return Vec3 The current position vector.
+         */
+        public function getPosition() : \GL\Math\Vec3 {}
+
+        /**
+         * Sets the minimum distance for 3D audio attenuation.
+         * 
+         * @param float $distance The minimum distance.
+         * @return void
+         */
+        public function setMinDistance(float $distance) : void {}
+
+        /**
+         * Gets the minimum distance for 3D audio attenuation.
+         * 
+         * @return float The minimum distance.
+         */
+        public function getMinDistance() : float {}
+
+        /**
+         * Sets the maximum distance for 3D audio rolloff.
+         * 
+         * @param float $distance The maximum distance.
+         * @return void
+         */
+        public function setMaxDistance(float $distance) : void {}
+
+        /**
+         * Gets the maximum distance for 3D audio rolloff.
+         * 
+         * @return float The maximum distance.
+         */
+        public function getMaxDistance() : float {}
+
+        /**
+         * Sets the direction of the sound for directional audio effects.
+         * 
+         * @param Vec3 $direction The direction vector.
+         * @return void
+         */
+        public function setDirection(\GL\Math\Vec3 $direction) : void {}
+
+        /**
+         * Gets the direction of the sound.
+         * 
+         * @return Vec3 The direction vector.
+         */
+        public function getDirection() : \GL\Math\Vec3 {}
+
+        /**
+         * Sets the velocity of the sound for Doppler effects.
+         * 
+         * @param Vec3 $velocity The velocity vector.
+         * @return void
+         */
+        public function setVelocity(\GL\Math\Vec3 $velocity) : void {}
+
+        /**
+         * Gets the velocity of the sound.
+         * 
+         * @return Vec3 The velocity vector.
+         */
+        public function getVelocity() : \GL\Math\Vec3 {}
+
+        /**
+         * Fades the sound in from 0 to full volume over the specified duration.
+         * 
+         * @param float $duration The fade duration in seconds.
+         * @return void
+         */
+        public function fadeIn(float $duration) : void {}
+
+        /**
+         * Fades the sound out from current volume to 0 over the specified duration.
+         * 
+         * @param float $duration The fade duration in seconds.
+         * @return void
+         */
+        public function fadeOut(float $duration) : void {}
+
+        /**
+         * Sets a custom fade from one volume to another over the specified duration.
+         * 
+         * @param float $fromVolume The starting volume (0.0 to 1.0).
+         * @param float $toVolume The target volume (0.0 to 1.0).
+         * @param float $duration The fade duration in seconds.
+         * @return void
+         */
+        public function setFade(float $fromVolume, float $toVolume, float $duration) : void {}
+
+        /**
+         * Gets the current fade volume.
+         * 
+         * @return float The current fade volume.
+         */
+        public function getCurrentFadeVolume() : float {}
     }
 }
 
@@ -10859,6 +11345,67 @@ namespace {
      * @return void
      */ 
     function glBufferData(int $target, \GL\Buffer\BufferInterface $buffer, int $usage) : void {}
+ 
+    /**
+     * render primitives from array data using element indices
+     * 
+     * Example: 
+     * ```php
+     * // define vertices for a rectangle using two triangles
+     * $vertices = new GL\Buffer\FloatBuffer([
+     *     // positions     // colors
+     *     0.5,  0.5, 0.0,  1.0, 0.0, 0.0,  // top right
+     *     0.5, -0.5, 0.0,  0.0, 1.0, 0.0,  // bottom right
+     *    -0.5, -0.5, 0.0,  0.0, 0.0, 1.0,  // bottom left
+     *    -0.5,  0.5, 0.0,  1.0, 1.0, 0.0   // top left 
+     * ]);
+     * 
+     * // define indices to form two triangles
+     * $indices = new GL\Buffer\UIntBuffer([
+     *     0, 1, 3,  // first triangle
+     *     1, 2, 3   // second triangle
+     * ]);
+     * 
+     * glGenVertexArrays(1, $VAO);
+     * glGenBuffers(1, $VBO);
+     * glGenBuffers(1, $EBO);
+     * 
+     * glBindVertexArray($VAO);
+     * glBindBuffer(GL_ARRAY_BUFFER, $VBO);
+     * glBufferData(GL_ARRAY_BUFFER, $vertices, GL_STATIC_DRAW);
+     * 
+     * glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, $EBO);
+     * glBufferData(GL_ELEMENT_ARRAY_BUFFER, $indices, GL_STATIC_DRAW);
+     * 
+     * // ... set up vertex attributes ...
+     * 
+     * // draw the rectangle using indices
+     * glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+     * ```
+     * 
+     * @PHP-GLFW: In the PHP extension this method supports both buffer objects and
+     * integer offsets.
+     * When using an Element Array Buffer (bound to GL_ELEMENT_ARRAY_BUFFER), pass
+     * an integer offset.
+     * When drawing without binding an element buffer, pass a UIntBuffer,
+     * UShortBuffer, or UByteBuffer containing the indices.
+     * 
+     * @param int $mode Specifies what kind of primitives to render. Symbolic
+     * constants GL_POINTS, GL_LINE_STRIP, GL_LINE_LOOP, GL_LINES,
+     * GL_LINE_STRIP_ADJACENCY, GL_LINES_ADJACENCY, GL_TRIANGLE_STRIP,
+     * GL_TRIANGLE_FAN, GL_TRIANGLES, GL_TRIANGLE_STRIP_ADJACENCY,
+     * GL_TRIANGLES_ADJACENCY and GL_PATCHES are accepted.
+     * @param int $count Specifies the number of elements to be rendered.
+     * @param int $type Specifies the type of the values in indices. Must be one of
+     * GL_UNSIGNED_BYTE, GL_UNSIGNED_SHORT, or GL_UNSIGNED_INT.
+     * @param
+     * int|\GL\Buffer\UIntBuffer|\GL\Buffer\UShortBuffer|\GL\Buffer\UByteBuffer
+     * $indices Specifies a buffer object containing the indices, or an offset into
+     * the currently bound element array buffer.
+     * 
+     * @return void
+     */ 
+    function glDrawElements(int $mode, int $count, int $type, int|\GL\Buffer\UIntBuffer|\GL\Buffer\UShortBuffer|\GL\Buffer\UByteBuffer $indices) : void {}
  
     /**
      * Sets a matrix (mat4x4) uniform value to the current shader program.

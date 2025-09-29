@@ -37,7 +37,9 @@
 #include "phpglfw_buffer.h"
 #include "phpglfw_texture.h"
 #include "phpglfw_objparser.h"
+#include "phpglfw_voxparser.h"
 #include "phpglfw_vg.h"
+#include "phpglfw_audio.h"
 
 ZEND_DECLARE_MODULE_GLOBALS(glfw)
 
@@ -97,8 +99,14 @@ PHP_MINIT_FUNCTION(glfw)
     // object parser module
     phpglfw_register_objparser_module(INIT_FUNC_ARGS_PASSTHRU);
 
+    // voxel parser module
+    phpglfw_register_voxparser_module(INIT_FUNC_ARGS_PASSTHRU);
+
     // vg module
     phpglfw_register_vg_module(INIT_FUNC_ARGS_PASSTHRU);
+
+    // audio module
+    phpglfw_register_audio_module(INIT_FUNC_ARGS_PASSTHRU);
 
     return SUCCESS;
 }

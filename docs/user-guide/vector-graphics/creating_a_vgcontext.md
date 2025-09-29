@@ -8,7 +8,7 @@ _We are not going to discuss the details of creating a window and a context in t
 
 !!! question "PHP-GLFW already installed?"
 
-    Follow the **[installation guide](./installation/install-linux.md)** if you **haven't** installed the extension yet!
+    Follow the **[installation guide](./../../getting-started/installation/install-linux.md)** if you **haven't** installed the extension yet!
 
 
 <figure markdown>

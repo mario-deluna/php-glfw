@@ -26,6 +26,30 @@ class GLBufferDataAdjustment implements AdjustmentInterface
 if (Z_OBJCE_P(buffer_zval) == phpglfw_get_buffer_glfloat_ce()) {
     phpglfw_buffer_glfloat_object *obj_ptr = phpglfw_buffer_glfloat_objectptr_from_zobj_p(Z_OBJ_P(buffer_zval));
     glBufferData(target, sizeof(GLfloat) * cvector_size(obj_ptr->vec), obj_ptr->vec, usage);
+} else if (Z_OBJCE_P(buffer_zval) == phpglfw_get_buffer_gluint_ce()) {
+    phpglfw_buffer_gluint_object *obj_ptr = phpglfw_buffer_gluint_objectptr_from_zobj_p(Z_OBJ_P(buffer_zval));
+    glBufferData(target, sizeof(GLuint) * cvector_size(obj_ptr->vec), obj_ptr->vec, usage);
+} else if (Z_OBJCE_P(buffer_zval) == phpglfw_get_buffer_glint_ce()) {
+    phpglfw_buffer_glint_object *obj_ptr = phpglfw_buffer_glint_objectptr_from_zobj_p(Z_OBJ_P(buffer_zval));
+    glBufferData(target, sizeof(GLint) * cvector_size(obj_ptr->vec), obj_ptr->vec, usage);
+} else if (Z_OBJCE_P(buffer_zval) == phpglfw_get_buffer_glushort_ce()) {
+    phpglfw_buffer_glushort_object *obj_ptr = phpglfw_buffer_glushort_objectptr_from_zobj_p(Z_OBJ_P(buffer_zval));
+    glBufferData(target, sizeof(GLushort) * cvector_size(obj_ptr->vec), obj_ptr->vec, usage);
+} else if (Z_OBJCE_P(buffer_zval) == phpglfw_get_buffer_glshort_ce()) {
+    phpglfw_buffer_glshort_object *obj_ptr = phpglfw_buffer_glshort_objectptr_from_zobj_p(Z_OBJ_P(buffer_zval));
+    glBufferData(target, sizeof(GLshort) * cvector_size(obj_ptr->vec), obj_ptr->vec, usage);
+} else if (Z_OBJCE_P(buffer_zval) == phpglfw_get_buffer_glubyte_ce()) {
+    phpglfw_buffer_glubyte_object *obj_ptr = phpglfw_buffer_glubyte_objectptr_from_zobj_p(Z_OBJ_P(buffer_zval));
+    glBufferData(target, sizeof(GLubyte) * cvector_size(obj_ptr->vec), obj_ptr->vec, usage);
+} else if (Z_OBJCE_P(buffer_zval) == phpglfw_get_buffer_glbyte_ce()) {
+    phpglfw_buffer_glbyte_object *obj_ptr = phpglfw_buffer_glbyte_objectptr_from_zobj_p(Z_OBJ_P(buffer_zval));
+    glBufferData(target, sizeof(GLbyte) * cvector_size(obj_ptr->vec), obj_ptr->vec, usage);
+} else if (Z_OBJCE_P(buffer_zval) == phpglfw_get_buffer_glhalf_ce()) {
+    phpglfw_buffer_glhalf_object *obj_ptr = phpglfw_buffer_glhalf_objectptr_from_zobj_p(Z_OBJ_P(buffer_zval));
+    glBufferData(target, sizeof(GLhalf) * cvector_size(obj_ptr->vec), obj_ptr->vec, usage);
+} else if (Z_OBJCE_P(buffer_zval) == phpglfw_get_buffer_gldouble_ce()) {
+    phpglfw_buffer_gldouble_object *obj_ptr = phpglfw_buffer_gldouble_objectptr_from_zobj_p(Z_OBJ_P(buffer_zval));
+    glBufferData(target, sizeof(GLdouble) * cvector_size(obj_ptr->vec), obj_ptr->vec, usage);
 } else {
     zend_throw_error(NULL, "glBufferData: Invalid or unsupported buffer object given.");
 }

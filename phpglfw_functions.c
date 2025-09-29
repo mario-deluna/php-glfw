@@ -12246,8 +12246,64 @@ PHP_FUNCTION(glBufferData)
     if (Z_OBJCE_P(buffer_zval) == phpglfw_get_buffer_glfloat_ce()) {
         phpglfw_buffer_glfloat_object *obj_ptr = phpglfw_buffer_glfloat_objectptr_from_zobj_p(Z_OBJ_P(buffer_zval));
         glBufferData(target, sizeof(GLfloat) * cvector_size(obj_ptr->vec), obj_ptr->vec, usage);
+    } else if (Z_OBJCE_P(buffer_zval) == phpglfw_get_buffer_gluint_ce()) {
+        phpglfw_buffer_gluint_object *obj_ptr = phpglfw_buffer_gluint_objectptr_from_zobj_p(Z_OBJ_P(buffer_zval));
+        glBufferData(target, sizeof(GLuint) * cvector_size(obj_ptr->vec), obj_ptr->vec, usage);
+    } else if (Z_OBJCE_P(buffer_zval) == phpglfw_get_buffer_glint_ce()) {
+        phpglfw_buffer_glint_object *obj_ptr = phpglfw_buffer_glint_objectptr_from_zobj_p(Z_OBJ_P(buffer_zval));
+        glBufferData(target, sizeof(GLint) * cvector_size(obj_ptr->vec), obj_ptr->vec, usage);
+    } else if (Z_OBJCE_P(buffer_zval) == phpglfw_get_buffer_glushort_ce()) {
+        phpglfw_buffer_glushort_object *obj_ptr = phpglfw_buffer_glushort_objectptr_from_zobj_p(Z_OBJ_P(buffer_zval));
+        glBufferData(target, sizeof(GLushort) * cvector_size(obj_ptr->vec), obj_ptr->vec, usage);
+    } else if (Z_OBJCE_P(buffer_zval) == phpglfw_get_buffer_glshort_ce()) {
+        phpglfw_buffer_glshort_object *obj_ptr = phpglfw_buffer_glshort_objectptr_from_zobj_p(Z_OBJ_P(buffer_zval));
+        glBufferData(target, sizeof(GLshort) * cvector_size(obj_ptr->vec), obj_ptr->vec, usage);
+    } else if (Z_OBJCE_P(buffer_zval) == phpglfw_get_buffer_glubyte_ce()) {
+        phpglfw_buffer_glubyte_object *obj_ptr = phpglfw_buffer_glubyte_objectptr_from_zobj_p(Z_OBJ_P(buffer_zval));
+        glBufferData(target, sizeof(GLubyte) * cvector_size(obj_ptr->vec), obj_ptr->vec, usage);
+    } else if (Z_OBJCE_P(buffer_zval) == phpglfw_get_buffer_glbyte_ce()) {
+        phpglfw_buffer_glbyte_object *obj_ptr = phpglfw_buffer_glbyte_objectptr_from_zobj_p(Z_OBJ_P(buffer_zval));
+        glBufferData(target, sizeof(GLbyte) * cvector_size(obj_ptr->vec), obj_ptr->vec, usage);
+    } else if (Z_OBJCE_P(buffer_zval) == phpglfw_get_buffer_glhalf_ce()) {
+        phpglfw_buffer_glhalf_object *obj_ptr = phpglfw_buffer_glhalf_objectptr_from_zobj_p(Z_OBJ_P(buffer_zval));
+        glBufferData(target, sizeof(GLhalf) * cvector_size(obj_ptr->vec), obj_ptr->vec, usage);
+    } else if (Z_OBJCE_P(buffer_zval) == phpglfw_get_buffer_gldouble_ce()) {
+        phpglfw_buffer_gldouble_object *obj_ptr = phpglfw_buffer_gldouble_objectptr_from_zobj_p(Z_OBJ_P(buffer_zval));
+        glBufferData(target, sizeof(GLdouble) * cvector_size(obj_ptr->vec), obj_ptr->vec, usage);
     } else {
         zend_throw_error(NULL, "glBufferData: Invalid or unsupported buffer object given.");
+    };
+} 
+
+/**
+ * glDrawElements
+ */ 
+PHP_FUNCTION(glDrawElements)
+{
+    zend_long mode;
+    zend_long count;
+    zend_long type;
+    zval * indices;
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "lllz", &mode, &count, &type, &indices) == FAILURE) {
+        return;
+    }
+    if (Z_TYPE_P(indices) == IS_LONG) {
+        // indices is an offset (for use with element array buffer)
+        glDrawElements(mode, count, type, (void*)(uintptr_t)Z_LVAL_P(indices));
+    } else if (Z_OBJCE_P(indices) == phpglfw_get_buffer_gluint_ce()) {
+        // indices is a buffer object containing index data
+        phpglfw_buffer_gluint_object *obj_ptr = phpglfw_buffer_gluint_objectptr_from_zobj_p(Z_OBJ_P(indices));
+        glDrawElements(mode, count, type, obj_ptr->vec);
+    } else if (Z_OBJCE_P(indices) == phpglfw_get_buffer_glushort_ce()) {
+        // indices is a buffer object containing index data
+        phpglfw_buffer_glushort_object *obj_ptr = phpglfw_buffer_glushort_objectptr_from_zobj_p(Z_OBJ_P(indices));
+        glDrawElements(mode, count, type, obj_ptr->vec);
+    } else if (Z_OBJCE_P(indices) == phpglfw_get_buffer_glubyte_ce()) {
+        // indices is a buffer object containing index data
+        phpglfw_buffer_glubyte_object *obj_ptr = phpglfw_buffer_glubyte_objectptr_from_zobj_p(Z_OBJ_P(indices));
+        glDrawElements(mode, count, type, obj_ptr->vec);
+    } else {
+        zend_throw_error(NULL, "glDrawElements: Invalid indices argument. Must be an integer offset or a UIntBuffer, UShortBuffer, or UByteBuffer object.");
     };
 } 
 

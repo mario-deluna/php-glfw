@@ -67,6 +67,7 @@ $gen->adjust(PHPGlfwAdjustments\GLFWSetWindowMonitorAdjustment::class);
 $gen->adjust(PHPGlfwAdjustments\GLFWJoystickAdjustment::class);
 $gen->adjust(PHPGlfwAdjustments\GLShaderSourceAdjustment::class);
 $gen->adjust(PHPGlfwAdjustments\GLBufferDataAdjustment::class);
+$gen->adjust(PHPGlfwAdjustments\GLDrawElementsAdjustment::class);
 $gen->adjust(PHPGlfwAdjustments\GLVertexAttribPointerAdjustment::class);
 $gen->adjust(PHPGlfwAdjustments\GLGenFunctionAdjustments::class);
 $gen->adjust(PHPGlfwAdjustments\GLDestroyFunctionAdjustments::class);

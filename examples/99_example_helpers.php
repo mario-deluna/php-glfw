@@ -300,6 +300,14 @@ class ExampleHelper
     }
 
     /**
+     * gets the primary color used in buttons, switches, etc.
+     */
+    public static function getPrimaryColor(float $alpha = 1.0) : VGColor
+    {
+        return new VGColor(0.31, 0.224, 0.965, $alpha);
+    }
+
+    /**
      * Draws a colored function call text to the screen.
      * This is used to directly visualize what impact what parameter has on the result.
      * 
@@ -605,6 +613,112 @@ class ExampleHelper
         }
     }
 
+    /**
+     * Draws an interactable slider (horizontal or vertical).
+     * Returns the new value if changed, otherwise the current value.
+     */
+    public static function drawSlider(
+        VGContext $vg,
+        float $x,
+        float $y,
+        float $width,
+        float $height,
+        float $min,
+        float $max,
+        float &$value,
+        string $tooltip = '',
+        bool $vertical = false
+    ) : void {
+        $vg->save();
+        $vg->resetTransform();
+
+        // bg
+        if ($vertical) {
+            $barX = $x;
+            $barY = $y;
+            $barW = $width;
+            $barH = $height;
+            $radius = $width / 2;
+        } else {
+            $barX = $x;
+            $barY = $y;
+            $barW = $width;
+            $barH = $height;
+            $radius = $height / 2;
+        }
+        $vg->beginPath();
+        $vg->roundedRect($barX, $barY, $barW, $barH, $radius);
+        $vg->fillColori(40, 40, 40, 220);
+        $vg->fill();
+        $vg->strokeColori(255, 255, 255, 100);
+        $vg->strokeWidth(2);
+        $vg->stroke();
+
+        // handle pos
+        $t = ($value - $min) / ($max - $min);
+        if ($vertical) {
+            $handleX = $x + $width / 2;
+            $handleY = $y + $height - $t * $height;
+            $handleRadius = $width * 0.7;
+        } else {
+            $handleX = $x + $t * $width;
+            $handleY = $y + $height / 2;
+            $handleRadius = $height * 0.7;
+        }
+
+        // draw handle
+        $vg->beginPath();
+        $vg->circle($handleX, $handleY, $handleRadius);
+        $vg->fillColor(self::getPrimaryColor());
+        $vg->fill();
+        $vg->strokeColori(255, 255, 255, 180);
+        $vg->strokeWidth(2);
+        $vg->stroke();
+
+        // cursor handling
+        glfwGetCursorPos(self::$currentWindow, $mouseX, $mouseY);
+        $isInside = $vertical
+            ? ($mouseX >= $x && $mouseX <= $x + $width && $mouseY >= $y && $mouseY <= $y + $height)
+            : ($mouseX >= $x && $mouseX <= $x + $width && $mouseY >= $y && $mouseY <= $y + $height);
+        static $dragging = false;
+        static $activeSlider = null;
+        $sliderId = sprintf('%d_%d_%s_%s', $x, $y, $tooltip, $vertical ? 'v' : 'h');
+
+        // draw tooltip
+        if ($tooltip !== '' && $activeSlider === $sliderId && ($isInside || $dragging)) {
+            $vg->fontSize(14);
+            $vg->fontFaceId(self::getVGFontHandle($vg));
+            $vg->fillColori(255,255,255,255);
+            $vg->textAlign(VGAlign::LEFT | VGAlign::MIDDLE);
+            if ($vertical) {
+                $tooltipX = $handleX + $handleRadius * 2 + 10;
+                $tooltipY = $handleY;
+                $vg->text($tooltipX, $tooltipY, sprintf($tooltip, $value));
+            } else {
+                $tooltipX = $x + $t * $width + 10;
+                $tooltipY = $y + 10;        
+            }
+        }
+
+
+        $mouseDown = glfwGetMouseButton(self::$currentWindow, GLFW_MOUSE_BUTTON_LEFT) === GLFW_PRESS;
+        if (($isInside && $mouseDown && !$dragging) || ($activeSlider === $sliderId && $mouseDown)) {
+            $dragging = true;
+            $activeSlider = $sliderId;
+            if ($vertical) {
+                $t = 1.0 - (($mouseY - $y) / $height);
+            } else {
+                $t = ($mouseX - $x) / $width;
+            }
+            $t = min(max($t, 0.0), 1.0);
+            $value = $min + $t * ($max - $min);
+        } else if ($activeSlider === $sliderId && !$mouseDown) {
+            $dragging = false;
+            $activeSlider = null;
+        }
+
+        $vg->restore();
+    }
 
     /**
      * Draws a button group with the given options.
@@ -691,10 +805,10 @@ class ExampleHelper
                 $vg->beginPath();
                 $vg->roundedRect($bx, $by, $bw, $bh, 7);
                 if ($isInside) {
-                    $vg->fillColori(76, 66, 233, 200);
+                    $vg->fillColor(self::getPrimaryColor(0.8));
                     $vg->fill();
                 } else {
-                    $vg->fillColori(76, 66, 233, 255);
+                    $vg->fillColor(self::getPrimaryColor());
                     $vg->fill();
                 }
 
@@ -728,6 +842,7 @@ class ExampleHelper
         $innerOffset = 4;
         $lineHeight = $fontSize * 1.8;
         $buttonId = sprintf('%s_%d_%d', $label, $x, $y);
+        $initalX = $x;
     
         $vg->save();
 
@@ -757,10 +872,10 @@ class ExampleHelper
         $vg->fillColori(255, 255, 255, 255);
         $vg->fill();
     
-        // Get the current mouse position
+        // get the current mouse position
         glfwGetCursorPos(self::$currentWindow, $mouseX, $mouseY);
     
-        // Check if the mouse is inside the button
+        // check if the mouse is inside the button
         $isInside = $mouseX >= $x && $mouseX <= $x + $buttonWidth &&
                     $mouseY >= $y && $mouseY <= $y + $totalHeight;
     
@@ -778,9 +893,9 @@ class ExampleHelper
             $buttonPressed[$buttonId] = false;
         }
 
-        $highlightColor = VGColor::irgba(76, 66, 233, 200);
+        $highlightColor = self::getPrimaryColor();
     
-        // Set button color based on state
+        // set button color based on state
         if (!$isInside) {
             $vg->beginPath();
             $vg->fillColor($highlightColor);
@@ -802,12 +917,109 @@ class ExampleHelper
             $vg->fillColor($highlightColor);
         }
     
-        // Draw the label
+        // draw the label
         $vg->text($x + $padding, $y + $totalHeight * 0.5, $label);
     
         $vg->restore();
 
+        if ($align === 'left') {
+            return $initalX + $buttonWidth;
+        }
+
         return $x + $buttonWidth;
+    }
+
+    public static function drawSwitch(
+        VGContext $vg, 
+        float $x, 
+        float $y, 
+        string $label, 
+        bool &$state,
+        string $align = 'center'
+    ) : float
+    {
+        $fontHandle = self::getVGFontHandle($vg);
+        $fontSize = 20;
+        $padding = 30;
+        $innerOffset = 4;
+        $lineHeight = $fontSize * 1.8;
+        $switchId = sprintf('%s_%d_%d', $label, $x, $y);
+        $initialX = $x;
+    
+        $vg->save();
+        $vg->resetTransform();
+    
+        $vg->fontSize($fontSize);
+        $vg->fontFaceId($fontHandle);
+        $vg->textAlign(VGAlign::LEFT | VGAlign::MIDDLE);
+    
+        // calculate dimensions
+        $switchWidth = 60; // fixed width for switch
+        $switchHeight = 30; // fixed height for switch
+        $labelWidth = $vg->textBounds(0, 0, $label);
+        $totalWidth = $switchWidth + $labelWidth + $padding;
+        $totalHeight = max($lineHeight, $switchHeight) + $innerOffset * 2;
+    
+        // adjust x and y based on alignment
+        if ($align === 'center') {
+            $x -= $totalWidth * 0.5;
+            $y -= $totalHeight * 0.5;
+        } else if ($align === 'right') {
+            $x -= $totalWidth;
+        }
+    
+        // switch background
+        $switchX = $x;
+        $switchY = $y + ($totalHeight - $switchHeight) * 0.5;
+        
+        $vg->beginPath();
+        $vg->roundedRect($switchX, $switchY, $switchWidth, $switchHeight, $switchHeight * 0.5);
+        $vg->fillColor($state ? self::getPrimaryColor() : VGColor::gray());
+        $vg->fill();
+        $vg->strokeColor(VGColor::white());
+        $vg->strokeWidth(2);
+        $vg->stroke();
+    
+        // switch handle
+        $handleRadius = $switchHeight * 0.4;
+        $handleX = $state ? $switchX + $switchWidth - $handleRadius - 2 : $switchX + $handleRadius + 2;
+        $handleY = $switchY + $switchHeight * 0.5;
+        
+        $vg->beginPath();
+        $vg->circle($handleX, $handleY, $handleRadius);
+        $vg->fillColor(VGColor::white());
+        $vg->fill();
+    
+        // draw label on the right
+        $vg->fillColor(VGColor::white());
+        $vg->text($x + $switchWidth + $padding, $y + $totalHeight * 0.5, $label);
+    
+        // mouse interaction
+        glfwGetCursorPos(self::$currentWindow, $mouseX, $mouseY);
+        $isInside = $mouseX >= $switchX && $mouseX <= $switchX + $switchWidth &&
+                    $mouseY >= $switchY && $mouseY <= $switchY + $switchHeight;
+    
+        static $switchPressed = [];
+        if (!isset($switchPressed[$switchId])) {
+            $switchPressed[$switchId] = false;
+        }
+    
+        if ($isInside && glfwGetMouseButton(self::$currentWindow, GLFW_MOUSE_BUTTON_LEFT) === GLFW_PRESS) {
+            if (!$switchPressed[$switchId]) {
+                $switchPressed[$switchId] = true;
+                $state = !$state;
+            }
+        } else {
+            $switchPressed[$switchId] = false;
+        }
+    
+        $vg->restore();
+    
+        if ($align === 'left') {
+            return $initialX + $totalWidth;
+        }
+    
+        return $x + $totalWidth;
     }
 
     public static function createAnimation(VGContext $vg) : ExampleAnimation {

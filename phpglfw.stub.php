@@ -1,8 +1,8 @@
 <?php 
 
-/** 
+/**
  * @generate-function-entries
- * ##generate-class-entries
+ * @generate-class-entries
  */
 
 namespace GL\Geometry
@@ -22,6 +22,24 @@ namespace GL\Geometry
         public function getIndexedVertices(string $layout, ?\GL\Geometry\ObjFileParser\Group $group = null) : \GL\Geometry\ObjFileParser\Mesh {}
         public function getMeshes(string $layout, ?\GL\Geometry\ObjFileParser\Group $group = null) : array {}
         public function getIndexedMeshes(string $layout, ?\GL\Geometry\ObjFileParser\Group $group = null) : array {}
+    }
+
+    class VoxFileParser
+    {
+        public readonly ?VoxFileParser\Resource $resource;
+        public readonly array $models;
+        public readonly array $instances;
+        public readonly array $layers;
+        public readonly array $groups;
+        public readonly ?VoxFileParser\Palette $palette;
+        public readonly int $modelCount;
+        public readonly int $instanceCount;
+        public readonly int $layerCount;
+        public readonly int $groupCount;
+
+        public function __construct(string $file) {}
+        public function getModel(int $modelIndex) : ?VoxFileParser\Model {}
+        public function getPaletteColor(int $colorIndex) : ?\GL\Math\Vec4 {}
     }
 }
 
@@ -51,6 +69,89 @@ namespace GL\Geometry\ObjFileParser
 
     class Texture
     {
+        public function __construct() {}
+    }
+}
+
+namespace GL\Geometry\VoxFileParser
+{
+    class Resource {}
+
+    class Palette
+    {
+        public function __construct(?\GL\Buffer\UByteBuffer $buffer = null) {}
+        public function getBuffer() : \GL\Buffer\UByteBuffer {}
+        public function setColor(int $index, \GL\Math\Vec4 $color) : void {}
+        public function setColorf(int $index, float $r, float $g, float $b, float $a = 1.0) : void {}
+        public function getColor(int $index) : \GL\Math\Vec4 {}
+        public function replaceFromBuffer(\GL\Buffer\UByteBuffer|\GL\Buffer\FloatBuffer $buffer) : void {}
+        public function replaceFromArray(array $colors) : void {}
+        public function fillDefault() : void {}
+    }
+
+    class Model
+    {
+        /** @var int */
+        public const MODE_SIMPLE = 0;
+        /** @var int */
+        public const MODE_GREEDY = 1;
+        /** @var int */
+        public const MODE_POLYGON = 2;
+
+        public readonly int $index;
+        public readonly int $sizeX;
+        public readonly int $sizeY;
+        public readonly int $sizeZ;
+        public readonly int $voxelHash;
+        public readonly int $voxelCount;
+        public readonly ?\GL\Buffer\UByteBuffer $voxelData;
+        public readonly ?Resource $resource;
+
+        public function __construct() {}
+        public function getVoxel(int $x, int $y, int $z) : ?int {}
+        public function generateTriangleMesh(
+            \GL\Buffer\FloatBuffer $vertices,
+            \GL\Buffer\UIntBuffer $indices,
+            ?Palette $palette = null,
+            string $mode = 'simple',
+            ?array $options = null
+        ) : bool {}
+    }
+
+    class Instance
+    {
+        public readonly int $index;
+        public readonly ?string $name;
+        public readonly int $modelIndex;
+        public readonly int $layerIndex;
+        public readonly int $groupIndex;
+        public readonly bool $hidden;
+        public readonly ?\GL\Math\Mat4 $transform;
+        public readonly ?\GL\Math\Mat4 $localTransform;
+
+        public function __construct() {}
+    }
+
+    class Layer
+    {
+        public readonly int $index;
+        public readonly ?string $name;
+        public readonly ?\GL\Math\Vec4 $color;
+        public readonly bool $hidden;
+
+        public function __construct() {}
+    }
+
+    class Group
+    {
+        public readonly int $index;
+        public readonly ?string $name;
+        public readonly int $parentGroupIndex;
+        public readonly int $layerIndex;
+        public readonly bool $hidden;
+        public readonly ?\GL\Math\Mat4 $transform;
+        public readonly ?\GL\Math\Mat4 $localTransform;
+
         public function __construct() {}
     }
 }
@@ -543,6 +644,72 @@ namespace GL\VectorGraphics
         public function deleteInternal() : void {}
         public function debugDumpPathCache() : void {}
  
+    }
+};
+
+namespace GL\Audio
+{
+    class Engine {
+        public function __construct(array $options = []) {}
+
+        public function start() : void {}
+        public function stop() : void {}
+
+        public function soundFromDisk(string $path) : \GL\Audio\Sound {}
+        
+        public function setMasterVolume(float $volume) : void {}
+        public function getMasterVolume() : float {}
+        public function setListenerPosition(\GL\Math\Vec3 $position) : void {}
+        public function setListenerDirection(\GL\Math\Vec3 $direction) : void {}
+        public function setListenerWorldUp(\GL\Math\Vec3 $worldUp) : void {}
+    }
+    
+    class Sound {
+        public readonly int $sampleRate;
+        public readonly int $channels;
+        public readonly float $length;
+        public readonly int $lengthPCM;
+
+        public function __construct() {}
+
+        // prop getters
+        public function getSampleRate() : int {}
+        public function getChannels() : int {}
+        public function getLength() : float {}
+        public function getLengthPCM() : int {}
+
+        // direct ma interface
+        public function play() : void {}
+        public function stop() : void {}
+        public function setStartMs(int $start) : void {}
+        public function setStopMs(int $stop) : void {}
+        public function isPlaying() : bool {}
+        public function getCursor() : float {}
+        public function getCursorPCM() : int {}
+        public function seekTo(float $cursor) : bool {}
+        public function seekToPCM(int $cursor) : bool {}
+
+        public function setVolume(float $volume) : void {}
+        public function setPitch(float $pitch) : void {}    
+        public function setLoop(bool $loop) : void {}
+
+        public function setPosition(\GL\Math\Vec3 $position) : void {}
+        public function setMinDistance(float $distance) : void {}
+        public function getMinDistance() : float {}
+        public function setMaxDistance(float $distance) : void {}
+        public function getMaxDistance() : float {}
+        
+        public function setDirection(\GL\Math\Vec3 $direction) : void {}
+        public function getDirection() : \GL\Math\Vec3 {}
+        public function setVelocity(\GL\Math\Vec3 $velocity) : void {}
+        public function getVelocity() : \GL\Math\Vec3 {}
+        
+        public function fadeIn(float $duration) : void {}
+        public function fadeOut(float $duration) : void {}
+        public function setFade(float $fromVolume, float $toVolume, float $duration) : void {}
+        public function getCurrentFadeVolume() : float {}
+        
+        public function readFrames(int $frames, \GL\Buffer\BufferInterface $buffer) : int {}
     }
 };
 
@@ -2773,6 +2940,7 @@ namespace {
     function glfwGetGamepadButtons(int $joystick) : array {}
     function glShaderSource(int $shader, string $source) : void {}
     function glBufferData(int $target, \GL\Buffer\BufferInterface $buffer, int $usage) : void {}
+    function glDrawElements(int $mode, int $count, int $type, int|\GL\Buffer\UIntBuffer|\GL\Buffer\UShortBuffer|\GL\Buffer\UByteBuffer $indices) : void {}
     function glUniformMatrix4f(int $location, bool $transpose, \GL\Math\Mat4 $matrix) : void {}
     function glUniformVec2f(int $location, \GL\Math\Vec2 $vec) : void {}
     function glUniformVec3f(int $location, \GL\Math\Vec3 $vec) : void {}

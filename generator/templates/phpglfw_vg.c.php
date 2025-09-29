@@ -46,6 +46,10 @@
         color->nvgcolor = nvgRGBAf(r, g, b, a); \
     }
 
+static const zend_function_entry phpglfw_empty_function_entries[] = {
+    ZEND_FE_END
+};
+
 zend_class_entry *phpglfw_vgcontext_ce;
 zend_class_entry *phpglfw_vgpaint_ce;
 zend_class_entry *phpglfw_vgimage_ce;
@@ -1013,7 +1017,7 @@ void phpglfw_register_vg_module(INIT_FUNC_ARGS)
 
 
     // initialize and register the VectorGraphics Paint class
-    INIT_CLASS_ENTRY(tmp_ce, "GL\\VectorGraphics\\VGPaint", class_GL_VectorGraphics_VGPaint_methods);
+    INIT_CLASS_ENTRY(tmp_ce, "GL\\VectorGraphics\\VGPaint", phpglfw_empty_function_entries);
     phpglfw_vgpaint_ce = zend_register_internal_class(&tmp_ce);
     phpglfw_vgpaint_ce->create_object = phpglfw_vgpaint_create_handler;
 

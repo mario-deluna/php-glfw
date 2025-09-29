@@ -17,7 +17,7 @@ jobs:
     runs-on: windows-latest
     steps:
       - name: Checkout PHP-GLFW
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
         
       - name: Setup PHP
         id: setup-php
@@ -49,13 +49,13 @@ jobs:
       - run: cd ${{matrix.arch}}/Release && ls -la
         if: ${{ matrix.ts == 'nts' }}
         
-      - uses: actions/upload-artifact@v3
+      - uses: actions/upload-artifact@v4
         if: ${{ matrix.ts == 'ts' }}
         with:
           name: glfw_php${{matrix.version}}_ts_${{matrix.arch}}
           path: ${{matrix.arch}}/Release_TS/php_glfw.dll
         
-      - uses: actions/upload-artifact@v3
+      - uses: actions/upload-artifact@v4
         if: ${{ matrix.ts == 'nts' }}
         with:
           name: glfw_php${{matrix.version}}_nts_${{matrix.arch}}
