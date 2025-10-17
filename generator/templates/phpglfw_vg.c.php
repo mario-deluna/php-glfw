@@ -559,6 +559,50 @@ PHP_METHOD(GL_VectorGraphics_VGColor, invert)
     color->nvgcolor = nvgRGBAf(1.0f - intern->nvgcolor.r, 1.0f - intern->nvgcolor.g, 1.0f - intern->nvgcolor.b, intern->nvgcolor.a);
 }
 
+PHP_METHOD(GL_VectorGraphics_VGColor, withAlpha)
+{
+    double alpha;
+    if (zend_parse_parameters(ZEND_NUM_ARGS(), "d", &alpha) == FAILURE) {
+        RETURN_THROWS();
+    }
+
+    phpglfw_vgcolor_object *intern = phpglfw_vgcolor_objectptr_from_zobj_p(Z_OBJ_P(getThis()));
+
+    object_init_ex(return_value, phpglfw_get_vg_vgcolor_ce());
+    phpglfw_vgcolor_object *color = phpglfw_vgcolor_objectptr_from_zobj_p(Z_OBJ_P(return_value));
+
+    color->nvgcolor = nvgRGBAf(intern->nvgcolor.r, intern->nvgcolor.g, intern->nvgcolor.b, alpha);
+}
+
+PHP_METHOD(GL_VectorGraphics_VGColor, copy)
+{
+    phpglfw_vgcolor_object *intern = phpglfw_vgcolor_objectptr_from_zobj_p(Z_OBJ_P(getThis()));
+
+    object_init_ex(return_value, phpglfw_get_vg_vgcolor_ce());
+    phpglfw_vgcolor_object *color = phpglfw_vgcolor_objectptr_from_zobj_p(Z_OBJ_P(return_value));
+
+    color->nvgcolor = nvgRGBAf(intern->nvgcolor.r, intern->nvgcolor.g, intern->nvgcolor.b, intern->nvgcolor.a);
+}
+
+PHP_METHOD(GL_VectorGraphics_VGColor, contrast)
+{
+    phpglfw_vgcolor_object *intern = phpglfw_vgcolor_objectptr_from_zobj_p(Z_OBJ_P(getThis()));
+
+    // calculate perceived luminance using W3C formula
+    // luminance = 0.299 * R + 0.587 * G + 0.114 * B
+    float luminance = 0.299f * intern->nvgcolor.r + 0.587f * intern->nvgcolor.g + 0.114f * intern->nvgcolor.b;
+
+    object_init_ex(return_value, phpglfw_get_vg_vgcolor_ce());
+    phpglfw_vgcolor_object *color = phpglfw_vgcolor_objectptr_from_zobj_p(Z_OBJ_P(return_value));
+
+    // return white for dark colors (luminance < 0.5), black for light colors
+    if (luminance < 0.5f) {
+        color->nvgcolor = nvgRGBAf(1.0f, 1.0f, 1.0f, 1.0f); // white
+    } else {
+        color->nvgcolor = nvgRGBAf(0.0f, 0.0f, 0.0f, 1.0f); // black
+    }
+}
+
 /**
  * VGPaint 
  * 

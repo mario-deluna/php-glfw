@@ -499,6 +499,9 @@ namespace GL\VectorGraphics
         public function darken(float $amount) : VGColor {}
         public function lighten(float $amount) : VGColor {}
         public function invert() : VGColor {}
+        public function withAlpha(float $alpha) : VGColor {}
+        public function copy() : VGColor {}
+        public function contrast() : VGColor {}
     }
     
     class VGPaint {

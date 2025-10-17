@@ -2160,6 +2160,30 @@ namespace GL\VectorGraphics
          * @return VGColor The inverted color.
          */
         public function invert() : VGColor {}
+
+        /**
+         * Returns a new color with modified alpha.
+         *
+         * @param float $alpha The new alpha value (0.0 to 1.0).
+         * @return VGColor A new color with the specified alpha.
+         */
+        public function withAlpha(float $alpha) : VGColor {}
+
+        /**
+         * Returns a copy of the color object.
+         *
+         * @return VGColor A copy of this color.
+         */
+        public function copy() : VGColor {}
+
+        /**
+         * Returns either black or white depending on what provides better contrast for this color.
+         * Uses perceived luminance to determine which color (black or white) would be more readable
+         * when displayed on top of this color.
+         *
+         * @return VGColor Either black or white color for optimal contrast.
+         */
+        public function contrast() : VGColor {}
     }
     
     class VGPaint {

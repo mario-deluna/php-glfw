@@ -1,5 +1,5 @@
 /* This is a generated file, edit the .stub.php file instead.
- * Stub hash: b4e0a92e5965c6cd63b1bc28a79f6cdc87db7a70 */
+ * Stub hash: 96a9586a6c419702396d1d5e57d332602f50373a */
 
 ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_glCullFace, 0, 1, IS_VOID, 0)
 	ZEND_ARG_TYPE_INFO(0, mode, IS_LONG, 0)
@@ -3128,6 +3128,14 @@ ZEND_END_ARG_INFO()
 
 #define arginfo_class_GL_VectorGraphics_VGColor_invert arginfo_class_GL_VectorGraphics_VGColor_red
 
+ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(arginfo_class_GL_VectorGraphics_VGColor_withAlpha, 0, 1, GL\\VectorGraphics\\VGColor, 0)
+	ZEND_ARG_TYPE_INFO(0, alpha, IS_DOUBLE, 0)
+ZEND_END_ARG_INFO()
+
+#define arginfo_class_GL_VectorGraphics_VGColor_copy arginfo_class_GL_VectorGraphics_VGColor_red
+
+#define arginfo_class_GL_VectorGraphics_VGColor_contrast arginfo_class_GL_VectorGraphics_VGColor_red
+
 ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(arginfo_class_GL_VectorGraphics_VGImage_makePaint, 0, 4, GL\\VectorGraphics\\VGPaint, 0)
 	ZEND_ARG_TYPE_INFO(0, x, IS_DOUBLE, 0)
 	ZEND_ARG_TYPE_INFO(0, y, IS_DOUBLE, 0)
@@ -4457,6 +4465,9 @@ ZEND_METHOD(GL_VectorGraphics_VGColor, getVec3);
 ZEND_METHOD(GL_VectorGraphics_VGColor, darken);
 ZEND_METHOD(GL_VectorGraphics_VGColor, lighten);
 ZEND_METHOD(GL_VectorGraphics_VGColor, invert);
+ZEND_METHOD(GL_VectorGraphics_VGColor, withAlpha);
+ZEND_METHOD(GL_VectorGraphics_VGColor, copy);
+ZEND_METHOD(GL_VectorGraphics_VGColor, contrast);
 ZEND_METHOD(GL_VectorGraphics_VGImage, makePaint);
 ZEND_METHOD(GL_VectorGraphics_VGImage, makePaintCentered);
 ZEND_METHOD(GL_VectorGraphics_VGContext, __construct);
@@ -5573,6 +5584,9 @@ static const zend_function_entry class_GL_VectorGraphics_VGColor_methods[] = {
 	ZEND_ME(GL_VectorGraphics_VGColor, darken, arginfo_class_GL_VectorGraphics_VGColor_darken, ZEND_ACC_PUBLIC)
 	ZEND_ME(GL_VectorGraphics_VGColor, lighten, arginfo_class_GL_VectorGraphics_VGColor_lighten, ZEND_ACC_PUBLIC)
 	ZEND_ME(GL_VectorGraphics_VGColor, invert, arginfo_class_GL_VectorGraphics_VGColor_invert, ZEND_ACC_PUBLIC)
+	ZEND_ME(GL_VectorGraphics_VGColor, withAlpha, arginfo_class_GL_VectorGraphics_VGColor_withAlpha, ZEND_ACC_PUBLIC)
+	ZEND_ME(GL_VectorGraphics_VGColor, copy, arginfo_class_GL_VectorGraphics_VGColor_copy, ZEND_ACC_PUBLIC)
+	ZEND_ME(GL_VectorGraphics_VGColor, contrast, arginfo_class_GL_VectorGraphics_VGColor_contrast, ZEND_ACC_PUBLIC)
 	ZEND_FE_END
 };
 
