@@ -140,7 +140,7 @@ class NVGParser
                 else {
                     $phpfunc->incomplete = true;
                 }
-            } 
+            }
 
             // if the first argument is a NVGcontext we consider a context function
             // that should be binded onto the VGContext class
@@ -150,6 +150,41 @@ class NVGParser
                     continue;
                 }
                 $extGen->vgContextFunctions[] = $phpfunc;
+            }
+
+            // check for a doc override file
+            $docOverridePath = GEN_PATH_DATA . '/fncdoc_override/vg/' . $phpfunc->name . '.md';
+            if (file_exists($docOverridePath)) {
+                $phpfunc->comment = file_get_contents($docOverridePath);
+
+                @list($comm, $args) = explode('---', $phpfunc->comment, 2);
+
+                $phpfunc->comment = trim($comm);
+                 // parse @return from the comment
+                if (preg_match('/@return\s+(.+)/', $args ?? '', $matches)) {
+                    $phpfunc->returnComment = trim($matches[1]);
+                    // remove the @return line from the comment
+                    $args = preg_replace('/@return\s+.+/s', '', $args);
+                }
+
+                $args = "\n" . trim($args ?? '') . "\n";
+                $args = array_filter(array_map('trim', explode("\n$", $args)));
+
+                $mappedArgs = [];
+                foreach($args as $argLine) {
+                    // till the first space is the argument name
+                    $argName = substr($argLine, 0, strpos($argLine, ' '));
+                    $argDesc = trim(substr($argLine, strlen($argName)));
+
+                    $mappedArgs[$argName] = $argDesc;
+                }
+
+                // now replace the argument comments
+                foreach($phpfunc->arguments as $parg) {
+                    if (isset($mappedArgs[$parg->name])) {
+                        $parg->comment = $mappedArgs[$parg->name];
+                    }
+                }
             }
         }
     }

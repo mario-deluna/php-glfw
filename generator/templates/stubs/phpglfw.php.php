@@ -2539,7 +2539,8 @@ namespace GL\VectorGraphics
         //public function imagePattern(float $cx, float $cy, float $w, float $h, float $angle, float $alpha) : VGPaint {}
 
 <?php foreach($vgContextFunctions as $func) : ?>
-        public <?php echo $func->getPHPStub(); ?>
+<?php echo tabulate(tabulate($func->getFunctionPHPCommentBlock())); ?> 
+        public <?php echo $func->getPHPStub(); ?> 
 <?php endforeach; ?> 
     }
 }

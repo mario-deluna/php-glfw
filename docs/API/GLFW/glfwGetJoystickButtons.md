@@ -25,7 +25,9 @@ arguments
 
 returns
 
-:    `array` 
+:    `array` An array of button states, or `NULL` if the joystick is not
+present
+or an `error` occurred.
 
 ---
      

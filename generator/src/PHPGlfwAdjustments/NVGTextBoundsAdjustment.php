@@ -73,6 +73,9 @@ class NVGTextBoundsAdjustment implements AdjustmentInterface
         $func->arguments[$boundsArgIndex]->defaultValue = 'NULL';
         $func->arguments[$boundsArgIndex]->explicitPassedByReference = true;
 
+        // copy comment from base function
+        $func->arguments[$boundsArgIndex]->comment = $baseFunc->arguments[$boundsArgIndex]->comment;
+
         // force complete
         $func->incomplete = false;
 
@@ -97,6 +100,7 @@ class NVGTextBoundsAdjustment implements AdjustmentInterface
                 break;
             }
         }
+
 
         // add min & max arguments
         $func->arguments[$boundsArgIndex] = new class('bounds', ExtType::T_CE) extends CEObjectArgument {
@@ -134,6 +138,9 @@ class NVGTextBoundsAdjustment implements AdjustmentInterface
         };
         $func->arguments[$boundsArgIndex]->defaultValue = 'NULL';
         $func->arguments[$boundsArgIndex]->explicitPassedByReference = true;
+
+        // copy comment from base function
+        $func->arguments[$boundsArgIndex]->comment = $baseFunc->arguments[$boundsArgIndex]->comment;
 
         // force complete
         $func->incomplete = false;

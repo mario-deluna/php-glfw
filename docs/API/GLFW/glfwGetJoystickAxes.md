@@ -18,7 +18,9 @@ arguments
 
 returns
 
-:    `array` 
+:    `array` An array of axis values, or `NULL` if the joystick is not
+present or
+an `error` occurred.
 
 ---
      

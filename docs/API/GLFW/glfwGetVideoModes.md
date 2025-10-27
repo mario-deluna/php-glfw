@@ -17,7 +17,8 @@ arguments
 
 returns
 
-:    `\GLFWvidmode` 
+:    `\GLFWvidmode` An array of video modes, or `NULL` if an
+`error` occurred.
 
 ---
      

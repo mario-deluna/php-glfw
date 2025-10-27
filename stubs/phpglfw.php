@@ -3538,76 +3538,789 @@ namespace GL\VectorGraphics
         public function radialGradient(float $cx, float $cy, float $inr, float $outr, VGColor $icol, VGColor $ocol) : VGPaint {}
         //public function imagePattern(float $cx, float $cy, float $w, float $h, float $angle, float $alpha) : VGPaint {}
 
+        /**
+         * Begins drawing a new frame.
+         * 
+         * Example:
+         * 
+         * ```php
+         * $vg->beginFrame($windowWidth, $windowHeight, $devicePixelRatio);
+         * // draw commands here
+         * $vg->endFrame();
+         * ```
+         * 
+         * @param float $windowWidth The width of the window in pixels.
+         * @param float $windowHeight The height of the window in pixels.
+         * @param float $devicePixelRatio The device pixel ratio.
+         * 
+         * @return void
+         */ 
         public function beginFrame(float $windowWidth, float $windowHeight, float $devicePixelRatio) : void {}
+ 
+        /**
+         * cancelFrame
+         * @return void
+         */ 
         public function cancelFrame() : void {}
+ 
+        /**
+         * Ends drawing the current frame.
+         * 
+         * Example:
+         * 
+         * ```php
+         * $vg->beginFrame($windowWidth, $windowHeight, $devicePixelRatio);
+         * // draw commands here
+         * $vg->endFrame();
+         * ```
+         * @return void
+         */ 
         public function endFrame() : void {}
+ 
+        /**
+         * globalCompositeOperation
+         * 
+         * @param int $op 
+         * 
+         * @return void
+         */ 
         public function globalCompositeOperation(int $op) : void {}
+ 
+        /**
+         * globalCompositeBlendFunc
+         * 
+         * @param int $sfactor 
+         * @param int $dfactor 
+         * 
+         * @return void
+         */ 
         public function globalCompositeBlendFunc(int $sfactor, int $dfactor) : void {}
+ 
+        /**
+         * globalCompositeBlendFuncSeparate
+         * 
+         * @param int $srcRGB 
+         * @param int $dstRGB 
+         * @param int $srcAlpha 
+         * @param int $dstAlpha 
+         * 
+         * @return void
+         */ 
         public function globalCompositeBlendFuncSeparate(int $srcRGB, int $dstRGB, int $srcAlpha, int $dstAlpha) : void {}
+ 
+        /**
+         * Saves the current render state onto a state stack.
+         * 
+         * Example:
+         * 
+         * ```php
+         * $vg->save();
+         * // modify state here
+         * $vg->restore();
+         * ```
+         * @return void
+         */ 
         public function save() : void {}
+ 
+        /**
+         * Restores the render state from the state stack.
+         * 
+         * Example:
+         * 
+         * ```php
+         * $vg->save();
+         * // modify state here
+         * $vg->restore();
+         * ```
+         * @return void
+         */ 
         public function restore() : void {}
+ 
+        /**
+         * Resets the current render state to default values.
+         * @return void
+         */ 
         public function reset() : void {}
+ 
+        /**
+         * shapeAntiAlias
+         * 
+         * @param int $enabled 
+         * 
+         * @return void
+         */ 
         public function shapeAntiAlias(int $enabled) : void {}
+ 
+        /**
+         * Sets the stroke color.
+         * 
+         * Example:
+         * 
+         * ```php
+         * $color = new VGColor(0.0, 0.0, 0.0, 1.0);
+         * $vg->strokeColor($color);
+         * ```
+         * 
+         * @param \GL\VectorGraphics\VGColor $color The stroke color.
+         * 
+         * @return void
+         */ 
         public function strokeColor(\GL\VectorGraphics\VGColor $color) : void {}
+ 
+        /**
+         * strokePaint
+         * 
+         * @param \GL\VectorGraphics\VGPaint $paint 
+         * 
+         * @return void
+         */ 
         public function strokePaint(\GL\VectorGraphics\VGPaint $paint) : void {}
+ 
+        /**
+         * Sets the fill color.
+         * 
+         * Example:
+         * 
+         * ```php
+         * $color = new VGColor(1.0, 0.0, 0.0, 1.0);
+         * $vg->fillColor($color);
+         * ```
+         * 
+         * @param \GL\VectorGraphics\VGColor $color The fill color.
+         * 
+         * @return void
+         */ 
         public function fillColor(\GL\VectorGraphics\VGColor $color) : void {}
+ 
+        /**
+         * fillPaint
+         * 
+         * @param \GL\VectorGraphics\VGPaint $paint 
+         * 
+         * @return void
+         */ 
         public function fillPaint(\GL\VectorGraphics\VGPaint $paint) : void {}
+ 
+        /**
+         * miterLimit
+         * 
+         * @param float $limit 
+         * 
+         * @return void
+         */ 
         public function miterLimit(float $limit) : void {}
+ 
+        /**
+         * Sets the stroke width.
+         * 
+         * Example:
+         * 
+         * ```php
+         * $vg->strokeWidth(2.0);
+         * ```
+         * 
+         * @param float $size The stroke width.
+         * 
+         * @return void
+         */ 
         public function strokeWidth(float $size) : void {}
+ 
+        /**
+         * lineCap
+         * 
+         * @param int $cap 
+         * 
+         * @return void
+         */ 
         public function lineCap(int $cap) : void {}
+ 
+        /**
+         * lineJoin
+         * 
+         * @param int $join 
+         * 
+         * @return void
+         */ 
         public function lineJoin(int $join) : void {}
+ 
+        /**
+         * globalAlpha
+         * 
+         * @param float $alpha 
+         * 
+         * @return void
+         */ 
         public function globalAlpha(float $alpha) : void {}
+ 
+        /**
+         * resetTransform
+         * @return void
+         */ 
         public function resetTransform() : void {}
+ 
+        /**
+         * transform
+         * 
+         * @param float $a 
+         * @param float $b 
+         * @param float $c 
+         * @param float $d 
+         * @param float $e 
+         * @param float $f 
+         * 
+         * @return void
+         */ 
         public function transform(float $a, float $b, float $c, float $d, float $e, float $f) : void {}
+ 
+        /**
+         * translate
+         * 
+         * @param float $x 
+         * @param float $y 
+         * 
+         * @return void
+         */ 
         public function translate(float $x, float $y) : void {}
+ 
+        /**
+         * rotate
+         * 
+         * @param float $angle 
+         * 
+         * @return void
+         */ 
         public function rotate(float $angle) : void {}
+ 
+        /**
+         * skewX
+         * 
+         * @param float $angle 
+         * 
+         * @return void
+         */ 
         public function skewX(float $angle) : void {}
+ 
+        /**
+         * skewY
+         * 
+         * @param float $angle 
+         * 
+         * @return void
+         */ 
         public function skewY(float $angle) : void {}
+ 
+        /**
+         * scale
+         * 
+         * @param float $x 
+         * @param float $y 
+         * 
+         * @return void
+         */ 
         public function scale(float $x, float $y) : void {}
+ 
+        /**
+         * currentTransform
+         * 
+         * @param \GL\Buffer\FloatBuffer $buffer 
+         * 
+         * @return void
+         */ 
         public function currentTransform(\GL\Buffer\FloatBuffer $buffer) : void {}
+ 
+        /**
+         * transformPointCurrent
+         * 
+         * @param float &$dstx 
+         * @param float &$dsty 
+         * @param float $srcx 
+         * @param float $srcy 
+         * 
+         * @return void
+         */ 
         public function transformPointCurrent(float &$dstx, float &$dsty, float $srcx, float $srcy) : void {}
+ 
+        /**
+         * imageSize
+         * 
+         * @param int $image 
+         * @param int &$w 
+         * @param int &$h 
+         * 
+         * @return void
+         */ 
         public function imageSize(int $image, int &$w, int &$h) : void {}
+ 
+        /**
+         * deleteImage
+         * 
+         * @param int $image 
+         * 
+         * @return void
+         */ 
         public function deleteImage(int $image) : void {}
+ 
+        /**
+         * scissor
+         * 
+         * @param float $x 
+         * @param float $y 
+         * @param float $w 
+         * @param float $h 
+         * 
+         * @return void
+         */ 
         public function scissor(float $x, float $y, float $w, float $h) : void {}
+ 
+        /**
+         * intersectScissor
+         * 
+         * @param float $x 
+         * @param float $y 
+         * @param float $w 
+         * @param float $h 
+         * 
+         * @return void
+         */ 
         public function intersectScissor(float $x, float $y, float $w, float $h) : void {}
+ 
+        /**
+         * resetScissor
+         * @return void
+         */ 
         public function resetScissor() : void {}
+ 
+        /**
+         * Begins a new path.
+         * 
+         * Example:
+         * 
+         * ```php
+         * $vg->beginPath();
+         * $vg->rect(100, 100, 200, 100);
+         * $vg->fill();
+         * ```
+         * @return void
+         */ 
         public function beginPath() : void {}
+ 
+        /**
+         * moveTo
+         * 
+         * @param float $x 
+         * @param float $y 
+         * 
+         * @return void
+         */ 
         public function moveTo(float $x, float $y) : void {}
+ 
+        /**
+         * lineTo
+         * 
+         * @param float $x 
+         * @param float $y 
+         * 
+         * @return void
+         */ 
         public function lineTo(float $x, float $y) : void {}
+ 
+        /**
+         * bezierTo
+         * 
+         * @param float $c1x 
+         * @param float $c1y 
+         * @param float $c2x 
+         * @param float $c2y 
+         * @param float $x 
+         * @param float $y 
+         * 
+         * @return void
+         */ 
         public function bezierTo(float $c1x, float $c1y, float $c2x, float $c2y, float $x, float $y) : void {}
+ 
+        /**
+         * quadTo
+         * 
+         * @param float $cx 
+         * @param float $cy 
+         * @param float $x 
+         * @param float $y 
+         * 
+         * @return void
+         */ 
         public function quadTo(float $cx, float $cy, float $x, float $y) : void {}
+ 
+        /**
+         * arcTo
+         * 
+         * @param float $x1 
+         * @param float $y1 
+         * @param float $x2 
+         * @param float $y2 
+         * @param float $radius 
+         * 
+         * @return void
+         */ 
         public function arcTo(float $x1, float $y1, float $x2, float $y2, float $radius) : void {}
+ 
+        /**
+         * closePath
+         * @return void
+         */ 
         public function closePath() : void {}
+ 
+        /**
+         * pathWinding
+         * 
+         * @param int $dir 
+         * 
+         * @return void
+         */ 
         public function pathWinding(int $dir) : void {}
+ 
+        /**
+         * arc
+         * 
+         * @param float $cx 
+         * @param float $cy 
+         * @param float $r 
+         * @param float $a0 
+         * @param float $a1 
+         * @param int $dir 
+         * 
+         * @return void
+         */ 
         public function arc(float $cx, float $cy, float $r, float $a0, float $a1, int $dir) : void {}
+ 
+        /**
+         * Creates a rectangle path.
+         * 
+         * Example:
+         * 
+         * ```php
+         * $vg->beginPath();
+         * $vg->rect(100, 100, 200, 100);
+         * $vg->fill();
+         * ```
+         * 
+         * @param float $x The x-coordinate of the top-left corner.
+         * @param float $y The y-coordinate of the top-left corner.
+         * @param float $w The width of the rectangle.
+         * @param float $h The height of the rectangle.
+         * 
+         * @return void
+         */ 
         public function rect(float $x, float $y, float $w, float $h) : void {}
+ 
+        /**
+         * roundedRect
+         * 
+         * @param float $x 
+         * @param float $y 
+         * @param float $w 
+         * @param float $h 
+         * @param float $r 
+         * 
+         * @return void
+         */ 
         public function roundedRect(float $x, float $y, float $w, float $h, float $r) : void {}
+ 
+        /**
+         * roundedRectVarying
+         * 
+         * @param float $x 
+         * @param float $y 
+         * @param float $w 
+         * @param float $h 
+         * @param float $radTopLeft 
+         * @param float $radTopRight 
+         * @param float $radBottomRight 
+         * @param float $radBottomLeft 
+         * 
+         * @return void
+         */ 
         public function roundedRectVarying(float $x, float $y, float $w, float $h, float $radTopLeft, float $radTopRight, float $radBottomRight, float $radBottomLeft) : void {}
+ 
+        /**
+         * ellipse
+         * 
+         * @param float $cx 
+         * @param float $cy 
+         * @param float $rx 
+         * @param float $ry 
+         * 
+         * @return void
+         */ 
         public function ellipse(float $cx, float $cy, float $rx, float $ry) : void {}
+ 
+        /**
+         * Creates a circle path.
+         * 
+         * Example:
+         * 
+         * ```php
+         * $vg->beginPath();
+         * $vg->circle(150, 150, 50);
+         * $vg->fill();
+         * ```
+         * 
+         * @param float $cx The x-coordinate of the center.
+         * @param float $cy The y-coordinate of the center.
+         * @param float $r The radius of the circle.
+         * 
+         * @return void
+         */ 
         public function circle(float $cx, float $cy, float $r) : void {}
+ 
+        /**
+         * Fills the current path with the current fill color or paint.
+         * 
+         * Example:
+         * 
+         * ```php
+         * $vg->beginPath();
+         * $vg->rect(100, 100, 200, 100);
+         * $vg->fill();
+         * ```
+         * @return void
+         */ 
         public function fill() : void {}
+ 
+        /**
+         * Strokes the current path with the current stroke color or paint.
+         * 
+         * Example:
+         * 
+         * ```php
+         * $vg->beginPath();
+         * $vg->rect(100, 100, 200, 100);
+         * $vg->stroke();
+         * ```
+         * @return void
+         */ 
         public function stroke() : void {}
+ 
+        /**
+         * createFont
+         * 
+         * @param string $name 
+         * @param string $filename 
+         * 
+         * @return int
+         */ 
         public function createFont(string $name, string $filename) : int {}
+ 
+        /**
+         * createFontAtIndex
+         * 
+         * @param string $name 
+         * @param string $filename 
+         * @param int $fontIndex 
+         * 
+         * @return int
+         */ 
         public function createFontAtIndex(string $name, string $filename, int $fontIndex) : int {}
+ 
+        /**
+         * findFont
+         * 
+         * @param string $name 
+         * 
+         * @return int
+         */ 
         public function findFont(string $name) : int {}
+ 
+        /**
+         * addFallbackFontId
+         * 
+         * @param int $baseFont 
+         * @param int $fallbackFont 
+         * 
+         * @return int
+         */ 
         public function addFallbackFontId(int $baseFont, int $fallbackFont) : int {}
+ 
+        /**
+         * addFallbackFont
+         * 
+         * @param string $baseFont 
+         * @param string $fallbackFont 
+         * 
+         * @return int
+         */ 
         public function addFallbackFont(string $baseFont, string $fallbackFont) : int {}
+ 
+        /**
+         * resetFallbackFontsId
+         * 
+         * @param int $baseFont 
+         * 
+         * @return void
+         */ 
         public function resetFallbackFontsId(int $baseFont) : void {}
+ 
+        /**
+         * resetFallbackFonts
+         * 
+         * @param string $baseFont 
+         * 
+         * @return void
+         */ 
         public function resetFallbackFonts(string $baseFont) : void {}
+ 
+        /**
+         * fontSize
+         * 
+         * @param float $size 
+         * 
+         * @return void
+         */ 
         public function fontSize(float $size) : void {}
+ 
+        /**
+         * fontBlur
+         * 
+         * @param float $blur 
+         * 
+         * @return void
+         */ 
         public function fontBlur(float $blur) : void {}
+ 
+        /**
+         * textLetterSpacing
+         * 
+         * @param float $spacing 
+         * 
+         * @return void
+         */ 
         public function textLetterSpacing(float $spacing) : void {}
+ 
+        /**
+         * textLineHeight
+         * 
+         * @param float $lineHeight 
+         * 
+         * @return void
+         */ 
         public function textLineHeight(float $lineHeight) : void {}
+ 
+        /**
+         * textAlign
+         * 
+         * @param int $align 
+         * 
+         * @return void
+         */ 
         public function textAlign(int $align) : void {}
+ 
+        /**
+         * fontFaceId
+         * 
+         * @param int $font 
+         * 
+         * @return void
+         */ 
         public function fontFaceId(int $font) : void {}
+ 
+        /**
+         * fontFace
+         * 
+         * @param string $font 
+         * 
+         * @return void
+         */ 
         public function fontFace(string $font) : void {}
+ 
+        /**
+         * Draws text at the specified position.
+         * 
+         * Example:
+         * 
+         * ```php
+         * $vg->fontSize(18.0);
+         * $advance = $vg->text(100, 100, "Hello, World!");
+         * ```
+         * 
+         * @param float $x The x-coordinate of the text position.
+         * @param float $y The y-coordinate of the text position.
+         * @param string $string The text string to draw.
+         * 
+         * @return float float The horizontal advance of the text.
+         */ 
         public function text(float $x, float $y, string $string) : float {}
+ 
+        /**
+         * textBox
+         * 
+         * @param float $x 
+         * @param float $y 
+         * @param float $breakRowWidth 
+         * @param string $string 
+         * 
+         * @return void
+         */ 
         public function textBox(float $x, float $y, float $breakRowWidth, string $string) : void {}
+ 
+        /**
+         * Calculates the bounding box of the specified text and returns the horizontal
+         * advance.
+         * 
+         * Example: 
+         * 
+         * ```php
+         * $vg->fontSize(18.0);
+         * $bounds = new Vec4();
+         * $advance = $vg->textBounds(100, 100, "Hello, World!", $bounds);
+         * echo "Text bounds: " . $bounds . "\n";
+         * echo "Text advance: " . $advance . "\n";
+         * ```
+         * 
+         * @param float $x The x of the text position.
+         * @param float $y The y of the text position.
+         * @param string $string The text string to measure.
+         * @param ?\GL\Math\Vec4 &$bounds Vec4 object in which the calculated bounds are
+         * stored [xmin, ymin, xmax, ymax].
+         * 
+         * @return float The horizontal advance of the text.
+         */ 
         public function textBounds(float $x, float $y, string $string, ?\GL\Math\Vec4 &$bounds = NULL) : float {}
+ 
+        /**
+         * textBoxBounds
+         * 
+         * @param float $x 
+         * @param float $y 
+         * @param float $breakRowWidth 
+         * @param string $string 
+         * @param ?\GL\Math\Vec4 &$bounds 
+         * 
+         * @return void
+         */ 
         public function textBoxBounds(float $x, float $y, float $breakRowWidth, string $string, ?\GL\Math\Vec4 &$bounds = NULL) : void {}
+ 
+        /**
+         * textMetrics
+         * 
+         * @param float &$ascender 
+         * @param float &$descender 
+         * @param float &$lineh 
+         * 
+         * @return void
+         */ 
         public function textMetrics(float &$ascender, float &$descender, float &$lineh) : void {}
+ 
+        /**
+         * deleteInternal
+         * @return void
+         */ 
         public function deleteInternal() : void {}
+ 
+        /**
+         * debugDumpPathCache
+         * @return void
+         */ 
         public function debugDumpPathCache() : void {}
+ 
  
     }
 }
@@ -9359,7 +10072,8 @@ namespace {
      * 
      * @param GLFWmonitor $monitor The monitor to query.
      * 
-     * @return GLFWvidmode
+     * @return GLFWvidmode An array of video modes, or `NULL` if an
+     * `error` occurred.
      */ 
     function glfwGetVideoModes(GLFWmonitor $monitor) : GLFWvidmode {}
  
@@ -9532,7 +10246,8 @@ namespace {
      * or `NULL`
      * to not share resources.
      * 
-     * @return GLFWwindow
+     * @return GLFWwindow The handle of the created window, or `NULL` if an
+     * `error` occurred.
      */ 
     function glfwCreateWindow(int $width, int $height, string $title, ?GLFWmonitor $monitor = NULL, ?GLFWwindow $share = NULL) : GLFWwindow {}
  
@@ -10923,7 +11638,9 @@ namespace {
      * 
      * @param int $jid The `joystick` to query.
      * 
-     * @return array
+     * @return array An array of axis values, or `NULL` if the joystick is not
+     * present or
+     * an `error` occurred.
      */ 
     function glfwGetJoystickAxes(int $jid) : array {}
  
@@ -10946,7 +11663,9 @@ namespace {
      * 
      * @param int $jid The `joystick` to query.
      * 
-     * @return array
+     * @return array An array of button states, or `NULL` if the joystick is not
+     * present
+     * or an `error` occurred.
      */ 
     function glfwGetJoystickButtons(int $jid) : array {}
  

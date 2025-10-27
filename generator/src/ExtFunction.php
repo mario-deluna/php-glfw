@@ -75,6 +75,7 @@ class ExtFunction
         $this->comment = $from->comment;
         $this->returnTypeFrom = $from->returnTypeFrom;
         $this->returnType = $from->returnType;
+        $this->returnComment = $from->returnComment;
         $this->returnIPO = $from->returnIPO;
         $this->arguments = $from->arguments;
     }
@@ -253,14 +254,19 @@ class ExtFunction
     {
         $argsBuffer = '';
         foreach($this->arguments as $arg) {
+            if (!$arg->isParsed) continue;
             $argsBuffer .= PHP_EOL . '@param ' . $this->getPHPStubArgument($arg, false) . ' ' . $arg->comment; 
         }
 
         // add some spaceing if there is content
         if ($argsBuffer) $argsBuffer = PHP_EOL . $argsBuffer . PHP_EOL;
 
-        // retrun tag
-        $return = '@return ' . $this->getPHPStubReturn() . ' ' . $this->returnComment;
+        // return tag
+        if ($this->returnType === self::RETURN_VOID) {
+            $return = '@return void';
+        } else {
+            $return = '@return ' . $this->getPHPStubReturn() . ' ' . $this->returnComment;
+        }
 
         return commentBlock(trim(sprintf("%s%s\n%s", $this->getFunctionPHPComment(), $argsBuffer, $return)));
     }
@@ -330,6 +336,9 @@ class ExtFunction
     {
         // IPO argument
         if ($arg->argumentType === ExtType::T_IPO) {
+            if (!$arg->argInternalPtrObject) {
+                throw new Exception("IPO argument {$arg->name} has no argInternalPtrObject set");
+            }
             $buffer = ($arg->isOptional() || $arg->isNullable ? '?' : '') . $arg->argInternalPtrObject->getPHPClassName() . ' ' . '$' . $arg->name;
                 
             if ($arg->isOptional() && $allowDefaultValue) {
