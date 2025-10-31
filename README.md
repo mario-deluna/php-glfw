@@ -6,7 +6,7 @@
 
 <p align="center">
   <a href="https://github.com/mario-deluna/php-glfw/blob/master/LICENSE" title="license"><img alt="LICENSE" src="https://img.shields.io/badge/license-MIT-428f7e.svg?logo=open%20source%20initiative&logoColor=white&labelColor=555555"></a>
-  <a href="#tada-php-support" title="PHP Versions Supported"><img alt="PHP Versions Supported" src="https://img.shields.io/badge/php-8.0%20to%208.3-777bb3.svg?logo=php&logoColor=white&labelColor=555555"></a>
+  <a href="#tada-php-support" title="PHP Versions Supported"><img alt="PHP Versions Supported" src="https://img.shields.io/badge/php-8.0%20to%208.4-777bb3.svg?logo=php&logoColor=white&labelColor=555555"></a>
   <a href="https://github.com/mario-deluna/php-glfw/releases/"><img src="https://img.shields.io/github/tag/mario-deluna/php-glfw?include_prereleases=&sort=semver&color=blue" alt="GitHub tag"></a>
   <a href="https://github.com/mario-deluna/php-glfw/issues"><img src="https://img.shields.io/github/issues/mario-deluna/php-glfw" alt="issues - php-glfw"></a>
 </p>
