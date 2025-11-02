@@ -9855,6 +9855,1687 @@ namespace {
     function glGetDoublei_v(int $target, int $index, ?bool &...$data) : void {}
  
     /**
+     * draw multiple instances of a range of elements with offset applied to
+     * instanced attributes
+     * 
+     * @param int $mode Specifies what kind of primitives to render. Symbolic
+     * constants <constant>GL_POINTS</constant>, <constant>GL_LINE_STRIP</constant>,
+     * <constant>GL_LINE_LOOP</constant>, <constant>GL_LINES</constant>,
+     * <constant>GL_TRIANGLE_STRIP</constant>, <constant>GL_TRIANGLE_FAN</constant>,
+     * <constant>GL_TRIANGLES</constant> <constant>GL_LINES_ADJACENCY</constant>,
+     * <constant>GL_LINE_STRIP_ADJACENCY</constant>,
+     * <constant>GL_TRIANGLES_ADJACENCY</constant>,
+     * <constant>GL_TRIANGLE_STRIP_ADJACENCY</constant> and
+     * <constant>GL_PATCHES</constant> are accepted.
+     * @param int $first Specifies the starting index in the enabled arrays.
+     * @param int $count Specifies the number of indices to be rendered.
+     * @param int $instancecount Specifies the number of instances of the specified
+     * range of indices to be rendered.
+     * @param int $baseinstance Specifies the base instance for use in fetching
+     * instanced vertex attributes.
+     * 
+     * @return void
+     */ 
+    function glDrawArraysInstancedBaseInstance(int $mode, int $first, int $count, int $instancecount, int $baseinstance) : void {}
+ 
+    /**
+     * glGetInternalformativ
+     * 
+     * @param int $target 
+     * @param int $internalformat 
+     * @param int $pname 
+     * @param int $count 
+     * @param int &$params 
+     * 
+     * @return void
+     */ 
+    function glGetInternalformativ(int $target, int $internalformat, int $pname, int $count, int &$params) : void {}
+ 
+    /**
+     * retrieve information about the set of active atomic counter buffers for a
+     * program
+     * 
+     * @param int $program The name of a program object from which to retrieve
+     * information.
+     * @param int $bufferIndex Specifies index of an active atomic counter buffer.
+     * @param int $pname Specifies which parameter of the atomic counter buffer to
+     * retrieve.
+     * @param int &$params Specifies the address of a variable into which to write
+     * the retrieved information.
+     * 
+     * @return void
+     */ 
+    function glGetActiveAtomicCounterBufferiv(int $program, int $bufferIndex, int $pname, int &$params) : void {}
+ 
+    /**
+     * bind a level of a texture to an image unit
+     * 
+     * @param int $unit Specifies the index of the image unit to which to bind the
+     * texture
+     * @param int $texture Specifies the name of the texture to bind to the image
+     * unit.
+     * @param int $level Specifies the level of the texture that is to be bound.
+     * @param bool $layered Specifies whether a layered texture binding is to be
+     * established.
+     * @param int $layer If layered is <constant>GL_FALSE</constant>, specifies the
+     * layer of texture to be bound to the image unit. Ignored otherwise.
+     * @param int $access Specifies a token indicating the type of access that will
+     * be performed on the image.
+     * @param int $format Specifies the format that the elements of the image will
+     * be treated as for the purposes of formatted stores.
+     * 
+     * @return void
+     */ 
+    function glBindImageTexture(int $unit, int $texture, int $level, bool $layered, int $layer, int $access, int $format) : void {}
+ 
+    /**
+     * defines a barrier ordering memory transactions
+     * 
+     * @param int $barriers Specifies the barriers to insert.
+     * 
+     * @return void
+     */ 
+    function glMemoryBarrier(int $barriers) : void {}
+ 
+    /**
+     * simultaneously specify storage for all levels of a one-dimensional texture
+     * 
+     * @param int $target Specifies the target to which the texture object is bound
+     * for glTexStorage1D. Must be one of <constant>GL_TEXTURE_1D</constant> or
+     * <constant>GL_PROXY_TEXTURE_1D</constant>.
+     * @param int $levels Specify the number of texture levels.
+     * @param int $internalformat Specifies the sized internal format to be used to
+     * store texture image data.
+     * @param int $width Specifies the width of the texture, in texels.
+     * 
+     * @return void
+     */ 
+    function glTexStorage1D(int $target, int $levels, int $internalformat, int $width) : void {}
+ 
+    /**
+     * simultaneously specify storage for all levels of a two-dimensional or
+     * one-dimensional array texture
+     * 
+     * @param int $target Specifies the target to which the texture object is bound
+     * for glTexStorage2D. Must be one of <constant>GL_TEXTURE_2D</constant>,
+     * <constant>GL_TEXTURE_1D_ARRAY</constant>,
+     * <constant>GL_TEXTURE_RECTANGLE</constant>,
+     * <constant>GL_TEXTURE_CUBE_MAP</constant>,
+     * <constant>GL_PROXY_TEXTURE_2D</constant>,
+     * <constant>GL_PROXY_TEXTURE_1D_ARRAY</constant>,
+     * <constant>GL_PROXY_TEXTURE_RECTANGLE</constant>, or
+     * <constant>GL_PROXY_TEXTURE_CUBE_MAP</constant>.
+     * @param int $levels Specify the number of texture levels.
+     * @param int $internalformat Specifies the sized internal format to be used to
+     * store texture image data.
+     * @param int $width Specifies the width of the texture, in texels.
+     * @param int $height Specifies the height of the texture, in texels.
+     * 
+     * @return void
+     */ 
+    function glTexStorage2D(int $target, int $levels, int $internalformat, int $width, int $height) : void {}
+ 
+    /**
+     * simultaneously specify storage for all levels of a three-dimensional,
+     * two-dimensional array or cube-map array texture
+     * 
+     * @param int $target Specifies the target to which the texture object is bound
+     * for glTexStorage3D. Must be one of <constant>GL_TEXTURE_3D</constant>,
+     * <constant>GL_TEXTURE_2D_ARRAY</constant>,
+     * <constant>GL_TEXTURE_CUBE_MAP_ARRAY</constant>,
+     * <constant>GL_PROXY_TEXTURE_3D</constant>,
+     * <constant>GL_PROXY_TEXTURE_2D_ARRAY</constant> or
+     * <constant>GL_PROXY_TEXTURE_CUBE_MAP_ARRAY</constant>.
+     * @param int $levels Specify the number of texture levels.
+     * @param int $internalformat Specifies the sized internal format to be used to
+     * store texture image data.
+     * @param int $width Specifies the width of the texture, in texels.
+     * @param int $height Specifies the height of the texture, in texels.
+     * @param int $depth Specifies the depth of the texture, in texels.
+     * 
+     * @return void
+     */ 
+    function glTexStorage3D(int $target, int $levels, int $internalformat, int $width, int $height, int $depth) : void {}
+ 
+    /**
+     * render multiple instances of primitives using a count derived from a
+     * transform feedback object
+     * 
+     * @param int $mode Specifies what kind of primitives to render. Symbolic
+     * constants <constant>GL_POINTS</constant>, <constant>GL_LINE_STRIP</constant>,
+     * <constant>GL_LINE_LOOP</constant>, <constant>GL_LINES</constant>,
+     * <constant>GL_LINE_STRIP_ADJACENCY</constant>,
+     * <constant>GL_LINES_ADJACENCY</constant>,
+     * <constant>GL_TRIANGLE_STRIP</constant>, <constant>GL_TRIANGLE_FAN</constant>,
+     * <constant>GL_TRIANGLES</constant>,
+     * <constant>GL_TRIANGLE_STRIP_ADJACENCY</constant>,
+     * <constant>GL_TRIANGLES_ADJACENCY</constant>, and
+     * <constant>GL_PATCHES</constant> are accepted.
+     * @param int $id Specifies the name of a transform feedback object from which
+     * to retrieve a primitive count.
+     * @param int $instancecount Specifies the number of instances of the geometry
+     * to render.
+     * 
+     * @return void
+     */ 
+    function glDrawTransformFeedbackInstanced(int $mode, int $id, int $instancecount) : void {}
+ 
+    /**
+     * render multiple instances of primitives using a count derived from a specifed
+     * stream of a transform feedback object
+     * 
+     * @param int $mode Specifies what kind of primitives to render. Symbolic
+     * constants <constant>GL_POINTS</constant>, <constant>GL_LINE_STRIP</constant>,
+     * <constant>GL_LINE_LOOP</constant>, <constant>GL_LINES</constant>,
+     * <constant>GL_LINE_STRIP_ADJACENCY</constant>,
+     * <constant>GL_LINES_ADJACENCY</constant>,
+     * <constant>GL_TRIANGLE_STRIP</constant>, <constant>GL_TRIANGLE_FAN</constant>,
+     * <constant>GL_TRIANGLES</constant>,
+     * <constant>GL_TRIANGLE_STRIP_ADJACENCY</constant>,
+     * <constant>GL_TRIANGLES_ADJACENCY</constant>, and
+     * <constant>GL_PATCHES</constant> are accepted.
+     * @param int $id Specifies the name of a transform feedback object from which
+     * to retrieve a primitive count.
+     * @param int $stream Specifies the index of the transform feedback stream from
+     * which to retrieve a primitive count.
+     * @param int $instancecount Specifies the number of instances of the geometry
+     * to render.
+     * 
+     * @return void
+     */ 
+    function glDrawTransformFeedbackStreamInstanced(int $mode, int $id, int $stream, int $instancecount) : void {}
+ 
+    /**
+     * launch one or more compute work groups
+     * 
+     * @param int $num_groups_x The number of work groups to be launched in the X
+     * dimension.
+     * @param int $num_groups_y The number of work groups to be launched in the Y
+     * dimension.
+     * @param int $num_groups_z The number of work groups to be launched in the Z
+     * dimension.
+     * 
+     * @return void
+     */ 
+    function glDispatchCompute(int $num_groups_x, int $num_groups_y, int $num_groups_z) : void {}
+ 
+    /**
+     * launch one or more compute work groups using parameters stored in a buffer
+     * 
+     * @param int $indirect The offset into the buffer object currently bound to the
+     * <constant>GL_DISPATCH_INDIRECT_BUFFER</constant> buffer target at which the
+     * dispatch parameters are stored.
+     * 
+     * @return void
+     */ 
+    function glDispatchComputeIndirect(int $indirect) : void {}
+ 
+    /**
+     * perform a raw data copy between two images
+     * 
+     * @param int $srcName The name of a texture or renderbuffer object from which
+     * to copy.
+     * @param int $srcTarget The target representing the namespace of the source
+     * name srcName.
+     * @param int $srcLevel The mipmap level to read from the source.
+     * @param int $srcX The X coordinate of the left edge of the souce region to
+     * copy.
+     * @param int $srcY The Y coordinate of the top edge of the souce region to
+     * copy.
+     * @param int $srcZ The Z coordinate of the near edge of the souce region to
+     * copy.
+     * @param int $dstName The name of a texture or renderbuffer object to which to
+     * copy.
+     * @param int $dstTarget The target representing the namespace of the
+     * destination name dstName.
+     * @param int $dstLevel 
+     * @param int $dstX The X coordinate of the left edge of the destination region.
+     * @param int $dstY The Y coordinate of the top edge of the destination region.
+     * @param int $dstZ The Z coordinate of the near edge of the destination region.
+     * @param int $srcWidth The width of the region to be copied.
+     * @param int $srcHeight The height of the region to be copied.
+     * @param int $srcDepth The depth of the region to be copied.
+     * 
+     * @return void
+     */ 
+    function glCopyImageSubData(int $srcName, int $srcTarget, int $srcLevel, int $srcX, int $srcY, int $srcZ, int $dstName, int $dstTarget, int $dstLevel, int $dstX, int $dstY, int $dstZ, int $srcWidth, int $srcHeight, int $srcDepth) : void {}
+ 
+    /**
+     * set a named parameter of a framebuffer object
+     * 
+     * @param int $target Specifies the target to which the framebuffer is bound for
+     * glFramebufferParameteri.
+     * @param int $pname Specifies the framebuffer parameter to be modified.
+     * @param int $param The new value for the parameter named pname.
+     * 
+     * @return void
+     */ 
+    function glFramebufferParameteri(int $target, int $pname, int $param) : void {}
+ 
+    /**
+     * glGetFramebufferParameteriv
+     * 
+     * @param int $target 
+     * @param int $pname 
+     * @param int &$params 
+     * 
+     * @return void
+     */ 
+    function glGetFramebufferParameteriv(int $target, int $pname, int &$params) : void {}
+ 
+    /**
+     * glGetInternalformati64v
+     * 
+     * @param int $target 
+     * @param int $internalformat 
+     * @param int $pname 
+     * @param int $count 
+     * @param int &$params 
+     * 
+     * @return void
+     */ 
+    function glGetInternalformati64v(int $target, int $internalformat, int $pname, int $count, int &$params) : void {}
+ 
+    /**
+     * invalidate a region of a texture image
+     * 
+     * @param int $texture The name of a texture object a subregion of which to
+     * invalidate.
+     * @param int $level The level of detail of the texture object within which the
+     * region resides.
+     * @param int $xoffset The X offset of the region to be invalidated.
+     * @param int $yoffset The Y offset of the region to be invalidated.
+     * @param int $zoffset The Z offset of the region to be invalidated.
+     * @param int $width The width of the region to be invalidated.
+     * @param int $height The height of the region to be invalidated.
+     * @param int $depth The depth of the region to be invalidated.
+     * 
+     * @return void
+     */ 
+    function glInvalidateTexSubImage(int $texture, int $level, int $xoffset, int $yoffset, int $zoffset, int $width, int $height, int $depth) : void {}
+ 
+    /**
+     * invalidate the entirety a texture image
+     * 
+     * @param int $texture The name of a texture object to invalidate.
+     * @param int $level The level of detail of the texture object to invalidate.
+     * 
+     * @return void
+     */ 
+    function glInvalidateTexImage(int $texture, int $level) : void {}
+ 
+    /**
+     * invalidate a region of a buffer object's data store
+     * 
+     * @param int $buffer The name of a buffer object, a subrange of whose data
+     * store to invalidate.
+     * @param int $offset The offset within the buffer's data store of the start of
+     * the range to be invalidated.
+     * @param int $length The length of the range within the buffer's data store to
+     * be invalidated.
+     * 
+     * @return void
+     */ 
+    function glInvalidateBufferSubData(int $buffer, int $offset, int $length) : void {}
+ 
+    /**
+     * invalidate the content of a buffer object's data store
+     * 
+     * @param int $buffer The name of a buffer object whose data store to
+     * invalidate.
+     * 
+     * @return void
+     */ 
+    function glInvalidateBufferData(int $buffer) : void {}
+ 
+    /**
+     * glGetProgramInterfaceiv
+     * 
+     * @param int $program 
+     * @param int $programInterface 
+     * @param int $pname 
+     * @param int &$params 
+     * 
+     * @return void
+     */ 
+    function glGetProgramInterfaceiv(int $program, int $programInterface, int $pname, int &$params) : void {}
+ 
+    /**
+     * query the index of a named resource within a program
+     * 
+     * @param int $program The name of a program object whose resources to query.
+     * @param int $programInterface A token identifying the interface within program
+     * containing the resource named name.
+     * @param string $name The name of the resource to query the index of.
+     * 
+     * @return int
+     */ 
+    function glGetProgramResourceIndex(int $program, int $programInterface, string $name) : int {}
+ 
+    /**
+     * query the location of a named resource within a program
+     * 
+     * @param int $program The name of a program object whose resources to query.
+     * @param int $programInterface A token identifying the interface within program
+     * containing the resource named name.
+     * @param string $name The name of the resource to query the location of.
+     * 
+     * @return int
+     */ 
+    function glGetProgramResourceLocation(int $program, int $programInterface, string $name) : int {}
+ 
+    /**
+     * query the fragment color index of a named variable within a program
+     * 
+     * @param int $program The name of a program object whose resources to query.
+     * @param int $programInterface A token identifying the interface within program
+     * containing the resource named name.
+     * @param string $name The name of the resource to query the location of.
+     * 
+     * @return int
+     */ 
+    function glGetProgramResourceLocationIndex(int $program, int $programInterface, string $name) : int {}
+ 
+    /**
+     * change an active shader storage block binding
+     * 
+     * @param int $program The name of the program containing the block whose
+     * binding to change.
+     * @param int $storageBlockIndex The index storage block within the program.
+     * @param int $storageBlockBinding The index storage block binding to associate
+     * with the specified storage block.
+     * 
+     * @return void
+     */ 
+    function glShaderStorageBlockBinding(int $program, int $storageBlockIndex, int $storageBlockBinding) : void {}
+ 
+    /**
+     * attach a range of a buffer object's data store to a buffer texture object
+     * 
+     * @param int $target Specifies the target to which the texture object is bound
+     * for glTexBufferRange. Must be <constant>GL_TEXTURE_BUFFER</constant>.
+     * @param int $internalformat Specifies the internal format of the data in the
+     * store belonging to buffer.
+     * @param int $buffer Specifies the name of the buffer object whose storage to
+     * attach to the active buffer texture.
+     * @param int $offset Specifies the offset of the start of the range of the
+     * buffer's data store to attach.
+     * @param int $size Specifies the size of the range of the buffer's data store
+     * to attach.
+     * 
+     * @return void
+     */ 
+    function glTexBufferRange(int $target, int $internalformat, int $buffer, int $offset, int $size) : void {}
+ 
+    /**
+     * specify storage for a two-dimensional multisample texture
+     * 
+     * @param int $target Specifies the target to which the texture object is bound
+     * for glTexStorage2DMultisample. Must be one of
+     * <constant>GL_TEXTURE_2D_MULTISAMPLE</constant> or
+     * <constant>GL_PROXY_TEXTURE_2D_MULTISAMPLE</constant>.
+     * @param int $samples Specify the number of samples in the texture.
+     * @param int $internalformat Specifies the sized internal format to be used to
+     * store texture image data.
+     * @param int $width Specifies the width of the texture, in texels.
+     * @param int $height Specifies the height of the texture, in texels.
+     * @param bool $fixedsamplelocations Specifies whether the image will use
+     * identical sample locations and the same number of samples for all texels in
+     * the image, and the sample locations will not depend on the internal format or
+     * size of the image.
+     * 
+     * @return void
+     */ 
+    function glTexStorage2DMultisample(int $target, int $samples, int $internalformat, int $width, int $height, bool $fixedsamplelocations) : void {}
+ 
+    /**
+     * specify storage for a two-dimensional multisample array texture
+     * 
+     * @param int $target Specifies the target to which the texture object is bound
+     * for glTexStorage3DMultisample. Must be one of
+     * <constant>GL_TEXTURE_2D_MULTISAMPLE_ARRAY</constant> or
+     * <constant>GL_PROXY_TEXTURE_2D_MULTISAMPLE_ARRAY</constant>.
+     * @param int $samples Specify the number of samples in the texture.
+     * @param int $internalformat Specifies the sized internal format to be used to
+     * store texture image data.
+     * @param int $width Specifies the width of the texture, in texels.
+     * @param int $height Specifies the height of the texture, in texels.
+     * @param int $depth Specifies the depth of the texture, in layers.
+     * @param bool $fixedsamplelocations Specifies whether the image will use
+     * identical sample locations and the same number of samples for all texels in
+     * the image, and the sample locations will not depend on the internal format or
+     * size of the image.
+     * 
+     * @return void
+     */ 
+    function glTexStorage3DMultisample(int $target, int $samples, int $internalformat, int $width, int $height, int $depth, bool $fixedsamplelocations) : void {}
+ 
+    /**
+     * initialize a texture as a data alias of another texture's data store
+     * 
+     * @param int $texture Specifies the texture object to be initialized as a view.
+     * @param int $target Specifies the target to be used for the newly initialized
+     * texture.
+     * @param int $origtexture Specifies the name of a texture object of which to
+     * make a view.
+     * @param int $internalformat Specifies the internal format for the newly
+     * created view.
+     * @param int $minlevel Specifies lowest level of detail of the view.
+     * @param int $numlevels Specifies the number of levels of detail to include in
+     * the view.
+     * @param int $minlayer Specifies the index of the first layer to include in the
+     * view.
+     * @param int $numlayers Specifies the number of layers to include in the view.
+     * 
+     * @return void
+     */ 
+    function glTextureView(int $texture, int $target, int $origtexture, int $internalformat, int $minlevel, int $numlevels, int $minlayer, int $numlayers) : void {}
+ 
+    /**
+     * bind a buffer to a vertex buffer bind point
+     * 
+     * @param int $bindingindex The index of the vertex buffer binding point to
+     * which to bind the buffer.
+     * @param int $buffer The name of a buffer to bind to the vertex buffer binding
+     * point.
+     * @param int $offset The offset of the first element of the buffer.
+     * @param int $stride The distance between elements within the buffer.
+     * 
+     * @return void
+     */ 
+    function glBindVertexBuffer(int $bindingindex, int $buffer, int $offset, int $stride) : void {}
+ 
+    /**
+     * specify the organization of vertex arrays
+     * 
+     * @param int $attribindex The generic vertex attribute array being described.
+     * @param int $size The number of values per vertex that are stored in the
+     * array.
+     * @param int $type The type of the data stored in the array.
+     * @param bool $normalized Specifies whether fixed-point data values should be
+     * normalized (<constant>GL_TRUE</constant>) or converted directly as
+     * fixed-point values (<constant>GL_FALSE</constant>) when they are accessed.
+     * This parameter is ignored if type is <constant>GL_FIXED</constant>.
+     * @param int $relativeoffset The distance between elements within the buffer.
+     * 
+     * @return void
+     */ 
+    function glVertexAttribFormat(int $attribindex, int $size, int $type, bool $normalized, int $relativeoffset) : void {}
+ 
+    /**
+     * glVertexAttribIFormat
+     * 
+     * @param int $attribindex 
+     * @param int $size 
+     * @param int $type 
+     * @param int $relativeoffset 
+     * 
+     * @return void
+     */ 
+    function glVertexAttribIFormat(int $attribindex, int $size, int $type, int $relativeoffset) : void {}
+ 
+    /**
+     * glVertexAttribLFormat
+     * 
+     * @param int $attribindex 
+     * @param int $size 
+     * @param int $type 
+     * @param int $relativeoffset 
+     * 
+     * @return void
+     */ 
+    function glVertexAttribLFormat(int $attribindex, int $size, int $type, int $relativeoffset) : void {}
+ 
+    /**
+     * associate a vertex attribute and a vertex buffer binding for a vertex array
+     * object
+     * 
+     * @param int $attribindex The index of the attribute to associate with a vertex
+     * buffer binding.
+     * @param int $bindingindex The index of the vertex buffer binding with which to
+     * associate the generic vertex attribute.
+     * 
+     * @return void
+     */ 
+    function glVertexAttribBinding(int $attribindex, int $bindingindex) : void {}
+ 
+    /**
+     * modify the rate at which generic vertex attributes
+     *     advance
+     * 
+     * @param int $bindingindex The index of the binding whose divisor to modify.
+     * @param int $divisor The new value for the instance step rate to apply.
+     * 
+     * @return void
+     */ 
+    function glVertexBindingDivisor(int $bindingindex, int $divisor) : void {}
+ 
+    /**
+     * inject an application-supplied message into the debug message queue
+     * 
+     * @param int $source The source of the debug message to insert.
+     * @param int $type The type of the debug message insert.
+     * @param int $id The user-supplied identifier of the message to insert.
+     * @param int $severity The severity of the debug messages to insert.
+     * @param int $length The length string contained in the character array whose
+     * address is given by message.
+     * @param string $buf 
+     * 
+     * @return void
+     */ 
+    function glDebugMessageInsert(int $source, int $type, int $id, int $severity, int $length, string $buf) : void {}
+ 
+    /**
+     * push a named debug group into the command stream
+     * 
+     * @param int $source The source of the debug message.
+     * @param int $id The identifier of the message.
+     * @param int $length The length of the message to be sent to the debug output
+     * stream.
+     * @param string $message The a string containing the message to be sent to the
+     * debug output stream.
+     * 
+     * @return void
+     */ 
+    function glPushDebugGroup(int $source, int $id, int $length, string $message) : void {}
+ 
+    /**
+     * pop the active debug group
+     * @return void
+     */ 
+    function glPopDebugGroup() : void {}
+ 
+    /**
+     * label a named object identified within a namespace
+     * 
+     * @param int $identifier The namespace from which the name of the object is
+     * allocated.
+     * @param int $name The name of the object to label.
+     * @param int $length The length of the label to be used for the object.
+     * @param string $label The address of a string containing the label to assign
+     * to the object.
+     * 
+     * @return void
+     */ 
+    function glObjectLabel(int $identifier, int $name, int $length, string $label) : void {}
+ 
+    /**
+     * control clip coordinate to window coordinate behavior
+     * 
+     * @param int $origin Specifies the clip control origin. Must be one of
+     * <constant>GL_LOWER_LEFT</constant> or <constant>GL_UPPER_LEFT</constant>.
+     * @param int $depth Specifies the clip control depth mode. Must be one of
+     * <constant>GL_NEGATIVE_ONE_TO_ONE</constant> or
+     * <constant>GL_ZERO_TO_ONE</constant>.
+     * 
+     * @return void
+     */ 
+    function glClipControl(int $origin, int $depth) : void {}
+ 
+    /**
+     * create transform feedback objects
+     * 
+     * @param int $n Number of transform feedback objects to create.
+     * @param ?int &...$ids 
+     * 
+     * @return void
+     */ 
+    function glCreateTransformFeedbacks(int $n, ?int &...$ids) : void {}
+ 
+    /**
+     * bind a buffer object to a transform feedback buffer object
+     * 
+     * @param int $xfb Name of the transform feedback buffer object.
+     * @param int $index Index of the binding point within xfb.
+     * @param int $buffer Name of the buffer object to bind to the specified binding
+     * point.
+     * 
+     * @return void
+     */ 
+    function glTransformFeedbackBufferBase(int $xfb, int $index, int $buffer) : void {}
+ 
+    /**
+     * bind a range within a buffer object to a transform feedback buffer object
+     * 
+     * @param int $xfb Name of the transform feedback buffer object.
+     * @param int $index Index of the binding point within xfb.
+     * @param int $buffer Name of the buffer object to bind to the specified binding
+     * point.
+     * @param int $offset The starting offset in basic machine units into the buffer
+     * object.
+     * @param int $size The amount of data in basic machine units that can be read
+     * from or written to the buffer object while used as an indexed target.
+     * 
+     * @return void
+     */ 
+    function glTransformFeedbackBufferRange(int $xfb, int $index, int $buffer, int $offset, int $size) : void {}
+ 
+    /**
+     * glGetTransformFeedbackiv
+     * 
+     * @param int $xfb 
+     * @param int $pname 
+     * @param int &$param 
+     * 
+     * @return void
+     */ 
+    function glGetTransformFeedbackiv(int $xfb, int $pname, int &$param) : void {}
+ 
+    /**
+     * glGetTransformFeedbacki_v
+     * 
+     * @param int $xfb 
+     * @param int $pname 
+     * @param int $index 
+     * @param int &$param 
+     * 
+     * @return void
+     */ 
+    function glGetTransformFeedbacki_v(int $xfb, int $pname, int $index, int &$param) : void {}
+ 
+    /**
+     * glGetTransformFeedbacki64_v
+     * 
+     * @param int $xfb 
+     * @param int $pname 
+     * @param int $index 
+     * @param int &$param 
+     * 
+     * @return void
+     */ 
+    function glGetTransformFeedbacki64_v(int $xfb, int $pname, int $index, int &$param) : void {}
+ 
+    /**
+     * create buffer objects
+     * 
+     * @param int $n Specifies the number of buffer objects to create.
+     * @param ?int &...$buffers 
+     * 
+     * @return void
+     */ 
+    function glCreateBuffers(int $n, ?int &...$buffers) : void {}
+ 
+    /**
+     * glCopyNamedBufferSubData
+     * 
+     * @param int $readBuffer 
+     * @param int $writeBuffer 
+     * @param int $readOffset 
+     * @param int $writeOffset 
+     * @param int $size 
+     * 
+     * @return void
+     */ 
+    function glCopyNamedBufferSubData(int $readBuffer, int $writeBuffer, int $readOffset, int $writeOffset, int $size) : void {}
+ 
+    /**
+     * glUnmapNamedBuffer
+     * 
+     * @param int $buffer 
+     * 
+     * @return bool
+     */ 
+    function glUnmapNamedBuffer(int $buffer) : bool {}
+ 
+    /**
+     * glFlushMappedNamedBufferRange
+     * 
+     * @param int $buffer 
+     * @param int $offset 
+     * @param int $length 
+     * 
+     * @return void
+     */ 
+    function glFlushMappedNamedBufferRange(int $buffer, int $offset, int $length) : void {}
+ 
+    /**
+     * glGetNamedBufferParameteriv
+     * 
+     * @param int $buffer 
+     * @param int $pname 
+     * @param int &$params 
+     * 
+     * @return void
+     */ 
+    function glGetNamedBufferParameteriv(int $buffer, int $pname, int &$params) : void {}
+ 
+    /**
+     * glGetNamedBufferParameteri64v
+     * 
+     * @param int $buffer 
+     * @param int $pname 
+     * @param int &$params 
+     * 
+     * @return void
+     */ 
+    function glGetNamedBufferParameteri64v(int $buffer, int $pname, int &$params) : void {}
+ 
+    /**
+     * create framebuffer objects
+     * 
+     * @param int $n Number of framebuffer objects to create.
+     * @param ?int &...$framebuffers 
+     * 
+     * @return void
+     */ 
+    function glCreateFramebuffers(int $n, ?int &...$framebuffers) : void {}
+ 
+    /**
+     * glNamedFramebufferRenderbuffer
+     * 
+     * @param int $framebuffer 
+     * @param int $attachment 
+     * @param int $renderbuffertarget 
+     * @param int $renderbuffer 
+     * 
+     * @return void
+     */ 
+    function glNamedFramebufferRenderbuffer(int $framebuffer, int $attachment, int $renderbuffertarget, int $renderbuffer) : void {}
+ 
+    /**
+     * glNamedFramebufferParameteri
+     * 
+     * @param int $framebuffer 
+     * @param int $pname 
+     * @param int $param 
+     * 
+     * @return void
+     */ 
+    function glNamedFramebufferParameteri(int $framebuffer, int $pname, int $param) : void {}
+ 
+    /**
+     * glNamedFramebufferTexture
+     * 
+     * @param int $framebuffer 
+     * @param int $attachment 
+     * @param int $texture 
+     * @param int $level 
+     * 
+     * @return void
+     */ 
+    function glNamedFramebufferTexture(int $framebuffer, int $attachment, int $texture, int $level) : void {}
+ 
+    /**
+     * glNamedFramebufferTextureLayer
+     * 
+     * @param int $framebuffer 
+     * @param int $attachment 
+     * @param int $texture 
+     * @param int $level 
+     * @param int $layer 
+     * 
+     * @return void
+     */ 
+    function glNamedFramebufferTextureLayer(int $framebuffer, int $attachment, int $texture, int $level, int $layer) : void {}
+ 
+    /**
+     * glNamedFramebufferDrawBuffer
+     * 
+     * @param int $framebuffer 
+     * @param int $buf 
+     * 
+     * @return void
+     */ 
+    function glNamedFramebufferDrawBuffer(int $framebuffer, int $buf) : void {}
+ 
+    /**
+     * glNamedFramebufferReadBuffer
+     * 
+     * @param int $framebuffer 
+     * @param int $src 
+     * 
+     * @return void
+     */ 
+    function glNamedFramebufferReadBuffer(int $framebuffer, int $src) : void {}
+ 
+    /**
+     * glClearNamedFramebufferiv
+     * 
+     * @param int $framebuffer 
+     * @param int $buffer 
+     * @param int $drawbuffer 
+     * @param \GL\Buffer\IntBuffer|array $value 
+     * 
+     * @return void
+     */ 
+    function glClearNamedFramebufferiv(int $framebuffer, int $buffer, int $drawbuffer, \GL\Buffer\IntBuffer|array $value) : void {}
+ 
+    /**
+     * glClearNamedFramebufferuiv
+     * 
+     * @param int $framebuffer 
+     * @param int $buffer 
+     * @param int $drawbuffer 
+     * @param \GL\Buffer\UIntBuffer|array $value 
+     * 
+     * @return void
+     */ 
+    function glClearNamedFramebufferuiv(int $framebuffer, int $buffer, int $drawbuffer, \GL\Buffer\UIntBuffer|array $value) : void {}
+ 
+    /**
+     * glClearNamedFramebufferfv
+     * 
+     * @param int $framebuffer 
+     * @param int $buffer 
+     * @param int $drawbuffer 
+     * @param \GL\Buffer\FloatBuffer|array $value 
+     * 
+     * @return void
+     */ 
+    function glClearNamedFramebufferfv(int $framebuffer, int $buffer, int $drawbuffer, \GL\Buffer\FloatBuffer|array $value) : void {}
+ 
+    /**
+     * glClearNamedFramebufferfi
+     * 
+     * @param int $framebuffer 
+     * @param int $buffer 
+     * @param int $drawbuffer 
+     * @param float $depth 
+     * @param int $stencil 
+     * 
+     * @return void
+     */ 
+    function glClearNamedFramebufferfi(int $framebuffer, int $buffer, int $drawbuffer, float $depth, int $stencil) : void {}
+ 
+    /**
+     * glBlitNamedFramebuffer
+     * 
+     * @param int $readFramebuffer 
+     * @param int $drawFramebuffer 
+     * @param int $srcX0 
+     * @param int $srcY0 
+     * @param int $srcX1 
+     * @param int $srcY1 
+     * @param int $dstX0 
+     * @param int $dstY0 
+     * @param int $dstX1 
+     * @param int $dstY1 
+     * @param int $mask 
+     * @param int $filter 
+     * 
+     * @return void
+     */ 
+    function glBlitNamedFramebuffer(int $readFramebuffer, int $drawFramebuffer, int $srcX0, int $srcY0, int $srcX1, int $srcY1, int $dstX0, int $dstY0, int $dstX1, int $dstY1, int $mask, int $filter) : void {}
+ 
+    /**
+     * glCheckNamedFramebufferStatus
+     * 
+     * @param int $framebuffer 
+     * @param int $target 
+     * 
+     * @return int
+     */ 
+    function glCheckNamedFramebufferStatus(int $framebuffer, int $target) : int {}
+ 
+    /**
+     * glGetNamedFramebufferParameteriv
+     * 
+     * @param int $framebuffer 
+     * @param int $pname 
+     * @param int &$param 
+     * 
+     * @return void
+     */ 
+    function glGetNamedFramebufferParameteriv(int $framebuffer, int $pname, int &$param) : void {}
+ 
+    /**
+     * glGetNamedFramebufferAttachmentParameteriv
+     * 
+     * @param int $framebuffer 
+     * @param int $attachment 
+     * @param int $pname 
+     * @param int &$params 
+     * 
+     * @return void
+     */ 
+    function glGetNamedFramebufferAttachmentParameteriv(int $framebuffer, int $attachment, int $pname, int &$params) : void {}
+ 
+    /**
+     * create renderbuffer objects
+     * 
+     * @param int $n Number of renderbuffer objects to create.
+     * @param ?int &...$renderbuffers 
+     * 
+     * @return void
+     */ 
+    function glCreateRenderbuffers(int $n, ?int &...$renderbuffers) : void {}
+ 
+    /**
+     * glNamedRenderbufferStorage
+     * 
+     * @param int $renderbuffer 
+     * @param int $internalformat 
+     * @param int $width 
+     * @param int $height 
+     * 
+     * @return void
+     */ 
+    function glNamedRenderbufferStorage(int $renderbuffer, int $internalformat, int $width, int $height) : void {}
+ 
+    /**
+     * glNamedRenderbufferStorageMultisample
+     * 
+     * @param int $renderbuffer 
+     * @param int $samples 
+     * @param int $internalformat 
+     * @param int $width 
+     * @param int $height 
+     * 
+     * @return void
+     */ 
+    function glNamedRenderbufferStorageMultisample(int $renderbuffer, int $samples, int $internalformat, int $width, int $height) : void {}
+ 
+    /**
+     * glGetNamedRenderbufferParameteriv
+     * 
+     * @param int $renderbuffer 
+     * @param int $pname 
+     * @param int &$params 
+     * 
+     * @return void
+     */ 
+    function glGetNamedRenderbufferParameteriv(int $renderbuffer, int $pname, int &$params) : void {}
+ 
+    /**
+     * create texture objects
+     * 
+     * @param int $target Specifies the effective texture target of each created
+     * texture.
+     * @param int $n Number of texture objects to create.
+     * @param int &$textures Specifies an array in which names of the new texture
+     * objects are stored.
+     * 
+     * @return void
+     */ 
+    function glCreateTextures(int $target, int $n, int &$textures) : void {}
+ 
+    /**
+     * glTextureBuffer
+     * 
+     * @param int $texture 
+     * @param int $internalformat 
+     * @param int $buffer 
+     * 
+     * @return void
+     */ 
+    function glTextureBuffer(int $texture, int $internalformat, int $buffer) : void {}
+ 
+    /**
+     * glTextureBufferRange
+     * 
+     * @param int $texture 
+     * @param int $internalformat 
+     * @param int $buffer 
+     * @param int $offset 
+     * @param int $size 
+     * 
+     * @return void
+     */ 
+    function glTextureBufferRange(int $texture, int $internalformat, int $buffer, int $offset, int $size) : void {}
+ 
+    /**
+     * glTextureStorage1D
+     * 
+     * @param int $texture 
+     * @param int $levels 
+     * @param int $internalformat 
+     * @param int $width 
+     * 
+     * @return void
+     */ 
+    function glTextureStorage1D(int $texture, int $levels, int $internalformat, int $width) : void {}
+ 
+    /**
+     * glTextureStorage2D
+     * 
+     * @param int $texture 
+     * @param int $levels 
+     * @param int $internalformat 
+     * @param int $width 
+     * @param int $height 
+     * 
+     * @return void
+     */ 
+    function glTextureStorage2D(int $texture, int $levels, int $internalformat, int $width, int $height) : void {}
+ 
+    /**
+     * glTextureStorage3D
+     * 
+     * @param int $texture 
+     * @param int $levels 
+     * @param int $internalformat 
+     * @param int $width 
+     * @param int $height 
+     * @param int $depth 
+     * 
+     * @return void
+     */ 
+    function glTextureStorage3D(int $texture, int $levels, int $internalformat, int $width, int $height, int $depth) : void {}
+ 
+    /**
+     * glTextureStorage2DMultisample
+     * 
+     * @param int $texture 
+     * @param int $samples 
+     * @param int $internalformat 
+     * @param int $width 
+     * @param int $height 
+     * @param bool $fixedsamplelocations 
+     * 
+     * @return void
+     */ 
+    function glTextureStorage2DMultisample(int $texture, int $samples, int $internalformat, int $width, int $height, bool $fixedsamplelocations) : void {}
+ 
+    /**
+     * glTextureStorage3DMultisample
+     * 
+     * @param int $texture 
+     * @param int $samples 
+     * @param int $internalformat 
+     * @param int $width 
+     * @param int $height 
+     * @param int $depth 
+     * @param bool $fixedsamplelocations 
+     * 
+     * @return void
+     */ 
+    function glTextureStorage3DMultisample(int $texture, int $samples, int $internalformat, int $width, int $height, int $depth, bool $fixedsamplelocations) : void {}
+ 
+    /**
+     * glCopyTextureSubImage1D
+     * 
+     * @param int $texture 
+     * @param int $level 
+     * @param int $xoffset 
+     * @param int $x 
+     * @param int $y 
+     * @param int $width 
+     * 
+     * @return void
+     */ 
+    function glCopyTextureSubImage1D(int $texture, int $level, int $xoffset, int $x, int $y, int $width) : void {}
+ 
+    /**
+     * glCopyTextureSubImage2D
+     * 
+     * @param int $texture 
+     * @param int $level 
+     * @param int $xoffset 
+     * @param int $yoffset 
+     * @param int $x 
+     * @param int $y 
+     * @param int $width 
+     * @param int $height 
+     * 
+     * @return void
+     */ 
+    function glCopyTextureSubImage2D(int $texture, int $level, int $xoffset, int $yoffset, int $x, int $y, int $width, int $height) : void {}
+ 
+    /**
+     * glCopyTextureSubImage3D
+     * 
+     * @param int $texture 
+     * @param int $level 
+     * @param int $xoffset 
+     * @param int $yoffset 
+     * @param int $zoffset 
+     * @param int $x 
+     * @param int $y 
+     * @param int $width 
+     * @param int $height 
+     * 
+     * @return void
+     */ 
+    function glCopyTextureSubImage3D(int $texture, int $level, int $xoffset, int $yoffset, int $zoffset, int $x, int $y, int $width, int $height) : void {}
+ 
+    /**
+     * glTextureParameterf
+     * 
+     * @param int $texture 
+     * @param int $pname 
+     * @param float $param 
+     * 
+     * @return void
+     */ 
+    function glTextureParameterf(int $texture, int $pname, float $param) : void {}
+ 
+    /**
+     * glTextureParameterfv
+     * 
+     * @param int $texture 
+     * @param int $pname 
+     * @param \GL\Buffer\FloatBuffer|array $param 
+     * 
+     * @return void
+     */ 
+    function glTextureParameterfv(int $texture, int $pname, \GL\Buffer\FloatBuffer|array $param) : void {}
+ 
+    /**
+     * glTextureParameteri
+     * 
+     * @param int $texture 
+     * @param int $pname 
+     * @param int $param 
+     * 
+     * @return void
+     */ 
+    function glTextureParameteri(int $texture, int $pname, int $param) : void {}
+ 
+    /**
+     * glTextureParameterIiv
+     * 
+     * @param int $texture 
+     * @param int $pname 
+     * @param \GL\Buffer\IntBuffer|array $params 
+     * 
+     * @return void
+     */ 
+    function glTextureParameterIiv(int $texture, int $pname, \GL\Buffer\IntBuffer|array $params) : void {}
+ 
+    /**
+     * glTextureParameterIuiv
+     * 
+     * @param int $texture 
+     * @param int $pname 
+     * @param \GL\Buffer\UIntBuffer|array $params 
+     * 
+     * @return void
+     */ 
+    function glTextureParameterIuiv(int $texture, int $pname, \GL\Buffer\UIntBuffer|array $params) : void {}
+ 
+    /**
+     * glTextureParameteriv
+     * 
+     * @param int $texture 
+     * @param int $pname 
+     * @param \GL\Buffer\IntBuffer|array $param 
+     * 
+     * @return void
+     */ 
+    function glTextureParameteriv(int $texture, int $pname, \GL\Buffer\IntBuffer|array $param) : void {}
+ 
+    /**
+     * glGenerateTextureMipmap
+     * 
+     * @param int $texture 
+     * 
+     * @return void
+     */ 
+    function glGenerateTextureMipmap(int $texture) : void {}
+ 
+    /**
+     * bind an existing texture object to the specified texture unit 
+     * 
+     * @param int $unit 
+     * @param int $texture 
+     * 
+     * @return void
+     */ 
+    function glBindTextureUnit(int $unit, int $texture) : void {}
+ 
+    /**
+     * glGetTextureLevelParameterfv
+     * 
+     * @param int $texture 
+     * @param int $level 
+     * @param int $pname 
+     * @param float &$params 
+     * 
+     * @return void
+     */ 
+    function glGetTextureLevelParameterfv(int $texture, int $level, int $pname, float &$params) : void {}
+ 
+    /**
+     * glGetTextureLevelParameteriv
+     * 
+     * @param int $texture 
+     * @param int $level 
+     * @param int $pname 
+     * @param int &$params 
+     * 
+     * @return void
+     */ 
+    function glGetTextureLevelParameteriv(int $texture, int $level, int $pname, int &$params) : void {}
+ 
+    /**
+     * glGetTextureParameterfv
+     * 
+     * @param int $texture 
+     * @param int $pname 
+     * @param float &$params 
+     * 
+     * @return void
+     */ 
+    function glGetTextureParameterfv(int $texture, int $pname, float &$params) : void {}
+ 
+    /**
+     * glGetTextureParameterIiv
+     * 
+     * @param int $texture 
+     * @param int $pname 
+     * @param int &$params 
+     * 
+     * @return void
+     */ 
+    function glGetTextureParameterIiv(int $texture, int $pname, int &$params) : void {}
+ 
+    /**
+     * glGetTextureParameterIuiv
+     * 
+     * @param int $texture 
+     * @param int $pname 
+     * @param int &$params 
+     * 
+     * @return void
+     */ 
+    function glGetTextureParameterIuiv(int $texture, int $pname, int &$params) : void {}
+ 
+    /**
+     * glGetTextureParameteriv
+     * 
+     * @param int $texture 
+     * @param int $pname 
+     * @param int &$params 
+     * 
+     * @return void
+     */ 
+    function glGetTextureParameteriv(int $texture, int $pname, int &$params) : void {}
+ 
+    /**
+     * create vertex array objects
+     * 
+     * @param int $n Number of vertex array objects to create.
+     * @param ?int &...$arrays 
+     * 
+     * @return void
+     */ 
+    function glCreateVertexArrays(int $n, ?int &...$arrays) : void {}
+ 
+    /**
+     * glDisableVertexArrayAttrib
+     * 
+     * @param int $vaobj 
+     * @param int $index 
+     * 
+     * @return void
+     */ 
+    function glDisableVertexArrayAttrib(int $vaobj, int $index) : void {}
+ 
+    /**
+     * glEnableVertexArrayAttrib
+     * 
+     * @param int $vaobj 
+     * @param int $index 
+     * 
+     * @return void
+     */ 
+    function glEnableVertexArrayAttrib(int $vaobj, int $index) : void {}
+ 
+    /**
+     * configures element array buffer binding of a vertex array object
+     * 
+     * @param int $vaobj Specifies the name of the vertex array object.
+     * @param int $buffer Specifies the name of the buffer object to use for the
+     * element array buffer binding.
+     * 
+     * @return void
+     */ 
+    function glVertexArrayElementBuffer(int $vaobj, int $buffer) : void {}
+ 
+    /**
+     * glVertexArrayVertexBuffer
+     * 
+     * @param int $vaobj 
+     * @param int $bindingindex 
+     * @param int $buffer 
+     * @param int $offset 
+     * @param int $stride 
+     * 
+     * @return void
+     */ 
+    function glVertexArrayVertexBuffer(int $vaobj, int $bindingindex, int $buffer, int $offset, int $stride) : void {}
+ 
+    /**
+     * glVertexArrayAttribBinding
+     * 
+     * @param int $vaobj 
+     * @param int $attribindex 
+     * @param int $bindingindex 
+     * 
+     * @return void
+     */ 
+    function glVertexArrayAttribBinding(int $vaobj, int $attribindex, int $bindingindex) : void {}
+ 
+    /**
+     * glVertexArrayAttribFormat
+     * 
+     * @param int $vaobj 
+     * @param int $attribindex 
+     * @param int $size 
+     * @param int $type 
+     * @param bool $normalized 
+     * @param int $relativeoffset 
+     * 
+     * @return void
+     */ 
+    function glVertexArrayAttribFormat(int $vaobj, int $attribindex, int $size, int $type, bool $normalized, int $relativeoffset) : void {}
+ 
+    /**
+     * glVertexArrayAttribIFormat
+     * 
+     * @param int $vaobj 
+     * @param int $attribindex 
+     * @param int $size 
+     * @param int $type 
+     * @param int $relativeoffset 
+     * 
+     * @return void
+     */ 
+    function glVertexArrayAttribIFormat(int $vaobj, int $attribindex, int $size, int $type, int $relativeoffset) : void {}
+ 
+    /**
+     * glVertexArrayAttribLFormat
+     * 
+     * @param int $vaobj 
+     * @param int $attribindex 
+     * @param int $size 
+     * @param int $type 
+     * @param int $relativeoffset 
+     * 
+     * @return void
+     */ 
+    function glVertexArrayAttribLFormat(int $vaobj, int $attribindex, int $size, int $type, int $relativeoffset) : void {}
+ 
+    /**
+     * glVertexArrayBindingDivisor
+     * 
+     * @param int $vaobj 
+     * @param int $bindingindex 
+     * @param int $divisor 
+     * 
+     * @return void
+     */ 
+    function glVertexArrayBindingDivisor(int $vaobj, int $bindingindex, int $divisor) : void {}
+ 
+    /**
+     * retrieve parameters of a vertex array object
+     * 
+     * @param int $vaobj specifies the name of the vertex array object to use for
+     * the query.
+     * @param int $pname Name of the property to use for the query. Must be
+     * <constant>GL_ELEMENT_ARRAY_BUFFER_BINDING</constant>.
+     * @param int &$param Returns the requested value.
+     * 
+     * @return void
+     */ 
+    function glGetVertexArrayiv(int $vaobj, int $pname, int &$param) : void {}
+ 
+    /**
+     * glGetVertexArrayIndexediv
+     * 
+     * @param int $vaobj 
+     * @param int $index 
+     * @param int $pname 
+     * @param int &$param 
+     * 
+     * @return void
+     */ 
+    function glGetVertexArrayIndexediv(int $vaobj, int $index, int $pname, int &$param) : void {}
+ 
+    /**
+     * glGetVertexArrayIndexed64iv
+     * 
+     * @param int $vaobj 
+     * @param int $index 
+     * @param int $pname 
+     * @param int &$param 
+     * 
+     * @return void
+     */ 
+    function glGetVertexArrayIndexed64iv(int $vaobj, int $index, int $pname, int &$param) : void {}
+ 
+    /**
+     * create sampler objects
+     * 
+     * @param int $n Number of sampler objects to create.
+     * @param ?int &...$samplers 
+     * 
+     * @return void
+     */ 
+    function glCreateSamplers(int $n, ?int &...$samplers) : void {}
+ 
+    /**
+     * create program pipeline objects
+     * 
+     * @param int $n Number of program pipeline objects to create.
+     * @param ?int &...$pipelines 
+     * 
+     * @return void
+     */ 
+    function glCreateProgramPipelines(int $n, ?int &...$pipelines) : void {}
+ 
+    /**
+     * create query objects
+     * 
+     * @param int $target Specifies the target of each created query object.
+     * @param int $n Number of query objects to create.
+     * @param int &$ids Specifies an array in which names of the new query objects
+     * are stored.
+     * 
+     * @return void
+     */ 
+    function glCreateQueries(int $target, int $n, int &$ids) : void {}
+ 
+    /**
+     * glGetQueryBufferObjecti64v
+     * 
+     * @param int $id 
+     * @param int $buffer 
+     * @param int $pname 
+     * @param int $offset 
+     * 
+     * @return void
+     */ 
+    function glGetQueryBufferObjecti64v(int $id, int $buffer, int $pname, int $offset) : void {}
+ 
+    /**
+     * glGetQueryBufferObjectiv
+     * 
+     * @param int $id 
+     * @param int $buffer 
+     * @param int $pname 
+     * @param int $offset 
+     * 
+     * @return void
+     */ 
+    function glGetQueryBufferObjectiv(int $id, int $buffer, int $pname, int $offset) : void {}
+ 
+    /**
+     * glGetQueryBufferObjectui64v
+     * 
+     * @param int $id 
+     * @param int $buffer 
+     * @param int $pname 
+     * @param int $offset 
+     * 
+     * @return void
+     */ 
+    function glGetQueryBufferObjectui64v(int $id, int $buffer, int $pname, int $offset) : void {}
+ 
+    /**
+     * glGetQueryBufferObjectuiv
+     * 
+     * @param int $id 
+     * @param int $buffer 
+     * @param int $pname 
+     * @param int $offset 
+     * 
+     * @return void
+     */ 
+    function glGetQueryBufferObjectuiv(int $id, int $buffer, int $pname, int $offset) : void {}
+ 
+    /**
+     * glMemoryBarrierByRegion
+     * 
+     * @param int $barriers 
+     * 
+     * @return void
+     */ 
+    function glMemoryBarrierByRegion(int $barriers) : void {}
+ 
+    /**
+     * check if the rendering context has not been lost due to software or hardware
+     * issues
+     * @return int
+     */ 
+    function glGetGraphicsResetStatus() : int {}
+ 
+    /**
+     * glGetnUniformdv
+     * 
+     * @param int $program 
+     * @param int $location 
+     * @param int $bufSize 
+     * @param float &$params 
+     * 
+     * @return void
+     */ 
+    function glGetnUniformdv(int $program, int $location, int $bufSize, float &$params) : void {}
+ 
+    /**
+     * glGetnUniformfv
+     * 
+     * @param int $program 
+     * @param int $location 
+     * @param int $bufSize 
+     * @param float &$params 
+     * 
+     * @return void
+     */ 
+    function glGetnUniformfv(int $program, int $location, int $bufSize, float &$params) : void {}
+ 
+    /**
+     * glGetnUniformiv
+     * 
+     * @param int $program 
+     * @param int $location 
+     * @param int $bufSize 
+     * @param int &$params 
+     * 
+     * @return void
+     */ 
+    function glGetnUniformiv(int $program, int $location, int $bufSize, int &$params) : void {}
+ 
+    /**
+     * glGetnUniformuiv
+     * 
+     * @param int $program 
+     * @param int $location 
+     * @param int $bufSize 
+     * @param int &$params 
+     * 
+     * @return void
+     */ 
+    function glGetnUniformuiv(int $program, int $location, int $bufSize, int &$params) : void {}
+ 
+    /**
+     * glGetnMapdv
+     * 
+     * @param int $target 
+     * @param int $query 
+     * @param int $bufSize 
+     * @param float &$v 
+     * 
+     * @return void
+     */ 
+    function glGetnMapdv(int $target, int $query, int $bufSize, float &$v) : void {}
+ 
+    /**
+     * glGetnMapfv
+     * 
+     * @param int $target 
+     * @param int $query 
+     * @param int $bufSize 
+     * @param float &$v 
+     * 
+     * @return void
+     */ 
+    function glGetnMapfv(int $target, int $query, int $bufSize, float &$v) : void {}
+ 
+    /**
+     * glGetnMapiv
+     * 
+     * @param int $target 
+     * @param int $query 
+     * @param int $bufSize 
+     * @param int &$v 
+     * 
+     * @return void
+     */ 
+    function glGetnMapiv(int $target, int $query, int $bufSize, int &$v) : void {}
+ 
+    /**
+     * glGetnPixelMapfv
+     * 
+     * @param int $map 
+     * @param int $bufSize 
+     * @param float &$values 
+     * 
+     * @return void
+     */ 
+    function glGetnPixelMapfv(int $map, int $bufSize, float &$values) : void {}
+ 
+    /**
+     * glGetnPixelMapuiv
+     * 
+     * @param int $map 
+     * @param int $bufSize 
+     * @param int &$values 
+     * 
+     * @return void
+     */ 
+    function glGetnPixelMapuiv(int $map, int $bufSize, int &$values) : void {}
+ 
+    /**
+     * glGetnPixelMapusv
+     * 
+     * @param int $map 
+     * @param int $bufSize 
+     * @param int &$values 
+     * 
+     * @return void
+     */ 
+    function glGetnPixelMapusv(int $map, int $bufSize, int &$values) : void {}
+ 
+    /**
+     * glGetnPolygonStipple
+     * 
+     * @param int $bufSize 
+     * @param int &$pattern 
+     * 
+     * @return void
+     */ 
+    function glGetnPolygonStipple(int $bufSize, int &$pattern) : void {}
+ 
+    /**
+     * controls the ordering of reads and writes to rendered fragments across
+     * drawing commands
+     * @return void
+     */ 
+    function glTextureBarrier() : void {}
+ 
+    /**
+     * glPolygonOffsetClamp
+     * 
+     * @param float $factor 
+     * @param float $units 
+     * @param float $clamp 
+     * 
+     * @return void
+     */ 
+    function glPolygonOffsetClamp(float $factor, float $units, float $clamp) : void {}
+ 
+    /**
      * Initializes the GLFW library.
      * 
      * This function initializes the GLFW library. Before most GLFW functions can
@@ -12211,7 +13892,7 @@ namespace {
      * ----------------------------------------------------------------------------
      */
     define('PHPGLFW_COMPILED_API', 'gl');
-    define('PHPGLFW_COMPILED_API_VERSION', '4.1');
+    define('PHPGLFW_COMPILED_API_VERSION', '4.6');
     define('GL_SIZEOF_BYTE', 1);
     define('GL_SIZEOF_UNSIGNED_BYTE', 1);
     define('GL_SIZEOF_SHORT', 2);
@@ -12698,6 +14379,8 @@ namespace {
     define('GL_TRIANGLE_STRIP_ADJACENCY', 0x000D);
     define('GL_PATCHES', 0x000E);
     define('GL_FIXED', 0x140C);
+    define('GL_CONTEXT_LOST', 0x0507);
+    define('GL_TEXTURE_TARGET', 0x1006);
     define('GL_POLYGON_OFFSET_FILL', 0x8037);
     define('GL_POLYGON_OFFSET_FACTOR', 0x8038);
     define('GL_TEXTURE_BINDING_1D', 0x8068);
@@ -12806,6 +14489,12 @@ namespace {
     define('GL_MIN', 0x8007);
     define('GL_MAX', 0x8008);
     define('GL_BLEND_EQUATION_RGB', 0x8009);
+    define('GL_CONVOLUTION_1D', 0x8010);
+    define('GL_CONVOLUTION_2D', 0x8011);
+    define('GL_SEPARABLE_2D', 0x8012);
+    define('GL_HISTOGRAM', 0x8024);
+    define('GL_PROXY_HISTOGRAM', 0x8025);
+    define('GL_MINMAX', 0x802E);
     define('GL_CLIENT_PIXEL_STORE_BIT', 0x00000001);
     define('GL_CLIENT_VERTEX_ARRAY_BIT', 0x00000002);
     define('GL_CLIENT_ALL_ATTRIB_BITS', 0xFFFFFFFF);
@@ -12820,6 +14509,8 @@ namespace {
     define('GL_BGRA', 0x80E1);
     define('GL_MAX_ELEMENTS_VERTICES', 0x80E8);
     define('GL_MAX_ELEMENTS_INDICES', 0x80E9);
+    define('GL_PARAMETER_BUFFER', 0x80EE);
+    define('GL_PARAMETER_BUFFER_BINDING', 0x80EF);
     define('GL_CLAMP_TO_EDGE', 0x812F);
     define('GL_TEXTURE_MIN_LOD', 0x813A);
     define('GL_TEXTURE_MAX_LOD', 0x813B);
@@ -12931,6 +14622,8 @@ namespace {
     define('GL_MAX_RECTANGLE_TEXTURE_SIZE', 0x84F8);
     define('GL_UNIFORM_BLOCK_REFERENCED_BY_TESS_CONTROL_SHADER', 0x84F0);
     define('GL_UNIFORM_BLOCK_REFERENCED_BY_TESS_EVALUATION_SHADER', 0x84F1);
+    define('GL_TEXTURE_MAX_ANISOTROPY', 0x84FE);
+    define('GL_MAX_TEXTURE_MAX_ANISOTROPY', 0x84FF);
     define('GL_TEXTURE_COMPRESSED_IMAGE_SIZE', 0x86A0);
     define('GL_TEXTURE_COMPRESSED', 0x86A1);
     define('GL_NUM_COMPRESSED_TEXTURE_FORMATS', 0x86A2);
@@ -13208,6 +14901,7 @@ namespace {
     define('GL_ANY_SAMPLES_PASSED', 0x8C2F);
     define('GL_SAMPLE_SHADING', 0x8C36);
     define('GL_MIN_SAMPLE_SHADING_VALUE', 0x8C37);
+    define('GL_TEXTURE_BUFFER_BINDING', 0x8C2A);
     define('GL_MAJOR_VERSION', 0x821B);
     define('GL_MINOR_VERSION', 0x821C);
     define('GL_NUM_EXTENSIONS', 0x821D);
@@ -13248,7 +14942,13 @@ namespace {
     define('GL_RG16UI', 0x823A);
     define('GL_RG32I', 0x823B);
     define('GL_RG32UI', 0x823C);
+    define('GL_PRIMITIVE_RESTART_FOR_PATCHES_SUPPORTED', 0x8221);
+    define('GL_BUFFER_IMMUTABLE_STORAGE', 0x821F);
+    define('GL_BUFFER_STORAGE_FLAGS', 0x8220);
     define('GL_CONTEXT_FLAG_FORWARD_COMPATIBLE_BIT', 0x00000001);
+    define('GL_CONTEXT_FLAG_DEBUG_BIT', 0x00000002);
+    define('GL_CONTEXT_FLAG_ROBUST_ACCESS_BIT', 0x00000004);
+    define('GL_CONTEXT_FLAG_NO_ERROR_BIT', 0x00000008);
     define('GL_RGBA32UI', 0x8D70);
     define('GL_RGB32UI', 0x8D71);
     define('GL_RGBA16UI', 0x8D76);
@@ -13373,6 +15073,17 @@ namespace {
     define('GL_TRANSFORM_FEEDBACK_BUFFER_ACTIVE', 0x8E24);
     define('GL_TRANSFORM_FEEDBACK_BINDING', 0x8E25);
     define('GL_MAX_TRANSFORM_FEEDBACK_BUFFERS', 0x8E70);
+    define('GL_TRANSFORM_FEEDBACK_ACTIVE', 0x8E24);
+    define('GL_TRANSFORM_FEEDBACK_PAUSED', 0x8E23);
+    define('GL_COMPRESSED_RGBA_BPTC_UNORM', 0x8E8C);
+    define('GL_COMPRESSED_SRGB_ALPHA_BPTC_UNORM', 0x8E8D);
+    define('GL_COMPRESSED_RGB_BPTC_SIGNED_FLOAT', 0x8E8E);
+    define('GL_COMPRESSED_RGB_BPTC_UNSIGNED_FLOAT', 0x8E8F);
+    define('GL_QUERY_WAIT_INVERTED', 0x8E17);
+    define('GL_QUERY_NO_WAIT_INVERTED', 0x8E18);
+    define('GL_QUERY_BY_REGION_WAIT_INVERTED', 0x8E19);
+    define('GL_QUERY_BY_REGION_NO_WAIT_INVERTED', 0x8E1A);
+    define('GL_POLYGON_OFFSET_CLAMP', 0x8E1B);
     define('GL_BUFFER_ACCESS_FLAGS', 0x911F);
     define('GL_BUFFER_MAP_LENGTH', 0x9120);
     define('GL_BUFFER_MAP_OFFSET', 0x9121);
@@ -13411,6 +15122,15 @@ namespace {
     define('GL_MAX_COLOR_TEXTURE_SAMPLES', 0x910E);
     define('GL_MAX_DEPTH_TEXTURE_SAMPLES', 0x910F);
     define('GL_MAX_INTEGER_SAMPLES', 0x9110);
+    define('GL_UNPACK_COMPRESSED_BLOCK_WIDTH', 0x9127);
+    define('GL_UNPACK_COMPRESSED_BLOCK_HEIGHT', 0x9128);
+    define('GL_UNPACK_COMPRESSED_BLOCK_DEPTH', 0x9129);
+    define('GL_UNPACK_COMPRESSED_BLOCK_SIZE', 0x912A);
+    define('GL_PACK_COMPRESSED_BLOCK_WIDTH', 0x912B);
+    define('GL_PACK_COMPRESSED_BLOCK_HEIGHT', 0x912C);
+    define('GL_PACK_COMPRESSED_BLOCK_DEPTH', 0x912D);
+    define('GL_PACK_COMPRESSED_BLOCK_SIZE', 0x912E);
+    define('GL_TEXTURE_IMMUTABLE_FORMAT', 0x912F);
     define('GL_FRAMEBUFFER_ATTACHMENT_OBJECT_TYPE', 0x8CD0);
     define('GL_FRAMEBUFFER_ATTACHMENT_OBJECT_NAME', 0x8CD1);
     define('GL_FRAMEBUFFER_ATTACHMENT_TEXTURE_LEVEL', 0x8CD2);
@@ -13480,6 +15200,8 @@ namespace {
     define('GL_MAP_INVALIDATE_BUFFER_BIT', 0x0008);
     define('GL_MAP_FLUSH_EXPLICIT_BIT', 0x0010);
     define('GL_MAP_UNSYNCHRONIZED_BIT', 0x0020);
+    define('GL_MAP_PERSISTENT_BIT', 0x0040);
+    define('GL_MAP_COHERENT_BIT', 0x0080);
     define('GL_VERTEX_ARRAY_BINDING', 0x85B5);
     define('GL_R8_SNORM', 0x8F94);
     define('GL_RG8_SNORM', 0x8F95);
@@ -13505,6 +15227,17 @@ namespace {
     define('GL_DOUBLE_MAT3x4', 0x8F4C);
     define('GL_DOUBLE_MAT4x2', 0x8F4D);
     define('GL_DOUBLE_MAT4x3', 0x8F4E);
+    define('GL_COPY_READ_BUFFER_BINDING', 0x8F36);
+    define('GL_COPY_WRITE_BUFFER_BINDING', 0x8F37);
+    define('GL_MAX_IMAGE_UNITS', 0x8F38);
+    define('GL_MAX_COMBINED_IMAGE_UNITS_AND_FRAGMENT_OUTPUTS', 0x8F39);
+    define('GL_IMAGE_BINDING_NAME', 0x8F3A);
+    define('GL_IMAGE_BINDING_LEVEL', 0x8F3B);
+    define('GL_IMAGE_BINDING_LAYERED', 0x8F3C);
+    define('GL_IMAGE_BINDING_LAYER', 0x8F3D);
+    define('GL_IMAGE_BINDING_ACCESS', 0x8F3E);
+    define('GL_MAX_COMBINED_SHADER_OUTPUT_RESOURCES', 0x8F39);
+    define('GL_VERTEX_BINDING_BUFFER', 0x8F4F);
     define('GL_UNIFORM_BUFFER', 0x8A11);
     define('GL_UNIFORM_BUFFER_BINDING', 0x8A28);
     define('GL_UNIFORM_BUFFER_START', 0x8A29);
@@ -13541,6 +15274,71 @@ namespace {
     define('GL_CONTEXT_COMPATIBILITY_PROFILE_BIT', 0x00000002);
     define('GL_SYNC_FLUSH_COMMANDS_BIT', 0x00000001);
     define('GL_RGB10_A2UI', 0x906F);
+    define('GL_MIN_MAP_BUFFER_ALIGNMENT', 0x90BC);
+    define('GL_IMAGE_1D', 0x904C);
+    define('GL_IMAGE_2D', 0x904D);
+    define('GL_IMAGE_3D', 0x904E);
+    define('GL_IMAGE_2D_RECT', 0x904F);
+    define('GL_IMAGE_CUBE', 0x9050);
+    define('GL_IMAGE_BUFFER', 0x9051);
+    define('GL_IMAGE_1D_ARRAY', 0x9052);
+    define('GL_IMAGE_2D_ARRAY', 0x9053);
+    define('GL_IMAGE_CUBE_MAP_ARRAY', 0x9054);
+    define('GL_IMAGE_2D_MULTISAMPLE', 0x9055);
+    define('GL_IMAGE_2D_MULTISAMPLE_ARRAY', 0x9056);
+    define('GL_INT_IMAGE_1D', 0x9057);
+    define('GL_INT_IMAGE_2D', 0x9058);
+    define('GL_INT_IMAGE_3D', 0x9059);
+    define('GL_INT_IMAGE_2D_RECT', 0x905A);
+    define('GL_INT_IMAGE_CUBE', 0x905B);
+    define('GL_INT_IMAGE_BUFFER', 0x905C);
+    define('GL_INT_IMAGE_1D_ARRAY', 0x905D);
+    define('GL_INT_IMAGE_2D_ARRAY', 0x905E);
+    define('GL_INT_IMAGE_CUBE_MAP_ARRAY', 0x905F);
+    define('GL_INT_IMAGE_2D_MULTISAMPLE', 0x9060);
+    define('GL_INT_IMAGE_2D_MULTISAMPLE_ARRAY', 0x9061);
+    define('GL_UNSIGNED_INT_IMAGE_1D', 0x9062);
+    define('GL_UNSIGNED_INT_IMAGE_2D', 0x9063);
+    define('GL_UNSIGNED_INT_IMAGE_3D', 0x9064);
+    define('GL_UNSIGNED_INT_IMAGE_2D_RECT', 0x9065);
+    define('GL_UNSIGNED_INT_IMAGE_CUBE', 0x9066);
+    define('GL_UNSIGNED_INT_IMAGE_BUFFER', 0x9067);
+    define('GL_UNSIGNED_INT_IMAGE_1D_ARRAY', 0x9068);
+    define('GL_UNSIGNED_INT_IMAGE_2D_ARRAY', 0x9069);
+    define('GL_UNSIGNED_INT_IMAGE_CUBE_MAP_ARRAY', 0x906A);
+    define('GL_UNSIGNED_INT_IMAGE_2D_MULTISAMPLE', 0x906B);
+    define('GL_UNSIGNED_INT_IMAGE_2D_MULTISAMPLE_ARRAY', 0x906C);
+    define('GL_MAX_IMAGE_SAMPLES', 0x906D);
+    define('GL_IMAGE_BINDING_FORMAT', 0x906E);
+    define('GL_IMAGE_FORMAT_COMPATIBILITY_TYPE', 0x90C7);
+    define('GL_IMAGE_FORMAT_COMPATIBILITY_BY_SIZE', 0x90C8);
+    define('GL_IMAGE_FORMAT_COMPATIBILITY_BY_CLASS', 0x90C9);
+    define('GL_MAX_VERTEX_IMAGE_UNIFORMS', 0x90CA);
+    define('GL_MAX_TESS_CONTROL_IMAGE_UNIFORMS', 0x90CB);
+    define('GL_MAX_TESS_EVALUATION_IMAGE_UNIFORMS', 0x90CC);
+    define('GL_MAX_GEOMETRY_IMAGE_UNIFORMS', 0x90CD);
+    define('GL_MAX_FRAGMENT_IMAGE_UNIFORMS', 0x90CE);
+    define('GL_MAX_COMBINED_IMAGE_UNIFORMS', 0x90CF);
+    define('GL_MAX_COMPUTE_WORK_GROUP_INVOCATIONS', 0x90EB);
+    define('GL_UNIFORM_BLOCK_REFERENCED_BY_COMPUTE_SHADER', 0x90EC);
+    define('GL_ATOMIC_COUNTER_BUFFER_REFERENCED_BY_COMPUTE_SHADER', 0x90ED);
+    define('GL_DISPATCH_INDIRECT_BUFFER', 0x90EE);
+    define('GL_DISPATCH_INDIRECT_BUFFER_BINDING', 0x90EF);
+    define('GL_SHADER_STORAGE_BUFFER', 0x90D2);
+    define('GL_SHADER_STORAGE_BUFFER_BINDING', 0x90D3);
+    define('GL_SHADER_STORAGE_BUFFER_START', 0x90D4);
+    define('GL_SHADER_STORAGE_BUFFER_SIZE', 0x90D5);
+    define('GL_MAX_VERTEX_SHADER_STORAGE_BLOCKS', 0x90D6);
+    define('GL_MAX_GEOMETRY_SHADER_STORAGE_BLOCKS', 0x90D7);
+    define('GL_MAX_TESS_CONTROL_SHADER_STORAGE_BLOCKS', 0x90D8);
+    define('GL_MAX_TESS_EVALUATION_SHADER_STORAGE_BLOCKS', 0x90D9);
+    define('GL_MAX_FRAGMENT_SHADER_STORAGE_BLOCKS', 0x90DA);
+    define('GL_MAX_COMPUTE_SHADER_STORAGE_BLOCKS', 0x90DB);
+    define('GL_MAX_COMBINED_SHADER_STORAGE_BLOCKS', 0x90DC);
+    define('GL_MAX_SHADER_STORAGE_BUFFER_BINDINGS', 0x90DD);
+    define('GL_MAX_SHADER_STORAGE_BLOCK_SIZE', 0x90DE);
+    define('GL_SHADER_STORAGE_BUFFER_OFFSET_ALIGNMENT', 0x90DF);
+    define('GL_DEPTH_STENCIL_TEXTURE_MODE', 0x90EA);
     define('GL_TEXTURE_CUBE_MAP_ARRAY', 0x9009);
     define('GL_TEXTURE_BINDING_CUBE_MAP_ARRAY', 0x900A);
     define('GL_PROXY_TEXTURE_CUBE_MAP_ARRAY', 0x900B);
@@ -13566,6 +15364,9 @@ namespace {
     define('GL_MAX_VARYING_VECTORS', 0x8DFC);
     define('GL_MAX_FRAGMENT_UNIFORM_VECTORS', 0x8DFD);
     define('GL_RGB565', 0x8D62);
+    define('GL_PRIMITIVE_RESTART_FIXED_INDEX', 0x8D69);
+    define('GL_ANY_SAMPLES_PASSED_CONSERVATIVE', 0x8D6A);
+    define('GL_MAX_ELEMENT_INDEX', 0x8D6B);
     define('GL_PROGRAM_BINARY_RETRIEVABLE_HINT', 0x8257);
     define('GL_PROGRAM_SEPARABLE', 0x8258);
     define('GL_ACTIVE_PROGRAM', 0x8259);
@@ -13576,13 +15377,339 @@ namespace {
     define('GL_LAYER_PROVOKING_VERTEX', 0x825E);
     define('GL_VIEWPORT_INDEX_PROVOKING_VERTEX', 0x825F);
     define('GL_UNDEFINED_VERTEX', 0x8260);
+    define('GL_MAX_COMPUTE_SHARED_MEMORY_SIZE', 0x8262);
+    define('GL_MAX_COMPUTE_UNIFORM_COMPONENTS', 0x8263);
+    define('GL_MAX_COMPUTE_ATOMIC_COUNTER_BUFFERS', 0x8264);
+    define('GL_MAX_COMPUTE_ATOMIC_COUNTERS', 0x8265);
+    define('GL_MAX_COMBINED_COMPUTE_UNIFORM_COMPONENTS', 0x8266);
+    define('GL_COMPUTE_WORK_GROUP_SIZE', 0x8267);
+    define('GL_DEBUG_OUTPUT_SYNCHRONOUS', 0x8242);
+    define('GL_DEBUG_NEXT_LOGGED_MESSAGE_LENGTH', 0x8243);
+    define('GL_DEBUG_CALLBACK_FUNCTION', 0x8244);
+    define('GL_DEBUG_CALLBACK_USER_PARAM', 0x8245);
+    define('GL_DEBUG_SOURCE_API', 0x8246);
+    define('GL_DEBUG_SOURCE_WINDOW_SYSTEM', 0x8247);
+    define('GL_DEBUG_SOURCE_SHADER_COMPILER', 0x8248);
+    define('GL_DEBUG_SOURCE_THIRD_PARTY', 0x8249);
+    define('GL_DEBUG_SOURCE_APPLICATION', 0x824A);
+    define('GL_DEBUG_SOURCE_OTHER', 0x824B);
+    define('GL_DEBUG_TYPE_ERROR', 0x824C);
+    define('GL_DEBUG_TYPE_DEPRECATED_BEHAVIOR', 0x824D);
+    define('GL_DEBUG_TYPE_UNDEFINED_BEHAVIOR', 0x824E);
+    define('GL_DEBUG_TYPE_PORTABILITY', 0x824F);
+    define('GL_DEBUG_TYPE_PERFORMANCE', 0x8250);
+    define('GL_DEBUG_TYPE_OTHER', 0x8251);
+    define('GL_DEBUG_TYPE_MARKER', 0x8268);
+    define('GL_DEBUG_TYPE_PUSH_GROUP', 0x8269);
+    define('GL_DEBUG_TYPE_POP_GROUP', 0x826A);
+    define('GL_DEBUG_SEVERITY_NOTIFICATION', 0x826B);
+    define('GL_MAX_DEBUG_GROUP_STACK_DEPTH', 0x826C);
+    define('GL_DEBUG_GROUP_STACK_DEPTH', 0x826D);
+    define('GL_MAX_UNIFORM_LOCATIONS', 0x826E);
+    define('GL_INTERNALFORMAT_SUPPORTED', 0x826F);
+    define('GL_INTERNALFORMAT_PREFERRED', 0x8270);
+    define('GL_INTERNALFORMAT_RED_SIZE', 0x8271);
+    define('GL_INTERNALFORMAT_GREEN_SIZE', 0x8272);
+    define('GL_INTERNALFORMAT_BLUE_SIZE', 0x8273);
+    define('GL_INTERNALFORMAT_ALPHA_SIZE', 0x8274);
+    define('GL_INTERNALFORMAT_DEPTH_SIZE', 0x8275);
+    define('GL_INTERNALFORMAT_STENCIL_SIZE', 0x8276);
+    define('GL_INTERNALFORMAT_SHARED_SIZE', 0x8277);
+    define('GL_INTERNALFORMAT_RED_TYPE', 0x8278);
+    define('GL_INTERNALFORMAT_GREEN_TYPE', 0x8279);
+    define('GL_INTERNALFORMAT_BLUE_TYPE', 0x827A);
+    define('GL_INTERNALFORMAT_ALPHA_TYPE', 0x827B);
+    define('GL_INTERNALFORMAT_DEPTH_TYPE', 0x827C);
+    define('GL_INTERNALFORMAT_STENCIL_TYPE', 0x827D);
+    define('GL_MAX_WIDTH', 0x827E);
+    define('GL_MAX_HEIGHT', 0x827F);
+    define('GL_MAX_DEPTH', 0x8280);
+    define('GL_MAX_LAYERS', 0x8281);
+    define('GL_MAX_COMBINED_DIMENSIONS', 0x8282);
+    define('GL_COLOR_COMPONENTS', 0x8283);
+    define('GL_DEPTH_COMPONENTS', 0x8284);
+    define('GL_STENCIL_COMPONENTS', 0x8285);
+    define('GL_COLOR_RENDERABLE', 0x8286);
+    define('GL_DEPTH_RENDERABLE', 0x8287);
+    define('GL_STENCIL_RENDERABLE', 0x8288);
+    define('GL_FRAMEBUFFER_RENDERABLE', 0x8289);
+    define('GL_FRAMEBUFFER_RENDERABLE_LAYERED', 0x828A);
+    define('GL_FRAMEBUFFER_BLEND', 0x828B);
+    define('GL_READ_PIXELS', 0x828C);
+    define('GL_READ_PIXELS_FORMAT', 0x828D);
+    define('GL_READ_PIXELS_TYPE', 0x828E);
+    define('GL_TEXTURE_IMAGE_FORMAT', 0x828F);
+    define('GL_TEXTURE_IMAGE_TYPE', 0x8290);
+    define('GL_GET_TEXTURE_IMAGE_FORMAT', 0x8291);
+    define('GL_GET_TEXTURE_IMAGE_TYPE', 0x8292);
+    define('GL_MIPMAP', 0x8293);
+    define('GL_MANUAL_GENERATE_MIPMAP', 0x8294);
+    define('GL_AUTO_GENERATE_MIPMAP', 0x8295);
+    define('GL_COLOR_ENCODING', 0x8296);
+    define('GL_SRGB_READ', 0x8297);
+    define('GL_SRGB_WRITE', 0x8298);
+    define('GL_FILTER', 0x829A);
+    define('GL_VERTEX_TEXTURE', 0x829B);
+    define('GL_TESS_CONTROL_TEXTURE', 0x829C);
+    define('GL_TESS_EVALUATION_TEXTURE', 0x829D);
+    define('GL_GEOMETRY_TEXTURE', 0x829E);
+    define('GL_FRAGMENT_TEXTURE', 0x829F);
+    define('GL_COMPUTE_TEXTURE', 0x82A0);
+    define('GL_TEXTURE_SHADOW', 0x82A1);
+    define('GL_TEXTURE_GATHER', 0x82A2);
+    define('GL_TEXTURE_GATHER_SHADOW', 0x82A3);
+    define('GL_SHADER_IMAGE_LOAD', 0x82A4);
+    define('GL_SHADER_IMAGE_STORE', 0x82A5);
+    define('GL_SHADER_IMAGE_ATOMIC', 0x82A6);
+    define('GL_IMAGE_TEXEL_SIZE', 0x82A7);
+    define('GL_IMAGE_COMPATIBILITY_CLASS', 0x82A8);
+    define('GL_IMAGE_PIXEL_FORMAT', 0x82A9);
+    define('GL_IMAGE_PIXEL_TYPE', 0x82AA);
+    define('GL_SIMULTANEOUS_TEXTURE_AND_DEPTH_TEST', 0x82AC);
+    define('GL_SIMULTANEOUS_TEXTURE_AND_STENCIL_TEST', 0x82AD);
+    define('GL_SIMULTANEOUS_TEXTURE_AND_DEPTH_WRITE', 0x82AE);
+    define('GL_SIMULTANEOUS_TEXTURE_AND_STENCIL_WRITE', 0x82AF);
+    define('GL_GUILTY_CONTEXT_RESET', 0x8253);
+    define('GL_INNOCENT_CONTEXT_RESET', 0x8254);
+    define('GL_UNKNOWN_CONTEXT_RESET', 0x8255);
+    define('GL_RESET_NOTIFICATION_STRATEGY', 0x8256);
+    define('GL_LOSE_CONTEXT_ON_RESET', 0x8252);
+    define('GL_NO_RESET_NOTIFICATION', 0x8261);
     define('GL_PROGRAM_BINARY_LENGTH', 0x8741);
+    define('GL_VERTEX_ATTRIB_ARRAY_LONG', 0x874E);
+    define('GL_MIRROR_CLAMP_TO_EDGE', 0x8743);
     define('GL_VERTEX_SHADER_BIT', 0x00000001);
     define('GL_FRAGMENT_SHADER_BIT', 0x00000002);
     define('GL_GEOMETRY_SHADER_BIT', 0x00000004);
     define('GL_TESS_CONTROL_SHADER_BIT', 0x00000008);
     define('GL_TESS_EVALUATION_SHADER_BIT', 0x00000010);
     define('GL_ALL_SHADER_BITS', 0xFFFFFFFF);
+    define('GL_COMPUTE_SHADER_BIT', 0x00000020);
+    define('GL_NUM_SAMPLE_COUNTS', 0x9380);
+    define('GL_ATOMIC_COUNTER_BUFFER', 0x92C0);
+    define('GL_ATOMIC_COUNTER_BUFFER_BINDING', 0x92C1);
+    define('GL_ATOMIC_COUNTER_BUFFER_START', 0x92C2);
+    define('GL_ATOMIC_COUNTER_BUFFER_SIZE', 0x92C3);
+    define('GL_ATOMIC_COUNTER_BUFFER_DATA_SIZE', 0x92C4);
+    define('GL_ATOMIC_COUNTER_BUFFER_ACTIVE_ATOMIC_COUNTERS', 0x92C5);
+    define('GL_ATOMIC_COUNTER_BUFFER_ACTIVE_ATOMIC_COUNTER_INDICES', 0x92C6);
+    define('GL_ATOMIC_COUNTER_BUFFER_REFERENCED_BY_VERTEX_SHADER', 0x92C7);
+    define('GL_ATOMIC_COUNTER_BUFFER_REFERENCED_BY_TESS_CONTROL_SHADER', 0x92C8);
+    define('GL_ATOMIC_COUNTER_BUFFER_REFERENCED_BY_TESS_EVALUATION_SHADER', 0x92C9);
+    define('GL_ATOMIC_COUNTER_BUFFER_REFERENCED_BY_GEOMETRY_SHADER', 0x92CA);
+    define('GL_ATOMIC_COUNTER_BUFFER_REFERENCED_BY_FRAGMENT_SHADER', 0x92CB);
+    define('GL_MAX_VERTEX_ATOMIC_COUNTER_BUFFERS', 0x92CC);
+    define('GL_MAX_TESS_CONTROL_ATOMIC_COUNTER_BUFFERS', 0x92CD);
+    define('GL_MAX_TESS_EVALUATION_ATOMIC_COUNTER_BUFFERS', 0x92CE);
+    define('GL_MAX_GEOMETRY_ATOMIC_COUNTER_BUFFERS', 0x92CF);
+    define('GL_MAX_FRAGMENT_ATOMIC_COUNTER_BUFFERS', 0x92D0);
+    define('GL_MAX_COMBINED_ATOMIC_COUNTER_BUFFERS', 0x92D1);
+    define('GL_MAX_VERTEX_ATOMIC_COUNTERS', 0x92D2);
+    define('GL_MAX_TESS_CONTROL_ATOMIC_COUNTERS', 0x92D3);
+    define('GL_MAX_TESS_EVALUATION_ATOMIC_COUNTERS', 0x92D4);
+    define('GL_MAX_GEOMETRY_ATOMIC_COUNTERS', 0x92D5);
+    define('GL_MAX_FRAGMENT_ATOMIC_COUNTERS', 0x92D6);
+    define('GL_MAX_COMBINED_ATOMIC_COUNTERS', 0x92D7);
+    define('GL_MAX_ATOMIC_COUNTER_BUFFER_SIZE', 0x92D8);
+    define('GL_MAX_ATOMIC_COUNTER_BUFFER_BINDINGS', 0x92DC);
+    define('GL_ACTIVE_ATOMIC_COUNTER_BUFFERS', 0x92D9);
+    define('GL_UNIFORM_ATOMIC_COUNTER_BUFFER_INDEX', 0x92DA);
+    define('GL_UNSIGNED_INT_ATOMIC_COUNTER', 0x92DB);
+    define('GL_DEBUG_OUTPUT', 0x92E0);
+    define('GL_FRAMEBUFFER_DEFAULT_WIDTH', 0x9310);
+    define('GL_FRAMEBUFFER_DEFAULT_HEIGHT', 0x9311);
+    define('GL_FRAMEBUFFER_DEFAULT_LAYERS', 0x9312);
+    define('GL_FRAMEBUFFER_DEFAULT_SAMPLES', 0x9313);
+    define('GL_FRAMEBUFFER_DEFAULT_FIXED_SAMPLE_LOCATIONS', 0x9314);
+    define('GL_MAX_FRAMEBUFFER_WIDTH', 0x9315);
+    define('GL_MAX_FRAMEBUFFER_HEIGHT', 0x9316);
+    define('GL_MAX_FRAMEBUFFER_LAYERS', 0x9317);
+    define('GL_MAX_FRAMEBUFFER_SAMPLES', 0x9318);
+    define('GL_UNIFORM', 0x92E1);
+    define('GL_UNIFORM_BLOCK', 0x92E2);
+    define('GL_PROGRAM_INPUT', 0x92E3);
+    define('GL_PROGRAM_OUTPUT', 0x92E4);
+    define('GL_BUFFER_VARIABLE', 0x92E5);
+    define('GL_SHADER_STORAGE_BLOCK', 0x92E6);
+    define('GL_VERTEX_SUBROUTINE', 0x92E8);
+    define('GL_TESS_CONTROL_SUBROUTINE', 0x92E9);
+    define('GL_TESS_EVALUATION_SUBROUTINE', 0x92EA);
+    define('GL_GEOMETRY_SUBROUTINE', 0x92EB);
+    define('GL_FRAGMENT_SUBROUTINE', 0x92EC);
+    define('GL_COMPUTE_SUBROUTINE', 0x92ED);
+    define('GL_VERTEX_SUBROUTINE_UNIFORM', 0x92EE);
+    define('GL_TESS_CONTROL_SUBROUTINE_UNIFORM', 0x92EF);
+    define('GL_TESS_EVALUATION_SUBROUTINE_UNIFORM', 0x92F0);
+    define('GL_GEOMETRY_SUBROUTINE_UNIFORM', 0x92F1);
+    define('GL_FRAGMENT_SUBROUTINE_UNIFORM', 0x92F2);
+    define('GL_COMPUTE_SUBROUTINE_UNIFORM', 0x92F3);
+    define('GL_TRANSFORM_FEEDBACK_VARYING', 0x92F4);
+    define('GL_ACTIVE_RESOURCES', 0x92F5);
+    define('GL_MAX_NAME_LENGTH', 0x92F6);
+    define('GL_MAX_NUM_ACTIVE_VARIABLES', 0x92F7);
+    define('GL_MAX_NUM_COMPATIBLE_SUBROUTINES', 0x92F8);
+    define('GL_NAME_LENGTH', 0x92F9);
+    define('GL_TYPE', 0x92FA);
+    define('GL_ARRAY_SIZE', 0x92FB);
+    define('GL_OFFSET', 0x92FC);
+    define('GL_BLOCK_INDEX', 0x92FD);
+    define('GL_ARRAY_STRIDE', 0x92FE);
+    define('GL_MATRIX_STRIDE', 0x92FF);
+    define('GL_IS_ROW_MAJOR', 0x9300);
+    define('GL_ATOMIC_COUNTER_BUFFER_INDEX', 0x9301);
+    define('GL_BUFFER_BINDING', 0x9302);
+    define('GL_BUFFER_DATA_SIZE', 0x9303);
+    define('GL_NUM_ACTIVE_VARIABLES', 0x9304);
+    define('GL_ACTIVE_VARIABLES', 0x9305);
+    define('GL_REFERENCED_BY_VERTEX_SHADER', 0x9306);
+    define('GL_REFERENCED_BY_TESS_CONTROL_SHADER', 0x9307);
+    define('GL_REFERENCED_BY_TESS_EVALUATION_SHADER', 0x9308);
+    define('GL_REFERENCED_BY_GEOMETRY_SHADER', 0x9309);
+    define('GL_REFERENCED_BY_FRAGMENT_SHADER', 0x930A);
+    define('GL_REFERENCED_BY_COMPUTE_SHADER', 0x930B);
+    define('GL_TOP_LEVEL_ARRAY_SIZE', 0x930C);
+    define('GL_TOP_LEVEL_ARRAY_STRIDE', 0x930D);
+    define('GL_LOCATION', 0x930E);
+    define('GL_LOCATION_INDEX', 0x930F);
+    define('GL_IS_PER_PATCH', 0x92E7);
+    define('GL_CLEAR_TEXTURE', 0x9365);
+    define('GL_LOCATION_COMPONENT', 0x934A);
+    define('GL_TRANSFORM_FEEDBACK_BUFFER_INDEX', 0x934B);
+    define('GL_TRANSFORM_FEEDBACK_BUFFER_STRIDE', 0x934C);
+    define('GL_NEGATIVE_ONE_TO_ONE', 0x935E);
+    define('GL_ZERO_TO_ONE', 0x935F);
+    define('GL_CLIP_ORIGIN', 0x935C);
+    define('GL_CLIP_DEPTH_MODE', 0x935D);
+    define('GL_VERTEX_ATTRIB_ARRAY_BARRIER_BIT', 0x00000001);
+    define('GL_ELEMENT_ARRAY_BARRIER_BIT', 0x00000002);
+    define('GL_UNIFORM_BARRIER_BIT', 0x00000004);
+    define('GL_TEXTURE_FETCH_BARRIER_BIT', 0x00000008);
+    define('GL_SHADER_IMAGE_ACCESS_BARRIER_BIT', 0x00000020);
+    define('GL_COMMAND_BARRIER_BIT', 0x00000040);
+    define('GL_PIXEL_BUFFER_BARRIER_BIT', 0x00000080);
+    define('GL_TEXTURE_UPDATE_BARRIER_BIT', 0x00000100);
+    define('GL_BUFFER_UPDATE_BARRIER_BIT', 0x00000200);
+    define('GL_FRAMEBUFFER_BARRIER_BIT', 0x00000400);
+    define('GL_TRANSFORM_FEEDBACK_BARRIER_BIT', 0x00000800);
+    define('GL_ATOMIC_COUNTER_BARRIER_BIT', 0x00001000);
+    define('GL_ALL_BARRIER_BITS', 0xFFFFFFFF);
+    define('GL_SHADER_STORAGE_BARRIER_BIT', 0x00002000);
+    define('GL_CLIENT_MAPPED_BUFFER_BARRIER_BIT', 0x00004000);
+    define('GL_QUERY_BUFFER_BARRIER_BIT', 0x00008000);
+    define('GL_NUM_SHADING_LANGUAGE_VERSIONS', 0x82E9);
+    define('GL_BUFFER', 0x82E0);
+    define('GL_SHADER', 0x82E1);
+    define('GL_PROGRAM', 0x82E2);
+    define('GL_QUERY', 0x82E3);
+    define('GL_PROGRAM_PIPELINE', 0x82E4);
+    define('GL_SAMPLER', 0x82E6);
+    define('GL_MAX_LABEL_LENGTH', 0x82E8);
+    define('GL_TEXTURE_COMPRESSED_BLOCK_WIDTH', 0x82B1);
+    define('GL_TEXTURE_COMPRESSED_BLOCK_HEIGHT', 0x82B2);
+    define('GL_TEXTURE_COMPRESSED_BLOCK_SIZE', 0x82B3);
+    define('GL_CLEAR_BUFFER', 0x82B4);
+    define('GL_TEXTURE_VIEW', 0x82B5);
+    define('GL_VIEW_COMPATIBILITY_CLASS', 0x82B6);
+    define('GL_FULL_SUPPORT', 0x82B7);
+    define('GL_CAVEAT_SUPPORT', 0x82B8);
+    define('GL_IMAGE_CLASS_4_X_32', 0x82B9);
+    define('GL_IMAGE_CLASS_2_X_32', 0x82BA);
+    define('GL_IMAGE_CLASS_1_X_32', 0x82BB);
+    define('GL_IMAGE_CLASS_4_X_16', 0x82BC);
+    define('GL_IMAGE_CLASS_2_X_16', 0x82BD);
+    define('GL_IMAGE_CLASS_1_X_16', 0x82BE);
+    define('GL_IMAGE_CLASS_4_X_8', 0x82BF);
+    define('GL_IMAGE_CLASS_2_X_8', 0x82C0);
+    define('GL_IMAGE_CLASS_1_X_8', 0x82C1);
+    define('GL_IMAGE_CLASS_11_11_10', 0x82C2);
+    define('GL_IMAGE_CLASS_10_10_10_2', 0x82C3);
+    define('GL_VIEW_CLASS_128_BITS', 0x82C4);
+    define('GL_VIEW_CLASS_96_BITS', 0x82C5);
+    define('GL_VIEW_CLASS_64_BITS', 0x82C6);
+    define('GL_VIEW_CLASS_48_BITS', 0x82C7);
+    define('GL_VIEW_CLASS_32_BITS', 0x82C8);
+    define('GL_VIEW_CLASS_24_BITS', 0x82C9);
+    define('GL_VIEW_CLASS_16_BITS', 0x82CA);
+    define('GL_VIEW_CLASS_8_BITS', 0x82CB);
+    define('GL_VIEW_CLASS_S3TC_DXT1_RGB', 0x82CC);
+    define('GL_VIEW_CLASS_S3TC_DXT1_RGBA', 0x82CD);
+    define('GL_VIEW_CLASS_S3TC_DXT3_RGBA', 0x82CE);
+    define('GL_VIEW_CLASS_S3TC_DXT5_RGBA', 0x82CF);
+    define('GL_VIEW_CLASS_RGTC1_RED', 0x82D0);
+    define('GL_VIEW_CLASS_RGTC2_RG', 0x82D1);
+    define('GL_VIEW_CLASS_BPTC_UNORM', 0x82D2);
+    define('GL_VIEW_CLASS_BPTC_FLOAT', 0x82D3);
+    define('GL_TEXTURE_VIEW_MIN_LEVEL', 0x82DB);
+    define('GL_TEXTURE_VIEW_NUM_LEVELS', 0x82DC);
+    define('GL_TEXTURE_VIEW_MIN_LAYER', 0x82DD);
+    define('GL_TEXTURE_VIEW_NUM_LAYERS', 0x82DE);
+    define('GL_TEXTURE_IMMUTABLE_LEVELS', 0x82DF);
+    define('GL_VERTEX_ATTRIB_BINDING', 0x82D4);
+    define('GL_VERTEX_ATTRIB_RELATIVE_OFFSET', 0x82D5);
+    define('GL_VERTEX_BINDING_DIVISOR', 0x82D6);
+    define('GL_VERTEX_BINDING_OFFSET', 0x82D7);
+    define('GL_VERTEX_BINDING_STRIDE', 0x82D8);
+    define('GL_MAX_VERTEX_ATTRIB_RELATIVE_OFFSET', 0x82D9);
+    define('GL_MAX_VERTEX_ATTRIB_BINDINGS', 0x82DA);
+    define('GL_DISPLAY_LIST', 0x82E7);
+    define('GL_MAX_VERTEX_ATTRIB_STRIDE', 0x82E5);
+    define('GL_MAX_CULL_DISTANCES', 0x82F9);
+    define('GL_MAX_COMBINED_CLIP_AND_CULL_DISTANCES', 0x82FA);
+    define('GL_QUERY_TARGET', 0x82EA);
+    define('GL_CONTEXT_RELEASE_BEHAVIOR', 0x82FB);
+    define('GL_CONTEXT_RELEASE_BEHAVIOR_FLUSH', 0x82FC);
+    define('GL_VERTICES_SUBMITTED', 0x82EE);
+    define('GL_PRIMITIVES_SUBMITTED', 0x82EF);
+    define('GL_VERTEX_SHADER_INVOCATIONS', 0x82F0);
+    define('GL_TESS_CONTROL_SHADER_PATCHES', 0x82F1);
+    define('GL_TESS_EVALUATION_SHADER_INVOCATIONS', 0x82F2);
+    define('GL_GEOMETRY_SHADER_PRIMITIVES_EMITTED', 0x82F3);
+    define('GL_FRAGMENT_SHADER_INVOCATIONS', 0x82F4);
+    define('GL_COMPUTE_SHADER_INVOCATIONS', 0x82F5);
+    define('GL_CLIPPING_INPUT_PRIMITIVES', 0x82F6);
+    define('GL_CLIPPING_OUTPUT_PRIMITIVES', 0x82F7);
+    define('GL_TRANSFORM_FEEDBACK_OVERFLOW', 0x82EC);
+    define('GL_TRANSFORM_FEEDBACK_STREAM_OVERFLOW', 0x82ED);
+    define('GL_COMPRESSED_RGB8_ETC2', 0x9274);
+    define('GL_COMPRESSED_SRGB8_ETC2', 0x9275);
+    define('GL_COMPRESSED_RGB8_PUNCHTHROUGH_ALPHA1_ETC2', 0x9276);
+    define('GL_COMPRESSED_SRGB8_PUNCHTHROUGH_ALPHA1_ETC2', 0x9277);
+    define('GL_COMPRESSED_RGBA8_ETC2_EAC', 0x9278);
+    define('GL_COMPRESSED_SRGB8_ALPHA8_ETC2_EAC', 0x9279);
+    define('GL_COMPRESSED_R11_EAC', 0x9270);
+    define('GL_COMPRESSED_SIGNED_R11_EAC', 0x9271);
+    define('GL_COMPRESSED_RG11_EAC', 0x9272);
+    define('GL_COMPRESSED_SIGNED_RG11_EAC', 0x9273);
+    define('GL_COMPUTE_SHADER', 0x91B9);
+    define('GL_MAX_COMPUTE_UNIFORM_BLOCKS', 0x91BB);
+    define('GL_MAX_COMPUTE_TEXTURE_IMAGE_UNITS', 0x91BC);
+    define('GL_MAX_COMPUTE_IMAGE_UNIFORMS', 0x91BD);
+    define('GL_MAX_COMPUTE_WORK_GROUP_COUNT', 0x91BE);
+    define('GL_MAX_COMPUTE_WORK_GROUP_SIZE', 0x91BF);
+    define('GL_MAX_DEBUG_MESSAGE_LENGTH', 0x9143);
+    define('GL_MAX_DEBUG_LOGGED_MESSAGES', 0x9144);
+    define('GL_DEBUG_LOGGED_MESSAGES', 0x9145);
+    define('GL_DEBUG_SEVERITY_HIGH', 0x9146);
+    define('GL_DEBUG_SEVERITY_MEDIUM', 0x9147);
+    define('GL_DEBUG_SEVERITY_LOW', 0x9148);
+    define('GL_TEXTURE_BUFFER_OFFSET', 0x919D);
+    define('GL_TEXTURE_BUFFER_SIZE', 0x919E);
+    define('GL_TEXTURE_BUFFER_OFFSET_ALIGNMENT', 0x919F);
+    define('GL_QUERY_BUFFER', 0x9192);
+    define('GL_QUERY_BUFFER_BINDING', 0x9193);
+    define('GL_QUERY_RESULT_NO_WAIT', 0x9194);
+    define('GL_DYNAMIC_STORAGE_BIT', 0x0100);
+    define('GL_CLIENT_STORAGE_BIT', 0x0200);
+    define('GL_COLOR_TABLE', 0x80D0);
+    define('GL_POST_CONVOLUTION_COLOR_TABLE', 0x80D1);
+    define('GL_POST_COLOR_MATRIX_COLOR_TABLE', 0x80D2);
+    define('GL_PROXY_COLOR_TABLE', 0x80D3);
+    define('GL_PROXY_POST_CONVOLUTION_COLOR_TABLE', 0x80D4);
+    define('GL_PROXY_POST_COLOR_MATRIX_COLOR_TABLE', 0x80D5);
+    define('GL_SHADER_BINARY_FORMAT_SPIR_V', 0x9551);
+    define('GL_SPIR_V_BINARY', 0x9552);
+    define('GL_SPIR_V_EXTENSIONS', 0x9553);
+    define('GL_NUM_SPIR_V_EXTENSIONS', 0x9554);
     define('GLFW_VERSION_MAJOR', 3);
     define('GLFW_VERSION_MINOR', 3);
     define('GLFW_VERSION_REVISION', 8);
