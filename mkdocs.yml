@@ -23,6 +23,7 @@ nav:
       - Text & Fonts: user-guide/vector-graphics/text.md
       - Images: user-guide/vector-graphics/images.md
       - Gradients: user-guide/vector-graphics/gradients.md
+    - Audio: user-guide/audio/
     - Math & 3D Space: user-guide/math/
     - Noise: user-guide/noise/
     - Offscreen & Headless Rendering: user-guide/offscreen/
