@@ -1137,7 +1137,7 @@ namespace GL\Math
     }
 };
 
-namespace GL\Buffer 
+namespace GL\Buffer
 {   
     interface BufferInterface {
         public function __construct(?array $initalData = null);
@@ -1174,6 +1174,15 @@ namespace GL\Buffer
          * @return void
          */
         public function pushArray(array $values) : void {}
+
+        /**
+         * appends the values of another buffer to this buffer.
+         *
+         * @param \GL\Buffer\FloatBuffer $buffer Another buffer object of the same type to append to this buffer.
+         *
+         * @return void 
+         */
+        public function append(\GL\Buffer\FloatBuffer $buffer) : void {}
 
         /**
          * Pushes the values of a Vec2 object into the buffer
@@ -1271,6 +1280,15 @@ namespace GL\Buffer
          */
         public function pushArray(array $values) : void {}
 
+        /**
+         * appends the values of another buffer to this buffer.
+         *
+         * @param \GL\Buffer\HFloatBuffer $buffer Another buffer object of the same type to append to this buffer.
+         *
+         * @return void 
+         */
+        public function append(\GL\Buffer\HFloatBuffer $buffer) : void {}
+
 
         /**
          * Fills the buffer with $count amount of values. The second argument is the value that is filled in.
@@ -1347,6 +1365,15 @@ namespace GL\Buffer
          * @return void
          */
         public function pushArray(array $values) : void {}
+
+        /**
+         * appends the values of another buffer to this buffer.
+         *
+         * @param \GL\Buffer\DoubleBuffer $buffer Another buffer object of the same type to append to this buffer.
+         *
+         * @return void 
+         */
+        public function append(\GL\Buffer\DoubleBuffer $buffer) : void {}
 
 
         /**
@@ -1425,6 +1452,15 @@ namespace GL\Buffer
          */
         public function pushArray(array $values) : void {}
 
+        /**
+         * appends the values of another buffer to this buffer.
+         *
+         * @param \GL\Buffer\IntBuffer $buffer Another buffer object of the same type to append to this buffer.
+         *
+         * @return void 
+         */
+        public function append(\GL\Buffer\IntBuffer $buffer) : void {}
+
 
         /**
          * Fills the buffer with $count amount of values. The second argument is the value that is filled in.
@@ -1501,6 +1537,15 @@ namespace GL\Buffer
          * @return void
          */
         public function pushArray(array $values) : void {}
+
+        /**
+         * appends the values of another buffer to this buffer.
+         *
+         * @param \GL\Buffer\UIntBuffer $buffer Another buffer object of the same type to append to this buffer.
+         *
+         * @return void 
+         */
+        public function append(\GL\Buffer\UIntBuffer $buffer) : void {}
 
 
         /**
@@ -1579,6 +1624,15 @@ namespace GL\Buffer
          */
         public function pushArray(array $values) : void {}
 
+        /**
+         * appends the values of another buffer to this buffer.
+         *
+         * @param \GL\Buffer\ShortBuffer $buffer Another buffer object of the same type to append to this buffer.
+         *
+         * @return void 
+         */
+        public function append(\GL\Buffer\ShortBuffer $buffer) : void {}
+
 
         /**
          * Fills the buffer with $count amount of values. The second argument is the value that is filled in.
@@ -1655,6 +1709,15 @@ namespace GL\Buffer
          * @return void
          */
         public function pushArray(array $values) : void {}
+
+        /**
+         * appends the values of another buffer to this buffer.
+         *
+         * @param \GL\Buffer\UShortBuffer $buffer Another buffer object of the same type to append to this buffer.
+         *
+         * @return void 
+         */
+        public function append(\GL\Buffer\UShortBuffer $buffer) : void {}
 
 
         /**
@@ -1733,6 +1796,15 @@ namespace GL\Buffer
          */
         public function pushArray(array $values) : void {}
 
+        /**
+         * appends the values of another buffer to this buffer.
+         *
+         * @param \GL\Buffer\ByteBuffer $buffer Another buffer object of the same type to append to this buffer.
+         *
+         * @return void 
+         */
+        public function append(\GL\Buffer\ByteBuffer $buffer) : void {}
+
 
         /**
          * Fills the buffer with $count amount of values. The second argument is the value that is filled in.
@@ -1809,6 +1881,15 @@ namespace GL\Buffer
          * @return void
          */
         public function pushArray(array $values) : void {}
+
+        /**
+         * appends the values of another buffer to this buffer.
+         *
+         * @param \GL\Buffer\UByteBuffer $buffer Another buffer object of the same type to append to this buffer.
+         *
+         * @return void 
+         */
+        public function append(\GL\Buffer\UByteBuffer $buffer) : void {}
 
         /**
          * Pushes a string into the buffer

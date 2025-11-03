@@ -285,6 +285,7 @@ namespace GL\Buffer
         public function __toString() : string {}
         public function push(<?php echo $buffer->getValuePHPType(); ?> $value) : void {}
         public function pushArray(array $values) : void {}
+        public function append(\GL\Buffer\<?php echo $buffer->name; ?> $buffer) : void {}
 <?php if ($buffer->name == 'UByteBuffer') : ?>
         public function pushString(string $str) : void {}
 <?php elseif ($buffer->name == 'FloatBuffer') : ?>

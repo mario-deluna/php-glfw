@@ -11,11 +11,17 @@ This guide walks through the main building blocks:
 - Spatial audio features (listener, positions, min/max distance)
 - Reading PCM frames for visualisation or DSP
 
+## Example
+
 You can try everything live by running the music player example:
 
 ```bash
 php examples/vg/audio_musicplayer.php
 ```
+
+<figure markdown>
+![PHP Audio Player Example (PHP-GLFW VG)](./../../docs-assets/php-glfw/user_guide/audio/player.jpg){ width="600" }
+</figure>
 
 ## Engine setup
 
@@ -82,7 +88,6 @@ MiniAudio supports a wide range of formats (WAV, MP3, FLAC, Ogg/Vorbis, and more
 Every sound shares the same engine but exposes independent playback state.  The most common actions are straightforward:
 
 ```php
-$sound->play();
 $sound->setLoop(true);
 $sound->setVolume(0.65);
 $sound->setPitch(1.1);
@@ -117,7 +122,7 @@ $current = $sound->getCurrentFadeVolume();
 
 ## Spatial audio
 
-Combine the audio engine with `GL\Math\Vec3` to position sounds in 3D.  The listener properties typically follow your camera, while sound positions follow moving entities.
+Combine the audio engine with [`Vec3`](/API/Math/Vec3.html) to position sounds in 3D.  The listener properties typically follow your camera, while sound positions follow moving entities.
 
 ```php
 use GL\Math\Vec3;
@@ -146,13 +151,9 @@ use GL\Buffer\FloatBuffer;
 
 $frames = new FloatBuffer();
 $requested = 2048;
-$readFrames = $sound->readFrames($requested, $frames);
+$readCount = $sound->readFrames($requested, $frames);
 
-printf("Read %d frames (%.2f ms)\n", $readFrames, $readFrames / $sound->getSampleRate() * 1000);
+printf("Read %d frames (%.2f ms)\n", $readCount, $readCount / $sound->getSampleRate() * 1000);
 ```
 
 The method returns the number of frames read and resizes the buffer automatically. You can feed these samples into FFT analysis, visualisers, or streaming uploads similar to the `audio_musicplayer` example.
-
-## Example: Music Player
-
-The `examples/vg/audio_musicplayer.php` example demonstrates how all of these pieces fit together. It streams dropped files, renders a waveform texture, and exposes UI controls for volume, pitch, looping, and spatial position. Use it as a starting point for your own tools.

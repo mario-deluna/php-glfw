@@ -481,6 +481,25 @@ PHP_METHOD(<?php echo $buffer->getFullNamespaceConstString(); ?>, pushArray)
     } ZEND_HASH_FOREACH_END();
 }
 
+PHP_METHOD(<?php echo $buffer->getFullNamespaceConstString(); ?>, append)
+{
+    zval *other_buffer;
+    if (zend_parse_parameters(ZEND_NUM_ARGS(), "O", &other_buffer, <?php echo $buffer->getClassEntryName(); ?>) == FAILURE) {
+        return;
+    }
+
+    zval *obj;
+    obj = getThis();
+    <?php echo $buffer->getObjectName(); ?> *obj_ptr = <?php echo $buffer->objectFromZObjFunctionName(); ?>(Z_OBJ_P(obj));
+    <?php echo $buffer->getObjectName(); ?> *other_ptr = <?php echo $buffer->objectFromZObjFunctionName(); ?>(Z_OBJ_P(other_buffer));
+    
+    // append all elements from the other buffer
+    size_t other_size = cvector_size(other_ptr->vec);
+    for (size_t i = 0; i < other_size; i++) {
+        cvector_push_back(obj_ptr->vec, other_ptr->vec[i]);
+    }
+}
+
 <?php if ($buffer->name == 'UByteBuffer') : ?>
 
 PHP_METHOD(<?php echo $buffer->getFullNamespaceConstString(); ?>, pushString)

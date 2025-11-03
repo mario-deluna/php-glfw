@@ -332,6 +332,7 @@ namespace GL\Buffer
         public function __toString() : string {}
         public function push(float $value) : void {}
         public function pushArray(array $values) : void {}
+        public function append(\GL\Buffer\FloatBuffer $buffer) : void {}
         public function pushVec2(GL\Math\Vec2 $vec) : void {}
         public function pushVec3(GL\Math\Vec3 $vec) : void {}
         public function pushVec4(GL\Math\Vec4 $vec) : void {}
@@ -350,6 +351,7 @@ namespace GL\Buffer
         public function __toString() : string {}
         public function push(int $value) : void {}
         public function pushArray(array $values) : void {}
+        public function append(\GL\Buffer\HFloatBuffer $buffer) : void {}
         public function fill(int $count, int $value) : void {}
         public function clear() : void {}
         public function size() : int {}
@@ -363,6 +365,7 @@ namespace GL\Buffer
         public function __toString() : string {}
         public function push(float $value) : void {}
         public function pushArray(array $values) : void {}
+        public function append(\GL\Buffer\DoubleBuffer $buffer) : void {}
         public function fill(int $count, float $value) : void {}
         public function clear() : void {}
         public function size() : int {}
@@ -376,6 +379,7 @@ namespace GL\Buffer
         public function __toString() : string {}
         public function push(int $value) : void {}
         public function pushArray(array $values) : void {}
+        public function append(\GL\Buffer\IntBuffer $buffer) : void {}
         public function fill(int $count, int $value) : void {}
         public function clear() : void {}
         public function size() : int {}
@@ -389,6 +393,7 @@ namespace GL\Buffer
         public function __toString() : string {}
         public function push(int $value) : void {}
         public function pushArray(array $values) : void {}
+        public function append(\GL\Buffer\UIntBuffer $buffer) : void {}
         public function fill(int $count, int $value) : void {}
         public function clear() : void {}
         public function size() : int {}
@@ -402,6 +407,7 @@ namespace GL\Buffer
         public function __toString() : string {}
         public function push(int $value) : void {}
         public function pushArray(array $values) : void {}
+        public function append(\GL\Buffer\ShortBuffer $buffer) : void {}
         public function fill(int $count, int $value) : void {}
         public function clear() : void {}
         public function size() : int {}
@@ -415,6 +421,7 @@ namespace GL\Buffer
         public function __toString() : string {}
         public function push(int $value) : void {}
         public function pushArray(array $values) : void {}
+        public function append(\GL\Buffer\UShortBuffer $buffer) : void {}
         public function fill(int $count, int $value) : void {}
         public function clear() : void {}
         public function size() : int {}
@@ -428,6 +435,7 @@ namespace GL\Buffer
         public function __toString() : string {}
         public function push(int $value) : void {}
         public function pushArray(array $values) : void {}
+        public function append(\GL\Buffer\ByteBuffer $buffer) : void {}
         public function fill(int $count, int $value) : void {}
         public function clear() : void {}
         public function size() : int {}
@@ -441,6 +449,7 @@ namespace GL\Buffer
         public function __toString() : string {}
         public function push(int $value) : void {}
         public function pushArray(array $values) : void {}
+        public function append(\GL\Buffer\UByteBuffer $buffer) : void {}
         public function pushString(string $str) : void {}
         public function fill(int $count, int $value) : void {}
         public function clear() : void {}

@@ -525,6 +525,25 @@ PHP_METHOD(GL_Buffer_FloatBuffer, pushArray)
     } ZEND_HASH_FOREACH_END();
 }
 
+PHP_METHOD(GL_Buffer_FloatBuffer, append)
+{
+    zval *other_buffer;
+    if (zend_parse_parameters(ZEND_NUM_ARGS(), "O", &other_buffer, phpglfw_buffer_glfloat_ce) == FAILURE) {
+        return;
+    }
+
+    zval *obj;
+    obj = getThis();
+    phpglfw_buffer_glfloat_object *obj_ptr = phpglfw_buffer_glfloat_objectptr_from_zobj_p(Z_OBJ_P(obj));
+    phpglfw_buffer_glfloat_object *other_ptr = phpglfw_buffer_glfloat_objectptr_from_zobj_p(Z_OBJ_P(other_buffer));
+    
+    // append all elements from the other buffer
+    size_t other_size = cvector_size(other_ptr->vec);
+    for (size_t i = 0; i < other_size; i++) {
+        cvector_push_back(obj_ptr->vec, other_ptr->vec[i]);
+    }
+}
+
 
 PHP_METHOD(GL_Buffer_FloatBuffer, pushVec2)
 {
@@ -1137,6 +1156,25 @@ PHP_METHOD(GL_Buffer_HFloatBuffer, pushArray)
     } ZEND_HASH_FOREACH_END();
 }
 
+PHP_METHOD(GL_Buffer_HFloatBuffer, append)
+{
+    zval *other_buffer;
+    if (zend_parse_parameters(ZEND_NUM_ARGS(), "O", &other_buffer, phpglfw_buffer_glhalf_ce) == FAILURE) {
+        return;
+    }
+
+    zval *obj;
+    obj = getThis();
+    phpglfw_buffer_glhalf_object *obj_ptr = phpglfw_buffer_glhalf_objectptr_from_zobj_p(Z_OBJ_P(obj));
+    phpglfw_buffer_glhalf_object *other_ptr = phpglfw_buffer_glhalf_objectptr_from_zobj_p(Z_OBJ_P(other_buffer));
+    
+    // append all elements from the other buffer
+    size_t other_size = cvector_size(other_ptr->vec);
+    for (size_t i = 0; i < other_size; i++) {
+        cvector_push_back(obj_ptr->vec, other_ptr->vec[i]);
+    }
+}
+
 
 
 PHP_METHOD(GL_Buffer_HFloatBuffer, reserve)
@@ -1642,6 +1680,25 @@ PHP_METHOD(GL_Buffer_DoubleBuffer, pushArray)
     } ZEND_HASH_FOREACH_END();
 }
 
+PHP_METHOD(GL_Buffer_DoubleBuffer, append)
+{
+    zval *other_buffer;
+    if (zend_parse_parameters(ZEND_NUM_ARGS(), "O", &other_buffer, phpglfw_buffer_gldouble_ce) == FAILURE) {
+        return;
+    }
+
+    zval *obj;
+    obj = getThis();
+    phpglfw_buffer_gldouble_object *obj_ptr = phpglfw_buffer_gldouble_objectptr_from_zobj_p(Z_OBJ_P(obj));
+    phpglfw_buffer_gldouble_object *other_ptr = phpglfw_buffer_gldouble_objectptr_from_zobj_p(Z_OBJ_P(other_buffer));
+    
+    // append all elements from the other buffer
+    size_t other_size = cvector_size(other_ptr->vec);
+    for (size_t i = 0; i < other_size; i++) {
+        cvector_push_back(obj_ptr->vec, other_ptr->vec[i]);
+    }
+}
+
 
 
 PHP_METHOD(GL_Buffer_DoubleBuffer, reserve)
@@ -2137,6 +2194,25 @@ PHP_METHOD(GL_Buffer_IntBuffer, pushArray)
 
         cvector_push_back(obj_ptr->vec, Z_LVAL_P(array));
     } ZEND_HASH_FOREACH_END();
+}
+
+PHP_METHOD(GL_Buffer_IntBuffer, append)
+{
+    zval *other_buffer;
+    if (zend_parse_parameters(ZEND_NUM_ARGS(), "O", &other_buffer, phpglfw_buffer_glint_ce) == FAILURE) {
+        return;
+    }
+
+    zval *obj;
+    obj = getThis();
+    phpglfw_buffer_glint_object *obj_ptr = phpglfw_buffer_glint_objectptr_from_zobj_p(Z_OBJ_P(obj));
+    phpglfw_buffer_glint_object *other_ptr = phpglfw_buffer_glint_objectptr_from_zobj_p(Z_OBJ_P(other_buffer));
+    
+    // append all elements from the other buffer
+    size_t other_size = cvector_size(other_ptr->vec);
+    for (size_t i = 0; i < other_size; i++) {
+        cvector_push_back(obj_ptr->vec, other_ptr->vec[i]);
+    }
 }
 
 
@@ -2636,6 +2712,25 @@ PHP_METHOD(GL_Buffer_UIntBuffer, pushArray)
     } ZEND_HASH_FOREACH_END();
 }
 
+PHP_METHOD(GL_Buffer_UIntBuffer, append)
+{
+    zval *other_buffer;
+    if (zend_parse_parameters(ZEND_NUM_ARGS(), "O", &other_buffer, phpglfw_buffer_gluint_ce) == FAILURE) {
+        return;
+    }
+
+    zval *obj;
+    obj = getThis();
+    phpglfw_buffer_gluint_object *obj_ptr = phpglfw_buffer_gluint_objectptr_from_zobj_p(Z_OBJ_P(obj));
+    phpglfw_buffer_gluint_object *other_ptr = phpglfw_buffer_gluint_objectptr_from_zobj_p(Z_OBJ_P(other_buffer));
+    
+    // append all elements from the other buffer
+    size_t other_size = cvector_size(other_ptr->vec);
+    for (size_t i = 0; i < other_size; i++) {
+        cvector_push_back(obj_ptr->vec, other_ptr->vec[i]);
+    }
+}
+
 
 
 PHP_METHOD(GL_Buffer_UIntBuffer, reserve)
@@ -3131,6 +3226,25 @@ PHP_METHOD(GL_Buffer_ShortBuffer, pushArray)
 
         cvector_push_back(obj_ptr->vec, Z_LVAL_P(array));
     } ZEND_HASH_FOREACH_END();
+}
+
+PHP_METHOD(GL_Buffer_ShortBuffer, append)
+{
+    zval *other_buffer;
+    if (zend_parse_parameters(ZEND_NUM_ARGS(), "O", &other_buffer, phpglfw_buffer_glshort_ce) == FAILURE) {
+        return;
+    }
+
+    zval *obj;
+    obj = getThis();
+    phpglfw_buffer_glshort_object *obj_ptr = phpglfw_buffer_glshort_objectptr_from_zobj_p(Z_OBJ_P(obj));
+    phpglfw_buffer_glshort_object *other_ptr = phpglfw_buffer_glshort_objectptr_from_zobj_p(Z_OBJ_P(other_buffer));
+    
+    // append all elements from the other buffer
+    size_t other_size = cvector_size(other_ptr->vec);
+    for (size_t i = 0; i < other_size; i++) {
+        cvector_push_back(obj_ptr->vec, other_ptr->vec[i]);
+    }
 }
 
 
@@ -3630,6 +3744,25 @@ PHP_METHOD(GL_Buffer_UShortBuffer, pushArray)
     } ZEND_HASH_FOREACH_END();
 }
 
+PHP_METHOD(GL_Buffer_UShortBuffer, append)
+{
+    zval *other_buffer;
+    if (zend_parse_parameters(ZEND_NUM_ARGS(), "O", &other_buffer, phpglfw_buffer_glushort_ce) == FAILURE) {
+        return;
+    }
+
+    zval *obj;
+    obj = getThis();
+    phpglfw_buffer_glushort_object *obj_ptr = phpglfw_buffer_glushort_objectptr_from_zobj_p(Z_OBJ_P(obj));
+    phpglfw_buffer_glushort_object *other_ptr = phpglfw_buffer_glushort_objectptr_from_zobj_p(Z_OBJ_P(other_buffer));
+    
+    // append all elements from the other buffer
+    size_t other_size = cvector_size(other_ptr->vec);
+    for (size_t i = 0; i < other_size; i++) {
+        cvector_push_back(obj_ptr->vec, other_ptr->vec[i]);
+    }
+}
+
 
 
 PHP_METHOD(GL_Buffer_UShortBuffer, reserve)
@@ -4127,6 +4260,25 @@ PHP_METHOD(GL_Buffer_ByteBuffer, pushArray)
     } ZEND_HASH_FOREACH_END();
 }
 
+PHP_METHOD(GL_Buffer_ByteBuffer, append)
+{
+    zval *other_buffer;
+    if (zend_parse_parameters(ZEND_NUM_ARGS(), "O", &other_buffer, phpglfw_buffer_glbyte_ce) == FAILURE) {
+        return;
+    }
+
+    zval *obj;
+    obj = getThis();
+    phpglfw_buffer_glbyte_object *obj_ptr = phpglfw_buffer_glbyte_objectptr_from_zobj_p(Z_OBJ_P(obj));
+    phpglfw_buffer_glbyte_object *other_ptr = phpglfw_buffer_glbyte_objectptr_from_zobj_p(Z_OBJ_P(other_buffer));
+    
+    // append all elements from the other buffer
+    size_t other_size = cvector_size(other_ptr->vec);
+    for (size_t i = 0; i < other_size; i++) {
+        cvector_push_back(obj_ptr->vec, other_ptr->vec[i]);
+    }
+}
+
 
 
 PHP_METHOD(GL_Buffer_ByteBuffer, reserve)
@@ -4622,6 +4774,25 @@ PHP_METHOD(GL_Buffer_UByteBuffer, pushArray)
 
         cvector_push_back(obj_ptr->vec, Z_LVAL_P(array));
     } ZEND_HASH_FOREACH_END();
+}
+
+PHP_METHOD(GL_Buffer_UByteBuffer, append)
+{
+    zval *other_buffer;
+    if (zend_parse_parameters(ZEND_NUM_ARGS(), "O", &other_buffer, phpglfw_buffer_glubyte_ce) == FAILURE) {
+        return;
+    }
+
+    zval *obj;
+    obj = getThis();
+    phpglfw_buffer_glubyte_object *obj_ptr = phpglfw_buffer_glubyte_objectptr_from_zobj_p(Z_OBJ_P(obj));
+    phpglfw_buffer_glubyte_object *other_ptr = phpglfw_buffer_glubyte_objectptr_from_zobj_p(Z_OBJ_P(other_buffer));
+    
+    // append all elements from the other buffer
+    size_t other_size = cvector_size(other_ptr->vec);
+    for (size_t i = 0; i < other_size; i++) {
+        cvector_push_back(obj_ptr->vec, other_ptr->vec[i]);
+    }
 }
 
 

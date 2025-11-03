@@ -120,7 +120,8 @@ abstract class BufferTestCase extends \PHPUnit\Framework\TestCase
 
     public function testReadUnsupportedKey()
     {
-        $this->expectError();
+        $this->expectException(\Error::class);
+        $this->expectExceptionMessage('Only a int offset');
         
         $className = $this->getBufferClass();
         $buffer = new $className();
@@ -254,5 +255,100 @@ abstract class BufferTestCase extends \PHPUnit\Framework\TestCase
         $buffer->reserve(20);
 
         $this->assertEquals($className . '(5 [20])', (string) $buffer);
+    }
+
+    public function testAppendSameType()
+    {
+        $className = $this->getBufferClass();
+        $data1 = array_slice($this->getTestData(), 0, 3);
+        $data2 = array_slice($this->getTestData(), 3, 3);
+        
+        $buffer1 = new $className($data1);
+        $buffer2 = new $className($data2);
+
+        $this->assertEquals(3, $buffer1->size());
+        $this->assertEquals(3, $buffer2->size());
+
+        $buffer1->append($buffer2);
+
+        // buffer1 should now contain both sets of data
+        $this->assertEquals(6, $buffer1->size());
+        
+        // check first part (original data1)
+        for($i = 0; $i < 3; $i++) {
+            $this->assertEqualBufferValue($data1[$i], $buffer1[$i]);
+        }
+        
+        // check appended part (data2)
+        for($i = 0; $i < 3; $i++) {
+            $this->assertEqualBufferValue($data2[$i], $buffer1[$i + 3]);
+        }
+
+        // buffer2 should remain unchanged
+        $this->assertEquals(3, $buffer2->size());
+        for($i = 0; $i < 3; $i++) {
+            $this->assertEqualBufferValue($data2[$i], $buffer2[$i]);
+        }
+    }
+
+    public function testAppendEmptyBuffer()
+    {
+        $className = $this->getBufferClass();
+        $data = $this->getTestData();
+        
+        $buffer1 = new $className($data);
+        $buffer2 = new $className(); // empty buffer
+
+        $originalSize = $buffer1->size();
+        $buffer1->append($buffer2);
+
+        // size should remain the same
+        $this->assertEquals($originalSize, $buffer1->size());
+        
+        // data should remain unchanged
+        for($i = 0; $i < count($data); $i++) {
+            $this->assertEqualBufferValue($data[$i], $buffer1[$i]);
+        }
+    }
+
+    public function testAppendToEmptyBuffer()
+    {
+        $className = $this->getBufferClass();
+        $data = $this->getTestData();
+        
+        $buffer1 = new $className(); // empty buffer
+        $buffer2 = new $className($data);
+
+        $buffer1->append($buffer2);
+
+        // buffer1 should now have the same size and data as buffer2
+        $this->assertEquals($buffer2->size(), $buffer1->size());
+        
+        for($i = 0; $i < count($data); $i++) {
+            $this->assertEqualBufferValue($data[$i], $buffer1[$i]);
+        }
+    }
+
+    public function testAppendMultipleTimes()
+    {
+        $className = $this->getBufferClass();
+        $data = array_slice($this->getTestData(), 0, 2);
+        
+        $buffer1 = new $className();
+        $buffer2 = new $className($data);
+
+        // append the same buffer multiple times
+        $buffer1->append($buffer2);
+        $buffer1->append($buffer2);
+        $buffer1->append($buffer2);
+
+        $this->assertEquals(6, $buffer1->size()); // 2 * 3 = 6
+
+        // check that data is repeated correctly
+        for($repeat = 0; $repeat < 3; $repeat++) {
+            for($i = 0; $i < 2; $i++) {
+                $this->assertEqualBufferValue($data[$i], $buffer1[$repeat * 2 + $i]);
+            }
+        }
     }
 }

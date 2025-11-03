@@ -80,6 +80,10 @@ constant {
     border-radius: 4px;
 }
 
+.md-content a {
+    font-weight: bold;
+}
+
 /* Homepage stuff */
 
 

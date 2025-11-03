@@ -97,4 +97,20 @@ class FloatBufferTest extends BufferTestCase
             $this->assertEqualBufferValue($i + 1, $buffer[$i]);
         }
     }
+
+    public function testAppendFloat()
+    {
+        $buffer1 = new FloatBuffer([1.1, 2.2, 3.3]);
+        $buffer2 = new FloatBuffer([4.4, 5.5, 6.6]);
+
+        $buffer1->append($buffer2);
+
+        $this->assertEquals(6, $buffer1->size());
+        $this->assertEqualBufferValue(1.1, $buffer1[0]);
+        $this->assertEqualBufferValue(2.2, $buffer1[1]);
+        $this->assertEqualBufferValue(3.3, $buffer1[2]);
+        $this->assertEqualBufferValue(4.4, $buffer1[3]);
+        $this->assertEqualBufferValue(5.5, $buffer1[4]);
+        $this->assertEqualBufferValue(6.6, $buffer1[5]);
+    }
 }

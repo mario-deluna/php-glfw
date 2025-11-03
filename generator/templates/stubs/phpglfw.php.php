@@ -748,7 +748,7 @@ namespace GL\Math
 <?php endforeach; ?>
 };
 
-namespace GL\Buffer 
+namespace GL\Buffer
 {   
     interface BufferInterface {
         public function __construct(?array $initalData = null);
@@ -786,6 +786,15 @@ namespace GL\Buffer
          * @return void
          */
         public function pushArray(array $values) : void {}
+
+        /**
+         * appends the values of another buffer to this buffer.
+         *
+         * @param \GL\Buffer\<?php echo $buffer->name; ?> $buffer Another buffer object of the same type to append to this buffer.
+         *
+         * @return void 
+         */
+        public function append(\GL\Buffer\<?php echo $buffer->name; ?> $buffer) : void {}
 
 <?php if ($buffer->name == 'UByteBuffer') : ?>
         /**

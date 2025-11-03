@@ -45,4 +45,35 @@ class IntBufferTest extends BufferTestCase
         $this->assertEquals(-2147483648, $buffer[2]);
         $this->assertEquals(1, $buffer[3]);
     }
+
+    public function testAppendInt()
+    {
+        $buffer1 = new IntBuffer([10, 20, 30]);
+        $buffer2 = new IntBuffer([40, 50, 60]);
+
+        $buffer1->append($buffer2);
+
+        $this->assertEquals(6, $buffer1->size());
+        $this->assertEquals(10, $buffer1[0]);
+        $this->assertEquals(20, $buffer1[1]);
+        $this->assertEquals(30, $buffer1[2]);
+        $this->assertEquals(40, $buffer1[3]);
+        $this->assertEquals(50, $buffer1[4]);
+        $this->assertEquals(60, $buffer1[5]);
+    }
+
+    public function testAppendLargeNumbers()
+    {
+        $buffer1 = new IntBuffer([2147483647, -2147483648]);
+        $buffer2 = new IntBuffer([0, 1, -1]);
+
+        $buffer1->append($buffer2);
+
+        $this->assertEquals(5, $buffer1->size());
+        $this->assertEquals(2147483647, $buffer1[0]);
+        $this->assertEquals(-2147483648, $buffer1[1]);
+        $this->assertEquals(0, $buffer1[2]);
+        $this->assertEquals(1, $buffer1[3]);
+        $this->assertEquals(-1, $buffer1[4]);
+    }
 }
