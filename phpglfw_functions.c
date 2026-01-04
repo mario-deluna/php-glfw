@@ -418,39 +418,38 @@ static void phpglfw_glfwvidmode_object_free(zend_object *intern)
 zval *phpglfw_glfwvidmode_object_read_property(zend_object *object, zend_string *member, int type, void **cache_slot, zval *rv)
 {
     phpglfw_glfwvidmode_object *intern = phpglfw_glfwvidmode_objectptr_from_zobj_p(object);
-    zval *retval = &EG(uninitialized_zval);
 
     if (intern->glfwvidmode) {
         if (zend_string_equals_literal(member, "width")) {
-            ZVAL_LONG(retval, intern->glfwvidmode->width);
-            return retval;
+            ZVAL_LONG(rv, intern->glfwvidmode->width);
+            return rv;
         }
         else if (zend_string_equals_literal(member, "height")) {
-            ZVAL_LONG(retval, intern->glfwvidmode->height);
-            return retval;
+            ZVAL_LONG(rv, intern->glfwvidmode->height);
+            return rv;
         }
         else if (zend_string_equals_literal(member, "redBits")) {
-            ZVAL_LONG(retval, intern->glfwvidmode->redBits);
-            return retval;
+            ZVAL_LONG(rv, intern->glfwvidmode->redBits);
+            return rv;
         }
         else if (zend_string_equals_literal(member, "greenBits")) {
-            ZVAL_LONG(retval, intern->glfwvidmode->greenBits);
-            return retval;
+            ZVAL_LONG(rv, intern->glfwvidmode->greenBits);
+            return rv;
         }
         else if (zend_string_equals_literal(member, "blueBits")) {
-            ZVAL_LONG(retval, intern->glfwvidmode->blueBits);
-            return retval;
+            ZVAL_LONG(rv, intern->glfwvidmode->blueBits);
+            return rv;
         }
         else if (zend_string_equals_literal(member, "refreshRate")) {
-            ZVAL_LONG(retval, intern->glfwvidmode->refreshRate);
-            return retval;
+            ZVAL_LONG(rv, intern->glfwvidmode->refreshRate);
+            return rv;
         }
         else {
             zend_throw_error(NULL, "Trying to access invalid property '%s' on GLFWvidmode", ZSTR_VAL(member));
         }
     }
 
-    return retval;
+    return &EG(uninitialized_zval);
 }
 
 

@@ -125,9 +125,10 @@ if test "$PHP_GLFW" != "no"; then
     phpglfw_texture.c \
     phpglfw_objparser.c \
     phpglfw_voxparser.c \
-    ogt_vox_c_wrapper.cpp \
+    src/ogt_vox_c_wrapper.cpp \
     phpglfw_vg.c \
     phpglfw_audio.c \
+    phpglfw_drawcall_assembler.c \
     vendor/fastobj/fast_obj.c \
     vendor/glad/src/glad.c \
     vendor/nanovg/src/nanovg.c"
@@ -148,6 +149,8 @@ if test "$PHP_GLFW" != "no"; then
 
 
   PHP_ADD_INCLUDE([$ext_srcdir])
+  PHP_ADD_INCLUDE([$ext_srcdir/include])
+  PHP_ADD_INCLUDE([$ext_srcdir/src])
   PHP_ADD_INCLUDE([$ext_srcdir/vendor/glad/include])
   PHP_ADD_INCLUDE([$ext_srcdir/vendor/cvector])
   PHP_ADD_INCLUDE([$ext_srcdir/vendor/stb])
@@ -158,6 +161,7 @@ if test "$PHP_GLFW" != "no"; then
   PHP_ADD_INCLUDE([$GLFW_DIR/include])
 
   PHP_INSTALL_HEADERS([ext/glfw], [*.h \
+        include/*.h \
         vendor/glad/include/glad/*.h \
         vendor/glad/include/KHR/*.h \
         vendor/cvector/*.h \
