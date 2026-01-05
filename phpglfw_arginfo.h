@@ -1,5 +1,5 @@
 /* This is a generated file, edit the .stub.php file instead.
- * Stub hash: 861093568067648dbf0fd0e88d84c463b92af68a */
+ * Stub hash: 0eda5f52dd751acb54f19c93baeb11164c8bd4d5 */
 
 ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_glCullFace, 0, 1, IS_VOID, 0)
 	ZEND_ARG_TYPE_INFO(0, mode, IS_LONG, 0)
@@ -2383,13 +2383,24 @@ ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(arginfo_class_GL_Texture_Texture2D_fromBu
 	ZEND_ARG_TYPE_INFO_WITH_DEFAULT_VALUE(0, channels, IS_LONG, 0, "GL\\Texture\\Texture2D::CHANNEL_RGBA")
 ZEND_END_ARG_INFO()
 
-#define arginfo_class_GL_Texture_Texture2D_buffer arginfo_class_GL_Geometry_VoxFileParser_Palette_getBuffer
+ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(arginfo_class_GL_Texture_Texture2D_fromBufferHDR, 0, 3, GL\\Texture\\Texture2D, 0)
+	ZEND_ARG_TYPE_INFO(0, width, IS_LONG, 0)
+	ZEND_ARG_TYPE_INFO(0, height, IS_LONG, 0)
+	ZEND_ARG_OBJ_INFO(0, buffer, GL\\Buffer\\FloatBuffer, 0)
+	ZEND_ARG_TYPE_INFO_WITH_DEFAULT_VALUE(0, channels, IS_LONG, 0, "GL\\Texture\\Texture2D::CHANNEL_RGBA")
+ZEND_END_ARG_INFO()
+
+ZEND_BEGIN_ARG_WITH_RETURN_OBJ_TYPE_MASK_EX(arginfo_class_GL_Texture_Texture2D_buffer, 0, 0, GL\\Buffer\\\125ByteBuffer|GL\\Buffer\\FloatBuffer, 0)
+ZEND_END_ARG_INFO()
 
 #define arginfo_class_GL_Texture_Texture2D_width arginfo_glGetError
 
 #define arginfo_class_GL_Texture_Texture2D_height arginfo_glGetError
 
 #define arginfo_class_GL_Texture_Texture2D_channels arginfo_glGetError
+
+ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_class_GL_Texture_Texture2D_isHDR, 0, 0, _IS_BOOL, 0)
+ZEND_END_ARG_INFO()
 
 ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_class_GL_Texture_Texture2D_writeJPG, 0, 1, IS_VOID, 0)
 	ZEND_ARG_TYPE_INFO(0, path, IS_STRING, 0)
@@ -2403,6 +2414,8 @@ ZEND_END_ARG_INFO()
 #define arginfo_class_GL_Texture_Texture2D_writeBMP arginfo_class_GL_Texture_Texture2D_writePNG
 
 #define arginfo_class_GL_Texture_Texture2D_writeTGA arginfo_class_GL_Texture_Texture2D_writePNG
+
+#define arginfo_class_GL_Texture_Texture2D_writeHDR arginfo_class_GL_Texture_Texture2D_writePNG
 
 ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_class_GL_Noise_perlin, 0, 3, IS_DOUBLE, 0)
 	ZEND_ARG_TYPE_INFO(0, x, IS_DOUBLE, 0)
@@ -3703,8 +3716,7 @@ ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_class_GL_Audio_Sound_setStopMs, 
 	ZEND_ARG_TYPE_INFO(0, stop, IS_LONG, 0)
 ZEND_END_ARG_INFO()
 
-ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_class_GL_Audio_Sound_isPlaying, 0, 0, _IS_BOOL, 0)
-ZEND_END_ARG_INFO()
+#define arginfo_class_GL_Audio_Sound_isPlaying arginfo_class_GL_Texture_Texture2D_isHDR
 
 #define arginfo_class_GL_Audio_Sound_getCursor arginfo_glfwGetTime
 
@@ -4358,14 +4370,17 @@ ZEND_METHOD(GL_Geometry_VoxFileParser_Layer, __construct);
 ZEND_METHOD(GL_Geometry_VoxFileParser_Group, __construct);
 ZEND_METHOD(GL_Texture_Texture2D, fromDisk);
 ZEND_METHOD(GL_Texture_Texture2D, fromBuffer);
+ZEND_METHOD(GL_Texture_Texture2D, fromBufferHDR);
 ZEND_METHOD(GL_Texture_Texture2D, buffer);
 ZEND_METHOD(GL_Texture_Texture2D, width);
 ZEND_METHOD(GL_Texture_Texture2D, height);
 ZEND_METHOD(GL_Texture_Texture2D, channels);
+ZEND_METHOD(GL_Texture_Texture2D, isHDR);
 ZEND_METHOD(GL_Texture_Texture2D, writeJPG);
 ZEND_METHOD(GL_Texture_Texture2D, writePNG);
 ZEND_METHOD(GL_Texture_Texture2D, writeBMP);
 ZEND_METHOD(GL_Texture_Texture2D, writeTGA);
+ZEND_METHOD(GL_Texture_Texture2D, writeHDR);
 ZEND_METHOD(GL_Noise, perlin);
 ZEND_METHOD(GL_Noise, ridge);
 ZEND_METHOD(GL_Noise, fbm);
@@ -5411,14 +5426,17 @@ static const zend_function_entry class_GL_Geometry_VoxFileParser_Group_methods[]
 static const zend_function_entry class_GL_Texture_Texture2D_methods[] = {
 	ZEND_ME(GL_Texture_Texture2D, fromDisk, arginfo_class_GL_Texture_Texture2D_fromDisk, ZEND_ACC_PUBLIC|ZEND_ACC_STATIC)
 	ZEND_ME(GL_Texture_Texture2D, fromBuffer, arginfo_class_GL_Texture_Texture2D_fromBuffer, ZEND_ACC_PUBLIC|ZEND_ACC_STATIC)
+	ZEND_ME(GL_Texture_Texture2D, fromBufferHDR, arginfo_class_GL_Texture_Texture2D_fromBufferHDR, ZEND_ACC_PUBLIC|ZEND_ACC_STATIC)
 	ZEND_ME(GL_Texture_Texture2D, buffer, arginfo_class_GL_Texture_Texture2D_buffer, ZEND_ACC_PUBLIC)
 	ZEND_ME(GL_Texture_Texture2D, width, arginfo_class_GL_Texture_Texture2D_width, ZEND_ACC_PUBLIC)
 	ZEND_ME(GL_Texture_Texture2D, height, arginfo_class_GL_Texture_Texture2D_height, ZEND_ACC_PUBLIC)
 	ZEND_ME(GL_Texture_Texture2D, channels, arginfo_class_GL_Texture_Texture2D_channels, ZEND_ACC_PUBLIC)
+	ZEND_ME(GL_Texture_Texture2D, isHDR, arginfo_class_GL_Texture_Texture2D_isHDR, ZEND_ACC_PUBLIC)
 	ZEND_ME(GL_Texture_Texture2D, writeJPG, arginfo_class_GL_Texture_Texture2D_writeJPG, ZEND_ACC_PUBLIC)
 	ZEND_ME(GL_Texture_Texture2D, writePNG, arginfo_class_GL_Texture_Texture2D_writePNG, ZEND_ACC_PUBLIC)
 	ZEND_ME(GL_Texture_Texture2D, writeBMP, arginfo_class_GL_Texture_Texture2D_writeBMP, ZEND_ACC_PUBLIC)
 	ZEND_ME(GL_Texture_Texture2D, writeTGA, arginfo_class_GL_Texture_Texture2D_writeTGA, ZEND_ACC_PUBLIC)
+	ZEND_ME(GL_Texture_Texture2D, writeHDR, arginfo_class_GL_Texture_Texture2D_writeHDR, ZEND_ACC_PUBLIC)
 	ZEND_FE_END
 };
 

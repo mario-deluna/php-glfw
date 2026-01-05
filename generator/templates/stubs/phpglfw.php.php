@@ -1805,7 +1805,8 @@ namespace GL\Texture
 {
     /**
      * The Texture2D class is part of the PHP-GLFW OpenGL extension.
-     * It loads images / textures from common formats like PNG, JPG, GIF, BMP, TGA etc. and converts the raw bitmap to a `GL\UByteBuffer` instance.
+     * It loads images / textures from common formats like PNG, JPG, GIF, BMP, TGA, HDR etc. and converts the raw bitmap to a buffer instance.
+     * For LDR (Low Dynamic Range) images, a `GL\Buffer\UByteBuffer` is used. For HDR (High Dynamic Range) images, a `GL\Buffer\FloatBuffer` is used.
      */
     class Texture2D 
     {
@@ -1818,25 +1819,52 @@ namespace GL\Texture
 
         /**
          * Loads a texture / image from a file on disk and returns a Texture2D object.
+         * 
+         * This method automatically detects HDR files (.hdr) and loads them into a FloatBuffer.
+         * All other supported formats (PNG, JPG, GIF, BMP, TGA, etc.) are loaded into a UByteBuffer.
          *
-         * @param string $file The path to the image file to load.
+         * @param string $path The path to the image file to load.
+         * @param int $requestedChannelCount The number of channels to force. 0 means use the original channel count.
+         * @param bool $flipVertically Whether to flip the image vertically on load (default: true).
          * @return \GL\Texture\Texture2D The loaded texture object.
          */
-        public static function fromDisk(string $path) : Texture2D {}
+        public static function fromDisk(string $path, int $requestedChannelCount = 0, bool $flipVertically = true) : Texture2D {}
 
         /**
-         * Loads a texture / image from a buffer and returns a Texture2D object.
+         * Loads a texture / image from a UByteBuffer and returns a Texture2D object.
          * 
          * The buffer is not copied, the Texture2D object will hold a reference to the buffer given.
+         * 
+         * @param int $width The width of the image.
+         * @param int $height The height of the image.
+         * @param \GL\Buffer\UByteBuffer $buffer The buffer containing the image data.
+         * @param int $channels The number of channels in the image data.
+         * @return \GL\Texture\Texture2D The created texture object.
          */
         public static function fromBuffer(int $width, int $height, \GL\Buffer\UByteBuffer $buffer, int $channels = Texture2D::CHANNEL_RGBA) : Texture2D {}
 
         /**
-         * Returns a reference to the internal `UByteBuffer` instance of the current texture.
+         * Loads a HDR texture from a FloatBuffer and returns a Texture2D object.
          * 
-         * @return \GL\UByteBuffer The loaded image data.
+         * The buffer is not copied, the Texture2D object will hold a reference to the buffer given.
+         * 
+         * @param int $width The width of the image.
+         * @param int $height The height of the image.
+         * @param \GL\Buffer\FloatBuffer $buffer The buffer containing the HDR image data.
+         * @param int $channels The number of channels in the image data.
+         * @return \GL\Texture\Texture2D The created HDR texture object.
          */
-        public function buffer() : \GL\Buffer\UByteBuffer {}
+        public static function fromBufferHDR(int $width, int $height, \GL\Buffer\FloatBuffer $buffer, int $channels = Texture2D::CHANNEL_RGBA) : Texture2D {}
+
+        /**
+         * Returns a reference to the internal buffer instance of the current texture.
+         * 
+         * For LDR images, this returns a `UByteBuffer`. For HDR images, this returns a `FloatBuffer`.
+         * Use `isHDR()` to check which type of buffer is returned.
+         * 
+         * @return \GL\Buffer\UByteBuffer|\GL\Buffer\FloatBuffer The loaded image data.
+         */
+        public function buffer() : \GL\Buffer\UByteBuffer|\GL\Buffer\FloatBuffer {}
 
         /**
          * Returns the width of the image.
@@ -1860,9 +1888,21 @@ namespace GL\Texture
         public function channels() : int {}
 
         /**
+         * Returns whether the texture contains HDR (High Dynamic Range) data.
+         * 
+         * When true, the buffer() method returns a FloatBuffer.
+         * When false, the buffer() method returns a UByteBuffer.
+         *
+         * @return bool
+         */
+        public function isHDR() : bool {}
+
+        /**
          * Writes the image data to a file on disk. (JPEG)
          * 
-         * @param string $file The path to the file to write to.
+         * Note: This method only works with LDR textures. For HDR textures, use writeHDR().
+         * 
+         * @param string $path The path to the file to write to.
          * @param int $quality The quality of the image. (0 - 100)
          *
          * @return void
@@ -1871,24 +1911,39 @@ namespace GL\Texture
 
         /**
          * Writes the image data to a file on disk. (PNG)
+         * 
+         * Note: This method only works with LDR textures. For HDR textures, use writeHDR().
          *
-         * @param string $file The path to the file to write to.
+         * @param string $path The path to the file to write to.
          */
         public function writePNG(string $path) : void {}
 
         /**
          * Writes the image data to a file on disk. (BMP)
+         * 
+         * Note: This method only works with LDR textures. For HDR textures, use writeHDR().
          *
-         * @param string $file The path to the file to write to.
+         * @param string $path The path to the file to write to.
          */
         public function writeBMP(string $path) : void {}
 
         /**
          * Writes the image data to a file on disk. (TGA)
+         * 
+         * Note: This method only works with LDR textures. For HDR textures, use writeHDR().
          *
-         * @param string $file The path to the file to write to.
+         * @param string $path The path to the file to write to.
          */
         public function writeTGA(string $path) : void {}
+
+        /**
+         * Writes the HDR image data to a file on disk. (.hdr format)
+         * 
+         * Note: This method only works with HDR textures. For LDR textures, use writePNG(), writeJPG(), etc.
+         *
+         * @param string $path The path to the file to write to.
+         */
+        public function writeHDR(string $path) : void {}
     }
 }
 
