@@ -80,10 +80,6 @@ static zend_object *phpglfw_drawcall_assembler_create_object(zend_class_entry *c
     intern->camera_position = NULL;
     intern->view_matrix = NULL;
     intern->projection_matrix = NULL;
-    ZVAL_UNDEF(&intern->command_buffer_zv);
-    ZVAL_UNDEF(&intern->instance_transform_buffer_zv);
-    ZVAL_UNDEF(&intern->instance_meta_buffer_zv);
-    ZVAL_UNDEF(&intern->instance_payload_buffer_zv);
     ZVAL_UNDEF(&intern->payload_data_buffer_zv);
     ZVAL_UNDEF(&intern->camera_position_zv);
     ZVAL_UNDEF(&intern->view_matrix_zv);
@@ -112,10 +108,7 @@ static void phpglfw_drawcall_assembler_free_handler(zend_object *object)
 {
     phpglfw_drawcall_assembler_object *intern = phpglfw_drawcall_assembler_objectptr_from_zobj_p(object);
 
-    phpglfw_drawcall_release_zval(&intern->command_buffer_zv);
-    phpglfw_drawcall_release_zval(&intern->instance_transform_buffer_zv);
-    phpglfw_drawcall_release_zval(&intern->instance_meta_buffer_zv);
-    phpglfw_drawcall_release_zval(&intern->instance_payload_buffer_zv);
+    // release internal-only zvals
     phpglfw_drawcall_release_zval(&intern->payload_data_buffer_zv);
     phpglfw_drawcall_release_zval(&intern->camera_position_zv);
     phpglfw_drawcall_release_zval(&intern->view_matrix_zv);
@@ -150,79 +143,6 @@ static void phpglfw_drawcall_assembler_free_handler(zend_object *object)
     zend_object_std_dtor(&intern->std);
 }
 
-static zval *phpglfw_drawcall_assembler_read_prop_handler(zend_object *object, zend_string *name, int type, void **cache_slot, zval *rv)
-{
-    phpglfw_drawcall_assembler_object *obj = phpglfw_drawcall_assembler_objectptr_from_zobj_p(object);
-    const char *prop_name = ZSTR_VAL(name);
-
-    if (strcmp(prop_name, "commandBuffer") == 0)
-    {
-        if (obj->command_buffer)
-        {
-            ZVAL_OBJ(rv, &obj->command_buffer->std);
-            Z_ADDREF_P(rv);
-        }
-        else
-        {
-            ZVAL_NULL(rv);
-        }
-    }
-    else if (strcmp(prop_name, "instanceTransformBuffer") == 0)
-    {
-        if (obj->instance_transform_buffer)
-        {
-            ZVAL_OBJ(rv, &obj->instance_transform_buffer->std);
-            Z_ADDREF_P(rv);
-        }
-        else
-        {
-            ZVAL_NULL(rv);
-        }
-    }
-    else if (strcmp(prop_name, "instanceMetaBuffer") == 0)
-    {
-        if (obj->instance_meta_buffer)
-        {
-            ZVAL_OBJ(rv, &obj->instance_meta_buffer->std);
-            Z_ADDREF_P(rv);
-        }
-        else
-        {
-            ZVAL_NULL(rv);
-        }
-    }
-    else if (strcmp(prop_name, "instancePayloadBuffer") == 0)
-    {
-        if (obj->instance_payload_buffer)
-        {
-            ZVAL_OBJ(rv, &obj->instance_payload_buffer->std);
-            Z_ADDREF_P(rv);
-        }
-        else
-        {
-            ZVAL_NULL(rv);
-        }
-    }
-    else if (strcmp(prop_name, "commandStride") == 0)
-    {
-        ZVAL_LONG(rv, PHPGLFW_COMMAND_STRIDE);
-    }
-    else if (strcmp(prop_name, "transformStride") == 0)
-    {
-        ZVAL_LONG(rv, PHPGLFW_TRANSFORM_STRIDE);
-    }
-    else if (strcmp(prop_name, "instanceMetaStride") == 0)
-    {
-        ZVAL_LONG(rv, PHPGLFW_INSTANCE_META_STRIDE);
-    }
-    else
-    {
-        rv = zend_std_read_property(object, name, type, cache_slot, rv);
-    }
-
-    return rv;
-}
-
 PHP_METHOD(GL_Rendering_DrawCallAssembler, __construct)
 {
     zend_long initial_mesh_capacity = 256;
@@ -247,26 +167,43 @@ PHP_METHOD(GL_Rendering_DrawCallAssembler, __construct)
     intern->instance_capacity = initial_instance_capacity;
     intern->instances = ecalloc(intern->instance_capacity, sizeof(phpglfw_drawcall_instance));
 
-    // create exposed buffers
+    // for readonly properties, we must write directly to the properties table
+    // zend_update_property doesn't work with readonly properties declared in stubs
+    zend_object *this_obj = Z_OBJ_P(ZEND_THIS);
+    zval *prop;
 
     // command buffer
-    object_init_ex(&intern->command_buffer_zv, phpglfw_get_buffer_gluint_ce());
-    intern->command_buffer = phpglfw_buffer_gluint_objectptr_from_zobj_p(Z_OBJ(intern->command_buffer_zv));
+    prop = OBJ_PROP_NUM(this_obj, 0);
+    object_init_ex(prop, phpglfw_get_buffer_gluint_ce());
+    intern->command_buffer = phpglfw_buffer_gluint_objectptr_from_zobj_p(Z_OBJ_P(prop));
     cvector_reserve(intern->command_buffer->vec, initial_command_capacity * PHPGLFW_COMMAND_STRIDE);
 
     // instance transform buffer
-    object_init_ex(&intern->instance_transform_buffer_zv, phpglfw_get_buffer_glfloat_ce());
-    intern->instance_transform_buffer = phpglfw_buffer_glfloat_objectptr_from_zobj_p(Z_OBJ(intern->instance_transform_buffer_zv));
+    prop = OBJ_PROP_NUM(this_obj, 1);
+    object_init_ex(prop, phpglfw_get_buffer_glfloat_ce());
+    intern->instance_transform_buffer = phpglfw_buffer_glfloat_objectptr_from_zobj_p(Z_OBJ_P(prop));
     cvector_reserve(intern->instance_transform_buffer->vec, initial_instance_capacity * PHPGLFW_TRANSFORM_STRIDE);
 
     // instance meta buffer
-    object_init_ex(&intern->instance_meta_buffer_zv, phpglfw_get_buffer_gluint_ce());
-    intern->instance_meta_buffer = phpglfw_buffer_gluint_objectptr_from_zobj_p(Z_OBJ(intern->instance_meta_buffer_zv));
+    prop = OBJ_PROP_NUM(this_obj, 2);
+    object_init_ex(prop, phpglfw_get_buffer_gluint_ce());
+    intern->instance_meta_buffer = phpglfw_buffer_gluint_objectptr_from_zobj_p(Z_OBJ_P(prop));
     cvector_reserve(intern->instance_meta_buffer->vec, initial_instance_capacity * PHPGLFW_INSTANCE_META_STRIDE);
 
     // instance payload buffer
-    object_init_ex(&intern->instance_payload_buffer_zv, phpglfw_get_buffer_glfloat_ce());
-    intern->instance_payload_buffer = phpglfw_buffer_glfloat_objectptr_from_zobj_p(Z_OBJ(intern->instance_payload_buffer_zv));
+    prop = OBJ_PROP_NUM(this_obj, 3);
+    object_init_ex(prop, phpglfw_get_buffer_glfloat_ce());
+    intern->instance_payload_buffer = phpglfw_buffer_glfloat_objectptr_from_zobj_p(Z_OBJ_P(prop));
+
+    // stride constants
+    prop = OBJ_PROP_NUM(this_obj, 4);
+    ZVAL_LONG(prop, PHPGLFW_COMMAND_STRIDE);
+
+    prop = OBJ_PROP_NUM(this_obj, 5);
+    ZVAL_LONG(prop, PHPGLFW_TRANSFORM_STRIDE);
+
+    prop = OBJ_PROP_NUM(this_obj, 6);
+    ZVAL_LONG(prop, PHPGLFW_INSTANCE_META_STRIDE);
 
     // initialize internal VBO (will be created on first use)
     intern->internal_transform_vbo = 0;
@@ -1627,5 +1564,4 @@ void phpglfw_register_drawcall_assembler_module(INIT_FUNC_ARGS)
     memcpy(&phpglfw_drawcall_assembler_object_handlers, zend_get_std_object_handlers(), sizeof(zend_object_handlers));
     phpglfw_drawcall_assembler_object_handlers.offset = XtOffsetOf(phpglfw_drawcall_assembler_object, std);
     phpglfw_drawcall_assembler_object_handlers.free_obj = phpglfw_drawcall_assembler_free_handler;
-    phpglfw_drawcall_assembler_object_handlers.read_property = phpglfw_drawcall_assembler_read_prop_handler;
 }

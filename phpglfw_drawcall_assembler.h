@@ -115,17 +115,11 @@ typedef struct _phpglfw_drawcall_instance {
 } phpglfw_drawcall_instance;
 
 typedef struct _phpglfw_drawcall_assembler_object {
-    zend_object std;
-    
     // buffers exposed to php
     phpglfw_buffer_gluint_object *command_buffer;
     phpglfw_buffer_glfloat_object *instance_transform_buffer;
     phpglfw_buffer_gluint_object *instance_meta_buffer;
     phpglfw_buffer_glfloat_object *instance_payload_buffer;
-    zval command_buffer_zv;
-    zval instance_transform_buffer_zv;
-    zval instance_meta_buffer_zv;
-    zval instance_payload_buffer_zv;
 
     // payload data buffer (for user-defined per-instance data)
     // this one holds the source data, the instance_payload_buffer is the GPU buffer
@@ -175,6 +169,8 @@ typedef struct _phpglfw_drawcall_assembler_object {
     // output stats
     uint32_t final_command_count;
     uint32_t final_instance_count;
+    
+    zend_object std;
 } phpglfw_drawcall_assembler_object;
 
 zend_class_entry *phpglfw_get_drawcall_assembler_ce();
