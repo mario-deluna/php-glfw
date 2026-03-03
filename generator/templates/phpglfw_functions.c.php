@@ -206,7 +206,7 @@ void <?php echo $ipo->getObjectMinitHelperFunctionName(); ?>(void)
     <?php echo $ipo->getClassEntryName(); ?> = <?php echo $ipo->getClassRegistrationFunctionName(); ?>();
     <?php echo $ipo->getClassEntryName(); ?>->create_object = <?php echo $ipo->getObjectCreateFunctionName(); ?>;
 
-    memcpy(&<?php echo $ipo->getObjectHandlersVar(); ?>, &std_object_handlers, sizeof(zend_object_handlers));
+    memcpy(&<?php echo $ipo->getObjectHandlersVar(); ?>, zend_get_std_object_handlers(), sizeof(zend_object_handlers));
     <?php echo $ipo->getObjectHandlersVar(); ?>.clone_obj = NULL;
     <?php echo $ipo->getObjectHandlersVar(); ?>.free_obj = <?php echo $ipo->getObjectFreeFunctionName(); ?>;
     <?php echo $ipo->getObjectHandlersVar(); ?>.get_constructor = <?php echo $ipo->getClassConstructorFunctionName(); ?>;

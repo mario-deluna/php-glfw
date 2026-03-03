@@ -49,7 +49,7 @@ void phpglfw_voxparser_transform_to_mat4(zval *mat4_zval, const ogt_vox_transfor
 phpglfw_buffer_glubyte_object *phpglfw_voxparser_palette_ensure_buffer(phpglfw_voxparser_palette_object *palette_intern);
 void phpglfw_voxparser_palette_prepare_buffer(phpglfw_buffer_glubyte_object *buffer_intern);
 void phpglfw_voxparser_palette_copy_from_rgba(phpglfw_buffer_glubyte_object *buffer_intern, const ogt_vox_rgba_c *rgba);
-zend_bool phpglfw_voxparser_palette_extract_color(zval *color_zval, uint8_t *rgba_out);
+bool phpglfw_voxparser_palette_extract_color(zval *color_zval, uint8_t *rgba_out);
 uint8_t phpglfw_vox_float_to_byte(double value);
 
 zend_class_entry *phpglfw_voxparser_res_ce;
@@ -98,7 +98,7 @@ static const ogt_vox_rgba_c* phpglfw_vox_default_palette(void)
     return palette;
 }
 
-static zend_bool phpglfw_vox_mesh_mode_from_zval(zval *mode_zval, phpglfw_vox_mesh_mode *out_mode)
+static bool phpglfw_vox_mesh_mode_from_zval(zval *mode_zval, phpglfw_vox_mesh_mode *out_mode)
 {
     if (!mode_zval || !out_mode) {
         return 0;
@@ -415,8 +415,8 @@ void create_instances_phparray(zval *array_zval, const ogt_vox_scene_wrapper* sc
 
         ogt_vox_transform_c transform_global;
         ogt_vox_transform_c transform_local;
-        zend_bool have_global = ogt_vox_scene_get_instance_transform_global(scene, i, &transform_global);
-        zend_bool have_local = ogt_vox_scene_get_instance_transform_local(scene, i, &transform_local);
+        bool have_global = ogt_vox_scene_get_instance_transform_global(scene, i, &transform_global);
+        bool have_local = ogt_vox_scene_get_instance_transform_local(scene, i, &transform_local);
 
         instance_intern->has_transforms = have_global || have_local;
         if (have_global) {
@@ -539,8 +539,8 @@ void create_groups_phparray(zval *array_zval, const ogt_vox_scene_wrapper* scene
 
         ogt_vox_transform_c transform_global;
         ogt_vox_transform_c transform_local;
-        zend_bool have_global = ogt_vox_scene_get_group_transform_global(scene, i, &transform_global);
-        zend_bool have_local = ogt_vox_scene_get_group_transform_local(scene, i, &transform_local);
+        bool have_global = ogt_vox_scene_get_group_transform_global(scene, i, &transform_global);
+        bool have_local = ogt_vox_scene_get_group_transform_local(scene, i, &transform_local);
 
         group_intern->has_transforms = have_global || have_local;
 
@@ -959,7 +959,7 @@ PHP_METHOD(GL_Geometry_VoxFileParser_Palette, replaceFromArray)
     phpglfw_buffer_glubyte_object *buffer_intern = phpglfw_voxparser_palette_ensure_buffer(intern);
 
     HashTable *ht = Z_ARRVAL_P(colors_zval);
-    zend_bool updated = 0;
+    bool updated = 0;
     zval *color_entry;
     zend_ulong index_key;
 
@@ -1055,7 +1055,7 @@ PHP_METHOD(GL_Geometry_VoxFileParser_Model, generateTriangleMesh)
         PHPGLFW_VOX_COLOR_LAYOUT_NONE
     } color_mode = PHPGLFW_VOX_COLOR_LAYOUT_RGB;
 
-    zend_bool include_palette_index = 0;
+    bool include_palette_index = 0;
     enum {
         PHPGLFW_VOX_ORIGIN_CORNER,
         PHPGLFW_VOX_ORIGIN_CENTER
@@ -1381,7 +1381,7 @@ void phpglfw_voxparser_palette_copy_from_rgba(phpglfw_buffer_glubyte_object *buf
     memcpy(buffer_intern->vec, rgba, PHPGLFW_VOX_PALETTE_BYTES);
 }
 
-zend_bool phpglfw_voxparser_palette_extract_color(zval *color_zval, uint8_t *rgba_out)
+bool phpglfw_voxparser_palette_extract_color(zval *color_zval, uint8_t *rgba_out)
 {
     if (Z_TYPE_P(color_zval) == IS_ARRAY) {
         HashTable *ht = Z_ARRVAL_P(color_zval);

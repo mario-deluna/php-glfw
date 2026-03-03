@@ -170,7 +170,7 @@ void phpglfw_glfwwindow_object_minit_helper(void)
     phpglfw_glfwwindow_ce = phpglfw_glfwwindow_class_register();
     phpglfw_glfwwindow_ce->create_object = phpglfw_glfwwindow_object_create;
 
-    memcpy(&phpglfw_glfwwindow_object_handlers, &std_object_handlers, sizeof(zend_object_handlers));
+    memcpy(&phpglfw_glfwwindow_object_handlers, zend_get_std_object_handlers(), sizeof(zend_object_handlers));
     phpglfw_glfwwindow_object_handlers.clone_obj = NULL;
     phpglfw_glfwwindow_object_handlers.free_obj = phpglfw_glfwwindow_object_free;
     phpglfw_glfwwindow_object_handlers.get_constructor = phpglfw_glfwwindow_class_constructor;
@@ -255,7 +255,7 @@ void phpglfw_glfwmonitor_object_minit_helper(void)
     phpglfw_glfwmonitor_ce = phpglfw_glfwmonitor_class_register();
     phpglfw_glfwmonitor_ce->create_object = phpglfw_glfwmonitor_object_create;
 
-    memcpy(&phpglfw_glfwmonitor_object_handlers, &std_object_handlers, sizeof(zend_object_handlers));
+    memcpy(&phpglfw_glfwmonitor_object_handlers, zend_get_std_object_handlers(), sizeof(zend_object_handlers));
     phpglfw_glfwmonitor_object_handlers.clone_obj = NULL;
     phpglfw_glfwmonitor_object_handlers.free_obj = phpglfw_glfwmonitor_object_free;
     phpglfw_glfwmonitor_object_handlers.get_constructor = phpglfw_glfwmonitor_class_constructor;
@@ -340,7 +340,7 @@ void phpglfw_glfwcursor_object_minit_helper(void)
     phpglfw_glfwcursor_ce = phpglfw_glfwcursor_class_register();
     phpglfw_glfwcursor_ce->create_object = phpglfw_glfwcursor_object_create;
 
-    memcpy(&phpglfw_glfwcursor_object_handlers, &std_object_handlers, sizeof(zend_object_handlers));
+    memcpy(&phpglfw_glfwcursor_object_handlers, zend_get_std_object_handlers(), sizeof(zend_object_handlers));
     phpglfw_glfwcursor_object_handlers.clone_obj = NULL;
     phpglfw_glfwcursor_object_handlers.free_obj = phpglfw_glfwcursor_object_free;
     phpglfw_glfwcursor_object_handlers.get_constructor = phpglfw_glfwcursor_class_constructor;
@@ -495,7 +495,7 @@ void phpglfw_glfwvidmode_object_minit_helper(void)
     phpglfw_glfwvidmode_ce = phpglfw_glfwvidmode_class_register();
     phpglfw_glfwvidmode_ce->create_object = phpglfw_glfwvidmode_object_create;
 
-    memcpy(&phpglfw_glfwvidmode_object_handlers, &std_object_handlers, sizeof(zend_object_handlers));
+    memcpy(&phpglfw_glfwvidmode_object_handlers, zend_get_std_object_handlers(), sizeof(zend_object_handlers));
     phpglfw_glfwvidmode_object_handlers.clone_obj = NULL;
     phpglfw_glfwvidmode_object_handlers.free_obj = phpglfw_glfwvidmode_object_free;
     phpglfw_glfwvidmode_object_handlers.get_constructor = phpglfw_glfwvidmode_class_constructor;
