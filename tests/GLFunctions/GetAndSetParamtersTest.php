@@ -2,10 +2,6 @@
 
 namespace GL\Tests\GLFunctions;
 
-use GLFWwindow;
-use SebastianBergmann\RecursionContext\InvalidArgumentException;
-use PHPUnit\Framework\ExpectationFailedException;
-
 /**
  * @group glfwinit
  */
