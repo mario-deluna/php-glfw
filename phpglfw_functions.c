@@ -10940,6 +10940,9 @@ PHP_FUNCTION(glfwCreateWindow)
         share = phpglfw_glfwwindowptr_from_zval_ptr(share_zval);
     }
     GLFWwindow* glfwwindow = glfwCreateWindow(width, height, title, monitor, share);
+    if (glfwwindow == NULL) {
+        RETURN_NULL();
+    }
     phpglfw_glfwwindow_ptr_assign_to_zval_p(return_value, glfwwindow);
     // fetch the internal object
     phpglfw_glfwwindow_object *intern = phpglfw_glfwwindow_objectptr_from_zobj_p(Z_OBJ_P(return_value));

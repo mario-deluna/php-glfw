@@ -5,6 +5,7 @@ namespace GL\Tests\GLFunctions;
 /**
  * @group glfwinit
  */
+#[\PHPUnit\Framework\Attributes\Group('glfwinit')]
 class ShderCompilationTest extends GLFunctionsTestCase
 {
     public function testShaderCompilation()

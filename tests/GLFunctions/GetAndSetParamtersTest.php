@@ -5,6 +5,7 @@ namespace GL\Tests\GLFunctions;
 /**
  * @group glfwinit
  */
+#[\PHPUnit\Framework\Attributes\Group('glfwinit')]
 class GetAndSetParamtersTest extends GLFunctionsTestCase
 {
     public function testGlEnableDisable()
