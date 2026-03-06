@@ -55,7 +55,7 @@ jobs:
 
     - name: Install PHPUnit
       run: |
-        composer install"
+        composer install
       
     - name: Run PHPUnit
       run: |
