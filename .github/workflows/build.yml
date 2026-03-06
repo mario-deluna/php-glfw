@@ -109,7 +109,7 @@ jobs:
         echo 'extension=glfw.so' >> /opt/homebrew/etc/php/${{ matrix.php-versions }}/php.ini
     
     - name: Install PHPUnit
-      run: composer install"
+      run: composer install
     
     # On MacOS we currently exclude all tests requiring glfwinit to work.. 
     # Initializing it in the Github action results in a segmentation fault. 
