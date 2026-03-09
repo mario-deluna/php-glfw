@@ -207,6 +207,21 @@ abstract class BufferTestCase extends \PHPUnit\Framework\TestCase
         }
     }
 
+    public function testIteratorUnkeyed()
+    {
+        $className = $this->getBufferClass();
+        $data = $this->getTestData();
+        $buffer = new $className($data);
+        
+        $this->assertEquals(count($data), $buffer->size());
+
+        $i = 0;
+        foreach($buffer as $value) {
+            $this->assertEqualBufferValue($data[$i], $value);
+            $i++;
+        }
+    }
+
     public function testSerialisation() 
     {
         $className = $this->getBufferClass();

@@ -62,7 +62,7 @@ zend_object *phpglfw_texture2d_create_handler(zend_class_entry *class_type)
     intern->std.handlers = &phpglfw_texture2d_handlers;
 
     ZVAL_UNDEF(&intern->buffer_zval);
-    object_init_ex(&intern->buffer_zval, phpglfw_get_buffer_glubyte_ce());
+    intern->is_hdr = 0;
 
     return &intern->std;
 }
@@ -81,7 +81,7 @@ static HashTable *phpglfw_texture2d_debug_info_handler(zend_object *object, int 
     zval zv;
     HashTable *ht;
 
-    ht = zend_new_array(3);
+    ht = zend_new_array(4);
     *is_temp = 1;
 
     ZVAL_LONG(&zv, intern->width);
@@ -92,7 +92,9 @@ static HashTable *phpglfw_texture2d_debug_info_handler(zend_object *object, int 
 
     ZVAL_LONG(&zv, intern->channels);
     zend_hash_str_update(ht, "channels", sizeof("channels") - 1, &zv);
- 
+
+    ZVAL_BOOL(&zv, intern->is_hdr);
+    zend_hash_str_update(ht, "isHdr", sizeof("isHdr") - 1, &zv);
 
     return ht;
 }
@@ -114,42 +116,56 @@ PHP_METHOD(GL_Texture_Texture2D, fromDisk)
 
     object_init_ex(return_value, phpglfw_get_texture_texture2d_ce());
     phpglfw_texture2d_object *intern = phpglfw_texture2d_objectptr_from_zobj_p(Z_OBJ_P(return_value));
-    phpglfw_buffer_glubyte_object *buffer = phpglfw_buffer_glubyte_objectptr_from_zobj_p(Z_OBJ_P(&intern->buffer_zval));
 
-    stbi_set_flip_vertically_on_load(flip_vertically); 
+    stbi_set_flip_vertically_on_load(flip_vertically);
 
-    unsigned char *data = stbi_load(path, &intern->width, &intern->height, &intern->channels, force_channels);
-    size_t buffersize;
-    if (data == NULL) {
-        zend_throw_error(NULL, "Failed to load image from disk '%s'.", path);
-        return;
+    // we do a quick check if the image is HDR or LDR
+    // and then either allocate a FloatBuffer or UByteBuffer
+    if (stbi_is_hdr(path)) {
+        // HD arrrrrr
+        object_init_ex(&intern->buffer_zval, phpglfw_get_buffer_glfloat_ce());
+        phpglfw_buffer_glfloat_object *buffer = phpglfw_buffer_glfloat_objectptr_from_zobj_p(Z_OBJ_P(&intern->buffer_zval));
+        intern->is_hdr = 1;
+
+        float *data = stbi_loadf(path, &intern->width, &intern->height, &intern->channels, force_channels);
+        if (data == NULL) {
+            zend_throw_error(NULL, "Failed to load HDR image from disk '%s'.", path);
+            return;
+        }
+
+        if (force_channels > 0) {
+            intern->channels = force_channels;
+        }
+
+        size_t buffersize = intern->width * intern->height * intern->channels;
+        cvector_reserve(buffer->vec, buffersize);
+        memcpy(buffer->vec, data, buffersize * sizeof(float));
+        cvector_set_size(buffer->vec, buffersize);
+
+        efree(data);
+    } else {
+        // lllowwwww
+        object_init_ex(&intern->buffer_zval, phpglfw_get_buffer_glubyte_ce());
+        phpglfw_buffer_glubyte_object *buffer = phpglfw_buffer_glubyte_objectptr_from_zobj_p(Z_OBJ_P(&intern->buffer_zval));
+        intern->is_hdr = 0;
+
+        unsigned char *data = stbi_load(path, &intern->width, &intern->height, &intern->channels, force_channels);
+        if (data == NULL) {
+            zend_throw_error(NULL, "Failed to load image from disk '%s'.", path);
+            return;
+        }
+
+        if (force_channels > 0) {
+            intern->channels = force_channels;
+        }
+
+        size_t buffersize = intern->width * intern->height * intern->channels;
+        cvector_reserve(buffer->vec, buffersize);
+        memcpy(buffer->vec, data, buffersize * sizeof(unsigned char));
+        cvector_set_size(buffer->vec, buffersize);
+
+        efree(data);
     }
-
-    // in our case we overwrite the channels with the forced channels
-    // because from userland we care about the final resulting buffer
-    if (force_channels > 0) {
-        intern->channels = force_channels;
-    }
-
-    buffersize = intern->width * intern->height * intern->channels;
-
-    // php_printf("%s: %i x %i x %i, (%i)", path, intern->width, intern->height, intern->channels, buffersize);
-
-    // prealloc space
-    cvector_reserve(buffer->vec, buffersize);
-
-    // copy the data over to the buffer
-    // please if somebody finds a way to avoid this copy, let me know
-    memcpy(buffer->vec, data, buffersize * sizeof(unsigned char));
-    cvector_set_size(buffer->vec, buffersize);
-    // for (size_t i = 0; i < buffersize; i++) {
-    //     cvector_push_back(buffer->vec, data[i]);
-    // }
-
-    // free the stb allocated memory 
-    efree(data);
-    // php_printf("buffer cap %i\n", cvector_capacity(buffer->vec));
-    // buffer->vec = data;
 }
 
 PHP_METHOD(GL_Texture_Texture2D, fromBuffer)
@@ -181,6 +197,39 @@ PHP_METHOD(GL_Texture_Texture2D, fromBuffer)
     intern->width = width;
     intern->height = height;
     intern->channels = channels;
+    intern->is_hdr = 0;
+}
+
+PHP_METHOD(GL_Texture_Texture2D, fromBufferHDR)
+{
+    zend_long width, height, channels = 4;
+    zval *buffer_zval;
+    if (zend_parse_parameters(ZEND_NUM_ARGS(), "llO|l", &width, &height, &buffer_zval, phpglfw_get_buffer_glfloat_ce(), &channels) == FAILURE) {
+        RETURN_THROWS();
+    }
+
+    if (channels > 4 || channels < 1) {
+        zend_throw_error(NULL, "Invalid number of channels. Must be between 1 and 4.");
+        return;
+    }
+
+    // check if the buffer is big enough, size matters..
+    phpglfw_buffer_glfloat_object *buffer = phpglfw_buffer_glfloat_objectptr_from_zobj_p(Z_OBJ_P(buffer_zval));
+
+    if (cvector_size(buffer->vec) < width * height * channels) {
+        zend_throw_error(NULL, "Buffer is too small to hold the HDR image data.");
+        return;
+    }
+
+    object_init_ex(return_value, phpglfw_get_texture_texture2d_ce());
+    phpglfw_texture2d_object *intern = phpglfw_texture2d_objectptr_from_zobj_p(Z_OBJ_P(return_value));
+
+    ZVAL_COPY(&intern->buffer_zval, buffer_zval);
+
+    intern->width = width;
+    intern->height = height;
+    intern->channels = channels;
+    intern->is_hdr = 1;
 }
 
 PHP_METHOD(GL_Texture_Texture2D, width)
@@ -201,6 +250,12 @@ PHP_METHOD(GL_Texture_Texture2D, channels)
     RETURN_LONG(intern->channels);
 }
 
+PHP_METHOD(GL_Texture_Texture2D, isHDR)
+{
+    phpglfw_texture2d_object *intern = phpglfw_texture2d_objectptr_from_zobj_p(Z_OBJ_P(getThis()));
+    RETURN_BOOL(intern->is_hdr);
+}
+
 PHP_METHOD(GL_Texture_Texture2D, buffer)
 {
     phpglfw_texture2d_object *intern = phpglfw_texture2d_objectptr_from_zobj_p(Z_OBJ_P(getThis()));
@@ -214,12 +269,18 @@ PHP_METHOD(GL_Texture_Texture2D, buffer)
 PHP_METHOD(GL_Texture_Texture2D, writeJPG)
 {
     phpglfw_texture2d_object *intern = phpglfw_texture2d_objectptr_from_zobj_p(Z_OBJ_P(getThis()));
-    phpglfw_buffer_glubyte_object *buffer = phpglfw_buffer_glubyte_objectptr_from_zobj_p(Z_OBJ_P(&intern->buffer_zval));
     const char *path;
     size_t path_size;
     if (zend_parse_parameters(ZEND_NUM_ARGS() , "s", &path, &path_size) == FAILURE) {
         RETURN_THROWS();
     }
+
+    if (intern->is_hdr) {
+        zend_throw_error(NULL, "Cannot write HDR texture to JPG format. Use writeHDR() instead or convert to LDR first.");
+        return;
+    }
+
+    phpglfw_buffer_glubyte_object *buffer = phpglfw_buffer_glubyte_objectptr_from_zobj_p(Z_OBJ_P(&intern->buffer_zval));
     stbi_flip_vertically_on_write(1);
     stbi_write_jpg(path, intern->width, intern->height, intern->channels, buffer->vec, 100);
 }
@@ -227,12 +288,18 @@ PHP_METHOD(GL_Texture_Texture2D, writeJPG)
 PHP_METHOD(GL_Texture_Texture2D, writePNG)
 {
     phpglfw_texture2d_object *intern = phpglfw_texture2d_objectptr_from_zobj_p(Z_OBJ_P(getThis()));
-    phpglfw_buffer_glubyte_object *buffer = phpglfw_buffer_glubyte_objectptr_from_zobj_p(Z_OBJ_P(&intern->buffer_zval));
     const char *path;
     size_t path_size;
     if (zend_parse_parameters(ZEND_NUM_ARGS() , "s", &path, &path_size) == FAILURE) {
         RETURN_THROWS();
     }
+
+    if (intern->is_hdr) {
+        zend_throw_error(NULL, "Cannot write HDR texture to PNG format. Use writeHDR() instead or convert to LDR first.");
+        return;
+    }
+
+    phpglfw_buffer_glubyte_object *buffer = phpglfw_buffer_glubyte_objectptr_from_zobj_p(Z_OBJ_P(&intern->buffer_zval));
     stbi_flip_vertically_on_write(1);
     stbi_write_png(path, intern->width, intern->height, intern->channels, buffer->vec, 0);
 }
@@ -240,12 +307,18 @@ PHP_METHOD(GL_Texture_Texture2D, writePNG)
 PHP_METHOD(GL_Texture_Texture2D, writeBMP)
 {
     phpglfw_texture2d_object *intern = phpglfw_texture2d_objectptr_from_zobj_p(Z_OBJ_P(getThis()));
-    phpglfw_buffer_glubyte_object *buffer = phpglfw_buffer_glubyte_objectptr_from_zobj_p(Z_OBJ_P(&intern->buffer_zval));
     const char *path;
     size_t path_size;
     if (zend_parse_parameters(ZEND_NUM_ARGS() , "s", &path, &path_size) == FAILURE) {
         RETURN_THROWS();
     }
+
+    if (intern->is_hdr) {
+        zend_throw_error(NULL, "Cannot write HDR texture to BMP format. Use writeHDR() instead or convert to LDR first.");
+        return;
+    }
+
+    phpglfw_buffer_glubyte_object *buffer = phpglfw_buffer_glubyte_objectptr_from_zobj_p(Z_OBJ_P(&intern->buffer_zval));
     stbi_flip_vertically_on_write(1);
     stbi_write_bmp(path, intern->width, intern->height, intern->channels, buffer->vec);
 }
@@ -253,14 +326,39 @@ PHP_METHOD(GL_Texture_Texture2D, writeBMP)
 PHP_METHOD(GL_Texture_Texture2D, writeTGA)
 {
     phpglfw_texture2d_object *intern = phpglfw_texture2d_objectptr_from_zobj_p(Z_OBJ_P(getThis()));
-    phpglfw_buffer_glubyte_object *buffer = phpglfw_buffer_glubyte_objectptr_from_zobj_p(Z_OBJ_P(&intern->buffer_zval));
     const char *path;
     size_t path_size;
     if (zend_parse_parameters(ZEND_NUM_ARGS() , "s", &path, &path_size) == FAILURE) {
         RETURN_THROWS();
     }
+
+    if (intern->is_hdr) {
+        zend_throw_error(NULL, "Cannot write HDR texture to TGA format. Use writeHDR() instead or convert to LDR first.");
+        return;
+    }
+
+    phpglfw_buffer_glubyte_object *buffer = phpglfw_buffer_glubyte_objectptr_from_zobj_p(Z_OBJ_P(&intern->buffer_zval));
     stbi_flip_vertically_on_write(1);
     stbi_write_tga(path, intern->width, intern->height, intern->channels, buffer->vec);
+}
+
+PHP_METHOD(GL_Texture_Texture2D, writeHDR)
+{
+    phpglfw_texture2d_object *intern = phpglfw_texture2d_objectptr_from_zobj_p(Z_OBJ_P(getThis()));
+    const char *path;
+    size_t path_size;
+    if (zend_parse_parameters(ZEND_NUM_ARGS() , "s", &path, &path_size) == FAILURE) {
+        RETURN_THROWS();
+    }
+
+    if (!intern->is_hdr) {
+        zend_throw_error(NULL, "Cannot write LDR texture to HDR format. Use writePNG() or other LDR formats instead.");
+        return;
+    }
+
+    phpglfw_buffer_glfloat_object *buffer = phpglfw_buffer_glfloat_objectptr_from_zobj_p(Z_OBJ_P(&intern->buffer_zval));
+    stbi_flip_vertically_on_write(1);
+    stbi_write_hdr(path, intern->width, intern->height, intern->channels, buffer->vec);
 }
 
 PHP_METHOD(GL_Noise, perlin)

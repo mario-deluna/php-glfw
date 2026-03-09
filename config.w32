@@ -7,6 +7,7 @@ if (PHP_GLFW != "no") {
 	if (
 		CHECK_HEADER_ADD_INCLUDE("glad/glad.h", "CFLAGS_GLFW", configure_module_dirname + "\\vendor\\glad\\include;" + PHP_EXTRA_INCLUDES) && 
 		CHECK_HEADER_ADD_INCLUDE("GLFW/glfw3.h", "CFLAGS_GLFW", configure_module_dirname + "\\vendor\\glfw\\include;" + PHP_EXTRA_INCLUDES) &&
+		CHECK_HEADER_ADD_INCLUDE("ogt_vox_c_wrapper.h", "CFLAGS_GLFW", configure_module_dirname + "\\include;" + PHP_EXTRA_INCLUDES) &&
 		CHECK_HEADER_ADD_INCLUDE("cvector.h", "CFLAGS_GLFW", configure_module_dirname + "\\vendor\\cvector;" + PHP_EXTRA_INCLUDES) &&
 		CHECK_HEADER_ADD_INCLUDE("stb_image.h", "CFLAGS_GLFW", configure_module_dirname + "\\vendor\\stb;" + PHP_EXTRA_INCLUDES) &&
 		CHECK_HEADER_ADD_INCLUDE("stb_perlin.h", "CFLAGS_GLFW", configure_module_dirname + "\\vendor\\stb;" + PHP_EXTRA_INCLUDES) &&
@@ -19,7 +20,8 @@ if (PHP_GLFW != "no") {
         CHECK_HEADER_ADD_INCLUDE("ogt_vox.h", "CFLAGS_GLFW", configure_module_dirname + "\\vendor\\opengametools\\src;" + PHP_EXTRA_INCLUDES)
 	) {
 
-		var sources = "phpglfw.c phpglfw_constants.c phpglfw_functions.c phpglfw_math.c phpglfw_buffer.c phpglfw_texture.c phpglfw_objparser.c phpglfw_voxparser.c ogt_vox_c_wrapper.cpp phpglfw_vg.c phpglfw_audio.c";
+		var sources = "phpglfw.c phpglfw_constants.c phpglfw_functions.c phpglfw_math.c phpglfw_buffer.c phpglfw_texture.c phpglfw_objparser.c phpglfw_voxparser.c phpglfw_vg.c phpglfw_audio.c phpglfw_drawcall_assembler.c";
+		var src_sources = "ogt_vox_c_wrapper.cpp";
 
 		var glad_sources = "glad.c";
 		var fastobj_sources = "fast_obj.c";
@@ -30,6 +32,7 @@ if (PHP_GLFW != "no") {
 
 		EXTENSION("glfw", sources);
 
+        ADD_SOURCES(configure_module_dirname + "\\src", src_sources, "glfw");
         ADD_SOURCES(configure_module_dirname + "\\vendor\\glad\\src", glad_sources, "glfw");
         ADD_SOURCES(configure_module_dirname + "\\vendor\\glfw\\src", glfw_sources, "glfw");
         ADD_SOURCES(configure_module_dirname + "\\vendor\\fastobj", fastobj_sources, "glfw");

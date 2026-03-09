@@ -40,6 +40,7 @@
 #include "phpglfw_voxparser.h"
 #include "phpglfw_vg.h"
 #include "phpglfw_audio.h"
+#include "phpglfw_drawcall_assembler.h"
 
 ZEND_DECLARE_MODULE_GLOBALS(glfw)
 
@@ -107,6 +108,9 @@ PHP_MINIT_FUNCTION(glfw)
 
     // audio module
     phpglfw_register_audio_module(INIT_FUNC_ARGS_PASSTHRU);
+
+    // drawcall assembler module
+    phpglfw_register_drawcall_assembler_module(INIT_FUNC_ARGS_PASSTHRU);
 
     return SUCCESS;
 }

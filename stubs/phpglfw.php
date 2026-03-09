@@ -1946,6 +1946,346 @@ namespace GL\Buffer
     }
 };
 
+namespace GL\Rendering
+{
+    /**
+     * The draw call assembler will help you to generate efficient draw call batches for your meshes.
+     *
+     * This particular workload is quite costly in user-land PHP, this class takes care of this common problem
+     * in a efficient manner specifically designed for PHP-GLFW.
+     *
+     * What it can do:
+     *  - Batch meshes that share the same material.
+     *  - Sort meshes based on distance to camera, what shader they use etc.
+     *  - Generate optimal draw call lists to minimize state changes in OpenGL.
+     *  - Auto instance meshes that are used multiple times.
+     *  - Frustum cull meshes based on the camera.
+     *  - LOD support based on distance to camera. 
+     */
+    class DrawCallAssembler 
+    {
+        /** @var int */
+        public const SORT_NONE = 0;
+        /** @var int */
+        public const SORT_FRONT_TO_BACK = 1;
+        /** @var int */
+        public const SORT_BACK_TO_FRONT = 2;
+
+        /** @var int */
+        public const PASS_OPAQUE = 0;
+        /** @var int */
+        public const PASS_TRANSPARENT = 1;
+        /** @var int */
+        public const PASS_DEPTH = 2;
+        /** @var int */
+        public const PASS_USER = 3;
+
+        /** @var int */
+        public const FLAG_IGNORE_CULLING = 2;
+        /** @var int */
+        public const FLAG_DISABLE_INSTANCING = 4;
+        /** @var int */
+        public const FLAG_CUSTOM_SORT_KEY = 8;
+
+        /**
+         * Packed draw commands represented as uint32 values. Filled after calling "build".
+         *
+         * Layout per command (uint32 stride = 8):
+         *  0 => mesh handle
+         *  1 => VAO id for the draw
+         *  2 => index offset (0 when drawing arrays)
+         *  3 => index or vertex count
+         *  4 => base vertex offset
+         *  5 => instance offset inside the transform buffer
+         *  6 => instance count (1 for non-instanced draws)
+         *  7 => material identifier used for batching
+         */
+        public readonly \GL\Buffer\UIntBuffer $commandBuffer;
+
+        /**
+         * Packed transform buffer storing Mat4 entries per instance.
+         * 
+         * Note: This only contains visible instances, determined by the last "build" call.
+         */
+        public readonly \GL\Buffer\FloatBuffer $instanceTransformBuffer;
+
+        /**
+         * Packed per-instance metadata.
+         * Layout per instance (uint32 stride = 4):
+         *  0 => mesh handle
+         *  1 => material id
+         *  2 => custom user id (optional)
+         *  3 => draw flags snapshot
+         *
+         * Note: This only contains visible instances, determined by the last "build" call.
+         */
+        public readonly \GL\Buffer\UIntBuffer $instanceMetaBuffer;
+
+        /**
+         * Optional floating point payload buffer that can store arbitrary per-instance attributes
+         * (colors, skinning weights, etc.). 
+         * 
+         * Layout per instance (float stride = N):
+         */
+        public readonly \GL\Buffer\FloatBuffer $instancePayloadBuffer;
+
+        /**
+         * The command buffer stride (in uint32 components) of one draw command entry.
+         */
+        public readonly int $commandStride;
+
+        /**
+         * The instance transform buffer stride (in float components) of one transform entry.
+         */
+        public readonly int $transformStride;
+
+        /**
+         * The instance metadata buffer stride (in uint32 components) of one metadata entry.
+         */
+        public readonly int $instanceMetaStride;
+
+        /**
+         * Create a new assembler instance.
+         *
+         * @param int $initialMeshCapacity     Number of mesh slots preallocated in the registry.
+         * @param int $initialInstanceCapacity Number of instance slots backed by the buffers.
+         * @param int $initialCommandCapacity  Number of draw command slots.
+         */
+        public function __construct(
+            int $initialMeshCapacity = 256,
+            int $initialInstanceCapacity = 2048,
+            int $initialCommandCapacity = 512
+        ) {}
+
+        /**
+         * Enable or disable automatic instancing for meshes that are submitted multiple times per frame.
+         */
+        public function setAutoInstancing(bool $enabled) : void {}
+
+        /**
+         * Select the ordering applied to opaque draw calls.
+         */
+        public function setSortMode(int $mode) : void {}
+
+        /**
+         * Update the camera state used for sorting, frustum culling and LOD evaluation.
+         *
+         * @param ?\GL\Math\Vec3 $cameraPosition   Camera position used for LOD selection.
+         * @param ?\GL\Math\Mat4 $viewMatrix       View matrix used for frustum generation.
+         * @param ?\GL\Math\Mat4 $projectionMatrix Projection matrix used for frustum generation.
+         */
+        public function setCameraData(
+            ?\GL\Math\Vec3 $cameraPosition = null,
+            ?\GL\Math\Mat4 $viewMatrix = null,
+            ?\GL\Math\Mat4 $projectionMatrix = null
+        ) : void {}
+
+        /**
+         * Manually configure the frustum to use for culling tasks.
+         */
+        public function setFrustumPlanes(
+            \GL\Math\Vec4 $left,
+            \GL\Math\Vec4 $right,
+            \GL\Math\Vec4 $bottom,
+            \GL\Math\Vec4 $top,
+            \GL\Math\Vec4 $near,
+            \GL\Math\Vec4 $far
+        ) : void {}
+
+        /**
+         * Register a mesh in the assembler's registry and receive a numeric handle.
+         *
+         * You need to register your meshes so you can submit instances of them later.
+         *
+         * You are the owner of any passed references, the assembler will not modify or delete them.
+         *
+         * @param int $vao           OpenGL vertex array object handle that encapsulates buffers and layout.
+         * @param int $vertexOffset  Starting vertex inside the bound VBO (0 based).
+         * @param int $vertexCount   Number of vertices to draw when the mesh is rendered without indices.
+         * @param int $indexOffset   Starting index inside the EBO (set to 0 to draw arrays instead).
+         * @param int $indexCount    Number of indices used for indexed rendering (0 falls back to $vertexCount arrays).
+         * @param ?\GL\Math\Vec3 $aabbMin Optional minimum point of the mesh bounds (for frustum culling).
+         * @param ?\GL\Math\Vec3 $aabbMax Optional maximum point of the mesh bounds.
+         * @param int $materialHint  Optional default material id that is applied when submit() omits a material.
+         * @param int $primitive     GL primitive value (defaults to GL_TRIANGLES = 0x0004).
+         *
+         * @return int Numeric handle for reference
+         */
+        public function registerMesh(
+            int $vao,
+            int $vertexOffset = 0,
+            int $vertexCount = 0,
+            int $indexOffset = 0,
+            int $indexCount = 0,
+            ?\GL\Math\Vec3 $aabbMin = null,
+            ?\GL\Math\Vec3 $aabbMax = null,
+            int $materialHint = 0,
+            int $primitive = 0x0004
+        ) : int {}
+
+        /**
+         * Update or override the default material identifier attached to a mesh.
+         */
+        public function setMeshMaterial(int $meshHandle, int $materialId) : void {}
+
+        /**
+         * Attach LOD alternatives to a mesh.
+         *
+         * @param int $meshHandle Base mesh handle (the one that should be replaced) returned by {@see registerMesh}.
+         * @param \GL\Buffer\FloatBuffer $distanceThresholds Distances in ascending order.
+         * @param \GL\Buffer\UIntBuffer $meshHandles         Mesh handles for each LOD level.
+         */
+        public function setLodTable(
+            int $meshHandle,
+            \GL\Buffer\FloatBuffer $distanceThresholds,
+            \GL\Buffer\UIntBuffer $meshHandles
+        ) : void {}
+
+        /**
+         * Binds and sets up the transform buffer for instanced rendering.
+         *
+         * This method:
+         * - creates or reuses an internal VBO for transform data
+         * - sets up vertex attribute pointers for the transform matrix (4x Vec4 attributes)
+         * - returns the next available attribute location offset
+         *
+         * ```php
+         * $nextOffset = $assembler->bindTransformBuffer($vao, 2);
+         * // transform matrix now uses attributes 2, 3, 4, 5
+         * // next custom attribute can use location $nextOffset (6 in this case)
+         * ```
+         *
+         * @param int $vao The vertex array object to configure.
+         * @param int $offset The starting vertex attribute location (default: 2).
+         * @return int The next available attribute location after the transform matrix.
+         */
+        public function bindTransformBuffer(int $vao, int $offset = 1) : int {}
+
+        /**
+         * Binds payload data for per-instance custom attributes.
+         * 
+         * Don't forget to call {@see bindPayloadBuffer()} to set up the attributes after calling {@see build()}.
+         *
+         * This method stores a reference to a FloatBuffer containing custom per-instance data
+         * (colors, skinning weights, etc.) and specifies how many floats comprise each instance's payload.
+         * The data will be available in the instancePayloadBuffer after calling build().
+         *
+         * @param \GL\Buffer\FloatBuffer $payloadBuffer Buffer containing per-instance payload data.
+         * @param int $stride Number of floats per instance in the payload buffer.
+         */
+        public function bindPayloadData(\GL\Buffer\FloatBuffer $payloadBuffer, int $stride) : void {}
+
+        /**
+         * Binds and sets up the payload buffer for instanced rendering.
+         *
+         * This method sets up vertex attribute pointers for the custom payload data buffer.
+         * Must be called after bindPayloadData() and build() to properly configure the payload attributes.
+         *
+         * @param int $vao The vertex array object to configure.
+         * @param int $offset The starting vertex attribute location.
+         * @param int $stride Number of floats per payload entry (0 uses bound payload stride).
+         * @return int The next available attribute location after the payload attributes.
+         */
+        public function bindPayloadBuffer(int $vao, int $offset, int $stride = 0) : int {}
+
+        /**
+         * Remove all recorded instances without touching registered meshes.
+         */
+        public function clearInstances() : void {}
+
+        /**
+         * Record a single mesh instance.
+         *
+         * @param int $meshHandle  Mesh handle from {@see registerMesh}
+         * @param \GL\Math\Mat4 $transform World transform
+         * @param int $materialId  Material identifier 
+         * @param int $pass        Render pass identifier (use PASS_* constants)
+         * @param int $programId   Optional program/shader identifier used for batching and sorting
+         * @param int $flags       Optional state overrides (FLAG_* bitmask)
+         * @param float $sortBias  Extra distance bias applied when sorting draws
+         * @param int $userId      Optional user supplied id mirrored into the instance metadata buffer
+         */
+        public function submit(
+            int $meshHandle,
+            \GL\Math\Mat4 $transform,
+            int $materialId,
+            int $pass = 0,
+            int $programId = 0,
+            int $flags = 0,
+            float $sortBias = 0.0,
+            int $userId = 0
+        ) : void {}
+
+        /**
+         * Build the final draw list. Returns the number of commands generated for this frame.
+         *
+         * Will fill the instance buffers:
+         *  - {@see commandBuffer}
+         *  - {@see instanceTransformBuffer}
+         *  - {@see instanceMetaBuffer}
+         *  - {@see instancePayloadBuffer}
+         * 
+         * Use this if you want to handle and execute the draw calls **manually**.
+         * Otherwise you can use {@see execute()} to perform the draw calls directly.
+         */
+        public function build() : int {}
+
+        /**
+         * Executes the draw calls by issuing OpenGL commands.
+         * 
+         * The given callback will be called before each draw call allowing you to set up materials and other GL state.
+         * Before calling this method, you must call {@see bindTransformBuffer()} to set up the transform data.
+         *
+         * The callback receives the following parameters:
+         *  - int $meshHandle: The mesh handle for this draw call
+         *  - int $materialId: The material identifier for this draw call
+         *  - int $instanceOffset: The offset into the instance transform buffer
+         *  - int $instanceCount: The number of instances to draw
+         *  - int $flags: The draw flags (see FLAG_* constants)
+         *
+         * Example usage:
+         * ```php
+         * // first bind the transform buffer to set up instancing
+         * $assembler->bindTransformBuffer($vao, $instanceTransformVBO);
+         * // ... setup draw loop ...
+         * // then execute the draw calls
+         * $assembler->execute(function(int $meshHandle, int $materialId, int $instanceOffset, int $instanceCount, int $flags) {
+         *     // use shaders, bind textures, set uniforms etc..
+         *     // note: the VAO is bound by the assembler internally, and the draw calls are issued automatically.
+         * });
+         * ```
+         *
+         * @param callable(int,int,int,int,int):void $drawCallback Before draw callback function.
+         */
+        public function execute(callable $drawCallback) : void {}
+
+        /**
+         * Number of draw commands generated by the previous {@see build()} call.
+         */
+        public function commandCount() : int {}
+
+        /**
+         * Number of instances submitted so far for the current frame.
+         */
+        public function instanceCount() : int {}
+
+        /**
+         * Number of instances that participated in the last {@see build()} call.
+         */
+        public function builtInstanceCount() : int {}
+
+        /**
+         * Completely remove all registered meshes and release buffers.
+         */
+        public function clearMeshes() : void {}
+
+        /**
+         * Reset both registry and frame state.
+         */
+        public function reset() : void {}
+    }
+};
+
 namespace GL\Geometry\ObjFileParser
 {
     /**
@@ -2023,12 +2363,12 @@ namespace GL\Geometry\ObjFileParser
         public readonly \GL\Math\Vec3 $specular;
 
         /**
-         * The emmisive color of the material
+         * The emissive color of the material
          * This property is often also used for illumination, self glow or light emission.
          * 
-         * @var \GL\Math\Vec3 $emmisive
+         * @var \GL\Math\Vec3 $emissive
          */
-        public readonly \GL\Math\Vec3 $emmisive;
+        public readonly \GL\Math\Vec3 $emissive;
 
         /**
          * The transmittance of the material
@@ -2537,7 +2877,8 @@ namespace GL\Texture
 {
     /**
      * The Texture2D class is part of the PHP-GLFW OpenGL extension.
-     * It loads images / textures from common formats like PNG, JPG, GIF, BMP, TGA etc. and converts the raw bitmap to a `GL\UByteBuffer` instance.
+     * It loads images / textures from common formats like PNG, JPG, GIF, BMP, TGA, HDR etc. and converts the raw bitmap to a buffer instance.
+     * For LDR (Low Dynamic Range) images, a `GL\Buffer\UByteBuffer` is used. For HDR (High Dynamic Range) images, a `GL\Buffer\FloatBuffer` is used.
      */
     class Texture2D 
     {
@@ -2550,25 +2891,52 @@ namespace GL\Texture
 
         /**
          * Loads a texture / image from a file on disk and returns a Texture2D object.
+         * 
+         * This method automatically detects HDR files (.hdr) and loads them into a FloatBuffer.
+         * All other supported formats (PNG, JPG, GIF, BMP, TGA, etc.) are loaded into a UByteBuffer.
          *
-         * @param string $file The path to the image file to load.
+         * @param string $path The path to the image file to load.
+         * @param int $requestedChannelCount The number of channels to force. 0 means use the original channel count.
+         * @param bool $flipVertically Whether to flip the image vertically on load (default: true).
          * @return \GL\Texture\Texture2D The loaded texture object.
          */
-        public static function fromDisk(string $path) : Texture2D {}
+        public static function fromDisk(string $path, int $requestedChannelCount = 0, bool $flipVertically = true) : Texture2D {}
 
         /**
-         * Loads a texture / image from a buffer and returns a Texture2D object.
+         * Loads a texture / image from a UByteBuffer and returns a Texture2D object.
          * 
          * The buffer is not copied, the Texture2D object will hold a reference to the buffer given.
+         * 
+         * @param int $width The width of the image.
+         * @param int $height The height of the image.
+         * @param \GL\Buffer\UByteBuffer $buffer The buffer containing the image data.
+         * @param int $channels The number of channels in the image data.
+         * @return \GL\Texture\Texture2D The created texture object.
          */
         public static function fromBuffer(int $width, int $height, \GL\Buffer\UByteBuffer $buffer, int $channels = Texture2D::CHANNEL_RGBA) : Texture2D {}
 
         /**
-         * Returns a reference to the internal `UByteBuffer` instance of the current texture.
+         * Loads a HDR texture from a FloatBuffer and returns a Texture2D object.
          * 
-         * @return \GL\UByteBuffer The loaded image data.
+         * The buffer is not copied, the Texture2D object will hold a reference to the buffer given.
+         * 
+         * @param int $width The width of the image.
+         * @param int $height The height of the image.
+         * @param \GL\Buffer\FloatBuffer $buffer The buffer containing the HDR image data.
+         * @param int $channels The number of channels in the image data.
+         * @return \GL\Texture\Texture2D The created HDR texture object.
          */
-        public function buffer() : \GL\Buffer\UByteBuffer {}
+        public static function fromBufferHDR(int $width, int $height, \GL\Buffer\FloatBuffer $buffer, int $channels = Texture2D::CHANNEL_RGBA) : Texture2D {}
+
+        /**
+         * Returns a reference to the internal buffer instance of the current texture.
+         * 
+         * For LDR images, this returns a `UByteBuffer`. For HDR images, this returns a `FloatBuffer`.
+         * Use `isHDR()` to check which type of buffer is returned.
+         * 
+         * @return \GL\Buffer\UByteBuffer|\GL\Buffer\FloatBuffer The loaded image data.
+         */
+        public function buffer() : \GL\Buffer\UByteBuffer|\GL\Buffer\FloatBuffer {}
 
         /**
          * Returns the width of the image.
@@ -2592,9 +2960,21 @@ namespace GL\Texture
         public function channels() : int {}
 
         /**
+         * Returns whether the texture contains HDR (High Dynamic Range) data.
+         * 
+         * When true, the buffer() method returns a FloatBuffer.
+         * When false, the buffer() method returns a UByteBuffer.
+         *
+         * @return bool
+         */
+        public function isHDR() : bool {}
+
+        /**
          * Writes the image data to a file on disk. (JPEG)
          * 
-         * @param string $file The path to the file to write to.
+         * Note: This method only works with LDR textures. For HDR textures, use writeHDR().
+         * 
+         * @param string $path The path to the file to write to.
          * @param int $quality The quality of the image. (0 - 100)
          *
          * @return void
@@ -2603,24 +2983,39 @@ namespace GL\Texture
 
         /**
          * Writes the image data to a file on disk. (PNG)
+         * 
+         * Note: This method only works with LDR textures. For HDR textures, use writeHDR().
          *
-         * @param string $file The path to the file to write to.
+         * @param string $path The path to the file to write to.
          */
         public function writePNG(string $path) : void {}
 
         /**
          * Writes the image data to a file on disk. (BMP)
+         * 
+         * Note: This method only works with LDR textures. For HDR textures, use writeHDR().
          *
-         * @param string $file The path to the file to write to.
+         * @param string $path The path to the file to write to.
          */
         public function writeBMP(string $path) : void {}
 
         /**
          * Writes the image data to a file on disk. (TGA)
+         * 
+         * Note: This method only works with LDR textures. For HDR textures, use writeHDR().
          *
-         * @param string $file The path to the file to write to.
+         * @param string $path The path to the file to write to.
          */
         public function writeTGA(string $path) : void {}
+
+        /**
+         * Writes the HDR image data to a file on disk. (.hdr format)
+         * 
+         * Note: This method only works with HDR textures. For LDR textures, use writePNG(), writeJPG(), etc.
+         *
+         * @param string $path The path to the file to write to.
+         */
+        public function writeHDR(string $path) : void {}
     }
 }
 

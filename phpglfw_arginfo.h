@@ -1,5 +1,5 @@
 /* This is a generated file, edit the .stub.php file instead.
- * Stub hash: 802b724983d817083ad91edff17f154a94a071be */
+ * Stub hash: 0eda5f52dd751acb54f19c93baeb11164c8bd4d5 */
 
 ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_glCullFace, 0, 1, IS_VOID, 0)
 	ZEND_ARG_TYPE_INFO(0, mode, IS_LONG, 0)
@@ -2383,13 +2383,24 @@ ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(arginfo_class_GL_Texture_Texture2D_fromBu
 	ZEND_ARG_TYPE_INFO_WITH_DEFAULT_VALUE(0, channels, IS_LONG, 0, "GL\\Texture\\Texture2D::CHANNEL_RGBA")
 ZEND_END_ARG_INFO()
 
-#define arginfo_class_GL_Texture_Texture2D_buffer arginfo_class_GL_Geometry_VoxFileParser_Palette_getBuffer
+ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(arginfo_class_GL_Texture_Texture2D_fromBufferHDR, 0, 3, GL\\Texture\\Texture2D, 0)
+	ZEND_ARG_TYPE_INFO(0, width, IS_LONG, 0)
+	ZEND_ARG_TYPE_INFO(0, height, IS_LONG, 0)
+	ZEND_ARG_OBJ_INFO(0, buffer, GL\\Buffer\\FloatBuffer, 0)
+	ZEND_ARG_TYPE_INFO_WITH_DEFAULT_VALUE(0, channels, IS_LONG, 0, "GL\\Texture\\Texture2D::CHANNEL_RGBA")
+ZEND_END_ARG_INFO()
+
+ZEND_BEGIN_ARG_WITH_RETURN_OBJ_TYPE_MASK_EX(arginfo_class_GL_Texture_Texture2D_buffer, 0, 0, GL\\Buffer\\\125ByteBuffer|GL\\Buffer\\FloatBuffer, 0)
+ZEND_END_ARG_INFO()
 
 #define arginfo_class_GL_Texture_Texture2D_width arginfo_glGetError
 
 #define arginfo_class_GL_Texture_Texture2D_height arginfo_glGetError
 
 #define arginfo_class_GL_Texture_Texture2D_channels arginfo_glGetError
+
+ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_class_GL_Texture_Texture2D_isHDR, 0, 0, _IS_BOOL, 0)
+ZEND_END_ARG_INFO()
 
 ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_class_GL_Texture_Texture2D_writeJPG, 0, 1, IS_VOID, 0)
 	ZEND_ARG_TYPE_INFO(0, path, IS_STRING, 0)
@@ -2403,6 +2414,8 @@ ZEND_END_ARG_INFO()
 #define arginfo_class_GL_Texture_Texture2D_writeBMP arginfo_class_GL_Texture_Texture2D_writePNG
 
 #define arginfo_class_GL_Texture_Texture2D_writeTGA arginfo_class_GL_Texture_Texture2D_writePNG
+
+#define arginfo_class_GL_Texture_Texture2D_writeHDR arginfo_class_GL_Texture_Texture2D_writePNG
 
 ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_class_GL_Noise_perlin, 0, 3, IS_DOUBLE, 0)
 	ZEND_ARG_TYPE_INFO(0, x, IS_DOUBLE, 0)
@@ -3061,6 +3074,101 @@ ZEND_END_ARG_INFO()
 
 #define arginfo_class_GL_Buffer_UByteBuffer_dump arginfo_glfwGetVersionString
 
+ZEND_BEGIN_ARG_INFO_EX(arginfo_class_GL_Rendering_DrawCallAssembler___construct, 0, 0, 0)
+	ZEND_ARG_TYPE_INFO_WITH_DEFAULT_VALUE(0, initialMeshCapacity, IS_LONG, 0, "256")
+	ZEND_ARG_TYPE_INFO_WITH_DEFAULT_VALUE(0, initialInstanceCapacity, IS_LONG, 0, "2048")
+	ZEND_ARG_TYPE_INFO_WITH_DEFAULT_VALUE(0, initialCommandCapacity, IS_LONG, 0, "512")
+ZEND_END_ARG_INFO()
+
+ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_class_GL_Rendering_DrawCallAssembler_setAutoInstancing, 0, 1, IS_VOID, 0)
+	ZEND_ARG_TYPE_INFO(0, enabled, _IS_BOOL, 0)
+ZEND_END_ARG_INFO()
+
+#define arginfo_class_GL_Rendering_DrawCallAssembler_setSortMode arginfo_glCullFace
+
+ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_class_GL_Rendering_DrawCallAssembler_setCameraData, 0, 0, IS_VOID, 0)
+	ZEND_ARG_OBJ_INFO_WITH_DEFAULT_VALUE(0, cameraPosition, GL\\Math\\Vec3, 1, "null")
+	ZEND_ARG_OBJ_INFO_WITH_DEFAULT_VALUE(0, viewMatrix, GL\\Math\\Mat4, 1, "null")
+	ZEND_ARG_OBJ_INFO_WITH_DEFAULT_VALUE(0, projectionMatrix, GL\\Math\\Mat4, 1, "null")
+ZEND_END_ARG_INFO()
+
+ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_class_GL_Rendering_DrawCallAssembler_setFrustumPlanes, 0, 6, IS_VOID, 0)
+	ZEND_ARG_OBJ_INFO(0, left, GL\\Math\\Vec4, 0)
+	ZEND_ARG_OBJ_INFO(0, right, GL\\Math\\Vec4, 0)
+	ZEND_ARG_OBJ_INFO(0, bottom, GL\\Math\\Vec4, 0)
+	ZEND_ARG_OBJ_INFO(0, top, GL\\Math\\Vec4, 0)
+	ZEND_ARG_OBJ_INFO(0, near, GL\\Math\\Vec4, 0)
+	ZEND_ARG_OBJ_INFO(0, far, GL\\Math\\Vec4, 0)
+ZEND_END_ARG_INFO()
+
+ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_class_GL_Rendering_DrawCallAssembler_registerMesh, 0, 1, IS_LONG, 0)
+	ZEND_ARG_TYPE_INFO(0, vao, IS_LONG, 0)
+	ZEND_ARG_TYPE_INFO_WITH_DEFAULT_VALUE(0, vertexOffset, IS_LONG, 0, "0")
+	ZEND_ARG_TYPE_INFO_WITH_DEFAULT_VALUE(0, vertexCount, IS_LONG, 0, "0")
+	ZEND_ARG_TYPE_INFO_WITH_DEFAULT_VALUE(0, indexOffset, IS_LONG, 0, "0")
+	ZEND_ARG_TYPE_INFO_WITH_DEFAULT_VALUE(0, indexCount, IS_LONG, 0, "0")
+	ZEND_ARG_OBJ_INFO_WITH_DEFAULT_VALUE(0, aabbMin, GL\\Math\\Vec3, 1, "null")
+	ZEND_ARG_OBJ_INFO_WITH_DEFAULT_VALUE(0, aabbMax, GL\\Math\\Vec3, 1, "null")
+	ZEND_ARG_TYPE_INFO_WITH_DEFAULT_VALUE(0, materialHint, IS_LONG, 0, "0")
+	ZEND_ARG_TYPE_INFO_WITH_DEFAULT_VALUE(0, primitive, IS_LONG, 0, "0x4")
+ZEND_END_ARG_INFO()
+
+ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_class_GL_Rendering_DrawCallAssembler_setMeshMaterial, 0, 2, IS_VOID, 0)
+	ZEND_ARG_TYPE_INFO(0, meshHandle, IS_LONG, 0)
+	ZEND_ARG_TYPE_INFO(0, materialId, IS_LONG, 0)
+ZEND_END_ARG_INFO()
+
+ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_class_GL_Rendering_DrawCallAssembler_setLodTable, 0, 3, IS_VOID, 0)
+	ZEND_ARG_TYPE_INFO(0, meshHandle, IS_LONG, 0)
+	ZEND_ARG_OBJ_INFO(0, distanceThresholds, GL\\Buffer\\FloatBuffer, 0)
+	ZEND_ARG_OBJ_INFO(0, meshHandles, GL\\Buffer\\\125IntBuffer, 0)
+ZEND_END_ARG_INFO()
+
+ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_class_GL_Rendering_DrawCallAssembler_bindTransformBuffer, 0, 1, IS_LONG, 0)
+	ZEND_ARG_TYPE_INFO(0, vao, IS_LONG, 0)
+	ZEND_ARG_TYPE_INFO_WITH_DEFAULT_VALUE(0, offset, IS_LONG, 0, "1")
+ZEND_END_ARG_INFO()
+
+ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_class_GL_Rendering_DrawCallAssembler_bindPayloadData, 0, 2, IS_VOID, 0)
+	ZEND_ARG_OBJ_INFO(0, payloadBuffer, GL\\Buffer\\FloatBuffer, 0)
+	ZEND_ARG_TYPE_INFO(0, stride, IS_LONG, 0)
+ZEND_END_ARG_INFO()
+
+ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_class_GL_Rendering_DrawCallAssembler_bindPayloadBuffer, 0, 2, IS_LONG, 0)
+	ZEND_ARG_TYPE_INFO(0, vao, IS_LONG, 0)
+	ZEND_ARG_TYPE_INFO(0, offset, IS_LONG, 0)
+	ZEND_ARG_TYPE_INFO_WITH_DEFAULT_VALUE(0, stride, IS_LONG, 0, "0")
+ZEND_END_ARG_INFO()
+
+#define arginfo_class_GL_Rendering_DrawCallAssembler_clearInstances arginfo_glFinish
+
+ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_class_GL_Rendering_DrawCallAssembler_submit, 0, 3, IS_VOID, 0)
+	ZEND_ARG_TYPE_INFO(0, meshHandle, IS_LONG, 0)
+	ZEND_ARG_OBJ_INFO(0, transform, GL\\Math\\Mat4, 0)
+	ZEND_ARG_TYPE_INFO(0, materialId, IS_LONG, 0)
+	ZEND_ARG_TYPE_INFO_WITH_DEFAULT_VALUE(0, pass, IS_LONG, 0, "0")
+	ZEND_ARG_TYPE_INFO_WITH_DEFAULT_VALUE(0, programId, IS_LONG, 0, "0")
+	ZEND_ARG_TYPE_INFO_WITH_DEFAULT_VALUE(0, flags, IS_LONG, 0, "0")
+	ZEND_ARG_TYPE_INFO_WITH_DEFAULT_VALUE(0, sortBias, IS_DOUBLE, 0, "0.0")
+	ZEND_ARG_TYPE_INFO_WITH_DEFAULT_VALUE(0, userId, IS_LONG, 0, "0")
+ZEND_END_ARG_INFO()
+
+#define arginfo_class_GL_Rendering_DrawCallAssembler_build arginfo_glGetError
+
+ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_class_GL_Rendering_DrawCallAssembler_execute, 0, 1, IS_VOID, 0)
+	ZEND_ARG_TYPE_INFO(0, drawCallback, IS_CALLABLE, 0)
+ZEND_END_ARG_INFO()
+
+#define arginfo_class_GL_Rendering_DrawCallAssembler_commandCount arginfo_glGetError
+
+#define arginfo_class_GL_Rendering_DrawCallAssembler_instanceCount arginfo_glGetError
+
+#define arginfo_class_GL_Rendering_DrawCallAssembler_builtInstanceCount arginfo_glGetError
+
+#define arginfo_class_GL_Rendering_DrawCallAssembler_clearMeshes arginfo_glFinish
+
+#define arginfo_class_GL_Rendering_DrawCallAssembler_reset arginfo_glFinish
+
 ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(arginfo_class_GL_VectorGraphics_VGColor_rgb, 0, 3, GL\\VectorGraphics\\VGColor, 0)
 	ZEND_ARG_TYPE_INFO(0, r, IS_DOUBLE, 0)
 	ZEND_ARG_TYPE_INFO(0, g, IS_DOUBLE, 0)
@@ -3608,8 +3716,7 @@ ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_class_GL_Audio_Sound_setStopMs, 
 	ZEND_ARG_TYPE_INFO(0, stop, IS_LONG, 0)
 ZEND_END_ARG_INFO()
 
-ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_class_GL_Audio_Sound_isPlaying, 0, 0, _IS_BOOL, 0)
-ZEND_END_ARG_INFO()
+#define arginfo_class_GL_Audio_Sound_isPlaying arginfo_class_GL_Texture_Texture2D_isHDR
 
 #define arginfo_class_GL_Audio_Sound_getCursor arginfo_glfwGetTime
 
@@ -4263,14 +4370,17 @@ ZEND_METHOD(GL_Geometry_VoxFileParser_Layer, __construct);
 ZEND_METHOD(GL_Geometry_VoxFileParser_Group, __construct);
 ZEND_METHOD(GL_Texture_Texture2D, fromDisk);
 ZEND_METHOD(GL_Texture_Texture2D, fromBuffer);
+ZEND_METHOD(GL_Texture_Texture2D, fromBufferHDR);
 ZEND_METHOD(GL_Texture_Texture2D, buffer);
 ZEND_METHOD(GL_Texture_Texture2D, width);
 ZEND_METHOD(GL_Texture_Texture2D, height);
 ZEND_METHOD(GL_Texture_Texture2D, channels);
+ZEND_METHOD(GL_Texture_Texture2D, isHDR);
 ZEND_METHOD(GL_Texture_Texture2D, writeJPG);
 ZEND_METHOD(GL_Texture_Texture2D, writePNG);
 ZEND_METHOD(GL_Texture_Texture2D, writeBMP);
 ZEND_METHOD(GL_Texture_Texture2D, writeTGA);
+ZEND_METHOD(GL_Texture_Texture2D, writeHDR);
 ZEND_METHOD(GL_Noise, perlin);
 ZEND_METHOD(GL_Noise, ridge);
 ZEND_METHOD(GL_Noise, fbm);
@@ -4475,6 +4585,26 @@ ZEND_METHOD(GL_Buffer_UByteBuffer, size);
 ZEND_METHOD(GL_Buffer_UByteBuffer, capacity);
 ZEND_METHOD(GL_Buffer_UByteBuffer, reserve);
 ZEND_METHOD(GL_Buffer_UByteBuffer, dump);
+ZEND_METHOD(GL_Rendering_DrawCallAssembler, __construct);
+ZEND_METHOD(GL_Rendering_DrawCallAssembler, setAutoInstancing);
+ZEND_METHOD(GL_Rendering_DrawCallAssembler, setSortMode);
+ZEND_METHOD(GL_Rendering_DrawCallAssembler, setCameraData);
+ZEND_METHOD(GL_Rendering_DrawCallAssembler, setFrustumPlanes);
+ZEND_METHOD(GL_Rendering_DrawCallAssembler, registerMesh);
+ZEND_METHOD(GL_Rendering_DrawCallAssembler, setMeshMaterial);
+ZEND_METHOD(GL_Rendering_DrawCallAssembler, setLodTable);
+ZEND_METHOD(GL_Rendering_DrawCallAssembler, bindTransformBuffer);
+ZEND_METHOD(GL_Rendering_DrawCallAssembler, bindPayloadData);
+ZEND_METHOD(GL_Rendering_DrawCallAssembler, bindPayloadBuffer);
+ZEND_METHOD(GL_Rendering_DrawCallAssembler, clearInstances);
+ZEND_METHOD(GL_Rendering_DrawCallAssembler, submit);
+ZEND_METHOD(GL_Rendering_DrawCallAssembler, build);
+ZEND_METHOD(GL_Rendering_DrawCallAssembler, execute);
+ZEND_METHOD(GL_Rendering_DrawCallAssembler, commandCount);
+ZEND_METHOD(GL_Rendering_DrawCallAssembler, instanceCount);
+ZEND_METHOD(GL_Rendering_DrawCallAssembler, builtInstanceCount);
+ZEND_METHOD(GL_Rendering_DrawCallAssembler, clearMeshes);
+ZEND_METHOD(GL_Rendering_DrawCallAssembler, reset);
 ZEND_METHOD(GL_VectorGraphics_VGColor, rgb);
 ZEND_METHOD(GL_VectorGraphics_VGColor, rgba);
 ZEND_METHOD(GL_VectorGraphics_VGColor, hsl);
@@ -5296,14 +5426,17 @@ static const zend_function_entry class_GL_Geometry_VoxFileParser_Group_methods[]
 static const zend_function_entry class_GL_Texture_Texture2D_methods[] = {
 	ZEND_ME(GL_Texture_Texture2D, fromDisk, arginfo_class_GL_Texture_Texture2D_fromDisk, ZEND_ACC_PUBLIC|ZEND_ACC_STATIC)
 	ZEND_ME(GL_Texture_Texture2D, fromBuffer, arginfo_class_GL_Texture_Texture2D_fromBuffer, ZEND_ACC_PUBLIC|ZEND_ACC_STATIC)
+	ZEND_ME(GL_Texture_Texture2D, fromBufferHDR, arginfo_class_GL_Texture_Texture2D_fromBufferHDR, ZEND_ACC_PUBLIC|ZEND_ACC_STATIC)
 	ZEND_ME(GL_Texture_Texture2D, buffer, arginfo_class_GL_Texture_Texture2D_buffer, ZEND_ACC_PUBLIC)
 	ZEND_ME(GL_Texture_Texture2D, width, arginfo_class_GL_Texture_Texture2D_width, ZEND_ACC_PUBLIC)
 	ZEND_ME(GL_Texture_Texture2D, height, arginfo_class_GL_Texture_Texture2D_height, ZEND_ACC_PUBLIC)
 	ZEND_ME(GL_Texture_Texture2D, channels, arginfo_class_GL_Texture_Texture2D_channels, ZEND_ACC_PUBLIC)
+	ZEND_ME(GL_Texture_Texture2D, isHDR, arginfo_class_GL_Texture_Texture2D_isHDR, ZEND_ACC_PUBLIC)
 	ZEND_ME(GL_Texture_Texture2D, writeJPG, arginfo_class_GL_Texture_Texture2D_writeJPG, ZEND_ACC_PUBLIC)
 	ZEND_ME(GL_Texture_Texture2D, writePNG, arginfo_class_GL_Texture_Texture2D_writePNG, ZEND_ACC_PUBLIC)
 	ZEND_ME(GL_Texture_Texture2D, writeBMP, arginfo_class_GL_Texture_Texture2D_writeBMP, ZEND_ACC_PUBLIC)
 	ZEND_ME(GL_Texture_Texture2D, writeTGA, arginfo_class_GL_Texture_Texture2D_writeTGA, ZEND_ACC_PUBLIC)
+	ZEND_ME(GL_Texture_Texture2D, writeHDR, arginfo_class_GL_Texture_Texture2D_writeHDR, ZEND_ACC_PUBLIC)
 	ZEND_FE_END
 };
 
@@ -5598,6 +5731,31 @@ static const zend_function_entry class_GL_Buffer_UByteBuffer_methods[] = {
 	ZEND_ME(GL_Buffer_UByteBuffer, capacity, arginfo_class_GL_Buffer_UByteBuffer_capacity, ZEND_ACC_PUBLIC)
 	ZEND_ME(GL_Buffer_UByteBuffer, reserve, arginfo_class_GL_Buffer_UByteBuffer_reserve, ZEND_ACC_PUBLIC)
 	ZEND_ME(GL_Buffer_UByteBuffer, dump, arginfo_class_GL_Buffer_UByteBuffer_dump, ZEND_ACC_PUBLIC)
+	ZEND_FE_END
+};
+
+
+static const zend_function_entry class_GL_Rendering_DrawCallAssembler_methods[] = {
+	ZEND_ME(GL_Rendering_DrawCallAssembler, __construct, arginfo_class_GL_Rendering_DrawCallAssembler___construct, ZEND_ACC_PUBLIC)
+	ZEND_ME(GL_Rendering_DrawCallAssembler, setAutoInstancing, arginfo_class_GL_Rendering_DrawCallAssembler_setAutoInstancing, ZEND_ACC_PUBLIC)
+	ZEND_ME(GL_Rendering_DrawCallAssembler, setSortMode, arginfo_class_GL_Rendering_DrawCallAssembler_setSortMode, ZEND_ACC_PUBLIC)
+	ZEND_ME(GL_Rendering_DrawCallAssembler, setCameraData, arginfo_class_GL_Rendering_DrawCallAssembler_setCameraData, ZEND_ACC_PUBLIC)
+	ZEND_ME(GL_Rendering_DrawCallAssembler, setFrustumPlanes, arginfo_class_GL_Rendering_DrawCallAssembler_setFrustumPlanes, ZEND_ACC_PUBLIC)
+	ZEND_ME(GL_Rendering_DrawCallAssembler, registerMesh, arginfo_class_GL_Rendering_DrawCallAssembler_registerMesh, ZEND_ACC_PUBLIC)
+	ZEND_ME(GL_Rendering_DrawCallAssembler, setMeshMaterial, arginfo_class_GL_Rendering_DrawCallAssembler_setMeshMaterial, ZEND_ACC_PUBLIC)
+	ZEND_ME(GL_Rendering_DrawCallAssembler, setLodTable, arginfo_class_GL_Rendering_DrawCallAssembler_setLodTable, ZEND_ACC_PUBLIC)
+	ZEND_ME(GL_Rendering_DrawCallAssembler, bindTransformBuffer, arginfo_class_GL_Rendering_DrawCallAssembler_bindTransformBuffer, ZEND_ACC_PUBLIC)
+	ZEND_ME(GL_Rendering_DrawCallAssembler, bindPayloadData, arginfo_class_GL_Rendering_DrawCallAssembler_bindPayloadData, ZEND_ACC_PUBLIC)
+	ZEND_ME(GL_Rendering_DrawCallAssembler, bindPayloadBuffer, arginfo_class_GL_Rendering_DrawCallAssembler_bindPayloadBuffer, ZEND_ACC_PUBLIC)
+	ZEND_ME(GL_Rendering_DrawCallAssembler, clearInstances, arginfo_class_GL_Rendering_DrawCallAssembler_clearInstances, ZEND_ACC_PUBLIC)
+	ZEND_ME(GL_Rendering_DrawCallAssembler, submit, arginfo_class_GL_Rendering_DrawCallAssembler_submit, ZEND_ACC_PUBLIC)
+	ZEND_ME(GL_Rendering_DrawCallAssembler, build, arginfo_class_GL_Rendering_DrawCallAssembler_build, ZEND_ACC_PUBLIC)
+	ZEND_ME(GL_Rendering_DrawCallAssembler, execute, arginfo_class_GL_Rendering_DrawCallAssembler_execute, ZEND_ACC_PUBLIC)
+	ZEND_ME(GL_Rendering_DrawCallAssembler, commandCount, arginfo_class_GL_Rendering_DrawCallAssembler_commandCount, ZEND_ACC_PUBLIC)
+	ZEND_ME(GL_Rendering_DrawCallAssembler, instanceCount, arginfo_class_GL_Rendering_DrawCallAssembler_instanceCount, ZEND_ACC_PUBLIC)
+	ZEND_ME(GL_Rendering_DrawCallAssembler, builtInstanceCount, arginfo_class_GL_Rendering_DrawCallAssembler_builtInstanceCount, ZEND_ACC_PUBLIC)
+	ZEND_ME(GL_Rendering_DrawCallAssembler, clearMeshes, arginfo_class_GL_Rendering_DrawCallAssembler_clearMeshes, ZEND_ACC_PUBLIC)
+	ZEND_ME(GL_Rendering_DrawCallAssembler, reset, arginfo_class_GL_Rendering_DrawCallAssembler_reset, ZEND_ACC_PUBLIC)
 	ZEND_FE_END
 };
 
@@ -6425,6 +6583,122 @@ static zend_class_entry *register_class_GL_Buffer_UByteBuffer(zend_class_entry *
 	INIT_NS_CLASS_ENTRY(ce, "GL\\Buffer", "UByteBuffer", class_GL_Buffer_UByteBuffer_methods);
 	class_entry = zend_register_internal_class_ex(&ce, NULL);
 	zend_class_implements(class_entry, 1, class_entry_GL_Buffer_BufferInterface);
+
+	return class_entry;
+}
+
+static zend_class_entry *register_class_GL_Rendering_DrawCallAssembler(void)
+{
+	zend_class_entry ce, *class_entry;
+
+	INIT_NS_CLASS_ENTRY(ce, "GL\\Rendering", "DrawCallAssembler", class_GL_Rendering_DrawCallAssembler_methods);
+	class_entry = zend_register_internal_class_ex(&ce, NULL);
+
+	zval const_SORT_NONE_value;
+	ZVAL_LONG(&const_SORT_NONE_value, 0);
+	zend_string *const_SORT_NONE_name = zend_string_init_interned("SORT_NONE", sizeof("SORT_NONE") - 1, 1);
+	zend_declare_class_constant_ex(class_entry, const_SORT_NONE_name, &const_SORT_NONE_value, ZEND_ACC_PUBLIC, NULL);
+	zend_string_release(const_SORT_NONE_name);
+
+	zval const_SORT_FRONT_TO_BACK_value;
+	ZVAL_LONG(&const_SORT_FRONT_TO_BACK_value, 1);
+	zend_string *const_SORT_FRONT_TO_BACK_name = zend_string_init_interned("SORT_FRONT_TO_BACK", sizeof("SORT_FRONT_TO_BACK") - 1, 1);
+	zend_declare_class_constant_ex(class_entry, const_SORT_FRONT_TO_BACK_name, &const_SORT_FRONT_TO_BACK_value, ZEND_ACC_PUBLIC, NULL);
+	zend_string_release(const_SORT_FRONT_TO_BACK_name);
+
+	zval const_SORT_BACK_TO_FRONT_value;
+	ZVAL_LONG(&const_SORT_BACK_TO_FRONT_value, 2);
+	zend_string *const_SORT_BACK_TO_FRONT_name = zend_string_init_interned("SORT_BACK_TO_FRONT", sizeof("SORT_BACK_TO_FRONT") - 1, 1);
+	zend_declare_class_constant_ex(class_entry, const_SORT_BACK_TO_FRONT_name, &const_SORT_BACK_TO_FRONT_value, ZEND_ACC_PUBLIC, NULL);
+	zend_string_release(const_SORT_BACK_TO_FRONT_name);
+
+	zval const_PASS_OPAQUE_value;
+	ZVAL_LONG(&const_PASS_OPAQUE_value, 0);
+	zend_string *const_PASS_OPAQUE_name = zend_string_init_interned("PASS_OPAQUE", sizeof("PASS_OPAQUE") - 1, 1);
+	zend_declare_class_constant_ex(class_entry, const_PASS_OPAQUE_name, &const_PASS_OPAQUE_value, ZEND_ACC_PUBLIC, NULL);
+	zend_string_release(const_PASS_OPAQUE_name);
+
+	zval const_PASS_TRANSPARENT_value;
+	ZVAL_LONG(&const_PASS_TRANSPARENT_value, 1);
+	zend_string *const_PASS_TRANSPARENT_name = zend_string_init_interned("PASS_TRANSPARENT", sizeof("PASS_TRANSPARENT") - 1, 1);
+	zend_declare_class_constant_ex(class_entry, const_PASS_TRANSPARENT_name, &const_PASS_TRANSPARENT_value, ZEND_ACC_PUBLIC, NULL);
+	zend_string_release(const_PASS_TRANSPARENT_name);
+
+	zval const_PASS_DEPTH_value;
+	ZVAL_LONG(&const_PASS_DEPTH_value, 2);
+	zend_string *const_PASS_DEPTH_name = zend_string_init_interned("PASS_DEPTH", sizeof("PASS_DEPTH") - 1, 1);
+	zend_declare_class_constant_ex(class_entry, const_PASS_DEPTH_name, &const_PASS_DEPTH_value, ZEND_ACC_PUBLIC, NULL);
+	zend_string_release(const_PASS_DEPTH_name);
+
+	zval const_PASS_USER_value;
+	ZVAL_LONG(&const_PASS_USER_value, 3);
+	zend_string *const_PASS_USER_name = zend_string_init_interned("PASS_USER", sizeof("PASS_USER") - 1, 1);
+	zend_declare_class_constant_ex(class_entry, const_PASS_USER_name, &const_PASS_USER_value, ZEND_ACC_PUBLIC, NULL);
+	zend_string_release(const_PASS_USER_name);
+
+	zval const_FLAG_IGNORE_CULLING_value;
+	ZVAL_LONG(&const_FLAG_IGNORE_CULLING_value, 2);
+	zend_string *const_FLAG_IGNORE_CULLING_name = zend_string_init_interned("FLAG_IGNORE_CULLING", sizeof("FLAG_IGNORE_CULLING") - 1, 1);
+	zend_declare_class_constant_ex(class_entry, const_FLAG_IGNORE_CULLING_name, &const_FLAG_IGNORE_CULLING_value, ZEND_ACC_PUBLIC, NULL);
+	zend_string_release(const_FLAG_IGNORE_CULLING_name);
+
+	zval const_FLAG_DISABLE_INSTANCING_value;
+	ZVAL_LONG(&const_FLAG_DISABLE_INSTANCING_value, 4);
+	zend_string *const_FLAG_DISABLE_INSTANCING_name = zend_string_init_interned("FLAG_DISABLE_INSTANCING", sizeof("FLAG_DISABLE_INSTANCING") - 1, 1);
+	zend_declare_class_constant_ex(class_entry, const_FLAG_DISABLE_INSTANCING_name, &const_FLAG_DISABLE_INSTANCING_value, ZEND_ACC_PUBLIC, NULL);
+	zend_string_release(const_FLAG_DISABLE_INSTANCING_name);
+
+	zval const_FLAG_CUSTOM_SORT_KEY_value;
+	ZVAL_LONG(&const_FLAG_CUSTOM_SORT_KEY_value, 8);
+	zend_string *const_FLAG_CUSTOM_SORT_KEY_name = zend_string_init_interned("FLAG_CUSTOM_SORT_KEY", sizeof("FLAG_CUSTOM_SORT_KEY") - 1, 1);
+	zend_declare_class_constant_ex(class_entry, const_FLAG_CUSTOM_SORT_KEY_name, &const_FLAG_CUSTOM_SORT_KEY_value, ZEND_ACC_PUBLIC, NULL);
+	zend_string_release(const_FLAG_CUSTOM_SORT_KEY_name);
+
+	zval property_commandBuffer_default_value;
+	ZVAL_UNDEF(&property_commandBuffer_default_value);
+	zend_string *property_commandBuffer_name = zend_string_init("commandBuffer", sizeof("commandBuffer") - 1, 1);
+	zend_string *property_commandBuffer_class_GL_Buffer_UIntBuffer = zend_string_init("GL\\Buffer\\\125IntBuffer", sizeof("GL\\Buffer\\\125IntBuffer")-1, 1);
+	zend_declare_typed_property(class_entry, property_commandBuffer_name, &property_commandBuffer_default_value, ZEND_ACC_PUBLIC|ZEND_ACC_READONLY, NULL, (zend_type) ZEND_TYPE_INIT_CLASS(property_commandBuffer_class_GL_Buffer_UIntBuffer, 0, 0));
+	zend_string_release(property_commandBuffer_name);
+
+	zval property_instanceTransformBuffer_default_value;
+	ZVAL_UNDEF(&property_instanceTransformBuffer_default_value);
+	zend_string *property_instanceTransformBuffer_name = zend_string_init("instanceTransformBuffer", sizeof("instanceTransformBuffer") - 1, 1);
+	zend_string *property_instanceTransformBuffer_class_GL_Buffer_FloatBuffer = zend_string_init("GL\\Buffer\\FloatBuffer", sizeof("GL\\Buffer\\FloatBuffer")-1, 1);
+	zend_declare_typed_property(class_entry, property_instanceTransformBuffer_name, &property_instanceTransformBuffer_default_value, ZEND_ACC_PUBLIC|ZEND_ACC_READONLY, NULL, (zend_type) ZEND_TYPE_INIT_CLASS(property_instanceTransformBuffer_class_GL_Buffer_FloatBuffer, 0, 0));
+	zend_string_release(property_instanceTransformBuffer_name);
+
+	zval property_instanceMetaBuffer_default_value;
+	ZVAL_UNDEF(&property_instanceMetaBuffer_default_value);
+	zend_string *property_instanceMetaBuffer_name = zend_string_init("instanceMetaBuffer", sizeof("instanceMetaBuffer") - 1, 1);
+	zend_string *property_instanceMetaBuffer_class_GL_Buffer_UIntBuffer = zend_string_init("GL\\Buffer\\\125IntBuffer", sizeof("GL\\Buffer\\\125IntBuffer")-1, 1);
+	zend_declare_typed_property(class_entry, property_instanceMetaBuffer_name, &property_instanceMetaBuffer_default_value, ZEND_ACC_PUBLIC|ZEND_ACC_READONLY, NULL, (zend_type) ZEND_TYPE_INIT_CLASS(property_instanceMetaBuffer_class_GL_Buffer_UIntBuffer, 0, 0));
+	zend_string_release(property_instanceMetaBuffer_name);
+
+	zval property_instancePayloadBuffer_default_value;
+	ZVAL_UNDEF(&property_instancePayloadBuffer_default_value);
+	zend_string *property_instancePayloadBuffer_name = zend_string_init("instancePayloadBuffer", sizeof("instancePayloadBuffer") - 1, 1);
+	zend_string *property_instancePayloadBuffer_class_GL_Buffer_FloatBuffer = zend_string_init("GL\\Buffer\\FloatBuffer", sizeof("GL\\Buffer\\FloatBuffer")-1, 1);
+	zend_declare_typed_property(class_entry, property_instancePayloadBuffer_name, &property_instancePayloadBuffer_default_value, ZEND_ACC_PUBLIC|ZEND_ACC_READONLY, NULL, (zend_type) ZEND_TYPE_INIT_CLASS(property_instancePayloadBuffer_class_GL_Buffer_FloatBuffer, 0, 0));
+	zend_string_release(property_instancePayloadBuffer_name);
+
+	zval property_commandStride_default_value;
+	ZVAL_UNDEF(&property_commandStride_default_value);
+	zend_string *property_commandStride_name = zend_string_init("commandStride", sizeof("commandStride") - 1, 1);
+	zend_declare_typed_property(class_entry, property_commandStride_name, &property_commandStride_default_value, ZEND_ACC_PUBLIC|ZEND_ACC_READONLY, NULL, (zend_type) ZEND_TYPE_INIT_MASK(MAY_BE_LONG));
+	zend_string_release(property_commandStride_name);
+
+	zval property_transformStride_default_value;
+	ZVAL_UNDEF(&property_transformStride_default_value);
+	zend_string *property_transformStride_name = zend_string_init("transformStride", sizeof("transformStride") - 1, 1);
+	zend_declare_typed_property(class_entry, property_transformStride_name, &property_transformStride_default_value, ZEND_ACC_PUBLIC|ZEND_ACC_READONLY, NULL, (zend_type) ZEND_TYPE_INIT_MASK(MAY_BE_LONG));
+	zend_string_release(property_transformStride_name);
+
+	zval property_instanceMetaStride_default_value;
+	ZVAL_UNDEF(&property_instanceMetaStride_default_value);
+	zend_string *property_instanceMetaStride_name = zend_string_init("instanceMetaStride", sizeof("instanceMetaStride") - 1, 1);
+	zend_declare_typed_property(class_entry, property_instanceMetaStride_name, &property_instanceMetaStride_default_value, ZEND_ACC_PUBLIC|ZEND_ACC_READONLY, NULL, (zend_type) ZEND_TYPE_INIT_MASK(MAY_BE_LONG));
+	zend_string_release(property_instanceMetaStride_name);
 
 	return class_entry;
 }

@@ -167,16 +167,19 @@ namespace GL\Texture
         // public const CHANNEL_RGBA = 4;
 
         public static function fromDisk(string $path, int $requestedChannelCount = 0, bool $flipVertically = true) : Texture2D {}
-        public static function fromBuffer(int $width, int $height, \GL\Buffer\UByteBuffer $buffer, int $channels = Texture2D::CHANNEL_RGBA) : Texture2D {} 
-        public function buffer() : \GL\Buffer\UByteBuffer {}
+        public static function fromBuffer(int $width, int $height, \GL\Buffer\UByteBuffer $buffer, int $channels = Texture2D::CHANNEL_RGBA) : Texture2D {}
+        public static function fromBufferHDR(int $width, int $height, \GL\Buffer\FloatBuffer $buffer, int $channels = Texture2D::CHANNEL_RGBA) : Texture2D {}
+        public function buffer() : \GL\Buffer\UByteBuffer|\GL\Buffer\FloatBuffer {}
         public function width() : int {}
         public function height() : int {}
         public function channels() : int {}
+        public function isHDR() : bool {}
 
         public function writeJPG(string $path, int $quality = 100) : void {}
         public function writePNG(string $path) : void {}
         public function writeBMP(string $path) : void {}
         public function writeTGA(string $path) : void {}
+        public function writeHDR(string $path) : void {}
     }
 }
 
@@ -459,6 +462,120 @@ namespace GL\Buffer
         public function dump() : string {}
     }
 };
+
+namespace GL\Rendering
+{
+    class DrawCallAssembler
+    {
+        /** @var int */
+        public const SORT_NONE = 0;
+        /** @var int */
+        public const SORT_FRONT_TO_BACK = 1;
+        /** @var int */
+        public const SORT_BACK_TO_FRONT = 2;
+
+        /** @var int */
+        public const PASS_OPAQUE = 0;
+        /** @var int */
+        public const PASS_TRANSPARENT = 1;
+        /** @var int */
+        public const PASS_DEPTH = 2;
+        /** @var int */
+        public const PASS_USER = 3;
+
+        /** @var int */
+        public const FLAG_IGNORE_CULLING = 2;
+        /** @var int */
+        public const FLAG_DISABLE_INSTANCING = 4;
+        /** @var int */
+        public const FLAG_CUSTOM_SORT_KEY = 8;
+
+        public readonly \GL\Buffer\UIntBuffer $commandBuffer;
+        public readonly \GL\Buffer\FloatBuffer $instanceTransformBuffer;
+        public readonly \GL\Buffer\UIntBuffer $instanceMetaBuffer;
+        public readonly \GL\Buffer\FloatBuffer $instancePayloadBuffer;
+
+        public readonly int $commandStride;
+        public readonly int $transformStride;
+        public readonly int $instanceMetaStride;
+
+        public function __construct(
+            int $initialMeshCapacity = 256,
+            int $initialInstanceCapacity = 2048,
+            int $initialCommandCapacity = 512
+        ) {}
+
+        public function setAutoInstancing(bool $enabled) : void {}
+        public function setSortMode(int $mode) : void {}
+
+        public function setCameraData(
+            ?\GL\Math\Vec3 $cameraPosition = null,
+            ?\GL\Math\Mat4 $viewMatrix = null,
+            ?\GL\Math\Mat4 $projectionMatrix = null
+        ) : void {}
+        
+        public function setFrustumPlanes(
+            \GL\Math\Vec4 $left,
+            \GL\Math\Vec4 $right,
+            \GL\Math\Vec4 $bottom,
+            \GL\Math\Vec4 $top,
+            \GL\Math\Vec4 $near,
+            \GL\Math\Vec4 $far
+        ) : void {}
+
+        public function registerMesh(
+            int $vao,
+            int $vertexOffset = 0,
+            int $vertexCount = 0,
+            int $indexOffset = 0,
+            int $indexCount = 0,
+            ?\GL\Math\Vec3 $aabbMin = null,
+            ?\GL\Math\Vec3 $aabbMax = null,
+            int $materialHint = 0,
+            int $primitive = 0x0004
+        ) : int {}
+
+        public function setMeshMaterial(int $meshHandle, int $materialId) : void {}
+
+        public function setLodTable(
+            int $meshHandle,
+            \GL\Buffer\FloatBuffer $distanceThresholds,
+            \GL\Buffer\UIntBuffer $meshHandles
+        ) : void {}
+
+        public function bindTransformBuffer(int $vao, int $offset = 1) : int {}
+
+        public function bindPayloadData(\GL\Buffer\FloatBuffer $payloadBuffer, int $stride) : void {}
+        public function bindPayloadBuffer(int $vao, int $offset, int $stride = 0) : int {}
+
+        public function clearInstances() : void {}
+
+        public function submit(
+            int $meshHandle,
+            \GL\Math\Mat4 $transform,
+            int $materialId,
+            int $pass = 0,
+            int $programId = 0,
+            int $flags = 0,
+            float $sortBias = 0.0,
+            int $userId = 0
+        ) : void {}
+
+        public function build() : int {}
+
+        public function execute(callable $drawCallback) : void {}
+
+        public function commandCount() : int {}
+
+        public function instanceCount() : int {}
+
+        public function builtInstanceCount() : int {}
+
+        public function clearMeshes() : void {}
+
+        public function reset() : void {}
+    }
+}
 
 namespace GL\VectorGraphics
 {

@@ -33,6 +33,7 @@ typedef struct _phpglfw_texture2d_object {
     int width;
     int height;
     int channels;
+    int is_hdr; // 1 if the texture is HDR (FloatBuffer), 0 if LDR (UByteBuffer)
     zend_object std;
 } phpglfw_texture2d_object; 
 

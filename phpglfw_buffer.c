@@ -202,9 +202,10 @@ zend_object_iterator *phpglfw_buffer_glfloat_get_iterator_handler(zend_class_ent
 		return NULL;
 	}
     
-	iterator = emalloc(sizeof(phpglfw_buffer_glfloat_iterator));
+    iterator = ecalloc(1, sizeof(phpglfw_buffer_glfloat_iterator));
 
-	zend_iterator_init((zend_object_iterator*)iterator);
+    zend_iterator_init((zend_object_iterator*)iterator);
+    ZVAL_UNDEF(&iterator->current);
 
 	ZVAL_OBJ_COPY(&iterator->intern.data, Z_OBJ_P(object));
 	iterator->intern.funcs = &phpglfw_buffer_glfloat_iterator_handlers;
@@ -841,9 +842,10 @@ zend_object_iterator *phpglfw_buffer_glhalf_get_iterator_handler(zend_class_entr
 		return NULL;
 	}
     
-	iterator = emalloc(sizeof(phpglfw_buffer_glhalf_iterator));
+    iterator = ecalloc(1, sizeof(phpglfw_buffer_glhalf_iterator));
 
-	zend_iterator_init((zend_object_iterator*)iterator);
+    zend_iterator_init((zend_object_iterator*)iterator);
+    ZVAL_UNDEF(&iterator->current);
 
 	ZVAL_OBJ_COPY(&iterator->intern.data, Z_OBJ_P(object));
 	iterator->intern.funcs = &phpglfw_buffer_glhalf_iterator_handlers;
@@ -1357,9 +1359,10 @@ zend_object_iterator *phpglfw_buffer_gldouble_get_iterator_handler(zend_class_en
 		return NULL;
 	}
     
-	iterator = emalloc(sizeof(phpglfw_buffer_gldouble_iterator));
+    iterator = ecalloc(1, sizeof(phpglfw_buffer_gldouble_iterator));
 
-	zend_iterator_init((zend_object_iterator*)iterator);
+    zend_iterator_init((zend_object_iterator*)iterator);
+    ZVAL_UNDEF(&iterator->current);
 
 	ZVAL_OBJ_COPY(&iterator->intern.data, Z_OBJ_P(object));
 	iterator->intern.funcs = &phpglfw_buffer_gldouble_iterator_handlers;
@@ -1881,9 +1884,10 @@ zend_object_iterator *phpglfw_buffer_glint_get_iterator_handler(zend_class_entry
 		return NULL;
 	}
     
-	iterator = emalloc(sizeof(phpglfw_buffer_glint_iterator));
+    iterator = ecalloc(1, sizeof(phpglfw_buffer_glint_iterator));
 
-	zend_iterator_init((zend_object_iterator*)iterator);
+    zend_iterator_init((zend_object_iterator*)iterator);
+    ZVAL_UNDEF(&iterator->current);
 
 	ZVAL_OBJ_COPY(&iterator->intern.data, Z_OBJ_P(object));
 	iterator->intern.funcs = &phpglfw_buffer_glint_iterator_handlers;
@@ -2397,9 +2401,10 @@ zend_object_iterator *phpglfw_buffer_gluint_get_iterator_handler(zend_class_entr
 		return NULL;
 	}
     
-	iterator = emalloc(sizeof(phpglfw_buffer_gluint_iterator));
+    iterator = ecalloc(1, sizeof(phpglfw_buffer_gluint_iterator));
 
-	zend_iterator_init((zend_object_iterator*)iterator);
+    zend_iterator_init((zend_object_iterator*)iterator);
+    ZVAL_UNDEF(&iterator->current);
 
 	ZVAL_OBJ_COPY(&iterator->intern.data, Z_OBJ_P(object));
 	iterator->intern.funcs = &phpglfw_buffer_gluint_iterator_handlers;
@@ -2913,9 +2918,10 @@ zend_object_iterator *phpglfw_buffer_glshort_get_iterator_handler(zend_class_ent
 		return NULL;
 	}
     
-	iterator = emalloc(sizeof(phpglfw_buffer_glshort_iterator));
+    iterator = ecalloc(1, sizeof(phpglfw_buffer_glshort_iterator));
 
-	zend_iterator_init((zend_object_iterator*)iterator);
+    zend_iterator_init((zend_object_iterator*)iterator);
+    ZVAL_UNDEF(&iterator->current);
 
 	ZVAL_OBJ_COPY(&iterator->intern.data, Z_OBJ_P(object));
 	iterator->intern.funcs = &phpglfw_buffer_glshort_iterator_handlers;
@@ -3429,9 +3435,10 @@ zend_object_iterator *phpglfw_buffer_glushort_get_iterator_handler(zend_class_en
 		return NULL;
 	}
     
-	iterator = emalloc(sizeof(phpglfw_buffer_glushort_iterator));
+    iterator = ecalloc(1, sizeof(phpglfw_buffer_glushort_iterator));
 
-	zend_iterator_init((zend_object_iterator*)iterator);
+    zend_iterator_init((zend_object_iterator*)iterator);
+    ZVAL_UNDEF(&iterator->current);
 
 	ZVAL_OBJ_COPY(&iterator->intern.data, Z_OBJ_P(object));
 	iterator->intern.funcs = &phpglfw_buffer_glushort_iterator_handlers;
@@ -3945,9 +3952,10 @@ zend_object_iterator *phpglfw_buffer_glbyte_get_iterator_handler(zend_class_entr
 		return NULL;
 	}
     
-	iterator = emalloc(sizeof(phpglfw_buffer_glbyte_iterator));
+    iterator = ecalloc(1, sizeof(phpglfw_buffer_glbyte_iterator));
 
-	zend_iterator_init((zend_object_iterator*)iterator);
+    zend_iterator_init((zend_object_iterator*)iterator);
+    ZVAL_UNDEF(&iterator->current);
 
 	ZVAL_OBJ_COPY(&iterator->intern.data, Z_OBJ_P(object));
 	iterator->intern.funcs = &phpglfw_buffer_glbyte_iterator_handlers;
@@ -4461,9 +4469,10 @@ zend_object_iterator *phpglfw_buffer_glubyte_get_iterator_handler(zend_class_ent
 		return NULL;
 	}
     
-	iterator = emalloc(sizeof(phpglfw_buffer_glubyte_iterator));
+    iterator = ecalloc(1, sizeof(phpglfw_buffer_glubyte_iterator));
 
-	zend_iterator_init((zend_object_iterator*)iterator);
+    zend_iterator_init((zend_object_iterator*)iterator);
+    ZVAL_UNDEF(&iterator->current);
 
 	ZVAL_OBJ_COPY(&iterator->intern.data, Z_OBJ_P(object));
 	iterator->intern.funcs = &phpglfw_buffer_glubyte_iterator_handlers;
