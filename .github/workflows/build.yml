@@ -13,7 +13,7 @@ jobs:
     strategy:
       matrix:
         operating-system: ['ubuntu-22.04']
-        php-versions: ['8.1', '8.2', '8.3', '8.4']
+        php-versions: ['8.1', '8.2', '8.3', '8.4', '8.5']
         phpunit-versions: ['latest']
         preinstalled-glfw: ['libglfw3-dev', '']
     
@@ -55,7 +55,7 @@ jobs:
 
     - name: Install PHPUnit
       run: |
-        composer require "phpunit/phpunit:9.6.3"
+        composer install
       
     - name: Run PHPUnit
       run: |
@@ -76,7 +76,7 @@ jobs:
     strategy:
       matrix:
         operating-system: ['macos-latest']
-        php-versions: ['8.1', '8.2', '8.3', '8.4']
+        php-versions: ['8.1', '8.2', '8.3', '8.4', '8.5']
         phpunit-versions: ['latest']
     
     steps:
@@ -109,7 +109,7 @@ jobs:
         echo 'extension=glfw.so' >> /opt/homebrew/etc/php/${{ matrix.php-versions }}/php.ini
     
     - name: Install PHPUnit
-      run: composer require "phpunit/phpunit:9.6.3"
+      run: composer install
     
     # On MacOS we currently exclude all tests requiring glfwinit to work.. 
     # Initializing it in the Github action results in a segmentation fault. 
