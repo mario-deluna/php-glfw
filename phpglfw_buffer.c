@@ -4928,7 +4928,7 @@ void phpglfw_register_buffer_module(INIT_FUNC_ARGS)
     phpglfw_buffer_glfloat_ce->get_iterator = phpglfw_buffer_glfloat_get_iterator_handler;
 
 	zend_class_implements(phpglfw_buffer_glfloat_ce, 1, phpglfw_buffer_interface_ce);
-    memcpy(&phpglfw_buffer_glfloat_handlers, &std_object_handlers, sizeof(zend_object_handlers));
+    memcpy(&phpglfw_buffer_glfloat_handlers, zend_get_std_object_handlers(), sizeof(zend_object_handlers));
     phpglfw_buffer_glfloat_handlers.offset = XtOffsetOf(phpglfw_buffer_glfloat_object, std);
     
     phpglfw_buffer_glfloat_handlers.free_obj = phpglfw_buffer_glfloat_free_handler;
@@ -4945,7 +4945,7 @@ void phpglfw_register_buffer_module(INIT_FUNC_ARGS)
     phpglfw_buffer_glhalf_ce->get_iterator = phpglfw_buffer_glhalf_get_iterator_handler;
 
 	zend_class_implements(phpglfw_buffer_glhalf_ce, 1, phpglfw_buffer_interface_ce);
-    memcpy(&phpglfw_buffer_glhalf_handlers, &std_object_handlers, sizeof(zend_object_handlers));
+    memcpy(&phpglfw_buffer_glhalf_handlers, zend_get_std_object_handlers(), sizeof(zend_object_handlers));
     phpglfw_buffer_glhalf_handlers.offset = XtOffsetOf(phpglfw_buffer_glhalf_object, std);
     
     phpglfw_buffer_glhalf_handlers.free_obj = phpglfw_buffer_glhalf_free_handler;
@@ -4962,7 +4962,7 @@ void phpglfw_register_buffer_module(INIT_FUNC_ARGS)
     phpglfw_buffer_gldouble_ce->get_iterator = phpglfw_buffer_gldouble_get_iterator_handler;
 
 	zend_class_implements(phpglfw_buffer_gldouble_ce, 1, phpglfw_buffer_interface_ce);
-    memcpy(&phpglfw_buffer_gldouble_handlers, &std_object_handlers, sizeof(zend_object_handlers));
+    memcpy(&phpglfw_buffer_gldouble_handlers, zend_get_std_object_handlers(), sizeof(zend_object_handlers));
     phpglfw_buffer_gldouble_handlers.offset = XtOffsetOf(phpglfw_buffer_gldouble_object, std);
     
     phpglfw_buffer_gldouble_handlers.free_obj = phpglfw_buffer_gldouble_free_handler;
@@ -4979,7 +4979,7 @@ void phpglfw_register_buffer_module(INIT_FUNC_ARGS)
     phpglfw_buffer_glint_ce->get_iterator = phpglfw_buffer_glint_get_iterator_handler;
 
 	zend_class_implements(phpglfw_buffer_glint_ce, 1, phpglfw_buffer_interface_ce);
-    memcpy(&phpglfw_buffer_glint_handlers, &std_object_handlers, sizeof(zend_object_handlers));
+    memcpy(&phpglfw_buffer_glint_handlers, zend_get_std_object_handlers(), sizeof(zend_object_handlers));
     phpglfw_buffer_glint_handlers.offset = XtOffsetOf(phpglfw_buffer_glint_object, std);
     
     phpglfw_buffer_glint_handlers.free_obj = phpglfw_buffer_glint_free_handler;
@@ -4996,7 +4996,7 @@ void phpglfw_register_buffer_module(INIT_FUNC_ARGS)
     phpglfw_buffer_gluint_ce->get_iterator = phpglfw_buffer_gluint_get_iterator_handler;
 
 	zend_class_implements(phpglfw_buffer_gluint_ce, 1, phpglfw_buffer_interface_ce);
-    memcpy(&phpglfw_buffer_gluint_handlers, &std_object_handlers, sizeof(zend_object_handlers));
+    memcpy(&phpglfw_buffer_gluint_handlers, zend_get_std_object_handlers(), sizeof(zend_object_handlers));
     phpglfw_buffer_gluint_handlers.offset = XtOffsetOf(phpglfw_buffer_gluint_object, std);
     
     phpglfw_buffer_gluint_handlers.free_obj = phpglfw_buffer_gluint_free_handler;
@@ -5013,7 +5013,7 @@ void phpglfw_register_buffer_module(INIT_FUNC_ARGS)
     phpglfw_buffer_glshort_ce->get_iterator = phpglfw_buffer_glshort_get_iterator_handler;
 
 	zend_class_implements(phpglfw_buffer_glshort_ce, 1, phpglfw_buffer_interface_ce);
-    memcpy(&phpglfw_buffer_glshort_handlers, &std_object_handlers, sizeof(zend_object_handlers));
+    memcpy(&phpglfw_buffer_glshort_handlers, zend_get_std_object_handlers(), sizeof(zend_object_handlers));
     phpglfw_buffer_glshort_handlers.offset = XtOffsetOf(phpglfw_buffer_glshort_object, std);
     
     phpglfw_buffer_glshort_handlers.free_obj = phpglfw_buffer_glshort_free_handler;
@@ -5030,7 +5030,7 @@ void phpglfw_register_buffer_module(INIT_FUNC_ARGS)
     phpglfw_buffer_glushort_ce->get_iterator = phpglfw_buffer_glushort_get_iterator_handler;
 
 	zend_class_implements(phpglfw_buffer_glushort_ce, 1, phpglfw_buffer_interface_ce);
-    memcpy(&phpglfw_buffer_glushort_handlers, &std_object_handlers, sizeof(zend_object_handlers));
+    memcpy(&phpglfw_buffer_glushort_handlers, zend_get_std_object_handlers(), sizeof(zend_object_handlers));
     phpglfw_buffer_glushort_handlers.offset = XtOffsetOf(phpglfw_buffer_glushort_object, std);
     
     phpglfw_buffer_glushort_handlers.free_obj = phpglfw_buffer_glushort_free_handler;
@@ -5047,7 +5047,7 @@ void phpglfw_register_buffer_module(INIT_FUNC_ARGS)
     phpglfw_buffer_glbyte_ce->get_iterator = phpglfw_buffer_glbyte_get_iterator_handler;
 
 	zend_class_implements(phpglfw_buffer_glbyte_ce, 1, phpglfw_buffer_interface_ce);
-    memcpy(&phpglfw_buffer_glbyte_handlers, &std_object_handlers, sizeof(zend_object_handlers));
+    memcpy(&phpglfw_buffer_glbyte_handlers, zend_get_std_object_handlers(), sizeof(zend_object_handlers));
     phpglfw_buffer_glbyte_handlers.offset = XtOffsetOf(phpglfw_buffer_glbyte_object, std);
     
     phpglfw_buffer_glbyte_handlers.free_obj = phpglfw_buffer_glbyte_free_handler;
@@ -5064,7 +5064,7 @@ void phpglfw_register_buffer_module(INIT_FUNC_ARGS)
     phpglfw_buffer_glubyte_ce->get_iterator = phpglfw_buffer_glubyte_get_iterator_handler;
 
 	zend_class_implements(phpglfw_buffer_glubyte_ce, 1, phpglfw_buffer_interface_ce);
-    memcpy(&phpglfw_buffer_glubyte_handlers, &std_object_handlers, sizeof(zend_object_handlers));
+    memcpy(&phpglfw_buffer_glubyte_handlers, zend_get_std_object_handlers(), sizeof(zend_object_handlers));
     phpglfw_buffer_glubyte_handlers.offset = XtOffsetOf(phpglfw_buffer_glubyte_object, std);
     
     phpglfw_buffer_glubyte_handlers.free_obj = phpglfw_buffer_glubyte_free_handler;

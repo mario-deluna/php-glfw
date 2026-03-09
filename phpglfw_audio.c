@@ -500,7 +500,7 @@ PHP_METHOD(GL_Audio_Sound, setPitch)
 
 PHP_METHOD(GL_Audio_Sound, setLoop)
 {
-    zend_bool loop;
+    bool loop;
     if (zend_parse_parameters(ZEND_NUM_ARGS() , "b", &loop) == FAILURE) {
         RETURN_THROWS();
     }

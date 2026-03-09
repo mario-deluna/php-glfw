@@ -2,13 +2,10 @@
 
 namespace GL\Tests\GLFunctions;
 
-use GLFWwindow;
-use SebastianBergmann\RecursionContext\InvalidArgumentException;
-use PHPUnit\Framework\ExpectationFailedException;
-
 /**
  * @group glfwinit
  */
+#[\PHPUnit\Framework\Attributes\Group('glfwinit')]
 class ShderCompilationTest extends GLFunctionsTestCase
 {
     public function testShaderCompilation()

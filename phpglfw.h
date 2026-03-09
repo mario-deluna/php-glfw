@@ -34,7 +34,7 @@ PHP_MINFO_FUNCTION(glfw);
 PHP_MSHUTDOWN_FUNCTION(glfw);
 
 ZEND_BEGIN_MODULE_GLOBALS(glfw)
-    zend_bool buffer_serialize_hex_float;
+    bool buffer_serialize_hex_float;
 ZEND_END_MODULE_GLOBALS(glfw)
 
 ZEND_EXTERN_MODULE_GLOBALS(glfw)

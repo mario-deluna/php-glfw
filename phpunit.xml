@@ -2,7 +2,7 @@
 <phpunit colors="true" bootstrap="phpunit.php">
   <testsuites>
     <testsuite name="Hydrogen App">
-      <directory suffix=".php">./tests/</directory>
+      <directory suffix="Test.php">./tests/</directory>
     </testsuite>
   </testsuites>
 </phpunit>

@@ -991,7 +991,7 @@ void phpglfw_register_vg_module(INIT_FUNC_ARGS)
     phpglfw_vgcontext_ce = zend_register_internal_class(&tmp_ce);
     phpglfw_vgcontext_ce->create_object = phpglfw_vgcontext_create_handler;
 
-    memcpy(&phpglfw_vgcontext_handlers, &std_object_handlers, sizeof(zend_object_handlers));
+    memcpy(&phpglfw_vgcontext_handlers, zend_get_std_object_handlers(), sizeof(zend_object_handlers));
     phpglfw_vgcontext_handlers.offset = XtOffsetOf(phpglfw_vgcontext_object, std);
     phpglfw_vgcontext_handlers.free_obj = phpglfw_vgcontext_free_handler;
 
@@ -1022,7 +1022,7 @@ void phpglfw_register_vg_module(INIT_FUNC_ARGS)
     phpglfw_vgcolor_ce->serialize = phpglfw_vgcolor_serialize_handler;
     phpglfw_vgcolor_ce->unserialize = phpglfw_vgcolor_unserialize_handler;
 
-    memcpy(&phpglfw_vgcolor_handlers, &std_object_handlers, sizeof(zend_object_handlers));
+    memcpy(&phpglfw_vgcolor_handlers, zend_get_std_object_handlers(), sizeof(zend_object_handlers));
     phpglfw_vgcolor_handlers.offset = XtOffsetOf(phpglfw_vgcolor_object, std);
     phpglfw_vgcolor_handlers.free_obj = phpglfw_vgcolor_free_handler;
     phpglfw_vgcolor_handlers.get_debug_info = phpglfw_vgcolor_debug_info_handler;
@@ -1034,7 +1034,7 @@ void phpglfw_register_vg_module(INIT_FUNC_ARGS)
     phpglfw_vgimage_ce = zend_register_internal_class(&tmp_ce);
     phpglfw_vgimage_ce->create_object = phpglfw_vgimage_create_handler;
 
-    memcpy(&phpglfw_vgimage_handlers, &std_object_handlers, sizeof(zend_object_handlers));
+    memcpy(&phpglfw_vgimage_handlers, zend_get_std_object_handlers(), sizeof(zend_object_handlers));
     phpglfw_vgimage_handlers.offset = XtOffsetOf(phpglfw_vgimage_object, std);
     phpglfw_vgimage_handlers.free_obj = phpglfw_vgimage_free_handler;
 
@@ -1065,7 +1065,7 @@ void phpglfw_register_vg_module(INIT_FUNC_ARGS)
     phpglfw_vgpaint_ce = zend_register_internal_class(&tmp_ce);
     phpglfw_vgpaint_ce->create_object = phpglfw_vgpaint_create_handler;
 
-    memcpy(&phpglfw_vgpaint_handlers, &std_object_handlers, sizeof(zend_object_handlers));
+    memcpy(&phpglfw_vgpaint_handlers, zend_get_std_object_handlers(), sizeof(zend_object_handlers));
     phpglfw_vgpaint_handlers.offset = XtOffsetOf(phpglfw_vgpaint_object, std);
     phpglfw_vgpaint_handlers.free_obj = phpglfw_vgpaint_free_handler;
     phpglfw_vgpaint_handlers.get_debug_info = phpglfw_vgpaint_debug_info_handler;
