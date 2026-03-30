@@ -16,10 +16,10 @@ jobs:
         php-versions: ['8.1', '8.2', '8.3', '8.4', '8.5']
         phpunit-versions: ['latest']
         preinstalled-glfw: ['libglfw3-dev', '']
-    
+
     steps:
     - uses: actions/checkout@v4
-    
+
     - name: Setup PHP
       uses: shivammathur/setup-php@v2
       with:
@@ -27,14 +27,14 @@ jobs:
         extensions: :glfw, dom, xml, mbstring, zip
         coverage: xdebug
         tools: cs2pr, phpunit
-    # - name: Build GLFW lib
-    #   run: cd vendor/glfw && cmake . -DGLFW_BUILD_TESTS=OFF -DGLFW_BUILD_EXAMPLES=OFF -DBUILD_SHARED_LIBS=ON && sudo make install && sudo ldconfig && cd ../../
-    
-    - name: Install dependenies
+
+    - name: Install dependencies
       run: |
         sudo apt-get update
         sudo apt-get install -y build-essential cmake ${{ matrix.preinstalled-glfw }} xvfb libxrandr-dev libxinerama-dev libxcursor-dev libxi-dev gdb
-      
+        # Vulkan SDK for Vulkan support testing
+        sudo apt-get install -y libvulkan-dev vulkan-tools || true
+
     - name: Echo current PHP version, php.ini and php-config
       run: |
         echo "PHP version: $(php -v)"
@@ -47,16 +47,21 @@ jobs:
         phpize
         ./configure --enable-glfw
         sudo make -j"$(nproc)" install
-    
+
     - name: Enable PHP-GLFW
-      run: | 
+      run: |
         grep -qxF 'extension=glfw.so' /etc/php/${{ matrix.php-versions }}/cli/php.ini || \
         echo 'extension=glfw.so' >> /etc/php/${{ matrix.php-versions }}/cli/php.ini
+
+    - name: Check Vulkan support
+      run: |
+        php -r "echo 'PHP-GLFW loaded: ' . (extension_loaded('glfw') ? 'YES' : 'NO') . PHP_EOL;"
+        php -r "glfwInit(); echo 'Vulkan supported: ' . (glfwVulkanSupported() ? 'YES' : 'NO') . PHP_EOL;" || echo "glfwVulkanSupported check failed (expected in headless CI)"
 
     - name: Install PHPUnit
       run: |
         composer install
-      
+
     - name: Run PHPUnit
       run: |
         xvfb-run --auto-servernum \
@@ -65,12 +70,7 @@ jobs:
         -dxdebug.auto_trace=ON \
         -dxdebug.trace_output_dir=trace \
         ./vendor/bin/phpunit
-    
-    #- name: Setup upterm session
-    #  if: always()
-    #  uses: lhotari/action-upterm@v1
-  
-    
+
   macos:
     runs-on: ${{ matrix.operating-system }}
     strategy:
@@ -78,10 +78,10 @@ jobs:
         operating-system: ['macos-latest']
         php-versions: ['8.1', '8.2', '8.3', '8.4', '8.5']
         phpunit-versions: ['latest']
-    
+
     steps:
     - uses: actions/checkout@v3
-    
+
     - name: Setup PHP
       uses: shivammathur/setup-php@v2
       with:
@@ -89,40 +89,42 @@ jobs:
         extensions: :glfw, dom, xml, mbstring, zip
         coverage: xdebug
         tools: cs2pr
-        
-    # - name: Install dependenies
-    #   run: brew install mesa mesalib-glw
-      
-    # - name: Build GLFW lib
-    #   run: cd vendor/glfw && cmake . -DGLFW_BUILD_TESTS=OFF -DGLFW_BUILD_EXAMPLES=OFF -DBUILD_SHARED_LIBS=ON  && sudo make install && cd ../../
-        
+
+    - name: Install Vulkan/MoltenVK
+      run: |
+        brew install molten-vk vulkan-loader || true
+        echo "MoltenVK check:"
+        ls -la /opt/homebrew/lib/libvulkan*.dylib 2>/dev/null || echo "libvulkan not found in /opt/homebrew"
+        ls -la /usr/local/lib/libvulkan*.dylib 2>/dev/null || echo "libvulkan not found in /usr/local"
+
     - name: Build PHP-GLFW
       run: sudo phpize && ./configure --enable-glfw && make
-   
+
     - name: Locate php.ini
       run: php -i | grep 'php.ini'
-      
+
     - name: Install PHP-GLFW
       run: |
         sudo make install && \
         grep -qxF 'extension=glfw.so' /opt/homebrew/etc/php/${{ matrix.php-versions }}/php.ini || \
         echo 'extension=glfw.so' >> /opt/homebrew/etc/php/${{ matrix.php-versions }}/php.ini
-    
+
+    - name: Check Vulkan support
+      run: |
+        php -r "echo 'PHP-GLFW loaded: ' . (extension_loaded('glfw') ? 'YES' : 'NO') . PHP_EOL;"
+        php -r "phpinfo();" | grep -i "glfw\|vulkan" || true
+
     - name: Install PHPUnit
       run: composer install
-    
-    # On MacOS we currently exclude all tests requiring glfwinit to work.. 
-    # Initializing it in the Github action results in a segmentation fault. 
-    # I've tried to build php from source in debug mode, and run the script 
+
+    # On MacOS we currently exclude all tests requiring glfwinit to work..
+    # Initializing it in the Github action results in a segmentation fault.
+    # I've tried to build php from source in debug mode, and run the script
     # through gdb but I had no luck. The failure happens in "_glfwPlatformInit"
-    # all down to the CoreFoundation. The tests run fine on my mac tho.. So 
+    # all down to the CoreFoundation. The tests run fine on my mac tho.. So
     # the assumption is that it simply fails because of a missin screen..
-    # xvfb is not available anymore for macos so... 
+    # xvfb is not available anymore for macos so...
     # If anybody skilled is able to make it run in the "macos-latest" environment
-    # I will be deeply grateful. 
-    - name: Run PHPUnit 
+    # I will be deeply grateful.
+    - name: Run PHPUnit
       run: php vendor/bin/phpunit --exclude-group=glfwinit
-      
-    # - name: Setup upterm session
-    #   if: always()
-    #   uses: lhotari/action-upterm@v1
