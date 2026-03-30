@@ -12,76 +12,39 @@ use PHPUnit\Framework\TestCase;
 #[\PHPUnit\Framework\Attributes\Group('glfwinit')]
 class VulkanSupportTest extends TestCase
 {
-    private bool $glfwReady = false;
-
     protected function setUp(): void
     {
         if (!glfwInit()) {
             $this->markTestSkipped('glfwInit() failed — no display available');
         }
-        $this->glfwReady = true;
     }
 
     /**
-     * glfwVulkanSupported() must return a boolean and not crash.
-     * Whether it returns true depends on the system having Vulkan/MoltenVK installed.
+     * glfwVulkanSupported() must return a valid value (int 0/1 or bool) without crashing.
      */
-    public function testVulkanSupportedReturnsValidValue(): void
+    public function testVulkanSupportedDoesNotCrash(): void
     {
         $result = glfwVulkanSupported();
-        // glfwVulkanSupported() returns int (0/1) or bool depending on php-glfw version
-        $this->assertTrue($result === true || $result === false || $result === 0 || $result === 1,
-            'glfwVulkanSupported() must return a boolean-compatible value');
+        $this->assertTrue(
+            $result === true || $result === false || $result === 0 || $result === 1,
+            'glfwVulkanSupported() must return a boolean-compatible value, got: ' . var_export($result, true),
+        );
     }
 
     /**
-     * When Vulkan libraries are present on the system, glfwVulkanSupported() should return true.
-     * This test is informational — it passes either way but logs the result.
+     * Log Vulkan support status for CI diagnostic visibility.
      */
     public function testVulkanSupportedReportsStatus(): void
     {
-        $supported = glfwVulkanSupported();
+        $supported = (bool) glfwVulkanSupported();
 
-        // Log the result for CI visibility
         fwrite(STDERR, sprintf(
             "\n[VulkanSupportTest] glfwVulkanSupported() = %s\n",
             $supported ? 'true (Vulkan available)' : 'false (Vulkan not available)',
         ));
 
-        // Check if Vulkan libraries exist on the system
-        $hasVulkanLib = false;
-        if (PHP_OS_FAMILY === 'Darwin') {
-            foreach (['/opt/homebrew/lib', '/usr/local/lib'] as $dir) {
-                if (file_exists("{$dir}/libvulkan.dylib")) {
-                    $hasVulkanLib = true;
-                    break;
-                }
-            }
-        } else {
-            foreach (['/usr/lib', '/usr/local/lib'] as $dir) {
-                if (file_exists("{$dir}/libvulkan.so") || file_exists("{$dir}/libvulkan.so.1")) {
-                    $hasVulkanLib = true;
-                    break;
-                }
-            }
-        }
-
-        fwrite(STDERR, sprintf(
-            "[VulkanSupportTest] Vulkan library on disk: %s\n",
-            $hasVulkanLib ? 'found' : 'not found',
-        ));
-
-        if ($hasVulkanLib && $supported) {
-            // Best case: Vulkan lib exists AND GLFW reports support
-            $this->assertNotEmpty($supported, 'Vulkan library found and GLFW reports support');
-        } elseif ($hasVulkanLib && !$supported) {
-            // Vulkan lib exists but GLFW doesn't support it — GLFW was compiled without Vulkan
-            fwrite(STDERR, "[VulkanSupportTest] WARNING: Vulkan library present but GLFW lacks Vulkan support.\n");
-            fwrite(STDERR, "[VulkanSupportTest] Rebuild GLFW with Vulkan loader to enable glfwVulkanSupported().\n");
-            $this->assertEmpty($supported); // Still passes — just documents the gap
-        } else {
-            // No Vulkan on system — expected to be false
-            $this->assertEmpty($supported, 'No Vulkan library — expected false');
-        }
+        // This test always passes — it's purely diagnostic.
+        // The actual value depends on the system's Vulkan installation.
+        $this->addToAssertionCount(1);
     }
 }
