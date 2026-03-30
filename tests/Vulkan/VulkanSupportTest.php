@@ -26,10 +26,12 @@ class VulkanSupportTest extends TestCase
      * glfwVulkanSupported() must return a boolean and not crash.
      * Whether it returns true depends on the system having Vulkan/MoltenVK installed.
      */
-    public function testVulkanSupportedReturnsBool(): void
+    public function testVulkanSupportedReturnsValidValue(): void
     {
         $result = glfwVulkanSupported();
-        $this->assertIsBool($result);
+        // glfwVulkanSupported() returns int (0/1) or bool depending on php-glfw version
+        $this->assertTrue($result === true || $result === false || $result === 0 || $result === 1,
+            'glfwVulkanSupported() must return a boolean-compatible value');
     }
 
     /**
@@ -71,15 +73,15 @@ class VulkanSupportTest extends TestCase
 
         if ($hasVulkanLib && $supported) {
             // Best case: Vulkan lib exists AND GLFW reports support
-            $this->assertTrue($supported, 'Vulkan library found and GLFW reports support');
+            $this->assertNotEmpty($supported, 'Vulkan library found and GLFW reports support');
         } elseif ($hasVulkanLib && !$supported) {
             // Vulkan lib exists but GLFW doesn't support it — GLFW was compiled without Vulkan
             fwrite(STDERR, "[VulkanSupportTest] WARNING: Vulkan library present but GLFW lacks Vulkan support.\n");
             fwrite(STDERR, "[VulkanSupportTest] Rebuild GLFW with Vulkan loader to enable glfwVulkanSupported().\n");
-            $this->assertFalse($supported); // Still passes — just documents the gap
+            $this->assertEmpty($supported); // Still passes — just documents the gap
         } else {
             // No Vulkan on system — expected to be false
-            $this->assertFalse($supported, 'No Vulkan library — expected false');
+            $this->assertEmpty($supported, 'No Vulkan library — expected false');
         }
     }
 }
