@@ -616,15 +616,17 @@ PHP_METHOD(GL_Rendering_DrawCallAssembler, setAutoInstancing)
 
 PHP_METHOD(GL_Rendering_DrawCallAssembler, setFrustumPlanes)
 {
-    zval *left, *right, *bottom, *top, *near, *far;
+    // note: avoid the identifiers "near"/"far" here, they are legacy macros
+    // predefined by the Windows headers (windef.h) and break compilation on MSVC
+    zval *left, *right, *bottom, *top, *near_plane, *far_plane;
 
     if (zend_parse_parameters(ZEND_NUM_ARGS(), "OOOOOO",
-        &left,   phpglfw_get_math_vec4_ce(),
-        &right,  phpglfw_get_math_vec4_ce(),
-        &bottom, phpglfw_get_math_vec4_ce(),
-        &top,    phpglfw_get_math_vec4_ce(),
-        &near,   phpglfw_get_math_vec4_ce(),
-        &far,    phpglfw_get_math_vec4_ce()) == FAILURE) {
+        &left,       phpglfw_get_math_vec4_ce(),
+        &right,      phpglfw_get_math_vec4_ce(),
+        &bottom,     phpglfw_get_math_vec4_ce(),
+        &top,        phpglfw_get_math_vec4_ce(),
+        &near_plane, phpglfw_get_math_vec4_ce(),
+        &far_plane,  phpglfw_get_math_vec4_ce()) == FAILURE) {
         RETURN_THROWS();
     }
 
@@ -635,8 +637,8 @@ PHP_METHOD(GL_Rendering_DrawCallAssembler, setFrustumPlanes)
         phpglfw_math_vec4_objectptr_from_zobj_p(Z_OBJ_P(right)),
         phpglfw_math_vec4_objectptr_from_zobj_p(Z_OBJ_P(bottom)),
         phpglfw_math_vec4_objectptr_from_zobj_p(Z_OBJ_P(top)),
-        phpglfw_math_vec4_objectptr_from_zobj_p(Z_OBJ_P(near)),
-        phpglfw_math_vec4_objectptr_from_zobj_p(Z_OBJ_P(far)),
+        phpglfw_math_vec4_objectptr_from_zobj_p(Z_OBJ_P(near_plane)),
+        phpglfw_math_vec4_objectptr_from_zobj_p(Z_OBJ_P(far_plane)),
     };
 
     for (int i = 0; i < 6; i++) {
