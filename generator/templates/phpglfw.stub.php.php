@@ -408,7 +408,7 @@ namespace GL\Rendering
 
         public function build() : int {}
 
-        public function execute(callable $drawCallback) : void {}
+        public function execute(callable $drawCallback) : int {}
 
         public function commandCount() : int {}
 
@@ -493,6 +493,14 @@ namespace GL\VectorGraphics
         //public function makePaintAABB(float $minx, float $miny, float $maxx, float $maxy, float $angle = 0.0, float $alpha = 1.0) : VGPaint {}
     }
 
+    class SVGImage {
+        public readonly float $width;
+        public readonly float $height;
+
+        public static function fromDisk(string $path) : SVGImage {}
+        public static function fromString(string $svg) : SVGImage {}
+    }
+
     class VGAlign {
         // public const LEFT = 1;
         // public const CENTER = 2;
@@ -541,6 +549,8 @@ namespace GL\VectorGraphics
             int $repeatMode = VGImage::REPEAT_NONE,
             int $filterMode = VGImage::FILTER_LINEAR
         ) : VGImage {}
+
+        public function drawSVG(SVGImage $svg, float $x = 0.0, float $y = 0.0, ?float $w = null, ?float $h = null) : void {}
 
         public function linearGradient(float $sx, float $sy, float $ex, float $ey, VGColor $icol, VGColor $ocol) : VGPaint {}
         public function boxGradient(float $x, float $y, float $w, float $h, float $r, float $f, VGColor $icol, VGColor $ocol) : VGPaint {}

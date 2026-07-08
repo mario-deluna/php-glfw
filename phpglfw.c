@@ -38,6 +38,7 @@
 #include "phpglfw_texture.h"
 #include "phpglfw_objparser.h"
 #include "phpglfw_voxparser.h"
+#include "phpglfw_svgparser.h"
 #include "phpglfw_vg.h"
 #include "phpglfw_audio.h"
 #include "phpglfw_drawcall_assembler.h"
@@ -102,6 +103,9 @@ PHP_MINIT_FUNCTION(glfw)
 
     // voxel parser module
     phpglfw_register_voxparser_module(INIT_FUNC_ARGS_PASSTHRU);
+
+    // svg parser module (registers SVGImage, used by the vg module's drawSVG)
+    phpglfw_register_svgparser_module(INIT_FUNC_ARGS_PASSTHRU);
 
     // vg module
     phpglfw_register_vg_module(INIT_FUNC_ARGS_PASSTHRU);

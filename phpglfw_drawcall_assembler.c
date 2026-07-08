@@ -44,7 +44,6 @@ phpglfw_drawcall_assembler_object *phpglfw_drawcall_assembler_objectptr_from_zob
 
 static zend_object_handlers phpglfw_drawcall_assembler_object_handlers;
 
-static float phpglfw_drawcall_distance_to_camera(phpglfw_math_vec3_object *camera_pos, const mat4x4 transform);
 static void phpglfw_drawcall_store_plane(vec4 dest, float a, float b, float c, float d);
 static void phpglfw_drawcall_extract_frustum(phpglfw_drawcall_assembler_object *intern);
 static uint32_t phpglfw_drawcall_collect_visible_indices(phpglfw_drawcall_assembler_object *intern, uint32_t *visible_indices);
@@ -59,6 +58,20 @@ static inline void phpglfw_drawcall_release_zval(zval *value)
         zval_ptr_dtor(value);
         ZVAL_UNDEF(value);
     }
+}
+
+// release every PHP object a mesh holds a reference to and clear the raw
+// typed pointers so they can never be read after the object is gone.
+static void phpglfw_drawcall_release_mesh_refs(phpglfw_drawcall_mesh *mesh)
+{
+    phpglfw_drawcall_release_zval(&mesh->aabb_min_zv);
+    phpglfw_drawcall_release_zval(&mesh->aabb_max_zv);
+    phpglfw_drawcall_release_zval(&mesh->lod_distances_zv);
+    phpglfw_drawcall_release_zval(&mesh->lod_handles_zv);
+    mesh->aabb_min = NULL;
+    mesh->aabb_max = NULL;
+    mesh->lod_distances = NULL;
+    mesh->lod_handles = NULL;
 }
 
 static zend_object *phpglfw_drawcall_assembler_create_object(zend_class_entry *class_type)
@@ -77,6 +90,10 @@ static zend_object *phpglfw_drawcall_assembler_create_object(zend_class_entry *c
     intern->meshes = NULL;
     intern->instances = NULL;
     intern->visible_index_buffer = NULL;
+    intern->sort_keys_a = NULL;
+    intern->sort_keys_b = NULL;
+    intern->sort_indices_b = NULL;
+    intern->sort_scratch_capacity = 0;
     intern->camera_position = NULL;
     intern->view_matrix = NULL;
     intern->projection_matrix = NULL;
@@ -92,6 +109,7 @@ static zend_object *phpglfw_drawcall_assembler_create_object(zend_class_entry *c
     intern->instance_capacity = 0;
     intern->instance_count = 0;
     intern->has_frustum = false;
+    intern->frustum_from_matrices = false;
     intern->sort_mode = PHPGLFW_SORT_NONE;
     intern->auto_instancing = true;
     intern->final_command_count = 0;
@@ -114,8 +132,14 @@ static void phpglfw_drawcall_assembler_free_handler(zend_object *object)
     phpglfw_drawcall_release_zval(&intern->view_matrix_zv);
     phpglfw_drawcall_release_zval(&intern->projection_matrix_zv);
 
-    // free mesh array
+    // free mesh array, releasing every reference each mesh holds first.
+    // we iterate the full capacity because clearMeshes()/reset() only lower
+    // mesh_count, and every slot is either a live mesh or zero-initialized
+    // (all-UNDEF) memory, so releasing is always safe.
     if (intern->meshes) {
+        for (uint32_t i = 0; i < intern->mesh_capacity; i++) {
+            phpglfw_drawcall_release_mesh_refs(&intern->meshes[i]);
+        }
         efree(intern->meshes);
     }
 
@@ -126,6 +150,17 @@ static void phpglfw_drawcall_assembler_free_handler(zend_object *object)
 
     if (intern->visible_index_buffer) {
         cvector_free(intern->visible_index_buffer);
+    }
+
+    // radix sort scratch buffers
+    if (intern->sort_keys_a) {
+        efree(intern->sort_keys_a);
+    }
+    if (intern->sort_keys_b) {
+        efree(intern->sort_keys_b);
+    }
+    if (intern->sort_indices_b) {
+        efree(intern->sort_indices_b);
     }
 
     // rendering dispatch
@@ -154,6 +189,20 @@ PHP_METHOD(GL_Rendering_DrawCallAssembler, __construct)
         &initial_instance_capacity,
         &initial_command_capacity
     ) == FAILURE) {
+        RETURN_THROWS();
+    }
+
+    // a zero or negative seed would corrupt the heap: ecalloc(0, ...) allocates
+    // nothing and the capacity *= 2 growth path never grows 0, so the first
+    // write lands out of bounds. negatives also wrap to huge uint32_t values.
+    if (initial_mesh_capacity < 1 || initial_instance_capacity < 1 || initial_command_capacity < 1) {
+        zend_value_error("DrawCallAssembler capacities must be >= 1");
+        RETURN_THROWS();
+    }
+    if (initial_mesh_capacity > PHPGLFW_MAX_CAPACITY ||
+        initial_instance_capacity > PHPGLFW_MAX_CAPACITY ||
+        initial_command_capacity > PHPGLFW_MAX_CAPACITY) {
+        zend_value_error("DrawCallAssembler capacities exceed the maximum");
         RETURN_THROWS();
     }
 
@@ -216,56 +265,63 @@ PHP_METHOD(GL_Rendering_DrawCallAssembler, setCameraData)
     zval *view_matrix = NULL;
     zval *projection_matrix = NULL;
 
-    if (zend_parse_parameters(ZEND_NUM_ARGS(), "|zzz", &camera_position, &view_matrix, &projection_matrix) == FAILURE) {
+    if (zend_parse_parameters(ZEND_NUM_ARGS(), "|O!O!O!",
+        &camera_position,   phpglfw_get_math_vec3_ce(),
+        &view_matrix,       phpglfw_get_math_mat4_ce(),
+        &projection_matrix, phpglfw_get_math_mat4_ce()) == FAILURE) {
         RETURN_THROWS();
     }
 
     phpglfw_drawcall_assembler_object *intern = phpglfw_drawcall_assembler_objectptr_from_zobj_p(Z_OBJ_P(ZEND_THIS));
 
-    // store camera data if provided
-    if (camera_position && Z_TYPE_P(camera_position) == IS_OBJECT)
+    // store camera data if provided. the "O!O!O!" parameter spec already
+    // guarantees each argument is either NULL or an object of the required
+    // class, so a non-NULL zval is always the expected object type.
+    phpglfw_drawcall_release_zval(&intern->camera_position_zv);
+    if (camera_position)
     {
-        phpglfw_drawcall_release_zval(&intern->camera_position_zv);
         ZVAL_OBJ_COPY(&intern->camera_position_zv, Z_OBJ_P(camera_position));
         intern->camera_position = phpglfw_math_vec3_objectptr_from_zobj_p(Z_OBJ(intern->camera_position_zv));
     }
     else
     {
-        phpglfw_drawcall_release_zval(&intern->camera_position_zv);
         intern->camera_position = NULL;
     }
 
-    if (view_matrix && Z_TYPE_P(view_matrix) == IS_OBJECT)
+    phpglfw_drawcall_release_zval(&intern->view_matrix_zv);
+    if (view_matrix)
     {
-        phpglfw_drawcall_release_zval(&intern->view_matrix_zv);
         ZVAL_OBJ_COPY(&intern->view_matrix_zv, Z_OBJ_P(view_matrix));
         intern->view_matrix = phpglfw_math_mat4_objectptr_from_zobj_p(Z_OBJ(intern->view_matrix_zv));
     }
     else
     {
-        phpglfw_drawcall_release_zval(&intern->view_matrix_zv);
         intern->view_matrix = NULL;
     }
 
-    if (projection_matrix && Z_TYPE_P(projection_matrix) == IS_OBJECT)
+    phpglfw_drawcall_release_zval(&intern->projection_matrix_zv);
+    if (projection_matrix)
     {
-        phpglfw_drawcall_release_zval(&intern->projection_matrix_zv);
         ZVAL_OBJ_COPY(&intern->projection_matrix_zv, Z_OBJ_P(projection_matrix));
         intern->projection_matrix = phpglfw_math_mat4_objectptr_from_zobj_p(Z_OBJ(intern->projection_matrix_zv));
     }
     else
     {
-        phpglfw_drawcall_release_zval(&intern->projection_matrix_zv);
         intern->projection_matrix = NULL;
     }
 
     if (intern->view_matrix && intern->projection_matrix)
     {
-        phpglfw_drawcall_extract_frustum(intern);
+        phpglfw_drawcall_extract_frustum(intern); // sets frustum_from_matrices = true
     }
-    else
+    else if (intern->frustum_from_matrices)
     {
+        // we no longer have both matrices to derive a frustum from (incomplete
+        // matrix update, or a position-only update). a previously matrix-derived
+        // frustum is now stale, so disable culling (safe default). a manually set
+        // frustum (setFrustumPlanes) is left intact.
         intern->has_frustum = false;
+        intern->frustum_from_matrices = false;
     }
 }
 
@@ -357,6 +413,7 @@ static void phpglfw_drawcall_extract_frustum(phpglfw_drawcall_assembler_object *
     );
 
     intern->has_frustum = true;
+    intern->frustum_from_matrices = true;
 }
 
 PHP_METHOD(GL_Rendering_DrawCallAssembler, registerMesh)
@@ -369,12 +426,13 @@ PHP_METHOD(GL_Rendering_DrawCallAssembler, registerMesh)
     zend_long primitive = 0x0004; // gl_triangles
 
     if (zend_parse_parameters(ZEND_NUM_ARGS(), 
-        "l|llllzzll",
+        "l|llllO!O!ll",
         &vao_id,
         &vertex_offset, &vertex_count,
         &index_offset, &index_count,
-        &aabb_min, &aabb_max,
-        &material_hint, 
+        &aabb_min, phpglfw_get_math_vec3_ce(),
+        &aabb_max, phpglfw_get_math_vec3_ce(),
+        &material_hint,
         &primitive
     ) == FAILURE) {
         RETURN_THROWS();
@@ -384,11 +442,17 @@ PHP_METHOD(GL_Rendering_DrawCallAssembler, registerMesh)
 
     // resize mesh array if needed
     if (intern->mesh_count >= intern->mesh_capacity) {
+        uint32_t old_capacity = intern->mesh_capacity;
         intern->mesh_capacity *= 2;
         intern->meshes = erealloc(intern->meshes, intern->mesh_capacity * sizeof(phpglfw_drawcall_mesh));
+        // erealloc does not zero the grown region; do it ourselves so the new
+        // slots have UNDEF zvals (releasing/overwriting them stays safe).
+        memset(&intern->meshes[old_capacity], 0, (intern->mesh_capacity - old_capacity) * sizeof(phpglfw_drawcall_mesh));
     }
 
     phpglfw_drawcall_mesh *mesh = &intern->meshes[intern->mesh_count];
+    // release anything a reused slot may still hold (after clearMeshes/reset)
+    phpglfw_drawcall_release_mesh_refs(mesh);
     mesh->vao_id = vao_id;
     mesh->vertex_offset = vertex_offset;
     mesh->vertex_count = vertex_count;
@@ -397,15 +461,18 @@ PHP_METHOD(GL_Rendering_DrawCallAssembler, registerMesh)
     mesh->material_hint = material_hint;
     mesh->primitive = primitive;
 
-    // store bounding box if provided
-    if (aabb_min && Z_TYPE_P(aabb_min) == IS_OBJECT) {
-        mesh->aabb_min = phpglfw_math_vec3_objectptr_from_zobj_p(Z_OBJ_P(aabb_min));
+    // store bounding box if provided (holding a reference so it can't dangle).
+    // the "O!" spec guarantees a non-NULL arg is already a Vec3 object.
+    if (aabb_min) {
+        ZVAL_OBJ_COPY(&mesh->aabb_min_zv, Z_OBJ_P(aabb_min));
+        mesh->aabb_min = phpglfw_math_vec3_objectptr_from_zobj_p(Z_OBJ(mesh->aabb_min_zv));
     } else {
         mesh->aabb_min = NULL;
     }
 
-    if (aabb_max && Z_TYPE_P(aabb_max) == IS_OBJECT) {
-        mesh->aabb_max = phpglfw_math_vec3_objectptr_from_zobj_p(Z_OBJ_P(aabb_max));
+    if (aabb_max) {
+        ZVAL_OBJ_COPY(&mesh->aabb_max_zv, Z_OBJ_P(aabb_max));
+        mesh->aabb_max = phpglfw_math_vec3_objectptr_from_zobj_p(Z_OBJ(mesh->aabb_max_zv));
     } else {
         mesh->aabb_max = NULL;
     }
@@ -452,32 +519,34 @@ PHP_METHOD(GL_Rendering_DrawCallAssembler, setLodTable)
     zend_long mesh_handle;
     zval *distance_thresholds, *mesh_handles;
 
-    if (zend_parse_parameters(ZEND_NUM_ARGS(), "lzz", &mesh_handle, &distance_thresholds, &mesh_handles) == FAILURE) {
+    if (zend_parse_parameters(ZEND_NUM_ARGS(), "lOO",
+        &mesh_handle,
+        &distance_thresholds, phpglfw_get_buffer_glfloat_ce(),
+        &mesh_handles,        phpglfw_get_buffer_gluint_ce()) == FAILURE) {
         RETURN_THROWS();
     }
 
     phpglfw_drawcall_assembler_object *intern = phpglfw_drawcall_assembler_objectptr_from_zobj_p(Z_OBJ_P(ZEND_THIS));
 
-    if (mesh_handle >= intern->mesh_count) {
+    if (mesh_handle < 0 || (uint32_t)mesh_handle >= intern->mesh_count) {
         zend_throw_error(NULL, "invalid mesh handle");
         RETURN_THROWS();
     }
 
     phpglfw_drawcall_mesh *mesh = &intern->meshes[mesh_handle];
 
-    if (Z_TYPE_P(distance_thresholds) == IS_OBJECT) {
-        mesh->lod_distances = phpglfw_buffer_glfloat_objectptr_from_zobj_p(Z_OBJ_P(distance_thresholds));
-    }
-    else {
-        mesh->lod_distances = NULL;
-    }
+    // release any previously bound lod buffers before rebinding
+    phpglfw_drawcall_release_zval(&mesh->lod_distances_zv);
+    mesh->lod_distances = NULL;
+    phpglfw_drawcall_release_zval(&mesh->lod_handles_zv);
+    mesh->lod_handles = NULL;
 
-    if (Z_TYPE_P(mesh_handles) == IS_OBJECT) {
-        mesh->lod_handles = phpglfw_buffer_gluint_objectptr_from_zobj_p(Z_OBJ_P(mesh_handles));
-    }
-    else {
-        mesh->lod_handles = NULL;
-    }
+    // "O" guarantees objects of the expected buffer classes
+    ZVAL_OBJ_COPY(&mesh->lod_distances_zv, Z_OBJ_P(distance_thresholds));
+    mesh->lod_distances = phpglfw_buffer_glfloat_objectptr_from_zobj_p(Z_OBJ(mesh->lod_distances_zv));
+
+    ZVAL_OBJ_COPY(&mesh->lod_handles_zv, Z_OBJ_P(mesh_handles));
+    mesh->lod_handles = phpglfw_buffer_gluint_objectptr_from_zobj_p(Z_OBJ(mesh->lod_handles_zv));
 }
 
 PHP_METHOD(GL_Rendering_DrawCallAssembler, setMeshMaterial)
@@ -490,7 +559,7 @@ PHP_METHOD(GL_Rendering_DrawCallAssembler, setMeshMaterial)
 
     phpglfw_drawcall_assembler_object *intern = phpglfw_drawcall_assembler_objectptr_from_zobj_p(Z_OBJ_P(ZEND_THIS));
 
-    if (mesh_handle >= intern->mesh_count) {
+    if (mesh_handle < 0 || (uint32_t)mesh_handle >= intern->mesh_count) {
         zend_throw_error(NULL, "invalid mesh handle");
         RETURN_THROWS();
     }
@@ -514,7 +583,13 @@ PHP_METHOD(GL_Rendering_DrawCallAssembler, setFrustumPlanes)
 {
     zval *left, *right, *bottom, *top, *near, *far;
 
-    if (zend_parse_parameters(ZEND_NUM_ARGS(), "zzzzzz", &left, &right, &bottom, &top, &near, &far) == FAILURE) {
+    if (zend_parse_parameters(ZEND_NUM_ARGS(), "OOOOOO",
+        &left,   phpglfw_get_math_vec4_ce(),
+        &right,  phpglfw_get_math_vec4_ce(),
+        &bottom, phpglfw_get_math_vec4_ce(),
+        &top,    phpglfw_get_math_vec4_ce(),
+        &near,   phpglfw_get_math_vec4_ce(),
+        &far,    phpglfw_get_math_vec4_ce()) == FAILURE) {
         RETURN_THROWS();
     }
 
@@ -534,6 +609,7 @@ PHP_METHOD(GL_Rendering_DrawCallAssembler, setFrustumPlanes)
     }
 
     intern->has_frustum = true;
+    intern->frustum_from_matrices = false; // manually set, not matrix-derived
 }
 
 PHP_METHOD(GL_Rendering_DrawCallAssembler, setSortMode)
@@ -573,11 +649,6 @@ static float phpglfw_drawcall_distance_to_camera_sq(phpglfw_math_vec3_object *ca
     const float dz = transform[3][2] - camera_pos->data[2];
 
     return dx * dx + dy * dy + dz * dz;
-}
-
-static float phpglfw_drawcall_distance_to_camera(phpglfw_math_vec3_object *camera_pos, const mat4x4 transform)
-{
-    return sqrtf(phpglfw_drawcall_distance_to_camera_sq(camera_pos, transform));
 }
 
 static uint32_t phpglfw_drawcall_collect_visible_indices(phpglfw_drawcall_assembler_object *intern, uint32_t *visible_indices)
@@ -669,9 +740,10 @@ static zend_always_inline uint32_t phpglfw_drawcall_select_lod(
         return instance->base_mesh_handle;
     }
 
-    // check cache first
+    // check cache first (handle 0 is a valid mesh, so use an explicit valid flag
+    // rather than a "handle != 0" sentinel)
     const float distance_diff = fabsf(distance - instance->cached_lod_distance);
-    if (distance_diff < PHPGLFW_LOD_CACHE_EPSILON && instance->cached_lod_handle != 0) {
+    if (instance->lod_cache_valid && distance_diff < PHPGLFW_LOD_CACHE_EPSILON) {
         return instance->cached_lod_handle;
     }
 
@@ -682,37 +754,29 @@ static zend_always_inline uint32_t phpglfw_drawcall_select_lod(
 
     const phpglfw_drawcall_mesh *mesh = &intern->meshes[base_handle];
 
-    if (!mesh->lod_distances || !mesh->lod_handles)
-    {
-        instance->cached_lod_distance = distance;
-        instance->cached_lod_handle = base_handle;
-        return base_handle;
-    }
-
-    const uint32_t lod_count = (uint32_t)cvector_size(mesh->lod_distances->vec);
-    const uint32_t handle_count = (uint32_t)cvector_size(mesh->lod_handles->vec);
+    // fall back to the base handle when there are no usable LODs. lod_count and
+    // handle_count are both non-zero past this guard, so limit is too.
+    const uint32_t lod_count = mesh->lod_distances ? (uint32_t)cvector_size(mesh->lod_distances->vec) : 0;
+    const uint32_t handle_count = mesh->lod_handles ? (uint32_t)cvector_size(mesh->lod_handles->vec) : 0;
     if (lod_count == 0 || handle_count == 0)
     {
+        instance->lod_cache_valid = true;
         instance->cached_lod_distance = distance;
         instance->cached_lod_handle = base_handle;
         return base_handle;
     }
 
     const uint32_t limit = lod_count < handle_count ? lod_count : handle_count;
-    if (limit == 0)
-    {
-        instance->cached_lod_distance = distance;
-        instance->cached_lod_handle = base_handle;
-        return base_handle;
-    }
 
-    const float clamped_distance = distance < 0.0f ? 0.0f : distance;
+    // distance is the SQUARED distance to the camera, so compare against
+    // squared thresholds (monotonic, so LOD selection is unchanged).
+    const float clamped_distance_sq = distance < 0.0f ? 0.0f : distance;
     uint32_t selected_handle = base_handle;
-    
+
     // optimize loop by avoiding bounds checks where possible
     const float *distances = mesh->lod_distances->vec;
     const uint32_t *handles = mesh->lod_handles->vec;
-    
+
     for (uint32_t i = 0; i < limit; i++)
     {
         const float threshold = distances[i];
@@ -723,7 +787,7 @@ static zend_always_inline uint32_t phpglfw_drawcall_select_lod(
             continue;
         }
 
-        if (clamped_distance >= threshold)
+        if (clamped_distance_sq >= threshold * threshold)
         {
             selected_handle = alternative;
         }
@@ -734,9 +798,10 @@ static zend_always_inline uint32_t phpglfw_drawcall_select_lod(
     }
 
     // cache result
+    instance->lod_cache_valid = true;
     instance->cached_lod_distance = distance;
     instance->cached_lod_handle = selected_handle;
-    
+
     return selected_handle;
 }
 
@@ -760,12 +825,14 @@ static inline uint64_t make_sort_key_transparent(
 ){
     uint32_t depth_rev = (SK_MASK(SK_DEPTH_BITS) - (depth_bucket & SK_MASK(SK_DEPTH_BITS)));
     uint64_t k = 0;
-    k |= ((uint64_t)(pass        & SK_MASK(SK_PASS_BITS)))  << SK_PASS_SHIFT;
-    k |= ((uint64_t)(depth_rev   & SK_MASK(SK_DEPTH_BITS))) << SK_PROG_SHIFT;
-    k |= ((uint64_t)(program_id  & SK_MASK(SK_PROG_BITS)))  << SK_MAT_SHIFT;
-    k |= ((uint64_t)(material_id & SK_MASK(SK_MAT_BITS)))   << SK_VAO_SHIFT;
-    k |= ((uint64_t)(vao_id      & SK_MASK(SK_VAO_BITS)))   << SK_MESH_SHIFT;
-    k |= ((uint64_t)(mesh_id     & SK_MASK(SK_MESH_BITS)))  << SK_DEPTH_SHIFT;
+    // depth-major layout so transparent draws sort back-to-front. uses the
+    // dedicated SKT_* shifts whose field widths match the reordered fields.
+    k |= ((uint64_t)(pass        & SK_MASK(SK_PASS_BITS)))  << SKT_PASS_SHIFT;
+    k |= ((uint64_t)(depth_rev   & SK_MASK(SK_DEPTH_BITS))) << SKT_DEPTH_SHIFT;
+    k |= ((uint64_t)(program_id  & SK_MASK(SK_PROG_BITS)))  << SKT_PROG_SHIFT;
+    k |= ((uint64_t)(material_id & SK_MASK(SK_MAT_BITS)))   << SKT_MAT_SHIFT;
+    k |= ((uint64_t)(vao_id      & SK_MASK(SK_VAO_BITS)))   << SKT_VAO_SHIFT;
+    k |= ((uint64_t)(mesh_id     & SK_MASK(SK_MESH_BITS)))  << SKT_MESH_SHIFT;
     return k;
 }
 
@@ -794,13 +861,35 @@ static inline void phpglfw_drawcall_compute_sort_key(phpglfw_drawcall_assembler_
         instance->flags
     );
 
-    // quantize depth to 0-1023 range (clamped at 1000 units) for 10-bit field
-    float distance = instance->sort_distance + instance->sort_bias;
-    uint32_t depth_bucket = (uint32_t)(fminf(distance / 1000.0f, 1.0f) * 1023.0f);
+    // pick the sort direction first; it also decides how we quantize depth.
+    // SORT_NONE keeps the per-pass default (transparent = back-to-front,
+    // everything else front-to-back); the explicit modes force a global
+    // direction regardless of pass.
+    bool back_to_front;
+    switch (intern->sort_mode) {
+        case PHPGLFW_SORT_FRONT_TO_BACK: back_to_front = false; break;
+        case PHPGLFW_SORT_BACK_TO_FRONT: back_to_front = true; break;
+        default:                         back_to_front = (instance->pass == PHPGLFW_PASS_TRANSPARENT); break;
+    }
 
-    const bool is_transparent = (instance->pass == PHPGLFW_PASS_TRANSPARENT);
+    // quantize depth to the 0-1023 range (10-bit field). sort_distance holds
+    // the SQUARED distance to the camera. back-to-front (transparent) draws use
+    // depth as the *most*-significant sort field with only 10 bits, so they
+    // need real-distance resolution in the near field -> take the sqrt here.
+    // front-to-back (opaque) draws use depth as the *least*-significant field,
+    // so quantizing straight from the squared distance is enough (monotonic)
+    // and keeps the hot path sqrt-free. clamp to >= 0 first: a negative float
+    // cast to uint32_t is undefined and would jumble the bucket.
+    uint32_t depth_bucket;
+    if (back_to_front) {
+        // sort_bias is applied in linear distance space, matching submit()'s
+        // linear bias semantics.
+        float distance = sqrtf(instance->sort_distance) + instance->sort_bias;
+        if (distance < 0.0f) {
+            distance = 0.0f;
+        }
+        depth_bucket = (uint32_t)(fminf(distance / 1000.0f, 1.0f) * 1023.0f);
 
-    if (is_transparent) {
         instance->sort_key = make_sort_key_transparent(
             instance->pass,
             instance->program_id,
@@ -810,6 +899,16 @@ static inline void phpglfw_drawcall_compute_sort_key(phpglfw_drawcall_assembler_
             depth_bucket
         );
     } else {
+        // clamp against 1000^2 so the mapping lines up with the linear
+        // 1000-unit clamp used on the transparent path. sort_bias has no
+        // meaningful effect on this coarse least-significant bucket and is
+        // intentionally omitted to avoid a sqrt.
+        float distance_sq = instance->sort_distance;
+        if (distance_sq < 0.0f) {
+            distance_sq = 0.0f;
+        }
+        depth_bucket = (uint32_t)(fminf(distance_sq / (1000.0f * 1000.0f), 1.0f) * 1023.0f);
+
         instance->sort_key = make_sort_key_opaque(
             instance->pass,
             instance->program_id,
@@ -861,7 +960,7 @@ PHP_METHOD(GL_Rendering_DrawCallAssembler, submit)
 
     phpglfw_drawcall_assembler_object *intern = phpglfw_drawcall_assembler_objectptr_from_zobj_p(Z_OBJ_P(ZEND_THIS));
 
-    if (mesh_handle >= intern->mesh_count) {
+    if (mesh_handle < 0 || (uint32_t)mesh_handle >= intern->mesh_count) {
         zend_throw_error(NULL, "invalid mesh handle");
         RETURN_THROWS();
     }
@@ -873,7 +972,6 @@ PHP_METHOD(GL_Rendering_DrawCallAssembler, submit)
     }
 
     phpglfw_drawcall_instance *instance = &intern->instances[intern->instance_count];
-    const phpglfw_drawcall_mesh *mesh = &intern->meshes[mesh_handle];
     instance->base_mesh_handle = (uint32_t)mesh_handle;
     instance->mesh_handle = (uint32_t)mesh_handle;
     instance->material_id = material_id;
@@ -884,6 +982,7 @@ PHP_METHOD(GL_Rendering_DrawCallAssembler, submit)
     instance->sort_bias = sort_bias;
     instance->sort_distance = 0.0f;
     
+    instance->lod_cache_valid = false;
     instance->cached_lod_distance = -1.0f;
     instance->cached_lod_handle = 0;
 
@@ -895,24 +994,240 @@ PHP_METHOD(GL_Rendering_DrawCallAssembler, submit)
     intern->instance_count++;
 }
 
-static const phpglfw_drawcall_instance *instances_global;
-static int phpglfw_index_compare_by_sort_key(const void *a, const void *b)
+// below this count neither the radix setup nor a quicksort partition pays off,
+// so we use a plain stable insertion sort (it also guarantees the stable order
+// the unit tests rely on).
+#define PHPGLFW_SMALL_SORT_THRESHOLD 64
+
+// stable LSD radix sort of visible_indices by the precomputed 64-bit sort_key.
+//
+// the keys are extracted once into a scratch array so the byte passes never
+// touch the scattered 128-byte instance struct, and the scratch buffers are
+// reused across calls. this wins when the keys are diverse: it replaces a
+// comparison sort's O(n log n) key-chasing comparisons with a fixed number of
+// linear, cache-friendly passes.
+static void phpglfw_drawcall_radix_sort(phpglfw_drawcall_assembler_object *intern, uint32_t *visible_indices, uint32_t count)
 {
-    const uint32_t idx_a = *(const uint32_t *)a;
-    const uint32_t idx_b = *(const uint32_t *)b;
-    const uint64_t key_a = instances_global[idx_a].sort_key;
-    const uint64_t key_b = instances_global[idx_b].sort_key;
-    return (key_a < key_b) ? -1 : ((key_a > key_b) ? 1 : 0);
+    const phpglfw_drawcall_instance * const instances = intern->instances;
+
+    // grow the scratch buffers if needed (geometric, like the instance array)
+    if (intern->sort_scratch_capacity < count)
+    {
+        uint32_t new_cap = intern->sort_scratch_capacity ? intern->sort_scratch_capacity : 256;
+        while (new_cap < count) {
+            new_cap *= 2;
+        }
+        intern->sort_keys_a = erealloc(intern->sort_keys_a, new_cap * sizeof(uint64_t));
+        intern->sort_keys_b = erealloc(intern->sort_keys_b, new_cap * sizeof(uint64_t));
+        intern->sort_indices_b = erealloc(intern->sort_indices_b, new_cap * sizeof(uint32_t));
+        intern->sort_scratch_capacity = new_cap;
+    }
+
+    uint64_t *keys_src = intern->sort_keys_a;
+    uint64_t *keys_dst = intern->sort_keys_b;
+    uint32_t *idx_src = visible_indices;
+    uint32_t *idx_dst = intern->sort_indices_b;
+
+    // extract the keys once so the passes below stay cache-friendly
+    for (uint32_t i = 0; i < count; i++) {
+        keys_src[i] = instances[idx_src[i]].sort_key;
+    }
+
+    // LSD radix over the 8 bytes of the 64-bit key
+    for (uint32_t shift = 0; shift < 64; shift += 8)
+    {
+        uint32_t counts[256] = {0};
+        for (uint32_t i = 0; i < count; i++) {
+            counts[(keys_src[i] >> shift) & 0xFF]++;
+        }
+
+        // skip the pass entirely if every key shares this byte (small keys)
+        if (counts[(keys_src[0] >> shift) & 0xFF] == count) {
+            continue;
+        }
+
+        // exclusive prefix sum -> bucket start offsets
+        uint32_t sum = 0;
+        for (uint32_t b = 0; b < 256; b++) {
+            const uint32_t c = counts[b];
+            counts[b] = sum;
+            sum += c;
+        }
+
+        // stable scatter
+        for (uint32_t i = 0; i < count; i++) {
+            const uint32_t pos = counts[(keys_src[i] >> shift) & 0xFF]++;
+            keys_dst[pos] = keys_src[i];
+            idx_dst[pos] = idx_src[i];
+        }
+
+        uint64_t *tk = keys_src; keys_src = keys_dst; keys_dst = tk;
+        uint32_t *ti = idx_src; idx_src = idx_dst; idx_dst = ti;
+    }
+
+    // if the result ended up in the scratch index buffer, copy it back
+    if (idx_src != visible_indices) {
+        memcpy(visible_indices, idx_src, (size_t)count * sizeof(uint32_t));
+    }
+}
+
+// in-place 3-way (Dutch-flag) quicksort of visible_indices by sort_key, reading
+// the keys on demand. this wins when the keys are highly repetitive: equal keys
+// collapse into the middle partition so the sort finishes in a couple of passes
+// instead of paying the radix extract + per-byte passes. iterative with an
+// explicit stack (recurse the smaller side, loop the larger) to bound depth,
+// median-of-3 pivot to avoid quadratic behaviour on sorted input, and an
+// insertion-sort cutoff for small partitions.
+static void phpglfw_drawcall_quicksort3(const phpglfw_drawcall_instance *instances, uint32_t *a, uint32_t count)
+{
+    // signed bounds keep the lt-1 / gt+1 boundary math free of unsigned wrap.
+    // depth is bounded to ~2*log2(count) because we only push the smaller side.
+    int64_t stack[128];
+    int sp = 0;
+    stack[sp++] = 0;
+    stack[sp++] = (int64_t)count - 1;
+
+    while (sp > 0)
+    {
+        int64_t hi = stack[--sp];
+        int64_t lo = stack[--sp];
+
+        while (lo < hi)
+        {
+            if (hi - lo < 24)
+            {
+                for (int64_t i = lo + 1; i <= hi; i++) {
+                    const uint32_t v = a[i];
+                    const uint64_t k = instances[v].sort_key;
+                    int64_t j = i;
+                    while (j > lo && instances[a[j - 1]].sort_key > k) {
+                        a[j] = a[j - 1];
+                        j--;
+                    }
+                    a[j] = v;
+                }
+                break;
+            }
+
+            // median-of-3 pivot key from lo, mid, hi
+            const int64_t mid = lo + (hi - lo) / 2;
+            const uint64_t ka = instances[a[lo]].sort_key;
+            const uint64_t kb = instances[a[mid]].sort_key;
+            const uint64_t kc = instances[a[hi]].sort_key;
+            uint64_t pivot;
+            if (ka < kb) {
+                pivot = (kb < kc) ? kb : ((ka < kc) ? kc : ka);
+            } else {
+                pivot = (ka < kc) ? ka : ((kb < kc) ? kc : kb);
+            }
+
+            // 3-way partition: [lo,lt-1] < pivot, [lt,gt] == pivot, [gt+1,hi] > pivot
+            int64_t lt = lo, gt = hi, i = lo;
+            while (i <= gt)
+            {
+                const uint64_t ki = instances[a[i]].sort_key;
+                if (ki < pivot) {
+                    const uint32_t t = a[lt]; a[lt] = a[i]; a[i] = t;
+                    lt++; i++;
+                } else if (ki > pivot) {
+                    const uint32_t t = a[i]; a[i] = a[gt]; a[gt] = t;
+                    gt--;
+                } else {
+                    i++;
+                }
+            }
+
+            // recurse the smaller side, loop on the larger (bounds stack depth)
+            const int64_t left_lo = lo, left_hi = lt - 1;
+            const int64_t right_lo = gt + 1, right_hi = hi;
+            if ((left_hi - left_lo) > (right_hi - right_lo)) {
+                if (right_lo < right_hi) { stack[sp++] = right_lo; stack[sp++] = right_hi; }
+                hi = left_hi;
+            } else {
+                if (left_lo < left_hi) { stack[sp++] = left_lo; stack[sp++] = left_hi; }
+                lo = right_lo;
+            }
+        }
+    }
+}
+
+// sorts visible_indices in place by the precomputed 64-bit instance sort_key.
+//
+// picks the algorithm from a cheap cardinality estimate of an evenly spaced key
+// sample: diverse keys go to the radix sort (its fixed extract + pass cost
+// amortizes over the many comparisons a comparison sort would otherwise do),
+// while highly repetitive keys go to the 3-way quicksort (which collapses equal
+// keys and finishes without radix's overhead). small batches use a stable
+// insertion sort, which also guarantees the stable order the unit tests expect.
+static void phpglfw_drawcall_sort_visible(phpglfw_drawcall_assembler_object *intern, uint32_t *visible_indices, uint32_t count)
+{
+    if (count < 2) {
+        return;
+    }
+
+    const phpglfw_drawcall_instance * const instances = intern->instances;
+
+    if (count < PHPGLFW_SMALL_SORT_THRESHOLD)
+    {
+        for (uint32_t i = 1; i < count; i++)
+        {
+            const uint32_t idx = visible_indices[i];
+            const uint64_t key = instances[idx].sort_key;
+            uint32_t j = i;
+            while (j > 0 && instances[visible_indices[j - 1]].sort_key > key) {
+                visible_indices[j] = visible_indices[j - 1];
+                j--;
+            }
+            visible_indices[j] = idx;
+        }
+        return;
+    }
+
+    // estimate key cardinality from an evenly spaced sample
+    enum { SAMPLE = 64 };
+    uint64_t sample[SAMPLE];
+    uint32_t step = count / SAMPLE;
+    if (step == 0) {
+        step = 1;
+    }
+    uint32_t sn = 0;
+    for (uint32_t i = 0; sn < SAMPLE && i < count; i += step) {
+        sample[sn++] = instances[visible_indices[i]].sort_key;
+    }
+    for (uint32_t i = 1; i < sn; i++) {
+        const uint64_t v = sample[i];
+        uint32_t j = i;
+        while (j > 0 && sample[j - 1] > v) {
+            sample[j] = sample[j - 1];
+            j--;
+        }
+        sample[j] = v;
+    }
+    uint32_t distinct = sn ? 1 : 0;
+    for (uint32_t i = 1; i < sn; i++) {
+        if (sample[i] != sample[i - 1]) {
+            distinct++;
+        }
+    }
+
+    // diverse sample (>= half distinct) -> radix; repetitive -> 3-way quicksort
+    if (distinct * 2 >= sn) {
+        phpglfw_drawcall_radix_sort(intern, visible_indices, count);
+    } else {
+        phpglfw_drawcall_quicksort3(instances, visible_indices, count);
+    }
 }
 
 PHP_METHOD(GL_Rendering_DrawCallAssembler, build)
 {
     phpglfw_drawcall_assembler_object *intern = phpglfw_drawcall_assembler_objectptr_from_zobj_p(Z_OBJ_P(ZEND_THIS));
 
-    // clear output buffers
+    // clear output buffers (including payload, so a frame with no payload bound
+    // does not leave stale data exposed on the readonly property)
     cvector_set_size(intern->command_buffer->vec, 0);
     cvector_set_size(intern->instance_transform_buffer->vec, 0);
     cvector_set_size(intern->instance_meta_buffer->vec, 0);
+    cvector_set_size(intern->instance_payload_buffer->vec, 0);
 
     uint32_t command_count = 0;
     uint32_t instance_offset = 0;
@@ -927,13 +1242,9 @@ PHP_METHOD(GL_Rendering_DrawCallAssembler, build)
     }
     else
     {
-        // ensure the index buffer is allocated and large enough
-        if (!intern->visible_index_buffer) {
-            cvector_reserve(intern->visible_index_buffer, visible_count);
-        }
-        else if (cvector_capacity(intern->visible_index_buffer) < visible_count) {
-            cvector_reserve(intern->visible_index_buffer, visible_count);
-        }
+        // ensure the index buffer is allocated and large enough. cvector_reserve
+        // is a no-op when capacity already suffices and allocates from NULL.
+        cvector_reserve(intern->visible_index_buffer, visible_count);
         visible_indices = intern->visible_index_buffer;
     }
 
@@ -967,7 +1278,8 @@ PHP_METHOD(GL_Rendering_DrawCallAssembler, build)
     size_t transform_cursor = 0;
     size_t meta_cursor = 0;
 
-    const phpglfw_drawcall_instance * const instances = intern->instances;
+    // non-const: the distance loop below mutates instances in place
+    phpglfw_drawcall_instance * const instances = intern->instances;
     const phpglfw_drawcall_mesh * const meshes = intern->meshes;
 
     // compute the distance to camera for each visible instance
@@ -977,11 +1289,15 @@ PHP_METHOD(GL_Rendering_DrawCallAssembler, build)
         {
             const uint32_t instance_index = visible_indices[i];
             phpglfw_drawcall_instance *instance = &instances[instance_index];
-            
-            // calculate distance to camera and apply it to the instance
+
+            // store the SQUARED distance to the camera and skip the per-instance
+            // sqrt here. LOD selection compares against squared thresholds and
+            // the opaque depth bucket quantizes from the squared distance; the
+            // transparent path takes the sqrt on demand in compute_sort_key.
+            // the sort key is (re)computed by refresh_instance_lods below once
+            // the final LOD mesh handle is known, so we don't compute it here.
             float distance_sq = phpglfw_drawcall_distance_to_camera_sq(intern->camera_position, instance->transform);
-            phpglfw_drawcall_set_instance_distance(intern, instance, sqrtf(distance_sq));
-            phpglfw_drawcall_compute_sort_key(intern, instance);
+            phpglfw_drawcall_set_instance_distance(intern, instance, distance_sq);
         }
     }
 
@@ -989,11 +1305,8 @@ PHP_METHOD(GL_Rendering_DrawCallAssembler, build)
     phpglfw_drawcall_refresh_instance_lods(intern);
 
     // sort the visible indices by precomputed sort keys
-    if (visible_count > 1) {
-        instances_global = instances;
-        qsort(visible_indices, visible_count, sizeof(uint32_t), phpglfw_index_compare_by_sort_key);
-    }
-    
+    phpglfw_drawcall_sort_visible(intern, visible_indices, visible_count);
+
     // build draw call commands
     for (uint32_t base_pos = 0; base_pos < visible_count;)
     {
@@ -1064,8 +1377,9 @@ PHP_METHOD(GL_Rendering_DrawCallAssembler, build)
             meta_cursor += PHPGLFW_INSTANCE_META_STRIDE;
         }
 
-        // copy payload data if available
-        if (payload_write_ptr && !Z_ISUNDEF(intern->payload_data_buffer_zv)) 
+        // copy payload data if available. payload_write_ptr is non-NULL only
+        // when a payload buffer is bound, so no need to re-check the zval.
+        if (payload_write_ptr)
         {
             phpglfw_buffer_glfloat_object *payload_source = phpglfw_buffer_glfloat_objectptr_from_zobj_p(Z_OBJ(intern->payload_data_buffer_zv));
 
@@ -1168,6 +1482,8 @@ PHP_METHOD(GL_Rendering_DrawCallAssembler, bindPayloadData)
     phpglfw_drawcall_assembler_object *intern = phpglfw_drawcall_assembler_objectptr_from_zobj_p(Z_OBJ_P(ZEND_THIS));
 
     // store reference to the buffer object and stride
+    // release any previously bound payload buffer first to avoid leaking it
+    phpglfw_drawcall_release_zval(&intern->payload_data_buffer_zv);
     ZVAL_COPY(&intern->payload_data_buffer_zv, payload_buffer);
     intern->payload_data_stride = (uint32_t)stride;
 }
@@ -1253,6 +1569,24 @@ PHP_METHOD(GL_Rendering_DrawCallAssembler, execute)
 
     phpglfw_drawcall_assembler_object *intern = phpglfw_drawcall_assembler_objectptr_from_zobj_p(Z_OBJ_P(ZEND_THIS));
 
+    // nothing was submitted -> nothing to draw. return before the transform
+    // buffer precondition so an empty assembler (e.g. a render pass whose
+    // geometry has no instances this frame) is a harmless no-op rather than an
+    // error. bindTransformBuffer only runs when a mesh is registered, so an
+    // assembler that never received any instances legitimately has no VBO yet.
+    if (intern->instance_count == 0) {
+        intern->final_command_count = 0;
+        intern->final_instance_count = 0;
+        RETURN_LONG(0);
+    }
+
+    // precondition: a transform VBO must have been created via bindTransformBuffer.
+    // check once up front rather than mid-loop so we never leave GL state half-bound.
+    if (intern->internal_transform_vbo == 0) {
+        zend_throw_error(NULL, "bindTransformBuffer must be called before execute, seeing this error means you probably forgot to bind your VAO to the DrawCallAssembler.");
+        RETURN_THROWS();
+    }
+
     uint32_t command_count = 0;
     uint32_t instance_offset = 0;
     uint32_t visible_count = intern->instance_count;
@@ -1266,13 +1600,9 @@ PHP_METHOD(GL_Rendering_DrawCallAssembler, execute)
     }
     else
     {
-        // ensure the index buffer is allocated and large enough
-        if (!intern->visible_index_buffer) {
-            cvector_reserve(intern->visible_index_buffer, visible_count);
-        }
-        else if (cvector_capacity(intern->visible_index_buffer) < visible_count) {
-            cvector_reserve(intern->visible_index_buffer, visible_count);
-        }
+        // ensure the index buffer is allocated and large enough. cvector_reserve
+        // is a no-op when capacity already suffices and allocates from NULL.
+        cvector_reserve(intern->visible_index_buffer, visible_count);
         visible_indices = intern->visible_index_buffer;
     }
 
@@ -1298,10 +1628,14 @@ PHP_METHOD(GL_Rendering_DrawCallAssembler, execute)
             const uint32_t instance_index = visible_indices[i];
             phpglfw_drawcall_instance *instance = &instances[instance_index];
             
-            // calculate distance to camera and apply it to the instance
+            // store the SQUARED distance to the camera and skip the per-instance
+            // sqrt here. LOD selection compares against squared thresholds and
+            // the opaque depth bucket quantizes from the squared distance; the
+            // transparent path takes the sqrt on demand in compute_sort_key.
+            // the sort key is (re)computed by refresh_instance_lods below once
+            // the final LOD mesh handle is known, so we don't compute it here.
             float distance_sq = phpglfw_drawcall_distance_to_camera_sq(intern->camera_position, instance->transform);
-            phpglfw_drawcall_set_instance_distance(intern, instance, sqrtf(distance_sq));
-            phpglfw_drawcall_compute_sort_key(intern, instance);
+            phpglfw_drawcall_set_instance_distance(intern, instance, distance_sq);
         }
     }
 
@@ -1309,10 +1643,7 @@ PHP_METHOD(GL_Rendering_DrawCallAssembler, execute)
     phpglfw_drawcall_refresh_instance_lods(intern);
 
     // sort the visible indices by precomputed sort keys
-    if (visible_count > 1) {
-        instances_global = instances;
-        qsort(visible_indices, visible_count, sizeof(uint32_t), phpglfw_index_compare_by_sort_key);
-    }
+    phpglfw_drawcall_sort_visible(intern, visible_indices, visible_count);
 
     // prepare transform buffer data
     const size_t total_transform_floats = (size_t)visible_count * PHPGLFW_TRANSFORM_STRIDE;
@@ -1407,11 +1738,7 @@ PHP_METHOD(GL_Rendering_DrawCallAssembler, execute)
             transform_cursor += PHPGLFW_TRANSFORM_STRIDE;
         }
 
-        // upload transform data to GPU using internal VBO
-        if (intern->internal_transform_vbo == 0) {
-            zend_throw_error(NULL, "bindTransformBuffer must be called before execute, seeing this error means you probably forgot to bind your VAO to the DrawCallAssembler.");
-            RETURN_THROWS();
-        }
+        // upload transform data to GPU using internal VBO (existence checked up front)
         glBindBuffer(GL_ARRAY_BUFFER, intern->internal_transform_vbo);
         glBufferData(GL_ARRAY_BUFFER, batch_size * PHPGLFW_TRANSFORM_STRIDE * sizeof(float), transform_write_ptr + (instance_offset * PHPGLFW_TRANSFORM_STRIDE), GL_DYNAMIC_DRAW);
 
@@ -1528,6 +1855,9 @@ PHP_METHOD(GL_Rendering_DrawCallAssembler, clearMeshes)
     }
 
     phpglfw_drawcall_assembler_object *intern = phpglfw_drawcall_assembler_objectptr_from_zobj_p(Z_OBJ_P(ZEND_THIS));
+    for (uint32_t i = 0; i < intern->mesh_count; i++) {
+        phpglfw_drawcall_release_mesh_refs(&intern->meshes[i]);
+    }
     intern->mesh_count = 0;
 }
 
@@ -1540,6 +1870,9 @@ PHP_METHOD(GL_Rendering_DrawCallAssembler, reset)
 
     phpglfw_drawcall_assembler_object *intern = phpglfw_drawcall_assembler_objectptr_from_zobj_p(Z_OBJ_P(ZEND_THIS));
 
+    for (uint32_t i = 0; i < intern->mesh_count; i++) {
+        phpglfw_drawcall_release_mesh_refs(&intern->meshes[i]);
+    }
     intern->mesh_count = 0;
     intern->instance_count = 0;
     intern->final_command_count = 0;

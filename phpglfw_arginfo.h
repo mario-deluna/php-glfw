@@ -1,5 +1,5 @@
 /* This is a generated file, edit the .stub.php file instead.
- * Stub hash: 0eda5f52dd751acb54f19c93baeb11164c8bd4d5 */
+ * Stub hash: 9def2afe8de1930de99204621c2569d867a29ae5 */
 
 ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_glCullFace, 0, 1, IS_VOID, 0)
 	ZEND_ARG_TYPE_INFO(0, mode, IS_LONG, 0)
@@ -3155,7 +3155,7 @@ ZEND_END_ARG_INFO()
 
 #define arginfo_class_GL_Rendering_DrawCallAssembler_build arginfo_glGetError
 
-ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_class_GL_Rendering_DrawCallAssembler_execute, 0, 1, IS_VOID, 0)
+ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_class_GL_Rendering_DrawCallAssembler_execute, 0, 1, IS_LONG, 0)
 	ZEND_ARG_TYPE_INFO(0, drawCallback, IS_CALLABLE, 0)
 ZEND_END_ARG_INFO()
 
@@ -3298,6 +3298,14 @@ ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(arginfo_class_GL_VectorGraphics_VGImage_m
 	ZEND_ARG_TYPE_INFO_WITH_DEFAULT_VALUE(0, alpha, IS_DOUBLE, 0, "1.0")
 ZEND_END_ARG_INFO()
 
+ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(arginfo_class_GL_VectorGraphics_SVGImage_fromDisk, 0, 1, GL\\VectorGraphics\\SVGImage, 0)
+	ZEND_ARG_TYPE_INFO(0, path, IS_STRING, 0)
+ZEND_END_ARG_INFO()
+
+ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(arginfo_class_GL_VectorGraphics_SVGImage_fromString, 0, 1, GL\\VectorGraphics\\SVGImage, 0)
+	ZEND_ARG_TYPE_INFO(0, svg, IS_STRING, 0)
+ZEND_END_ARG_INFO()
+
 ZEND_BEGIN_ARG_INFO_EX(arginfo_class_GL_VectorGraphics_VGContext___construct, 0, 0, 0)
 	ZEND_ARG_TYPE_INFO_WITH_DEFAULT_VALUE(0, flags, IS_LONG, 0, "0")
 ZEND_END_ARG_INFO()
@@ -3336,6 +3344,14 @@ ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(arginfo_class_GL_VectorGraphics_VGContext
 	ZEND_ARG_TYPE_INFO(0, height, IS_LONG, 0)
 	ZEND_ARG_TYPE_INFO_WITH_DEFAULT_VALUE(0, repeatMode, IS_LONG, 0, "GL\\VectorGraphics\\VGImage::REPEAT_NONE")
 	ZEND_ARG_TYPE_INFO_WITH_DEFAULT_VALUE(0, filterMode, IS_LONG, 0, "GL\\VectorGraphics\\VGImage::FILTER_LINEAR")
+ZEND_END_ARG_INFO()
+
+ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_class_GL_VectorGraphics_VGContext_drawSVG, 0, 1, IS_VOID, 0)
+	ZEND_ARG_OBJ_INFO(0, svg, GL\\VectorGraphics\\SVGImage, 0)
+	ZEND_ARG_TYPE_INFO_WITH_DEFAULT_VALUE(0, x, IS_DOUBLE, 0, "0.0")
+	ZEND_ARG_TYPE_INFO_WITH_DEFAULT_VALUE(0, y, IS_DOUBLE, 0, "0.0")
+	ZEND_ARG_TYPE_INFO_WITH_DEFAULT_VALUE(0, w, IS_DOUBLE, 1, "null")
+	ZEND_ARG_TYPE_INFO_WITH_DEFAULT_VALUE(0, h, IS_DOUBLE, 1, "null")
 ZEND_END_ARG_INFO()
 
 ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(arginfo_class_GL_VectorGraphics_VGContext_linearGradient, 0, 6, GL\\VectorGraphics\\VGPaint, 0)
@@ -3565,7 +3581,17 @@ ZEND_END_ARG_INFO()
 
 #define arginfo_class_GL_VectorGraphics_VGContext_fill arginfo_glFinish
 
+#define arginfo_class_GL_VectorGraphics_VGContext_fillEvenOdd arginfo_glFinish
+
 #define arginfo_class_GL_VectorGraphics_VGContext_stroke arginfo_glFinish
+
+#define arginfo_class_GL_VectorGraphics_VGContext_clip arginfo_glFinish
+
+#define arginfo_class_GL_VectorGraphics_VGContext_resetClip arginfo_glFinish
+
+#define arginfo_class_GL_VectorGraphics_VGContext_saveClip arginfo_glFinish
+
+#define arginfo_class_GL_VectorGraphics_VGContext_restoreClip arginfo_glFinish
 
 ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_class_GL_VectorGraphics_VGContext_createFont, 0, 2, IS_LONG, 0)
 	ZEND_ARG_TYPE_INFO(0, name, IS_STRING, 0)
@@ -4643,6 +4669,8 @@ ZEND_METHOD(GL_VectorGraphics_VGColor, copy);
 ZEND_METHOD(GL_VectorGraphics_VGColor, contrast);
 ZEND_METHOD(GL_VectorGraphics_VGImage, makePaint);
 ZEND_METHOD(GL_VectorGraphics_VGImage, makePaintCentered);
+ZEND_METHOD(GL_VectorGraphics_SVGImage, fromDisk);
+ZEND_METHOD(GL_VectorGraphics_SVGImage, fromString);
 ZEND_METHOD(GL_VectorGraphics_VGContext, __construct);
 ZEND_METHOD(GL_VectorGraphics_VGContext, fillColori);
 ZEND_METHOD(GL_VectorGraphics_VGContext, strokeColori);
@@ -4652,6 +4680,7 @@ ZEND_METHOD(GL_VectorGraphics_VGContext, transformPoint);
 ZEND_METHOD(GL_VectorGraphics_VGContext, transformVec2);
 ZEND_METHOD(GL_VectorGraphics_VGContext, imageFromTexture);
 ZEND_METHOD(GL_VectorGraphics_VGContext, imageFromHandle);
+ZEND_METHOD(GL_VectorGraphics_VGContext, drawSVG);
 ZEND_METHOD(GL_VectorGraphics_VGContext, linearGradient);
 ZEND_METHOD(GL_VectorGraphics_VGContext, boxGradient);
 ZEND_METHOD(GL_VectorGraphics_VGContext, radialGradient);
@@ -4703,7 +4732,12 @@ ZEND_METHOD(GL_VectorGraphics_VGContext, roundedRectVarying);
 ZEND_METHOD(GL_VectorGraphics_VGContext, ellipse);
 ZEND_METHOD(GL_VectorGraphics_VGContext, circle);
 ZEND_METHOD(GL_VectorGraphics_VGContext, fill);
+ZEND_METHOD(GL_VectorGraphics_VGContext, fillEvenOdd);
 ZEND_METHOD(GL_VectorGraphics_VGContext, stroke);
+ZEND_METHOD(GL_VectorGraphics_VGContext, clip);
+ZEND_METHOD(GL_VectorGraphics_VGContext, resetClip);
+ZEND_METHOD(GL_VectorGraphics_VGContext, saveClip);
+ZEND_METHOD(GL_VectorGraphics_VGContext, restoreClip);
 ZEND_METHOD(GL_VectorGraphics_VGContext, createFont);
 ZEND_METHOD(GL_VectorGraphics_VGContext, createFontAtIndex);
 ZEND_METHOD(GL_VectorGraphics_VGContext, findFont);
@@ -5813,6 +5847,13 @@ static const zend_function_entry class_GL_VectorGraphics_VGImage_methods[] = {
 };
 
 
+static const zend_function_entry class_GL_VectorGraphics_SVGImage_methods[] = {
+	ZEND_ME(GL_VectorGraphics_SVGImage, fromDisk, arginfo_class_GL_VectorGraphics_SVGImage_fromDisk, ZEND_ACC_PUBLIC|ZEND_ACC_STATIC)
+	ZEND_ME(GL_VectorGraphics_SVGImage, fromString, arginfo_class_GL_VectorGraphics_SVGImage_fromString, ZEND_ACC_PUBLIC|ZEND_ACC_STATIC)
+	ZEND_FE_END
+};
+
+
 static const zend_function_entry class_GL_VectorGraphics_VGAlign_methods[] = {
 	ZEND_FE_END
 };
@@ -5828,6 +5869,7 @@ static const zend_function_entry class_GL_VectorGraphics_VGContext_methods[] = {
 	ZEND_ME(GL_VectorGraphics_VGContext, transformVec2, arginfo_class_GL_VectorGraphics_VGContext_transformVec2, ZEND_ACC_PUBLIC)
 	ZEND_ME(GL_VectorGraphics_VGContext, imageFromTexture, arginfo_class_GL_VectorGraphics_VGContext_imageFromTexture, ZEND_ACC_PUBLIC)
 	ZEND_ME(GL_VectorGraphics_VGContext, imageFromHandle, arginfo_class_GL_VectorGraphics_VGContext_imageFromHandle, ZEND_ACC_PUBLIC)
+	ZEND_ME(GL_VectorGraphics_VGContext, drawSVG, arginfo_class_GL_VectorGraphics_VGContext_drawSVG, ZEND_ACC_PUBLIC)
 	ZEND_ME(GL_VectorGraphics_VGContext, linearGradient, arginfo_class_GL_VectorGraphics_VGContext_linearGradient, ZEND_ACC_PUBLIC)
 	ZEND_ME(GL_VectorGraphics_VGContext, boxGradient, arginfo_class_GL_VectorGraphics_VGContext_boxGradient, ZEND_ACC_PUBLIC)
 	ZEND_ME(GL_VectorGraphics_VGContext, radialGradient, arginfo_class_GL_VectorGraphics_VGContext_radialGradient, ZEND_ACC_PUBLIC)
@@ -5879,7 +5921,12 @@ static const zend_function_entry class_GL_VectorGraphics_VGContext_methods[] = {
 	ZEND_ME(GL_VectorGraphics_VGContext, ellipse, arginfo_class_GL_VectorGraphics_VGContext_ellipse, ZEND_ACC_PUBLIC)
 	ZEND_ME(GL_VectorGraphics_VGContext, circle, arginfo_class_GL_VectorGraphics_VGContext_circle, ZEND_ACC_PUBLIC)
 	ZEND_ME(GL_VectorGraphics_VGContext, fill, arginfo_class_GL_VectorGraphics_VGContext_fill, ZEND_ACC_PUBLIC)
+	ZEND_ME(GL_VectorGraphics_VGContext, fillEvenOdd, arginfo_class_GL_VectorGraphics_VGContext_fillEvenOdd, ZEND_ACC_PUBLIC)
 	ZEND_ME(GL_VectorGraphics_VGContext, stroke, arginfo_class_GL_VectorGraphics_VGContext_stroke, ZEND_ACC_PUBLIC)
+	ZEND_ME(GL_VectorGraphics_VGContext, clip, arginfo_class_GL_VectorGraphics_VGContext_clip, ZEND_ACC_PUBLIC)
+	ZEND_ME(GL_VectorGraphics_VGContext, resetClip, arginfo_class_GL_VectorGraphics_VGContext_resetClip, ZEND_ACC_PUBLIC)
+	ZEND_ME(GL_VectorGraphics_VGContext, saveClip, arginfo_class_GL_VectorGraphics_VGContext_saveClip, ZEND_ACC_PUBLIC)
+	ZEND_ME(GL_VectorGraphics_VGContext, restoreClip, arginfo_class_GL_VectorGraphics_VGContext_restoreClip, ZEND_ACC_PUBLIC)
 	ZEND_ME(GL_VectorGraphics_VGContext, createFont, arginfo_class_GL_VectorGraphics_VGContext_createFont, ZEND_ACC_PUBLIC)
 	ZEND_ME(GL_VectorGraphics_VGContext, createFontAtIndex, arginfo_class_GL_VectorGraphics_VGContext_createFontAtIndex, ZEND_ACC_PUBLIC)
 	ZEND_ME(GL_VectorGraphics_VGContext, findFont, arginfo_class_GL_VectorGraphics_VGContext_findFont, ZEND_ACC_PUBLIC)
@@ -6753,6 +6800,28 @@ static zend_class_entry *register_class_GL_VectorGraphics_VGImage(void)
 
 	INIT_NS_CLASS_ENTRY(ce, "GL\\VectorGraphics", "VGImage", class_GL_VectorGraphics_VGImage_methods);
 	class_entry = zend_register_internal_class_ex(&ce, NULL);
+
+	return class_entry;
+}
+
+static zend_class_entry *register_class_GL_VectorGraphics_SVGImage(void)
+{
+	zend_class_entry ce, *class_entry;
+
+	INIT_NS_CLASS_ENTRY(ce, "GL\\VectorGraphics", "SVGImage", class_GL_VectorGraphics_SVGImage_methods);
+	class_entry = zend_register_internal_class_ex(&ce, NULL);
+
+	zval property_width_default_value;
+	ZVAL_UNDEF(&property_width_default_value);
+	zend_string *property_width_name = zend_string_init("width", sizeof("width") - 1, 1);
+	zend_declare_typed_property(class_entry, property_width_name, &property_width_default_value, ZEND_ACC_PUBLIC|ZEND_ACC_READONLY, NULL, (zend_type) ZEND_TYPE_INIT_MASK(MAY_BE_DOUBLE));
+	zend_string_release(property_width_name);
+
+	zval property_height_default_value;
+	ZVAL_UNDEF(&property_height_default_value);
+	zend_string *property_height_name = zend_string_init("height", sizeof("height") - 1, 1);
+	zend_declare_typed_property(class_entry, property_height_name, &property_height_default_value, ZEND_ACC_PUBLIC|ZEND_ACC_READONLY, NULL, (zend_type) ZEND_TYPE_INIT_MASK(MAY_BE_DOUBLE));
+	zend_string_release(property_height_name);
 
 	return class_entry;
 }

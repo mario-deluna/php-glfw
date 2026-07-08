@@ -125,6 +125,7 @@ if test "$PHP_GLFW" != "no"; then
     phpglfw_texture.c \
     phpglfw_objparser.c \
     phpglfw_voxparser.c \
+    phpglfw_svgparser.c \
     src/ogt_vox_c_wrapper.cpp \
     phpglfw_vg.c \
     phpglfw_audio.c \
@@ -155,6 +156,7 @@ if test "$PHP_GLFW" != "no"; then
   PHP_ADD_INCLUDE([$ext_srcdir/vendor/cvector])
   PHP_ADD_INCLUDE([$ext_srcdir/vendor/stb])
   PHP_ADD_INCLUDE([$ext_srcdir/vendor/fastobj])
+  PHP_ADD_INCLUDE([$ext_srcdir/vendor/nanosvg/src])
   PHP_ADD_INCLUDE([$ext_srcdir/vendor/nanovg/src])
   PHP_ADD_INCLUDE([$ext_srcdir/vendor/miniaudio])
   PHP_ADD_INCLUDE([$ext_srcdir/vendor/opengametools/src])
@@ -167,6 +169,7 @@ if test "$PHP_GLFW" != "no"; then
         vendor/cvector/*.h \
         vendor/stb/*.h \
         vendor/fastobj/*.h \
+        vendor/nanosvg/src/*.h \
         vendor/nanovg/src/*.h \
         vendor/miniaudio/*.h \
         vendor/opengametools/src/*.h \

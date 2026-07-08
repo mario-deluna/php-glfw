@@ -44,13 +44,26 @@
 #define SK_MESH_BITS     14
 #define SK_DEPTH_BITS    10
 
-// sort key bit shifts (MSB -> LSB)
+// sort key bit shifts (MSB -> LSB) for the opaque layout:
+// pass | program | material | vao | mesh | depth
 #define SK_DEPTH_SHIFT    0
 #define SK_MESH_SHIFT    (SK_DEPTH_SHIFT + SK_DEPTH_BITS)          // 10
 #define SK_VAO_SHIFT     (SK_MESH_SHIFT  + SK_MESH_BITS)           // 24
 #define SK_MAT_SHIFT     (SK_VAO_SHIFT   + SK_VAO_BITS)            // 36
 #define SK_PROG_SHIFT    (SK_MAT_SHIFT   + SK_MAT_BITS)            // 50
 #define SK_PASS_SHIFT    (SK_PROG_SHIFT  + SK_PROG_BITS)           // 62
+
+// sort key bit shifts (MSB -> LSB) for the transparent layout:
+// pass | depth | program | material | vao | mesh
+// depth is placed high so transparent draws sort back-to-front.
+// these have their own shifts because the field *order* differs from the
+// opaque layout, so the opaque SK_*_SHIFT values do not fit the widths here.
+#define SKT_MESH_SHIFT    0
+#define SKT_VAO_SHIFT    (SKT_MESH_SHIFT + SK_MESH_BITS)           // 14
+#define SKT_MAT_SHIFT    (SKT_VAO_SHIFT  + SK_VAO_BITS)            // 26
+#define SKT_PROG_SHIFT   (SKT_MAT_SHIFT  + SK_MAT_BITS)            // 40
+#define SKT_DEPTH_SHIFT  (SKT_PROG_SHIFT + SK_PROG_BITS)           // 52
+#define SKT_PASS_SHIFT   (SKT_DEPTH_SHIFT+ SK_DEPTH_BITS)          // 62
 
 // sort key bit masks
 #define SK_MASK(bits)     ((1ULL << (bits)) - 1ULL)
@@ -71,6 +84,10 @@
 #define PHPGLFW_TRANSFORM_STRIDE 16
 #define PHPGLFW_INSTANCE_META_STRIDE 4
 
+// maximum initial capacity accepted by the constructor; bounds the arguments so
+// the geometric (capacity *= 2) growth path cannot overflow a uint32_t.
+#define PHPGLFW_MAX_CAPACITY (1u << 26)
+
 // performance constants
 #define PHPGLFW_SMALL_BUFFER_THRESHOLD 256
 #define PHPGLFW_LOD_CACHE_EPSILON 0.01f
@@ -88,10 +105,18 @@ typedef struct _phpglfw_drawcall_mesh {
     bool has_bounds;
     float bounds_center[3];
     float bounds_radius;
-    
+
     // lod table
     phpglfw_buffer_glfloat_object *lod_distances;
     phpglfw_buffer_gluint_object *lod_handles;
+
+    // owning references for the objects pointed to above. these keep the
+    // PHP objects alive for as long as the mesh references them, so the raw
+    // typed pointers above can never dangle. UNDEF when unset.
+    zval aabb_min_zv;
+    zval aabb_max_zv;
+    zval lod_distances_zv;
+    zval lod_handles_zv;
 } phpglfw_drawcall_mesh;
 
 typedef struct _phpglfw_drawcall_instance {
@@ -106,6 +131,7 @@ typedef struct _phpglfw_drawcall_instance {
     float sort_distance;
     float sort_bias;
     // lod caching
+    bool lod_cache_valid;
     float cached_lod_distance;
     uint32_t cached_lod_handle;
     // precomputed sort key for fast sorting
@@ -139,6 +165,15 @@ typedef struct _phpglfw_drawcall_assembler_object {
     // buffer where we store the visible instance indices during culling
     // we reuse this buffer each frame to avoid reallocations
     uint32_t *visible_index_buffer;
+
+    // scratch buffers for the radix sort of visible instances. the sort keys
+    // are extracted once into sort_keys_a and the sort ping-pongs between
+    // (visible_index_buffer, sort_keys_a) and (sort_indices_b, sort_keys_b).
+    // reused across build()/execute() calls and grown on demand.
+    uint64_t *sort_keys_a;
+    uint64_t *sort_keys_b;
+    uint32_t *sort_indices_b;
+    uint32_t sort_scratch_capacity;
     
     // frame state
     phpglfw_math_vec3_object *camera_position;
@@ -151,6 +186,7 @@ typedef struct _phpglfw_drawcall_assembler_object {
     // frustum planes (left, right, bottom, top, near, far)
     vec4 frustum_planes[6];
     bool has_frustum;
+    bool frustum_from_matrices; // true only when derived from view*projection
     
     // settings
     int sort_mode;
