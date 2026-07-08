@@ -79,7 +79,7 @@ class VGClipRenderTest extends GLFunctionsTestCase
         $vg->stroke();
     }
 
-    public function strokeFlagProvider() : array
+    public static function strokeFlagProvider() : array
     {
         return [
             'plain strokes'   => [VGContext::ANTIALIAS],
