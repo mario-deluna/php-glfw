@@ -47,17 +47,19 @@ jobs:
         uses: actions/cache@v3
         with:
           path: /tmp/static-php-cli
-          key: cache-static-php-cli
+          key: cache-static-php-cli-2.8.5
 
       - name: Download static-php-cli
         if: steps.cache-static-php-cli.outputs.cache-hit != 'true'
         run: |
-          # Clone only the specific commit to save time and space
-          git clone --depth 1 --branch main https://github.com/crazywhalecc/static-php-cli.git /tmp/static-php-cli
+          # Clone a pinned stable release to avoid main-branch lockfile drift
+          git clone --depth 1 --branch 2.8.5 https://github.com/crazywhalecc/static-php-cli.git /tmp/static-php-cli
           cd /tmp/static-php-cli
           
-          # Install composer dependencies
-          composer install --no-dev --no-interaction --no-progress --no-suggest --no-scripts --prefer-dist --optimize-autoloader
+          # Install composer dependencies. Use `update` rather than `install`
+          # because upstream's committed lockfile pins packages that require a
+          # newer PHP than some matrix versions (e.g. symfony/string >=8.4).
+          composer update --no-dev --no-interaction --no-progress --no-scripts --prefer-dist --optimize-autoloader
         
       - if: steps.cache-static-php-cli.outputs.cache-hit != 'true'
         run: cd /tmp/static-php-cli && ./bin/spc download --with-php=${{ matrix.php-versions }} --all
