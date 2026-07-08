@@ -495,4 +495,136 @@ class DrawCallAssemblerTest extends TestCase
         $this->expectException(\TypeError::class);
         $assembler->setCameraData(new \stdClass());
     }
+
+    public function testSetCullingStrategyRejectsInvalidValue()
+    {
+        $assembler = new DrawCallAssembler(4, 4, 4);
+
+        $this->expectException(\ValueError::class);
+        $assembler->setCullingStrategy(99);
+    }
+
+    /**
+     * Returns the sorted list of surviving instance user ids after a build.
+     * user id is stored at offset 2 of every instance meta entry (stride 4).
+     */
+    private function survivingUserIds(DrawCallAssembler $assembler): array
+    {
+        $meta = $assembler->instanceMetaBuffer;
+        $count = $assembler->builtInstanceCount();
+        $ids = [];
+        for ($i = 0; $i < $count; $i++) {
+            $ids[] = $meta[$i * 4 + 2];
+        }
+        sort($ids);
+        return $ids;
+    }
+
+    /**
+     * Submits a fixed grid of instances that spans both sides of the culling
+     * frustum's far plane (which keeps z <= 5), so roughly half are culled.
+     * Each instance carries a unique user id so survivors can be compared.
+     */
+    private function submitCullingGrid(DrawCallAssembler $assembler, int $meshHandle): void
+    {
+        $userId = 1;
+        for ($x = -3; $x <= 3; $x++) {
+            for ($y = -3; $y <= 3; $y++) {
+                for ($z = -3; $z <= 3; $z++) {
+                    $transform = new Mat4();
+                    $transform->translate(new Vec3($x * 2.0, $y * 2.0, $z * 4.0));
+                    $assembler->submit($meshHandle, $transform, 0, DrawCallAssembler::PASS_OPAQUE, 0, 0, 0.0, $userId++);
+                }
+            }
+        }
+    }
+
+    public function testOctreeCullingMatchesLinearCulling()
+    {
+        // linear strategy (default) over the grid
+        $linear = new DrawCallAssembler(4, 512, 512);
+        $linearMesh = $linear->registerMesh(1, 0, 3, 0, 0);
+        $this->applyCullingFrustum($linear);
+        $this->submitCullingGrid($linear, $linearMesh);
+        $linear->build();
+
+        // octree strategy over the identical grid
+        $octree = new DrawCallAssembler(4, 512, 512);
+        $octreeMesh = $octree->registerMesh(1, 0, 3, 0, 0);
+        $octree->setCullingStrategy(DrawCallAssembler::CULL_OCTREE);
+        $this->applyCullingFrustum($octree);
+        $this->submitCullingGrid($octree, $octreeMesh);
+        $octree->build();
+
+        $expected = $this->survivingUserIds($linear);
+
+        // sanity: some instances survived and some were culled (343 total)
+        $this->assertNotEmpty($expected);
+        $this->assertLessThan(343, count($expected));
+
+        $this->assertSame($expected, $this->survivingUserIds($octree));
+    }
+
+    public function testCullNoneKeepsEveryInstanceDespiteFrustum()
+    {
+        $assembler = new DrawCallAssembler(4, 512, 512);
+        $meshHandle = $assembler->registerMesh(1, 0, 3, 0, 0);
+        $assembler->setCullingStrategy(DrawCallAssembler::CULL_NONE);
+        $this->applyCullingFrustum($assembler);
+        $this->submitCullingGrid($assembler, $meshHandle);
+
+        $assembler->build();
+
+        $this->assertSame(343, $assembler->builtInstanceCount());
+    }
+
+    public function testOctreeCullingKeepsIgnoreCullingInstance()
+    {
+        $assembler = new DrawCallAssembler(4, 4, 4);
+        $meshHandle = $assembler->registerMesh(1, 0, 3, 0, 0);
+        $assembler->setCullingStrategy(DrawCallAssembler::CULL_OCTREE);
+        $this->applyCullingFrustum($assembler);
+
+        $near = new Mat4();
+        $near->translate(new Vec3(0.0, 0.0, 0.0));
+        $far = new Mat4();
+        $far->translate(new Vec3(0.0, 0.0, 100.0));
+
+        // the far instance is behind the far plane, but IGNORE_CULLING keeps it
+        $assembler->submit($meshHandle, $near, 0, DrawCallAssembler::PASS_OPAQUE, 0, 0, 0.0, 1);
+        $assembler->submit($meshHandle, $far, 0, DrawCallAssembler::PASS_OPAQUE, 0, DrawCallAssembler::FLAG_IGNORE_CULLING, 0.0, 2);
+
+        $assembler->build();
+
+        $this->assertSame(2, $assembler->builtInstanceCount());
+    }
+
+    public function testOctreeIsReusedWhenOnlyCameraChanges()
+    {
+        $assembler = new DrawCallAssembler(4, 512, 512);
+        $meshHandle = $assembler->registerMesh(1, 0, 3, 0, 0);
+        $assembler->setCullingStrategy(DrawCallAssembler::CULL_OCTREE);
+        $this->applyCullingFrustum($assembler);
+        $this->submitCullingGrid($assembler, $meshHandle);
+
+        // first build creates the tree
+        $assembler->build();
+        $first = $this->survivingUserIds($assembler);
+
+        // a camera-only change re-applies the same frustum and rebuilds; the
+        // cached tree must still yield the identical survivor set
+        $this->applyCullingFrustum($assembler);
+        $assembler->build();
+        $this->assertSame($first, $this->survivingUserIds($assembler));
+
+        // adding a visible instance dirties the tree and must be picked up
+        $extra = new Mat4();
+        $extra->translate(new Vec3(0.0, 0.0, 0.0));
+        $assembler->submit($meshHandle, $extra, 0, DrawCallAssembler::PASS_OPAQUE, 0, 0, 0.0, 9999);
+        $assembler->build();
+
+        $after = $this->survivingUserIds($assembler);
+        $this->assertContains(9999, $after);
+        $this->assertSame(count($first) + 1, count($after));
+    }
 }

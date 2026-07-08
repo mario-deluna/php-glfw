@@ -335,6 +335,13 @@ namespace GL\Rendering
         /** @var int */
         public const FLAG_CUSTOM_SORT_KEY = 8;
 
+        /** @var int */
+        public const CULL_NONE = 0;
+        /** @var int */
+        public const CULL_LINEAR = 1;
+        /** @var int */
+        public const CULL_OCTREE = 2;
+
         public readonly \GL\Buffer\UIntBuffer $commandBuffer;
         public readonly \GL\Buffer\FloatBuffer $instanceTransformBuffer;
         public readonly \GL\Buffer\UIntBuffer $instanceMetaBuffer;
@@ -352,6 +359,7 @@ namespace GL\Rendering
 
         public function setAutoInstancing(bool $enabled) : void {}
         public function setSortMode(int $mode) : void {}
+        public function setCullingStrategy(int $strategy, int $octreeMaxDepth = -1, int $octreeMinLeafInstances = -1) : void {}
 
         public function setCameraData(
             ?\GL\Math\Vec3 $cameraPosition = null,

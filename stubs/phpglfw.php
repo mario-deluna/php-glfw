@@ -1988,6 +1988,26 @@ namespace GL\Rendering
         public const FLAG_CUSTOM_SORT_KEY = 8;
 
         /**
+         * Culling strategy: never cull, all submitted instances are drawn.
+         * @var int
+         */
+        public const CULL_NONE = 0;
+        /**
+         * Culling strategy: test every instance's bounding sphere against the frustum
+         * each frame (O(n)). The default; best for fully dynamic instance sets.
+         * @var int
+         */
+        public const CULL_LINEAR = 1;
+        /**
+         * Culling strategy: build a persistent octree over the instances and traverse
+         * it for culling. The tree is reused across frames and only rebuilt when the
+         * instance set changes, so it is best for large, mostly-static scenes where the
+         * camera moves but the instances do not.
+         * @var int
+         */
+        public const CULL_OCTREE = 2;
+
+        /**
          * Packed draw commands represented as uint32 values. Filled after calling "build".
          *
          * Layout per command (uint32 stride = 8):
@@ -2066,6 +2086,28 @@ namespace GL\Rendering
          * Select the ordering applied to opaque draw calls.
          */
         public function setSortMode(int $mode) : void {}
+
+        /**
+         * Select the culling strategy used during "build"/"execute".
+         *
+         * Pass one of the CULL_* constants:
+         *  - CULL_NONE:   disable culling, every instance is drawn.
+         *  - CULL_LINEAR: per-instance frustum test each frame (default).
+         *  - CULL_OCTREE: persistent octree reused across frames, rebuilt only when
+         *                 the instance set changes. Ideal for large static scenes.
+         *
+         * The two optional arguments tune the octree (ignored by the other
+         * strategies). They only take effect when >= 0; pass -1 (the default) to
+         * leave the current value untouched. Changing either rebuilds the tree.
+         *
+         * @param int $octreeMaxDepth        Maximum subdivision depth. Increase for
+         *                                   scenes with a large spatial extent and
+         *                                   uneven density so dense regions split into
+         *                                   small leaves instead of a few huge ones.
+         * @param int $octreeMinLeafInstances A node stops subdividing once it holds
+         *                                   this many instances or fewer.
+         */
+        public function setCullingStrategy(int $strategy, int $octreeMaxDepth = -1, int $octreeMinLeafInstances = -1) : void {}
 
         /**
          * Update the camera state used for sorting, frustum culling and LOD evaluation.

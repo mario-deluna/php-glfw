@@ -1,5 +1,5 @@
 /* This is a generated file, edit the .stub.php file instead.
- * Stub hash: 9def2afe8de1930de99204621c2569d867a29ae5 */
+ * Stub hash: 46d3cfa46cb2745a7c623537c8c47272b85dc433 */
 
 ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_glCullFace, 0, 1, IS_VOID, 0)
 	ZEND_ARG_TYPE_INFO(0, mode, IS_LONG, 0)
@@ -3086,6 +3086,12 @@ ZEND_END_ARG_INFO()
 
 #define arginfo_class_GL_Rendering_DrawCallAssembler_setSortMode arginfo_glCullFace
 
+ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_class_GL_Rendering_DrawCallAssembler_setCullingStrategy, 0, 1, IS_VOID, 0)
+	ZEND_ARG_TYPE_INFO(0, strategy, IS_LONG, 0)
+	ZEND_ARG_TYPE_INFO_WITH_DEFAULT_VALUE(0, octreeMaxDepth, IS_LONG, 0, "-1")
+	ZEND_ARG_TYPE_INFO_WITH_DEFAULT_VALUE(0, octreeMinLeafInstances, IS_LONG, 0, "-1")
+ZEND_END_ARG_INFO()
+
 ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_class_GL_Rendering_DrawCallAssembler_setCameraData, 0, 0, IS_VOID, 0)
 	ZEND_ARG_OBJ_INFO_WITH_DEFAULT_VALUE(0, cameraPosition, GL\\Math\\Vec3, 1, "null")
 	ZEND_ARG_OBJ_INFO_WITH_DEFAULT_VALUE(0, viewMatrix, GL\\Math\\Mat4, 1, "null")
@@ -4614,6 +4620,7 @@ ZEND_METHOD(GL_Buffer_UByteBuffer, dump);
 ZEND_METHOD(GL_Rendering_DrawCallAssembler, __construct);
 ZEND_METHOD(GL_Rendering_DrawCallAssembler, setAutoInstancing);
 ZEND_METHOD(GL_Rendering_DrawCallAssembler, setSortMode);
+ZEND_METHOD(GL_Rendering_DrawCallAssembler, setCullingStrategy);
 ZEND_METHOD(GL_Rendering_DrawCallAssembler, setCameraData);
 ZEND_METHOD(GL_Rendering_DrawCallAssembler, setFrustumPlanes);
 ZEND_METHOD(GL_Rendering_DrawCallAssembler, registerMesh);
@@ -5773,6 +5780,7 @@ static const zend_function_entry class_GL_Rendering_DrawCallAssembler_methods[] 
 	ZEND_ME(GL_Rendering_DrawCallAssembler, __construct, arginfo_class_GL_Rendering_DrawCallAssembler___construct, ZEND_ACC_PUBLIC)
 	ZEND_ME(GL_Rendering_DrawCallAssembler, setAutoInstancing, arginfo_class_GL_Rendering_DrawCallAssembler_setAutoInstancing, ZEND_ACC_PUBLIC)
 	ZEND_ME(GL_Rendering_DrawCallAssembler, setSortMode, arginfo_class_GL_Rendering_DrawCallAssembler_setSortMode, ZEND_ACC_PUBLIC)
+	ZEND_ME(GL_Rendering_DrawCallAssembler, setCullingStrategy, arginfo_class_GL_Rendering_DrawCallAssembler_setCullingStrategy, ZEND_ACC_PUBLIC)
 	ZEND_ME(GL_Rendering_DrawCallAssembler, setCameraData, arginfo_class_GL_Rendering_DrawCallAssembler_setCameraData, ZEND_ACC_PUBLIC)
 	ZEND_ME(GL_Rendering_DrawCallAssembler, setFrustumPlanes, arginfo_class_GL_Rendering_DrawCallAssembler_setFrustumPlanes, ZEND_ACC_PUBLIC)
 	ZEND_ME(GL_Rendering_DrawCallAssembler, registerMesh, arginfo_class_GL_Rendering_DrawCallAssembler_registerMesh, ZEND_ACC_PUBLIC)
@@ -6700,6 +6708,24 @@ static zend_class_entry *register_class_GL_Rendering_DrawCallAssembler(void)
 	zend_string *const_FLAG_CUSTOM_SORT_KEY_name = zend_string_init_interned("FLAG_CUSTOM_SORT_KEY", sizeof("FLAG_CUSTOM_SORT_KEY") - 1, 1);
 	zend_declare_class_constant_ex(class_entry, const_FLAG_CUSTOM_SORT_KEY_name, &const_FLAG_CUSTOM_SORT_KEY_value, ZEND_ACC_PUBLIC, NULL);
 	zend_string_release(const_FLAG_CUSTOM_SORT_KEY_name);
+
+	zval const_CULL_NONE_value;
+	ZVAL_LONG(&const_CULL_NONE_value, 0);
+	zend_string *const_CULL_NONE_name = zend_string_init_interned("CULL_NONE", sizeof("CULL_NONE") - 1, 1);
+	zend_declare_class_constant_ex(class_entry, const_CULL_NONE_name, &const_CULL_NONE_value, ZEND_ACC_PUBLIC, NULL);
+	zend_string_release(const_CULL_NONE_name);
+
+	zval const_CULL_LINEAR_value;
+	ZVAL_LONG(&const_CULL_LINEAR_value, 1);
+	zend_string *const_CULL_LINEAR_name = zend_string_init_interned("CULL_LINEAR", sizeof("CULL_LINEAR") - 1, 1);
+	zend_declare_class_constant_ex(class_entry, const_CULL_LINEAR_name, &const_CULL_LINEAR_value, ZEND_ACC_PUBLIC, NULL);
+	zend_string_release(const_CULL_LINEAR_name);
+
+	zval const_CULL_OCTREE_value;
+	ZVAL_LONG(&const_CULL_OCTREE_value, 2);
+	zend_string *const_CULL_OCTREE_name = zend_string_init_interned("CULL_OCTREE", sizeof("CULL_OCTREE") - 1, 1);
+	zend_declare_class_constant_ex(class_entry, const_CULL_OCTREE_name, &const_CULL_OCTREE_value, ZEND_ACC_PUBLIC, NULL);
+	zend_string_release(const_CULL_OCTREE_name);
 
 	zval property_commandBuffer_default_value;
 	ZVAL_UNDEF(&property_commandBuffer_default_value);

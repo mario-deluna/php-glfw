@@ -28,6 +28,7 @@
 
 #include <math.h>
 #include <string.h>
+#include <float.h>
 #include "cvector.h"
 
 zend_class_entry *phpglfw_drawcall_assembler_ce;
@@ -49,7 +50,7 @@ static void phpglfw_drawcall_extract_frustum(phpglfw_drawcall_assembler_object *
 static uint32_t phpglfw_drawcall_collect_visible_indices(phpglfw_drawcall_assembler_object *intern, uint32_t *visible_indices);
 static uint32_t phpglfw_drawcall_select_lod(phpglfw_drawcall_assembler_object *intern, phpglfw_drawcall_instance *instance, float distance);
 static void phpglfw_drawcall_update_instance_lod(phpglfw_drawcall_assembler_object *intern, phpglfw_drawcall_instance *instance);
-static void phpglfw_drawcall_refresh_instance_lods(phpglfw_drawcall_assembler_object *intern);
+static void phpglfw_drawcall_refresh_instance_lods(phpglfw_drawcall_assembler_object *intern, const uint32_t *visible_indices, uint32_t visible_count);
 
 static inline void phpglfw_drawcall_release_zval(zval *value)
 {
@@ -94,6 +95,19 @@ static zend_object *phpglfw_drawcall_assembler_create_object(zend_class_entry *c
     intern->sort_keys_b = NULL;
     intern->sort_indices_b = NULL;
     intern->sort_scratch_capacity = 0;
+    intern->oct_nodes = NULL;
+    intern->oct_node_capacity = 0;
+    intern->oct_node_count = 0;
+    intern->oct_instance_indices = NULL;
+    intern->oct_instance_scratch = NULL;
+    intern->oct_centers = NULL;
+    intern->oct_radii = NULL;
+    intern->oct_ignored_indices = NULL;
+    intern->oct_ignored_count = 0;
+    intern->oct_scratch_capacity = 0;
+    intern->oct_dirty = true;
+    intern->oct_max_depth = PHPGLFW_OCT_MAX_DEPTH;
+    intern->oct_min_leaf = PHPGLFW_OCT_MIN_LEAF_INSTANCES;
     intern->camera_position = NULL;
     intern->view_matrix = NULL;
     intern->projection_matrix = NULL;
@@ -111,6 +125,7 @@ static zend_object *phpglfw_drawcall_assembler_create_object(zend_class_entry *c
     intern->has_frustum = false;
     intern->frustum_from_matrices = false;
     intern->sort_mode = PHPGLFW_SORT_NONE;
+    intern->cull_strategy = PHPGLFW_CULL_LINEAR;
     intern->auto_instancing = true;
     intern->final_command_count = 0;
     intern->final_instance_count = 0;
@@ -161,6 +176,26 @@ static void phpglfw_drawcall_assembler_free_handler(zend_object *object)
     }
     if (intern->sort_indices_b) {
         efree(intern->sort_indices_b);
+    }
+
+    // octree scratch buffers
+    if (intern->oct_nodes) {
+        efree(intern->oct_nodes);
+    }
+    if (intern->oct_instance_indices) {
+        efree(intern->oct_instance_indices);
+    }
+    if (intern->oct_instance_scratch) {
+        efree(intern->oct_instance_scratch);
+    }
+    if (intern->oct_centers) {
+        efree(intern->oct_centers);
+    }
+    if (intern->oct_radii) {
+        efree(intern->oct_radii);
+    }
+    if (intern->oct_ignored_indices) {
+        efree(intern->oct_ignored_indices);
     }
 
     // rendering dispatch
@@ -625,6 +660,45 @@ PHP_METHOD(GL_Rendering_DrawCallAssembler, setSortMode)
     intern->sort_mode = mode;
 }
 
+PHP_METHOD(GL_Rendering_DrawCallAssembler, setCullingStrategy)
+{
+    zend_long strategy;
+    // -1 sentinels: "leave the current octree tuning unchanged"
+    zend_long octree_max_depth = -1;
+    zend_long octree_min_leaf = -1;
+
+    if (zend_parse_parameters(ZEND_NUM_ARGS(), "l|ll", &strategy, &octree_max_depth, &octree_min_leaf) == FAILURE)
+    {
+        RETURN_THROWS();
+    }
+
+    if (strategy < PHPGLFW_CULL_NONE || strategy > PHPGLFW_CULL_OCTREE) {
+        zend_value_error("invalid culling strategy, expected one of DrawCallAssembler::CULL_*");
+        RETURN_THROWS();
+    }
+
+    phpglfw_drawcall_assembler_object *intern = phpglfw_drawcall_assembler_objectptr_from_zobj_p(Z_OBJ_P(ZEND_THIS));
+    intern->cull_strategy = (int)strategy;
+
+    // apply optional octree tuning; changing it invalidates any cached tree
+    if (octree_max_depth >= 0) {
+        if (octree_max_depth < 1 || octree_max_depth > PHPGLFW_OCT_MAX_DEPTH_LIMIT) {
+            zend_value_error("octree max depth must be between 1 and %d", PHPGLFW_OCT_MAX_DEPTH_LIMIT);
+            RETURN_THROWS();
+        }
+        intern->oct_max_depth = (int)octree_max_depth;
+        intern->oct_dirty = true;
+    }
+    if (octree_min_leaf >= 0) {
+        if (octree_min_leaf < 1) {
+            zend_value_error("octree min leaf instance count must be >= 1");
+            RETURN_THROWS();
+        }
+        intern->oct_min_leaf = (uint32_t)octree_min_leaf;
+        intern->oct_dirty = true;
+    }
+}
+
 PHP_METHOD(GL_Rendering_DrawCallAssembler, clearInstances)
 {
     if (zend_parse_parameters_none() == FAILURE) {
@@ -635,6 +709,7 @@ PHP_METHOD(GL_Rendering_DrawCallAssembler, clearInstances)
     intern->instance_count = 0;
     intern->final_command_count = 0;
     intern->final_instance_count = 0;
+    intern->oct_dirty = true;
 
     cvector_set_size(intern->command_buffer->vec, 0);
     cvector_set_size(intern->instance_transform_buffer->vec, 0);
@@ -651,14 +726,386 @@ static float phpglfw_drawcall_distance_to_camera_sq(phpglfw_math_vec3_object *ca
     return dx * dx + dy * dy + dz * dz;
 }
 
+// compute the world-space bounding sphere (center + radius) of an instance.
+// this is the exact model both the linear and octree culling paths test: the
+// mesh bounds center transformed to world space and the radius scaled by the
+// largest axis scale of the transform. instances without mesh bounds fall back
+// to the translation column and the (unscaled) mesh radius.
+static void phpglfw_drawcall_instance_world_sphere(
+    const phpglfw_drawcall_instance *instance,
+    const phpglfw_drawcall_mesh *mesh,
+    float out_center[3],
+    float *out_radius
+) {
+    float cx = instance->transform[3][0];
+    float cy = instance->transform[3][1];
+    float cz = instance->transform[3][2];
+    float scaled_radius = mesh->bounds_radius;
+
+    if (mesh->has_bounds)
+    {
+        // transform mesh center to world space
+        const float local_x = mesh->bounds_center[0];
+        const float local_y = mesh->bounds_center[1];
+        const float local_z = mesh->bounds_center[2];
+
+        cx = instance->transform[0][0] * local_x + instance->transform[1][0] * local_y + instance->transform[2][0] * local_z + instance->transform[3][0];
+        cy = instance->transform[0][1] * local_x + instance->transform[1][1] * local_y + instance->transform[2][1] * local_z + instance->transform[3][1];
+        cz = instance->transform[0][2] * local_x + instance->transform[1][2] * local_y + instance->transform[2][2] * local_z + instance->transform[3][2];
+
+        // compute uniform scale factor
+        const mat4x4 * const t = &instance->transform;
+        const float scale_x_sq = (*t)[0][0] * (*t)[0][0] + (*t)[0][1] * (*t)[0][1] + (*t)[0][2] * (*t)[0][2];
+        const float scale_y_sq = (*t)[1][0] * (*t)[1][0] + (*t)[1][1] * (*t)[1][1] + (*t)[1][2] * (*t)[1][2];
+        const float scale_z_sq = (*t)[2][0] * (*t)[2][0] + (*t)[2][1] * (*t)[2][1] + (*t)[2][2] * (*t)[2][2];
+        const float max_scale_sq = fmaxf(scale_x_sq, fmaxf(scale_y_sq, scale_z_sq));
+        scaled_radius *= sqrtf(max_scale_sq);
+    }
+
+    out_center[0] = cx;
+    out_center[1] = cy;
+    out_center[2] = cz;
+    *out_radius = scaled_radius;
+}
+
+// test a bounding sphere against the 6 frustum planes. a sphere is visible when
+// its signed distance to every plane is >= -radius; we early-out on the first
+// plane that rejects it.
+static zend_always_inline bool phpglfw_drawcall_sphere_in_frustum(
+    const float frustum[6][4], float cx, float cy, float cz, float radius
+) {
+    for (int plane = 0; plane < 6; plane++)
+    {
+        const float distance = frustum[plane][0] * cx + frustum[plane][1] * cy + frustum[plane][2] * cz + frustum[plane][3];
+        if (distance < -radius) {
+            return false;
+        }
+    }
+
+    return true;
+}
+
+// classify an axis-aligned box against the frustum: 0 = fully outside,
+// 1 = intersecting, 2 = fully inside. uses the p-vertex / n-vertex test: for
+// each plane the box corner farthest along the plane normal (p-vertex) decides
+// "fully outside", the nearest corner (n-vertex) decides "not fully inside".
+static int phpglfw_drawcall_aabb_frustum_class(const float frustum[6][4], const float mn[3], const float mx[3])
+{
+    bool intersecting = false;
+
+    for (int plane = 0; plane < 6; plane++)
+    {
+        const float a = frustum[plane][0];
+        const float b = frustum[plane][1];
+        const float c = frustum[plane][2];
+        const float d = frustum[plane][3];
+
+        const float px = (a >= 0.0f) ? mx[0] : mn[0];
+        const float py = (b >= 0.0f) ? mx[1] : mn[1];
+        const float pz = (c >= 0.0f) ? mx[2] : mn[2];
+        if (a * px + b * py + c * pz + d < 0.0f) {
+            return 0; // p-vertex behind the plane => whole box outside
+        }
+
+        const float nx = (a >= 0.0f) ? mn[0] : mx[0];
+        const float ny = (b >= 0.0f) ? mn[1] : mx[1];
+        const float nz = (c >= 0.0f) ? mn[2] : mx[2];
+        if (a * nx + b * ny + c * nz + d < 0.0f) {
+            intersecting = true; // n-vertex behind the plane => box straddles it
+        }
+    }
+
+    return intersecting ? 1 : 2;
+}
+
+// grow the per-instance octree scratch arrays to hold at least `count` entries.
+static void phpglfw_drawcall_oct_reserve_instances(phpglfw_drawcall_assembler_object *intern, uint32_t count)
+{
+    if (intern->oct_scratch_capacity >= count) {
+        return;
+    }
+
+    uint32_t new_cap = intern->oct_scratch_capacity ? intern->oct_scratch_capacity : 256;
+    while (new_cap < count) {
+        new_cap *= 2;
+    }
+
+    intern->oct_instance_indices = erealloc(intern->oct_instance_indices, new_cap * sizeof(uint32_t));
+    intern->oct_instance_scratch = erealloc(intern->oct_instance_scratch, new_cap * sizeof(uint32_t));
+    intern->oct_ignored_indices = erealloc(intern->oct_ignored_indices, new_cap * sizeof(uint32_t));
+    intern->oct_centers = erealloc(intern->oct_centers, new_cap * 3 * sizeof(float));
+    intern->oct_radii = erealloc(intern->oct_radii, new_cap * sizeof(float));
+    intern->oct_scratch_capacity = new_cap;
+}
+
+// grow the octree node pool to hold at least `needed` nodes.
+static void phpglfw_drawcall_oct_reserve_nodes(phpglfw_drawcall_assembler_object *intern, uint32_t needed)
+{
+    if (intern->oct_node_capacity >= needed) {
+        return;
+    }
+
+    uint32_t new_cap = intern->oct_node_capacity ? intern->oct_node_capacity : 64;
+    while (new_cap < needed) {
+        new_cap *= 2;
+    }
+
+    intern->oct_nodes = erealloc(intern->oct_nodes, new_cap * sizeof(phpglfw_drawcall_octnode));
+    intern->oct_node_capacity = new_cap;
+}
+
+// compute a node's bounds as the union of the world-space sphere AABBs of the
+// instances in its slice. spheres are indexed by instance id via oct_centers/
+// oct_radii; the slice itself is a range of the oct_instance_indices permutation.
+static void phpglfw_drawcall_oct_node_bounds(phpglfw_drawcall_assembler_object *intern, phpglfw_drawcall_octnode *node)
+{
+    if (node->instance_count == 0) {
+        node->aabb_min[0] = node->aabb_min[1] = node->aabb_min[2] = 0.0f;
+        node->aabb_max[0] = node->aabb_max[1] = node->aabb_max[2] = 0.0f;
+        return;
+    }
+
+    float mn[3] = { FLT_MAX, FLT_MAX, FLT_MAX };
+    float mx[3] = { -FLT_MAX, -FLT_MAX, -FLT_MAX };
+
+    const uint32_t end = node->first_instance + node->instance_count;
+    for (uint32_t i = node->first_instance; i < end; i++)
+    {
+        const uint32_t idx = intern->oct_instance_indices[i];
+        const float *c = &intern->oct_centers[idx * 3];
+        const float r = intern->oct_radii[idx];
+
+        for (int axis = 0; axis < 3; axis++) {
+            const float lo = c[axis] - r;
+            const float hi = c[axis] + r;
+            if (lo < mn[axis]) mn[axis] = lo;
+            if (hi > mx[axis]) mx[axis] = hi;
+        }
+    }
+
+    node->aabb_min[0] = mn[0]; node->aabb_min[1] = mn[1]; node->aabb_min[2] = mn[2];
+    node->aabb_max[0] = mx[0]; node->aabb_max[1] = mx[1]; node->aabb_max[2] = mx[2];
+}
+
+// recursively subdivide a node into 8 octants. recursion depth is bounded by
+// PHPGLFW_OCT_MAX_DEPTH, so the stack usage is trivially bounded.
+static void phpglfw_drawcall_oct_subdivide(phpglfw_drawcall_assembler_object *intern, uint32_t node_index, int depth)
+{
+    const uint32_t first = intern->oct_nodes[node_index].first_instance;
+    const uint32_t count = intern->oct_nodes[node_index].instance_count;
+
+    if (count <= intern->oct_min_leaf || depth >= intern->oct_max_depth) {
+        intern->oct_nodes[node_index].is_leaf = true;
+        intern->oct_nodes[node_index].child_base = 0;
+        return;
+    }
+
+    // split at the center of the node bounds
+    const float sx = 0.5f * (intern->oct_nodes[node_index].aabb_min[0] + intern->oct_nodes[node_index].aabb_max[0]);
+    const float sy = 0.5f * (intern->oct_nodes[node_index].aabb_min[1] + intern->oct_nodes[node_index].aabb_max[1]);
+    const float sz = 0.5f * (intern->oct_nodes[node_index].aabb_min[2] + intern->oct_nodes[node_index].aabb_max[2]);
+
+    const uint32_t end = first + count;
+
+    // count how many instances fall into each octant (by sphere center)
+    uint32_t counts[8] = {0};
+    for (uint32_t i = first; i < end; i++)
+    {
+        const uint32_t idx = intern->oct_instance_indices[i];
+        const float *c = &intern->oct_centers[idx * 3];
+        const int oct = (c[0] >= sx ? 1 : 0) | (c[1] >= sy ? 2 : 0) | (c[2] >= sz ? 4 : 0);
+        counts[oct]++;
+    }
+
+    // if every instance lands in the same octant, splitting makes no progress
+    // (e.g. coincident centers), so keep this node as a leaf.
+    for (int oct = 0; oct < 8; oct++) {
+        if (counts[oct] == count) {
+            intern->oct_nodes[node_index].is_leaf = true;
+            intern->oct_nodes[node_index].child_base = 0;
+            return;
+        }
+    }
+
+    // stable-ish scatter of the slice into 8 contiguous octant buckets
+    uint32_t cursor[8];
+    uint32_t offset = first;
+    for (int oct = 0; oct < 8; oct++) {
+        cursor[oct] = offset;
+        offset += counts[oct];
+    }
+    for (uint32_t i = first; i < end; i++)
+    {
+        const uint32_t idx = intern->oct_instance_indices[i];
+        const float *c = &intern->oct_centers[idx * 3];
+        const int oct = (c[0] >= sx ? 1 : 0) | (c[1] >= sy ? 2 : 0) | (c[2] >= sz ? 4 : 0);
+        intern->oct_instance_scratch[cursor[oct]++] = idx;
+    }
+    memcpy(&intern->oct_instance_indices[first], &intern->oct_instance_scratch[first], count * sizeof(uint32_t));
+
+    // allocate 8 children; this may move the node pool, so we read/write the
+    // parent purely by index and re-fetch pointers after the reserve.
+    const uint32_t child_base = intern->oct_node_count;
+    phpglfw_drawcall_oct_reserve_nodes(intern, child_base + 8);
+    intern->oct_node_count += 8;
+
+    intern->oct_nodes[node_index].is_leaf = false;
+    intern->oct_nodes[node_index].child_base = child_base;
+
+    uint32_t child_first = first;
+    for (int oct = 0; oct < 8; oct++)
+    {
+        phpglfw_drawcall_octnode *child = &intern->oct_nodes[child_base + oct];
+        child->first_instance = child_first;
+        child->instance_count = counts[oct];
+        child->child_base = 0;
+        child->is_leaf = true;
+        child_first += counts[oct];
+        phpglfw_drawcall_oct_node_bounds(intern, child);
+    }
+
+    for (int oct = 0; oct < 8; oct++) {
+        if (counts[oct] > 0) {
+            phpglfw_drawcall_oct_subdivide(intern, child_base + oct, depth + 1);
+        }
+    }
+}
+
+// (re)build the persistent octree from the current instance set. runs only when
+// the tree is dirty; the resulting tree is camera-independent and reused across
+// frames until the instance set changes.
+static void phpglfw_drawcall_build_octree(phpglfw_drawcall_assembler_object *intern)
+{
+    const uint32_t total_instances = intern->instance_count;
+    const phpglfw_drawcall_instance * const instances = intern->instances;
+    const phpglfw_drawcall_mesh * const meshes = intern->meshes;
+
+    intern->oct_node_count = 0;
+    intern->oct_ignored_count = 0;
+
+    if (total_instances > 0) {
+        phpglfw_drawcall_oct_reserve_instances(intern, total_instances);
+    }
+
+    // partition instances: IGNORE_CULLING ones are emitted verbatim every frame
+    // and kept out of the tree; the rest go into the permutation and get their
+    // world spheres cached (indexed by instance id).
+    uint32_t culled_count = 0;
+    for (uint32_t i = 0; i < total_instances; i++)
+    {
+        const phpglfw_drawcall_instance * const instance = &instances[i];
+
+        if (instance->flags & PHPGLFW_FLAG_IGNORE_CULLING) {
+            intern->oct_ignored_indices[intern->oct_ignored_count++] = i;
+            continue;
+        }
+
+        const phpglfw_drawcall_mesh * const mesh = &meshes[instance->mesh_handle];
+        float center[3];
+        float radius;
+        phpglfw_drawcall_instance_world_sphere(instance, mesh, center, &radius);
+
+        intern->oct_centers[i * 3 + 0] = center[0];
+        intern->oct_centers[i * 3 + 1] = center[1];
+        intern->oct_centers[i * 3 + 2] = center[2];
+        intern->oct_radii[i] = radius;
+        intern->oct_instance_indices[culled_count++] = i;
+    }
+
+    intern->oct_dirty = false;
+
+    if (culled_count == 0) {
+        return; // nothing to place in the tree (all instances ignored, or none)
+    }
+
+    // root node covering the whole culled set
+    phpglfw_drawcall_oct_reserve_nodes(intern, 1);
+    intern->oct_node_count = 1;
+    intern->oct_nodes[0].first_instance = 0;
+    intern->oct_nodes[0].instance_count = culled_count;
+    intern->oct_nodes[0].child_base = 0;
+    intern->oct_nodes[0].is_leaf = true;
+    phpglfw_drawcall_oct_node_bounds(intern, &intern->oct_nodes[0]);
+
+    phpglfw_drawcall_oct_subdivide(intern, 0, 0);
+}
+
+// recursively collect the visible instances of a subtree into visible_indices,
+// starting at write_index. nodes fully outside the frustum are pruned; nodes
+// fully inside accept their whole slice without any per-instance test; nodes
+// that straddle the frustum recurse (or, at a leaf, do a per-instance sphere test).
+static uint32_t phpglfw_drawcall_oct_collect_node(
+    phpglfw_drawcall_assembler_object *intern,
+    const float frustum[6][4],
+    uint32_t node_index,
+    uint32_t *visible_indices,
+    uint32_t write_index
+) {
+    const phpglfw_drawcall_octnode *node = &intern->oct_nodes[node_index];
+    if (node->instance_count == 0) {
+        return write_index;
+    }
+
+    const int cls = phpglfw_drawcall_aabb_frustum_class(frustum, node->aabb_min, node->aabb_max);
+    if (cls == 0) {
+        return write_index; // fully outside, prune
+    }
+
+    if (cls == 2) {
+        // fully inside: every contained sphere is inside, accept the whole slice
+        memcpy(&visible_indices[write_index], &intern->oct_instance_indices[node->first_instance], node->instance_count * sizeof(uint32_t));
+        return write_index + node->instance_count;
+    }
+
+    // straddles the frustum
+    if (node->is_leaf) {
+        const uint32_t end = node->first_instance + node->instance_count;
+        for (uint32_t i = node->first_instance; i < end; i++)
+        {
+            const uint32_t idx = intern->oct_instance_indices[i];
+            const float *c = &intern->oct_centers[idx * 3];
+            if (phpglfw_drawcall_sphere_in_frustum(frustum, c[0], c[1], c[2], intern->oct_radii[idx])) {
+                visible_indices[write_index++] = idx;
+            }
+        }
+        return write_index;
+    }
+
+    const uint32_t child_base = node->child_base;
+    for (int oct = 0; oct < 8; oct++) {
+        write_index = phpglfw_drawcall_oct_collect_node(intern, frustum, child_base + oct, visible_indices, write_index);
+    }
+
+    return write_index;
+}
+
+static uint32_t phpglfw_drawcall_octree_collect(
+    phpglfw_drawcall_assembler_object *intern,
+    const float frustum[6][4],
+    uint32_t *visible_indices
+) {
+    uint32_t write_index = 0;
+
+    // IGNORE_CULLING instances are always visible
+    for (uint32_t i = 0; i < intern->oct_ignored_count; i++) {
+        visible_indices[write_index++] = intern->oct_ignored_indices[i];
+    }
+
+    if (intern->oct_node_count == 0) {
+        return write_index;
+    }
+
+    return phpglfw_drawcall_oct_collect_node(intern, frustum, 0, visible_indices, write_index);
+}
+
 static uint32_t phpglfw_drawcall_collect_visible_indices(phpglfw_drawcall_assembler_object *intern, uint32_t *visible_indices)
 {
     const uint32_t total_instances = intern->instance_count;
     const phpglfw_drawcall_instance * const instances = intern->instances;
     const phpglfw_drawcall_mesh * const meshes = intern->meshes;
 
-    // if there is no frustum, we consider all instances to be visible
-    if (!intern->has_frustum) {
+    // no frustum, or culling explicitly disabled: everything is visible
+    if (!intern->has_frustum || intern->cull_strategy == PHPGLFW_CULL_NONE) {
         for (uint32_t i = 0; i < total_instances; i++) {
             visible_indices[i] = i;
         }
@@ -666,8 +1113,6 @@ static uint32_t phpglfw_drawcall_collect_visible_indices(phpglfw_drawcall_assemb
         return total_instances;
     }
 
-    uint32_t write_index = 0;
-    
     // get the frustum planes into stack memory (i think this is faster, but to be honest, i did not benchmark it..)
     const float frustum[6][4] = {
         {intern->frustum_planes[0][0], intern->frustum_planes[0][1], intern->frustum_planes[0][2], intern->frustum_planes[0][3]},
@@ -677,57 +1122,39 @@ static uint32_t phpglfw_drawcall_collect_visible_indices(phpglfw_drawcall_assemb
         {intern->frustum_planes[4][0], intern->frustum_planes[4][1], intern->frustum_planes[4][2], intern->frustum_planes[4][3]},
         {intern->frustum_planes[5][0], intern->frustum_planes[5][1], intern->frustum_planes[5][2], intern->frustum_planes[5][3]}
     };
-    
+
+    // octree strategy: (re)build the persistent tree if needed, then traverse it
+    if (intern->cull_strategy == PHPGLFW_CULL_OCTREE) {
+        if (intern->oct_dirty) {
+            phpglfw_drawcall_build_octree(intern);
+        }
+
+        return phpglfw_drawcall_octree_collect(intern, frustum, visible_indices);
+    }
+
+    // linear strategy: test every instance's bounding sphere against the frustum
+    uint32_t write_index = 0;
     for (uint32_t read_index = 0; read_index < total_instances; read_index++)
     {
         const phpglfw_drawcall_instance * const instance = &instances[read_index];
-        
+
         // fast path for ignore culling flag
         if (instance->flags & PHPGLFW_FLAG_IGNORE_CULLING) {
             visible_indices[write_index++] = read_index;
             continue;
         }
-        
+
         const phpglfw_drawcall_mesh * const mesh = &meshes[instance->mesh_handle];
-        
-        float cx = instance->transform[3][0];
-        float cy = instance->transform[3][1];
-        float cz = instance->transform[3][2];
-        float scaled_radius = mesh->bounds_radius;
-        
-        if (mesh->has_bounds)
-        {
-            // transform mesh center to world space
-            const float local_x = mesh->bounds_center[0];
-            const float local_y = mesh->bounds_center[1];
-            const float local_z = mesh->bounds_center[2];
-            
-            cx = instance->transform[0][0] * local_x + instance->transform[1][0] * local_y + instance->transform[2][0] * local_z + instance->transform[3][0];
-            cy = instance->transform[0][1] * local_x + instance->transform[1][1] * local_y + instance->transform[2][1] * local_z + instance->transform[3][1];
-            cz = instance->transform[0][2] * local_x + instance->transform[1][2] * local_y + instance->transform[2][2] * local_z + instance->transform[3][2];
-            
-            // compute uniform scale factor
-            const mat4x4 * const t = &instance->transform;
-            const float scale_x_sq = (*t)[0][0] * (*t)[0][0] + (*t)[0][1] * (*t)[0][1] + (*t)[0][2] * (*t)[0][2];
-            const float scale_y_sq = (*t)[1][0] * (*t)[1][0] + (*t)[1][1] * (*t)[1][1] + (*t)[1][2] * (*t)[1][2];
-            const float scale_z_sq = (*t)[2][0] * (*t)[2][0] + (*t)[2][1] * (*t)[2][1] + (*t)[2][2] * (*t)[2][2];
-            const float max_scale_sq = fmaxf(scale_x_sq, fmaxf(scale_y_sq, scale_z_sq));
-            scaled_radius *= sqrtf(max_scale_sq);
-        }
-        
-        // frustum test
-        bool is_visible = true;
-        for (int plane = 0; plane < 6 && is_visible; plane++)
-        {
-            const float distance = frustum[plane][0] * cx + frustum[plane][1] * cy + frustum[plane][2] * cz + frustum[plane][3];
-            is_visible = distance >= -scaled_radius;
-        }
-        
-        if (is_visible) {
+
+        float center[3];
+        float scaled_radius;
+        phpglfw_drawcall_instance_world_sphere(instance, mesh, center, &scaled_radius);
+
+        if (phpglfw_drawcall_sphere_in_frustum(frustum, center[0], center[1], center[2], scaled_radius)) {
             visible_indices[write_index++] = read_index;
         }
     }
-    
+
     return write_index;
 }
 
@@ -933,14 +1360,15 @@ static zend_always_inline void phpglfw_drawcall_update_instance_lod(phpglfw_draw
     phpglfw_drawcall_compute_sort_key(intern, instance);
 }
 
-static void phpglfw_drawcall_refresh_instance_lods(phpglfw_drawcall_assembler_object *intern)
+// refresh LOD selection and sort keys only for the visible set. culled
+// instances are never sorted or rendered this frame and their distance is not
+// recomputed, so refreshing them would be wasted work on stale data.
+static void phpglfw_drawcall_refresh_instance_lods(phpglfw_drawcall_assembler_object *intern, const uint32_t *visible_indices, uint32_t visible_count)
 {
-    if (intern->instance_count == 0) {
-        return;
-    }
+    phpglfw_drawcall_instance * const instances = intern->instances;
 
-    for (uint32_t i = 0; i < intern->instance_count; i++) {
-        phpglfw_drawcall_update_instance_lod(intern, &intern->instances[i]);
+    for (uint32_t i = 0; i < visible_count; i++) {
+        phpglfw_drawcall_update_instance_lod(intern, &instances[visible_indices[i]]);
     }
 }
 
@@ -992,6 +1420,9 @@ PHP_METHOD(GL_Rendering_DrawCallAssembler, submit)
     phpglfw_drawcall_compute_sort_key(intern, instance);
 
     intern->instance_count++;
+
+    // the instance set changed, so any cached octree is now stale
+    intern->oct_dirty = true;
 }
 
 // below this count neither the radix setup nor a quicksort partition pays off,
@@ -1302,7 +1733,7 @@ PHP_METHOD(GL_Rendering_DrawCallAssembler, build)
     }
 
     // eval LOD selection
-    phpglfw_drawcall_refresh_instance_lods(intern);
+    phpglfw_drawcall_refresh_instance_lods(intern, visible_indices, visible_count);
 
     // sort the visible indices by precomputed sort keys
     phpglfw_drawcall_sort_visible(intern, visible_indices, visible_count);
@@ -1640,7 +2071,7 @@ PHP_METHOD(GL_Rendering_DrawCallAssembler, execute)
     }
 
     // eval LOD selection
-    phpglfw_drawcall_refresh_instance_lods(intern);
+    phpglfw_drawcall_refresh_instance_lods(intern, visible_indices, visible_count);
 
     // sort the visible indices by precomputed sort keys
     phpglfw_drawcall_sort_visible(intern, visible_indices, visible_count);
@@ -1877,6 +2308,7 @@ PHP_METHOD(GL_Rendering_DrawCallAssembler, reset)
     intern->instance_count = 0;
     intern->final_command_count = 0;
     intern->final_instance_count = 0;
+    intern->oct_dirty = true;
     if (intern->visible_index_buffer) {
         cvector_set_size(intern->visible_index_buffer, 0);
     }

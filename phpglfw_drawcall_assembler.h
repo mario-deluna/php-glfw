@@ -36,6 +36,11 @@
 #define PHPGLFW_SORT_BACK_TO_FRONT 2
 #define PHPGLFW_SORT_DEPTH_PREPASS 3
 
+// culling strategy constants
+#define PHPGLFW_CULL_NONE 0
+#define PHPGLFW_CULL_LINEAR 1
+#define PHPGLFW_CULL_OCTREE 2
+
 // sort key bit packing constants
 #define SK_PASS_BITS      2
 #define SK_PROG_BITS     12
@@ -92,6 +97,18 @@
 #define PHPGLFW_SMALL_BUFFER_THRESHOLD 256
 #define PHPGLFW_LOD_CACHE_EPSILON 0.01f
 
+// octree tuning defaults (overridable per-assembler via setCullingStrategy):
+// a node stops subdividing once it holds no more than oct_min_leaf instances or
+// reaches oct_max_depth. the depth default is generous because scenes with a
+// large spatial extent and uneven density (e.g. a field spanning millions of
+// units that clusters near the origin) need many levels just to "zoom in" to the
+// populated region before a leaf can reach the target instance count. the leaf
+// count / all-in-one-octant guard terminate small/compact scenes long before the
+// cap, so a high cap costs nothing there.
+#define PHPGLFW_OCT_MAX_DEPTH 20
+#define PHPGLFW_OCT_MIN_LEAF_INSTANCES 16
+#define PHPGLFW_OCT_MAX_DEPTH_LIMIT 31
+
 typedef struct _phpglfw_drawcall_mesh {
     uint32_t vao_id;
     uint32_t vertex_offset;
@@ -140,6 +157,19 @@ typedef struct _phpglfw_drawcall_instance {
     uint64_t group_key;
 } phpglfw_drawcall_instance;
 
+typedef struct _phpglfw_drawcall_octnode {
+    // the node bounds are the union of the world-space bounding spheres of the
+    // instances in this subtree (each sphere's center +/- radius), NOT the raw
+    // geometric octant box. this is what makes the "node fully inside the frustum
+    // => every contained sphere is inside" fast path in the traversal correct.
+    float aabb_min[3];
+    float aabb_max[3];
+    uint32_t child_base;     // index of the first of 8 children in the node pool; 0 for a leaf
+    uint32_t first_instance; // offset into oct_instance_indices
+    uint32_t instance_count; // number of instances in this subtree slice
+    bool is_leaf;
+} phpglfw_drawcall_octnode;
+
 typedef struct _phpglfw_drawcall_assembler_object {
     // buffers exposed to php
     phpglfw_buffer_gluint_object *command_buffer;
@@ -174,7 +204,26 @@ typedef struct _phpglfw_drawcall_assembler_object {
     uint64_t *sort_keys_b;
     uint32_t *sort_indices_b;
     uint32_t sort_scratch_capacity;
-    
+
+    // persistent octree cache (only used by the PHPGLFW_CULL_OCTREE strategy).
+    // the tree is built on demand and reused across frames; it is rebuilt only
+    // when the instance set changes (oct_dirty). the cached world spheres depend
+    // solely on instance transforms and mesh bounds, not on the camera/frustum,
+    // so a camera-only change reuses the cached tree.
+    phpglfw_drawcall_octnode *oct_nodes;
+    uint32_t oct_node_capacity;
+    uint32_t oct_node_count;
+    uint32_t *oct_instance_indices;  // permutation of the culled (non-ignored) instances
+    uint32_t *oct_instance_scratch;  // ping-pong buffer for the octant partition scatter
+    float *oct_centers;              // 3 floats per instance: world-space sphere center
+    float *oct_radii;                // 1 float per instance: world-space sphere radius
+    uint32_t *oct_ignored_indices;   // IGNORE_CULLING instances, emitted every frame
+    uint32_t oct_ignored_count;
+    uint32_t oct_scratch_capacity;   // capacity of the per-instance arrays above
+    bool oct_dirty;                  // true => the tree must be rebuilt before the next cull
+    int oct_max_depth;               // subdivision depth cap
+    uint32_t oct_min_leaf;           // stop subdividing at/below this instance count
+
     // frame state
     phpglfw_math_vec3_object *camera_position;
     phpglfw_math_mat4_object *view_matrix;
@@ -190,6 +239,7 @@ typedef struct _phpglfw_drawcall_assembler_object {
     
     // settings
     int sort_mode;
+    int cull_strategy;
     bool auto_instancing;
 
     // rendering dispatch 
