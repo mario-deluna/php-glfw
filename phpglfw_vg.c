@@ -27,6 +27,7 @@
 #include "phpglfw_texture.h"
 #include "phpglfw_math.h"
 #include "phpglfw_buffer.h"
+#include "phpglfw_svgparser.h"
 
 #include "phpglfw_arginfo.h"
 
@@ -869,6 +870,142 @@ PHP_METHOD(GL_VectorGraphics_VGContext, imageFromHandle)
     image->nvgimage_handle = nvglCreateImageFromHandleGL3(intern->nvgctx, texture, w, h, image_flags);
 }
 
+// builds the current NanoVG path from a nanosvg path list. Each sub-path keeps
+// its original winding (via the signed area of its on-curve anchor points) so
+// interior cut-outs render as holes instead of being filled solid.
+// decode a nanosvg 0xAABBGGRR paint color into an NVGcolor, folding in the
+// shape's opacity. nanosvg packs the channels little-endian: R=bits 0-7,
+// G=8-15, B=16-23, A=24-31.
+static NVGcolor phpglfw_vg_svg_color(unsigned int c, float opacity)
+{
+    unsigned char a = (unsigned char) (((c >> 24) & 0xFF) * opacity);
+    return nvgRGBA(c & 0xFF, (c >> 8) & 0xFF, (c >> 16) & 0xFF, a);
+}
+
+static void phpglfw_vg_svg_build_path(NVGcontext *ctx, NSVGpath *paths)
+{
+    for (NSVGpath *path = paths; path != NULL; path = path->next) {
+        float *pts = path->pts;
+        if (path->npts < 1) {
+            continue;
+        }
+
+        nvgMoveTo(ctx, pts[0], pts[1]);
+        // nanosvg stores each path as a flat list of cubic bezier points:
+        // x0,y0, (cpx1,cpy1, cpx2,cpy2, x1,y1)* -> walk in steps of 3 points.
+        for (int i = 0; i < path->npts - 1; i += 3) {
+            float *p = &pts[i * 2];
+            nvgBezierTo(ctx, p[2], p[3], p[4], p[5], p[6], p[7]);
+        }
+
+        if (path->closed) {
+            nvgClosePath(ctx);
+        }
+
+        // preserve the source winding: shoelace over the on-curve anchor points
+        // (indices 0, 3, 6, ...). a positive area keeps the sub-path solid, a
+        // negative one marks it as a hole, matching the SVG's own orientation.
+        {
+            float area = 0.0f;
+            for (int i = 0; i < path->npts - 1; i += 3) {
+                float *a = &pts[i * 2];
+                float *b = &pts[(i + 3) * 2];
+                area += a[0] * b[1] - b[0] * a[1];
+            }
+            nvgPathWinding(ctx, area >= 0.0f ? NVG_SOLID : NVG_HOLE);
+        }
+    }
+}
+
+/**
+ * drawSVG
+ *
+ * Renders a parsed SVGImage as vector paths into the current frame. When $w and
+ * $h are omitted or null the SVG is drawn at its native size, otherwise it is scaled to
+ * fit the given width/height. Only solid fills/strokes are rendered; gradient
+ * paints are skipped for now. Alpha masks (mask="url(#id)") are honoured as a
+ * 1-bit (hard edged) clip via nvgClip(); soft/gradient masks are not supported.
+ *
+ * Any clip the caller had active is preserved: it is snapshotted with
+ * nvgSaveClip() on entry and reinstated with nvgRestoreClip() on exit (and after
+ * each masked shape). Note that a masked shape is clipped by its own mask only, it
+ * is not intersected with an existing caller clip.
+ */
+PHP_METHOD(GL_VectorGraphics_VGContext, drawSVG)
+{
+    zval *svg_zval;
+    double x = 0.0, y = 0.0;
+    double w = 0.0, h = 0.0;
+    bool w_is_null = 1, h_is_null = 1;
+    if (zend_parse_parameters(ZEND_NUM_ARGS(), "O|ddd!d!", &svg_zval, phpglfw_get_vg_svgimage_ce(), &x, &y, &w, &w_is_null, &h, &h_is_null) == FAILURE) {
+        RETURN_THROWS();
+    }
+
+    phpglfw_vgcontext_object *intern = phpglfw_vgcontext_objectptr_from_zobj_p(Z_OBJ_P(getThis()));
+    NVGcontext *ctx = intern->nvgctx;
+    NSVGimage *img = phpglfw_svgimage_objectptr_from_zobj_p(Z_OBJ_P(svg_zval))->image;
+
+    if (img == NULL) {
+        return;
+    }
+
+    nvgSave(ctx);
+    nvgTranslate(ctx, (float) x, (float) y);
+
+    // scale to the requested size when both width & height are given
+    if (!w_is_null && !h_is_null && w >= 0.0 && h >= 0.0 && img->width > 0.0f && img->height > 0.0f) {
+        nvgScale(ctx, (float) w / img->width, (float) h / img->height);
+    }
+
+    // snapshot the caller's clip so mask handling below can restore it; the clip
+    // is a per-context stencil region and is not covered by nvgSave/nvgRestore.
+    nvgSaveClip(ctx);
+
+    for (NSVGshape *shape = img->shapes; shape != NULL; shape = shape->next) {
+        if (!(shape->flags & NSVG_FLAGS_VISIBLE)) {
+            continue;
+        }
+
+        // when the shape references a mask, set up a clip from the mask geometry.
+        NSVGmask *mask = nsvgFindMask(img, shape->maskId);
+        if (mask != NULL && mask->paths != NULL) {
+            nvgBeginPath(ctx);
+            phpglfw_vg_svg_build_path(ctx, mask->paths);
+            nvgClip(ctx);
+        }
+
+        nvgBeginPath(ctx);
+        phpglfw_vg_svg_build_path(ctx, shape->paths);
+
+        // fill (solid colors only), honouring the shape's fill rule
+        if (shape->fill.type == NSVG_PAINT_COLOR) {
+            nvgFillColor(ctx, phpglfw_vg_svg_color(shape->fill.color, shape->opacity));
+            if (shape->fillRule == NSVG_FILLRULE_EVENODD) {
+                nvgFillEvenOdd(ctx);
+            } else {
+                nvgFill(ctx);
+            }
+        }
+
+        // stroke (solid colors only)
+        if (shape->stroke.type == NSVG_PAINT_COLOR) {
+            nvgStrokeColor(ctx, phpglfw_vg_svg_color(shape->stroke.color, shape->opacity));
+            nvgStrokeWidth(ctx, shape->strokeWidth);
+            nvgStroke(ctx);
+        }
+
+        // bring back the caller's clip (mask clip replaced it) for the next shape.
+        if (mask != NULL && mask->paths != NULL) {
+            nvgRestoreClip(ctx);
+        }
+    }
+
+    // ensure the caller's clip is reinstated regardless of the last shape.
+    nvgRestoreClip(ctx);
+
+    nvgRestore(ctx);
+}
+
 PHP_METHOD(GL_VectorGraphics_VGContext, __construct)
 {
     zval *obj;
@@ -1562,6 +1699,15 @@ PHP_METHOD(GL_VectorGraphics_VGContext, fill)
     nvgFill(intern->nvgctx);
 }
 /**
+ * fillEvenOdd
+ */ 
+PHP_METHOD(GL_VectorGraphics_VGContext, fillEvenOdd)
+{
+    phpglfw_vgcontext_object *intern = phpglfw_vgcontext_objectptr_from_zobj_p(Z_OBJ_P(getThis()));
+
+    nvgFillEvenOdd(intern->nvgctx);
+}
+/**
  * stroke
  */ 
 PHP_METHOD(GL_VectorGraphics_VGContext, stroke)
@@ -1569,6 +1715,42 @@ PHP_METHOD(GL_VectorGraphics_VGContext, stroke)
     phpglfw_vgcontext_object *intern = phpglfw_vgcontext_objectptr_from_zobj_p(Z_OBJ_P(getThis()));
 
     nvgStroke(intern->nvgctx);
+}
+/**
+ * clip
+ */ 
+PHP_METHOD(GL_VectorGraphics_VGContext, clip)
+{
+    phpglfw_vgcontext_object *intern = phpglfw_vgcontext_objectptr_from_zobj_p(Z_OBJ_P(getThis()));
+
+    nvgClip(intern->nvgctx);
+}
+/**
+ * resetClip
+ */ 
+PHP_METHOD(GL_VectorGraphics_VGContext, resetClip)
+{
+    phpglfw_vgcontext_object *intern = phpglfw_vgcontext_objectptr_from_zobj_p(Z_OBJ_P(getThis()));
+
+    nvgResetClip(intern->nvgctx);
+}
+/**
+ * saveClip
+ */ 
+PHP_METHOD(GL_VectorGraphics_VGContext, saveClip)
+{
+    phpglfw_vgcontext_object *intern = phpglfw_vgcontext_objectptr_from_zobj_p(Z_OBJ_P(getThis()));
+
+    nvgSaveClip(intern->nvgctx);
+}
+/**
+ * restoreClip
+ */ 
+PHP_METHOD(GL_VectorGraphics_VGContext, restoreClip)
+{
+    phpglfw_vgcontext_object *intern = phpglfw_vgcontext_objectptr_from_zobj_p(Z_OBJ_P(getThis()));
+
+    nvgRestoreClip(intern->nvgctx);
 }
 /**
  * createFont

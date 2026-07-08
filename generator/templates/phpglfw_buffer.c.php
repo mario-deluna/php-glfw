@@ -145,9 +145,10 @@ zend_object_iterator *<?php echo $buffer->getHandlerMethodName('get_iterator'); 
 		return NULL;
 	}
     
-	iterator = emalloc(sizeof(<?php echo $buffer->getIteratorObjectName(); ?>));
+    iterator = ecalloc(1, sizeof(<?php echo $buffer->getIteratorObjectName(); ?>));
 
-	zend_iterator_init((zend_object_iterator*)iterator);
+    zend_iterator_init((zend_object_iterator*)iterator);
+    ZVAL_UNDEF(&iterator->current);
 
 	ZVAL_OBJ_COPY(&iterator->intern.data, Z_OBJ_P(object));
 	iterator->intern.funcs = &<?php echo $buffer->getIteratorHandlersVarName(); ?>;

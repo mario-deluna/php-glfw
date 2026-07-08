@@ -524,8 +524,31 @@ void nvgCircle(NVGcontext* ctx, float cx, float cy, float r);
 // Fills the current path with current fill style.
 void nvgFill(NVGcontext* ctx);
 
+// Fills the current path with current fill style using the even-odd fill rule
+// (as opposed to the default non-zero winding rule used by nvgFill).
+void nvgFillEvenOdd(NVGcontext* ctx);
+
 // Fills the current path with current stroke style.
 void nvgStroke(NVGcontext* ctx);
+
+// Sets the current path as an arbitrary-shape clip region (stencil based). Subsequent
+// fills, strokes and text are restricted to the interior of this path until
+// nvgResetClip() is called. The clip replaces (does not intersect) any previous clip.
+// Note: clipping is 1-bit (hard edged).
+void nvgClip(NVGcontext* ctx);
+
+// Clears the active clip region set by nvgClip().
+void nvgResetClip(NVGcontext* ctx);
+
+// Saves the current clip region (a single 1-bit snapshot) so it can be reinstated
+// later with nvgRestoreClip(). Only one save level is kept: a second nvgSaveClip()
+// overwrites the first. Unlike nvgSave()/nvgRestore(), which operate on NVGstate,
+// this captures the per-context stencil clip so callers can wrap clip-mutating
+// helpers without losing their own clip.
+void nvgSaveClip(NVGcontext* ctx);
+
+// Restores the clip region captured by the last nvgSaveClip().
+void nvgRestoreClip(NVGcontext* ctx);
 
 
 //
@@ -688,8 +711,13 @@ struct NVGparams {
 	void (*renderCancel)(void* uptr);
 	void (*renderFlush)(void* uptr);
 	void (*renderFill)(void* uptr, NVGpaint* paint, NVGcompositeOperationState compositeOperation, NVGscissor* scissor, float fringe, const float* bounds, const NVGpath* paths, int npaths);
+	void (*renderFillEvenOdd)(void* uptr, NVGpaint* paint, NVGcompositeOperationState compositeOperation, NVGscissor* scissor, float fringe, const float* bounds, const NVGpath* paths, int npaths);
 	void (*renderStroke)(void* uptr, NVGpaint* paint, NVGcompositeOperationState compositeOperation, NVGscissor* scissor, float fringe, float strokeWidth, const NVGpath* paths, int npaths);
 	void (*renderTriangles)(void* uptr, NVGpaint* paint, NVGcompositeOperationState compositeOperation, NVGscissor* scissor, const NVGvertex* verts, int nverts, float fringe);
+	void (*renderClip)(void* uptr, NVGscissor* scissor, const float* bounds, const NVGpath* paths, int npaths);
+	void (*renderResetClip)(void* uptr);
+	void (*renderSaveClip)(void* uptr);
+	void (*renderRestoreClip)(void* uptr);
 	void (*renderDelete)(void* uptr);
 };
 typedef struct NVGparams NVGparams;

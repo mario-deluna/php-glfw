@@ -134,21 +134,20 @@ static void <?php echo $ipo->getObjectFreeFunctionName(); ?>(zend_object *intern
 zval *<?php echo $ipo->getObjectReadPropertyFunctionName(); ?>(zend_object *object, zend_string *member, int type, void **cache_slot, zval *rv)
 {
     <?php echo $ipo->getObjectStructName(); ?> *intern = <?php echo $ipo->getObjectStructPtrFromZObjPtrFunctionName(); ?>(object);
-    zval *retval = &EG(uninitialized_zval);
 
     if (intern-><?php echo $ipo->getObjectStructPointerVar(); ?>) {
 <?php foreach($ipo->structAccessMembers as $i => $member) : ?>
         <?php echo $i === 0 ? '' : 'else '; ?>if (zend_string_equals_literal(member, "<?php echo $member[0]; ?>")) {
 <?php if ($member[1] === 'int') : ?>
-            ZVAL_LONG(retval, intern-><?php echo $ipo->getObjectStructPointerVar(); ?>-><?php echo $member[0]; ?>);
+            ZVAL_LONG(rv, intern-><?php echo $ipo->getObjectStructPointerVar(); ?>-><?php echo $member[0]; ?>);
 <?php elseif ($member[1] === 'float') : ?>
-            ZVAL_DOUBLE(retval, intern-><?php echo $ipo->getObjectStructPointerVar(); ?>-><?php echo $member[0]; ?>);
+            ZVAL_DOUBLE(rv, intern-><?php echo $ipo->getObjectStructPointerVar(); ?>-><?php echo $member[0]; ?>);
 <?php elseif ($member[1] === 'string') : ?>
-            ZVAL_STRING(retval, intern-><?php echo $ipo->getObjectStructPointerVar(); ?>-><?php echo $member[0]; ?>);
+            ZVAL_STRING(rv, intern-><?php echo $ipo->getObjectStructPointerVar(); ?>-><?php echo $member[0]; ?>);
 <?php elseif ($member[1] === 'bool') : ?>
-            ZVAL_BOOL(retval, intern-><?php echo $ipo->getObjectStructPointerVar(); ?>-><?php echo $member[0]; ?>);
+            ZVAL_BOOL(rv, intern-><?php echo $ipo->getObjectStructPointerVar(); ?>-><?php echo $member[0]; ?>);
 <?php endif; ?>
-            return retval;
+            return rv;
         }
 <?php endforeach; ?>
         else {
@@ -156,7 +155,7 @@ zval *<?php echo $ipo->getObjectReadPropertyFunctionName(); ?>(zend_object *obje
         }
     }
 
-    return retval;
+    return &EG(uninitialized_zval);
 }
 
 

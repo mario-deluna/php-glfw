@@ -62,16 +62,16 @@ This property is often also used for reflection color, shininess or highlights c
 public readonly Vec3 $specular;
 ```
 
-### $emmisive
+### $emissive
 
-The emmisive color of the material. (marked as "Ke")
+The emissive color of the material. (marked as "Ke")
 This property is often also used for illumination, self glow or light emission.
 
 ```php
 /*
  * @var \GL\Math\Vec3
  */
-public readonly Vec3 $emmisive;
+public readonly Vec3 $emissive;
 ```
 
 ### $transmittance

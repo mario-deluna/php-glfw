@@ -2380,7 +2380,7 @@ void nvgDebugDumpPathCache(NVGcontext* ctx)
 	}
 }
 
-void nvgFill(NVGcontext* ctx)
+static void nvg__fill(NVGcontext* ctx, int evenOdd)
 {
 	NVGstate* state = nvg__getState(ctx);
 	const NVGpath* path;
@@ -2397,8 +2397,12 @@ void nvgFill(NVGcontext* ctx)
 	fillPaint.innerColor.a *= state->alpha;
 	fillPaint.outerColor.a *= state->alpha;
 
-	ctx->params.renderFill(ctx->params.userPtr, &fillPaint, state->compositeOperation, &state->scissor, ctx->fringeWidth,
-						   ctx->cache->bounds, ctx->cache->paths, ctx->cache->npaths);
+	if (evenOdd && ctx->params.renderFillEvenOdd != NULL)
+		ctx->params.renderFillEvenOdd(ctx->params.userPtr, &fillPaint, state->compositeOperation, &state->scissor, ctx->fringeWidth,
+							   ctx->cache->bounds, ctx->cache->paths, ctx->cache->npaths);
+	else
+		ctx->params.renderFill(ctx->params.userPtr, &fillPaint, state->compositeOperation, &state->scissor, ctx->fringeWidth,
+							   ctx->cache->bounds, ctx->cache->paths, ctx->cache->npaths);
 
 	// Count triangles
 	for (i = 0; i < ctx->cache->npaths; i++) {
@@ -2407,6 +2411,16 @@ void nvgFill(NVGcontext* ctx)
 		ctx->fillTriCount += path->nstroke-2;
 		ctx->drawCallCount += 2;
 	}
+}
+
+void nvgFill(NVGcontext* ctx)
+{
+	nvg__fill(ctx, 0);
+}
+
+void nvgFillEvenOdd(NVGcontext* ctx)
+{
+	nvg__fill(ctx, 1);
 }
 
 void nvgStroke(NVGcontext* ctx)
@@ -2448,6 +2462,39 @@ void nvgStroke(NVGcontext* ctx)
 		ctx->strokeTriCount += path->nstroke-2;
 		ctx->drawCallCount++;
 	}
+}
+
+void nvgClip(NVGcontext* ctx)
+{
+	NVGstate* state = nvg__getState(ctx);
+
+	if (ctx->params.renderClip == NULL)
+		return;
+
+	nvg__flattenPaths(ctx);
+	// build a crisp (non-antialiased) fill mask for the clip region
+	nvg__expandFill(ctx, 0.0f, NVG_MITER, 2.4f);
+
+	ctx->params.renderClip(ctx->params.userPtr, &state->scissor, ctx->cache->bounds,
+						   ctx->cache->paths, ctx->cache->npaths);
+}
+
+void nvgResetClip(NVGcontext* ctx)
+{
+	if (ctx->params.renderResetClip != NULL)
+		ctx->params.renderResetClip(ctx->params.userPtr);
+}
+
+void nvgSaveClip(NVGcontext* ctx)
+{
+	if (ctx->params.renderSaveClip != NULL)
+		ctx->params.renderSaveClip(ctx->params.userPtr);
+}
+
+void nvgRestoreClip(NVGcontext* ctx)
+{
+	if (ctx->params.renderRestoreClip != NULL)
+		ctx->params.renderRestoreClip(ctx->params.userPtr);
 }
 
 // Add fonts

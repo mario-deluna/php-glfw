@@ -418,39 +418,38 @@ static void phpglfw_glfwvidmode_object_free(zend_object *intern)
 zval *phpglfw_glfwvidmode_object_read_property(zend_object *object, zend_string *member, int type, void **cache_slot, zval *rv)
 {
     phpglfw_glfwvidmode_object *intern = phpglfw_glfwvidmode_objectptr_from_zobj_p(object);
-    zval *retval = &EG(uninitialized_zval);
 
     if (intern->glfwvidmode) {
         if (zend_string_equals_literal(member, "width")) {
-            ZVAL_LONG(retval, intern->glfwvidmode->width);
-            return retval;
+            ZVAL_LONG(rv, intern->glfwvidmode->width);
+            return rv;
         }
         else if (zend_string_equals_literal(member, "height")) {
-            ZVAL_LONG(retval, intern->glfwvidmode->height);
-            return retval;
+            ZVAL_LONG(rv, intern->glfwvidmode->height);
+            return rv;
         }
         else if (zend_string_equals_literal(member, "redBits")) {
-            ZVAL_LONG(retval, intern->glfwvidmode->redBits);
-            return retval;
+            ZVAL_LONG(rv, intern->glfwvidmode->redBits);
+            return rv;
         }
         else if (zend_string_equals_literal(member, "greenBits")) {
-            ZVAL_LONG(retval, intern->glfwvidmode->greenBits);
-            return retval;
+            ZVAL_LONG(rv, intern->glfwvidmode->greenBits);
+            return rv;
         }
         else if (zend_string_equals_literal(member, "blueBits")) {
-            ZVAL_LONG(retval, intern->glfwvidmode->blueBits);
-            return retval;
+            ZVAL_LONG(rv, intern->glfwvidmode->blueBits);
+            return rv;
         }
         else if (zend_string_equals_literal(member, "refreshRate")) {
-            ZVAL_LONG(retval, intern->glfwvidmode->refreshRate);
-            return retval;
+            ZVAL_LONG(rv, intern->glfwvidmode->refreshRate);
+            return rv;
         }
         else {
             zend_throw_error(NULL, "Trying to access invalid property '%s' on GLFWvidmode", ZSTR_VAL(member));
         }
     }
 
-    return retval;
+    return &EG(uninitialized_zval);
 }
 
 
@@ -10940,10 +10939,10 @@ PHP_FUNCTION(glfwCreateWindow)
         share = phpglfw_glfwwindowptr_from_zval_ptr(share_zval);
     }
     GLFWwindow* glfwwindow = glfwCreateWindow(width, height, title, monitor, share);
+    phpglfw_glfwwindow_ptr_assign_to_zval_p(return_value, glfwwindow);
     if (glfwwindow == NULL) {
         RETURN_NULL();
     }
-    phpglfw_glfwwindow_ptr_assign_to_zval_p(return_value, glfwwindow);
     // fetch the internal object
     phpglfw_glfwwindow_object *intern = phpglfw_glfwwindow_objectptr_from_zobj_p(Z_OBJ_P(return_value));
     // ensure user pointer is our internal window object

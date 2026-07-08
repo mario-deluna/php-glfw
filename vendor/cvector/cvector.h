@@ -199,6 +199,23 @@
     } while (0)
 
 /**
+ * @brief cvector_ensure - make sure the vector has at least the requested size
+ * @param vec - the vector
+ * @param size - minimum size to enforce
+ * @return void
+ */
+#define cvector_ensure(vec, size)                 \
+    do {                                         \
+        size_t cv_req__ = (size);                \
+        if (cvector_capacity(vec) < cv_req__) {  \
+            cvector_grow((vec), cv_req__);       \
+        }                                        \
+        if (cvector_size(vec) < cv_req__) {      \
+            cvector_set_size((vec), cv_req__);   \
+        }                                        \
+    } while (0)
+
+/**
  * @brief cvector_insert - insert element at position pos to the vector
  * @param vec - the vector
  * @param pos - position in the vector where the new elements are inserted.
