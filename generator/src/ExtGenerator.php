@@ -750,8 +750,23 @@ class ExtGenerator
     private function buildDocsCommon() : void
     {
         // geometry
-        $this->buildMarkdownDocsFile('geo_objfileparser.md', 'API/Geometry/ObjFileParser.md');   
+        $this->buildMarkdownDocsFile('geo_objfileparser.md', 'API/Geometry/ObjFileParser.md');
+        $this->buildMarkdownDocsFile('geo_voxfileparser.md', 'API/Geometry/VoxFileParser.md');
+        $this->buildMarkdownDocsFile('geo_voxfileparser_model.md', 'API/Geometry/VoxFileParserModel.md');
+        $this->buildMarkdownDocsFile('geo_voxfileparser_palette.md', 'API/Geometry/VoxFileParserPalette.md');
         // texture
-        $this->buildMarkdownDocsFile('texture_texture2d.md', 'API/Texture/Texture2D.md');   
+        $this->buildMarkdownDocsFile('texture_texture2d.md', 'API/Texture/Texture2D.md');
+
+        // vector graphics
+        $vgDir = GEN_PATH_EXT . '/docs/API/VectorGraphics';
+        if (!is_dir($vgDir)) {
+            mkdir($vgDir, 0777, true);
+        }
+        $this->buildMarkdownDocsFile('vg_vgcontext.md', 'API/VectorGraphics/VGContext.md');
+        $this->buildMarkdownDocsFile('vg_vgcolor.md', 'API/VectorGraphics/VGColor.md');
+        $this->buildMarkdownDocsFile('vg_vgpaint.md', 'API/VectorGraphics/VGPaint.md');
+        $this->buildMarkdownDocsFile('vg_vgimage.md', 'API/VectorGraphics/VGImage.md');
+        $this->buildMarkdownDocsFile('vg_svgimage.md', 'API/VectorGraphics/SVGImage.md');
+        $this->buildMarkdownDocsFile('vg_vgalign.md', 'API/VectorGraphics/VGAlign.md');
     }
 }

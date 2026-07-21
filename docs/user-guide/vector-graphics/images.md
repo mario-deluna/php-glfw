@@ -145,3 +145,6 @@ $glTexture; // the GL texture handle
 $vgImage = $vg->imageFromHandle($glTexture, $textureWidth, $textureHeight);
 $paint = $vgImage->makePaint(0, 0, $textureWidth, $textureHeight);
 ```
+## Full API Reference
+
+For the image and paint methods see the generated [`VGImage`](/API/VectorGraphics/VGImage.html) and [`VGPaint`](/API/VectorGraphics/VGPaint.html) references, and the [`VGContext` reference](/API/VectorGraphics/VGContext.html) for `imageFromTexture` and `imageFromHandle`.

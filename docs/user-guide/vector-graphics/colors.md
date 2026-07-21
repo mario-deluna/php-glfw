@@ -133,3 +133,6 @@ $green = VGColor::green()->getVec3();
 
 $mixed = Vec3::mix($red, $green, 0.5);
 ```
+## Full API Reference
+
+For every constructor, named color, and conversion helper, see the generated [`VGColor` class reference](/API/VectorGraphics/VGColor.html).

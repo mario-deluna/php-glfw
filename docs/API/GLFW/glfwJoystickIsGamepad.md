@@ -25,7 +25,8 @@ mapping,
 or `GLFW_FALSE` otherwise.
 
 ---
-     
+
+ 
 
 !!! cite "Copyright"
 

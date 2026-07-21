@@ -22,7 +22,8 @@ returns
 :    `float` The opacity value of the specified window.
 
 ---
-     
+
+ 
 
 !!! cite "Copyright"
 

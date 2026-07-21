@@ -24,7 +24,8 @@ returns
 :    `int` One of `GLFW_PRESS` or `GLFW_RELEASE`.
 
 ---
-     
+
+ 
 
 !!! cite "Copyright"
 

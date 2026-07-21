@@ -759,6 +759,12 @@ namespace GL\Buffer
     }
 <?php foreach($buffers as $buffer) : ?>
 
+    /**
+     * A typed, contiguous <?php echo $buffer->type; ?> buffer used to hand data to the GPU.
+     *
+     * See the Buffer Objects user guide for how to fill, read, and upload buffers:
+     * @see https://phpgl.net/user-guide/buffers/overview.html
+     */
     class <?php echo $buffer->name; ?> implements BufferInterface {
 
         /**
@@ -1663,39 +1669,61 @@ namespace GL\Geometry\VoxFileParser
 
         /**
          * Retrieve the underlying RGBA byte buffer (256 * 4 entries).
+         *
+         * @return \GL\Buffer\UByteBuffer The 256 * 4 byte RGBA palette buffer.
          */
         public function getBuffer() : \GL\Buffer\UByteBuffer {}
 
         /**
          * Assign a color at the given palette index using a Vec4 color.
+         *
+         * @param int $index The palette index to write (0..255).
+         * @param \GL\Math\Vec4 $color The color in the 0..1 range.
+         * @return void
          */
         public function setColor(int $index, \GL\Math\Vec4 $color) : void {}
 
         /**
          * Assign a color at the given palette index using individual float components.
          * Components are expected in the 0..1 range.
+         *
+         * @param int $index The palette index to write (0..255).
+         * @param float $r The red component (0..1).
+         * @param float $g The green component (0..1).
+         * @param float $b The blue component (0..1).
+         * @param float $a The alpha component (0..1), defaults to 1.0.
+         * @return void
          */
         public function setColorf(int $index, float $r, float $g, float $b, float $a = 1.0) : void {}
 
         /**
          * Fetch a color at the given palette index as a Vec4 object in the 0..1 range.
+         *
+         * @param int $index The palette index to read (0..255).
+         * @return \GL\Math\Vec4 The color at the given index in the 0..1 range.
          */
         public function getColor(int $index) : \GL\Math\Vec4 {}
 
         /**
          * Replace the palette contents from another buffer. Accepts RGBA byte or float layouts.
+         *
+         * @param \GL\Buffer\UByteBuffer|\GL\Buffer\FloatBuffer $buffer A buffer holding RGBA color data.
+         * @return void
          */
         public function replaceFromBuffer(\GL\Buffer\UByteBuffer|\GL\Buffer\FloatBuffer $buffer) : void {}
 
         /**
          * Replace palette entries from an array of colors. Each color may be [r, g, b] or [r, g, b, a] in 0..1 range.
          *
-         * @param array<int, array{0:float,1:float,2:float,3?:float}> $colors
+         * @param array<int, array{0:float,1:float,2:float,3?:float}> $colors The colors to write, starting at index 0.
+         * @return void
          */
         public function replaceFromArray(array $colors) : void {}
 
         /**
          * Reset the palette to the default MagicaVoxel color table.
+         *
+         * @return void
          */
         public function fillDefault() : void {}
     }
@@ -1736,7 +1764,7 @@ namespace GL\Geometry\VoxFileParser
          *
          * @param \GL\Buffer\FloatBuffer $vertices Destination buffer for vertex attributes (position, normal, colors).
          * @param \GL\Buffer\UIntBuffer  $indices Destination buffer for triangle indices.
-         * @param Palette|null $palette Optional palette override or editor instance.
+         * @param \GL\Geometry\VoxFileParser\Palette|null $palette Optional palette override or editor instance.
          * @param string $mode Mesh generation mode name (simple, greedy, polygon).
          * @param array{
          *     colors?: 'rgb'|'rgba'|'none',
@@ -1756,7 +1784,14 @@ namespace GL\Geometry\VoxFileParser
             ?array $options = null
         ) : bool {}
 
-        /** Retrieve the palette index stored at the given voxel coordinate. */
+        /**
+         * Retrieve the palette index stored at the given voxel coordinate.
+         *
+         * @param int $x The voxel x coordinate.
+         * @param int $y The voxel y coordinate.
+         * @param int $z The voxel z coordinate.
+         * @return int|null The palette index at the coordinate, or null when the cell is empty or out of bounds.
+         */
         public function getVoxel(int $x, int $y, int $z) : ?int {}
     }
 
@@ -1836,10 +1871,27 @@ namespace GL\Geometry
         /** Total number of groups */
         public readonly int $groupCount;
 
+        /**
+         * Parse a MagicaVoxel scene from a file on disk.
+         *
+         * @param string $file The path to the .vox file to load.
+         */
         public function __construct(string $file) {}
 
+        /**
+         * Retrieve a single voxel model by its index.
+         *
+         * @param int $modelIndex The index of the model inside the scene.
+         * @return VoxFileParser\Model|null The model, or null when the index is out of range.
+         */
         public function getModel(int $modelIndex) : ?VoxFileParser\Model {}
 
+        /**
+         * Look up a color from the scene palette by its index.
+         *
+         * @param int $colorIndex The palette index to read (0..255).
+         * @return \GL\Math\Vec4|null The color in the 0..1 range, or null when the index is out of range.
+         */
         public function getPaletteColor(int $colorIndex) : ?\GL\Math\Vec4 {}
     }
 }
@@ -2466,7 +2518,27 @@ namespace GL\Audio
 namespace GL\VectorGraphics
 {
     class VGColor {
+        /**
+         * RGB color constructor.
+         * All values are in the range [0.0, 1.0], alpha defaults to fully opaque.
+         *
+         * @param float $r Red
+         * @param float $g Green
+         * @param float $b Blue
+         * @return VGColor The resulting color.
+         */
         public static function rgb(float $r, float $g, float $b) : VGColor {}
+
+        /**
+         * RGBA color constructor.
+         * All values are in the range [0.0, 1.0].
+         *
+         * @param float $r Red
+         * @param float $g Green
+         * @param float $b Blue
+         * @param float $a Alpha
+         * @return VGColor The resulting color.
+         */
         public static function rgba(float $r, float $g, float $b, float $a) : VGColor {}
         /**
          * HSL color constructor
@@ -2524,24 +2596,42 @@ namespace GL\VectorGraphics
          */
         public static function hex(string $hex) : VGColor {}
 
+        /** The named color red. @return VGColor */
         public static function red() : VGColor {}
+        /** The named color green. @return VGColor */
         public static function green() : VGColor {}
+        /** The named color blue. @return VGColor */
         public static function blue() : VGColor {}
+        /** The named color white. @return VGColor */
         public static function white() : VGColor {}
+        /** The named color black. @return VGColor */
         public static function black() : VGColor {}
+        /** A fully transparent color. @return VGColor */
         public static function transparent() : VGColor {}
+        /** The named color yellow. @return VGColor */
         public static function yellow() : VGColor {}
+        /** The named color cyan. @return VGColor */
         public static function cyan() : VGColor {}
+        /** The named color magenta. @return VGColor */
         public static function magenta() : VGColor {}
+        /** The named color orange. @return VGColor */
         public static function orange() : VGColor {}
+        /** The named color pink. @return VGColor */
         public static function pink() : VGColor {}
+        /** The named color purple. @return VGColor */
         public static function purple() : VGColor {}
+        /** The named color brown. @return VGColor */
         public static function brown() : VGColor {}
+        /** The named color gray. @return VGColor */
         public static function gray() : VGColor {}
+        /** A darker shade of gray. @return VGColor */
         public static function darkGray() : VGColor {}
+        /** A lighter shade of gray. @return VGColor */
         public static function lightGray() : VGColor {}
+        /** A random opaque color, handy for quick debugging. @return VGColor */
         public static function random() : VGColor {}
-        public static function randomGray() : VGColor {} 
+        /** A random shade of gray, handy for quick debugging. @return VGColor */
+        public static function randomGray() : VGColor {}
 
         /**
          * Virtual property for the red component of the color

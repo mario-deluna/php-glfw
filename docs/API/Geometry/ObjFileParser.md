@@ -148,7 +148,8 @@ arguments
 :    1. `string` `$file` The path to the obj file to parse.
 
 ---
-     
+
+ 
 ### `getVertices`
 
 Returns a FloatBuffer object containing the requested vertex data for the given group.
@@ -188,7 +189,8 @@ returns
 :    `\GL\Math\FloatBuffer` The generated vertex data buffer
 
 ---
-     
+
+ 
 ### `getIndexedVertices`
 
 Almost the same as getVertices but returns an Mesh object instead.
@@ -216,7 +218,8 @@ returns
 :    `\GL\Geometry\Mesh` The generated mesh object
 
 ---
-     
+
+ 
 ### `getMeshes`
 
 Returns an array of Mesh objects grouped by material.
@@ -242,6 +245,7 @@ returns
 :    `\GL\Geometry\ObjFileParser\Mesh[]` 
 
 ---
-     
+
+ 
 
 

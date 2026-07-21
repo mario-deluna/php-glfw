@@ -16,7 +16,8 @@ returns
 :    `int` The value of the close flag.
 
 ---
-     
+
+ 
 
 !!! cite "Copyright"
 

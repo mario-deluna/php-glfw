@@ -88,8 +88,20 @@ class ExtDocParser
                 ];
 
                 // extract the comment
-                if ($node->getAttribute('comments') && $node->getAttribute('comments')[0]) {
-                    $this->symbolData[$symbol]['comment'] = $node->getAttribute('comments')[0]->getText();
+                $comments = $node->getAttribute('comments') ?: [];
+                if ($comments) {
+                    // prefer an actual docblock (/** ... */) when one is attached. php-parser
+                    // also collects preceding line comments (// ...), so picking the first
+                    // comment could grab a commented-out declaration sitting above the method.
+                    $chosen = null;
+                    foreach ($comments as $comment) {
+                        if ($comment instanceof \PhpParser\Comment\Doc) {
+                            $chosen = $comment;
+                        }
+                    }
+                    $chosen = $chosen ?: $comments[0];
+
+                    $this->symbolData[$symbol]['comment'] = $chosen->getText();
 
                     // parse the comment
                     $this->symbolData[$symbol]['docblock'] = $this->docblockFactory->create($this->symbolData[$symbol]['comment']);
@@ -254,10 +266,14 @@ MARKDOWN;
 {$returnMd}
 
 ---
-    
 MARKDOWN;
 
         $b = preg_replace("/\n\n+/", "\n\n", $b);
+
+        // ensure the block ends with a clean blank line and no trailing
+        // whitespace, otherwise the newline php eats after the template's
+        // closing php tag would leave stray spaces indenting the next heading
+        $b = rtrim($b) . "\n\n";
 
         return $b;
     }

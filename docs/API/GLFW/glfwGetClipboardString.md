@@ -21,7 +21,8 @@ returns
 if an `error` occurred.
 
 ---
-     
+
+ 
 
 !!! cite "Copyright"
 

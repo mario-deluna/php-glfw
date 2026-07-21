@@ -21,7 +21,8 @@ returns
 :    `string` The ASCII encoded GLFW version string.
 
 ---
-     
+
+ 
 
 !!! cite "Copyright"
 

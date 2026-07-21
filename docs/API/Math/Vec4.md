@@ -47,7 +47,8 @@ function __construct(?float $x = null, ?float $y = null, ?float $z = null, ?floa
 ```
 
 ---
-     
+
+ 
 ### `normalized`
 
 Retruns a normalized version of the given Vec4         *
@@ -68,7 +69,8 @@ returns
 :    `\Vec4` The normalized vector.
 
 ---
-     
+
+ 
 ### `distance`
 
 Returns the distance between the left and right vectors
@@ -91,7 +93,8 @@ returns
 :    `float` The distance between the left and right vectors.
 
 ---
-     
+
+ 
 ### `distance2`
 
 Returns the squared distance between the left and right vectors
@@ -114,7 +117,8 @@ returns
 :    `float` The squared distance between the left and right vectors.
 
 ---
-     
+
+ 
 ### `dot`
 
 Returns the dot product of the left and right vectors
@@ -137,7 +141,8 @@ returns
 :    `float` The dot product of the left and right vectors.
 
 ---
-     
+
+ 
 ### `mix`
 
 Linearly interpolates between the left and right vectors by the given t value.
@@ -161,7 +166,8 @@ returns
 :    `\Vec4` The mixed vector.
 
 ---
-     
+
+ 
 ### `lerp`
 
 Linearly interpolates between the left and right vectors by the given t value.
@@ -187,7 +193,8 @@ returns
 :    `\Vec4` The lerped vector.
 
 ---
-     
+
+ 
 ### `slerp`
 
 Spherically interpolates between the left and right vectors by the given t value.
@@ -211,7 +218,8 @@ returns
 :    `\Vec4` The slerped vector.
 
 ---
-     
+
+ 
 ### `length`
 
 Returns the length of the vector
@@ -225,7 +233,8 @@ returns
 :    `float` 
 
 ---
-     
+
+ 
 ### `distanceTo`
 
 Returns the distance between this vector and another
@@ -239,7 +248,8 @@ returns
 :    `float` 
 
 ---
-     
+
+ 
 ### `distance2To`
 
 Returns squared distance between this vector and another
@@ -253,7 +263,8 @@ returns
 :    `float` 
 
 ---
-     
+
+ 
 ### `normalize`
 
 normalizes the current vector
@@ -267,7 +278,8 @@ returns
 :    `void` 
 
 ---
-     
+
+ 
 ### `abs`
 
 Makes each component x if x >= 0; otherwise, -x
@@ -281,4 +293,5 @@ returns
 :    `void` 
 
 ---
-     
+
+ 

@@ -82,7 +82,8 @@ returns
 :    `void` 
 
 ---
-    
+
+
 
 ### `pushArray`
 
@@ -101,7 +102,8 @@ returns
 :    `void` 
 
 ---
-    
+
+
  
 ### `pushVec2`
 
@@ -112,7 +114,8 @@ function pushVec2(\GL\Math\Vec2 $vec) : void
 ```
 
 ---
-     
+
+ 
 ### `pushVec3`
 
 Pushes the values of a Vec3 object into the buffer
@@ -122,7 +125,8 @@ function pushVec3(\GL\Math\Vec3 $vec) : void
 ```
 
 ---
-     
+
+ 
 ### `pushVec4`
 
 Pushes the values of a Vec4 object into the buffer
@@ -132,7 +136,8 @@ function pushVec4(\GL\Math\Vec4 $vec) : void
 ```
 
 ---
-     
+
+ 
 ### `pushMat4`
 
 Pushes the values of a Mat4 (16) object into the buffer
@@ -142,7 +147,8 @@ function pushMat4(\GL\Math\Mat4 $matrix) : void
 ```
 
 ---
-     
+
+ 
 
 ### `fill`
 
@@ -194,7 +200,8 @@ returns
 :    `void` 
 
 ---
-     
+
+ 
 ### `clear`
 
 Will clear the Buffer, internally this will release all allocated data. Meaning any reserved space will be freed.
@@ -208,7 +215,8 @@ returns
 :    `void` 
 
 ---
-     
+
+ 
 ### `size`
 
 Returns the actual size / number of elements of the buffer.
@@ -222,7 +230,8 @@ returns
 :    `int` buffer size in element count (not bytes)
 
 ---
-     
+
+ 
 ### `capacity`
 
 Returns the current reserved space of the buffer.
@@ -236,4 +245,5 @@ returns
 :    `int` buffer space in element count (not bytes)
 
 ---
-     
+
+ 

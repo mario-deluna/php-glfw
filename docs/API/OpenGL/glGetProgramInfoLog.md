@@ -22,7 +22,8 @@ returns
 :    `string` Returns the information log for the specified object.
 
 ---
-     
+
+ 
 
 !!! cite "Copyright © 2010-2014 Khronos Group"
 

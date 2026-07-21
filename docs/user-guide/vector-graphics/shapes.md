@@ -130,3 +130,6 @@ $vg->circle(400 + 30, 230, 10);
 $vg->fillColor(VGColor::black());
 $vg->fill();
 ```
+## Full API Reference
+
+For every path and shape command, see the generated [`VGContext` class reference](/API/VectorGraphics/VGContext.html).

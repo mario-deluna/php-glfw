@@ -108,3 +108,7 @@ $color2 = new VGColor(0.169, 0.961, 0.596, 1.0);
 
 $paint = $vg->radialGradient($centerX, $centerY, $innerRadius, $outerRadius, $color1, $color2);
 ```
+
+## Full API Reference
+
+For the gradient factory methods see the generated [`VGContext` class reference](/API/VectorGraphics/VGContext.html), and the [`VGPaint` reference](/API/VectorGraphics/VGPaint.html) for the paint object they return.

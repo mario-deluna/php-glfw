@@ -34,7 +34,8 @@ aka:
 ```
 
 ---
-     
+
+ 
 ### `fromArray`
 
 Constructs and returns a new matrix based on the given array of values
@@ -61,7 +62,8 @@ returns
 :    `\Mat4` The new matrix.
 
 ---
-     
+
+ 
 ### `inverted`
 
 Constructs and returns an inverse of the given matrix
@@ -83,7 +85,8 @@ returns
 :    `\Mat4` The inverted matrix.
 
 ---
-     
+
+ 
 ### `multiplyQuat`
 
 Mat4 * Quat
@@ -97,7 +100,8 @@ Multiplies the left matrix by the right quaternion
 Note: **This method only exists because there is a bug with the order of operation in PHP.**
 
 ---
-     
+
+ 
 ### `copy`
 
 Copys the current matrix
@@ -117,7 +121,8 @@ returns
 :    `\Mat4` The copy of the current matrix.
 
 ---
-     
+
+ 
 ### `row`
 
 Returns the row at the given index.
@@ -150,7 +155,8 @@ returns
 :    `\Vec4` The row at the given index.
 
 ---
-     
+
+ 
 ### `setRow`
 
 Sets the row at the given index to the given row
@@ -176,7 +182,8 @@ returns
 :    `void` 
 
 ---
-     
+
+ 
 ### `col`
 
 Returns the column at the given index.
@@ -210,7 +217,8 @@ returns
 :    `\Vec4` The column at the given index.
 
 ---
-     
+
+ 
 ### `setCol`
 
 Sets the column at the given index to the given column
@@ -236,7 +244,8 @@ returns
 :    `void` 
 
 ---
-     
+
+ 
 ### `lookAt`
 
 Sets the matrix to a lookAt matrix
@@ -279,7 +288,8 @@ returns
 :    `void` 
 
 ---
-     
+
+ 
 ### `perspective`
 
 Sets the matrix to a perspective matrix
@@ -304,7 +314,8 @@ returns
 :    `void` 
 
 ---
-     
+
+ 
 ### `ortho`
 
 Sets the matrix to an orthographic matrix
@@ -331,7 +342,8 @@ returns
 :    `void` 
 
 ---
-     
+
+ 
 ### `transpose`
 
 Tranposes the matrix
@@ -349,7 +361,8 @@ returns
 :    `void` 
 
 ---
-     
+
+ 
 ### `inverse`
 
 Inverts the current matrix
@@ -367,7 +380,8 @@ returns
 :    `void` 
 
 ---
-     
+
+ 
 ### `scale`
 
 Scale the matrix by the given vector
@@ -381,7 +395,8 @@ $matrix->scale(new Vec3(2, 2, 2));
 ```
 
 ---
-     
+
+ 
 ### `translate`
 
 Translates the matrix by the given vector
@@ -403,7 +418,8 @@ returns
 :    `void` 
 
 ---
-     
+
+ 
 ### `rotate`
 
 Rotates the matrix by the given angle around the given axis
@@ -426,7 +442,8 @@ returns
 :    `void` 
 
 ---
-     
+
+ 
 ### `determinant`
 
 Retruns the determinant of the matrix
@@ -444,4 +461,5 @@ returns
 :    `float` The determinant of the matrix.
 
 ---
-     
+
+ 

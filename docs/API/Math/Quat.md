@@ -48,7 +48,8 @@ function __construct(?float $w = null, ?float $x = null, ?float $y = null, ?floa
 ```
 
 ---
-     
+
+ 
 ### `fromVec4`
 
 Constructs and returns a new quaternion based on the given Vec4 vector.
@@ -73,7 +74,8 @@ returns
 :    `\Quat` The constructed quaternion.
 
 ---
-     
+
+ 
 ### `fromMat4`
 
 Constructs and returns a new quaternion based on the given Mat4 matrix
@@ -95,7 +97,8 @@ returns
 :    `\Quat` The constructed quaternion.
 
 ---
-     
+
+ 
 ### `inverted`
 
 Constructs and return a inverted quaternion based on the given one
@@ -117,7 +120,8 @@ returns
 :    `\Quat` The inverted quaternion.
 
 ---
-     
+
+ 
 ### `normalized`
 
 Constructs and returns a normalized quaternion based on the given one
@@ -139,7 +143,8 @@ returns
 :    `\Quat` The normalized quaternion.
 
 ---
-     
+
+ 
 ### `mix`
 
 Performs a linear interpolation between two quaternions and returns the resulting quaternion.
@@ -163,7 +168,8 @@ returns
 :    `\Quat` The interpolated quaternion.
 
 ---
-     
+
+ 
 ### `slerp`
 
 Performs a spherical linear interpolation between two quaternions and returns the resulting quaternion.
@@ -187,7 +193,8 @@ returns
 :    `\Quat` The interpolated quaternion.
 
 ---
-     
+
+ 
 ### `dot`
 
 Returns the dot product of two quaternions.
@@ -210,7 +217,8 @@ returns
 :    `float` The dot product.
 
 ---
-     
+
+ 
 ### `normalize`
 
 The same as `normalized()`, but modifies the current quaternion instead of creating a new one.
@@ -224,7 +232,8 @@ $quat->normalize();
 ```
 
 ---
-     
+
+ 
 ### `length`
 
 Returns the length of the quaternion
@@ -238,7 +247,8 @@ $length = $quat->length();
 ```
 
 ---
-     
+
+ 
 ### `eulerAngles`
 
 Returns the quaternion represented as euler angles (in radians)
@@ -256,7 +266,8 @@ returns
 :    `\Vec3` The euler angles.
 
 ---
-     
+
+ 
 ### `rotate`
 
 Rotates the quaternion by the given angle (in radians) around the given axis
@@ -275,7 +286,8 @@ arguments
     2. `\Vec3` `$axis` The axis to rotate around
 
 ---
-     
+
+ 
 ### `inverse`
 
 Invseres the current quaternion, this is basically the same as `inverted()` but
@@ -290,7 +302,8 @@ $quat->inverse();
 ```
 
 ---
-     
+
+ 
 ### `mat4`
 
 Constructs a Mat4 matrix based on the current quaternion
@@ -308,4 +321,5 @@ returns
 :    `\Mat4` The matrix representation of the quaternion.
 
 ---
-     
+
+ 

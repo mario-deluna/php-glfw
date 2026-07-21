@@ -256,3 +256,7 @@ In the next chapter we are going to dive a bit more into the basics.
 ## Additional Resources
 
 * The vector graphics API is based on a modified version of the amazing [NanoVG](https://github.com/memononen/nanovg) library. 
+
+## Full API Reference
+
+For the exhaustive list of every method, argument, and constant on the context, see the generated [`VGContext` class reference](/API/VectorGraphics/VGContext.html).

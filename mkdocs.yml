@@ -23,9 +23,33 @@ nav:
       - Text & Fonts: user-guide/vector-graphics/text.md
       - Images: user-guide/vector-graphics/images.md
       - Gradients: user-guide/vector-graphics/gradients.md
+    - 'Buffers':
+      - Overview: user-guide/buffers/overview.md
+      - Filling & Reading: user-guide/buffers/filling-and-reading.md
+      - Vectors, Matrices & Conversions: user-guide/buffers/vectors-matrices-and-conversions.md
+    - 'Rendering':
+      - Shaders: user-guide/rendering/shaders.md
+      - Textures: user-guide/rendering/texture2d.md
+      - Draw Call Assembler:
+        - Getting Started: user-guide/rendering/draw-call-assembler.md
+        - Render Paths: user-guide/rendering/render-paths.md
+        - Culling & LOD: user-guide/rendering/culling-and-lod.md
+        - Sorting & Batching: user-guide/rendering/sorting-and-batching.md
+        - Per-Instance Payloads: user-guide/rendering/payload-attributes.md
+    - 'Window & Input':
+      - Overview: user-guide/input/overview.md
+      - Keyboard & Mouse: user-guide/input/keyboard-and-mouse.md
+      - Gamepad & Joystick: user-guide/input/gamepad-and-joystick.md
+      - Window Events: user-guide/input/window-events.md
     - 'Audio': user-guide/audio/
     - 'Geometry': user-guide/geometry/
-    - 'Math & 3D Space': user-guide/math/
+    - 'Math & 3D Space':
+      - Overview: user-guide/math/overview.md
+      - Vectors: user-guide/math/vectors.md
+      - Quaternions: user-guide/math/quaternions.md
+      - Matrices: user-guide/math/matrices.md
+      - Working in 3D Space: user-guide/math/working-in-3d-space.md
+      - Performance: user-guide/math/performance.md
     - 'Noise': user-guide/noise/
     - 'Offscreen & Headless Rendering': user-guide/offscreen/
     - 'Debugging': user-guide/debugging/

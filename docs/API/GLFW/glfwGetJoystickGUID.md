@@ -34,7 +34,8 @@ joystick
 is not present or an `error` occurred.
 
 ---
-     
+
+ 
 
 !!! cite "Copyright"
 

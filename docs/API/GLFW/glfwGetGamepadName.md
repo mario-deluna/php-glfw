@@ -25,7 +25,8 @@ joystick is not present, does not have a mapping or an
 `error` occurred.
 
 ---
-     
+
+ 
 
 !!! cite "Copyright"
 

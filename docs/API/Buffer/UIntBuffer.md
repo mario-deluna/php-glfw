@@ -82,7 +82,8 @@ returns
 :    `void` 
 
 ---
-    
+
+
 
 ### `pushArray`
 
@@ -101,7 +102,8 @@ returns
 :    `void` 
 
 ---
-    
+
+
 
 ### `fill`
 
@@ -153,7 +155,8 @@ returns
 :    `void` 
 
 ---
-     
+
+ 
 ### `clear`
 
 Will clear the Buffer, internally this will release all allocated data. Meaning any reserved space will be freed.
@@ -167,7 +170,8 @@ returns
 :    `void` 
 
 ---
-     
+
+ 
 ### `size`
 
 Returns the actual size / number of elements of the buffer.
@@ -181,7 +185,8 @@ returns
 :    `int` buffer size in element count (not bytes)
 
 ---
-     
+
+ 
 ### `capacity`
 
 Returns the current reserved space of the buffer.
@@ -195,4 +200,5 @@ returns
 :    `int` buffer space in element count (not bytes)
 
 ---
-     
+
+ 

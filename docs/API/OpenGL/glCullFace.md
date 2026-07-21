@@ -1,13 +1,24 @@
 # glCullFace
-Functions
-----------------------------------------------------------------------------
+specify whether front- or back-facing facets can be culled
 
 ```php
 function glCullFace(int $mode) : void
 ```
 
+arguments
+
+:    1. `int` `$mode` Specifies whether front- or back-facing facets are
+    candidates for culling. Symbolic constants <constant>GL_FRONT</constant>,
+    <constant>GL_BACK</constant>, and <constant>GL_FRONT_AND_BACK</constant> are
+    accepted. The initial value is <constant>GL_BACK</constant>.
+
+returns
+
+:    `void` 
+
 ---
-     
+
+ 
 
 !!! cite "Copyright © 2010-2014 Khronos Group"
 
