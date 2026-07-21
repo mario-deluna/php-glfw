@@ -4,9 +4,28 @@ The two biggest wins for a large scene both come down to the same idea: don't sp
 
 Both features rely on the mesh bounding boxes you provide when [registering meshes](/user-guide/rendering/draw-call-assembler.html#registering-your-meshes), so make sure your `registerMesh` calls include `aabbMin` and `aabbMax`.
 
+Here is the whole story for a single instance: test it against the frustum, and if it survives, pick the right level of detail for its distance before it is drawn.
+
+```mermaid
+graph LR
+  I[submitted instance] --> F{inside the frustum?};
+  F -->|no| X[discarded, never drawn];
+  F -->|yes| L{distance to camera};
+  L --> M[pick the LOD mesh];
+  M --> R[drawn];
+```
+
 ## Frustum Culling
 
 There's no point drawing what the camera can't see. Culling discards instances outside the view frustum before they ever reach a draw call, and for large scenes it's the single biggest win the assembler offers.
+
+The two shots below are the exact same field from the exact same viewpoint. The only difference is culling. With it off, every submitted instance is drawn; with it on, only the instances inside the camera frustum survive (here the frustum was frozen and then viewed from the side, so you can see the slice that remains).
+
+=== "Culling off"
+    ![PHP-GLFW DrawCallAssembler with frustum culling disabled, the entire field is drawn](./../../docs-assets/php-glfw/user_guide/rendering/culling_full.jpg){ width="100%" }
+
+=== "Culling on"
+    ![PHP-GLFW DrawCallAssembler with frustum culling enabled, only the visible slice survives](./../../docs-assets/php-glfw/user_guide/rendering/culling_frozen.jpg){ width="100%" }
 
 The simplest way to enable it is to hand the assembler your camera each frame. It derives the frustum from your view and projection matrices automatically:
 
@@ -66,6 +85,10 @@ $assembler->submit(
 ## Level of Detail (LOD)
 
 A ship that fills the screen deserves every triangle; the same ship two kilometers away is a few pixels and doesn't. Level of detail lets the assembler quietly swap in a cheaper mesh as an object recedes from the camera, with no branching in your submit loop and no bookkeeping on your side.
+
+![PHP-GLFW DrawCallAssembler level of detail, detailed ships up close swapped for simple cubes in the distance](./../../docs-assets/php-glfw/user_guide/rendering/lod_row.jpg){ width="100%" }
+
+That's one row of the *same* ship marching into the distance. Up close you get the full model; past the LOD threshold the assembler quietly draws the cheap cube stand-in instead, and at that size you can't tell the difference.
 
 You describe the swap points with a *LOD table*: a list of ascending distance thresholds, paired with the mesh handle to use past each threshold. Attach it to your base (highest-detail) mesh:
 

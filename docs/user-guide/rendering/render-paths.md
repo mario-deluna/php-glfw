@@ -2,6 +2,16 @@
 
 Once everything is submitted, you decide how the draws actually happen. The assembler offers two paths, and they exist for two different needs: one where you just want the objects on screen with the least fuss, and one where you need full control over the draws. This page covers both, plus how to read back the performance counters.
 
+```mermaid
+graph TD
+  S[submit instances] --> B[cull, sort, batch<br/>one native pass];
+  B --> E["execute()"];
+  B --> D["build()"];
+  E --> EI[binds each VAO and issues<br/>the draws for you];
+  D --> DB[fills readonly buffers:<br/>commands, transforms, meta];
+  DB --> DY[you issue the draws<br/>your own way];
+```
+
 New to the assembler? Start with [the getting-started page](/user-guide/rendering/draw-call-assembler.html), which explains registering meshes and submitting instances, the things everything here builds on.
 
 ## Letting the Assembler Draw: `execute()`
@@ -28,6 +38,11 @@ The callback receives everything it needs to configure the draw: the mesh handle
 ## Driving the Draws Yourself: `build()`
 
 Sometimes you need full control: a custom render backend, indirect drawing, or you simply want to inspect what the assembler decided. `build()` runs the same cull/sort/batch pass but issues no OpenGL calls. Instead it fills a set of readonly buffers and returns the command count:
+
+![PHP-GLFW DrawCallAssembler batches drawn by hand in wireframe mode](./../../docs-assets/php-glfw/user_guide/rendering/render_wireframe.jpg){ width="100%" }
+
+Whichever path you take, the render state around the draws stays yours to set. The wireframe pass above is nothing more than a `glPolygonMode(GL_FRONT_AND_BACK, GL_LINE)` wrapped around the same batched commands.
+
 
 ```php
 $commandCount = $assembler->build();

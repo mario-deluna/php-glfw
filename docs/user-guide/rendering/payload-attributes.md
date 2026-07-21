@@ -2,6 +2,10 @@
 
 [Instanced batching](/user-guide/rendering/sorting-and-batching.html) draws thousands of objects in one call, but if every object needs a different color, and color comes from a uniform, you're forced to break the batch to set that uniform. Payloads solve this. A *payload* is a block of arbitrary per-instance floats (a color, a set of skinning weights, whatever your shader wants) that travels alongside the transform as a vertex attribute. No uniforms, no broken batches.
 
+![PHP-GLFW DrawCallAssembler payload attributes, a grid of 200 ships each drawn in its own color within a single batch](./../../docs-assets/php-glfw/user_guide/rendering/payload_colors.jpg){ width="100%" }
+
+Every one of those 200 ships carries its own color, yet the whole grid is a single draw call. Had that color come from a uniform, you would have paid one draw call per color: 200 of them. The color instead rides along as a per-instance vertex attribute, so the batch never has to break.
+
 Let's wire up per-instance color, the way `examples/10_drawcall_assembler_with_payload.php` does. You can run that demo yourself:
 
 ```bash
@@ -25,6 +29,20 @@ layout (location = 2) in mat4 i_transform;
 layout (location = 6) in vec3 i_color;
 
 // ...
+```
+
+The attribute locations line up like this: your mesh owns the low locations, the assembler drives the transform across the next four, and your payload picks up right after.
+
+```mermaid
+graph LR
+  subgraph mesh["per-vertex, your mesh VBO"]
+    L0["location 0: position"];
+    L1["location 1: normal"];
+  end
+  subgraph inst["per-instance, driven by the assembler"]
+    L2["locations 2 to 5: transform mat4"];
+    L6["location 6: payload, e.g. color"];
+  end
 ```
 
 ## Filling and Binding the Payload

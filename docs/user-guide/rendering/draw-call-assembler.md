@@ -4,6 +4,8 @@ Rendering a handful of objects in PHP is easy: loop over your meshes, set a coup
 
 The [`GL\Rendering\DrawCallAssembler`](/API/Rendering/DrawCallAssembler.html) exists to take that work off your hands. You describe your scene one object at a time ("draw this mesh, with this transform, in this material"), and the assembler does the heavy lifting in native C: it culls everything outside the camera's view, picks a level of detail per object, sorts the draws to minimize state changes, and collapses identical objects into instanced batches. Then it either draws the whole thing for you, or hands you back GPU-ready buffers to draw yourself.
 
+![PHP-GLFW DrawCallAssembler rendering a dense field of thousands of instanced ships](./../../docs-assets/php-glfw/user_guide/rendering/field_hero.jpg){ width="100%" }
+
 How well does that work? The bundled example renders a **10-million-instance** asteroid field. On an M1 MacBook, with octree culling most of the field falls outside the frustum, and a typical frame looks like this:
 
 ```text
@@ -38,6 +40,14 @@ The assembler works in three beats:
 1. **Register your meshes, once.** You tell the assembler about each mesh (its VAO, how to draw it, its bounding box) and get back a small integer *handle*. You do this during setup, not every frame.
 2. **Submit instances, every frame.** For each object you want on screen, you `submit()` a mesh handle plus a transform (and optionally a material, render pass, and flags). This is cheap, since you're just recording intent, not drawing yet.
 3. **Build or execute.** Once everything is submitted, the assembler culls, sorts, LOD-selects, and batches the whole scene in one native pass. From here you either let it draw for you, or grab the packed buffers and draw yourself. That's the [Render Paths](/user-guide/rendering/render-paths.html) page.
+
+```mermaid
+graph LR
+  A[registerMesh<br/>once, at setup] --> B[submit<br/>once per object, each frame];
+  B --> C{build or execute};
+  C -->|execute| D[the assembler<br/>issues the draws];
+  C -->|build| E[GPU-ready buffers<br/>you draw yourself];
+```
 
 That's the whole loop. Register once, submit-and-build each frame. If some of the terms above don't click yet, don't worry, because each one has its own section and we'll get to them.
 
