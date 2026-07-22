@@ -65,6 +65,8 @@ Examples:
  - `pN` yields positions and flat normals `[px, py, pz, nfx, nfy, nfz, ...]`.
  - etc..
 
+For the full token reference, the per-vertex stride math, and the offsets you need for your attribute pointers, see the [Vertex Layouts](/user-guide/geometry/vertex-layouts.html) page.
+
 ### Uploading to OpenGL
 
 The returned buffer object can then be uploaded to your GPU, when using VISU we have a convenient class to handle this for us:

@@ -100,7 +100,7 @@ The third argument is an optional palette override (pass `null` to use the scene
 | `greedy` | Merges coplanar faces of the same color into larger quads. Far fewer triangles, ideal for rendering. |
 | `polygon` | Produces polygonal surfaces for the most compact result. |
 
-By default every vertex carries **9 floats**: position `(x, y, z)`, normal `(x, y, z)`, and an RGB color `(r, g, b)` baked in from the palette. That is the same `pnc`-style layout you may know from other loaders, so uploading it to OpenGL is familiar:
+By default every vertex carries **9 floats**: position `(x, y, z)`, normal `(x, y, z)`, and an RGB color `(r, g, b)` baked in from the palette. Unlike the OBJ parser, the voxel mesher does not take a layout string, you shape the output through the `$options` array below. The result is still a plain interleaved buffer, so the stride math from the [Vertex Layouts](/user-guide/geometry/vertex-layouts.html) page applies. Uploading it to OpenGL is familiar:
 
 ```php
 $stride = 9 * GL_SIZEOF_FLOAT;

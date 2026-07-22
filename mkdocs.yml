@@ -14,6 +14,7 @@ nav:
       - IDE Setup: getting-started/installation/ide-setup.md
     - Creating a Window: getting-started/window-creation.md
     - Drawing a Triangle: getting-started/drawing_a_triangle.md
+    - Rendering a Cube: getting-started/05_rendering-a-cube.md
   - User Guide:
     - Vector Graphics:
       - Getting Started: user-guide/vector-graphics/creating_a_vgcontext.md
@@ -42,7 +43,10 @@ nav:
       - Gamepad & Joystick: user-guide/input/gamepad-and-joystick.md
       - Window Events: user-guide/input/window-events.md
     - 'Audio': user-guide/audio/
-    - 'Geometry': user-guide/geometry/
+    - 'Geometry':
+      - Wavefront Object Files: user-guide/geometry/wavefront-object-files.md
+      - MagicaVoxel Files: user-guide/geometry/magicavoxel-files.md
+      - Vertex Layouts: user-guide/geometry/vertex-layouts.md
     - 'Math & 3D Space':
       - Overview: user-guide/math/overview.md
       - Vectors: user-guide/math/vectors.md
