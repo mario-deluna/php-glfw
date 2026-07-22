@@ -12,6 +12,73 @@ The trick that makes all of 3D graphics work is a chain of three matrices (model
     php examples/02_3D_cube.php
     ```
 
+## Moving, turning, and scaling
+
+Before we build a single matrix for the pipeline, it helps to know the three moves every one of them is made from. A fresh `Mat4` starts as the identity, a matrix that changes nothing, sitting an object right at the origin. From there you nudge it around with three transforms: translation, rotation, and scale. Everything you do to place an object in the world is some combination of these.
+
+Each one is a method on `Mat4` that changes the matrix in place, so you can stack them up.
+
+### Translation: move it
+
+Translation slides an object from where it is to somewhere else, without turning or resizing it. You give it an offset vector, and every point of the object shifts by that same amount.
+
+![A cube at the origin translated by an offset vector to a new position](./../../docs-assets/php-glfw/user_guide/math/translation.jpg){ width="100%" }
+
+```php
+use GL\Math\{Mat4, Vec3};
+
+$model = new Mat4;                     // identity: sits at the origin
+$model->translate(new Vec3(3, 1, 0)); // move 3 to the right and 1 up
+```
+
+### Rotation: turn it
+
+Rotation spins an object around an axis that passes through the origin. You pass the angle (in radians, so wrap degrees in `GLM::radians()`) and the axis to turn around. A `Vec3(0, 1, 0)` axis spins it around the vertical Y axis, like a turntable.
+
+![A cube rotated 45 degrees around the Y axis](./../../docs-assets/php-glfw/user_guide/math/rotation.jpg){ width="100%" }
+
+```php
+use GL\Math\{Mat4, Vec3, GLM};
+
+$model = new Mat4;
+$model->rotate(GLM::radians(45), new Vec3(0, 1, 0)); // 45 degrees around the Y axis
+```
+
+### Scale: resize it
+
+Scale grows or shrinks an object. Pass a factor per axis: `2` doubles that dimension, `0.5` halves it. Using the same factor on all three axes keeps the shape's proportions.
+
+![A small cube scaled up to twice its size on every axis](./../../docs-assets/php-glfw/user_guide/math/scale.jpg){ width="100%" }
+
+```php
+use GL\Math\{Mat4, Vec3};
+
+$model = new Mat4;
+$model->scale(new Vec3(2, 2, 2)); // twice as large on every axis
+```
+
+### Order matters
+
+Because these transforms build on one another, the order you apply them in changes where the object ends up. Translating and then rotating swings the object around the origin on an arc; rotating and then translating turns it in place and then steps it out. Same two moves, different destinations.
+
+![Translate-then-rotate and rotate-then-translate produce different results](./../../docs-assets/php-glfw/user_guide/math/transform_order.jpg){ width="100%" }
+
+```php
+use GL\Math\{Mat4, Vec3, GLM};
+
+// translate, then rotate: the cube swings around the origin
+$a = new Mat4;
+$a->translate(new Vec3(3, 0, 0));
+$a->rotate(GLM::radians(45), new Vec3(0, 1, 0));
+
+// rotate, then translate: the cube turns in place, then steps out
+$b = new Mat4;
+$b->rotate(GLM::radians(45), new Vec3(0, 1, 0));
+$b->translate(new Vec3(3, 0, 0));
+```
+
+Keep this in the back of your mind: it is the same reason the full `projection * view * model` chain later on is read in a specific order. With these three moves in hand, a model matrix is just a combination of them, so let's put them to work.
+
 ## The three matrices
 
 Every vertex of your object makes a journey from its own local space all the way to the screen, and each matrix handles one leg of that trip:
