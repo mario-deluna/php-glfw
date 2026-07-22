@@ -4,6 +4,8 @@ Almost every graphics program eventually needs to get an image into the picture:
 
 `GL\Texture\Texture2D` is the bridge. It reads the common image formats (PNG, JPG, GIF, BMP, TGA, and HDR) from disk into a native pixel buffer you can hand straight to OpenGL, it wraps a buffer you filled yourself so you can treat procedural data as an image, and it writes images back out to disk when you want to save a frame. Under the hood it is backed by the battle-tested `stb_image` loader, so you get broad format support for free.
 
+![A PNG is decoded into a pixel buffer, uploaded to the GPU as a texture, and sampled through UV coordinates that run from 0,0 to 1,1](./../../docs-assets/php-glfw/user_guide/rendering/texture_upload.jpg){ width="100%" }
+
 Want to see it in action first? A runnable demo ships with the extension:
 
 ```bash

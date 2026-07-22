@@ -2,15 +2,7 @@
 
 Once everything is submitted, you decide how the draws actually happen. The assembler offers two paths, and they exist for two different needs: one where you just want the objects on screen with the least fuss, and one where you need full control over the draws. This page covers both, plus how to read back the performance counters.
 
-```mermaid
-graph TD
-  S[submit instances] --> B[cull, sort, batch<br/>one native pass];
-  B --> E["execute()"];
-  B --> D["build()"];
-  E --> EI[binds each VAO and issues<br/>the draws for you];
-  D --> DB[fills readonly buffers:<br/>commands, transforms, meta];
-  DB --> DY[you issue the draws<br/>your own way];
-```
+![A draw call flows from register to submit to build command buffer to execute, with an auto-draw path and a packed command buffer path branching from submit](./../../docs-assets/php-glfw/user_guide/rendering/render_paths.jpg){ width="100%" }
 
 New to the assembler? Start with [the getting-started page](/user-guide/rendering/draw-call-assembler.html), which explains registering meshes and submitting instances, the things everything here builds on.
 

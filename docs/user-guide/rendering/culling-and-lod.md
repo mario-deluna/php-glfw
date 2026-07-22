@@ -4,6 +4,8 @@ The two biggest wins for a large scene both come down to the same idea: don't sp
 
 Both features rely on the mesh bounding boxes you provide when [registering meshes](/user-guide/rendering/draw-call-assembler.html#registering-your-meshes), so make sure your `registerMesh` calls include `aabbMin` and `aabbMax`.
 
+![Objects outside the camera frustum are culled while those inside are kept and drawn at high, mid, or low detail depending on their distance](./../../docs-assets/php-glfw/user_guide/rendering/frustum_lod.jpg){ width="100%" }
+
 Here is the whole story for a single instance: test it against the frustum, and if it survives, pick the right level of detail for its distance before it is drawn.
 
 ```mermaid

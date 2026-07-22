@@ -8,6 +8,8 @@ A vector is just a small, fixed group of numbers, but that simple idea does an e
 
 They all share the same shape, so once you're comfortable with one you know all three. The examples below use `Vec3`, but the same methods exist on the others unless noted.
 
+![A vector drawn as an arrow from the origin with its x and y components, two vectors added tip-to-tail, and a normalized unit-length vector](./../../docs-assets/php-glfw/user_guide/math/vectors.jpg){ width="100%" }
+
 ## Creating a vector
 
 Pass one value per component to the constructor:

@@ -22,6 +22,8 @@ $transform = new Mat4;
 
 Unlike vectors, a matrix has no named properties. Its 16 values are stored as one flat, column-major array, and you reach them by index with the array operator:
 
+![A 4x4 Mat4 laid out as 16 values in column-major order, each column mapping to a consecutive run of four cells in memory](./../../docs-assets/php-glfw/user_guide/math/matrix_layout.jpg){ width="100%" }
+
 ```php
 $m = new Mat4;
 echo $m[0];  // 1.0

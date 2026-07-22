@@ -4,6 +4,8 @@ Sooner or later, every graphics program has to hand a big pile of numbers to the
 
 PHP-GLFW solves this with a family of typed buffer objects in the `GL\Buffer` namespace. A buffer stores its values as a tight, contiguous block of a single C type, exactly the layout the GPU expects, so it can be uploaded directly. The classes are implemented in C, so they are fast and memory friendly even with millions of elements, while still behaving like an array when you want them to.
 
+![A PHP array holds scattered boxed values while a FloatBuffer holds one tight contiguous block ready for glBufferData to upload to the GPU](./../../docs-assets/php-glfw/user_guide/buffers/buffer_upload.jpg){ width="100%" }
+
 !!! tip "Not a GPU buffer"
 
     Don't confuse these objects with the actual GPU buffers you create with `glGenBuffers`. A `GL\Buffer\FloatBuffer` lives in CPU memory and holds your data; `glBufferData` is the step that copies it up to the GPU. Think of the buffer object as the well-packed box, and `glBufferData` as shipping it.

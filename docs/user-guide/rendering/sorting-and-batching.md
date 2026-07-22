@@ -2,6 +2,8 @@
 
 The order you draw in matters. Draw opaque objects front-to-back and the depth buffer rejects hidden pixels early; draw transparent objects back-to-front and they blend correctly. On top of that, grouping draws that share a shader or material cuts down on expensive state changes, and once like objects sit next to each other, the assembler can collapse them into a single instanced draw. This page covers passes, sort order, and the batching that ties them together.
 
+![An unsorted draw list of mixed materials is sorted by material key into contiguous batches, so fewer state changes means fewer draw calls](./../../docs-assets/php-glfw/user_guide/rendering/sort_batch.jpg){ width="100%" }
+
 ## Passes
 
 Every instance belongs to a render pass, chosen with the `pass` argument to `submit()`:

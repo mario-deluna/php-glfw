@@ -4,6 +4,8 @@ Every pixel PHP-GLFW puts on screen is decided by a shader. A shader is a small 
 
 If this is your very first shader, start with the [Drawing a Triangle](/getting-started/drawing_a_triangle.html) tutorial. It walks through the whole pipeline slowly, from scratch. This page assumes you have seen that once and now want to do it for real: compile shaders while actually seeing the compiler's error messages, and feed live data into them through uniforms and vertex attributes. That data bridge is where PHP-GLFW adds the most on top of plain OpenGL, so it is where we will spend the most time.
 
+![The shader pipeline: a vertex buffer feeds the vertex shader, then rasterization, then the fragment shader, then pixels; vertex attributes feed in per-vertex and uniforms are shared across stages](./../../docs-assets/php-glfw/user_guide/rendering/shader_pipeline.jpg){ width="100%" }
+
 ```bash
 # a spinning 3D cube driven by MVP-matrix uniforms
 php examples/02_3D_cube.php

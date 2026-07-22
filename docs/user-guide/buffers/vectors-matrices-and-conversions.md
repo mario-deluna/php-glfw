@@ -6,6 +6,8 @@ Most of the buffer API is the same across every type, but a few classes carry ex
 
 When you build vertex data by hand, you rarely think in loose floats, you think in positions, directions, and transforms, which the [math library](/user-guide/math/overview.html) already gives you as [`Vec3`](/API/Math/Vec3.html), [`Vec4`](/API/Math/Vec4.html), and [`Mat4`](/API/Math/Mat4.html) objects. Flattening those into individual `push` calls by hand is error prone, so the [`FloatBuffer`](/API/Buffer/FloatBuffer.html) offers helpers that unpack a math object straight into the buffer in the right order.
 
+![pushVec3 unpacks a Vec3 into three consecutive buffer cells and pushMat4 unpacks a Mat4 into 16 cells in column-major order](./../../docs-assets/php-glfw/user_guide/buffers/push_vec_mat.jpg){ width="100%" }
+
 To append a vector, use `pushVec2`, `pushVec3`, or `pushVec4`. Each one pushes the object's components in order:
 
 ```php
