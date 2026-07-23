@@ -238,7 +238,7 @@ php examples/02_3D_cube.php
 
 You now have the core loop of every 3D renderer: geometry in a buffer, a shader, three matrices, and depth testing. From here you might:
 
-- Give the cube a real surface with an image, see [Using Textures](./04_drawing_textures.md).
+- Give the cube a real surface with an image, see [Rendering a Textured Cube](./06_rendering-a-textured-cube.md).
 - Go deeper on the math behind the three matrices in [Working in 3D Space](/user-guide/math/working-in-3d-space.html).
 - Load real models instead of a hand-typed cube with the [Wavefront Object Files](/user-guide/geometry/wavefront-object-files.html) parser.
 

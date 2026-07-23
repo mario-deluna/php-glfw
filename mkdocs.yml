@@ -15,6 +15,7 @@ nav:
     - Creating a Window: getting-started/window-creation.md
     - Drawing a Triangle: getting-started/drawing_a_triangle.md
     - Rendering a Cube: getting-started/05_rendering-a-cube.md
+    - Rendering a Textured Cube: getting-started/06_rendering-a-textured-cube.md
   - User Guide:
     - Vector Graphics:
       - Getting Started: user-guide/vector-graphics/creating_a_vgcontext.md
