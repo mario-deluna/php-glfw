@@ -13,7 +13,7 @@ initially created. Set the `GLFW_FOCUSED` to
 disable this behavior.
 
 Also by default, windowed mode windows are focused when shown
-with [`glfwShowWindow`](/API/GLFW/glfwShowWindow.html). Set the
+with [`glfwShowWindow`](glfwShowWindow.md). Set the
 `GLFW_FOCUS_ON_SHOW` to disable this behavior.
 
 __Do not use this function__ to steal focus from other applications unless

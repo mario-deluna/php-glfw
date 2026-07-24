@@ -54,9 +54,9 @@ Batching is on by default. You can toggle it explicitly:
 $assembler->setAutoInstancing(true);  // the default
 ```
 
-This is the difference between 10,000 draw calls and a dozen. In the [command buffer](/user-guide/rendering/render-paths.html#driving-the-draws-yourself-build), a batched draw shows an instance count greater than 1 (field 6), and its instances sit contiguously in the transform buffer starting at the instance offset (field 5).
+This is the difference between 10,000 draw calls and a dozen. In the [command buffer](../../user-guide/rendering/render-paths.md#driving-the-draws-yourself-build), a batched draw shows an instance count greater than 1 (field 6), and its instances sit contiguously in the transform buffer starting at the instance offset (field 5).
 
-For batching to render, your shader must read the per-instance transform as a vertex attribute, and you must wire that up once with `bindTransformBuffer()`. See [Render Paths](/user-guide/rendering/render-paths.html) and, for sending extra per-instance data, [Per-Instance Payloads](/user-guide/rendering/payload-attributes.html).
+For batching to render, your shader must read the per-instance transform as a vertex attribute, and you must wire that up once with `bindTransformBuffer()`. See [Render Paths](../../user-guide/rendering/render-paths.md) and, for sending extra per-instance data, [Per-Instance Payloads](../../user-guide/rendering/payload-attributes.md).
 
 If you ever need identical instances to stay as separate draw calls, for instance to apply per-draw state that instancing can't express, submit them with `FLAG_DISABLE_INSTANCING`:
 

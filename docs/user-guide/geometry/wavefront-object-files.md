@@ -3,7 +3,7 @@
 
 # Wavefront Object Files
 
-[`GL\Geometry\ObjFileParser`](/API/Geometry/ObjFileParser.html) lets you pull Wavefront `.obj` assets straight into your PHP runtime. This page walks you through loading a model, shaping the vertex layout you need, handling materials, and producing indexed meshes that drop into your renderer.
+[`GL\Geometry\ObjFileParser`](../../API/Geometry/ObjFileParser.md) lets you pull Wavefront `.obj` assets straight into your PHP runtime. This page walks you through loading a model, shaping the vertex layout you need, handling materials, and producing indexed meshes that drop into your renderer.
 
 - Keep your `.mtl` files beside the `.obj`, since materials resolve paths relative to the model.
 - Want a quick demo? Run the example:
@@ -40,7 +40,7 @@ Loaded 19 objects
 
 ## Vertex Layouts
 
-[`getVertices`](/API/Geometry/ObjFileParser.html#getvertices) returns a [`FloatBuffer`](/API/Buffer/FloatBuffer.html). You can control the what attributes are included into the buffer by passing a layout string. Each **character** becomes a **vertex attribute** in the order provided.
+[`getVertices`](../../API/Geometry/ObjFileParser.md#getvertices) returns a [`FloatBuffer`](../../API/Buffer/FloatBuffer.md). You can control the what attributes are included into the buffer by passing a layout string. Each **character** becomes a **vertex attribute** in the order provided.
 
 ```php
 $vertices = $parser->getVertices('pntbc', $specifcGroup); // <- pass layout
@@ -65,7 +65,7 @@ Examples:
  - `pN` yields positions and flat normals `[px, py, pz, nfx, nfy, nfz, ...]`.
  - etc..
 
-For the full token reference, the per-vertex stride math, and the offsets you need for your attribute pointers, see the [Vertex Layouts](/user-guide/geometry/vertex-layouts.html) page.
+For the full token reference, the per-vertex stride math, and the offsets you need for your attribute pointers, see the [Vertex Layouts](../../user-guide/geometry/vertex-layouts.md) page.
 
 ### Uploading to OpenGL
 
@@ -113,11 +113,11 @@ The returned buffer object can then be uploaded to your GPU, when using VISU we 
     glEnableVertexAttribArray(2);
     ```
 
-Leave the `$group` argument empty to merge the entire file. Supply a [`Group`](/API/Geometry/ObjFileParserGroup.html) from `$parser->groups` or `$parser->objects` when you only want the geometry for a single section.
+Leave the `$group` argument empty to merge the entire file. Supply a [`Group`](../../API/Geometry/ObjFileParserGroup.md) from `$parser->groups` or `$parser->objects` when you only want the geometry for a single section.
 
 ## Working With Materials
 
-[`getMeshes()`](/API/Geometry/ObjFileParser.html#getmeshes) slices the model by [Material](/API/Geometry/ObjFileParserMaterial.html) and returns an array of [`Mesh`](/API/Geometry/ObjFileParserMesh.html) objects. Each mesh bundles everything you need to draw: a vertex buffer, an optional index buffer, a material descriptor, and an axis-aligned bounding box.
+[`getMeshes()`](../../API/Geometry/ObjFileParser.md#getmeshes) slices the model by [Material](../../API/Geometry/ObjFileParserMaterial.md) and returns an array of [`Mesh`](../../API/Geometry/ObjFileParserMesh.md) objects. Each mesh bundles everything you need to draw: a vertex buffer, an optional index buffer, a material descriptor, and an axis-aligned bounding box.
 
 ```php
 $meshes = $parser->getMeshes('pnc'); // <- pass layout
@@ -154,12 +154,12 @@ textile
 
 Material properties mirror common MTL fields such as `ambient`, `diffuse`, `specular`, `shininess`, `dissolve`, and `illuminationModel`. Use them to drive your shader uniforms or to build the inputs for a lightweight PBR workflow.
 
-Bounding boxes are available through `aabbMin` and `aabbMax` ([`Vec3`](/API/Math/Vec3.html)). They are perfect for quick frustum checks, simple collisions, or framing a camera before the first draw call.
+Bounding boxes are available through `aabbMin` and `aabbMax` ([`Vec3`](../../API/Math/Vec3.md)). They are perfect for quick frustum checks, simple collisions, or framing a camera before the first draw call.
 
 ## Groups and Objects
 
 Wavefront files distinguish between `g` groups and `o` objects. The parser keeps both exposed through `$parser->groups` and `$parser->objects`, each providing `name`, `faceCount`, `faceOffset`, and `indexOffset`.
-In php-glfw we consider both as [`Group`](/API/Geometry/ObjFileParserGroup.html) instances since they behave identically from a geometry extraction standpoint.
+In php-glfw we consider both as [`Group`](../../API/Geometry/ObjFileParserGroup.md) instances since they behave identically from a geometry extraction standpoint.
 
 Groups allow you to partially access the model geometry. This is useful to:
 

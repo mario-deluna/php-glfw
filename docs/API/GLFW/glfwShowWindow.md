@@ -13,7 +13,7 @@ By default, windowed mode windows are focused when shown
 Set the `GLFW_FOCUS_ON_SHOW` window hint
 to change this behavior for all newly created windows, or change the
 behavior for an existing window with
-[`glfwSetWindowAttrib`](/API/GLFW/glfwSetWindowAttrib.html).
+[`glfwSetWindowAttrib`](glfwSetWindowAttrib.md).
 
 arguments
 

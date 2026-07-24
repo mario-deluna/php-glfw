@@ -30,7 +30,7 @@ echo $textureData->height();   // 512
 echo $textureData->channels(); // 3 (RGB)
 ```
 
-The upload half is plain OpenGL. `Texture2D` does not create the GPU texture for you, it only hands you the pixels through `buffer()`. You generate and configure the GL texture yourself, then feed `buffer()` to [`glTexImage2D`](/API/OpenGL/glTexImage2D.html):
+The upload half is plain OpenGL. `Texture2D` does not create the GPU texture for you, it only hands you the pixels through `buffer()`. You generate and configure the GL texture yourself, then feed `buffer()` to [`glTexImage2D`](../../API/OpenGL/glTexImage2D.md):
 
 ```php
 // create the GPU texture object and bind it
@@ -134,7 +134,7 @@ This small helper pattern is exactly what the bundled `ExampleHelper::loadTextur
 
 ## Building Textures From a Buffer
 
-Not every texture comes from a file. Sometimes you generate the pixels yourself: a gradient, a noise field, a chart you rasterized, or a frame you read back from the GPU. For those cases, fill a [`UByteBuffer`](/API/Buffer/UByteBuffer.html) with your pixel data and wrap it with `Texture2D::fromBuffer`:
+Not every texture comes from a file. Sometimes you generate the pixels yourself: a gradient, a noise field, a chart you rasterized, or a frame you read back from the GPU. For those cases, fill a [`UByteBuffer`](../../API/Buffer/UByteBuffer.md) with your pixel data and wrap it with `Texture2D::fromBuffer`:
 
 ```php
 use GL\Buffer\UByteBuffer;
@@ -167,7 +167,7 @@ $texture->writePNG('noise.png');
 
 Ordinary images store each channel as a byte, so every value is pinned between 0 and 1. That is fine for a photo on screen, but it cannot represent the blazing highlights of a real sky or the subtle range an environment map needs for lighting. High Dynamic Range images lift that ceiling: each channel is a full 32-bit float, free to go well beyond 1.0.
 
-`Texture2D` handles HDR transparently. When you load a `.hdr` file, it detects the format and gives you a texture backed by a [`FloatBuffer`](/API/Buffer/FloatBuffer.html) instead of a `UByteBuffer`:
+`Texture2D` handles HDR transparently. When you load a `.hdr` file, it detects the format and gives you a texture backed by a [`FloatBuffer`](../../API/Buffer/FloatBuffer.md) instead of a `UByteBuffer`:
 
 ```php
 $env = Texture2D::fromDisk(__DIR__ . '/studio.hdr');
@@ -214,7 +214,7 @@ $env->writeHDR('studio_out.hdr');
 !!! warning
     The LDR writers (`writePNG`, `writeJPG`, `writeBMP`, `writeTGA`) work only on LDR textures, and `writeHDR` works only on HDR textures. Calling the wrong one for the texture's type throws an `\Error`. Use `isHDR()` to pick the correct writer when in doubt.
 
-A common pattern is to grab the current framebuffer with `glReadPixels` and save it. That full workflow, including a note on high-DPI framebuffers, lives on its own page: see [Rendering to an Image](/user-guide/offscreen/render-to-image.html).
+A common pattern is to grab the current framebuffer with `glReadPixels` and save it. That full workflow, including a note on high-DPI framebuffers, lives on its own page: see [Rendering to an Image](../../user-guide/offscreen/render-to-image.md).
 
 ## Using Textures in Vector Graphics
 
@@ -224,15 +224,15 @@ If you are working with the Vector Graphics API, you do not upload textures with
 $image = $vg->imageFromTexture($texture);
 ```
 
-Remember to load the texture with `flipVertically` set to `false` for this path, since the Vector Graphics coordinate system already matches the image. The complete story, including repeat and filter modes and how to paint with the result, is covered in [Images & Graphics](/user-guide/vector-graphics/images.html).
+Remember to load the texture with `flipVertically` set to `false` for this path, since the Vector Graphics coordinate system already matches the image. The complete story, including repeat and filter modes and how to paint with the result, is covered in [Images & Graphics](../../user-guide/vector-graphics/images.md).
 
 ## Full API Reference
 
-This guide walks through the pieces you reach for most. For the exhaustive list of every method, argument, channel constant, and return type, see the generated [`Texture2D` class reference](/API/Texture/Texture2D.html).
+This guide walks through the pieces you reach for most. For the exhaustive list of every method, argument, channel constant, and return type, see the generated [`Texture2D` class reference](../../API/Texture/Texture2D.md).
 
 ## See Also
 
-- [`glTexImage2D`](/API/OpenGL/glTexImage2D.html) the OpenGL call that uploads a texture's pixels to the GPU.
-- [`GL\Buffer\UByteBuffer`](/API/Buffer/UByteBuffer.html) and [`GL\Buffer\FloatBuffer`](/API/Buffer/FloatBuffer.html) the native buffers that back LDR and HDR textures.
-- [Rendering to an Image](/user-guide/offscreen/render-to-image.html) read the framebuffer back and save it with the write methods above.
-- [Images & Graphics](/user-guide/vector-graphics/images.html) use a `Texture2D` as a fill pattern in the Vector Graphics API.
+- [`glTexImage2D`](../../API/OpenGL/glTexImage2D.md) the OpenGL call that uploads a texture's pixels to the GPU.
+- [`GL\Buffer\UByteBuffer`](../../API/Buffer/UByteBuffer.md) and [`GL\Buffer\FloatBuffer`](../../API/Buffer/FloatBuffer.md) the native buffers that back LDR and HDR textures.
+- [Rendering to an Image](../../user-guide/offscreen/render-to-image.md) read the framebuffer back and save it with the write methods above.
+- [Images & Graphics](../../user-guide/vector-graphics/images.md) use a `Texture2D` as a fill pattern in the Vector Graphics API.

@@ -1,6 +1,6 @@
 # Working in 3D Space
 
-You've met [vectors](/user-guide/math/vectors.html), [quaternions](/user-guide/math/quaternions.html), and [matrices](/user-guide/math/matrices.html) on their own. This page is where they come together to do the thing you actually came for: put a 3D object on screen, in the right place, seen through a camera, and moving.
+You've met [vectors](../../user-guide/math/vectors.md), [quaternions](../../user-guide/math/quaternions.md), and [matrices](../../user-guide/math/matrices.md) on their own. This page is where they come together to do the thing you actually came for: put a 3D object on screen, in the right place, seen through a camera, and moving.
 
 The trick that makes all of 3D graphics work is a chain of three matrices (model, view, and projection) multiplied together and handed to your shader. Once that pipeline clicks, everything else is a variation on it. Let's build it step by step.
 
@@ -118,7 +118,7 @@ $view = new Mat4;
 $view->translate(new Vec3(0.0, 0.0, -2)); // camera sits 2 units back
 ```
 
-When you want a camera that aims at a specific target rather than one you nudge by hand, reach for [`lookAt()`](/user-guide/math/matrices.html#lookat-point-the-camera) instead. You give it the eye position, the point to look at, and an up vector, and it builds the view matrix for you.
+When you want a camera that aims at a specific target rather than one you nudge by hand, reach for [`lookAt()`](../../user-guide/math/matrices.md#lookat-point-the-camera) instead. You give it the eye position, the point to look at, and an up vector, and it builds the view matrix for you.
 
 ### Step 3: The projection matrix
 
@@ -136,7 +136,7 @@ $projection->perspective(
 );
 ```
 
-The projection rarely changes, typically only when the window is resized, so in a real app you might build it once outside the render loop. For a 2D or UI-style view where distance shouldn't shrink things, swap in [`ortho()`](/user-guide/math/matrices.html#ortho-a-flat-scale-preserving-view).
+The projection rarely changes, typically only when the window is resized, so in a real app you might build it once outside the render loop. For a 2D or UI-style view where distance shouldn't shrink things, swap in [`ortho()`](../../user-guide/math/matrices.md#ortho-a-flat-scale-preserving-view).
 
 ### Step 4: Send them to the shader
 
@@ -199,7 +199,7 @@ while (!glfwWindowShouldClose($window))
 
 ## A note on multiplication order
 
-If you ever build the combined matrix on the PHP side rather than in the shader, remember that order is everything and PHP can reorder `*` operands (see the [Overview](/user-guide/math/overview.html#operators-just-work)). Parenthesize each step and keep intermediates in their own variables:
+If you ever build the combined matrix on the PHP side rather than in the shader, remember that order is everything and PHP can reorder `*` operands (see the [Overview](../../user-guide/math/overview.md#operators-just-work)). Parenthesize each step and keep intermediates in their own variables:
 
 ```php
 $vp  = $projection * $view;
@@ -210,7 +210,7 @@ Read `projection * view * model` right to left: the model transform runs first, 
 
 ## Rotating with quaternions instead
 
-Stacking `rotate()` calls on the model matrix is perfectly fine for simple spins. But when you need to blend smoothly between two orientations, or you're worried about gimbal lock, build the rotation as a [quaternion](/user-guide/math/quaternions.html), convert it to a matrix, and fold it into your model transform:
+Stacking `rotate()` calls on the model matrix is perfectly fine for simple spins. But when you need to blend smoothly between two orientations, or you're worried about gimbal lock, build the rotation as a [quaternion](../../user-guide/math/quaternions.md), convert it to a matrix, and fold it into your model transform:
 
 ```php
 use GL\Math\{Mat4, Quat, Vec3, GLM};
@@ -227,6 +227,6 @@ $model = $model * $rotation->mat4(); // apply the quaternion's rotation
 
 You now have the core loop of every 3D renderer. From here you might:
 
-- Load real geometry instead of a hand-typed cube, see [Wavefront Object Files](/user-guide/geometry/wavefront-object-files.html).
-- Revisit any single piece: [Vectors](/user-guide/math/vectors.html), [Quaternions](/user-guide/math/quaternions.html), or [Matrices](/user-guide/math/matrices.html).
-- Reassure yourself the math is fast enough for a real render loop, see [Performance](/user-guide/math/performance.html).
+- Load real geometry instead of a hand-typed cube, see [Wavefront Object Files](../../user-guide/geometry/wavefront-object-files.md).
+- Revisit any single piece: [Vectors](../../user-guide/math/vectors.md), [Quaternions](../../user-guide/math/quaternions.md), or [Matrices](../../user-guide/math/matrices.md).
+- Reassure yourself the math is fast enough for a real render loop, see [Performance](../../user-guide/math/performance.md).

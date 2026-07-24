@@ -19,7 +19,7 @@ Our triangle was three vertices. A cube has six faces, and since the GPU only ev
 
 ![PHP-GLFW](./../docs-assets/php-glfw/getting_started/cube_vertices.jpg){ width="100%" }
 
-You may wonder why we repeat so many vertices instead of listing the eight corners once. We could, using an index buffer, and the [geometry guide](/user-guide/geometry/vertex-layouts.html) shows you how. For now let's keep it simple and spell out every vertex, so there is no extra machinery to reason about.
+You may wonder why we repeat so many vertices instead of listing the eight corners once. We could, using an index buffer, and the [geometry guide](../user-guide/geometry/vertex-layouts.md) shows you how. For now let's keep it simple and spell out every vertex, so there is no extra machinery to reason about.
 
 Each vertex carries a position `(x, y, z)` and a texture coordinate `(u, v)`. We will use those `uv` values to color the cube later, so you can tell its faces apart without loading a texture yet. Here is the buffer, with the first face shown in full and the rest trimmed for space:
 
@@ -126,7 +126,7 @@ $projection->perspective(GLM::radians(70.0), 800.0 / 600.0, 0.1, 100.0);
 
 The angles are in radians, which is why we pass degrees through `GLM::radians()`. The projection takes a field of view, the window's aspect ratio (width divided by height), and the near and far clipping planes.
 
-That is deliberately the short version. If you want to really understand what each matrix does, why moving the camera means moving the world, and when to reach for `lookAt()` or `ortho()`, the [Working in 3D Space](/user-guide/math/working-in-3d-space.html) guide takes it slowly, and the [Matrices](/user-guide/math/matrices.html) reference covers every method.
+That is deliberately the short version. If you want to really understand what each matrix does, why moving the camera means moving the world, and when to reach for `lookAt()` or `ortho()`, the [Working in 3D Space](../user-guide/math/working-in-3d-space.md) guide takes it slowly, and the [Matrices](../user-guide/math/matrices.md) reference covers every method.
 
 ## The Shader
 
@@ -239,8 +239,8 @@ php examples/02_3D_cube.php
 You now have the core loop of every 3D renderer: geometry in a buffer, a shader, three matrices, and depth testing. From here you might:
 
 - Give the cube a real surface with an image, see [Rendering a Textured Cube](./06_rendering-a-textured-cube.md).
-- Go deeper on the math behind the three matrices in [Working in 3D Space](/user-guide/math/working-in-3d-space.html).
-- Load real models instead of a hand-typed cube with the [Wavefront Object Files](/user-guide/geometry/wavefront-object-files.html) parser.
+- Go deeper on the math behind the three matrices in [Working in 3D Space](../user-guide/math/working-in-3d-space.md).
+- Load real models instead of a hand-typed cube with the [Wavefront Object Files](../user-guide/geometry/wavefront-object-files.md) parser.
 
 ## Additional resources
 

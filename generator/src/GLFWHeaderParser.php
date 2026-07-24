@@ -155,7 +155,7 @@ class GLFWHeaderParser
             $comment = preg_replace("/\[(.*)\]\(@ref (.*)\)/", "`$1`", $comment);
 
             // replace func refs
-            $comment = preg_replace("/@ref (glfw[A-Z][a-zA-Z0-9_]+)/", "[`$1`](/API/GLFW/$1.html)", $comment);
+            $comment = preg_replace("/@ref (glfw[A-Z][a-zA-Z0-9_]+)/", "[`$1`]($1.md)", $comment);
             // remove all other refs
             $comment = preg_replace("/@ref ([a-zA-Z0-9_]+)/", "`$1`", $comment);
 

@@ -2,9 +2,9 @@
 
 A vector is just a small, fixed group of numbers, but that simple idea does an enormous amount of work in graphics. A point in space, the direction something is facing, how fast it's moving, and even an RGBA color are all vectors. PHP-GLFW gives you three of them, and the number in the name is the number of components:
 
-- [`Vec2`](/API/Math/Vec2.html) has two components (`$x`, `$y`).
-- [`Vec3`](/API/Math/Vec3.html) has three components (`$x`, `$y`, `$z`).
-- [`Vec4`](/API/Math/Vec4.html) has four components (`$x`, `$y`, `$z`, `$w`).
+- [`Vec2`](../../API/Math/Vec2.md) has two components (`$x`, `$y`).
+- [`Vec3`](../../API/Math/Vec3.md) has three components (`$x`, `$y`, `$z`).
+- [`Vec4`](../../API/Math/Vec4.md) has four components (`$x`, `$y`, `$z`, `$w`).
 
 They all share the same shape, so once you're comfortable with one you know all three. The examples below use `Vec3`, but the same methods exist on the others unless noted.
 
@@ -88,7 +88,7 @@ echo $a + 1.0; // vec3(2.0, 3.0, 4.0)
 
 ## Common operations
 
-The methods below are the ones you'll reach for most. Remember the [mutating-vs-non-mutating convention](/user-guide/math/overview.html#mutating-vs-non-mutating): the instance method changes the vector in place, the static method returns a new one. For the complete list, see the [`Vec3` API reference](/API/Math/Vec3.html).
+The methods below are the ones you'll reach for most. Remember the [mutating-vs-non-mutating convention](../../user-guide/math/overview.md#mutating-vs-non-mutating): the instance method changes the vector in place, the static method returns a new one. For the complete list, see the [`Vec3` API reference](../../API/Math/Vec3.md).
 
 ### Length
 
@@ -118,7 +118,7 @@ $dir = new Vec3(1.0, 2.0, 3.0);
 $dir->normalize(); // $dir is now unit length
 ```
 
-If you'd rather not remember which vector class you're holding, [`GLM::normalize()`](/API/Math/GLM.html) accepts any of the three and returns a normalized copy:
+If you'd rather not remember which vector class you're holding, `GLM::normalize()` accepts any of the three and returns a normalized copy:
 
 ```php
 use GL\Math\GLM;
@@ -180,7 +180,7 @@ echo Vec3::mix($start, $end, 0.5); // vec3(5.0, 0.0, 0.0), halfway
 
 ## Feeding vectors to OpenGL
 
-Once you've computed your vertex data, you'll usually hand it to a [`GL\Buffer\FloatBuffer`](/API/Buffer/FloatBuffer.html) to upload to the GPU. The buffer knows how to unpack a vector into its component floats for you:
+Once you've computed your vertex data, you'll usually hand it to a [`GL\Buffer\FloatBuffer`](../../API/Buffer/FloatBuffer.md) to upload to the GPU. The buffer knows how to unpack a vector into its component floats for you:
 
 ```php
 use GL\Buffer\FloatBuffer;
@@ -191,4 +191,4 @@ $buffer->pushVec3(new Vec3(0.5, 0.5, 0.0));
 $buffer->pushVec2(new Vec2(1.0, 1.0));
 ```
 
-This is the bridge from the math library into your actual geometry. To see it in a full render, head to [Working in 3D Space](/user-guide/math/working-in-3d-space.html).
+This is the bridge from the math library into your actual geometry. To see it in a full render, head to [Working in 3D Space](../../user-guide/math/working-in-3d-space.md).

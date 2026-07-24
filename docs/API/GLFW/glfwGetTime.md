@@ -6,14 +6,13 @@ function glfwGetTime() : float
 ```
 
 This function returns the current GLFW time, in seconds. Unless the time
-has been set using [`glfwSetTime`](/API/GLFW/glfwSetTime.html) it measures
-time elapsed since GLFW was
+has been set using [`glfwSetTime`](glfwSetTime.md) it measures time elapsed
+since GLFW was
 initialized.
 
-This function and [`glfwSetTime`](/API/GLFW/glfwSetTime.html) are helper
-functions on top of @ref
-glfwGetTimerFrequency and
-[`glfwGetTimerValue`](/API/GLFW/glfwGetTimerValue.html).
+This function and [`glfwSetTime`](glfwSetTime.md) are helper functions on top
+of @ref
+glfwGetTimerFrequency and `glfwGetTimerValue`.
 
 The resolution of the timer is system dependent, but is usually on the order
 of a few micro- or nanoseconds. It uses the highest-resolution monotonic

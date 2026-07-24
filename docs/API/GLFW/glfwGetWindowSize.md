@@ -8,7 +8,7 @@ function glfwGetWindowSize(\GLFWwindow $window, int &$width, int &$height) : voi
 This function retrieves the size, in screen coordinates, of the content area
 of the specified window. If you wish to retrieve the size of the
 framebuffer of the window in pixels, see
-[`glfwGetFramebufferSize`](/API/GLFW/glfwGetFramebufferSize.html).
+[`glfwGetFramebufferSize`](glfwGetFramebufferSize.md).
 
 Any or all of the size arguments may be `NULL`. If an error occurs, all
 non-`NULL` size arguments will be set to zero.

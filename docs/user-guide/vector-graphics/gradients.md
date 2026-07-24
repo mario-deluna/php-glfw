@@ -111,4 +111,4 @@ $paint = $vg->radialGradient($centerX, $centerY, $innerRadius, $outerRadius, $co
 
 ## Full API Reference
 
-For the gradient factory methods see the generated [`VGContext` class reference](/API/VectorGraphics/VGContext.html), and the [`VGPaint` reference](/API/VectorGraphics/VGPaint.html) for the paint object they return.
+For the gradient factory methods see the generated [`VGContext` class reference](../../API/VectorGraphics/VGContext.md), and the [`VGPaint` reference](../../API/VectorGraphics/VGPaint.md) for the paint object they return.

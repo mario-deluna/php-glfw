@@ -2,7 +2,7 @@
 
 Rendering a handful of objects in PHP is easy: loop over your meshes, set a couple of uniforms, and issue a draw call for each one. But the moment your scene grows into a forest, a crowd, or an asteroid field, that friendly little loop turns into your biggest bottleneck. Thousands of individual draw calls, thousands of redundant state changes, and a CPU that spends all its time *talking* to the GPU instead of letting it draw.
 
-The [`GL\Rendering\DrawCallAssembler`](/API/Rendering/DrawCallAssembler.html) exists to take that work off your hands. You describe your scene one object at a time ("draw this mesh, with this transform, in this material"), and the assembler does the heavy lifting in native C: it culls everything outside the camera's view, picks a level of detail per object, sorts the draws to minimize state changes, and collapses identical objects into instanced batches. Then it either draws the whole thing for you, or hands you back GPU-ready buffers to draw yourself.
+The [`GL\Rendering\DrawCallAssembler`](../../API/Rendering/DrawCallAssembler.md) exists to take that work off your hands. You describe your scene one object at a time ("draw this mesh, with this transform, in this material"), and the assembler does the heavy lifting in native C: it culls everything outside the camera's view, picks a level of detail per object, sorts the draws to minimize state changes, and collapses identical objects into instanced batches. Then it either draws the whole thing for you, or hands you back GPU-ready buffers to draw yourself.
 
 ![PHP-GLFW DrawCallAssembler rendering a dense field of thousands of instanced ships](./../../docs-assets/php-glfw/user_guide/rendering/field_hero.jpg){ width="100%" }
 
@@ -14,12 +14,12 @@ octree | submitted 10000000, visible 35 (100.0% culled), draw calls: 28, avg exe
 
 This page gets you a working assembler running. From there, each capability has its own focused page:
 
-- [Render Paths](/user-guide/rendering/render-paths.html): let the assembler draw for you, or take the wheel with the packed command buffers.
-- [Culling & LOD](/user-guide/rendering/culling-and-lod.html): skip what the camera can't see, and swap in cheaper meshes with distance.
-- [Sorting & Batching](/user-guide/rendering/sorting-and-batching.html): passes, draw order, and collapsing draws into instanced batches.
-- [Per-Instance Payloads](/user-guide/rendering/payload-attributes.html): send arbitrary per-instance data (like colors) along as vertex attributes.
+- [Render Paths](../../user-guide/rendering/render-paths.md): let the assembler draw for you, or take the wheel with the packed command buffers.
+- [Culling & LOD](../../user-guide/rendering/culling-and-lod.md): skip what the camera can't see, and swap in cheaper meshes with distance.
+- [Sorting & Batching](../../user-guide/rendering/sorting-and-batching.md): passes, draw order, and collapsing draws into instanced batches.
+- [Per-Instance Payloads](../../user-guide/rendering/payload-attributes.md): send arbitrary per-instance data (like colors) along as vertex attributes.
 
-Every constant, property, and method is listed in the [`DrawCallAssembler` API reference](/API/Rendering/DrawCallAssembler.html).
+Every constant, property, and method is listed in the [`DrawCallAssembler` API reference](../../API/Rendering/DrawCallAssembler.md).
 
 Want to see it in motion first? Two runnable demos ship with the extension:
 
@@ -39,7 +39,7 @@ The assembler works in three beats:
 
 1. **Register your meshes, once.** You tell the assembler about each mesh (its VAO, how to draw it, its bounding box) and get back a small integer *handle*. You do this during setup, not every frame.
 2. **Submit instances, every frame.** For each object you want on screen, you `submit()` a mesh handle plus a transform (and optionally a material, render pass, and flags). This is cheap, since you're just recording intent, not drawing yet.
-3. **Build or execute.** Once everything is submitted, the assembler culls, sorts, LOD-selects, and batches the whole scene in one native pass. From here you either let it draw for you, or grab the packed buffers and draw yourself. That's the [Render Paths](/user-guide/rendering/render-paths.html) page.
+3. **Build or execute.** Once everything is submitted, the assembler culls, sorts, LOD-selects, and batches the whole scene in one native pass. From here you either let it draw for you, or grab the packed buffers and draw yourself. That's the [Render Paths](../../user-guide/rendering/render-paths.md) page.
 
 ```mermaid
 graph LR
@@ -121,7 +121,7 @@ $shipHandle = $assembler->registerMesh(
 A few notes on the arguments you'll reach for most:
 
 - Leave `indexCount` at `0` to draw arrays; pass a non-zero `indexCount` (with an `indexOffset`) to draw indexed geometry from an element buffer instead.
-- `aabbMin` and `aabbMax` are the corners of the mesh's axis-aligned bounding box, as [`Vec3`](/API/Math/Vec3.html) values. They're optional, but the assembler uses them for [frustum culling and LOD](/user-guide/rendering/culling-and-lod.html), so if you plan to cull, you'll want to provide them. If you loaded the mesh with the [`ObjFileParser`](/API/Geometry/ObjFileParser.html), its meshes already expose `aabbMin` / `aabbMax` for you (see [Wavefront Object Files](/user-guide/geometry/wavefront-object-files.html)).
+- `aabbMin` and `aabbMax` are the corners of the mesh's axis-aligned bounding box, as [`Vec3`](../../API/Math/Vec3.md) values. They're optional, but the assembler uses them for [frustum culling and LOD](../../user-guide/rendering/culling-and-lod.md), so if you plan to cull, you'll want to provide them. If you loaded the mesh with the [`ObjFileParser`](../../API/Geometry/ObjFileParser.md), its meshes already expose `aabbMin` / `aabbMax` for you (see [Wavefront Object Files](../../user-guide/geometry/wavefront-object-files.md)).
 
 !!! tip
     You own everything you pass in. The assembler stores your VAO handle and bounding box but never modifies, uploads, or deletes your buffers. That stays your responsibility.
@@ -155,7 +155,7 @@ $assembler->submit(
 
 Only the first three arguments are required; the rest have sensible defaults. The ones worth knowing:
 
-- `pass` groups the draw into a render pass: opaque, transparent, depth, or a user pass. See [Sorting & Batching](/user-guide/rendering/sorting-and-batching.html).
+- `pass` groups the draw into a render pass: opaque, transparent, depth, or a user pass. See [Sorting & Batching](../../user-guide/rendering/sorting-and-batching.md).
 - `programId` is an identifier for the shader program this instance uses. The assembler sorts and batches by it so it can keep like-shaded draws together, minimizing program switches.
 - `flags` is a bitmask of `FLAG_*` overrides, for example forcing an instance to skip culling or opt out of instancing.
 - `sortBias` nudges an instance earlier or later in the sorted order, handy for resolving z-fighting or forcing a decal to draw last.
@@ -169,7 +169,7 @@ $assembler->clearInstances();
 ```
 
 !!! tip "Static scenes: submit once, replay every frame"
-    If your instances never move and only the camera does, you don't have to resubmit them each frame. Submit once, then simply build (or execute) again on later frames with a new camera. The assembler re-culls and re-sorts against the new view without you touching the instance list. This is exactly what makes the [octree culling strategy](/user-guide/rendering/culling-and-lod.html) shine.
+    If your instances never move and only the camera does, you don't have to resubmit them each frame. Submit once, then simply build (or execute) again on later frames with a new camera. The assembler re-culls and re-sorts against the new view without you touching the instance list. This is exactly what makes the [octree culling strategy](../../user-guide/rendering/culling-and-lod.md) shine.
 
 ## Cleaning Up and Reusing an Assembler
 
@@ -184,7 +184,7 @@ $assembler->reset();       // forget meshes and instances both
 
 You now have objects on screen. From here, pick whichever problem you have:
 
-- Need full control over the draws, or want to inspect what the assembler produced? See [Render Paths](/user-guide/rendering/render-paths.html).
-- Scene too big to draw all of it? See [Culling & LOD](/user-guide/rendering/culling-and-lod.html).
-- Transparency out of order, or too many draw calls? See [Sorting & Batching](/user-guide/rendering/sorting-and-batching.html).
-- Every instance needs its own color or custom data? See [Per-Instance Payloads](/user-guide/rendering/payload-attributes.html).
+- Need full control over the draws, or want to inspect what the assembler produced? See [Render Paths](../../user-guide/rendering/render-paths.md).
+- Scene too big to draw all of it? See [Culling & LOD](../../user-guide/rendering/culling-and-lod.md).
+- Transparency out of order, or too many draw calls? See [Sorting & Batching](../../user-guide/rendering/sorting-and-batching.md).
+- Every instance needs its own color or custom data? See [Per-Instance Payloads](../../user-guide/rendering/payload-attributes.md).

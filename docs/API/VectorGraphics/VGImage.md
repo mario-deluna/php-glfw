@@ -2,10 +2,10 @@
 
 A `VGImage` is a texture that has been uploaded and prepared for use inside the vector graphics API.
 You never construct one directly. Instead you create it from a
-[`Texture2D`](/API/Texture/Texture2D.html) or an existing GPU handle with
-[`VGContext::imageFromTexture`](/API/VectorGraphics/VGContext.html#imagefromtexture) or
-[`imageFromHandle`](/API/VectorGraphics/VGContext.html#imagefromhandle). Once you have an image you
-turn it into a [`VGPaint`](/API/VectorGraphics/VGPaint.html) and use it to fill or stroke shapes,
+[`Texture2D`](../../API/Texture/Texture2D.md) or an existing GPU handle with
+[`VGContext::imageFromTexture`](../../API/VectorGraphics/VGContext.md#imagefromtexture) or
+[`imageFromHandle`](../../API/VectorGraphics/VGContext.md#imagefromhandle). Once you have an image you
+turn it into a [`VGPaint`](../../API/VectorGraphics/VGPaint.md) and use it to fill or stroke shapes,
 which lets you texture-map any path you can draw.
 
 ```php
@@ -16,7 +16,7 @@ namespace GL\VectorGraphics
 ```
 
 !!! tip "Looking for a walkthrough?"
-    See the [Images user guide](/user-guide/vector-graphics/images.html) for a hands-on introduction
+    See the [Images user guide](../../user-guide/vector-graphics/images.md) for a hands-on introduction
     to loading, scaling, filtering and repeating images.
 
 ## Usage
@@ -44,8 +44,8 @@ $vg->fill();
 ### Repeat modes
 
 How the image tiles when the painted area is larger than the image. Passed to
-[`VGContext::imageFromTexture`](/API/VectorGraphics/VGContext.html#imagefromtexture) /
-[`imageFromHandle`](/API/VectorGraphics/VGContext.html#imagefromhandle).
+[`VGContext::imageFromTexture`](../../API/VectorGraphics/VGContext.md#imagefromtexture) /
+[`imageFromHandle`](../../API/VectorGraphics/VGContext.md#imagefromhandle).
 
 | Constant | Value | Meaning |
 |----------|-------|---------|

@@ -1,8 +1,8 @@
 # VGAlign
 
 `VGAlign` is a small collection of constants that tell
-[`VGContext::textAlign`](/API/VectorGraphics/VGContext.html#textalign) where to anchor text relative
-to the coordinate you pass to [`text`](/API/VectorGraphics/VGContext.html#text). You combine exactly
+[`VGContext::textAlign`](../../API/VectorGraphics/VGContext.md#textalign) where to anchor text relative
+to the coordinate you pass to [`text`](../../API/VectorGraphics/VGContext.md#text). You combine exactly
 one horizontal option with one vertical option using the bitwise OR operator (`|`).
 
 ```php
@@ -13,7 +13,7 @@ namespace GL\VectorGraphics
 ```
 
 !!! tip "Looking for a walkthrough?"
-    The [Text & Fonts user guide](/user-guide/vector-graphics/text.html) shows alignment in a
+    The [Text & Fonts user guide](../../user-guide/vector-graphics/text.md) shows alignment in a
     complete example.
 
 ## Usage

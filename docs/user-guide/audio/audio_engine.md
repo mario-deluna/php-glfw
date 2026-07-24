@@ -122,7 +122,7 @@ $current = $sound->getCurrentFadeVolume();
 
 ## Spatial audio
 
-Combine the audio engine with [`Vec3`](/API/Math/Vec3.html) to position sounds in 3D.  The listener properties typically follow your camera, while sound positions follow moving entities.
+Combine the audio engine with [`Vec3`](../../API/Math/Vec3.md) to position sounds in 3D.  The listener properties typically follow your camera, while sound positions follow moving entities.
 
 ```php
 use GL\Math\Vec3;

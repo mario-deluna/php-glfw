@@ -17,7 +17,7 @@ GLFW_JOYSTICK_HAT_BUTTONS init hint before initialization.
 
 If the specified joystick is not present this function will return `NULL`
 but will not generate an error. This can be used instead of first calling
-[`glfwJoystickPresent`](/API/GLFW/glfwJoystickPresent.html).
+[`glfwJoystickPresent`](glfwJoystickPresent.md).
 
 arguments
 

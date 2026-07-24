@@ -117,4 +117,4 @@ foreach(['Hey ', 'How ', 'Are ', 'You? '] as $word) {
 ```
 ## Full API Reference
 
-For every font and text method see the generated [`VGContext` class reference](/API/VectorGraphics/VGContext.html), and for the alignment flags see the [`VGAlign` reference](/API/VectorGraphics/VGAlign.html).
+For every font and text method see the generated [`VGContext` class reference](../../API/VectorGraphics/VGContext.md), and for the alignment flags see the [`VGAlign` reference](../../API/VectorGraphics/VGAlign.md).

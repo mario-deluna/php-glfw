@@ -21,8 +21,8 @@ modes:
 
 If the mode is `GLFW_STICKY_KEYS`, the value must be either `GLFW_TRUE` to
 enable sticky keys, or `GLFW_FALSE` to disable it. If sticky keys are
-enabled, a key press will ensure that
-[`glfwGetKey`](/API/GLFW/glfwGetKey.html) returns `GLFW_PRESS`
+enabled, a key press will ensure that [`glfwGetKey`](glfwGetKey.md) returns
+`GLFW_PRESS`
 the next time it is called even if the key had been released before the
 call. This is useful when you are only interested in whether keys have been
 pressed but not when or in which order.
@@ -30,8 +30,8 @@ pressed but not when or in which order.
 If the mode is `GLFW_STICKY_MOUSE_BUTTONS`, the value must be either
 `GLFW_TRUE` to enable sticky mouse buttons, or `GLFW_FALSE` to disable it.
 If sticky mouse buttons are enabled, a mouse button press will ensure that
-[`glfwGetMouseButton`](/API/GLFW/glfwGetMouseButton.html) returns
-`GLFW_PRESS` the next time it is called even
+[`glfwGetMouseButton`](glfwGetMouseButton.md) returns `GLFW_PRESS` the next
+time it is called even
 if the mouse button had been released before the call. This is useful when
 you are only interested in whether mouse buttons have been pressed but not
 when or in which order.

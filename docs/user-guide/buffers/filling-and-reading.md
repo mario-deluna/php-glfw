@@ -2,7 +2,7 @@
 
 A buffer is only useful once it holds data, and most of the time you build it up piece by piece rather than knowing every value in advance. This page covers the everyday work of putting values in, reading them back, and keeping things fast when the buffers get large.
 
-Every buffer type shares the exact same set of methods, so the examples here use a [`FloatBuffer`](/API/Buffer/FloatBuffer.html), but they apply equally to a [`UIntBuffer`](/API/Buffer/UIntBuffer.html), a [`ByteBuffer`](/API/Buffer/ByteBuffer.html), or any of the others.
+Every buffer type shares the exact same set of methods, so the examples here use a [`FloatBuffer`](../../API/Buffer/FloatBuffer.md), but they apply equally to a [`UIntBuffer`](../../API/Buffer/UIntBuffer.md), a [`ByteBuffer`](../../API/Buffer/ByteBuffer.md), or any of the others.
 
 ## Adding data
 
@@ -149,5 +149,5 @@ When you are truly done with a buffer and want its memory back, `clear` releases
 
 ## Where to go next
 
-- [Vectors, Matrices & Conversions](/user-guide/buffers/vectors-matrices-and-conversions.html) shows the `FloatBuffer` helpers for pushing [math types](/user-guide/math/overview.html), working with strings and raw bytes, and quantizing floats to bytes.
-- The [Overview](/user-guide/buffers/overview.html) has the full table of buffer types if you need to pick a different one.
+- [Vectors, Matrices & Conversions](../../user-guide/buffers/vectors-matrices-and-conversions.md) shows the `FloatBuffer` helpers for pushing [math types](../../user-guide/math/overview.md), working with strings and raw bytes, and quantizing floats to bytes.
+- The [Overview](../../user-guide/buffers/overview.md) has the full table of buffer types if you need to pick a different one.

@@ -26,8 +26,7 @@ see the present mode of your swapchain instead.
 arguments
 
 :    1. `int` `$interval` The minimum number of screen updates to wait for
-    until the buffers are swapped by
-    [`glfwSwapBuffers`](/API/GLFW/glfwSwapBuffers.html).
+    until the buffers are swapped by [`glfwSwapBuffers`](glfwSwapBuffers.md).
 
 returns
 

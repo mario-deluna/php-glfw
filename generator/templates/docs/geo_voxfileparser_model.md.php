@@ -1,6 +1,6 @@
 # VoxFileParser / Model
 
-A Model holds the voxel data for one grid inside a MagicaVoxel scene: its dimensions and a palette index for every filled cell. A model has no position in the world, an [Instance](/API/Geometry/VoxFileParserInstance.html) is what places it. The most common thing you will do with a model is turn it into a renderable triangle mesh with `generateTriangleMesh`.
+A Model holds the voxel data for one grid inside a MagicaVoxel scene: its dimensions and a palette index for every filled cell. A model has no position in the world, an `Instance` is what places it. The most common thing you will do with a model is turn it into a renderable triangle mesh with `generateTriangleMesh`.
 
 ```php
 namespace GL\Geometry\VoxFileParser
@@ -23,7 +23,7 @@ $indices  = new UIntBuffer();
 $model->generateTriangleMesh($vertices, $indices, null, 'greedy');
 ```
 
-By default every vertex is 9 floats: position (3), normal (3), and an RGB color (3) baked from the palette. See the [MagicaVoxel Files](/user-guide/geometry/magicavoxel-files.html) guide for the full list of `$options` that reshape this layout.
+By default every vertex is 9 floats: position (3), normal (3), and an RGB color (3) baked from the palette. See the [MagicaVoxel Files](../../user-guide/geometry/magicavoxel-files.md) guide for the full list of `$options` that reshape this layout.
 
 ### Reading a single voxel
 

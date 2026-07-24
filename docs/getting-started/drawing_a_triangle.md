@@ -74,17 +74,17 @@ $buffer = new \GL\Buffer\FloatBuffer([ # (1)!
 glBufferData(GL_ARRAY_BUFFER, $buffer, GL_STATIC_DRAW);
 ```
 
-1.  The [FloatBuffer](./../API/Buffer/FloatBuffer.html) class is just one of many buffer helpers.
+1.  The [FloatBuffer](./../API/Buffer/FloatBuffer.md) class is just one of many buffer helpers.
     Also available are:
     - [ByteBuffer](./../API/Buffer/ByteBuffer.md)
-    - [UByteBuffer](./../API/Buffer/UByteBuffer.html)
-    - [ShortBuffer](./../API/Buffer/ShortBuffer.html)
-    - [UShortBuffer](./../API/Buffer/UShortBuffer.html)
-    - [IntBuffer](./../API/Buffer/IntBuffer.html)
-    - [UIntBuffer](./../API/Buffer/UIntBuffer.html)
-    - [FloatBuffer](./../API/Buffer/FloatBuffer.html)
-    - [HFloatBuffer](./../API/Buffer/HFloatBuffer.html)
-    - [DoubleBuffer](./../API/Buffer/DoubleBuffer.html)
+    - [UByteBuffer](./../API/Buffer/UByteBuffer.md)
+    - [ShortBuffer](./../API/Buffer/ShortBuffer.md)
+    - [UShortBuffer](./../API/Buffer/UShortBuffer.md)
+    - [IntBuffer](./../API/Buffer/IntBuffer.md)
+    - [UIntBuffer](./../API/Buffer/UIntBuffer.md)
+    - [FloatBuffer](./../API/Buffer/FloatBuffer.md)
+    - [HFloatBuffer](./../API/Buffer/HFloatBuffer.md)
+    - [DoubleBuffer](./../API/Buffer/DoubleBuffer.md)
 
 
 But what does the data actually mean? If not clear from the code here a visual representation of the data.

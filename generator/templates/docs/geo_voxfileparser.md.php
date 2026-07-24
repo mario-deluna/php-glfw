@@ -9,7 +9,7 @@ namespace GL\Geometry
 }
 ```
 
-If you are new to the voxel workflow, the [MagicaVoxel Files](/user-guide/geometry/magicavoxel-files.html) guide walks through loading, meshing, and recoloring a scene end to end.
+If you are new to the voxel workflow, the [MagicaVoxel Files](../../user-guide/geometry/magicavoxel-files.md) guide walks through loading, meshing, and recoloring a scene end to end.
 
 ## Usage
 
@@ -26,7 +26,7 @@ printf("Placed %d instances\n", $vox->instanceCount);
 
 ### Walking the scene
 
-A [Model](/API/Geometry/VoxFileParserModel.html) is voxel grid data with no position of its own, while an [Instance](/API/Geometry/VoxFileParserInstance.html) places a model in the world through its `modelIndex` and `transform`. To render a scene you typically loop over the instances and resolve the model each one refers to.
+A [Model](../../API/Geometry/VoxFileParserModel.md) is voxel grid data with no position of its own, while an `Instance` places a model in the world through its `modelIndex` and `transform`. To render a scene you typically loop over the instances and resolve the model each one refers to.
 
 ```php
 foreach ($vox->instances as $instance) {
@@ -43,7 +43,7 @@ foreach ($vox->instances as $instance) {
 
 ### $models
 
-An array of all voxel [Model](/API/Geometry/VoxFileParserModel.html) objects contained in the scene.
+An array of all voxel [Model](../../API/Geometry/VoxFileParserModel.md) objects contained in the scene.
 
 ```php
 /*
@@ -54,7 +54,7 @@ public readonly array $models;
 
 ### $instances
 
-An array of [Instance](/API/Geometry/VoxFileParserInstance.html) objects, each placing a model into the scene.
+An array of `Instance` objects, each placing a model into the scene.
 
 ```php
 /*
@@ -65,7 +65,7 @@ public readonly array $instances;
 
 ### $layers
 
-An array of [Layer](/API/Geometry/VoxFileParserLayer.html) objects describing the editor layers.
+An array of `Layer` objects describing the editor layers.
 
 ```php
 /*
@@ -76,7 +76,7 @@ public readonly array $layers;
 
 ### $groups
 
-An array of [Group](/API/Geometry/VoxFileParserGroup.html) objects describing the group hierarchy.
+An array of `Group` objects describing the group hierarchy.
 
 ```php
 /*
@@ -87,7 +87,7 @@ public readonly array $groups;
 
 ### $palette
 
-The scene [Palette](/API/Geometry/VoxFileParserPalette.html), holding the 256 RGBA colors every voxel refers to.
+The scene [Palette](../../API/Geometry/VoxFileParserPalette.md), holding the 256 RGBA colors every voxel refers to.
 
 ```php
 /*

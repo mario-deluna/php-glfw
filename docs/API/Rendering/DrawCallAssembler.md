@@ -9,7 +9,7 @@ namespace GL\Rendering
 }
 ```
 
-For a guided, example-first introduction, see the [Draw Call Assembler user guide](/user-guide/rendering/draw-call-assembler.html). This page is the flat API reference.
+For a guided, example-first introduction, see the [Draw Call Assembler user guide](../../user-guide/rendering/draw-call-assembler.md). This page is the flat API reference.
 
 ## Usage
 
@@ -292,7 +292,7 @@ arguments
 
 ### `setFrustumPlanes`
 
-Manually configures the six frustum planes used for culling. Each plane is a [`Vec4`](/API/Math/Vec4.html) holding the plane equation `ax + by + cz + d = 0`.
+Manually configures the six frustum planes used for culling. Each plane is a [`Vec4`](../../API/Math/Vec4.md) holding the plane equation `ax + by + cz + d = 0`.
 
 ```php
 function setFrustumPlanes(\GL\Math\Vec4 $left, \GL\Math\Vec4 $right, \GL\Math\Vec4 $bottom, \GL\Math\Vec4 $top, \GL\Math\Vec4 $near, \GL\Math\Vec4 $far) : void

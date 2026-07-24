@@ -1,6 +1,6 @@
 # VoxFileParser / Palette
 
-Every voxel stores a palette index rather than a color, and the Palette holds the 256 RGBA entries those indices point at. When you load a scene the parser exposes its palette through `$vox->palette`, and you are free to edit it before generating a mesh to recolor the model. The colors are owned by a 256 * 4 entry [UByteBuffer](/API/Buffer/UByteBuffer.html) under the hood, but the helpers below let you work in the friendlier 0..1 float range.
+Every voxel stores a palette index rather than a color, and the Palette holds the 256 RGBA entries those indices point at. When you load a scene the parser exposes its palette through `$vox->palette`, and you are free to edit it before generating a mesh to recolor the model. The colors are owned by a 256 * 4 entry [UByteBuffer](../../API/Buffer/UByteBuffer.md) under the hood, but the helpers below let you work in the friendlier 0..1 float range.
 
 ```php
 namespace GL\Geometry\VoxFileParser

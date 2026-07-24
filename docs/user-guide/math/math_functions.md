@@ -16,13 +16,13 @@ These functions and classes are also fast. Learn more about their performance [h
 
 ## Vector Usage
 
-There are three vector classes available: [`Vec2`](/API/Math/Vec2.html), [`Vec3`](/API/Math/Vec3.html), and [`Vec4`](/API/Math/Vec4.html).
+There are three vector classes available: [`Vec2`](../../API/Math/Vec2.md), [`Vec3`](../../API/Math/Vec3.md), and [`Vec4`](../../API/Math/Vec4.md).
 
 The number in the class name indicates the number of components the vector has:
 
- * [`Vec2`](/API/Math/Vec2.html) has 2 components (`$x`, `$y`)
- * [`Vec3`](/API/Math/Vec3.html) has 3 components (`$x`, `$y`, `$z`)
- * [`Vec4`](/API/Math/Vec4.html) has 4 components (`$x`, `$y`, `$z`, `$w`)
+ * [`Vec2`](../../API/Math/Vec2.md) has 2 components (`$x`, `$y`)
+ * [`Vec3`](../../API/Math/Vec3.md) has 3 components (`$x`, `$y`, `$z`)
+ * [`Vec4`](../../API/Math/Vec4.md) has 4 components (`$x`, `$y`, `$z`, `$w`)
 
 ```php
 use GL\Math\Vec3;
@@ -99,13 +99,13 @@ echo $vec1 / 2.0; // vec3(0.5, 1.0, 1.5)
 
 ### Functions
 
-You can read about the functions available in the [`Vec2`](/API/Math/Vec2.html), [`Vec3`](/API/Math/Vec3.html), [`Vec4`](/API/Math/Vec4.html) classes in the API documentation.
+You can read about the functions available in the [`Vec2`](../../API/Math/Vec2.md), [`Vec3`](../../API/Math/Vec3.md), [`Vec4`](../../API/Math/Vec4.md) classes in the API documentation.
 
 #### Normalize
 
-You can normalize a vector using the [`normalize()`](/API/Math/Vec3.html#normalize) function, or the [`normalized()`](/API/Math/Vec3.html#normalized) static function.
+You can normalize a vector using the [`normalize()`](../../API/Math/Vec3.md#normalize) function, or the [`normalized()`](../../API/Math/Vec3.md#normalized) static function.
 
-The difference between these two functions is that the [`normalize()`](/API/Math/Vec3.html#normalize) function modifies the vector in place, while the [`normalized()`](/API/Math/Vec3.html#normalized) function returns a new vector.
+The difference between these two functions is that the [`normalize()`](../../API/Math/Vec3.md#normalize) function modifies the vector in place, while the [`normalized()`](../../API/Math/Vec3.md#normalized) function returns a new vector.
 
 ```php
 $vec1 = new Vec3(1.0, 2.0, 3.0);
@@ -123,7 +123,7 @@ echo $vec1; // prints vec3(0.2673, 0.5345, 0.8018)
 
 #### Length
 
-You can get the length of a vector using the [`length()`](/API/Math/Vec3.html#length) function.
+You can get the length of a vector using the [`length()`](../../API/Math/Vec3.md#length) function.
 
 ```php
 $vec1 = new Vec3(1.0, 2.0, 3.0);
@@ -132,7 +132,7 @@ echo $vec1->length(); // prints 3.7416574954987
 
 #### Dot Product
 
-You can get the dot product of two vectors using the [`dot()`](/API/Math/Vec3.html#dot) function.
+You can get the dot product of two vectors using the [`dot()`](../../API/Math/Vec3.md#dot) function.
 
 ```php
 $vec1 = new Vec3(5.0, 12.5, 7.5);
@@ -143,7 +143,7 @@ echo Vec3::dot($vec1, $vec2); // prints 33.125
 
 #### Distance 
 
-Or simply the distance between two vectors using the [`distance()`](/API/Math/Vec3.html#distance) function.
+Or simply the distance between two vectors using the [`distance()`](../../API/Math/Vec3.md#distance) function.
 
 ```php
 $vec1 = new Vec3(5.0, 12.5, 7.5);
@@ -155,9 +155,9 @@ echo Vec3::distance($vec1, $vec2); // prints 13.268
 
 ## Quaternion Usage
 
-There is a [`Quat`](/API/Math/Quat.html) class available for working with quaternions.
+There is a [`Quat`](../../API/Math/Quat.md) class available for working with quaternions.
 
-You can think of a quaternion as a 4D vector, but it is not a vector in the same sense as a [`Vec4`](/API/Math/Vec4.html) is. A quaternion is usally used to represent a rotation in 3D space. In our implementation a quaternion has its components stored in `$w`, `$x`, `$y`, `$z` properties. This is not the same as the [`Vec4`](/API/Math/Vec4.html) class, where the components are stored in `$x`, `$y`, `$z`, `$w` properties.
+You can think of a quaternion as a 4D vector, but it is not a vector in the same sense as a [`Vec4`](../../API/Math/Vec4.md) is. A quaternion is usally used to represent a rotation in 3D space. In our implementation a quaternion has its components stored in `$w`, `$x`, `$y`, `$z` properties. This is not the same as the [`Vec4`](../../API/Math/Vec4.md) class, where the components are stored in `$x`, `$y`, `$z`, `$w` properties.
 
 ```php
 use GL\Math\Quat;
@@ -184,7 +184,7 @@ $quat->w = 2.0;
 
 ### Operators
 
-Just like the Vector classes the quaternion class [`Quat`](/API/Math/Quat.html) has overloaded operators. This means that you can use the `*` operator to multiply two quaternions together, which can be used to combine rotations. This continues to work even if you multiply a quaternion with a vector. The result will be a vector that has been rotated by the quaternion.
+Just like the Vector classes the quaternion class [`Quat`](../../API/Math/Quat.md) has overloaded operators. This means that you can use the `*` operator to multiply two quaternions together, which can be used to combine rotations. This continues to work even if you multiply a quaternion with a vector. The result will be a vector that has been rotated by the quaternion.
 
 ```php
 // creates a quat that rotates 90 degrees on the y axis
@@ -203,13 +203,13 @@ echo $rotated; // prints vec3(0.0, 0.0, -1.0)
 
 ### Functions
 
-Just like the vector classes there are a number of functions available for working with quaternions. You can read about the functions available in the [`Quat`](/API/Math/Quat.html) class in the API documentation.
+Just like the vector classes there are a number of functions available for working with quaternions. You can read about the functions available in the [`Quat`](../../API/Math/Quat.md) class in the API documentation.
 
 To just give a few common examples:
 
 #### Normalize
 
-You can normalize a quaternion using the [`normalize`](/API/Math/Quat.html#normalize) function. This will make the quaternion a unit quaternion.
+You can normalize a quaternion using the [`normalize`](../../API/Math/Quat.md#normalize) function. This will make the quaternion a unit quaternion.
 This modifies the quaternion in place.
 
 ```php
@@ -219,7 +219,7 @@ $quat->normalize();
 echo $quat; // prints quat(0.182574, 0.365148, 0.547723, 0.730297)
 ```
 
-You can also use the [`normalized`](/API/Math/Quat.htmlQuat.html#normalized) function to create a new quaternion that is a normalized version of the original quaternion.
+You can also use the [`normalized`](../../API/Math/Quat.md#normalized) function to create a new quaternion that is a normalized version of the original quaternion.
 
 ```php
 $quat = new Quat(1, 2, 3, 4);
@@ -228,7 +228,7 @@ $normalized = Quat::normalized($quat);
 
 #### Rotate 
 
-You can rotate a quaternion using the [`rotate`](/API/Math/Quat.html#rotate) function. This will rotate the quaternion by the given angle around the given axis.
+You can rotate a quaternion using the [`rotate`](../../API/Math/Quat.md#rotate) function. This will rotate the quaternion by the given angle around the given axis.
 
 ```php
 $quat = new Quat;
@@ -238,7 +238,7 @@ $quat->rotate(GLM::radians(90), new Vec3(0, 1, 0));
 
 ## Matrix Usage
 
-There is a [`Mat4`](/API/Math/Mat4.html) class available for working with 4x4 matrices. A matrix (in our implementation) has no accessable properties. You can only access the elements of the matrix using the array access operator `[]`. We store the values in a flat 1 dimensional array.
+There is a [`Mat4`](../../API/Math/Mat4.md) class available for working with 4x4 matrices. A matrix (in our implementation) has no accessable properties. You can only access the elements of the matrix using the array access operator `[]`. We store the values in a flat 1 dimensional array.
 
 ```php
 use GL\Math\Mat4;
@@ -260,7 +260,7 @@ $mat[0] = 2.0;
 
 ### Operators
 
-Just like the other math classes the matrix class [`Mat4`](/API/Math/Mat4.html) has overloaded operators. This means that you can use the `*` operator to multiply two matrices together. This continues to work even if you multiply a matrix with a vector. The result will be a vector that has been transformed by the matrix.
+Just like the other math classes the matrix class [`Mat4`](../../API/Math/Mat4.md) has overloaded operators. This means that you can use the `*` operator to multiply two matrices together. This continues to work even if you multiply a matrix with a vector. The result will be a vector that has been transformed by the matrix.
 
 ```php
 $mat1 = new Mat4;
@@ -284,13 +284,13 @@ $transformed = $mat * $point;
 
 ### Functions
 
-Just like the vector classes there are a number of functions available for working with matrices. You can read about the functions available in the [`Mat4`](/API/Math/Mat4.html) class in the API documentation.
+Just like the vector classes there are a number of functions available for working with matrices. You can read about the functions available in the [`Mat4`](../../API/Math/Mat4.md) class in the API documentation.
 
 To just give a few common examples:
 
 #### Inverse 
 
-You can invert a matrix using the [`inverse`](/API/Math/Mat4.html#inverse) function or the [`inverted`](/API/Math/Mat4.html#inverted) function. The `inverse` function modifies the matrix in place, while the `inverted` function returns a new matrix that is the inverse of the original matrix.
+You can invert a matrix using the [`inverse`](../../API/Math/Mat4.md#inverse) function or the [`inverted`](../../API/Math/Mat4.md#inverted) function. The `inverse` function modifies the matrix in place, while the `inverted` function returns a new matrix that is the inverse of the original matrix.
 
 ```php
 $mat = new Mat4;

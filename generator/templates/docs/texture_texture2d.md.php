@@ -1,9 +1,9 @@
 # Texture2D
 
 The Texture2D class is part of the PHP-GLFW OpenGL extension. It loads images / textures from common formats like PNG, JPG, GIF, BMP, TGA, HDR etc.
-and converts the raw bitmap into a native buffer instance you can upload to the GPU with the [`glTexImage2D`](/API/OpenGL/glTexImage2D.html) function.
+and converts the raw bitmap into a native buffer instance you can upload to the GPU with the [`glTexImage2D`](../../API/OpenGL/glTexImage2D.md) function.
 
-Standard (LDR) images are loaded into a [`GL\Buffer\UByteBuffer`](/API/Buffer/UByteBuffer.html), while High Dynamic Range (`.hdr`) images are loaded into a [`GL\Buffer\FloatBuffer`](/API/Buffer/FloatBuffer.html). Use `isHDR()` to tell which one `buffer()` returns.
+Standard (LDR) images are loaded into a [`GL\Buffer\UByteBuffer`](../../API/Buffer/UByteBuffer.md), while High Dynamic Range (`.hdr`) images are loaded into a [`GL\Buffer\FloatBuffer`](../../API/Buffer/FloatBuffer.md). Use `isHDR()` to tell which one `buffer()` returns.
 
 ```php
 namespace GL\Texture
@@ -13,7 +13,7 @@ namespace GL\Texture
 ```
 
 !!! tip "Looking for a walkthrough?"
-    This page is the exhaustive class reference. For a guided, example-first introduction (loading from disk, uploading to the GPU, procedural and HDR textures, and writing images back out), see the [Textures user guide](/user-guide/rendering/texture2d.html).
+    This page is the exhaustive class reference. For a guided, example-first introduction (loading from disk, uploading to the GPU, procedural and HDR textures, and writing images back out), see the [Textures user guide](../../user-guide/rendering/texture2d.md).
 
 ## Usage
 
@@ -33,7 +33,7 @@ glBindTexture(GL_TEXTURE_2D, $texture);
 glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, $textureData->width(), $textureData->height(), 0, GL_RGBA, GL_UNSIGNED_BYTE, $textureData->buffer());
 ```
 
-Read more about the [`glTexImage2D`](/API/OpenGL/glTexImage2D.html) function to learn about the arguments.
+Read more about the [`glTexImage2D`](../../API/OpenGL/glTexImage2D.md) function to learn about the arguments.
 
 ## Constants
 

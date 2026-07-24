@@ -10,8 +10,8 @@ gamepad mapping assigned to the specified joystick.
 
 If the specified joystick is not present or does not have a gamepad mapping
 this function will return `NULL` but will not generate an error. Call
-[`glfwJoystickPresent`](/API/GLFW/glfwJoystickPresent.html) to check whether
-it is present regardless of
+[`glfwJoystickPresent`](glfwJoystickPresent.md) to check whether it is
+present regardless of
 whether it has a mapping.
 
 arguments

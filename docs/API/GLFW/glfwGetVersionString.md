@@ -12,8 +12,8 @@ compile-time options. It should not be confused with the OpenGL or OpenGL
 ES version string, queried with `glGetString`.
 
 __Do not use the version string__ to parse the GLFW library version. The
-[`glfwGetVersion`](/API/GLFW/glfwGetVersion.html) function provides the
-version of the running library
+[`glfwGetVersion`](glfwGetVersion.md) function provides the version of the
+running library
 binary in numerical format.
 
 returns

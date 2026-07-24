@@ -4,7 +4,7 @@ Most of the buffer API is the same across every type, but a few classes carry ex
 
 ## Pushing vectors and matrices
 
-When you build vertex data by hand, you rarely think in loose floats, you think in positions, directions, and transforms, which the [math library](/user-guide/math/overview.html) already gives you as [`Vec3`](/API/Math/Vec3.html), [`Vec4`](/API/Math/Vec4.html), and [`Mat4`](/API/Math/Mat4.html) objects. Flattening those into individual `push` calls by hand is error prone, so the [`FloatBuffer`](/API/Buffer/FloatBuffer.html) offers helpers that unpack a math object straight into the buffer in the right order.
+When you build vertex data by hand, you rarely think in loose floats, you think in positions, directions, and transforms, which the [math library](../../user-guide/math/overview.md) already gives you as [`Vec3`](../../API/Math/Vec3.md), [`Vec4`](../../API/Math/Vec4.md), and [`Mat4`](../../API/Math/Mat4.md) objects. Flattening those into individual `push` calls by hand is error prone, so the [`FloatBuffer`](../../API/Buffer/FloatBuffer.md) offers helpers that unpack a math object straight into the buffer in the right order.
 
 ![pushVec3 unpacks a Vec3 into three consecutive buffer cells and pushMat4 unpacks a Mat4 into 16 cells in column-major order](./../../docs-assets/php-glfw/user_guide/buffers/push_vec_mat.jpg){ width="100%" }
 
@@ -42,7 +42,7 @@ You can see this used to place tens of thousands of instances in [examples/04_in
 
 ## Strings and raw bytes
 
-The [`UByteBuffer`](/API/Buffer/UByteBuffer.html) holds unsigned bytes, which makes it the natural home for raw binary data such as texture pixels or file contents. Rather than pushing each byte's numeric value one call at a time, `pushString` appends every byte of a PHP string for you:
+The [`UByteBuffer`](../../API/Buffer/UByteBuffer.md) holds unsigned bytes, which makes it the natural home for raw binary data such as texture pixels or file contents. Rather than pushing each byte's numeric value one call at a time, `pushString` appends every byte of a PHP string for you:
 
 ```php
 use GL\Buffer\UByteBuffer;
@@ -69,7 +69,7 @@ The returned string is the packed C representation, so a `FloatBuffer` of three 
 
 Vertex attributes like colors or normals are often stored as floats while you work with them, but a float is four bytes and you rarely need that precision on the GPU. Packing each value into a single byte cuts the memory footprint to a quarter, which adds up fast across a large mesh.
 
-`quantizeToUChar` does this conversion for you. It reads a `FloatBuffer` and returns a brand new [`UByteBuffer`](/API/Buffer/UByteBuffer.html), mapping the float range onto the `0` to `255` byte range. The original buffer is left unchanged:
+`quantizeToUChar` does this conversion for you. It reads a `FloatBuffer` and returns a brand new [`UByteBuffer`](../../API/Buffer/UByteBuffer.md), mapping the float range onto the `0` to `255` byte range. The original buffer is left unchanged:
 
 ```php
 function quantizeToUChar(bool $autoNormalize = true, float $lowerBound = 0.0, float $upperBound = 1.0) : \GL\Buffer\UByteBuffer
@@ -100,5 +100,5 @@ $packed = $normals->quantizeToUChar(false, -1.0, 1.0);
 
 ## Where to go next
 
-- The [math guide](/user-guide/math/overview.html) covers the `Vec` and `Mat4` types these helpers consume.
-- [Filling & Reading](/user-guide/buffers/filling-and-reading.html) covers the core API shared by every buffer type.
+- The [math guide](../../user-guide/math/overview.md) covers the `Vec` and `Mat4` types these helpers consume.
+- [Filling & Reading](../../user-guide/buffers/filling-and-reading.md) covers the core API shared by every buffer type.

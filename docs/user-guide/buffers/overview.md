@@ -12,7 +12,7 @@ PHP-GLFW solves this with a family of typed buffer objects in the `GL\Buffer` na
 
 ## Your first buffer
 
-The most common buffer by far is the [`FloatBuffer`](/API/Buffer/FloatBuffer.html), used to describe vertices. You may hand its constructor a plain PHP array, and then upload it with `glBufferData` just like you would upload raw data:
+The most common buffer by far is the [`FloatBuffer`](../../API/Buffer/FloatBuffer.md), used to describe vertices. You may hand its constructor a plain PHP array, and then upload it with `glBufferData` just like you would upload raw data:
 
 ```php
 // declare vertices for a single triangle and the color for each vertex
@@ -35,15 +35,15 @@ Because the GPU cares about the exact type of every value, there is one buffer c
 
 | Class | Internal GL type | PHP value type |
 | --- | --- | --- |
-| [`FloatBuffer`](/API/Buffer/FloatBuffer.html) | `GLfloat` | `float` |
-| [`HFloatBuffer`](/API/Buffer/HFloatBuffer.html) | `GLhalf` (16 bit) | `int` |
-| [`DoubleBuffer`](/API/Buffer/DoubleBuffer.html) | `GLdouble` | `float` |
-| [`IntBuffer`](/API/Buffer/IntBuffer.html) | `GLint` | `int` |
-| [`UIntBuffer`](/API/Buffer/UIntBuffer.html) | `GLuint` | `int` |
-| [`ShortBuffer`](/API/Buffer/ShortBuffer.html) | `GLshort` | `int` |
-| [`UShortBuffer`](/API/Buffer/UShortBuffer.html) | `GLushort` | `int` |
-| [`ByteBuffer`](/API/Buffer/ByteBuffer.html) | `GLbyte` | `int` |
-| [`UByteBuffer`](/API/Buffer/UByteBuffer.html) | `GLubyte` | `int` |
+| [`FloatBuffer`](../../API/Buffer/FloatBuffer.md) | `GLfloat` | `float` |
+| [`HFloatBuffer`](../../API/Buffer/HFloatBuffer.md) | `GLhalf` (16 bit) | `int` |
+| [`DoubleBuffer`](../../API/Buffer/DoubleBuffer.md) | `GLdouble` | `float` |
+| [`IntBuffer`](../../API/Buffer/IntBuffer.md) | `GLint` | `int` |
+| [`UIntBuffer`](../../API/Buffer/UIntBuffer.md) | `GLuint` | `int` |
+| [`ShortBuffer`](../../API/Buffer/ShortBuffer.md) | `GLshort` | `int` |
+| [`UShortBuffer`](../../API/Buffer/UShortBuffer.md) | `GLushort` | `int` |
+| [`ByteBuffer`](../../API/Buffer/ByteBuffer.md) | `GLbyte` | `int` |
+| [`UByteBuffer`](../../API/Buffer/UByteBuffer.md) | `GLubyte` | `int` |
 
 They all share the same interface (`GL\Buffer\BufferInterface`) and behave identically, so once you know one you know them all. If you are unsure which to reach for, these three cover almost everything:
 
@@ -55,5 +55,5 @@ They all share the same interface (`GL\Buffer\BufferInterface`) and behave ident
 
 Now that you can create a buffer and upload it, the rest of the guide shows you how to work with the data inside:
 
-- [Filling & Reading](/user-guide/buffers/filling-and-reading.html) covers adding, reading, and modifying values, plus preallocating for performance.
-- [Vectors, Matrices & Conversions](/user-guide/buffers/vectors-matrices-and-conversions.html) covers the `FloatBuffer` helpers for pushing math types, working with strings and raw bytes, and quantizing floats down to bytes.
+- [Filling & Reading](../../user-guide/buffers/filling-and-reading.md) covers adding, reading, and modifying values, plus preallocating for performance.
+- [Vectors, Matrices & Conversions](../../user-guide/buffers/vectors-matrices-and-conversions.md) covers the `FloatBuffer` helpers for pushing math types, working with strings and raw bytes, and quantizing floats down to bytes.

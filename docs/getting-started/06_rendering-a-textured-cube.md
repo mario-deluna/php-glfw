@@ -81,7 +81,7 @@ glGenerateMipmap(GL_TEXTURE_2D);
 
 That is the whole handoff: `Texture2D` held the pixels, `glTexImage2D` moved them onto the card. From here on the GPU has its own copy, and the cube will keep drawing even if you let the `Texture2D` object go.
 
-The wrapping, filtering, and mipmap options each have more to them than we need today. When you want the full menu, the [Textures reference](/user-guide/rendering/texture2d.html) covers every parameter and when to reach for it.
+The wrapping, filtering, and mipmap options each have more to them than we need today. When you want the full menu, the [Textures reference](../user-guide/rendering/texture2d.md) covers every parameter and when to reach for it.
 
 ## Pointing the Sampler at the Unit
 
@@ -180,9 +180,9 @@ php examples/03_textured_cube.php
 
 You can now put any image onto any surface, which is one of the biggest visual leaps in real-time graphics. From here you might:
 
-- Explore every texture option (wrapping modes, filtering, HDR images, writing images back to disk) in the [Textures reference](/user-guide/rendering/texture2d.html).
-- Get comfortable with the shaders that read those textures in the [Shaders guide](/user-guide/rendering/shaders.html).
-- Load a real model with its own texture coordinates instead of a hand-typed cube, using the [Wavefront Object Files](/user-guide/geometry/wavefront-object-files.html) parser.
+- Explore every texture option (wrapping modes, filtering, HDR images, writing images back to disk) in the [Textures reference](../user-guide/rendering/texture2d.md).
+- Get comfortable with the shaders that read those textures in the [Shaders guide](../user-guide/rendering/shaders.md).
+- Load a real model with its own texture coordinates instead of a hand-typed cube, using the [Wavefront Object Files](../user-guide/geometry/wavefront-object-files.md) parser.
 
 ## Additional resources
 

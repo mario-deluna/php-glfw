@@ -7,14 +7,14 @@ function glfwTerminate() : void
 
 This function destroys all remaining windows and cursors, restores any
 modified gamma ramps and frees any other allocated resources. Once this
-function is called, you must again call [`glfwInit`](/API/GLFW/glfwInit.html)
+function is called, you must again call [`glfwInit`](glfwInit.md)
 successfully before
 you will be able to use most GLFW functions.
 
 If GLFW has been successfully initialized, this function should be called
 before the application exits. If initialization fails, there is no need to
-call this function, as it is called by [`glfwInit`](/API/GLFW/glfwInit.html)
-before it returns
+call this function, as it is called by [`glfwInit`](glfwInit.md) before it
+returns
 failure.
 
 This function has no effect if GLFW is not initialized.

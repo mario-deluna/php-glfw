@@ -14,8 +14,7 @@ the window's context. As the context is unaffected, the bit depths of the
 framebuffer remain unchanged.
 
 If you wish to update the refresh rate of the desired video mode in addition
-to its resolution, see
-[`glfwSetWindowMonitor`](/API/GLFW/glfwSetWindowMonitor.html).
+to its resolution, see [`glfwSetWindowMonitor`](glfwSetWindowMonitor.md).
 
 The window manager may put limits on what sizes are allowed. GLFW cannot
 and should not override these limits.

@@ -11,7 +11,7 @@ yourself.
 
 If the specified joystick is not present this function will return `NULL`
 but will not generate an error. This can be used instead of first calling
-[`glfwJoystickPresent`](/API/GLFW/glfwJoystickPresent.html).
+[`glfwJoystickPresent`](glfwJoystickPresent.md).
 
 arguments
 

@@ -259,4 +259,4 @@ In the next chapter we are going to dive a bit more into the basics.
 
 ## Full API Reference
 
-For the exhaustive list of every method, argument, and constant on the context, see the generated [`VGContext` class reference](/API/VectorGraphics/VGContext.html).
+For the exhaustive list of every method, argument, and constant on the context, see the generated [`VGContext` class reference](../../API/VectorGraphics/VGContext.md).

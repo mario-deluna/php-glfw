@@ -6,7 +6,7 @@ function glfwCreateStandardCursor(int $shape) : \GLFWcursor
 ```
 
 Returns a cursor with a `standard shape`, that can be set for
-a window with [`glfwSetCursor`](/API/GLFW/glfwSetCursor.html).
+a window with [`glfwSetCursor`](glfwSetCursor.md).
 
 arguments
 

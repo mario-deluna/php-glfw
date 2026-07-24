@@ -187,7 +187,10 @@ foreach($categories as $category => $examples) {
 
     $newContent .= "<div class=\"grid cards\" markdown>\n\n";
     $newContent .= implode("\n\n", array_map(function($example) {
-        return "-   __{$example->name}__\n\n    ---\n\n    [![Example]({$example->thumbnail})](./vector-graphics/{$example->getDocName()}.md)";
+        // the about page lives one directory shallower than the per-example
+        // pages, so drop one "../" from the thumbnail path
+        $thumbnail = str_replace('./../../', './../', $example->thumbnail);
+        return "-   __{$example->name}__\n\n    ---\n\n    [![Example]({$thumbnail})](./vector-graphics/{$example->getDocName()}.md)";
     }, $examples));
     $newContent .= "\n\n</div>\n\n";
 }

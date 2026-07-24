@@ -14,7 +14,7 @@ surface creation or even instance creation is possible. Call @ref
 glfwGetRequiredInstanceExtensions to check whether the extensions necessary
 for Vulkan
 surface creation are available and
-[`glfwGetPhysicalDevicePresentationSupport`](/API/GLFW/glfwGetPhysicalDevicePresentationSupport.html)
+`glfwGetPhysicalDevicePresentationSupport`
 to
 check whether a queue family of a physical device supports image
 presentation.

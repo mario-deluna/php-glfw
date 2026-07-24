@@ -722,6 +722,7 @@ class ExtGenerator
      */
     private function buildDocsGLFW() : void
     {
+        $generated = [];
         foreach($this->getCompleteFunctions() as $func) {
 
             if (substr($func->name, 0, 4) !== 'glfw') continue;
@@ -732,6 +733,20 @@ class ExtGenerator
                 'func' => $func,
                 'docParser' => $this->docParser,
             ], false));
+
+            $generated[$func->name] = true;
+        }
+
+        // @ref cross-links may point to functions that never got a doc page
+        // (excluded or incomplete). unlink those to a plain code span so we
+        // do not leave broken relative links behind.
+        foreach(array_keys($generated) as $name) {
+            $path = GEN_PATH_EXT . '/docs/API/GLFW/' . $name . '.md';
+            $content = file_get_contents($path);
+            $content = preg_replace_callback('/\[`(glfw[A-Za-z0-9_]+)`\]\(\1\.md\)/', function($m) use ($generated) {
+                return isset($generated[$m[1]]) ? $m[0] : '`' . $m[1] . '`';
+            }, $content);
+            file_put_contents($path, $content);
         }
     }
 

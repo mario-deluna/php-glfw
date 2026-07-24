@@ -3,8 +3,8 @@
 The `VGContext` is your canvas for 2D vector graphics. It wraps a NanoVG rendering context and gives
 you everything you need to draw crisp, resolution-independent shapes, gradients, images and text
 directly on top of your OpenGL scene. You build a shape by describing a path, choose how it is
-painted with a [`VGColor`](/API/VectorGraphics/VGColor.html) or a
-[`VGPaint`](/API/VectorGraphics/VGPaint.html), and then fill or stroke it.
+painted with a [`VGColor`](../../API/VectorGraphics/VGColor.md) or a
+[`VGPaint`](../../API/VectorGraphics/VGPaint.md), and then fill or stroke it.
 
 ```php
 namespace GL\VectorGraphics
@@ -15,7 +15,7 @@ namespace GL\VectorGraphics
 
 !!! tip "Looking for a walkthrough?"
     This page is the exhaustive class reference. If you are just getting started, the
-    [Vector Graphics user guide](/user-guide/vector-graphics/creating_a_vgcontext.html) walks you
+    [Vector Graphics user guide](../../user-guide/vector-graphics/creating_a_vgcontext.md) walks you
     through creating a context, drawing your first shapes, colors, gradients, images and text with
     small runnable examples.
 
@@ -535,7 +535,7 @@ returns
 
 ## Gradients & Paints
 
-Each of these returns a [`VGPaint`](/API/VectorGraphics/VGPaint.html) you hand to
+Each of these returns a [`VGPaint`](../../API/VectorGraphics/VGPaint.md) you hand to
 [`fillPaint`](#fillpaint) or [`strokePaint`](#strokepaint).
 
 ### `linearGradient`
@@ -639,9 +639,9 @@ arguments
 
 ## Images & SVG
 
-Turn a [`Texture2D`](/API/Texture/Texture2D.html) into a
-[`VGImage`](/API/VectorGraphics/VGImage.html), or draw a parsed
-[`SVGImage`](/API/VectorGraphics/SVGImage.html) straight into the frame.
+Turn a [`Texture2D`](../../API/Texture/Texture2D.md) into a
+[`VGImage`](../../API/VectorGraphics/VGImage.md), or draw a parsed
+[`SVGImage`](../../API/VectorGraphics/SVGImage.md) straight into the frame.
 
 ### `imageFromTexture`
 
@@ -1467,7 +1467,7 @@ returns
 ## Fonts & Text
 
 Load a font once with [`createFont`](#createfont), then set the size and alignment
-(using the [`VGAlign`](/API/VectorGraphics/VGAlign.html) constants) before drawing with
+(using the [`VGAlign`](../../API/VectorGraphics/VGAlign.md) constants) before drawing with
 [`text`](#text) or [`textBox`](#textbox).
 
 ### `createFont`

@@ -7,8 +7,8 @@ function glfwWaitEvents() : void
 
 This function puts the calling thread to sleep until at least one event is
 available in the event queue. Once one or more events are available,
-it behaves exactly like [`glfwPollEvents`](/API/GLFW/glfwPollEvents.html),
-i.e. the events in the queue
+it behaves exactly like [`glfwPollEvents`](glfwPollEvents.md), i.e. the
+events in the queue
 are processed and the function then returns immediately. Processing events
 will cause the window and input callbacks associated with those events to be
 called.

@@ -147,4 +147,4 @@ $paint = $vgImage->makePaint(0, 0, $textureWidth, $textureHeight);
 ```
 ## Full API Reference
 
-For the image and paint methods see the generated [`VGImage`](/API/VectorGraphics/VGImage.html) and [`VGPaint`](/API/VectorGraphics/VGPaint.html) references, and the [`VGContext` reference](/API/VectorGraphics/VGContext.html) for `imageFromTexture` and `imageFromHandle`.
+For the image and paint methods see the generated [`VGImage`](../../API/VectorGraphics/VGImage.md) and [`VGPaint`](../../API/VectorGraphics/VGPaint.md) references, and the [`VGContext` reference](../../API/VectorGraphics/VGContext.md) for `imageFromTexture` and `imageFromHandle`.

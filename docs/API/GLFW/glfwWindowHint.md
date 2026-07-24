@@ -6,18 +6,17 @@ function glfwWindowHint(int $hint, int $value) : void
 ```
 
 This function sets hints for the next call to
-[`glfwCreateWindow`](/API/GLFW/glfwCreateWindow.html). The
+[`glfwCreateWindow`](glfwCreateWindow.md). The
 hints, once set, retain their values until changed by a call to this
-function or
-[`glfwDefaultWindowHints`](/API/GLFW/glfwDefaultWindowHints.html), or until
+function or [`glfwDefaultWindowHints`](glfwDefaultWindowHints.md), or until
 the library is terminated.
 
 Only integer value hints can be set with this function. String value hints
-are set with [`glfwWindowHintString`](/API/GLFW/glfwWindowHintString.html).
+are set with [`glfwWindowHintString`](glfwWindowHintString.md).
 
 This function does not check whether the specified hint values are valid.
 If you set hints to invalid values this will instead be reported by the next
-call to [`glfwCreateWindow`](/API/GLFW/glfwCreateWindow.html).
+call to [`glfwCreateWindow`](glfwCreateWindow.md).
 
 Some hints are platform specific. These may be set on any platform but they
 will only affect their specific platform. Other platforms will ignore them.

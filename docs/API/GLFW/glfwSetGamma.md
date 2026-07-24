@@ -6,8 +6,8 @@ function glfwSetGamma(\GLFWmonitor $monitor, float $gamma) : void
 ```
 
 This function generates an appropriately sized gamma ramp from the specified
-exponent and then calls [`glfwSetGammaRamp`](/API/GLFW/glfwSetGammaRamp.html)
-with it. The value must be
+exponent and then calls `glfwSetGammaRamp` with it.
+The value must be
 a finite number greater than zero.
 
 The software controlled gamma ramp is applied _in addition_ to the hardware

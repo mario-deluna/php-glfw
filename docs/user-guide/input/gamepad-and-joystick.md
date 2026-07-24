@@ -2,11 +2,11 @@
 
 Some games simply feel better with a controller in hand. GLFW reads gamepads and joysticks through the same window system you already use, and PHP-GLFW exposes their axes and buttons as plain PHP arrays. This page shows how to find a connected controller, read a proper gamepad, fall back to a raw joystick, and load community mappings so more controllers "just work".
 
-You do not need a window open to query controllers, but you do need GLFW initialized, which opening a window does for you. See [Creating a Window](/getting-started/window-creation.html) if you have not yet.
+You do not need a window open to query controllers, but you do need GLFW initialized, which opening a window does for you. See [Creating a Window](../../getting-started/window-creation.md) if you have not yet.
 
 ## Finding a controller
 
-Controllers are identified by a joystick id, a slot number from `GLFW_JOYSTICK_1` up to `GLFW_JOYSTICK_16`. Before reading anything, check whether a controller is plugged into a slot with [`glfwJoystickPresent`](/API/GLFW/glfwJoystickPresent.html):
+Controllers are identified by a joystick id, a slot number from `GLFW_JOYSTICK_1` up to `GLFW_JOYSTICK_16`. Before reading anything, check whether a controller is plugged into a slot with [`glfwJoystickPresent`](../../API/GLFW/glfwJoystickPresent.md):
 
 ```php
 if (glfwJoystickPresent(GLFW_JOYSTICK_1)) {
@@ -14,14 +14,14 @@ if (glfwJoystickPresent(GLFW_JOYSTICK_1)) {
 }
 ```
 
-[`glfwGetJoystickName`](/API/GLFW/glfwGetJoystickName.html) gives you a human-readable name for display. If you want to remember a specific controller across sessions, [`glfwGetJoystickGUID`](/API/GLFW/glfwGetJoystickGUID.html) returns a stable SDL-compatible identifier.
+[`glfwGetJoystickName`](../../API/GLFW/glfwGetJoystickName.md) gives you a human-readable name for display. If you want to remember a specific controller across sessions, [`glfwGetJoystickGUID`](../../API/GLFW/glfwGetJoystickGUID.md) returns a stable SDL-compatible identifier.
 
 !!! note "There is no connect/disconnect callback"
     PHP-GLFW does not expose a joystick callback, so you cannot be notified the moment a controller is plugged in or unplugged. Instead, poll `glfwJoystickPresent` for the slots you care about, once per frame or every so often, and react when the answer changes.
 
 ## Gamepads: the easy path
 
-Most modern controllers (Xbox, PlayStation, and the many that imitate them) have a standard button and stick layout. GLFW recognizes these as **gamepads** and gives them a consistent mapping, so button "A" is always in the same place no matter the brand. Check for a mapping with [`glfwJoystickIsGamepad`](/API/GLFW/glfwJoystickIsGamepad.html):
+Most modern controllers (Xbox, PlayStation, and the many that imitate them) have a standard button and stick layout. GLFW recognizes these as **gamepads** and gives them a consistent mapping, so button "A" is always in the same place no matter the brand. Check for a mapping with [`glfwJoystickIsGamepad`](../../API/GLFW/glfwJoystickIsGamepad.md):
 
 ```php
 if (glfwJoystickIsGamepad(GLFW_JOYSTICK_1)) {
@@ -29,7 +29,7 @@ if (glfwJoystickIsGamepad(GLFW_JOYSTICK_1)) {
 }
 ```
 
-Once you know it is a gamepad, read its sticks and triggers with [`glfwGetGamepadAxes`](/API/GLFW/glfwGetGamepadAxes.html) and its buttons with [`glfwGetGamepadButtons`](/API/GLFW/glfwGetGamepadButtons.html). Both return arrays indexed by GLFW's standard constants:
+Once you know it is a gamepad, read its sticks and triggers with [`glfwGetGamepadAxes`](../../API/GLFW/glfwGetGamepadAxes.md) and its buttons with [`glfwGetGamepadButtons`](../../API/GLFW/glfwGetGamepadButtons.md). Both return arrays indexed by GLFW's standard constants:
 
 ```php
 $axes = glfwGetGamepadAxes(GLFW_JOYSTICK_1);
@@ -53,7 +53,7 @@ The buttons cover the whole standard pad: the face buttons `GLFW_GAMEPAD_BUTTON_
 
 ## Raw joysticks: the fallback
 
-Flight sticks, racing wheels, and older or exotic controllers may not have a standard gamepad mapping. For those, read the raw hardware directly. [`glfwGetJoystickAxes`](/API/GLFW/glfwGetJoystickAxes.html) returns every analog axis as an array of floats, and [`glfwGetJoystickButtons`](/API/GLFW/glfwGetJoystickButtons.html) returns every button:
+Flight sticks, racing wheels, and older or exotic controllers may not have a standard gamepad mapping. For those, read the raw hardware directly. [`glfwGetJoystickAxes`](../../API/GLFW/glfwGetJoystickAxes.md) returns every analog axis as an array of floats, and [`glfwGetJoystickButtons`](../../API/GLFW/glfwGetJoystickButtons.md) returns every button:
 
 ```php
 $axes = glfwGetJoystickAxes(GLFW_JOYSTICK_1);
@@ -66,7 +66,7 @@ The trade-off is that the layout is device-specific: axis 0 might be steering on
 
 ## Teaching GLFW new controllers
 
-GLFW ships with mappings for many popular controllers, but new hardware appears all the time. The community maintains a large database of mappings (the SDL GameControllerDB), and you can feed it to GLFW so more controllers are recognized as gamepads. Load the database contents with [`glfwUpdateGamepadMappings`](/API/GLFW/glfwUpdateGamepadMappings.html):
+GLFW ships with mappings for many popular controllers, but new hardware appears all the time. The community maintains a large database of mappings (the SDL GameControllerDB), and you can feed it to GLFW so more controllers are recognized as gamepads. Load the database contents with [`glfwUpdateGamepadMappings`](../../API/GLFW/glfwUpdateGamepadMappings.md):
 
 ```php
 $db = file_get_contents(__DIR__ . '/gamecontrollerdb.txt');
@@ -77,4 +77,4 @@ Call this once at startup, before you check `glfwJoystickIsGamepad`. Any control
 
 ## Full API Reference
 
-For every controller function and the full list of button and axis constants, see the generated [GLFW function reference](/API/GLFW/), starting with [`glfwJoystickPresent`](/API/GLFW/glfwJoystickPresent.html), [`glfwGetGamepadAxes`](/API/GLFW/glfwGetGamepadAxes.html), and [`glfwGetGamepadButtons`](/API/GLFW/glfwGetGamepadButtons.html).
+For every controller function and the full list of button and axis constants, see the generated GLFW function reference, starting with [`glfwJoystickPresent`](../../API/GLFW/glfwJoystickPresent.md), [`glfwGetGamepadAxes`](../../API/GLFW/glfwGetGamepadAxes.md), and [`glfwGetGamepadButtons`](../../API/GLFW/glfwGetGamepadButtons.md).

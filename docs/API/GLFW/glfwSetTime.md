@@ -9,10 +9,9 @@ This function sets the current GLFW time, in seconds. The value must be
 a positive finite number less than or equal to 18446744073.0, which is
 approximately 584.5 years.
 
-This function and [`glfwGetTime`](/API/GLFW/glfwGetTime.html) are helper
-functions on top of @ref
-glfwGetTimerFrequency and
-[`glfwGetTimerValue`](/API/GLFW/glfwGetTimerValue.html).
+This function and [`glfwGetTime`](glfwGetTime.md) are helper functions on top
+of @ref
+glfwGetTimerFrequency and `glfwGetTimerValue`.
 
 arguments
 

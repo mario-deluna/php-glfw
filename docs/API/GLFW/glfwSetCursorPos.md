@@ -14,8 +14,7 @@ input focus when this function is called, it fails silently.
 __Do not use this function__ to implement things like camera controls. GLFW
 already provides the `GLFW_CURSOR_DISABLED` cursor mode that hides the
 cursor, transparently re-centers it and provides unconstrained cursor
-motion. See [`glfwSetInputMode`](/API/GLFW/glfwSetInputMode.html) for more
-information.
+motion. See [`glfwSetInputMode`](glfwSetInputMode.md) for more information.
 
 If the cursor mode is `GLFW_CURSOR_DISABLED` then the cursor position is
 unconstrained and limited only by the minimum and maximum values of

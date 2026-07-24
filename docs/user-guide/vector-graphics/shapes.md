@@ -132,4 +132,4 @@ $vg->fill();
 ```
 ## Full API Reference
 
-For every path and shape command, see the generated [`VGContext` class reference](/API/VectorGraphics/VGContext.html).
+For every path and shape command, see the generated [`VGContext` class reference](../../API/VectorGraphics/VGContext.md).

@@ -10593,10 +10593,10 @@ namespace {
      * should be terminated in order to free any resources allocated during or
      * after initialization.
      * 
-     * If this function fails, it calls
-     * [`glfwTerminate`](/API/GLFW/glfwTerminate.html) before returning. If it
-     * succeeds, you should call [`glfwTerminate`](/API/GLFW/glfwTerminate.html)
-     * before the application exits.
+     * If this function fails, it calls [`glfwTerminate`](glfwTerminate.md) before
+     * returning. If it
+     * succeeds, you should call [`glfwTerminate`](glfwTerminate.md) before the
+     * application exits.
      * 
      * Additional calls to this function after successful initialization but before
      * termination will return `GLFW_TRUE` immediately.
@@ -10610,14 +10610,14 @@ namespace {
      * 
      * This function destroys all remaining windows and cursors, restores any
      * modified gamma ramps and frees any other allocated resources. Once this
-     * function is called, you must again call [`glfwInit`](/API/GLFW/glfwInit.html)
+     * function is called, you must again call [`glfwInit`](glfwInit.md)
      * successfully before
      * you will be able to use most GLFW functions.
      * 
      * If GLFW has been successfully initialized, this function should be called
      * before the application exits. If initialization fails, there is no need to
-     * call this function, as it is called by [`glfwInit`](/API/GLFW/glfwInit.html)
-     * before it returns
+     * call this function, as it is called by [`glfwInit`](glfwInit.md) before it
+     * returns
      * failure.
      * 
      * This function has no effect if GLFW is not initialized.
@@ -10673,8 +10673,8 @@ namespace {
      * ES version string, queried with `glGetString`.
      * 
      * __Do not use the version string__ to parse the GLFW library version. The
-     * [`glfwGetVersion`](/API/GLFW/glfwGetVersion.html) function provides the
-     * version of the running library
+     * [`glfwGetVersion`](glfwGetVersion.md) function provides the version of the
+     * running library
      * binary in numerical format.
      * @return string The ASCII encoded GLFW version string.
      */ 
@@ -10826,8 +10826,8 @@ namespace {
      * Generates a gamma ramp and sets it for the specified monitor.
      * 
      * This function generates an appropriately sized gamma ramp from the specified
-     * exponent and then calls [`glfwSetGammaRamp`](/API/GLFW/glfwSetGammaRamp.html)
-     * with it. The value must be
+     * exponent and then calls [`glfwSetGammaRamp`](glfwSetGammaRamp.md) with it.
+     * The value must be
      * a finite number greater than zero.
      * 
      * The software controlled gamma ramp is applied _in addition_ to the hardware
@@ -10858,18 +10858,17 @@ namespace {
      * Sets the specified window hint to the desired value.
      * 
      * This function sets hints for the next call to
-     * [`glfwCreateWindow`](/API/GLFW/glfwCreateWindow.html). The
+     * [`glfwCreateWindow`](glfwCreateWindow.md). The
      * hints, once set, retain their values until changed by a call to this
-     * function or
-     * [`glfwDefaultWindowHints`](/API/GLFW/glfwDefaultWindowHints.html), or until
+     * function or [`glfwDefaultWindowHints`](glfwDefaultWindowHints.md), or until
      * the library is terminated.
      * 
      * Only integer value hints can be set with this function. String value hints
-     * are set with [`glfwWindowHintString`](/API/GLFW/glfwWindowHintString.html).
+     * are set with [`glfwWindowHintString`](glfwWindowHintString.md).
      * 
      * This function does not check whether the specified hint values are valid.
      * If you set hints to invalid values this will instead be reported by the next
-     * call to [`glfwCreateWindow`](/API/GLFW/glfwCreateWindow.html).
+     * call to [`glfwCreateWindow`](glfwCreateWindow.md).
      * 
      * Some hints are platform specific. These may be set on any platform but they
      * will only affect their specific platform. Other platforms will ignore them.
@@ -10886,18 +10885,17 @@ namespace {
      * Sets the specified window hint to the desired value.
      * 
      * This function sets hints for the next call to
-     * [`glfwCreateWindow`](/API/GLFW/glfwCreateWindow.html). The
+     * [`glfwCreateWindow`](glfwCreateWindow.md). The
      * hints, once set, retain their values until changed by a call to this
-     * function or
-     * [`glfwDefaultWindowHints`](/API/GLFW/glfwDefaultWindowHints.html), or until
+     * function or [`glfwDefaultWindowHints`](glfwDefaultWindowHints.md), or until
      * the library is terminated.
      * 
      * Only string type hints can be set with this function. Integer value hints
-     * are set with [`glfwWindowHint`](/API/GLFW/glfwWindowHint.html).
+     * are set with [`glfwWindowHint`](glfwWindowHint.md).
      * 
      * This function does not check whether the specified hint values are valid.
      * If you set hints to invalid values this will instead be reported by the next
-     * call to [`glfwCreateWindow`](/API/GLFW/glfwCreateWindow.html).
+     * call to [`glfwCreateWindow`](glfwCreateWindow.md).
      * 
      * Some hints are platform specific. These may be set on any platform but they
      * will only affect their specific platform. Other platforms will ignore them.
@@ -10927,8 +10925,8 @@ namespace {
      * `hard constraints`. This includes the size of the
      * window, especially for full screen windows. To query the actual attributes
      * of the created window, framebuffer and context, see @ref
-     * glfwGetWindowAttrib, [`glfwGetWindowSize`](/API/GLFW/glfwGetWindowSize.html)
-     * and [`glfwGetFramebufferSize`](/API/GLFW/glfwGetFramebufferSize.html).
+     * glfwGetWindowAttrib, [`glfwGetWindowSize`](glfwGetWindowSize.md) and
+     * [`glfwGetFramebufferSize`](glfwGetFramebufferSize.md).
      * 
      * To create a full screen window, you need to specify the monitor the window
      * will cover. If no monitor is specified, the window will be windowed mode.
@@ -10944,9 +10942,8 @@ namespace {
      * or _borderless full screen_ windows, see `window_windowed_full_screen`.
      * 
      * Once you have created the window, you can switch it between windowed and
-     * full screen mode with
-     * [`glfwSetWindowMonitor`](/API/GLFW/glfwSetWindowMonitor.html). This will not
-     * affect its
+     * full screen mode with [`glfwSetWindowMonitor`](glfwSetWindowMonitor.md). This
+     * will not affect its
      * OpenGL or OpenGL ES context.
      * 
      * By default, newly created windows use the placement recommended by the
@@ -11083,7 +11080,7 @@ namespace {
      * This function retrieves the size, in screen coordinates, of the content area
      * of the specified window. If you wish to retrieve the size of the
      * framebuffer of the window in pixels, see
-     * [`glfwGetFramebufferSize`](/API/GLFW/glfwGetFramebufferSize.html).
+     * [`glfwGetFramebufferSize`](glfwGetFramebufferSize.md).
      * 
      * Any or all of the size arguments may be `NULL`. If an error occurs, all
      * non-`NULL` size arguments will be set to zero.
@@ -11166,8 +11163,7 @@ namespace {
      * framebuffer remain unchanged.
      * 
      * If you wish to update the refresh rate of the desired video mode in addition
-     * to its resolution, see
-     * [`glfwSetWindowMonitor`](/API/GLFW/glfwSetWindowMonitor.html).
+     * to its resolution, see [`glfwSetWindowMonitor`](glfwSetWindowMonitor.md).
      * 
      * The window manager may put limits on what sizes are allowed. GLFW cannot
      * and should not override these limits.
@@ -11187,7 +11183,7 @@ namespace {
      * 
      * This function retrieves the size, in pixels, of the framebuffer of the
      * specified window. If you wish to retrieve the size of the window in screen
-     * coordinates, see [`glfwGetWindowSize`](/API/GLFW/glfwGetWindowSize.html).
+     * coordinates, see [`glfwGetWindowSize`](glfwGetWindowSize.md).
      * 
      * Any or all of the size arguments may be `NULL`. If an error occurs, all
      * non-`NULL` size arguments will be set to zero.
@@ -11349,7 +11345,7 @@ namespace {
      * Set the `GLFW_FOCUS_ON_SHOW` window hint
      * to change this behavior for all newly created windows, or change the
      * behavior for an existing window with
-     * [`glfwSetWindowAttrib`](/API/GLFW/glfwSetWindowAttrib.html).
+     * [`glfwSetWindowAttrib`](glfwSetWindowAttrib.md).
      * 
      * @param GLFWwindow $window The window to make visible.
      * 
@@ -11381,7 +11377,7 @@ namespace {
      * disable this behavior.
      * 
      * Also by default, windowed mode windows are focused when shown
-     * with [`glfwShowWindow`](/API/GLFW/glfwShowWindow.html). Set the
+     * with [`glfwShowWindow`](glfwShowWindow.md). Set the
      * `GLFW_FOCUS_ON_SHOW` to disable this behavior.
      * 
      * __Do not use this function__ to steal focus from other applications unless
@@ -11443,7 +11439,7 @@ namespace {
      * 
      * If you only wish to update the resolution of a full screen window or the
      * size of a windowed mode window, see
-     * [`glfwSetWindowSize`](/API/GLFW/glfwSetWindowSize.html).
+     * [`glfwSetWindowSize`](glfwSetWindowSize.md).
      * 
      * When a window transitions from full screen to windowed mode, this function
      * restores any previous window settings such as whether it is decorated,
@@ -11740,8 +11736,8 @@ namespace {
      * 
      * This function puts the calling thread to sleep until at least one event is
      * available in the event queue. Once one or more events are available,
-     * it behaves exactly like [`glfwPollEvents`](/API/GLFW/glfwPollEvents.html),
-     * i.e. the events in the queue
+     * it behaves exactly like [`glfwPollEvents`](glfwPollEvents.md), i.e. the
+     * events in the queue
      * are processed and the function then returns immediately. Processing events
      * will cause the window and input callbacks associated with those events to be
      * called.
@@ -11809,8 +11805,8 @@ namespace {
      * Posts an empty event to the event queue.
      * 
      * This function posts an empty event from the current thread to the event
-     * queue, causing [`glfwWaitEvents`](/API/GLFW/glfwWaitEvents.html) or
-     * [`glfwWaitEventsTimeout`](/API/GLFW/glfwWaitEventsTimeout.html) to return.
+     * queue, causing [`glfwWaitEvents`](glfwWaitEvents.md) or
+     * [`glfwWaitEventsTimeout`](glfwWaitEventsTimeout.md) to return.
      * @return void
      */ 
     function glfwPostEmptyEvent() : void {}
@@ -11851,8 +11847,8 @@ namespace {
      * 
      * If the mode is `GLFW_STICKY_KEYS`, the value must be either `GLFW_TRUE` to
      * enable sticky keys, or `GLFW_FALSE` to disable it. If sticky keys are
-     * enabled, a key press will ensure that
-     * [`glfwGetKey`](/API/GLFW/glfwGetKey.html) returns `GLFW_PRESS`
+     * enabled, a key press will ensure that [`glfwGetKey`](glfwGetKey.md) returns
+     * `GLFW_PRESS`
      * the next time it is called even if the key had been released before the
      * call. This is useful when you are only interested in whether keys have been
      * pressed but not when or in which order.
@@ -11860,8 +11856,8 @@ namespace {
      * If the mode is `GLFW_STICKY_MOUSE_BUTTONS`, the value must be either
      * `GLFW_TRUE` to enable sticky mouse buttons, or `GLFW_FALSE` to disable it.
      * If sticky mouse buttons are enabled, a mouse button press will ensure that
-     * [`glfwGetMouseButton`](/API/GLFW/glfwGetMouseButton.html) returns
-     * `GLFW_PRESS` the next time it is called even
+     * [`glfwGetMouseButton`](glfwGetMouseButton.md) returns `GLFW_PRESS` the next
+     * time it is called even
      * if the mouse button had been released before the call. This is useful when
      * you are only interested in whether mouse buttons have been pressed but not
      * when or in which order.
@@ -12066,8 +12062,7 @@ namespace {
      * __Do not use this function__ to implement things like camera controls. GLFW
      * already provides the `GLFW_CURSOR_DISABLED` cursor mode that hides the
      * cursor, transparently re-centers it and provides unconstrained cursor
-     * motion. See [`glfwSetInputMode`](/API/GLFW/glfwSetInputMode.html) for more
-     * information.
+     * motion. See [`glfwSetInputMode`](glfwSetInputMode.md) for more information.
      * 
      * If the cursor mode is `GLFW_CURSOR_DISABLED` then the cursor position is
      * unconstrained and limited only by the minimum and maximum values of
@@ -12087,7 +12082,7 @@ namespace {
      * Creates a cursor with a standard shape.
      * 
      * Returns a cursor with a `standard shape`, that can be set for
-     * a window with [`glfwSetCursor`](/API/GLFW/glfwSetCursor.html).
+     * a window with [`glfwSetCursor`](glfwSetCursor.md).
      * 
      * @param int $shape One of the `standard shapes`.
      * 
@@ -12365,7 +12360,7 @@ namespace {
      * 
      * If the specified joystick is not present this function will return `NULL`
      * but will not generate an error. This can be used instead of first calling
-     * [`glfwJoystickPresent`](/API/GLFW/glfwJoystickPresent.html).
+     * [`glfwJoystickPresent`](glfwJoystickPresent.md).
      * 
      * @param int $jid The `joystick` to query.
      * 
@@ -12390,7 +12385,7 @@ namespace {
      * 
      * If the specified joystick is not present this function will return `NULL`
      * but will not generate an error. This can be used instead of first calling
-     * [`glfwJoystickPresent`](/API/GLFW/glfwJoystickPresent.html).
+     * [`glfwJoystickPresent`](glfwJoystickPresent.md).
      * 
      * @param int $jid The `joystick` to query.
      * 
@@ -12409,7 +12404,7 @@ namespace {
      * 
      * If the specified joystick is not present this function will return `NULL`
      * but will not generate an error. This can be used instead of first calling
-     * [`glfwJoystickPresent`](/API/GLFW/glfwJoystickPresent.html).
+     * [`glfwJoystickPresent`](glfwJoystickPresent.md).
      * 
      * @param int $jid The `joystick` to query.
      * 
@@ -12432,7 +12427,7 @@ namespace {
      * 
      * If the specified joystick is not present this function will return `NULL`
      * but will not generate an error. This can be used instead of first calling
-     * [`glfwJoystickPresent`](/API/GLFW/glfwJoystickPresent.html).
+     * [`glfwJoystickPresent`](glfwJoystickPresent.md).
      * 
      * The GUID uses the format introduced in SDL 2.0.5. This GUID tries to
      * uniquely identify the make and model of a joystick but does not identify
@@ -12456,8 +12451,8 @@ namespace {
      * 
      * If the specified joystick is present but does not have a gamepad mapping
      * this function will return `GLFW_FALSE` but will not generate an error. Call
-     * [`glfwJoystickPresent`](/API/GLFW/glfwJoystickPresent.html) to check if a
-     * joystick is present regardless of
+     * [`glfwJoystickPresent`](glfwJoystickPresent.md) to check if a joystick is
+     * present regardless of
      * whether it has a mapping.
      * 
      * @param int $jid The `joystick` to query.
@@ -12499,8 +12494,8 @@ namespace {
      * 
      * If the specified joystick is not present or does not have a gamepad mapping
      * this function will return `NULL` but will not generate an error. Call
-     * [`glfwJoystickPresent`](/API/GLFW/glfwJoystickPresent.html) to check whether
-     * it is present regardless of
+     * [`glfwJoystickPresent`](glfwJoystickPresent.md) to check whether it is
+     * present regardless of
      * whether it has a mapping.
      * 
      * @param int $jid The `joystick` to query.
@@ -12544,14 +12539,13 @@ namespace {
      * Returns the GLFW time.
      * 
      * This function returns the current GLFW time, in seconds. Unless the time
-     * has been set using [`glfwSetTime`](/API/GLFW/glfwSetTime.html) it measures
-     * time elapsed since GLFW was
+     * has been set using [`glfwSetTime`](glfwSetTime.md) it measures time elapsed
+     * since GLFW was
      * initialized.
      * 
-     * This function and [`glfwSetTime`](/API/GLFW/glfwSetTime.html) are helper
-     * functions on top of @ref
-     * glfwGetTimerFrequency and
-     * [`glfwGetTimerValue`](/API/GLFW/glfwGetTimerValue.html).
+     * This function and [`glfwSetTime`](glfwSetTime.md) are helper functions on top
+     * of @ref
+     * glfwGetTimerFrequency and [`glfwGetTimerValue`](glfwGetTimerValue.md).
      * 
      * The resolution of the timer is system dependent, but is usually on the order
      * of a few micro- or nanoseconds. It uses the highest-resolution monotonic
@@ -12568,10 +12562,9 @@ namespace {
      * a positive finite number less than or equal to 18446744073.0, which is
      * approximately 584.5 years.
      * 
-     * This function and [`glfwGetTime`](/API/GLFW/glfwGetTime.html) are helper
-     * functions on top of @ref
-     * glfwGetTimerFrequency and
-     * [`glfwGetTimerValue`](/API/GLFW/glfwGetTimerValue.html).
+     * This function and [`glfwGetTime`](glfwGetTime.md) are helper functions on top
+     * of @ref
+     * glfwGetTimerFrequency and [`glfwGetTimerValue`](glfwGetTimerValue.md).
      * 
      * @param float $time The new value, in seconds.
      * 
@@ -12663,8 +12656,7 @@ namespace {
      * see the present mode of your swapchain instead.
      * 
      * @param int $interval The minimum number of screen updates to wait for
-     * until the buffers are swapped by
-     * [`glfwSwapBuffers`](/API/GLFW/glfwSwapBuffers.html).
+     * until the buffers are swapped by [`glfwSwapBuffers`](glfwSwapBuffers.md).
      * 
      * @return void
      */ 
@@ -12709,7 +12701,7 @@ namespace {
      * glfwGetRequiredInstanceExtensions to check whether the extensions necessary
      * for Vulkan
      * surface creation are available and
-     * [`glfwGetPhysicalDevicePresentationSupport`](/API/GLFW/glfwGetPhysicalDevicePresentationSupport.html)
+     * [`glfwGetPhysicalDevicePresentationSupport`](glfwGetPhysicalDevicePresentationSupport.md)
      * to
      * check whether a queue family of a physical device supports image
      * presentation.

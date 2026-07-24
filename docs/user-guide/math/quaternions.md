@@ -1,6 +1,6 @@
 # Quaternions
 
-Sooner or later you'll want to rotate something: spin a cube, aim a camera, tumble a model. You *could* stack up rotations around the x, y, and z axes, but that approach is famous for two headaches. The rotations interfere with each other ("gimbal lock"), and blending smoothly between two orientations is awkward. A quaternion solves both. It's the standard way to represent a rotation in 3D, and PHP-GLFW gives you the [`Quat`](/API/Math/Quat.html) class for it.
+Sooner or later you'll want to rotate something: spin a cube, aim a camera, tumble a model. You *could* stack up rotations around the x, y, and z axes, but that approach is famous for two headaches. The rotations interfere with each other ("gimbal lock"), and blending smoothly between two orientations is awkward. A quaternion solves both. It's the standard way to represent a rotation in 3D, and PHP-GLFW gives you the [`Quat`](../../API/Math/Quat.md) class for it.
 
 Don't worry if quaternions sound intimidating. You rarely need to think about the math inside. In practice you build one, rotate it, and multiply it against a vector or matrix. Let's do exactly that.
 
@@ -15,7 +15,7 @@ $rotation = new Quat();
 echo $rotation; // quat(1.0, 0.0, 0.0, 0.0)
 ```
 
-You can access its components through the `$w`, `$x`, `$y`, `$z` properties, but note the ordering: a quaternion is stored **w-first** (`w, x, y, z`), unlike [`Vec4`](/API/Math/Vec4.html), which is `x, y, z, w`. This trips people up, so it's worth stating plainly, and it's why converting from a `Vec4` deliberately reorders the components:
+You can access its components through the `$w`, `$x`, `$y`, `$z` properties, but note the ordering: a quaternion is stored **w-first** (`w, x, y, z`), unlike [`Vec4`](../../API/Math/Vec4.md), which is `x, y, z, w`. This trips people up, so it's worth stating plainly, and it's why converting from a `Vec4` deliberately reorders the components:
 
 ```php
 $q = Quat::fromVec4(new Vec4(1, 2, 3, 4)); // quat(4.0, 1.0, 2.0, 3.0)
@@ -23,7 +23,7 @@ $q = Quat::fromVec4(new Vec4(1, 2, 3, 4)); // quat(4.0, 1.0, 2.0, 3.0)
 
 ## Rotating
 
-The workhorse method is `rotate()`. It turns the quaternion by an angle (in **radians**) around an axis you give as a `Vec3`. Use [`GLM::radians()`](/API/Math/GLM.html) if you think in degrees:
+The workhorse method is `rotate()`. It turns the quaternion by an angle (in **radians**) around an axis you give as a `Vec3`. Use `GLM::radians()` if you think in degrees:
 
 ```php
 use GL\Math\{Quat, Vec3, GLM};
@@ -65,7 +65,7 @@ echo $rotated; // vec3(0.0, 0.0, -1.0)
 
 !!! warning "Mind the multiplication order"
 
-    Because quaternion multiplication is not commutative and PHP can swap `*` operands in some expressions (see the [Overview](/user-guide/math/overview.html#operators-just-work)), keep each multiplication in its own parenthesized step. When you want to be completely explicit, use the static helpers instead of the operator:
+    Because quaternion multiplication is not commutative and PHP can swap `*` operands in some expressions (see the [Overview](../../user-guide/math/overview.md#operators-just-work)), keep each multiplication in its own parenthesized step. When you want to be completely explicit, use the static helpers instead of the operator:
 
     ```php
     $combined = Quat::multiply($spin, $tilt);        // Quat * Quat
@@ -74,7 +74,7 @@ echo $rotated; // vec3(0.0, 0.0, -1.0)
 
 ## Common operations
 
-For the full list see the [`Quat` API reference](/API/Math/Quat.html); here are the ones you'll use most.
+For the full list see the [`Quat` API reference](../../API/Math/Quat.md); here are the ones you'll use most.
 
 ### Normalize
 
@@ -90,7 +90,7 @@ $copy = Quat::normalized(new Quat(1, 2, 3, 4)); // original untouched
 
 ### Converting to a matrix
 
-To use a rotation inside a full transform, convert it to a [`Mat4`](/API/Math/Mat4.html) with `mat4()`:
+To use a rotation inside a full transform, convert it to a [`Mat4`](../../API/Math/Mat4.md) with `mat4()`:
 
 ```php
 $rotation = new Quat();
@@ -123,4 +123,4 @@ If you need the rotation back as familiar pitch/yaw/roll angles (in radians), `e
 $euler = $rotation->eulerAngles();
 ```
 
-Now that you can rotate things, the next step is combining rotation with position and scale into a single transform. That's the job of [matrices](/user-guide/math/matrices.html).
+Now that you can rotate things, the next step is combining rotation with position and scale into a single transform. That's the job of [matrices](../../user-guide/math/matrices.md).

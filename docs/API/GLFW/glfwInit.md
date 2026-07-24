@@ -10,10 +10,10 @@ be used, GLFW must be initialized, and before an application terminates GLFW
 should be terminated in order to free any resources allocated during or
 after initialization.
 
-If this function fails, it calls
-[`glfwTerminate`](/API/GLFW/glfwTerminate.html) before returning. If it
-succeeds, you should call [`glfwTerminate`](/API/GLFW/glfwTerminate.html)
-before the application exits.
+If this function fails, it calls [`glfwTerminate`](glfwTerminate.md) before
+returning. If it
+succeeds, you should call [`glfwTerminate`](glfwTerminate.md) before the
+application exits.
 
 Additional calls to this function after successful initialization but before
 termination will return `GLFW_TRUE` immediately.

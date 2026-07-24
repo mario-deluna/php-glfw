@@ -1,6 +1,6 @@
 # Matrices
 
-A matrix is the single most important object in 3D graphics: it's how you move, rotate, scale, and project everything you draw. One 4x4 matrix can hold a whole transform, position, orientation, and size all at once, and multiplying matrices together lets you stack those transforms cleanly. PHP-GLFW provides the [`Mat4`](/API/Math/Mat4.html) class, a 4x4 matrix, for exactly this.
+A matrix is the single most important object in 3D graphics: it's how you move, rotate, scale, and project everything you draw. One 4x4 matrix can hold a whole transform, position, orientation, and size all at once, and multiplying matrices together lets you stack those transforms cleanly. PHP-GLFW provides the [`Mat4`](../../API/Math/Mat4.md) class, a 4x4 matrix, for exactly this.
 
 If matrices have always felt like a black box, that's fine, this page keeps things practical. You'll mostly *build* matrices with helper methods like `translate()` and `perspective()` and *combine* them with `*`, rarely touching the raw numbers.
 
@@ -31,7 +31,7 @@ echo $m[15]; // 1.0
 $m[0] = 2.0; // write an element
 ```
 
-You'll rarely poke at individual elements, but when you need a whole row or column as a vector, `row()` and `col()` return a [`Vec4`](/API/Math/Vec4.html) (with `setRow()` and `setCol()` to write them back):
+You'll rarely poke at individual elements, but when you need a whole row or column as a vector, `row()` and `col()` return a [`Vec4`](../../API/Math/Vec4.md) (with `setRow()` and `setCol()` to write them back):
 
 ```php
 $m = Mat4::fromArray([
@@ -80,7 +80,7 @@ $mat    = $model * $quat;  // Mat4, matrix combined with a rotation
 
 !!! warning "Order matters, always parenthesize"
 
-    Matrix multiplication is **not** commutative: `A * B` applies `B` first, then `A`, and swapping them gives a different result. On top of that, PHP's engine can reorder `*` operands in longer expressions (see the [Overview](/user-guide/math/overview.html#operators-just-work)). Both problems have the same fix, parenthesize each multiplication and assign intermediate results to their own variable:
+    Matrix multiplication is **not** commutative: `A * B` applies `B` first, then `A`, and swapping them gives a different result. On top of that, PHP's engine can reorder `*` operands in longer expressions (see the [Overview](../../user-guide/math/overview.md#operators-just-work)). Both problems have the same fix, parenthesize each multiplication and assign intermediate results to their own variable:
 
     ```php
     // do this
@@ -137,7 +137,7 @@ $projection->ortho(0.0, 800.0, 600.0, 0.0, -1.0, 1.0);
 
 ## Other useful operations
 
-Following the [mutating-vs-non-mutating convention](/user-guide/math/overview.html#mutating-vs-non-mutating): `inverse()` changes the matrix in place, while `Mat4::inverted()` returns a new one.
+Following the [mutating-vs-non-mutating convention](../../user-guide/math/overview.md#mutating-vs-non-mutating): `inverse()` changes the matrix in place, while `Mat4::inverted()` returns a new one.
 
 ```php
 $m = new Mat4;
@@ -147,6 +147,6 @@ $m->inverse();                // in place
 $back = Mat4::inverted($m);   // as a new matrix
 ```
 
-`transpose()` flips the matrix across its diagonal, and `determinant()` returns its determinant (a value of `0` means the matrix can't be inverted). The [`Mat4` API reference](/API/Math/Mat4.html) lists everything.
+`transpose()` flips the matrix across its diagonal, and `determinant()` returns its determinant (a value of `0` means the matrix can't be inverted). The [`Mat4` API reference](../../API/Math/Mat4.md) lists everything.
 
-With vectors, quaternions, and matrices in hand, you have all the pieces. The next page assembles them into a real, moving 3D render, so head to [Working in 3D Space](/user-guide/math/working-in-3d-space.html).
+With vectors, quaternions, and matrices in hand, you have all the pieces. The next page assembles them into a real, moving 3D render, so head to [Working in 3D Space](../../user-guide/math/working-in-3d-space.md).

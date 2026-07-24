@@ -1,6 +1,6 @@
 # Vertex Layouts
 
-When you load a model, the parser hands you a flat [`GL\Buffer\FloatBuffer`](/API/Buffer/FloatBuffer.html): one long run of floats with nothing to label them. Before you can upload it to the GPU you need to know exactly what is in there, in what order, and how many floats belong to each vertex. Rather than make you guess, [`GL\Geometry\ObjFileParser`](/API/Geometry/ObjFileParser.html) lets you spell that out with a short layout string, and it builds the buffer to match.
+When you load a model, the parser hands you a flat [`GL\Buffer\FloatBuffer`](../../API/Buffer/FloatBuffer.md): one long run of floats with nothing to label them. Before you can upload it to the GPU you need to know exactly what is in there, in what order, and how many floats belong to each vertex. Rather than make you guess, [`GL\Geometry\ObjFileParser`](../../API/Geometry/ObjFileParser.md) lets you spell that out with a short layout string, and it builds the buffer to match.
 
 Every method that returns vertex data takes this string as its first argument. Each character is one attribute, and they land in the buffer in the order you wrote them:
 
@@ -78,8 +78,8 @@ The same string works across every vertex-producing method on the OBJ parser, so
 - `getIndexedVertices($layout, $group)` returns a deduplicated buffer plus a matching index buffer.
 - `getMeshes($layout)` and `getIndexedMeshes($layout)` return the same data split per material group.
 
-The [Wavefront Object Files](/user-guide/geometry/wavefront-object-files.html) guide walks through the full loading workflow, and the [`ObjFileParser` reference](/API/Geometry/ObjFileParser.html) lists the exact signatures.
+The [Wavefront Object Files](../../user-guide/geometry/wavefront-object-files.md) guide walks through the full loading workflow, and the [`ObjFileParser` reference](../../API/Geometry/ObjFileParser.md) lists the exact signatures.
 
 ## What about MagicaVoxel?
 
-If you have used the [`VoxFileParser`](/user-guide/geometry/magicavoxel-files.html), you may expect the same string here, but the voxel mesher works a little differently. It does **not** take a layout string. Its meshing always emits position `(3)` and normal `(3)`, and you shape the color part through an `$options` array (`colors` set to `rgb`, `rgba`, or `none`, plus an optional palette index) instead of characters. Don't worry, the result is still a plain interleaved buffer, so the stride math on this page applies exactly the same way. The [MagicaVoxel Files](/user-guide/geometry/magicavoxel-files.html) guide covers those options in full.
+If you have used the [`VoxFileParser`](../../user-guide/geometry/magicavoxel-files.md), you may expect the same string here, but the voxel mesher works a little differently. It does **not** take a layout string. Its meshing always emits position `(3)` and normal `(3)`, and you shape the color part through an `$options` array (`colors` set to `rgb`, `rgba`, or `none`, plus an optional palette index) instead of characters. Don't worry, the result is still a plain interleaved buffer, so the stride math on this page applies exactly the same way. The [MagicaVoxel Files](../../user-guide/geometry/magicavoxel-files.md) guide covers those options in full.

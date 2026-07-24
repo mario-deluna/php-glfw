@@ -4,9 +4,9 @@ title: ObjFileParser / Mesh
 
 The Obj File Parser's Mesh class does not bring any new functionality to the table. It's just a container for the three objects that can make up a mesh by PHP OpenGLs definition. 
 
-- Vertices ([FloatBuffer](/API/Buffer/FloatBuffer.html)) storing the vertex data, like position, normal, texture coordinates, etc.
-- indices ([UIntBuffer](/API/Buffer/UIntBuffer.html)) storing the indices of the vertices that make up the triangles. **optional**
-- [Material](/API/Geometry/ObjFileParserMaterial.html) the material of the mesh. **optional**
+- Vertices ([FloatBuffer](../../API/Buffer/FloatBuffer.md)) storing the vertex data, like position, normal, texture coordinates, etc.
+- indices ([UIntBuffer](../../API/Buffer/UIntBuffer.md)) storing the indices of the vertices that make up the triangles. **optional**
+- [Material](../../API/Geometry/ObjFileParserMaterial.md) the material of the mesh. **optional**
 
 ```php 
 namespace GL\Geometry\ObjFileParser
@@ -31,7 +31,7 @@ public readonly ?Material $material;
 ### $vertices
 
 A float buffer containing vertex data of the mesh. The layout of the data is not fixed but rather requested by the user.
-Read more about the layout [here](/API/Geometry/ObjFileParser.html#getvertices).
+Read more about the layout [here](../../API/Geometry/ObjFileParser.md#getvertices).
 
 ```php
 /*

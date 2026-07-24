@@ -15,7 +15,7 @@ assigned to it.
 
 If the specified joystick is not present this function will return `NULL`
 but will not generate an error. This can be used instead of first calling
-[`glfwJoystickPresent`](/API/GLFW/glfwJoystickPresent.html).
+[`glfwJoystickPresent`](glfwJoystickPresent.md).
 
 The GUID uses the format introduced in SDL 2.0.5. This GUID tries to
 uniquely identify the make and model of a joystick but does not identify

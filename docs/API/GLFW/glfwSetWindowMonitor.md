@@ -18,7 +18,7 @@ is specified.
 
 If you only wish to update the resolution of a full screen window or the
 size of a windowed mode window, see
-[`glfwSetWindowSize`](/API/GLFW/glfwSetWindowSize.html).
+[`glfwSetWindowSize`](glfwSetWindowSize.md).
 
 When a window transitions from full screen to windowed mode, this function
 restores any previous window settings such as whether it is decorated,

@@ -4,8 +4,8 @@
 of juggling raw float components you get a friendly object with named colors, hex and HSL
 constructors, and handy tweaks like [`darken`](#darken), [`lighten`](#lighten) and
 [`withAlpha`](#withalpha). You hand a `VGColor` to
-[`VGContext::fillColor`](/API/VectorGraphics/VGContext.html#fillcolor) or
-[`strokeColor`](/API/VectorGraphics/VGContext.html#strokecolor) to paint your shapes.
+[`VGContext::fillColor`](../../API/VectorGraphics/VGContext.md#fillcolor) or
+[`strokeColor`](../../API/VectorGraphics/VGContext.md#strokecolor) to paint your shapes.
 
 ```php
 namespace GL\VectorGraphics
@@ -16,7 +16,7 @@ namespace GL\VectorGraphics
 
 !!! tip "Looking for a walkthrough?"
     For a gentle, example-first tour of colors (named colors, hex, HSL and adjusting lightness), see
-    the [Colors user guide](/user-guide/vector-graphics/colors.html).
+    the [Colors user guide](../../user-guide/vector-graphics/colors.md).
 
 ## Usage
 

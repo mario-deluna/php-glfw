@@ -2,7 +2,7 @@
 
 `SVGImage` holds a parsed SVG document ready to be drawn as real vector paths. You parse the file
 once (it is relatively expensive), keep the resulting `SVGImage` around, and then render it as often
-as you like with [`VGContext::drawSVG`](/API/VectorGraphics/VGContext.html#drawsvg). Because it is
+as you like with [`VGContext::drawSVG`](../../API/VectorGraphics/VGContext.md#drawsvg). Because it is
 drawn as paths rather than a bitmap, it stays crisp at any size.
 
 ```php

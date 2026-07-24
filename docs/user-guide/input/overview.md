@@ -4,11 +4,11 @@ A window that cannot hear the user is just a picture. The moment you want the pl
 
 This section is the narrative companion to the API reference. It teaches the two ways to read input, the callback idiom that ties everything together, and then splits into focused pages:
 
-- [Keyboard & Mouse](/user-guide/input/keyboard-and-mouse.html) covers keys, text input, mouse buttons, cursor position and modes, scrolling, cursors, and the clipboard.
-- [Gamepad & Joystick](/user-guide/input/gamepad-and-joystick.html) covers controllers, axes, buttons, and gamepad mappings.
-- [Window Events](/user-guide/input/window-events.html) covers resize, focus, close, file drops, and how to pump events.
+- [Keyboard & Mouse](../../user-guide/input/keyboard-and-mouse.md) covers keys, text input, mouse buttons, cursor position and modes, scrolling, cursors, and the clipboard.
+- [Gamepad & Joystick](../../user-guide/input/gamepad-and-joystick.md) covers controllers, axes, buttons, and gamepad mappings.
+- [Window Events](../../user-guide/input/window-events.md) covers resize, focus, close, file drops, and how to pump events.
 
-Every function shown here runs against a live window. If you have not opened one yet, start with [Creating a Window](/getting-started/window-creation.html). You can also run the example this whole section is built on:
+Every function shown here runs against a live window. If you have not opened one yet, start with [Creating a Window](../../getting-started/window-creation.md). You can also run the example this whole section is built on:
 
 ```bash
 php examples/08_input_and_events.php
@@ -68,7 +68,7 @@ glfwSetKeyCallback($window, function ($key, $scancode, $action, $mods) use ($win
 ```
 
 !!! tip "When do callbacks actually run?"
-    Your closures do not fire the instant the user acts. GLFW queues events and dispatches them all when you call [`glfwPollEvents`](/API/GLFW/glfwPollEvents.html) (or [`glfwWaitEvents`](/API/GLFW/glfwWaitEvents.html)), which you do once per frame. This keeps input synchronized with your render loop, so you never have a callback firing in the middle of drawing. See [Window Events](/user-guide/input/window-events.html) for the difference between polling and waiting.
+    Your closures do not fire the instant the user acts. GLFW queues events and dispatches them all when you call [`glfwPollEvents`](../../API/GLFW/glfwPollEvents.md) (or [`glfwWaitEvents`](../../API/GLFW/glfwWaitEvents.md)), which you do once per frame. This keeps input synchronized with your render loop, so you never have a callback firing in the middle of drawing. See [Window Events](../../user-guide/input/window-events.md) for the difference between polling and waiting.
 
 ## Actions and modifier keys
 
@@ -102,6 +102,6 @@ The modifier bits are `GLFW_MOD_SHIFT`, `GLFW_MOD_CONTROL`, `GLFW_MOD_ALT`, `GLF
 
 ## Where to go next
 
-- Want to read the keyboard, mouse, and scroll wheel, or grab the cursor for a 3D camera? Head to [Keyboard & Mouse](/user-guide/input/keyboard-and-mouse.html).
-- Wiring up a controller? See [Gamepad & Joystick](/user-guide/input/gamepad-and-joystick.html).
-- Need to react to resizes, focus loss, file drops, or build an event-driven app that sleeps until the user acts? See [Window Events](/user-guide/input/window-events.html).
+- Want to read the keyboard, mouse, and scroll wheel, or grab the cursor for a 3D camera? Head to [Keyboard & Mouse](../../user-guide/input/keyboard-and-mouse.md).
+- Wiring up a controller? See [Gamepad & Joystick](../../user-guide/input/gamepad-and-joystick.md).
+- Need to react to resizes, focus loss, file drops, or build an event-driven app that sleeps until the user acts? See [Window Events](../../user-guide/input/window-events.md).

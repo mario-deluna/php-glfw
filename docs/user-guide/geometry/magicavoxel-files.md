@@ -1,6 +1,6 @@
 # MagicaVoxel Files
 
-[MagicaVoxel](https://ephtracy.github.io/) is a free, wildly popular voxel editor, and its `.vox` format is one of the easiest ways to get 3D art into your project without touching a modeling pipeline. [`GL\Geometry\VoxFileParser`](/API/Geometry/VoxFileParser.html) reads those files straight into your PHP runtime: it hands you the scene's models, the way they are placed in the world, the color palette, and a one-call helper that turns a voxel grid into a triangle mesh ready for OpenGL.
+[MagicaVoxel](https://ephtracy.github.io/) is a free, wildly popular voxel editor, and its `.vox` format is one of the easiest ways to get 3D art into your project without touching a modeling pipeline. [`GL\Geometry\VoxFileParser`](../../API/Geometry/VoxFileParser.md) reads those files straight into your PHP runtime: it hands you the scene's models, the way they are placed in the world, the color palette, and a one-call helper that turns a voxel grid into a triangle mesh ready for OpenGL.
 
 This page walks you through loading a scene, understanding the difference between models and instances, generating a mesh to render, recoloring through the palette, and reading individual voxels.
 
@@ -32,10 +32,10 @@ Placed 12 instances
 
 Everything the file described is now available as plain PHP properties:
 
-- `$vox->models` is an array of [`Model`](/API/Geometry/VoxFileParserModel.html) objects, the actual voxel grids.
-- `$vox->instances` is an array of [`Instance`](/API/Geometry/VoxFileParserInstance.html) objects, each one placing a model somewhere in the scene.
-- `$vox->layers` and `$vox->groups` carry the [`Layer`](/API/Geometry/VoxFileParserLayer.html) and [`Group`](/API/Geometry/VoxFileParserGroup.html) metadata from the editor.
-- `$vox->palette` is the scene's [`Palette`](/API/Geometry/VoxFileParserPalette.html), the 256 colors every voxel refers to.
+- `$vox->models` is an array of [`Model`](../../API/Geometry/VoxFileParserModel.md) objects, the actual voxel grids.
+- `$vox->instances` is an array of `Instance` objects, each one placing a model somewhere in the scene.
+- `$vox->layers` and `$vox->groups` carry the `Layer` and `Group` metadata from the editor.
+- `$vox->palette` is the scene's [`Palette`](../../API/Geometry/VoxFileParserPalette.md), the 256 colors every voxel refers to.
 
 !!! tip
     If the file cannot be opened or is not a valid MagicaVoxel scene, the constructor throws an exception, so you can wrap the call in a `try`/`catch` when loading user-supplied files.
@@ -44,7 +44,7 @@ Everything the file described is now available as plain PHP properties:
 
 This is the one idea worth pausing on, because it is what lets a small `.vox` file describe a large scene.
 
-A **model** is a block of voxel data: a grid of a certain size where each cell holds a palette index. It has no position in the world. An **instance** is a placement: it points at a model by `modelIndex` and carries a `transform` (a [`Mat4`](/API/Math/Mat4.html)) that says where and how that model sits in the scene. One model can be reused by many instances, so a street of ten identical houses is one model and ten instances.
+A **model** is a block of voxel data: a grid of a certain size where each cell holds a palette index. It has no position in the world. An **instance** is a placement: it points at a model by `modelIndex` and carries a `transform` (a [`Mat4`](../../API/Math/Mat4.md)) that says where and how that model sits in the scene. One model can be reused by many instances, so a street of ten identical houses is one model and ten instances.
 
 That means the natural way to walk a scene is to loop over instances, resolve the model each one refers to, and use the instance transform when you draw it:
 
@@ -76,11 +76,11 @@ if ($instance->transform) {
 ```
 
 !!! hint "What about layers and groups?"
-    [`Layer`](/API/Geometry/VoxFileParserLayer.html) and [`Group`](/API/Geometry/VoxFileParserGroup.html) mirror the organizational structure from the editor: names, visibility, an optional color, and a parent group index. You are free to ignore them for straightforward rendering and reach for them only when you want to respect the artist's layer visibility or group hierarchy.
+    `Layer` and `Group` mirror the organizational structure from the editor: names, visibility, an optional color, and a parent group index. You are free to ignore them for straightforward rendering and reach for them only when you want to respect the artist's layer visibility or group hierarchy.
 
 ## Generating a Triangle Mesh
 
-A voxel grid is not something the GPU can draw directly, so the `Model` gives you [`generateTriangleMesh`](/API/Geometry/VoxFileParserModel.html#generatetrianglemesh) to turn it into vertices and indices. You hand it a [`FloatBuffer`](/API/Buffer/FloatBuffer.html) for the vertex attributes and a [`UIntBuffer`](/API/Buffer/UIntBuffer.html) for the triangle indices, and it fills them for you.
+A voxel grid is not something the GPU can draw directly, so the `Model` gives you [`generateTriangleMesh`](../../API/Geometry/VoxFileParserModel.md#generatetrianglemesh) to turn it into vertices and indices. You hand it a [`FloatBuffer`](../../API/Buffer/FloatBuffer.md) for the vertex attributes and a [`UIntBuffer`](../../API/Buffer/UIntBuffer.md) for the triangle indices, and it fills them for you.
 
 ```php
 use GL\Buffer\FloatBuffer;
@@ -100,7 +100,7 @@ The third argument is an optional palette override (pass `null` to use the scene
 | `greedy` | Merges coplanar faces of the same color into larger quads. Far fewer triangles, ideal for rendering. |
 | `polygon` | Produces polygonal surfaces for the most compact result. |
 
-By default every vertex carries **9 floats**: position `(x, y, z)`, normal `(x, y, z)`, and an RGB color `(r, g, b)` baked in from the palette. Unlike the OBJ parser, the voxel mesher does not take a layout string, you shape the output through the `$options` array below. The result is still a plain interleaved buffer, so the stride math from the [Vertex Layouts](/user-guide/geometry/vertex-layouts.html) page applies. Uploading it to OpenGL is familiar:
+By default every vertex carries **9 floats**: position `(x, y, z)`, normal `(x, y, z)`, and an RGB color `(r, g, b)` baked in from the palette. Unlike the OBJ parser, the voxel mesher does not take a layout string, you shape the output through the `$options` array below. The result is still a plain interleaved buffer, so the stride math from the [Vertex Layouts](../../user-guide/geometry/vertex-layouts.md) page applies. Uploading it to OpenGL is familiar:
 
 ```php
 $stride = 9 * GL_SIZEOF_FLOAT;
@@ -163,7 +163,7 @@ if (!$model->generateTriangleMesh($vertices, $indices) || $vertices->size() === 
 
 ## Working With the Palette
 
-Every voxel stores a palette index rather than a color, and the [`Palette`](/API/Geometry/VoxFileParserPalette.html) holds the 256 RGBA entries those indices point at. The quickest way to read a color is straight off the parser:
+Every voxel stores a palette index rather than a color, and the [`Palette`](../../API/Geometry/VoxFileParserPalette.md) holds the 256 RGBA entries those indices point at. The quickest way to read a color is straight off the parser:
 
 ```php
 $color = $vox->getPaletteColor(42); // a GL\Math\Vec4 in the 0..1 range, or null
@@ -197,7 +197,7 @@ $palette->fillDefault(); // start over from the default colors
 
 ## Reading Individual Voxels
 
-Sometimes you do not want a mesh at all, you want to know what is at a specific cell, for collision, gameplay, or building your own geometry. [`getVoxel`](/API/Geometry/VoxFileParserModel.html#getvoxel) returns the palette index stored at a coordinate, or `null` when the cell is empty or out of bounds.
+Sometimes you do not want a mesh at all, you want to know what is at a specific cell, for collision, gameplay, or building your own geometry. [`getVoxel`](../../API/Geometry/VoxFileParserModel.md#getvoxel) returns the palette index stored at a coordinate, or `null` when the cell is empty or out of bounds.
 
 ```php
 $index = $model->getVoxel(4, 0, 2);
@@ -212,7 +212,7 @@ Combined with `sizeX`, `sizeY`, and `sizeZ`, you can walk the whole grid yoursel
 
 ## Full API Reference
 
-- [`VoxFileParser`](/API/Geometry/VoxFileParser.html) class reference
-- [`VoxFileParser\Model`](/API/Geometry/VoxFileParserModel.html) class reference
-- [`VoxFileParser\Palette`](/API/Geometry/VoxFileParserPalette.html) class reference
-- [`VoxFileParser\Instance`](/API/Geometry/VoxFileParserInstance.html), [`Layer`](/API/Geometry/VoxFileParserLayer.html), and [`Group`](/API/Geometry/VoxFileParserGroup.html) containers
+- [`VoxFileParser`](../../API/Geometry/VoxFileParser.md) class reference
+- [`VoxFileParser\Model`](../../API/Geometry/VoxFileParserModel.md) class reference
+- [`VoxFileParser\Palette`](../../API/Geometry/VoxFileParserPalette.md) class reference
+- `VoxFileParser\Instance`, `Layer`, and `Group` containers

@@ -4,7 +4,7 @@ Once everything is submitted, you decide how the draws actually happen. The asse
 
 ![A draw call flows from register to submit to build command buffer to execute, with an auto-draw path and a packed command buffer path branching from submit](./../../docs-assets/php-glfw/user_guide/rendering/render_paths.jpg){ width="100%" }
 
-New to the assembler? Start with [the getting-started page](/user-guide/rendering/draw-call-assembler.html), which explains registering meshes and submitting instances, the things everything here builds on.
+New to the assembler? Start with [the getting-started page](../../user-guide/rendering/draw-call-assembler.md), which explains registering meshes and submitting instances, the things everything here builds on.
 
 ## Letting the Assembler Draw: `execute()`
 
@@ -25,7 +25,7 @@ $assembler->execute(function (int $meshHandle, int $materialId, int $instanceOff
 The callback receives everything it needs to configure the draw: the mesh handle, the material id, the offset and count within the instance buffer, and the flags. The VAO binding and the actual `glDraw...` call are handled internally. `execute()` returns the number of draw commands it issued.
 
 !!! warning
-    You **must** call `bindTransformBuffer()` (during setup) before using `execute()`. The assembler needs to know which vertex attribute locations hold the per-instance transform matrix before it can drive instanced draws. See [Sorting & Batching](/user-guide/rendering/sorting-and-batching.html) and [Per-Instance Payloads](/user-guide/rendering/payload-attributes.html).
+    You **must** call `bindTransformBuffer()` (during setup) before using `execute()`. The assembler needs to know which vertex attribute locations hold the per-instance transform matrix before it can drive instanced draws. See [Sorting & Batching](../../user-guide/rendering/sorting-and-batching.md) and [Per-Instance Payloads](../../user-guide/rendering/payload-attributes.md).
 
 ## Driving the Draws Yourself: `build()`
 
@@ -44,7 +44,7 @@ $transforms = $assembler->instanceTransformBuffer; // GL\Buffer\FloatBuffer
 $meta = $assembler->instanceMetaBuffer;            // GL\Buffer\UIntBuffer
 ```
 
-The `commandBuffer` is a flat [`UIntBuffer`](/API/Buffer/UIntBuffer.html) of packed draw commands. Each command is `commandStride` (8) `uint32` values, laid out like this:
+The `commandBuffer` is a flat [`UIntBuffer`](../../API/Buffer/UIntBuffer.md) of packed draw commands. Each command is `commandStride` (8) `uint32` values, laid out like this:
 
 | Index | Field            | Meaning                                             |
 |-------|------------------|-----------------------------------------------------|
@@ -102,4 +102,4 @@ printf(
 );
 ```
 
-A healthy scene shows a high cull percentage and a draw-call count far, far below the submitted instance count. That's [culling](/user-guide/rendering/culling-and-lod.html) and [batching](/user-guide/rendering/sorting-and-batching.html) doing their job.
+A healthy scene shows a high cull percentage and a draw-call count far, far below the submitted instance count. That's [culling](../../user-guide/rendering/culling-and-lod.md) and [batching](../../user-guide/rendering/sorting-and-batching.md) doing their job.

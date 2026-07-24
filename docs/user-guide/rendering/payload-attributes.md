@@ -1,6 +1,6 @@
 # Per-Instance Payloads
 
-[Instanced batching](/user-guide/rendering/sorting-and-batching.html) draws thousands of objects in one call, but if every object needs a different color, and color comes from a uniform, you're forced to break the batch to set that uniform. Payloads solve this. A *payload* is a block of arbitrary per-instance floats (a color, a set of skinning weights, whatever your shader wants) that travels alongside the transform as a vertex attribute. No uniforms, no broken batches.
+[Instanced batching](../../user-guide/rendering/sorting-and-batching.md) draws thousands of objects in one call, but if every object needs a different color, and color comes from a uniform, you're forced to break the batch to set that uniform. Payloads solve this. A *payload* is a block of arbitrary per-instance floats (a color, a set of skinning weights, whatever your shader wants) that travels alongside the transform as a vertex attribute. No uniforms, no broken batches.
 
 ![PHP-GLFW DrawCallAssembler payload attributes, a grid of 200 ships each drawn in its own color within a single batch](./../../docs-assets/php-glfw/user_guide/rendering/payload_colors.jpg){ width="100%" }
 
@@ -47,7 +47,7 @@ graph LR
 
 ## Filling and Binding the Payload
 
-On the PHP side you fill a [`FloatBuffer`](/API/Buffer/FloatBuffer.html) with one payload entry per instance, **in submission order**, and tell the assembler how many floats each entry has:
+On the PHP side you fill a [`FloatBuffer`](../../API/Buffer/FloatBuffer.md) with one payload entry per instance, **in submission order**, and tell the assembler how many floats each entry has:
 
 ```php
 use GL\Buffer\FloatBuffer;

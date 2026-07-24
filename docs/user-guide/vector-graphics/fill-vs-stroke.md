@@ -122,4 +122,4 @@ Again, the stroke width is always centered on the path so if you want to draw a 
 
 ## Full API Reference
 
-For the full list of fill and stroke methods and their arguments, see the generated [`VGContext` class reference](/API/VectorGraphics/VGContext.html).
+For the full list of fill and stroke methods and their arguments, see the generated [`VGContext` class reference](../../API/VectorGraphics/VGContext.md).

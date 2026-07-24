@@ -19,8 +19,8 @@ requested, as not all parameters and hints are
 `hard constraints`. This includes the size of the
 window, especially for full screen windows. To query the actual attributes
 of the created window, framebuffer and context, see @ref
-glfwGetWindowAttrib, [`glfwGetWindowSize`](/API/GLFW/glfwGetWindowSize.html)
-and [`glfwGetFramebufferSize`](/API/GLFW/glfwGetFramebufferSize.html).
+glfwGetWindowAttrib, [`glfwGetWindowSize`](glfwGetWindowSize.md) and
+[`glfwGetFramebufferSize`](glfwGetFramebufferSize.md).
 
 To create a full screen window, you need to specify the monitor the window
 will cover. If no monitor is specified, the window will be windowed mode.
@@ -36,9 +36,8 @@ screen windows, including the creation of so called _windowed full screen_
 or _borderless full screen_ windows, see `window_windowed_full_screen`.
 
 Once you have created the window, you can switch it between windowed and
-full screen mode with
-[`glfwSetWindowMonitor`](/API/GLFW/glfwSetWindowMonitor.html). This will not
-affect its
+full screen mode with [`glfwSetWindowMonitor`](glfwSetWindowMonitor.md). This
+will not affect its
 OpenGL or OpenGL ES context.
 
 By default, newly created windows use the placement recommended by the

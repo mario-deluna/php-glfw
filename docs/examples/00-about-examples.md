@@ -11,7 +11,7 @@ In this section you will find a collection of examples that demonstrate how to u
 
     ---
 
-    [![PHP CHIP-8, a chip8 emulator written in PHP](./../docs-assets/visu/games/php-chip8/php-chip8.gif)]([./opengl/10-sponza.md](https://github.com/mario-deluna/php-chip8))
+    [![PHP CHIP-8, a chip8 emulator written in PHP](./../docs-assets/visu/games/php-chip8/php-chip8.gif)](https://github.com/mario-deluna/php-chip8)
 
 -   __Flappyphant__
 
@@ -86,13 +86,13 @@ In this section you will find a collection of examples that demonstrate how to u
 
     ---
 
-    [![Example](./../../docs-assets/php-glfw/examples/vg/color_constants_thumb.png)](./vector-graphics/color_constants.md)
+    [![Example](./../docs-assets/php-glfw/examples/vg/color_constants_thumb.png)](./vector-graphics/color_constants.md)
 
 -   __Color Lightness__
 
     ---
 
-    [![Example](./../../docs-assets/php-glfw/examples/vg/color_lightness_thumb.png)](./vector-graphics/color_lightness.md)
+    [![Example](./../docs-assets/php-glfw/examples/vg/color_lightness_thumb.png)](./vector-graphics/color_lightness.md)
 
 </div>
 
@@ -104,19 +104,19 @@ In this section you will find a collection of examples that demonstrate how to u
 
     ---
 
-    [![Example](./../../docs-assets/php-glfw/examples/vg/fun_bitshifting_thumb.png)](./vector-graphics/fun_bitshifting.md)
+    [![Example](./../docs-assets/php-glfw/examples/vg/fun_bitshifting_thumb.png)](./vector-graphics/fun_bitshifting.md)
 
 -   __Plotting primes__
 
     ---
 
-    [![Example](./../../docs-assets/php-glfw/examples/vg/fun_primes_1_full_thumb.png)](./vector-graphics/fun_primes_1_full.md)
+    [![Example](./../docs-assets/php-glfw/examples/vg/fun_primes_1_full_thumb.png)](./vector-graphics/fun_primes_1_full.md)
 
 -   __Genetic Car Pathfinding__
 
     ---
 
-    [![Example](./../../docs-assets/php-glfw/examples/vg/ml_genetic_cars_thumb.png)](./vector-graphics/ml_genetic_cars.md)
+    [![Example](./../docs-assets/php-glfw/examples/vg/ml_genetic_cars_thumb.png)](./vector-graphics/ml_genetic_cars.md)
 
 </div>
 
@@ -128,19 +128,19 @@ In this section you will find a collection of examples that demonstrate how to u
 
     ---
 
-    [![Example](./../../docs-assets/php-glfw/examples/vg/gradient_linear_thumb.png)](./vector-graphics/gradient_linear.md)
+    [![Example](./../docs-assets/php-glfw/examples/vg/gradient_linear_thumb.png)](./vector-graphics/gradient_linear.md)
 
 -   __Radial Gradient__
 
     ---
 
-    [![Example](./../../docs-assets/php-glfw/examples/vg/gradient_radial_thumb.png)](./vector-graphics/gradient_radial.md)
+    [![Example](./../docs-assets/php-glfw/examples/vg/gradient_radial_thumb.png)](./vector-graphics/gradient_radial.md)
 
 -   __Gradient Wave__
 
     ---
 
-    [![Example](./../../docs-assets/php-glfw/examples/vg/gradient_wave_thumb.png)](./vector-graphics/gradient_wave.md)
+    [![Example](./../docs-assets/php-glfw/examples/vg/gradient_wave_thumb.png)](./vector-graphics/gradient_wave.md)
 
 </div>
 
@@ -152,19 +152,19 @@ In this section you will find a collection of examples that demonstrate how to u
 
     ---
 
-    [![Example](./../../docs-assets/php-glfw/examples/vg/images_filtering_thumb.png)](./vector-graphics/images_filtering.md)
+    [![Example](./../docs-assets/php-glfw/examples/vg/images_filtering_thumb.png)](./vector-graphics/images_filtering.md)
 
 -   __Image Repetition__
 
     ---
 
-    [![Example](./../../docs-assets/php-glfw/examples/vg/images_repeating_thumb.png)](./vector-graphics/images_repeating.md)
+    [![Example](./../docs-assets/php-glfw/examples/vg/images_repeating_thumb.png)](./vector-graphics/images_repeating.md)
 
 -   __Image Rotation__
 
     ---
 
-    [![Example](./../../docs-assets/php-glfw/examples/vg/images_texture_rotation_thumb.png)](./vector-graphics/images_texture_rotation.md)
+    [![Example](./../docs-assets/php-glfw/examples/vg/images_texture_rotation_thumb.png)](./vector-graphics/images_texture_rotation.md)
 
 </div>
 
@@ -176,7 +176,7 @@ In this section you will find a collection of examples that demonstrate how to u
 
     ---
 
-    [![Example](./../../docs-assets/php-glfw/examples/vg/input_joystick_thumb.png)](./vector-graphics/input_joystick.md)
+    [![Example](./../docs-assets/php-glfw/examples/vg/input_joystick_thumb.png)](./vector-graphics/input_joystick.md)
 
 </div>
 
@@ -188,13 +188,13 @@ In this section you will find a collection of examples that demonstrate how to u
 
     ---
 
-    [![Example](./../../docs-assets/php-glfw/examples/vg/noise_explorer_thumb.png)](./vector-graphics/noise_explorer.md)
+    [![Example](./../docs-assets/php-glfw/examples/vg/noise_explorer_thumb.png)](./vector-graphics/noise_explorer.md)
 
 -   __Noise Grid__
 
     ---
 
-    [![Example](./../../docs-assets/php-glfw/examples/vg/noise_grid_thumb.png)](./vector-graphics/noise_grid.md)
+    [![Example](./../docs-assets/php-glfw/examples/vg/noise_grid_thumb.png)](./vector-graphics/noise_grid.md)
 
 </div>
 
@@ -206,25 +206,25 @@ In this section you will find a collection of examples that demonstrate how to u
 
     ---
 
-    [![Example](./../../docs-assets/php-glfw/examples/vg/text_alignment_thumb.png)](./vector-graphics/text_alignment.md)
+    [![Example](./../docs-assets/php-glfw/examples/vg/text_alignment_thumb.png)](./vector-graphics/text_alignment.md)
 
 -   __Text Boxes__
 
     ---
 
-    [![Example](./../../docs-assets/php-glfw/examples/vg/text_boxes_thumb.png)](./vector-graphics/text_boxes.md)
+    [![Example](./../docs-assets/php-glfw/examples/vg/text_boxes_thumb.png)](./vector-graphics/text_boxes.md)
 
 -   __Colored Words__
 
     ---
 
-    [![Example](./../../docs-assets/php-glfw/examples/vg/text_color_words_thumb.png)](./vector-graphics/text_color_words.md)
+    [![Example](./../docs-assets/php-glfw/examples/vg/text_color_words_thumb.png)](./vector-graphics/text_color_words.md)
 
 -   __Text with Shadow__
 
     ---
 
-    [![Example](./../../docs-assets/php-glfw/examples/vg/text_intro_thumb.png)](./vector-graphics/text_intro.md)
+    [![Example](./../docs-assets/php-glfw/examples/vg/text_intro_thumb.png)](./vector-graphics/text_intro.md)
 
 </div>
 

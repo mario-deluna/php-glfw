@@ -2,7 +2,7 @@
 
 The two biggest wins for a large scene both come down to the same idea: don't spend effort on detail the viewer won't notice. *Culling* discards objects the camera can't see before they ever become a draw call. *Level of detail* (LOD) swaps in a cheaper mesh as an object shrinks into the distance. Together they're what let the assembler push millions of instances at interactive frame rates.
 
-Both features rely on the mesh bounding boxes you provide when [registering meshes](/user-guide/rendering/draw-call-assembler.html#registering-your-meshes), so make sure your `registerMesh` calls include `aabbMin` and `aabbMax`.
+Both features rely on the mesh bounding boxes you provide when [registering meshes](../../user-guide/rendering/draw-call-assembler.md#registering-your-meshes), so make sure your `registerMesh` calls include `aabbMin` and `aabbMax`.
 
 ![Objects outside the camera frustum are culled while those inside are kept and drawn at high, mid, or low detail depending on their distance](./../../docs-assets/php-glfw/user_guide/rendering/frustum_lod.jpg){ width="100%" }
 
@@ -37,7 +37,7 @@ $assembler->setCameraData($cameraPosition, $viewMatrix, $projectionMatrix);
 
 `setCameraData` does triple duty: the position drives LOD selection, and the view and projection matrices drive both sorting and frustum culling. For culling to actually remove anything, remember to register your meshes with bounding boxes, since that's what gets tested against the frustum.
 
-If you'd rather compute the six frustum planes yourself, you may set them directly as [`Vec4`](/API/Math/Vec4.html) values (each a plane equation `ax + by + cz + d = 0`):
+If you'd rather compute the six frustum planes yourself, you may set them directly as [`Vec4`](../../API/Math/Vec4.md) values (each a plane equation `ax + by + cz + d = 0`):
 
 ```php
 $assembler->setFrustumPlanes($left, $right, $bottom, $top, $near, $far);

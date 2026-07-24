@@ -6,8 +6,8 @@ function glfwPostEmptyEvent() : void
 ```
 
 This function posts an empty event from the current thread to the event
-queue, causing [`glfwWaitEvents`](/API/GLFW/glfwWaitEvents.html) or
-[`glfwWaitEventsTimeout`](/API/GLFW/glfwWaitEventsTimeout.html) to return.
+queue, causing [`glfwWaitEvents`](glfwWaitEvents.md) or
+[`glfwWaitEventsTimeout`](glfwWaitEventsTimeout.md) to return.
 
 returns
 
