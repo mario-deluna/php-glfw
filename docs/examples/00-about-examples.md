@@ -19,6 +19,12 @@ In this section you will find a collection of examples that demonstrate how to u
 
     [![Flppyphant, a 2D game written in PHP](./../docs-assets/visu/games/flappyphpant/gameplay.gif)](https://github.com/phpgl/flappyphpant)
 
+-   __NES PHP-GLFW__
+
+    ---
+
+    [![NES PHP-GLFW, a cycle accurate NES emulator written in PHP](./../docs-assets/visu/games/nes-php-glfw/screenshot.png)](https://github.com/oliverearl/nes-php-glfw)
+
 </div>
 
 ## Basic examples

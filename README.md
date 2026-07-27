@@ -51,6 +51,8 @@ _Currently supports **PHP8.x**_
   + [Game - FlappyPHPant](#flappyphpant)
   + [Emulator - PHP-CHIP8](#php-chip8)
   + [Game - PHP Towerdefense](#php-towerdense-game)
+  + [Game - php-pong](#php-pong)
+  + [Emulator - NES PHP-GLFW](#nes-php-glfw)
 - [Installation](#installation)
   + [MacOS](#macos)
   + [Linux](#linux)
@@ -210,6 +212,17 @@ Classic Pong game programmed with pure OpenGL wrapped in OOP code.
 </p>
 
 https://github.com/medilies/php-pong
+
+
+### nes-php-glfw
+
+A cycle accurate Nintendo Entertainment System emulator written entirely in PHP. It implements a 6502 CPU core with official and unofficial opcodes and a PPU rendering backgrounds and sprites, with the frames presented through PHP-GLFW. Requires PHP 8.5.
+
+<p align="center">
+   <img width="640" src="https://raw.githubusercontent.com/oliverearl/nes-php-glfw/master/.github/images/screenshot.png" alt="A NES emulator written in PHP">
+</p>
+
+https://github.com/oliverearl/nes-php-glfw
 
 ## Installation 
 
