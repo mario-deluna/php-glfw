@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+
+{% block htmltitle %}
+    {% if page.meta and page.meta.title %}
+    <title>{{ page.meta.title }} - {{ config.site_name }} | A fully-featured OpenGL and GLFW extension for PHP</title>
+    {% elif page.title and not page.is_homepage %}
+    <title>{{ page.title | striptags }} - {{ config.site_name }} | A fully-featured OpenGL and GLFW extension for PHP</title>
+    {% else %}
+    <title>{{ config.site_name }} | A fully-featured OpenGL and GLFW extension for PHP</title>
+    {% endif %}
+{% endblock %}
