@@ -28,7 +28,7 @@ esac
 
 if test "$build_mac" = "yes"; then
   AC_MSG_RESULT([building for MacOS])
-else 
+else
   AC_MSG_RESULT([building for Linux])
 fi
 
@@ -43,9 +43,9 @@ check_for_glfw3() {
 }
 
 if test "$PHP_GLFW" != "no"; then
-	
+
 	AC_MSG_CHECKING([for glfw installation])
-	
+
   if test "x$PHP_GLFW_DIR" != "xno"; then
     if test -r "$PHP_GLFW_DIR/include/GLFW/glfw3.h"; then
       GLFW_DIR=$PHP_GLFW_DIR
@@ -57,13 +57,11 @@ if test "$PHP_GLFW" != "no"; then
   fi
 
   if test "x$GLFW_DIR" = "x"; then
-    AC_MSG_RESULT([GLFW lib not found, trying to build])
-    # Build glfw
+    AC_MSG_RESULT([GLFW lib not found, building from vendor source with Vulkan support])
     cd vendor/glfw
-    # cmake . -DGLFW_BUILD_TESTS=OFF -DGLFW_BUILD_EXAMPLES=OFF -DCMAKE_INSTALL_PREFIX=./ && make install
     cmake . -DGLFW_BUILD_TESTS=OFF -DGLFW_BUILD_EXAMPLES=OFF -DGLFW_BUILD_DOCS=OFF -DBUILD_SHARED_LIBS=ON && sudo make install
     if test "$build_linux" = "yes"; then
-      sudo ldconfig 
+      sudo ldconfig
     fi
     cd ./../../
     check_for_glfw3
@@ -75,6 +73,36 @@ if test "$PHP_GLFW" != "no"; then
 
   AC_MSG_RESULT([found in $GLFW_DIR ($PHP_LIBDIR)])
 
+  dnl Check for Vulkan/MoltenVK support
+  AC_MSG_CHECKING([for Vulkan/MoltenVK support])
+  VULKAN_FOUND=no
+  if test "$build_mac" = "yes"; then
+    dnl macOS: check for MoltenVK via Homebrew
+    for vulkan_dir in /opt/homebrew /usr/local /usr; do
+      if test -r "$vulkan_dir/lib/libvulkan.dylib"; then
+        VULKAN_DIR=$vulkan_dir
+        VULKAN_FOUND=yes
+        break
+      fi
+    done
+  else
+    dnl Linux: check for libvulkan
+    for vulkan_dir in /usr /usr/local /opt; do
+      if test -r "$vulkan_dir/lib/libvulkan.so" -o -r "$vulkan_dir/lib/x86_64-linux-gnu/libvulkan.so"; then
+        VULKAN_DIR=$vulkan_dir
+        VULKAN_FOUND=yes
+        break
+      fi
+    done
+  fi
+
+  if test "$VULKAN_FOUND" = "yes"; then
+    AC_MSG_RESULT([found in $VULKAN_DIR])
+    AC_DEFINE(PHPGLFW_VULKAN_SUPPORT, 1, [Vulkan/MoltenVK support available])
+  else
+    AC_MSG_RESULT([not found — Vulkan features will be unavailable])
+  fi
+
   # GLFW lib common sources
   GLFWLIB_SRC_FILES=""
   GLFWPLATTFORMARGS=""
@@ -82,39 +110,9 @@ if test "$PHP_GLFW" != "no"; then
   if test "$build_mac" = "yes"; then
     AC_DEFINE(_GLFW_COCOA, 1, [Cocoa support])
     GLFWPLATTFORMARGS="-D_GLFW_COCOA"
-    # GLFWLIB_SRC_FILES="$GLFWLIB_SRC_FILES \
-    #   vendor/glfw/src/cocoa_init.m \
-    #   vendor/glfw/src/cocoa_joystick.m \
-    #   vendor/glfw/src/cocoa_monitor.m \
-    #   vendor/glfw/src/cocoa_window.m \
-    #   vendor/glfw/src/cocoa_time.c \
-    #   vendor/glfw/src/posix_thread.c \
-    #   vendor/glfw/src/nsgl_context.m \
-    #   vendor/glfw/src/egl_context.c \
-    #   vendor/glfw/src/osmesa_context.c"
-  else 
+  else
     AC_DEFINE(_GLFW_X11, 1, [X11 support])
     GLFWPLATTFORMARGS="-D_GLFW_X11"
-    # GLFWLIB_SRC_FILES="vendor/glfw/src/context.c \
-    #   vendor/glfw/src/init.c \
-    #   vendor/glfw/src/input.c \
-    #   vendor/glfw/src/monitor.c \
-    #   vendor/glfw/src/vulkan.c \
-    #   vendor/glfw/src/window.c"
-
-    # GLFWLIB_SRC_FILES="$GLFWLIB_SRC_FILES \
-    #   vendor/glfw/src/x11_init.c \
-    #   vendor/glfw/src/x11_monitor.c \
-    #   vendor/glfw/src/x11_window.c \x
-    #   vendor/glfw/src/xkb_unicode.c \
-    #   vendor/glfw/src/posix_time.c \
-    #   vendor/glfw/src/posix_thread.c \
-    #   vendor/glfw/src/glx_context.c \
-    #   vendor/glfw/src/egl_context.c \
-    #   vendor/glfw/src/osmesa_context.c \
-    #   vendor/glfw/src/null_joystick.c"
-    
-    # PHP_ADD_BUILD_DIR($ext_builddir/vendor/glfw/src)
   fi
 
   PHPGLFW_SRC_FILES="phpglfw.c \
@@ -138,13 +136,13 @@ if test "$PHP_GLFW" != "no"; then
   GLFWPLATTFORMARGS="-DNVG_NO_STB=1 $GLFWPLATTFORMARGS"
 
   # the generated arginfo file has unicode issues because we have classes like "\\UInt"
-  # im just going to supress those warnings for now, please don't judge me
+  # im just going to supress those warnings for now, please don't judge me
   GLFWPLATTFORMARGS="-Wno-unicode $GLFWPLATTFORMARGS"
 
   PHP_ADD_LIBRARY_WITH_PATH(glfw, [$GLFW_DIR/lib], GLFW_SHARED_LIBADD)
   AC_DEFINE(HAVE_GLFW, 1, [Whether you have glfw])
   PHP_SUBST(GLFW_SHARED_LIBADD)
-    
+
   PHP_REQUIRE_CXX()
   PHP_NEW_EXTENSION(glfw, $PHPGLFW_SRC_FILES $GLFWLIB_SRC_FILES, $ext_shared, , $GLFWPLATTFORMARGS -Wall)
 
@@ -174,7 +172,7 @@ if test "$PHP_GLFW" != "no"; then
         vendor/miniaudio/*.h \
         vendor/opengametools/src/*.h \
         vendor/glfw/include/GLFW/*.h])
-    
+
   PHP_ADD_BUILD_DIR($ext_builddir/src)
 
 fi
