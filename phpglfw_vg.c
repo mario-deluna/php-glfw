@@ -76,22 +76,22 @@ zend_class_entry *phpglfw_get_vg_vgcolor_ce() {
 
 zend_always_inline phpglfw_vgcontext_object* phpglfw_vgcontext_objectptr_from_zobj_p(zend_object* obj)
 {
-    return (phpglfw_vgcontext_object *) ((char *) (obj) - XtOffsetOf(phpglfw_vgcontext_object, std));
+    return (phpglfw_vgcontext_object *) ((char *) (obj) - offsetof(phpglfw_vgcontext_object, std));
 }
 
 zend_always_inline phpglfw_vgpaint_object* phpglfw_vgpaint_objectptr_from_zobj_p(zend_object* obj)
 {
-    return (phpglfw_vgpaint_object *) ((char *) (obj) - XtOffsetOf(phpglfw_vgpaint_object, std));
+    return (phpglfw_vgpaint_object *) ((char *) (obj) - offsetof(phpglfw_vgpaint_object, std));
 }
 
 zend_always_inline phpglfw_vgimage_object* phpglfw_vgimage_objectptr_from_zobj_p(zend_object* obj)
 {
-    return (phpglfw_vgimage_object *) ((char *) (obj) - XtOffsetOf(phpglfw_vgimage_object, std));
+    return (phpglfw_vgimage_object *) ((char *) (obj) - offsetof(phpglfw_vgimage_object, std));
 }
 
 zend_always_inline phpglfw_vgcolor_object* phpglfw_vgcolor_objectptr_from_zobj_p(zend_object* obj)
 {
-    return (phpglfw_vgcolor_object *) ((char *) (obj) - XtOffsetOf(phpglfw_vgcolor_object, std));
+    return (phpglfw_vgcolor_object *) ((char *) (obj) - offsetof(phpglfw_vgcolor_object, std));
 }
 
 static zend_object_handlers phpglfw_vgcontext_handlers;
@@ -2177,7 +2177,7 @@ void phpglfw_register_vg_module(INIT_FUNC_ARGS)
     phpglfw_vgcontext_ce->create_object = phpglfw_vgcontext_create_handler;
 
     memcpy(&phpglfw_vgcontext_handlers, zend_get_std_object_handlers(), sizeof(zend_object_handlers));
-    phpglfw_vgcontext_handlers.offset = XtOffsetOf(phpglfw_vgcontext_object, std);
+    phpglfw_vgcontext_handlers.offset = offsetof(phpglfw_vgcontext_object, std);
     phpglfw_vgcontext_handlers.free_obj = phpglfw_vgcontext_free_handler;
 
     // register the VGContext constants
@@ -2208,7 +2208,7 @@ void phpglfw_register_vg_module(INIT_FUNC_ARGS)
     phpglfw_vgcolor_ce->unserialize = phpglfw_vgcolor_unserialize_handler;
 
     memcpy(&phpglfw_vgcolor_handlers, zend_get_std_object_handlers(), sizeof(zend_object_handlers));
-    phpglfw_vgcolor_handlers.offset = XtOffsetOf(phpglfw_vgcolor_object, std);
+    phpglfw_vgcolor_handlers.offset = offsetof(phpglfw_vgcolor_object, std);
     phpglfw_vgcolor_handlers.free_obj = phpglfw_vgcolor_free_handler;
     phpglfw_vgcolor_handlers.get_debug_info = phpglfw_vgcolor_debug_info_handler;
     phpglfw_vgcolor_handlers.read_property = phpglfw_vgcolor_read_prop_handler;
@@ -2220,7 +2220,7 @@ void phpglfw_register_vg_module(INIT_FUNC_ARGS)
     phpglfw_vgimage_ce->create_object = phpglfw_vgimage_create_handler;
 
     memcpy(&phpglfw_vgimage_handlers, zend_get_std_object_handlers(), sizeof(zend_object_handlers));
-    phpglfw_vgimage_handlers.offset = XtOffsetOf(phpglfw_vgimage_object, std);
+    phpglfw_vgimage_handlers.offset = offsetof(phpglfw_vgimage_object, std);
     phpglfw_vgimage_handlers.free_obj = phpglfw_vgimage_free_handler;
 
     zend_declare_class_constant_long(phpglfw_vgimage_ce, "REPEAT_NONE", strlen("REPEAT_NONE"), PHPGLFW_VG_REPEAT_NONE);
@@ -2251,7 +2251,7 @@ void phpglfw_register_vg_module(INIT_FUNC_ARGS)
     phpglfw_vgpaint_ce->create_object = phpglfw_vgpaint_create_handler;
 
     memcpy(&phpglfw_vgpaint_handlers, zend_get_std_object_handlers(), sizeof(zend_object_handlers));
-    phpglfw_vgpaint_handlers.offset = XtOffsetOf(phpglfw_vgpaint_object, std);
+    phpglfw_vgpaint_handlers.offset = offsetof(phpglfw_vgpaint_object, std);
     phpglfw_vgpaint_handlers.free_obj = phpglfw_vgpaint_free_handler;
     phpglfw_vgpaint_handlers.get_debug_info = phpglfw_vgpaint_debug_info_handler;
 }

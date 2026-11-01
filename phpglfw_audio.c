@@ -50,12 +50,12 @@ zend_class_entry *phpglfw_get_audiosound_ce()
 
 zend_always_inline phpglfw_audioengine_object *phpglfw_audioengine_from_zobj_p(zend_object *obj)
 {
-    return (phpglfw_audioengine_object*)((char*)(obj) - XtOffsetOf(phpglfw_audioengine_object, std));
+    return (phpglfw_audioengine_object*)((char*)(obj) - offsetof(phpglfw_audioengine_object, std));
 }
 
 zend_always_inline phpglfw_audiosound_object *phpglfw_audiosound_from_zobj_p(zend_object *obj)
 {
-    return (phpglfw_audiosound_object*)((char*)(obj) - XtOffsetOf(phpglfw_audiosound_object, std));
+    return (phpglfw_audiosound_object*)((char*)(obj) - offsetof(phpglfw_audiosound_object, std));
 }
 
 static zend_object_handlers phpglfw_audioengine_object_handlers;
@@ -813,7 +813,7 @@ void phpglfw_register_audio_module(INIT_FUNC_ARGS)
     phpglfw_audioengine_ce->create_object = phpglfw_audioengine_create_object;
 
     memcpy(&phpglfw_audioengine_object_handlers, zend_get_std_object_handlers(), sizeof(zend_object_handlers));
-    phpglfw_audioengine_object_handlers.offset = XtOffsetOf(phpglfw_audioengine_object, std);
+    phpglfw_audioengine_object_handlers.offset = offsetof(phpglfw_audioengine_object, std);
     phpglfw_audioengine_object_handlers.free_obj = phpglfw_audioengine_free_handler;
 
     // sound class
@@ -821,7 +821,7 @@ void phpglfw_register_audio_module(INIT_FUNC_ARGS)
     phpglfw_audiosound_ce->create_object = phpglfw_audiosound_create_object;
 
     memcpy(&phpglfw_audiosound_object_handlers, zend_get_std_object_handlers(), sizeof(zend_object_handlers));
-    phpglfw_audiosound_object_handlers.offset = XtOffsetOf(phpglfw_audiosound_object, std);
+    phpglfw_audiosound_object_handlers.offset = offsetof(phpglfw_audiosound_object, std);
     phpglfw_audiosound_object_handlers.free_obj = phpglfw_audiosound_free_handler;
 
 }

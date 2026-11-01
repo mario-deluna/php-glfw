@@ -1,63 +1,63 @@
 name: Windows Build
-on: 
-  workflow_dispatch:  
+on:
+  workflow_dispatch:
   release:
     types: [published]
+
+permissions:
+  contents: write
+
+env:
+  # zips named php_glfw-<ref>-<php>-<ts>-<vs>-x64.zip containing a plain php_glfw.dll
+  artifact-naming-scheme: pecl
+
 jobs:
-  windows:
-    defaults:
-      run:
-        shell: cmd
-    strategy:
-      matrix:
-          version: ['8.1', '8.2', '8.3', '8.4', '8.5']
-          arch: [x64]
-          ts: [ts, nts]
-          # ts: [nts] # we are currently facing an issue on windows with the ZTS build, it crashes during the module initalisation 
-    runs-on: windows-latest
+  # php-windows-builder picks the runner and MSVC toolset matching the official
+  # PHP builds for each version (vs16 for 8.1-8.3, vs17 for 8.4/8.5, vs18 for 8.6).
+  # a DLL linked with a newer toolset than the PHP core refuses to load.
+  get-extension-matrix:
+    runs-on: ubuntu-latest
+    outputs:
+      matrix: ${{ steps.extension-matrix.outputs.matrix }}
     steps:
       - name: Checkout PHP-GLFW
-        uses: actions/checkout@v4
-        
-      - name: Setup PHP
-        id: setup-php
-        uses: php/setup-php-sdk@v0.12
+        uses: actions/checkout@v5
+
+      - name: Get the extension matrix
+        id: extension-matrix
+        uses: php/php-windows-builder/extension-matrix@v1
         with:
-          version: ${{matrix.version}}
-          arch: ${{matrix.arch}}
-          ts: ${{matrix.ts}}
-          
-      - name: Enable Developer Command Prompt
-        uses: ilammy/msvc-dev-cmd@v1
+          php-version-list: '8.1, 8.2, 8.3, 8.4, 8.5, 8.6'
+          arch-list: 'x64'
+          ts-list: 'nts, ts'
+
+  windows:
+    needs: get-extension-matrix
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix: ${{ fromJson(needs.get-extension-matrix.outputs.matrix) }}
+    steps:
+      - name: Checkout PHP-GLFW
+        uses: actions/checkout@v5
+
+      - name: Build the extension
+        uses: php/php-windows-builder/extension@v1
         with:
-          arch: ${{matrix.arch}}
-          toolset: ${{steps.setup-php.outputs.toolset}}
-          
-      - name: phpize
-        run: phpize
-        
-      - name: configure
-        run: configure --enable-glfw --with-prefix=${{steps.setup-php.outputs.prefix}}
-        
-      - name: make
-        run: nmake
-        
-      - run: ls -la
-      
-      - run: cd ${{matrix.arch}} && ls -la
-        
-      - run: cd ${{matrix.arch}}/Release && ls -la
-        if: ${{ matrix.ts == 'nts' }}
-        
-      - uses: actions/upload-artifact@v4
-        if: ${{ matrix.ts == 'ts' }}
+          php-version: ${{ matrix.php-version }}
+          arch: ${{ matrix.arch }}
+          ts: ${{ matrix.ts }}
+          # the phpunit tests need a GL context, there are no phpt tests
+          run-tests: 'false'
+          save-vs-cache: ${{ matrix.save-vs-cache }}
+
+  release:
+    needs: windows
+    if: ${{ github.event_name == 'release' }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Upload the DLLs to the release
+        uses: php/php-windows-builder/release@v1
         with:
-          name: glfw_php${{matrix.version}}_ts_${{matrix.arch}}
-          path: ${{matrix.arch}}/Release_TS/php_glfw.dll
-        
-      - uses: actions/upload-artifact@v4
-        if: ${{ matrix.ts == 'nts' }}
-        with:
-          name: glfw_php${{matrix.version}}_nts_${{matrix.arch}}
-          path: ${{matrix.arch}}/Release/php_glfw.dll
-        
+          release: ${{ github.event.release.tag_name }}
+          token: ${{ secrets.GITHUB_TOKEN }}

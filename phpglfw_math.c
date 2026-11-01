@@ -3325,7 +3325,7 @@ void phpglfw_register_math_module(INIT_FUNC_ARGS)
     phpglfw_math_vec2_handlers.read_property = phpglfw_math_vec2_read_prop_handler;
     phpglfw_math_vec2_handlers.write_property = phpglfw_math_vec2_write_prop_handler;
     phpglfw_math_vec2_handlers.do_operation = phpglfw_math_vec2_do_op_handler;
-    phpglfw_math_vec2_handlers.offset = XtOffsetOf(phpglfw_math_vec2_object, std);
+    phpglfw_math_vec2_handlers.offset = offsetof(phpglfw_math_vec2_object, std);
  
     INIT_CLASS_ENTRY(tmp_ce, "GL\\Math\\Vec3", class_GL_Math_Vec3_methods);
     phpglfw_math_vec3_ce = zend_register_internal_class(&tmp_ce);
@@ -3341,7 +3341,7 @@ void phpglfw_register_math_module(INIT_FUNC_ARGS)
     phpglfw_math_vec3_handlers.read_property = phpglfw_math_vec3_read_prop_handler;
     phpglfw_math_vec3_handlers.write_property = phpglfw_math_vec3_write_prop_handler;
     phpglfw_math_vec3_handlers.do_operation = phpglfw_math_vec3_do_op_handler;
-    phpglfw_math_vec3_handlers.offset = XtOffsetOf(phpglfw_math_vec3_object, std);
+    phpglfw_math_vec3_handlers.offset = offsetof(phpglfw_math_vec3_object, std);
  
     INIT_CLASS_ENTRY(tmp_ce, "GL\\Math\\Vec4", class_GL_Math_Vec4_methods);
     phpglfw_math_vec4_ce = zend_register_internal_class(&tmp_ce);
@@ -3357,7 +3357,7 @@ void phpglfw_register_math_module(INIT_FUNC_ARGS)
     phpglfw_math_vec4_handlers.read_property = phpglfw_math_vec4_read_prop_handler;
     phpglfw_math_vec4_handlers.write_property = phpglfw_math_vec4_write_prop_handler;
     phpglfw_math_vec4_handlers.do_operation = phpglfw_math_vec4_do_op_handler;
-    phpglfw_math_vec4_handlers.offset = XtOffsetOf(phpglfw_math_vec4_object, std);
+    phpglfw_math_vec4_handlers.offset = offsetof(phpglfw_math_vec4_object, std);
  
     INIT_CLASS_ENTRY(tmp_ce, "GL\\Math\\Quat", class_GL_Math_Quat_methods);
     phpglfw_math_quat_ce = zend_register_internal_class(&tmp_ce);
@@ -3373,7 +3373,7 @@ void phpglfw_register_math_module(INIT_FUNC_ARGS)
     phpglfw_math_quat_handlers.read_property = phpglfw_math_quat_read_prop_handler;
     phpglfw_math_quat_handlers.write_property = phpglfw_math_quat_write_prop_handler;
     phpglfw_math_quat_handlers.do_operation = phpglfw_math_quat_do_op_handler;
-    phpglfw_math_quat_handlers.offset = XtOffsetOf(phpglfw_math_quat_object, std);
+    phpglfw_math_quat_handlers.offset = offsetof(phpglfw_math_quat_object, std);
  
     INIT_CLASS_ENTRY(tmp_ce, "GL\\Math\\Mat4", class_GL_Math_Mat4_methods);
     phpglfw_math_mat4_ce = zend_register_internal_class(&tmp_ce);
@@ -3387,5 +3387,5 @@ void phpglfw_register_math_module(INIT_FUNC_ARGS)
     phpglfw_math_mat4_handlers.write_dimension = phpglfw_math_mat4_array_set_handler;
 
     phpglfw_math_mat4_handlers.do_operation = phpglfw_math_mat4_do_op_handler;
-    phpglfw_math_mat4_handlers.offset = XtOffsetOf(phpglfw_math_mat4_object, std);
+    phpglfw_math_mat4_handlers.offset = offsetof(phpglfw_math_mat4_object, std);
 }

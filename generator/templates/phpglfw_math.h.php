@@ -48,7 +48,7 @@ void phpglfw_register_math_module(INIT_FUNC_ARGS);
 <?php foreach($objects as $obj) : ?>
 zend_always_inline <?php echo $obj->getObjectName(); ?>* <?php echo $obj->objectFromZObjFunctionName(); ?>(zend_object* obj)
 {
-    return (<?php echo $obj->getObjectName(); ?> *) ((char *) (obj) - XtOffsetOf(<?php echo $obj->getObjectName(); ?>, std));
+    return (<?php echo $obj->getObjectName(); ?> *) ((char *) (obj) - offsetof(<?php echo $obj->getObjectName(); ?>, std));
 }
 
 <?php endforeach; ?>

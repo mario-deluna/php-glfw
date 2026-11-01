@@ -1811,6 +1811,6 @@ void phpglfw_register_math_module(INIT_FUNC_ARGS)
     <?php echo $obj->getHandlersVarName(); ?>.write_property = <?php echo $obj->getHandlerMethodName('write_prop'); ?>;
 <?php endif; ?>
     <?php echo $obj->getHandlersVarName(); ?>.do_operation = <?php echo $obj->getHandlerMethodName('do_op'); ?>;
-    <?php echo $obj->getHandlersVarName(); ?>.offset = XtOffsetOf(<?php echo $obj->getObjectName(); ?>, std);
+    <?php echo $obj->getHandlersVarName(); ?>.offset = offsetof(<?php echo $obj->getObjectName(); ?>, std);
 <?php endforeach; ?>
 }

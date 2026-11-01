@@ -44,7 +44,7 @@ zend_class_entry *phpglfw_get_vg_svgimage_ce() {
 
 phpglfw_svgimage_object* phpglfw_svgimage_objectptr_from_zobj_p(zend_object* obj)
 {
-    return (phpglfw_svgimage_object *) ((char *) (obj) - XtOffsetOf(phpglfw_svgimage_object, std));
+    return (phpglfw_svgimage_object *) ((char *) (obj) - offsetof(phpglfw_svgimage_object, std));
 }
 
 static zend_object_handlers phpglfw_svgimage_handlers;
@@ -195,7 +195,7 @@ void phpglfw_register_svgparser_module(INIT_FUNC_ARGS)
     phpglfw_svgimage_ce->create_object = phpglfw_svgimage_create_handler;
 
     memcpy(&phpglfw_svgimage_handlers, zend_get_std_object_handlers(), sizeof(zend_object_handlers));
-    phpglfw_svgimage_handlers.offset = XtOffsetOf(phpglfw_svgimage_object, std);
+    phpglfw_svgimage_handlers.offset = offsetof(phpglfw_svgimage_object, std);
     phpglfw_svgimage_handlers.free_obj = phpglfw_svgimage_free_handler;
     phpglfw_svgimage_handlers.get_debug_info = phpglfw_svgimage_debug_info_handler;
     phpglfw_svgimage_handlers.read_property = phpglfw_svgimage_read_prop_handler;

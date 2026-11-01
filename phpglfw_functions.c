@@ -111,7 +111,7 @@ static const zend_function_entry phpglfw_glfwwindow_class_methods[] = {
 
 static zend_always_inline phpglfw_glfwwindow_object* phpglfw_glfwwindow_objectptr_from_zobj_p(zend_object* obj)
 {
-    return (phpglfw_glfwwindow_object *) ((char *) (obj) - XtOffsetOf(phpglfw_glfwwindow_object, std));
+    return (phpglfw_glfwwindow_object *) ((char *) (obj) - offsetof(phpglfw_glfwwindow_object, std));
 }
 
 static zend_function *phpglfw_glfwwindow_class_constructor(zend_object *object)
@@ -175,7 +175,7 @@ void phpglfw_glfwwindow_object_minit_helper(void)
     phpglfw_glfwwindow_object_handlers.free_obj = phpglfw_glfwwindow_object_free;
     phpglfw_glfwwindow_object_handlers.get_constructor = phpglfw_glfwwindow_class_constructor;
     phpglfw_glfwwindow_object_handlers.compare = zend_objects_not_comparable;
-    phpglfw_glfwwindow_object_handlers.offset = XtOffsetOf(phpglfw_glfwwindow_object, std);
+    phpglfw_glfwwindow_object_handlers.offset = offsetof(phpglfw_glfwwindow_object, std);
 
 
 }
@@ -196,7 +196,7 @@ static const zend_function_entry phpglfw_glfwmonitor_class_methods[] = {
 
 static zend_always_inline phpglfw_glfwmonitor_object* phpglfw_glfwmonitor_objectptr_from_zobj_p(zend_object* obj)
 {
-    return (phpglfw_glfwmonitor_object *) ((char *) (obj) - XtOffsetOf(phpglfw_glfwmonitor_object, std));
+    return (phpglfw_glfwmonitor_object *) ((char *) (obj) - offsetof(phpglfw_glfwmonitor_object, std));
 }
 
 static zend_function *phpglfw_glfwmonitor_class_constructor(zend_object *object)
@@ -260,7 +260,7 @@ void phpglfw_glfwmonitor_object_minit_helper(void)
     phpglfw_glfwmonitor_object_handlers.free_obj = phpglfw_glfwmonitor_object_free;
     phpglfw_glfwmonitor_object_handlers.get_constructor = phpglfw_glfwmonitor_class_constructor;
     phpglfw_glfwmonitor_object_handlers.compare = zend_objects_not_comparable;
-    phpglfw_glfwmonitor_object_handlers.offset = XtOffsetOf(phpglfw_glfwmonitor_object, std);
+    phpglfw_glfwmonitor_object_handlers.offset = offsetof(phpglfw_glfwmonitor_object, std);
 
 
 }
@@ -281,7 +281,7 @@ static const zend_function_entry phpglfw_glfwcursor_class_methods[] = {
 
 static zend_always_inline phpglfw_glfwcursor_object* phpglfw_glfwcursor_objectptr_from_zobj_p(zend_object* obj)
 {
-    return (phpglfw_glfwcursor_object *) ((char *) (obj) - XtOffsetOf(phpglfw_glfwcursor_object, std));
+    return (phpglfw_glfwcursor_object *) ((char *) (obj) - offsetof(phpglfw_glfwcursor_object, std));
 }
 
 static zend_function *phpglfw_glfwcursor_class_constructor(zend_object *object)
@@ -345,7 +345,7 @@ void phpglfw_glfwcursor_object_minit_helper(void)
     phpglfw_glfwcursor_object_handlers.free_obj = phpglfw_glfwcursor_object_free;
     phpglfw_glfwcursor_object_handlers.get_constructor = phpglfw_glfwcursor_class_constructor;
     phpglfw_glfwcursor_object_handlers.compare = zend_objects_not_comparable;
-    phpglfw_glfwcursor_object_handlers.offset = XtOffsetOf(phpglfw_glfwcursor_object, std);
+    phpglfw_glfwcursor_object_handlers.offset = offsetof(phpglfw_glfwcursor_object, std);
 
 
 }
@@ -366,7 +366,7 @@ static const zend_function_entry phpglfw_glfwvidmode_class_methods[] = {
 
 static zend_always_inline phpglfw_glfwvidmode_object* phpglfw_glfwvidmode_objectptr_from_zobj_p(zend_object* obj)
 {
-    return (phpglfw_glfwvidmode_object *) ((char *) (obj) - XtOffsetOf(phpglfw_glfwvidmode_object, std));
+    return (phpglfw_glfwvidmode_object *) ((char *) (obj) - offsetof(phpglfw_glfwvidmode_object, std));
 }
 
 static zend_function *phpglfw_glfwvidmode_class_constructor(zend_object *object)
@@ -499,7 +499,7 @@ void phpglfw_glfwvidmode_object_minit_helper(void)
     phpglfw_glfwvidmode_object_handlers.free_obj = phpglfw_glfwvidmode_object_free;
     phpglfw_glfwvidmode_object_handlers.get_constructor = phpglfw_glfwvidmode_class_constructor;
     phpglfw_glfwvidmode_object_handlers.compare = zend_objects_not_comparable;
-    phpglfw_glfwvidmode_object_handlers.offset = XtOffsetOf(phpglfw_glfwvidmode_object, std);
+    phpglfw_glfwvidmode_object_handlers.offset = offsetof(phpglfw_glfwvidmode_object, std);
 
     phpglfw_glfwvidmode_object_handlers.read_property = phpglfw_glfwvidmode_object_read_property;
     phpglfw_glfwvidmode_object_handlers.get_debug_info = phpglfw_glfwvidmode_object_debug_info;

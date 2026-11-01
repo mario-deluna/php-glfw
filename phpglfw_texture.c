@@ -48,7 +48,7 @@ zend_class_entry *phpglfw_get_texture_texture2d_ce() {
 
 phpglfw_texture2d_object* phpglfw_texture2d_objectptr_from_zobj_p(zend_object* obj)
 {
-    return (phpglfw_texture2d_object *) ((char *) (obj) - XtOffsetOf(phpglfw_texture2d_object, std));
+    return (phpglfw_texture2d_object *) ((char *) (obj) - offsetof(phpglfw_texture2d_object, std));
 }
 
 static zend_object_handlers phpglfw_texture2d_handlers;
@@ -600,7 +600,7 @@ void phpglfw_register_texture_module(INIT_FUNC_ARGS)
     zend_declare_class_constant_long(phpglfw_texture2d_ce, "CHANNEL_RGBA", strlen("CHANNEL_RGBA"), 4);
 
     memcpy(&phpglfw_texture2d_handlers, zend_get_std_object_handlers(), sizeof(zend_object_handlers));
-    phpglfw_texture2d_handlers.offset = XtOffsetOf(phpglfw_texture2d_object, std);
+    phpglfw_texture2d_handlers.offset = offsetof(phpglfw_texture2d_object, std);
     phpglfw_texture2d_handlers.free_obj = phpglfw_texture2d_free_handler;
     phpglfw_texture2d_handlers.get_debug_info = phpglfw_texture2d_debug_info_handler;
 

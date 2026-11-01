@@ -57,7 +57,7 @@ zend_class_entry *<?php echo $buffer->getClassEntryNameGetter(); ?>() {
 <?php foreach($buffers as $buffer) : ?>
 <?php echo $buffer->getObjectName(); ?>* <?php echo $buffer->objectFromZObjFunctionName(); ?>(zend_object* obj)
 {
-    return (<?php echo $buffer->getObjectName(); ?> *) ((char *) (obj) - XtOffsetOf(<?php echo $buffer->getObjectName(); ?>, std));
+    return (<?php echo $buffer->getObjectName(); ?> *) ((char *) (obj) - offsetof(<?php echo $buffer->getObjectName(); ?>, std));
 }
 <?php endforeach; ?>
 
@@ -754,7 +754,7 @@ void phpglfw_register_buffer_module(INIT_FUNC_ARGS)
 
 	zend_class_implements(<?php echo $buffer->getClassEntryName(); ?>, 1, phpglfw_buffer_interface_ce);
     memcpy(&<?php echo $buffer->getHandlersVarName(); ?>, zend_get_std_object_handlers(), sizeof(zend_object_handlers));
-    <?php echo $buffer->getHandlersVarName(); ?>.offset = XtOffsetOf(<?php echo $buffer->getObjectName(); ?>, std);
+    <?php echo $buffer->getHandlersVarName(); ?>.offset = offsetof(<?php echo $buffer->getObjectName(); ?>, std);
     
     <?php echo $buffer->getHandlersVarName(); ?>.free_obj = <?php echo $buffer->getHandlerMethodName('free'); ?>;
     <?php echo $buffer->getHandlersVarName(); ?>.read_dimension = <?php echo $buffer->getHandlerMethodName('array_get'); ?>;

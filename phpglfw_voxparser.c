@@ -1313,32 +1313,32 @@ PHP_METHOD(GL_Geometry_VoxFileParser_Group, __construct)
 
 phpglfw_voxparser_resource_object* phpglfw_voxparser_res_objectptr_from_zobj_p(zend_object* obj)
 {
-    return (phpglfw_voxparser_resource_object*)((char*)(obj) - XtOffsetOf(phpglfw_voxparser_resource_object, std));
+    return (phpglfw_voxparser_resource_object*)((char*)(obj) - offsetof(phpglfw_voxparser_resource_object, std));
 }
 
 phpglfw_voxparser_model_object* phpglfw_voxparser_model_objectptr_from_zobj_p(zend_object* obj)
 {
-    return (phpglfw_voxparser_model_object*)((char*)(obj) - XtOffsetOf(phpglfw_voxparser_model_object, std));
+    return (phpglfw_voxparser_model_object*)((char*)(obj) - offsetof(phpglfw_voxparser_model_object, std));
 }
 
 phpglfw_voxparser_instance_object* phpglfw_voxparser_instance_objectptr_from_zobj_p(zend_object* obj)
 {
-    return (phpglfw_voxparser_instance_object*)((char*)(obj) - XtOffsetOf(phpglfw_voxparser_instance_object, std));
+    return (phpglfw_voxparser_instance_object*)((char*)(obj) - offsetof(phpglfw_voxparser_instance_object, std));
 }
 
 phpglfw_voxparser_layer_object* phpglfw_voxparser_layer_objectptr_from_zobj_p(zend_object* obj)
 {
-    return (phpglfw_voxparser_layer_object*)((char*)(obj) - XtOffsetOf(phpglfw_voxparser_layer_object, std));
+    return (phpglfw_voxparser_layer_object*)((char*)(obj) - offsetof(phpglfw_voxparser_layer_object, std));
 }
 
 phpglfw_voxparser_group_object* phpglfw_voxparser_group_objectptr_from_zobj_p(zend_object* obj)
 {
-    return (phpglfw_voxparser_group_object*)((char*)(obj) - XtOffsetOf(phpglfw_voxparser_group_object, std));
+    return (phpglfw_voxparser_group_object*)((char*)(obj) - offsetof(phpglfw_voxparser_group_object, std));
 }
 
 phpglfw_voxparser_palette_object* phpglfw_voxparser_palette_objectptr_from_zobj_p(zend_object* obj)
 {
-    return (phpglfw_voxparser_palette_object*)((char*)(obj) - XtOffsetOf(phpglfw_voxparser_palette_object, std));
+    return (phpglfw_voxparser_palette_object*)((char*)(obj) - offsetof(phpglfw_voxparser_palette_object, std));
 }
 
 void phpglfw_voxparser_transform_to_mat4(zval *mat4_zval, const ogt_vox_transform_c *transform)
@@ -1418,7 +1418,7 @@ void phpglfw_register_voxparser_module(INIT_FUNC_ARGS)
 
     memcpy(&phpglfw_voxparser_res_handlers, zend_get_std_object_handlers(), sizeof(phpglfw_voxparser_res_handlers));
 
-    phpglfw_voxparser_res_handlers.offset = XtOffsetOf(phpglfw_voxparser_resource_object, std);
+    phpglfw_voxparser_res_handlers.offset = offsetof(phpglfw_voxparser_resource_object, std);
     phpglfw_voxparser_res_handlers.free_obj = phpglfw_geometry_voxparser_res_free_handler;
 
     // Vox File Parser
@@ -1430,7 +1430,7 @@ void phpglfw_register_voxparser_module(INIT_FUNC_ARGS)
     phpglfw_voxparser_palette_ce->create_object = phpglfw_voxparser_palette_create_handler;
 
     memcpy(&phpglfw_voxparser_palette_handlers, zend_get_std_object_handlers(), sizeof(phpglfw_voxparser_palette_handlers));
-    phpglfw_voxparser_palette_handlers.offset = XtOffsetOf(phpglfw_voxparser_palette_object, std);
+    phpglfw_voxparser_palette_handlers.offset = offsetof(phpglfw_voxparser_palette_object, std);
     phpglfw_voxparser_palette_handlers.free_obj = phpglfw_voxparser_palette_free_handler;
 
     // Vox File Parser Model
@@ -1439,7 +1439,7 @@ void phpglfw_register_voxparser_module(INIT_FUNC_ARGS)
     phpglfw_voxparser_model_ce->create_object = phpglfw_voxparser_model_create_handler;
 
     memcpy(&phpglfw_voxparser_model_handlers, zend_get_std_object_handlers(), sizeof(phpglfw_voxparser_model_handlers));
-    phpglfw_voxparser_model_handlers.offset = XtOffsetOf(phpglfw_voxparser_model_object, std);
+    phpglfw_voxparser_model_handlers.offset = offsetof(phpglfw_voxparser_model_object, std);
     phpglfw_voxparser_model_handlers.free_obj = phpglfw_voxparser_model_free_handler;
 
     // Vox File Parser Instance
@@ -1448,7 +1448,7 @@ void phpglfw_register_voxparser_module(INIT_FUNC_ARGS)
     phpglfw_voxparser_instance_ce->create_object = phpglfw_voxparser_instance_create_handler;
 
     memcpy(&phpglfw_voxparser_instance_handlers, zend_get_std_object_handlers(), sizeof(phpglfw_voxparser_instance_handlers));
-    phpglfw_voxparser_instance_handlers.offset = XtOffsetOf(phpglfw_voxparser_instance_object, std);
+    phpglfw_voxparser_instance_handlers.offset = offsetof(phpglfw_voxparser_instance_object, std);
     phpglfw_voxparser_instance_handlers.free_obj = phpglfw_voxparser_instance_free_handler;
 
     // Vox File Parser Layer
@@ -1457,7 +1457,7 @@ void phpglfw_register_voxparser_module(INIT_FUNC_ARGS)
     phpglfw_voxparser_layer_ce->create_object = phpglfw_voxparser_layer_create_handler;
 
     memcpy(&phpglfw_voxparser_layer_handlers, zend_get_std_object_handlers(), sizeof(phpglfw_voxparser_layer_handlers));
-    phpglfw_voxparser_layer_handlers.offset = XtOffsetOf(phpglfw_voxparser_layer_object, std);
+    phpglfw_voxparser_layer_handlers.offset = offsetof(phpglfw_voxparser_layer_object, std);
     phpglfw_voxparser_layer_handlers.free_obj = phpglfw_voxparser_layer_free_handler;
 
     // Vox File Parser Group
@@ -1466,7 +1466,7 @@ void phpglfw_register_voxparser_module(INIT_FUNC_ARGS)
     phpglfw_voxparser_group_ce->create_object = phpglfw_voxparser_group_create_handler;
 
     memcpy(&phpglfw_voxparser_group_handlers, zend_get_std_object_handlers(), sizeof(phpglfw_voxparser_group_handlers));
-    phpglfw_voxparser_group_handlers.offset = XtOffsetOf(phpglfw_voxparser_group_object, std);
+    phpglfw_voxparser_group_handlers.offset = offsetof(phpglfw_voxparser_group_object, std);
     phpglfw_voxparser_group_handlers.free_obj = phpglfw_voxparser_group_free_handler;
 }
 

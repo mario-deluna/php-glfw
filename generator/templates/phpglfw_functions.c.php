@@ -82,7 +82,7 @@ static const zend_function_entry <?php echo $ipo->getClassMethodEntriesVar(); ?>
 
 static zend_always_inline <?php echo $ipo->getObjectStructName(); ?>* <?php echo $ipo->getObjectStructPtrFromZObjPtrFunctionName(); ?>(zend_object* obj)
 {
-    return (<?php echo $ipo->getObjectStructName(); ?> *) ((char *) (obj) - XtOffsetOf(<?php echo $ipo->getObjectStructName(); ?>, std));
+    return (<?php echo $ipo->getObjectStructName(); ?> *) ((char *) (obj) - offsetof(<?php echo $ipo->getObjectStructName(); ?>, std));
 }
 
 static zend_function *<?php echo $ipo->getClassConstructorFunctionName(); ?>(zend_object *object)
@@ -210,7 +210,7 @@ void <?php echo $ipo->getObjectMinitHelperFunctionName(); ?>(void)
     <?php echo $ipo->getObjectHandlersVar(); ?>.free_obj = <?php echo $ipo->getObjectFreeFunctionName(); ?>;
     <?php echo $ipo->getObjectHandlersVar(); ?>.get_constructor = <?php echo $ipo->getClassConstructorFunctionName(); ?>;
     <?php echo $ipo->getObjectHandlersVar(); ?>.compare = zend_objects_not_comparable;
-    <?php echo $ipo->getObjectHandlersVar(); ?>.offset = XtOffsetOf(<?php echo $ipo->getObjectStructName(); ?>, std);
+    <?php echo $ipo->getObjectHandlersVar(); ?>.offset = offsetof(<?php echo $ipo->getObjectStructName(); ?>, std);
 
 <?php if ($ipo->structAccessMembers) : ?>
     <?php echo $ipo->getObjectHandlersVar(); ?>.read_property = <?php echo $ipo->getObjectReadPropertyFunctionName(); ?>;

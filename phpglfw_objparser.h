@@ -71,22 +71,22 @@ phpglfw_objparser_resource_object* phpglfw_objparser_res_objectptr_from_zobj_p(z
 
 // zend_always_inline phpglfw_objparser_object* phpglfw_objparser_objectptr_from_zobj_p(zend_object* obj)
 // {
-//     return (phpglfw_objparser_object *) ((char *) (obj) - XtOffsetOf(phpglfw_objparser_object, std));
+//     return (phpglfw_objparser_object *) ((char *) (obj) - offsetof(phpglfw_objparser_object, std));
 // }
 
 // zend_always_inline phpglfw_objparser_material_object* phpglfw_objparser_material_objectptr_from_zobj_p(zend_object* obj)
 // {
-//     return (phpglfw_objparser_material_object *) ((char *) (obj) - XtOffsetOf(phpglfw_objparser_material_object, std));
+//     return (phpglfw_objparser_material_object *) ((char *) (obj) - offsetof(phpglfw_objparser_material_object, std));
 // }
 
 // zend_always_inline phpglfw_objparser_group_object* phpglfw_objparser_group_objectptr_from_zobj_p(zend_object* obj)
 // {
-//     return (phpglfw_objparser_group_object *) ((char *) (obj) - XtOffsetOf(phpglfw_objparser_group_object, std));
+//     return (phpglfw_objparser_group_object *) ((char *) (obj) - offsetof(phpglfw_objparser_group_object, std));
 // }
 
 // zend_always_inline phpglfw_objparser_texture_object* phpglfw_objparser_texture_objectptr_from_zobj_p(zend_object* obj)
 // {
-//     return (phpglfw_objparser_texture_object *) ((char *) (obj) - XtOffsetOf(phpglfw_objparser_texture_object, std));
+//     return (phpglfw_objparser_texture_object *) ((char *) (obj) - offsetof(phpglfw_objparser_texture_object, std));
 // }
 
 void phpglfw_register_objparser_module(INIT_FUNC_ARGS);

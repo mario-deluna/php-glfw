@@ -40,7 +40,7 @@ zend_class_entry *phpglfw_get_drawcall_assembler_ce()
 
 phpglfw_drawcall_assembler_object *phpglfw_drawcall_assembler_objectptr_from_zobj_p(zend_object *obj)
 {
-    return (phpglfw_drawcall_assembler_object *)((char *)(obj)-XtOffsetOf(phpglfw_drawcall_assembler_object, std));
+    return (phpglfw_drawcall_assembler_object *)((char *)(obj)-offsetof(phpglfw_drawcall_assembler_object, std));
 }
 
 static zend_object_handlers phpglfw_drawcall_assembler_object_handlers;
@@ -2329,6 +2329,6 @@ void phpglfw_register_drawcall_assembler_module(INIT_FUNC_ARGS)
 
     // setup object handlers
     memcpy(&phpglfw_drawcall_assembler_object_handlers, zend_get_std_object_handlers(), sizeof(zend_object_handlers));
-    phpglfw_drawcall_assembler_object_handlers.offset = XtOffsetOf(phpglfw_drawcall_assembler_object, std);
+    phpglfw_drawcall_assembler_object_handlers.offset = offsetof(phpglfw_drawcall_assembler_object, std);
     phpglfw_drawcall_assembler_object_handlers.free_obj = phpglfw_drawcall_assembler_free_handler;
 }

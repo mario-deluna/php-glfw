@@ -24,8 +24,16 @@ If you haven't already done so, check out the [Installing PHP natively on Window
 For Windows, we provide a prebuilt `DLL` which you can simply download and place into your PHP extension folder.
 
  1. See the releases page for the latest `DLL` downloads: [PHP-GLFW Releases](https://github.com/mario-deluna/php-glfw/releases)
- 2. Download the matching `DLL` for your local PHP installation. (If you are following this guide `ts_x64`)
- 3. Move and rename the downloaded `dll` to your PHP's `ext` folder. Usually `C:\php\ext\php_glfw.dll`. 
+ 2. Download the zip that matches your local PHP installation. The file names look like this:
+    ```
+    php_glfw-<release>-8.5-ts-vs17-x64.zip
+                       │   │  │    └ architecture
+                       │   │  └ Visual Studio version PHP was built with
+                       │   └ thread safety: "ts" or "nts"
+                       └ PHP version
+    ```
+    Run `php -v` to find the values for your PHP. It tells you the version, `ZTS` (thread safe, pick `ts`) or `NTS` (pick `nts`), and the Visual C++ version. If you are following this guide, you want the `ts` build for your PHP version.
+ 3. Extract `php_glfw.dll` from the zip into your PHP's `ext` folder. Usually that's `C:\php\ext\php_glfw.dll`.
  4. Enable the extension in your `php.ini` (usually at `C:\php\php.ini`)
     ```ini
     extension=glfw
@@ -34,6 +42,10 @@ For Windows, we provide a prebuilt `DLL` which you can simply download and place
 !!! success ""
     
     **That's it**, You can check if the extension is loaded properly with `php -m`.
+
+!!! tip "Seeing \"Can't load module ... as it's linked with 14.xx, but the core is linked with 14.yy\"?"
+
+    This means the `DLL` was built for a different PHP than the one you are running. Double check that the PHP version and the `ts`/`nts` part of the zip name match the output of `php -v`. If you are on an older PHP-GLFW release, grab the latest one: releases before 2.4.1 shipped PHP 8.4 and 8.5 builds that were linked with a too new compiler.
 
 ---
 

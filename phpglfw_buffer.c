@@ -84,39 +84,39 @@ zend_class_entry *phpglfw_get_buffer_glubyte_ce() {
 
 phpglfw_buffer_glfloat_object* phpglfw_buffer_glfloat_objectptr_from_zobj_p(zend_object* obj)
 {
-    return (phpglfw_buffer_glfloat_object *) ((char *) (obj) - XtOffsetOf(phpglfw_buffer_glfloat_object, std));
+    return (phpglfw_buffer_glfloat_object *) ((char *) (obj) - offsetof(phpglfw_buffer_glfloat_object, std));
 }
 phpglfw_buffer_glhalf_object* phpglfw_buffer_glhalf_objectptr_from_zobj_p(zend_object* obj)
 {
-    return (phpglfw_buffer_glhalf_object *) ((char *) (obj) - XtOffsetOf(phpglfw_buffer_glhalf_object, std));
+    return (phpglfw_buffer_glhalf_object *) ((char *) (obj) - offsetof(phpglfw_buffer_glhalf_object, std));
 }
 phpglfw_buffer_gldouble_object* phpglfw_buffer_gldouble_objectptr_from_zobj_p(zend_object* obj)
 {
-    return (phpglfw_buffer_gldouble_object *) ((char *) (obj) - XtOffsetOf(phpglfw_buffer_gldouble_object, std));
+    return (phpglfw_buffer_gldouble_object *) ((char *) (obj) - offsetof(phpglfw_buffer_gldouble_object, std));
 }
 phpglfw_buffer_glint_object* phpglfw_buffer_glint_objectptr_from_zobj_p(zend_object* obj)
 {
-    return (phpglfw_buffer_glint_object *) ((char *) (obj) - XtOffsetOf(phpglfw_buffer_glint_object, std));
+    return (phpglfw_buffer_glint_object *) ((char *) (obj) - offsetof(phpglfw_buffer_glint_object, std));
 }
 phpglfw_buffer_gluint_object* phpglfw_buffer_gluint_objectptr_from_zobj_p(zend_object* obj)
 {
-    return (phpglfw_buffer_gluint_object *) ((char *) (obj) - XtOffsetOf(phpglfw_buffer_gluint_object, std));
+    return (phpglfw_buffer_gluint_object *) ((char *) (obj) - offsetof(phpglfw_buffer_gluint_object, std));
 }
 phpglfw_buffer_glshort_object* phpglfw_buffer_glshort_objectptr_from_zobj_p(zend_object* obj)
 {
-    return (phpglfw_buffer_glshort_object *) ((char *) (obj) - XtOffsetOf(phpglfw_buffer_glshort_object, std));
+    return (phpglfw_buffer_glshort_object *) ((char *) (obj) - offsetof(phpglfw_buffer_glshort_object, std));
 }
 phpglfw_buffer_glushort_object* phpglfw_buffer_glushort_objectptr_from_zobj_p(zend_object* obj)
 {
-    return (phpglfw_buffer_glushort_object *) ((char *) (obj) - XtOffsetOf(phpglfw_buffer_glushort_object, std));
+    return (phpglfw_buffer_glushort_object *) ((char *) (obj) - offsetof(phpglfw_buffer_glushort_object, std));
 }
 phpglfw_buffer_glbyte_object* phpglfw_buffer_glbyte_objectptr_from_zobj_p(zend_object* obj)
 {
-    return (phpglfw_buffer_glbyte_object *) ((char *) (obj) - XtOffsetOf(phpglfw_buffer_glbyte_object, std));
+    return (phpglfw_buffer_glbyte_object *) ((char *) (obj) - offsetof(phpglfw_buffer_glbyte_object, std));
 }
 phpglfw_buffer_glubyte_object* phpglfw_buffer_glubyte_objectptr_from_zobj_p(zend_object* obj)
 {
-    return (phpglfw_buffer_glubyte_object *) ((char *) (obj) - XtOffsetOf(phpglfw_buffer_glubyte_object, std));
+    return (phpglfw_buffer_glubyte_object *) ((char *) (obj) - offsetof(phpglfw_buffer_glubyte_object, std));
 }
 
 /**
@@ -4938,7 +4938,7 @@ void phpglfw_register_buffer_module(INIT_FUNC_ARGS)
 
 	zend_class_implements(phpglfw_buffer_glfloat_ce, 1, phpglfw_buffer_interface_ce);
     memcpy(&phpglfw_buffer_glfloat_handlers, zend_get_std_object_handlers(), sizeof(zend_object_handlers));
-    phpglfw_buffer_glfloat_handlers.offset = XtOffsetOf(phpglfw_buffer_glfloat_object, std);
+    phpglfw_buffer_glfloat_handlers.offset = offsetof(phpglfw_buffer_glfloat_object, std);
     
     phpglfw_buffer_glfloat_handlers.free_obj = phpglfw_buffer_glfloat_free_handler;
     phpglfw_buffer_glfloat_handlers.read_dimension = phpglfw_buffer_glfloat_array_get_handler;
@@ -4955,7 +4955,7 @@ void phpglfw_register_buffer_module(INIT_FUNC_ARGS)
 
 	zend_class_implements(phpglfw_buffer_glhalf_ce, 1, phpglfw_buffer_interface_ce);
     memcpy(&phpglfw_buffer_glhalf_handlers, zend_get_std_object_handlers(), sizeof(zend_object_handlers));
-    phpglfw_buffer_glhalf_handlers.offset = XtOffsetOf(phpglfw_buffer_glhalf_object, std);
+    phpglfw_buffer_glhalf_handlers.offset = offsetof(phpglfw_buffer_glhalf_object, std);
     
     phpglfw_buffer_glhalf_handlers.free_obj = phpglfw_buffer_glhalf_free_handler;
     phpglfw_buffer_glhalf_handlers.read_dimension = phpglfw_buffer_glhalf_array_get_handler;
@@ -4972,7 +4972,7 @@ void phpglfw_register_buffer_module(INIT_FUNC_ARGS)
 
 	zend_class_implements(phpglfw_buffer_gldouble_ce, 1, phpglfw_buffer_interface_ce);
     memcpy(&phpglfw_buffer_gldouble_handlers, zend_get_std_object_handlers(), sizeof(zend_object_handlers));
-    phpglfw_buffer_gldouble_handlers.offset = XtOffsetOf(phpglfw_buffer_gldouble_object, std);
+    phpglfw_buffer_gldouble_handlers.offset = offsetof(phpglfw_buffer_gldouble_object, std);
     
     phpglfw_buffer_gldouble_handlers.free_obj = phpglfw_buffer_gldouble_free_handler;
     phpglfw_buffer_gldouble_handlers.read_dimension = phpglfw_buffer_gldouble_array_get_handler;
@@ -4989,7 +4989,7 @@ void phpglfw_register_buffer_module(INIT_FUNC_ARGS)
 
 	zend_class_implements(phpglfw_buffer_glint_ce, 1, phpglfw_buffer_interface_ce);
     memcpy(&phpglfw_buffer_glint_handlers, zend_get_std_object_handlers(), sizeof(zend_object_handlers));
-    phpglfw_buffer_glint_handlers.offset = XtOffsetOf(phpglfw_buffer_glint_object, std);
+    phpglfw_buffer_glint_handlers.offset = offsetof(phpglfw_buffer_glint_object, std);
     
     phpglfw_buffer_glint_handlers.free_obj = phpglfw_buffer_glint_free_handler;
     phpglfw_buffer_glint_handlers.read_dimension = phpglfw_buffer_glint_array_get_handler;
@@ -5006,7 +5006,7 @@ void phpglfw_register_buffer_module(INIT_FUNC_ARGS)
 
 	zend_class_implements(phpglfw_buffer_gluint_ce, 1, phpglfw_buffer_interface_ce);
     memcpy(&phpglfw_buffer_gluint_handlers, zend_get_std_object_handlers(), sizeof(zend_object_handlers));
-    phpglfw_buffer_gluint_handlers.offset = XtOffsetOf(phpglfw_buffer_gluint_object, std);
+    phpglfw_buffer_gluint_handlers.offset = offsetof(phpglfw_buffer_gluint_object, std);
     
     phpglfw_buffer_gluint_handlers.free_obj = phpglfw_buffer_gluint_free_handler;
     phpglfw_buffer_gluint_handlers.read_dimension = phpglfw_buffer_gluint_array_get_handler;
@@ -5023,7 +5023,7 @@ void phpglfw_register_buffer_module(INIT_FUNC_ARGS)
 
 	zend_class_implements(phpglfw_buffer_glshort_ce, 1, phpglfw_buffer_interface_ce);
     memcpy(&phpglfw_buffer_glshort_handlers, zend_get_std_object_handlers(), sizeof(zend_object_handlers));
-    phpglfw_buffer_glshort_handlers.offset = XtOffsetOf(phpglfw_buffer_glshort_object, std);
+    phpglfw_buffer_glshort_handlers.offset = offsetof(phpglfw_buffer_glshort_object, std);
     
     phpglfw_buffer_glshort_handlers.free_obj = phpglfw_buffer_glshort_free_handler;
     phpglfw_buffer_glshort_handlers.read_dimension = phpglfw_buffer_glshort_array_get_handler;
@@ -5040,7 +5040,7 @@ void phpglfw_register_buffer_module(INIT_FUNC_ARGS)
 
 	zend_class_implements(phpglfw_buffer_glushort_ce, 1, phpglfw_buffer_interface_ce);
     memcpy(&phpglfw_buffer_glushort_handlers, zend_get_std_object_handlers(), sizeof(zend_object_handlers));
-    phpglfw_buffer_glushort_handlers.offset = XtOffsetOf(phpglfw_buffer_glushort_object, std);
+    phpglfw_buffer_glushort_handlers.offset = offsetof(phpglfw_buffer_glushort_object, std);
     
     phpglfw_buffer_glushort_handlers.free_obj = phpglfw_buffer_glushort_free_handler;
     phpglfw_buffer_glushort_handlers.read_dimension = phpglfw_buffer_glushort_array_get_handler;
@@ -5057,7 +5057,7 @@ void phpglfw_register_buffer_module(INIT_FUNC_ARGS)
 
 	zend_class_implements(phpglfw_buffer_glbyte_ce, 1, phpglfw_buffer_interface_ce);
     memcpy(&phpglfw_buffer_glbyte_handlers, zend_get_std_object_handlers(), sizeof(zend_object_handlers));
-    phpglfw_buffer_glbyte_handlers.offset = XtOffsetOf(phpglfw_buffer_glbyte_object, std);
+    phpglfw_buffer_glbyte_handlers.offset = offsetof(phpglfw_buffer_glbyte_object, std);
     
     phpglfw_buffer_glbyte_handlers.free_obj = phpglfw_buffer_glbyte_free_handler;
     phpglfw_buffer_glbyte_handlers.read_dimension = phpglfw_buffer_glbyte_array_get_handler;
@@ -5074,7 +5074,7 @@ void phpglfw_register_buffer_module(INIT_FUNC_ARGS)
 
 	zend_class_implements(phpglfw_buffer_glubyte_ce, 1, phpglfw_buffer_interface_ce);
     memcpy(&phpglfw_buffer_glubyte_handlers, zend_get_std_object_handlers(), sizeof(zend_object_handlers));
-    phpglfw_buffer_glubyte_handlers.offset = XtOffsetOf(phpglfw_buffer_glubyte_object, std);
+    phpglfw_buffer_glubyte_handlers.offset = offsetof(phpglfw_buffer_glubyte_object, std);
     
     phpglfw_buffer_glubyte_handlers.free_obj = phpglfw_buffer_glubyte_free_handler;
     phpglfw_buffer_glubyte_handlers.read_dimension = phpglfw_buffer_glubyte_array_get_handler;

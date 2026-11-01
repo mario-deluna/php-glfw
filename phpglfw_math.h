@@ -65,27 +65,27 @@ void phpglfw_register_math_module(INIT_FUNC_ARGS);
  */
 zend_always_inline phpglfw_math_vec2_object* phpglfw_math_vec2_objectptr_from_zobj_p(zend_object* obj)
 {
-    return (phpglfw_math_vec2_object *) ((char *) (obj) - XtOffsetOf(phpglfw_math_vec2_object, std));
+    return (phpglfw_math_vec2_object *) ((char *) (obj) - offsetof(phpglfw_math_vec2_object, std));
 }
 
 zend_always_inline phpglfw_math_vec3_object* phpglfw_math_vec3_objectptr_from_zobj_p(zend_object* obj)
 {
-    return (phpglfw_math_vec3_object *) ((char *) (obj) - XtOffsetOf(phpglfw_math_vec3_object, std));
+    return (phpglfw_math_vec3_object *) ((char *) (obj) - offsetof(phpglfw_math_vec3_object, std));
 }
 
 zend_always_inline phpglfw_math_vec4_object* phpglfw_math_vec4_objectptr_from_zobj_p(zend_object* obj)
 {
-    return (phpglfw_math_vec4_object *) ((char *) (obj) - XtOffsetOf(phpglfw_math_vec4_object, std));
+    return (phpglfw_math_vec4_object *) ((char *) (obj) - offsetof(phpglfw_math_vec4_object, std));
 }
 
 zend_always_inline phpglfw_math_quat_object* phpglfw_math_quat_objectptr_from_zobj_p(zend_object* obj)
 {
-    return (phpglfw_math_quat_object *) ((char *) (obj) - XtOffsetOf(phpglfw_math_quat_object, std));
+    return (phpglfw_math_quat_object *) ((char *) (obj) - offsetof(phpglfw_math_quat_object, std));
 }
 
 zend_always_inline phpglfw_math_mat4_object* phpglfw_math_mat4_objectptr_from_zobj_p(zend_object* obj)
 {
-    return (phpglfw_math_mat4_object *) ((char *) (obj) - XtOffsetOf(phpglfw_math_mat4_object, std));
+    return (phpglfw_math_mat4_object *) ((char *) (obj) - offsetof(phpglfw_math_mat4_object, std));
 }
 
 
